@@ -12,6 +12,7 @@ allprojects {
     apply plugin: "idea"
 
     version = '1.0'
+
     ext {
         appName = "Mundus"
         gdxVersion = '1.7.1'

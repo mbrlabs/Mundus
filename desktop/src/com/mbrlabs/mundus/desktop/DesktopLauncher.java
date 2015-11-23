@@ -12,7 +12,7 @@ public class DesktopLauncher {
         // get monitor dimension
         Rectangle maximumWindowBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int width = (int) (maximumWindowBounds.getWidth() *0.95d);
-        int height = (int) (maximumWindowBounds.getHeight()*0.95d);
+        int height = (int) (maximumWindowBounds.getHeight()*0.9d);
         System.out.println("width: " + height);
 
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
