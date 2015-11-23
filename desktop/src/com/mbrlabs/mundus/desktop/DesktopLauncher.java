@@ -5,7 +5,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mbrlabs.mundus.Mundus;
 
 import java.awt.*;
-
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 

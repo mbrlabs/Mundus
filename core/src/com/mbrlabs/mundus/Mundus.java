@@ -5,12 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.kotcrab.vis.ui.VisUI;
+import com.mbrlabs.mundus.entities.EntityShader;
 import com.mbrlabs.mundus.terrain.TerrainShader;
-import com.mbrlabs.mundus.ui.screens.TerrainScreen;
+import com.mbrlabs.mundus.ui.screens.MainScreen;
 
 public class Mundus extends Game {
 
     public TerrainShader terrainShader;
+    public EntityShader entityShader;
 
     public PerspectiveCamera cam;
 
@@ -20,7 +22,7 @@ public class Mundus extends Game {
         ShaderProgram.pedantic = false;
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(2f, 2f, -1f);
+        cam.position.set(0, 0, 0);
         cam.lookAt(0,0,0);
         cam.near = 1f;
         cam.far = 300f;
@@ -29,8 +31,10 @@ public class Mundus extends Game {
         terrainShader = new TerrainShader();
         terrainShader.init();
 
+        entityShader = new EntityShader();
+        entityShader.init();
 
-        setScreen(new TerrainScreen(this));
+        setScreen(new MainScreen(this));
 	}
 
 	@Override
@@ -41,6 +45,8 @@ public class Mundus extends Game {
     @Override
     public void dispose() {
         super.dispose();
+        terrainShader.dispose();
+        entityShader.dispose();
         VisUI.dispose();
     }
 

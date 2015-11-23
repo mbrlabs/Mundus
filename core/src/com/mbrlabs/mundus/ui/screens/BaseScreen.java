@@ -9,10 +9,14 @@ import com.mbrlabs.mundus.Mundus;
  */
 public abstract class BaseScreen implements Screen {
 
-    protected Mundus mundus;
+    final protected Mundus mundus;
 
     public BaseScreen(Mundus mundus) {
         this.mundus = mundus;
+    }
+
+    public Mundus getMundus() {
+        return mundus;
     }
 
     @Override
