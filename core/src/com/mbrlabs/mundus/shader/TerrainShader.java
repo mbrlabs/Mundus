@@ -1,6 +1,5 @@
-package com.mbrlabs.mundus.entities;
+package com.mbrlabs.mundus.shader;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -11,13 +10,16 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.mbrlabs.mundus.utils.ShaderUtils;
 
 /**
  * @author Marcus Brummer
  * @version 22-11-2015
  */
-public class EntityShader extends BaseShader {
+public class TerrainShader extends BaseShader {
+
+    private static final String VERTEX_SHADER = "shader/terrain/terrain.vert.glsl";
+    private static final String FRAGMENT_SHADER = "shader/terrain/terrain.frag.glsl";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
@@ -30,13 +32,9 @@ public class EntityShader extends BaseShader {
 
     private int primitiveType = GL20.GL_TRIANGLES;
 
-    public EntityShader() {
+    public TerrainShader() {
         super();
-        String vert = Gdx.files.internal("shader/entity.vert.glsl").readString();
-        String frag = Gdx.files.internal("shader/entity.frag.glsl").readString();
-        program = new ShaderProgram(vert, frag);
-        if (!program.isCompiled())
-            throw new GdxRuntimeException(program.getLog());
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
     public void toggleWireframe() {
@@ -70,11 +68,6 @@ public class EntityShader extends BaseShader {
         program.begin();
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
-        if(primitiveType == GL20.GL_TRIANGLES) {
-            set(UNIFORM_WIREFRAME, 0);
-        } else {
-            set(UNIFORM_WIREFRAME, 1);
-        }
     }
 
     @Override

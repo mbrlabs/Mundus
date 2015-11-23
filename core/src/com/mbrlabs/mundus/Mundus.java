@@ -5,8 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.kotcrab.vis.ui.VisUI;
-import com.mbrlabs.mundus.entities.EntityShader;
-import com.mbrlabs.mundus.terrain.TerrainShader;
+import com.mbrlabs.mundus.shader.EntityShader;
+import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.ui.screens.MainScreen;
 
 public class Mundus extends Game {
