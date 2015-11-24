@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.Colors;
 import com.mbrlabs.mundus.Mundus;
+import com.mbrlabs.mundus.navigation.FreeCamController;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.utils.GlUtils;
 
@@ -47,7 +49,7 @@ public class MainScreen extends BaseScreen {
     private PointLight light;
 
     private InputMultiplexer inputMultiplexer;
-    private CameraInputController camController;
+    private FreeCamController camController;
 
     private ModelBatch modelBatch = new ModelBatch();
     private Environment environment = new Environment();
@@ -62,7 +64,7 @@ public class MainScreen extends BaseScreen {
         root.add(menuBar.getTable()).fillX().expandX().row();
 
         ModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
-        model = modelLoader.loadModel(Gdx.files.internal("ship/g3db/ship.g3db"));
+        model = modelLoader.loadModel(Gdx.files.internal("models/ship/g3db/ship.g3db"));
         modelInstance = new ModelInstance(model);
         modelInstance.transform.translate(0,0.7f,0);
         createAxes();
@@ -72,7 +74,7 @@ public class MainScreen extends BaseScreen {
         light.setIntensity(1);
         environment.add(light);
 
-        camController = new CameraInputController(mundus.cam);
+        camController = new FreeCamController(mundus.cam);
 
         inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
@@ -82,6 +84,7 @@ public class MainScreen extends BaseScreen {
             public boolean keyDown(int keycode) {
                 if(keycode == Input.Keys.F1) {
                     mundus.entityShader.toggleWireframe();
+                    System.out.println("sdf");
                 }
                 return true;
             }
@@ -135,7 +138,9 @@ public class MainScreen extends BaseScreen {
     public void render(float delta) {
         GlUtils.clearScreen(Colors.GRAY_222);
 
-        modelInstance.transform.rotate(0,1,0,1);
+        //modelInstance.transform.rotate(0,1,0,1);
+
+        camController.update();
 
         if (showAxes) modelBatch.render(axesInstance);
 

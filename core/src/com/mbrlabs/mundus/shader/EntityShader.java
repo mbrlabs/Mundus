@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.PointLightsAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -21,6 +22,7 @@ public class EntityShader extends BaseShader {
     private static final String VERTEX_SHADER = "shader/entity/entity.vert.glsl";
     private static final String FRAGMENT_SHADER = "shader/entity/entity.frag.glsl";
 
+    protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
@@ -63,8 +65,10 @@ public class EntityShader extends BaseShader {
 
     @Override
     public void begin(Camera camera, RenderContext context) {
-        context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
-        context.setDepthMask(true);
+        this.context = context;
+        this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
+        this.context.setDepthMask(true);
+
         program.begin();
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
@@ -79,9 +83,13 @@ public class EntityShader extends BaseShader {
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
+        // texture uniform
+        TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
+        set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
+
+        // Point light uniform
         final PointLightsAttribute pla =
                 renderable.environment.get(PointLightsAttribute.class, PointLightsAttribute.Type);
-        renderable.meshPart.primitiveType = primitiveType;
         final Array<PointLight> points = pla == null ? null : pla.lights;
         if(points != null && points.size > 0) {
             PointLight light = points.first();
@@ -89,6 +97,7 @@ public class EntityShader extends BaseShader {
             set(UNIFORM_LIGHT_INTENSITY, light.intensity);
         }
 
+        renderable.meshPart.primitiveType = primitiveType;
         // bind attributes, bind mesh & render; then unbinds everything
         renderable.meshPart.render(program);
 

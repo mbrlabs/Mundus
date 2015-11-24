@@ -22,9 +22,9 @@ public class Mundus extends Game {
         ShaderProgram.pedantic = false;
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(0, 0, 0);
-        cam.lookAt(0,0,0);
-        cam.near = 1f;
+        cam.position.set(0, 1, 3);
+        cam.lookAt(0,1,1);
+        cam.near = 0.2f;
         cam.far = 300f;
         cam.update();
 
