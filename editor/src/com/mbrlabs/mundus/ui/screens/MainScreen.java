@@ -22,6 +22,7 @@ import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.ui.components.StatusBar;
+import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.Mundus;
 import com.mbrlabs.mundus.importer.FbxConv;
@@ -45,6 +46,7 @@ public class MainScreen extends BaseScreen {
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
     private StatusBar statusBar;
+    private SettingsDialog settingsDialog;
 
     // axes
     public Model axesModel;
@@ -94,7 +96,7 @@ public class MainScreen extends BaseScreen {
         rootTable = new Table();
         rootTable.setFillParent(true);
         rootTable.align(Align.left | Align.top);
-       // rootTable.setDebug(true);
+        //rootTable.setDebug(true);
         stage.addActor(this.rootTable);
 
         // row 1: add menu
@@ -114,8 +116,13 @@ public class MainScreen extends BaseScreen {
         VisScrollPane scrollPane = new VisScrollPane(modelList);
         rootTable.add(scrollPane).width(300).top().left().expandY().fillY().row();
 
+        // row 4: status bar
         statusBar = new StatusBar();
         rootTable.add(statusBar).expandX().fillX().height(20).row();
+
+        // settings dialog
+        settingsDialog = new SettingsDialog();
+
     }
 
     private void setupFileChooser() {
@@ -150,6 +157,13 @@ public class MainScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("sd");
+            }
+        });
+
+        menuBar.getWindowMenu().getSettings().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settingsDialog.show(stage);
             }
         });
 

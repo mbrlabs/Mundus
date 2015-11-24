@@ -21,4 +21,8 @@ public class WindowMenu extends Menu {
         addItem(settings);
     }
 
+    public MenuItem getSettings() {
+        return settings;
+    }
+
 }
