@@ -1,7 +1,6 @@
 package com.mbrlabs.mundus.ui.components;
 
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.mbrlabs.mundus.ui.widgets.Toolbar;
 
 /**
  * @author Marcus Brummer
@@ -18,9 +17,9 @@ public class MundusToolbar extends Toolbar {
         saveBtn = new VisTextButton("SAVE");
         importBtn = new VisTextButton("IMPORT MODEL");
         buildBtn = new VisTextButton("BUILD");
-        addActor(saveBtn);
-        addActor(importBtn);
-        addActor(buildBtn);
+        addItem(saveBtn);
+        addItem(importBtn);
+        addItem(buildBtn);
     }
 
     public VisTextButton getSaveBtn() {

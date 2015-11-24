@@ -10,9 +10,9 @@ import com.kotcrab.vis.ui.widget.MenuBar;
  */
 public class MundusMenuBar extends MenuBar {
 
-    private Menu fileMenu;
-    private Menu editMenu;
-    private Menu windowMenu;
+    private FileMenu fileMenu;
+    private EditMenu editMenu;
+    private WindowMenu windowMenu;
 
     public MundusMenuBar() {
         super();
@@ -25,15 +25,15 @@ public class MundusMenuBar extends MenuBar {
         addMenu(windowMenu);
     }
 
-    public Menu getFileMenu() {
+    public FileMenu getFileMenu() {
         return fileMenu;
     }
 
-    public Menu getEditMenu() {
+    public EditMenu getEditMenu() {
         return editMenu;
     }
 
-    public Menu getWindowMenu() {
+    public WindowMenu getWindowMenu() {
         return windowMenu;
     }
 

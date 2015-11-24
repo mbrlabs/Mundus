@@ -21,6 +21,7 @@ import com.kotcrab.vis.ui.widget.VisList;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.Mundus;
 import com.mbrlabs.mundus.importer.FbxConv;
@@ -43,6 +44,7 @@ public class MainScreen extends BaseScreen {
     private MundusMenuBar menuBar;
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
+    private StatusBar statusBar;
 
     // axes
     public Model axesModel;
@@ -112,8 +114,8 @@ public class MainScreen extends BaseScreen {
         VisScrollPane scrollPane = new VisScrollPane(modelList);
         rootTable.add(scrollPane).width(300).top().left().expandY().fillY().row();
 
-        // TODO row 4: status bar
-
+        statusBar = new StatusBar();
+        rootTable.add(statusBar).expandX().fillX().height(20).row();
     }
 
     private void setupFileChooser() {
@@ -144,6 +146,13 @@ public class MainScreen extends BaseScreen {
             }
         });
 
+        menuBar.getFileMenu().getNewProject().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("sd");
+            }
+        });
+
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -155,6 +164,9 @@ public class MainScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         GlUtils.clearScreen(Colors.GRAY_222);
+
+        // ui updates
+        statusBar.setFps(Gdx.graphics.getFramesPerSecond());
 
         // updates
         camController.update();

@@ -1,5 +1,6 @@
 package com.mbrlabs.mundus.ui.components.menu;
 
+import com.badlogic.gdx.Input;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 
@@ -18,9 +19,13 @@ public class EditMenu extends Menu {
         super("Edit");
 
         copy = new MenuItem("Copy");
+        copy.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.C);
         paste = new MenuItem("Paste");
+        paste.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.P);
         undo = new MenuItem("Undo");
+        undo.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.Z);
         redo = new MenuItem("Redo");
+        redo.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.Y);
 
         addItem(copy);
         addItem(paste);
