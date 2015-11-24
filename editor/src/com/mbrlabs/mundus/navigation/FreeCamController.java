@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntIntMap;
 
+import java.security.Key;
+
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
@@ -54,11 +56,13 @@ public class FreeCamController extends InputAdapter {
 
     @Override
     public boolean touchDragged (int screenX, int screenY, int pointer) {
-        float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
-        float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
-        camera.direction.rotate(camera.up, deltaX);
-        tmp.set(camera.direction).crs(camera.up).nor();
-        camera.direction.rotate(tmp, deltaY);
+        if(Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+            float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
+            float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
+            camera.direction.rotate(camera.up, deltaX);
+            tmp.set(camera.direction).crs(camera.up).nor();
+            camera.direction.rotate(tmp, deltaY);
+        }
         return false;
     }
 

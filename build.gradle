@@ -20,6 +20,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.6.0'
         aiVersion = '1.6.0'
+        visuiVersion = '0.9.4'
     }
 
     repositories {
@@ -38,7 +39,7 @@ project(":editor") {
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.kotcrab.vis:vis-ui:0.9.2"
+        compile "com.kotcrab.vis:vis-ui:$visuiVersion"
 
         // desktop
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -46,6 +47,10 @@ project(":editor") {
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+        compile 'org.apache.commons:commons-lang3:3.4'
+        compile 'commons-io:commons-io:2.4'
+
     }
 }
 

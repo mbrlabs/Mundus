@@ -18,7 +18,6 @@ task dist(type: Jar) {
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}
     from files(project.assetsDir);
-
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
@@ -29,7 +28,7 @@ dist.dependsOn classes
 eclipse {
     project {
         name = appName + "-desktop"
-        linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/core/assets'
+        linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/editor/assets'
     }
 }
 
