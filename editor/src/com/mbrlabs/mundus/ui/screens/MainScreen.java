@@ -5,19 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -25,8 +18,10 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.Colors;
 import com.mbrlabs.mundus.Mundus;
 import com.mbrlabs.mundus.navigation.FreeCamController;
+import com.mbrlabs.mundus.ui.components.EntityPerspectiveTable;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.utils.GlUtils;
+import com.mbrlabs.mundus.utils.UsefulMeshs;
 
 /**
  * @author Marcus Brummer
@@ -35,7 +30,9 @@ import com.mbrlabs.mundus.utils.GlUtils;
 public class MainScreen extends BaseScreen {
 
     private Stage stage;
-    private VisTable root;
+    private Table rootTable;
+    private Table contentTable;
+    private EntityPerspectiveTable entityTable;
 
     private MundusMenuBar menuBar;
 
@@ -51,23 +48,19 @@ public class MainScreen extends BaseScreen {
     private InputMultiplexer inputMultiplexer;
     private FreeCamController camController;
 
-    private ModelBatch modelBatch = new ModelBatch();
     private Environment environment = new Environment();
-
 
     public MainScreen(final Mundus mundus) {
         super(mundus);
-        setupStage();
+        setupUI();
 
-        // Menu
-        menuBar = new MundusMenuBar();
-        root.add(menuBar.getTable()).fillX().expandX().row();
 
         ModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
         model = modelLoader.loadModel(Gdx.files.internal("models/ship/g3db/ship.g3db"));
         modelInstance = new ModelInstance(model);
-        modelInstance.transform.translate(0,0.7f,0);
-        createAxes();
+        modelInstance.transform.translate(0, 0.7f, 0);
+        axesModel = UsefulMeshs.createAxes();
+        axesInstance = new ModelInstance(axesModel);
 
         light = new PointLight();
         light.setPosition(0,10,-10);
@@ -95,38 +88,31 @@ public class MainScreen extends BaseScreen {
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
-    private void createAxes () {
-        final float GRID_MIN = -10f;
-        final float GRID_MAX = 10f;
-        final float GRID_STEP = 1f;
-        ModelBuilder modelBuilder = new ModelBuilder();
-        modelBuilder.begin();
-        MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, new Material());
-        builder.setColor(Color.LIGHT_GRAY);
-        for (float t = GRID_MIN; t <= GRID_MAX; t += GRID_STEP) {
-            builder.line(t, 0, GRID_MIN, t, 0, GRID_MAX);
-            builder.line(GRID_MIN, 0, t, GRID_MAX, 0, t);
-        }
-        builder = modelBuilder.part("axes", GL20.GL_LINES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, new Material());
-        builder.setColor(Color.RED);
-        builder.line(0, 0, 0, 100, 0, 0);
-        builder.setColor(Color.GREEN);
-        builder.line(0, 0, 0, 0, 100, 0);
-        builder.setColor(Color.BLUE);
-        builder.line(0, 0, 0, 0, 0, 100);
-        axesModel = modelBuilder.end();
-        axesInstance = new ModelInstance(axesModel);
-    }
-
-    private void setupStage() {
+    private void setupUI() {
         this.stage = new Stage(new ScreenViewport());
-        root = new VisTable();
-        root.setWidth(stage.getWidth());
-        root.align(Align.center | Align.top);
-        root.setPosition(0, Gdx.graphics.getHeight());
-        stage.addActor(this.root);
+
+        // root table
+        rootTable = new Table();
+        rootTable.setWidth(stage.getWidth());
+        rootTable.align(Align.center | Align.top);
+        rootTable.setPosition(0, Gdx.graphics.getHeight());
+        rootTable.debugAll();
+
+        // Menu
+        menuBar = new MundusMenuBar();
+        rootTable.add(menuBar.getTable()).fillX().expandX().row();
+
+        // content table
+        contentTable = new Table();
+        rootTable.add(contentTable).fill().expand().right();
+
+        // entity perspective table
+        entityTable = new EntityPerspectiveTable();
+
+        // set current perspective
+        contentTable.add(entityTable).fill().expand().right().row();
+
+        stage.addActor(this.rootTable);
     }
 
     @Override
@@ -138,19 +124,22 @@ public class MainScreen extends BaseScreen {
     public void render(float delta) {
         GlUtils.clearScreen(Colors.GRAY_222);
 
-        //modelInstance.transform.rotate(0,1,0,1);
-
+        // updates
         camController.update();
-
-        if (showAxes) modelBatch.render(axesInstance);
-
-        modelBatch.begin(mundus.cam);
-        modelBatch.render(modelInstance, environment, mundus.entityShader);
-        modelBatch.end();
-
-        // stage
         stage.act(delta);
+
+        // render axes
+        if (showAxes) mundus.modelBatch.render(axesInstance);
+        // render entities
+        mundus.modelBatch.begin(mundus.cam);
+        mundus.modelBatch.render(modelInstance, environment, mundus.entityShader);
+        mundus.modelBatch.end();
+
+        // TODO render terrains
+
+        // render UI
         stage.draw();
+
     }
 
     @Override
@@ -166,7 +155,6 @@ public class MainScreen extends BaseScreen {
         this.model = null;
         this.axesModel.dispose();
         this.axesModel = null;
-        modelBatch.dispose();
     }
 
 }
