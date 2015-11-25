@@ -9,7 +9,7 @@ varying vec3 v_vectorToLight;
 varying vec3 v_surfaceNormal;
 
 uniform float u_lightIntensity;
-uniform float u_wireframe;
+uniform int u_wireframe;
 
 
 void main(void) {
