@@ -1,8 +1,7 @@
 package com.mbrlabs.mundus.importer;
 
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
-import com.mbrlabs.mundus.settings.Settings;
-import com.mbrlabs.mundus.settings.global.GlobalSettings;
+import com.mbrlabs.mundus.data.settings.SettingsManager;
 import com.mbrlabs.mundus.utils.Callback;
 import com.mbrlabs.mundus.utils.Os;
 import org.apache.commons.io.FilenameUtils;
@@ -38,17 +37,16 @@ public class FbxConv {
 
     public FbxConv() {
         if(SystemUtils.IS_OS_MAC) {
-            pb = new ProcessBuilder(Settings.FBX_MAC);
             os = Os.MAC;
         } else if(SystemUtils.IS_OS_WINDOWS) {
-            pb = new ProcessBuilder(Settings.FBX_WINDOWS);
             os = Os.WINDOWS;
         } else if(SystemUtils.IS_OS_LINUX) {
-            pb = new ProcessBuilder(Settings.FBX_LINUX);
             os = Os.LINUX;
         } else {
             throw new OsNotSupported();
         }
+
+        pb = new ProcessBuilder(SettingsManager.getInstance().getSettings().getFbxConvBinary());
     }
 
     public void clear() {

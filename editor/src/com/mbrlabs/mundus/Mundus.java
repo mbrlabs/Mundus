@@ -2,15 +2,15 @@ package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
-import com.mbrlabs.mundus.settings.Settings;
-import com.mbrlabs.mundus.settings.global.Project;
+import com.mbrlabs.mundus.data.Bootstrap;
+import com.mbrlabs.mundus.data.projects.ProjectManager;
+import com.mbrlabs.mundus.data.settings.SettingsManager;
+import com.mbrlabs.mundus.data.projects.Project;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.ui.screens.MainScreen;
@@ -29,6 +29,7 @@ public class Mundus extends Game {
 
 	@Override
 	public void create () {
+        Bootstrap.bootstrap();
         init();
         setScreen(new MainScreen(this));
 	}
@@ -53,14 +54,7 @@ public class Mundus extends Game {
 
         modelBatch = new ModelBatch();
 
-        Settings.global.load();
-        Project project = new Project();
-        project.setName("Skyrim");
-        project.setCreated(new Date().getTime());
-        project.setLastOpend(new Date().getTime());
-        project.setPath("/path/to_skyrim/looooööooool");
-        Settings.global.getData().getProjects().add(project);
-        Settings.global.save();
+        
     }
 
 	@Override

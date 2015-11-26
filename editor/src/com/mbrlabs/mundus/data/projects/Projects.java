@@ -1,17 +1,17 @@
-package com.mbrlabs.mundus.settings.global;
+package com.mbrlabs.mundus.data.projects;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Marcus Brummer
- * @version 24-11-2015
+ * @version 25-11-2015
  */
-public class GlobalSettingsData {
+public class Projects {
 
     private List<Project> projects;
 
-    public GlobalSettingsData() {
+    public Projects() {
         projects = new ArrayList<>();
     }
 

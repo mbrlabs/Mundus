@@ -1,6 +1,4 @@
-package com.mbrlabs.mundus.settings.global;
-
-import java.util.Date;
+package com.mbrlabs.mundus.data.projects;
 
 /**
  * @author Marcus Brummer
@@ -17,7 +15,7 @@ public class Project {
         return lastOpened;
     }
 
-    public void setLastOpend(long lastOpened) {
+    public void setLastOpened(long lastOpened) {
         this.lastOpened = lastOpened;
     }
 
