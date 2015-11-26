@@ -8,14 +8,9 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.Bootstrap;
-import com.mbrlabs.mundus.data.projects.ProjectManager;
-import com.mbrlabs.mundus.data.settings.SettingsManager;
-import com.mbrlabs.mundus.data.projects.Project;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.ui.screens.MainScreen;
-
-import java.util.Date;
 
 public class Mundus extends Game {
 
@@ -35,6 +30,7 @@ public class Mundus extends Game {
 	}
 
     private void init() {
+
         VisUI.load();
         FileChooser.setFavoritesPrefsName(Mundus.class.getPackage().getName());
         // cam
@@ -53,8 +49,6 @@ public class Mundus extends Game {
         entityShader.init();
 
         modelBatch = new ModelBatch();
-
-        
     }
 
 	@Override

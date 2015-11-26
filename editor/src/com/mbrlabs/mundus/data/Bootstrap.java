@@ -2,6 +2,7 @@ package com.mbrlabs.mundus.data;
 
 import com.mbrlabs.mundus.data.projects.ProjectManager;
 import com.mbrlabs.mundus.data.settings.SettingsManager;
+import com.mbrlabs.mundus.utils.Log;
 
 import java.io.File;
 
@@ -20,9 +21,20 @@ public class Bootstrap {
         ProjectManager.getInstance();
     }
 
+    private static void loadSettings() {
+        SettingsManager.getInstance();
+    }
+
+    private static void initLogging() {
+        Log.init();
+    }
+
     public static void bootstrap() {
         createMundusHome();
+        initLogging();
         loadProjects();
+        loadSettings();
+        Log.info("Bootstrap finished");
     }
 
 }
