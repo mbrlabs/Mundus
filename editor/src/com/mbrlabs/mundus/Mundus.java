@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.Bootstrap;
+import com.mbrlabs.mundus.data.projects.ProjectManager;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.ui.screens.MainScreen;
@@ -38,7 +39,7 @@ public class Mundus extends Game {
         cam.position.set(0, 1, 3);
         cam.lookAt(0,1,1);
         cam.near = 0.2f;
-        cam.far = 300f;
+        cam.far = 3000f;
         cam.update();
 
         // shaders
@@ -49,6 +50,10 @@ public class Mundus extends Game {
         entityShader.init();
 
         modelBatch = new ModelBatch();
+
+        if(ProjectManager.getInstance().getProjects().getProjects().size() == 0) {
+            ProjectManager.getInstance().createProject("Skyrim", "/home/marcus/MundusProjects");
+        }
     }
 
 	@Override

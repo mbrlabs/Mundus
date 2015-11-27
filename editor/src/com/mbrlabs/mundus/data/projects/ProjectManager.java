@@ -5,6 +5,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.mbrlabs.mundus.data.JsonManager;
 import com.mbrlabs.mundus.data.settings.SettingsManager;
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
 
 /**
  * @author Marcus Brummer
@@ -35,15 +38,24 @@ public class ProjectManager implements JsonManager {
     public Project createProject(String name, String folder) {
         Project project = new Project();
         project.setName(name);
-        project.setPath(folder);
+        project.setPath(FilenameUtils.concat(folder, name));
         project.setCreated(System.currentTimeMillis());
         project.setLastOpened(System.currentTimeMillis());
         projects.getProjects().add(project);
         save();
 
+        File dir = new File(folder, name);
+        dir.mkdirs();
+
+        File modelDir = new File(dir.getAbsolutePath(), "models");
+        modelDir.mkdirs();
+
         return project;
     }
 
+    public Projects getProjects() {
+        return projects;
+    }
 
     @Override
     public void load() {

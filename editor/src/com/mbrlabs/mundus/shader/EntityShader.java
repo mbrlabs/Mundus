@@ -2,6 +2,7 @@ package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GLTexture;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.PointLightsAttribute;
@@ -85,7 +86,9 @@ public class EntityShader extends BaseShader {
 
         // texture uniform
         TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
-        set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
+        if(textureAttribute != null) {
+            set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
+        }
 
         // Point light uniform
         final PointLightsAttribute pla =

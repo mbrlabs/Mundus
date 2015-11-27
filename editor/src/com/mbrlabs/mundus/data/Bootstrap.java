@@ -1,6 +1,7 @@
 package com.mbrlabs.mundus.data;
 
 import com.mbrlabs.mundus.data.projects.ProjectManager;
+import com.mbrlabs.mundus.data.settings.Settings;
 import com.mbrlabs.mundus.data.settings.SettingsManager;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -22,7 +23,11 @@ public class Bootstrap {
     }
 
     private static void loadSettings() {
-        SettingsManager.getInstance();
+        if(SettingsManager.getInstance().getSettings().getFbxConvBinary() == null) {
+            SettingsManager.getInstance().getSettings().setFbxConvBinary(SettingsManager.MUNDUS_HOME + "fbx-conv/fbx-conv-lin64");
+            SettingsManager.getInstance().save();
+        }
+
     }
 
     private static void initLogging() {

@@ -35,7 +35,7 @@ public class SettingsManager implements JsonManager {
     }
 
     public void load() {
-        final String path = SettingsManager.MUNDUS_HOME + "" + JSON_FILE_NAME;
+        final String path = SettingsManager.MUNDUS_HOME + JSON_FILE_NAME;
         FileHandle settingsFile = Gdx.files.absolute(path);
         if(settingsFile.exists()) {
             settings = json.fromJson(Settings.class, settingsFile);

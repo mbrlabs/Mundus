@@ -11,9 +11,12 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
@@ -21,6 +24,7 @@ import com.kotcrab.vis.ui.widget.VisList;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 import com.mbrlabs.mundus.utils.Colors;
@@ -30,6 +34,7 @@ import com.mbrlabs.mundus.navigation.FreeCamController;
 import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.utils.GlUtils;
+import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.apache.commons.io.FilenameUtils;
 
@@ -40,13 +45,7 @@ import org.apache.commons.io.FilenameUtils;
 public class MainScreen extends BaseScreen {
 
     // UI stuff
-    private Stage stage;
-    private Table rootTable;
-    private MundusMenuBar menuBar;
-    private MundusToolbar toolbar;
-    private FileChooser fileChooser;
-    private StatusBar statusBar;
-    private SettingsDialog settingsDialog;
+    private Ui ui;
 
     // axes
     public Model axesModel;
@@ -55,7 +54,7 @@ public class MainScreen extends BaseScreen {
 
     // sample model
     private Model model;
-    private ModelInstance modelInstance;
+    private Array<ModelInstance> modelInstances = new Array<>();
 
     // lights
     private Environment environment = new Environment();
@@ -71,13 +70,15 @@ public class MainScreen extends BaseScreen {
 
     public MainScreen(final Mundus mundus) {
         super(mundus);
-        setupUI();
-        setupFileChooser();
+        ui = Ui.getInstance();
+
 
         ModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
         model = modelLoader.loadModel(Gdx.files.internal("models/ship/g3db/ship.g3db"));
-        modelInstance = new ModelInstance(model);
+        ModelInstance modelInstance = new ModelInstance(model);
         modelInstance.transform.translate(0, 0.7f, 0);
+        modelInstances.add(modelInstance);
+
         axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
 
@@ -87,47 +88,6 @@ public class MainScreen extends BaseScreen {
         environment.add(light);
 
         setupInput();
-    }
-
-    private void setupUI() {
-        this.stage = new Stage(new ScreenViewport());
-
-        // create root table
-        rootTable = new Table();
-        rootTable.setFillParent(true);
-        rootTable.align(Align.left | Align.top);
-        //rootTable.setDebug(true);
-        stage.addActor(this.rootTable);
-
-        // row 1: add menu
-        menuBar = new MundusMenuBar();
-        rootTable.add(menuBar.getTable()).fillX().expandX().row();
-
-        // row 2: toolbar
-        toolbar = new MundusToolbar();
-        rootTable.add(toolbar).fillX().expandX().row();
-
-        // row 3: content
-        VisList<String> modelList = new VisList<String>();
-        modelList.getStyle().background = VisUI.getSkin().getDrawable("default-pane");
-        for(int i = 0; i < 90; i++) {
-            modelList.getItems().add("Model " + i);
-        }
-        VisScrollPane scrollPane = new VisScrollPane(modelList);
-        rootTable.add(scrollPane).width(300).top().left().expandY().fillY().row();
-
-        // row 4: status bar
-        statusBar = new StatusBar();
-        rootTable.add(statusBar).expandX().fillX().height(20).row();
-
-        // settings dialog
-        settingsDialog = new SettingsDialog();
-
-    }
-
-    private void setupFileChooser() {
-        fileChooser = new FileChooser(FileChooser.Mode.OPEN);
-        fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
     }
 
     private void setupInput() {
@@ -144,26 +104,26 @@ public class MainScreen extends BaseScreen {
             }
         });
 
-        inputMultiplexer.addProcessor(stage);
-        toolbar.getImportBtn().addListener(new ChangeListener() {
+        inputMultiplexer.addProcessor(ui);
+        ui.getToolbar().getImportBtn().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                fileChooser.setListener(fileChooserImportModel);
-                stage.addActor(fileChooser.fadeIn());
+                ui.getFileChooser().setListener(fileChooserImportModel);
+                ui.addActor(ui.getFileChooser().fadeIn());
             }
         });
 
-        menuBar.getFileMenu().getNewProject().addListener(new ChangeListener() {
+        ui.getMenuBar().getFileMenu().getNewProject().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("sd");
             }
         });
 
-        menuBar.getWindowMenu().getSettings().addListener(new ChangeListener() {
+        ui.getMenuBar().getWindowMenu().getSettings().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settingsDialog.show(stage);
+                ui.getSettingsDialog().show(ui);
             }
         });
 
@@ -180,35 +140,36 @@ public class MainScreen extends BaseScreen {
         GlUtils.clearScreen(Colors.GRAY_222);
 
         // ui updates
-        statusBar.setFps(Gdx.graphics.getFramesPerSecond());
+        ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
 
         // updates
+        mundus.cam.update();
         camController.update();
-        stage.act(delta);
+        ui.act(delta);
 
         // render axes
         if (showAxes) mundus.modelBatch.render(axesInstance);
         // render entities
         mundus.modelBatch.begin(mundus.cam);
-        mundus.modelBatch.render(modelInstance, environment, mundus.entityShader);
+        mundus.modelBatch.render(modelInstances, environment, mundus.entityShader);
         mundus.modelBatch.end();
 
         // TODO render terrains
 
         // render UI
-        stage.draw();
+        ui.draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        ui.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose() {
-        this.stage.dispose();
-        this.stage = null;
+        this.ui.dispose();
+        this.ui = null;
         this.model.dispose();
         this.model = null;
         this.axesModel.dispose();
@@ -225,11 +186,17 @@ public class MainScreen extends BaseScreen {
             String outputPath = FilenameUtils.getFullPath(pathToFile);
 
             fbxConv.clear();
-            fbxConv.input(pathToFile).output(outputPath).flipTexture(true).outputFormat(FbxConv.OUTPUT_FORMAT_G3DJ);
+            fbxConv.input(pathToFile).output(outputPath).flipTexture(true).outputFormat(FbxConv.OUTPUT_FORMAT_G3DB);
             fbxConv.execute(result -> {
-                System.out.println("Import result: " + result.isSuccess());
-                System.out.println("Import log: " + result.getLog());
+                Log.debug("Import result: " + result.isSuccess());
+                Log.debug("Import log: " + result.getLog());
+                Model model = new G3dModelLoader(new UBJsonReader()).loadModel(Gdx.files.absolute(result.getOutputFile()));
+                ui.getModelList().getItems().add(model);
+                modelInstances.add(new ModelInstance(ui.getModelList().getItems().first()));
+                ui.getModelList().layout();
             });
+
+
 
         }
     }

@@ -1,8 +1,10 @@
 package com.mbrlabs.mundus.importer;
 
+import com.badlogic.gdx.Gdx;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
 import com.mbrlabs.mundus.data.settings.SettingsManager;
 import com.mbrlabs.mundus.utils.Callback;
+import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.Os;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -55,6 +57,7 @@ public class FbxConv {
         flipTexture = false;
         input = null;
         output = null;
+        pb = new ProcessBuilder(SettingsManager.getInstance().getSettings().getFbxConvBinary());
     }
 
     public FbxConv input(String pathToFile) {
@@ -108,7 +111,9 @@ public class FbxConv {
         }
 
         args.add(input);
-        args.add(FilenameUtils.concat(output, outputFilename));
+        String path = FilenameUtils.concat(output, outputFilename);
+        args.add(path);
+        Log.debug("FbxConv", "Command: " + args);
         pb.command().addAll(args);
 
         // execute fbx-conv process
@@ -119,8 +124,10 @@ public class FbxConv {
 
             if(exitCode == 0 && !log.contains("ERROR")) {
                 result.setSuccess(true);
+                result.setOutputFile(path);
             }
             result.setLog(log);
+
         } catch (IOException e) {
             e.printStackTrace();
             result.setResultCode(FbxConvResult.RESULT_CODE_IO_ERROR);
@@ -137,7 +144,7 @@ public class FbxConv {
             @Override
             public void run() {
                 FbxConvResult result = execute();
-                callback.done(result);
+                Gdx.app.postRunnable(() -> callback.done(result));
             }
         }.start();
     }
