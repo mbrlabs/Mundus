@@ -39,7 +39,7 @@ public class StatusBar extends Container {
         this.fpsLabel.setText("fps: " + fps);
     }
 
-    public void setVertexCount(int vertexCount) {
+    public void setVertexCount(long vertexCount) {
         this.verticesLabel.setText("vertices: " + vertexCount);
     }
 

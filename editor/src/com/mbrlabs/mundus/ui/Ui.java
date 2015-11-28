@@ -3,10 +3,10 @@ package com.mbrlabs.mundus.ui;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisList;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -15,6 +15,9 @@ import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
+import com.mbrlabs.mundus.ui.handler.menu.MenuNewProjectHandler;
+import com.mbrlabs.mundus.ui.handler.menu.MenuSettingsHandler;
+import com.mbrlabs.mundus.ui.handler.toolbar.ToolbarImportHandler;
 
 /**
  * @author Marcus Brummer
@@ -73,6 +76,21 @@ public class Ui extends Stage {
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
+
+        setHandlers();
+    }
+
+    private void setHandlers() {
+        // Menu
+        menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
+        menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
+
+        // Toolbar
+        toolbar.getImportBtn().addListener(new ToolbarImportHandler());
+    }
+
+    public void showDialog(VisDialog dialog) {
+        dialog.show(this);
     }
 
     public List<Model> getModelList() {
