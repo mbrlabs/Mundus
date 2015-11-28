@@ -12,6 +12,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.World;
 import com.mbrlabs.mundus.importer.FbxConv;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.screens.MainScreen;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
@@ -42,7 +43,7 @@ public class ToolbarImportHandler extends ChangeListener {
     private class FCAdapterImportModel extends FileChooserAdapter {
         @Override
         public void selected(FileHandle file) {
-            World world = World.getInstance();
+            World world = MainScreen.context.getWorld();
             Ui ui = Ui.getInstance();
 
             String pathToFile = file.path();

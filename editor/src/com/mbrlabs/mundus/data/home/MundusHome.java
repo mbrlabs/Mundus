@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.mbrlabs.mundus.data.JsonManager;
-import com.mbrlabs.mundus.data.projects.Projects;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -25,7 +24,7 @@ public class MundusHome implements JsonManager {
 
     private Json json;
 
-    private Projects projects;
+    private ProjectRefs projectRefs;
     private Settings settings;
 
     private MundusHome() {
@@ -45,12 +44,25 @@ public class MundusHome implements JsonManager {
         new File(LOGS_DIR).mkdirs();
     }
 
-    public Projects getProjects() {
-        return projects;
+    public ProjectRefs getProjectRefs() {
+        return projectRefs;
     }
 
     public Settings getSettings() {
         return settings;
+    }
+
+    public ProjectRef createProjectRef(String name, String folder) {
+        String path = FilenameUtils.concat(folder, name);
+        ProjectRef projectRef = new ProjectRef();
+        projectRef.setName(name);
+        projectRef.setPath(path);
+        projectRef.setCreated(System.currentTimeMillis());
+        projectRef.setLastOpened(System.currentTimeMillis());
+        projectRefs.getProjectRefs().add(projectRef);
+        save();
+
+        return projectRef;
     }
 
     public void load() {
@@ -62,12 +74,12 @@ public class MundusHome implements JsonManager {
             settings = new Settings();
         }
 
-        // projects
+        // project refs
         file = Gdx.files.absolute(PROJECTS_JSON);
         if(file.exists()) {
-            projects = json.fromJson(Projects.class, file);
+            projectRefs = json.fromJson(ProjectRefs.class, file);
         } else {
-            projects = new Projects();
+            projectRefs = new ProjectRefs();
         }
     }
 
@@ -76,9 +88,9 @@ public class MundusHome implements JsonManager {
         FileHandle file = Gdx.files.absolute(SETTINGS_JSON);
         json.toJson(settings, file);
 
-        // projects
+        // project refs
         file = Gdx.files.absolute(PROJECTS_JSON);
-        json.toJson(projects, file);
+        json.toJson(projectRefs, file);
     }
 
 }

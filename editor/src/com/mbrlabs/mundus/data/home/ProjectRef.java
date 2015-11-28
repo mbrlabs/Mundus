@@ -4,7 +4,7 @@ package com.mbrlabs.mundus.data.home;
  * @author Marcus Brummer
  * @version 24-11-2015
  */
-public class Project {
+public class ProjectRef {
 
     private String name;
     private String path;

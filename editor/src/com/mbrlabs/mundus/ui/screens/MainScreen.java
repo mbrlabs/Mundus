@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.World;
+import com.mbrlabs.mundus.data.ProjectContext;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.Mundus;
@@ -34,7 +35,11 @@ import java.util.Random;
 public class MainScreen extends BaseScreen {
 
     private Ui ui;
-    private World world;
+    public static ProjectContext context;
+
+    // axes
+    public Model axesModel;
+    public ModelInstance axesInstance;
 
     // input
     private InputMultiplexer inputMultiplexer;
@@ -45,8 +50,11 @@ public class MainScreen extends BaseScreen {
 
     public MainScreen(final Mundus mundus) {
         super(mundus);
-        world = World.getInstance();
+        context = new ProjectContext();
         ui = Ui.getInstance();
+
+        axesModel = UsefulMeshs.createAxes();
+        axesInstance = new ModelInstance(axesModel);
 
         setupInput();
     }
@@ -64,14 +72,14 @@ public class MainScreen extends BaseScreen {
                     mundus.entityShader.toggleWireframe();
                 }
                 if(keycode == Input.Keys.F2) {
-                    if(world.models.size > 0) {
+                    if(context.getWorld().models.size > 0) {
                         Random rand = new Random();
                         for(int i = 0; i < 200; i++) {
-                            ModelInstance instance = new ModelInstance(world.models.first());
+                            ModelInstance instance = new ModelInstance(context.getWorld().models.first());
 
                             instance.transform.translate(rand.nextFloat() * 1000, 0, rand.nextFloat()*1000);
                             instance.transform.rotate(0, rand.nextFloat(), 0, rand.nextFloat()*360);
-                            world.entities.add(instance);
+                            context.getWorld().entities.add(instance);
 
                         }
                     }
@@ -100,8 +108,8 @@ public class MainScreen extends BaseScreen {
         camController.update();
 
         mundus.modelBatch.begin(mundus.cam);
-        mundus.modelBatch.render(world.axesInstance);
-        mundus.modelBatch.render(world.entities, world.environment, mundus.entityShader);
+        mundus.modelBatch.render(axesInstance);
+        mundus.modelBatch.render(context.getWorld().entities, context.getWorld().environment, mundus.entityShader);
         mundus.modelBatch.end();
 
         // TODO render terrains
@@ -119,7 +127,9 @@ public class MainScreen extends BaseScreen {
     public void dispose() {
         this.ui.dispose();
         this.ui = null;
-        this.world.dispose();
+        axesModel.dispose();
+        axesModel = null;
+        context.dispose();
     }
 
 }

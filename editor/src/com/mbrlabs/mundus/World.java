@@ -14,8 +14,6 @@ import com.mbrlabs.mundus.utils.UsefulMeshs;
  */
 public class World implements Disposable {
 
-    private static World instance;
-
     public Array<ModelInstance> entities;
     public Array<Model> models;
 
@@ -26,15 +24,8 @@ public class World implements Disposable {
     public PointLight light;
     public Environment environment = new Environment();
 
-    public static World getInstance() {
-        if(instance == null) {
-            instance = new World();
-        }
 
-        return instance;
-    }
-
-    private World() {
+    public World() {
         entities = new Array<>();
         models = new Array<>();
 
