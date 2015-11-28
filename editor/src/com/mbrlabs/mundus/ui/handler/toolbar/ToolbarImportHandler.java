@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.mbrlabs.mundus.Mundus;
 import com.mbrlabs.mundus.World;
 import com.mbrlabs.mundus.importer.FbxConv;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.screens.MainScreen;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
@@ -43,7 +43,7 @@ public class ToolbarImportHandler extends ChangeListener {
     private class FCAdapterImportModel extends FileChooserAdapter {
         @Override
         public void selected(FileHandle file) {
-            World world = MainScreen.context.getWorld();
+            World world = Mundus.context.getWorld();
             Ui ui = Ui.getInstance();
 
             String pathToFile = file.path();
