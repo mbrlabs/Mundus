@@ -1,7 +1,11 @@
 package com.mbrlabs.mundus.data;
 
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.World;
 import com.mbrlabs.mundus.data.home.ProjectRef;
 
 /**
@@ -11,16 +15,20 @@ import com.mbrlabs.mundus.data.home.ProjectRef;
 public class ProjectContext implements Disposable {
 
     private ProjectRef ref;
-    private World world;
+
+    public Environment environment = new Environment();
+    public Array<ModelInstance> entities;
+    public Array<Model> models;
+    public PointLight light;
 
     public ProjectContext() {
-        ref = null;
-        world = new World();
-    }
+        entities = new Array<>();
+        models = new Array<>();
 
-    public ProjectContext(ProjectRef ref, World world) {
-        this.ref = ref;
-        this.world = world;
+        light = new PointLight();
+        light.setPosition(0,10,-10);
+        light.setIntensity(1);
+        environment.add(light);
     }
 
     public ProjectRef getRef() {
@@ -31,17 +39,12 @@ public class ProjectContext implements Disposable {
         this.ref = ref;
     }
 
-    public World getWorld() {
-        return world;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
-    }
-
     @Override
     public void dispose() {
-        world.dispose();
+        for(Model model : models) {
+            model.dispose();
+        }
+        models = null;
     }
 
 }

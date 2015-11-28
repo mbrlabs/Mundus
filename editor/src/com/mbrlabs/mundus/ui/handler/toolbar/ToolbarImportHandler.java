@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.Mundus;
-import com.mbrlabs.mundus.World;
 import com.mbrlabs.mundus.importer.FbxConv;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Log;
@@ -43,7 +42,6 @@ public class ToolbarImportHandler extends ChangeListener {
     private class FCAdapterImportModel extends FileChooserAdapter {
         @Override
         public void selected(FileHandle file) {
-            World world = Mundus.context.getWorld();
             Ui ui = Ui.getInstance();
 
             String pathToFile = file.path();
@@ -55,9 +53,9 @@ public class ToolbarImportHandler extends ChangeListener {
                 Log.debug("Import result: " + result.isSuccess());
                 Log.debug("Import log: " + result.getLog());
                 Model model = g3dbLoader.loadModel(Gdx.files.absolute(result.getOutputFile()));
-                world.models.add(model);
+                Mundus.context.models.add(model);
                 ui.getModelList().getItems().add(model);
-                world.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
+                Mundus.context.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
                 ui.getModelList().layout();
             });
 

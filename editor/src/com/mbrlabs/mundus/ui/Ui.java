@@ -13,10 +13,15 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
+import com.mbrlabs.mundus.ui.components.dialogs.NewProjectDialog;
+import com.mbrlabs.mundus.ui.components.dialogs.OpenProjectDialog;
 import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
+import com.mbrlabs.mundus.ui.dto.ModelDTO;
 import com.mbrlabs.mundus.ui.handler.menu.MenuNewProjectHandler;
 import com.mbrlabs.mundus.ui.handler.menu.MenuSettingsHandler;
+import com.mbrlabs.mundus.ui.handler.menu.NewProjectHandler;
+import com.mbrlabs.mundus.ui.handler.menu.OpenProjectHandler;
 import com.mbrlabs.mundus.ui.handler.toolbar.ToolbarImportHandler;
 
 /**
@@ -30,9 +35,12 @@ public class Ui extends Stage {
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
     private StatusBar statusBar;
-    private SettingsDialog settingsDialog;
     private List<Model> modelList;
 
+
+    private SettingsDialog settingsDialog;
+    private NewProjectDialog newProjectDialog;
+    private OpenProjectDialog openProjectDialog;
 
     private static Ui INSTANCE;
 
@@ -73,6 +81,8 @@ public class Ui extends Stage {
 
         // settings dialog
         settingsDialog = new SettingsDialog();
+        newProjectDialog = new NewProjectDialog();
+        openProjectDialog = new OpenProjectDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -84,6 +94,8 @@ public class Ui extends Stage {
         // Menu
         menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
+        menuBar.getFileMenu().getNewProject().addListener(new NewProjectHandler());
+        menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
 
         // Toolbar
         toolbar.getImportBtn().addListener(new ToolbarImportHandler());
@@ -96,7 +108,6 @@ public class Ui extends Stage {
     public List<Model> getModelList() {
         return modelList;
     }
-
 
     public MundusMenuBar getMenuBar() {
         return menuBar;
@@ -116,5 +127,13 @@ public class Ui extends Stage {
 
     public SettingsDialog getSettingsDialog() {
         return settingsDialog;
+    }
+
+    public NewProjectDialog getNewProjectDialog() {
+        return newProjectDialog;
+    }
+
+    public OpenProjectDialog getOpenProjectDialog() {
+        return openProjectDialog;
     }
 }

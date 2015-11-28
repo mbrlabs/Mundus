@@ -59,7 +59,7 @@ public class MundusHome implements JsonManager {
         projectRef.setPath(path);
         projectRef.setCreated(System.currentTimeMillis());
         projectRef.setLastOpened(System.currentTimeMillis());
-        projectRefs.getProjectRefs().add(projectRef);
+        projectRefs.getProjects().add(projectRef);
         save();
 
         return projectRef;

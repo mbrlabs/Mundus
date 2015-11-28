@@ -9,18 +9,27 @@ import java.util.List;
  */
 public class ProjectRefs {
 
-    private List<ProjectRef> projectRefs;
+    private List<ProjectRef> projects;
+    private ProjectRef curProject;
 
     public ProjectRefs() {
-        projectRefs = new ArrayList<>();
+        projects = new ArrayList<>();
     }
 
-    public List<ProjectRef> getProjectRefs() {
-        return projectRefs;
+    public List<ProjectRef> getProjects() {
+        return projects;
     }
 
-    public void setProjectRefs(List<ProjectRef> projectRefs) {
-        this.projectRefs = projectRefs;
+    public void setProjects(List<ProjectRef> projects) {
+        this.projects = projects;
+    }
+
+    public ProjectRef getCurProject() {
+        return curProject;
+    }
+
+    public void setCurProject(ProjectRef curProject) {
+        this.curProject = curProject;
     }
 
 }

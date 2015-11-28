@@ -28,8 +28,6 @@ public class Mundus implements ApplicationListener {
     public TerrainShader terrainShader;
     public EntityShader entityShader;
     public ModelBatch modelBatch;
-
-    // cam
     public PerspectiveCamera cam;
 
     private Ui ui;
@@ -81,7 +79,7 @@ public class Mundus implements ApplicationListener {
 
         modelBatch = new ModelBatch();
 
-        if(MundusHome.getInstance().getProjectRefs().getProjectRefs().size() == 0) {
+        if(MundusHome.getInstance().getProjectRefs().getProjects().size() == 0) {
             ProjectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
         }
     }
@@ -99,14 +97,14 @@ public class Mundus implements ApplicationListener {
                     entityShader.toggleWireframe();
                 }
                 if(keycode == Input.Keys.F2) {
-                    if(context.getWorld().models.size > 0) {
+                    if(context.models.size > 0) {
                         Random rand = new Random();
                         for(int i = 0; i < 200; i++) {
-                            ModelInstance instance = new ModelInstance(context.getWorld().models.first());
+                            ModelInstance instance = new ModelInstance(context.models.first());
 
                             instance.transform.translate(rand.nextFloat() * 1000, 0, rand.nextFloat()*1000);
                             instance.transform.rotate(0, rand.nextFloat(), 0, rand.nextFloat()*360);
-                            context.getWorld().entities.add(instance);
+                            context.entities.add(instance);
 
                         }
                     }
@@ -131,7 +129,7 @@ public class Mundus implements ApplicationListener {
 
         modelBatch.begin(cam);
         modelBatch.render(axesInstance);
-        modelBatch.render(context.getWorld().entities, context.getWorld().environment, entityShader);
+        modelBatch.render(context.entities, context.environment, entityShader);
         modelBatch.end();
 
         // TODO render terrains
