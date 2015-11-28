@@ -1,5 +1,7 @@
 package com.mbrlabs.mundus.data.projects;
 
+import com.mbrlabs.mundus.data.home.Project;
+
 import java.util.ArrayList;
 import java.util.List;
 

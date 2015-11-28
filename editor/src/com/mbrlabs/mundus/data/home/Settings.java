@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.data.settings;
+package com.mbrlabs.mundus.data.home;
 
 
 /**

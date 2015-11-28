@@ -1,8 +1,8 @@
 package com.mbrlabs.mundus.importer;
 
 import com.badlogic.gdx.Gdx;
+import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
-import com.mbrlabs.mundus.data.settings.SettingsManager;
 import com.mbrlabs.mundus.utils.Callback;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.Os;
@@ -48,7 +48,7 @@ public class FbxConv {
             throw new OsNotSupported();
         }
 
-        pb = new ProcessBuilder(SettingsManager.getInstance().getSettings().getFbxConvBinary());
+        pb = new ProcessBuilder(MundusHome.getInstance().getSettings().getFbxConvBinary());
     }
 
     public void clear() {
@@ -57,7 +57,7 @@ public class FbxConv {
         flipTexture = false;
         input = null;
         output = null;
-        pb = new ProcessBuilder(SettingsManager.getInstance().getSettings().getFbxConvBinary());
+        pb = new ProcessBuilder(MundusHome.getInstance().getSettings().getFbxConvBinary());
     }
 
     public FbxConv input(String pathToFile) {

@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.data.projects;
+package com.mbrlabs.mundus.data.home;
 
 /**
  * @author Marcus Brummer
@@ -10,6 +10,7 @@ public class Project {
     private String path;
     private long created;
     private long lastOpened;
+    private int id;
 
     public long getLastOpened() {
         return lastOpened;
@@ -43,4 +44,11 @@ public class Project {
         this.created = created;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
