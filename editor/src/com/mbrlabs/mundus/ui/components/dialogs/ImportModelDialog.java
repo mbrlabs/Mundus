@@ -22,6 +22,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FbxConv;
+import com.mbrlabs.mundus.utils.FileFormatUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.util.UUID;
@@ -31,6 +32,8 @@ import java.util.UUID;
  * @version 29-11-2015
  */
 public class ImportModelDialog extends BaseDialog {
+
+
 
     private Container fake3dViewport;
 
@@ -105,17 +108,17 @@ public class ImportModelDialog extends BaseDialog {
 
             // get model
             FileHandle modelFile = null;
-            if(files.get(0).path().endsWith("fbx") || files.get(0).path().endsWith("g3db")) {
+            if(FileFormatUtils.isFBX(files.get(0)) || FileFormatUtils.isG3DB(files.get(0))) {
                 modelFile = files.get(0);
-            } else if(files.get(1).path().endsWith("fbx") || files.get(1).path().endsWith("g3db")) {
+            } else if(FileFormatUtils.isFBX(files.get(1)) || FileFormatUtils.isG3DB(files.get(1))) {
                 modelFile = files.get(1);
             }
 
             // get texture
             FileHandle textureFile = null;
-            if(files.get(0).path().endsWith("png")) {
+            if(FileFormatUtils.isPNG(files.get(0))) {
                 textureFile = files.get(0);
-            } else if(files.get(1).path().endsWith("png")) {
+            } else if(FileFormatUtils.isPNG(files.get(1))) {
                 textureFile = files.get(1);
             }
 
@@ -129,7 +132,7 @@ public class ImportModelDialog extends BaseDialog {
 
             if(modelFile != null) {
                 // fbx format
-                if(modelFile.path().endsWith("fbx")) {
+                if(FileFormatUtils.isFBX(modelFile)) {
                     FbxConv.FbxConvResult result = new FbxConv().input(modelFile.path())
                             .output(tempModelCache.file().getAbsolutePath()).
                                     flipTexture(true).execute();
@@ -137,7 +140,7 @@ public class ImportModelDialog extends BaseDialog {
                         tempModelFile = result.getOutputFile();
                     }
                 // g3db format
-                } else if(modelFile.path().endsWith("g3db")) {
+                } else if(FileFormatUtils.isG3DB(modelFile)) {
                     modelFile.copyTo(tempModelCache);
                     tempModelFile = FilenameUtils.concat(tempModelCache.file().getAbsolutePath(), modelFile.name());
                 }
