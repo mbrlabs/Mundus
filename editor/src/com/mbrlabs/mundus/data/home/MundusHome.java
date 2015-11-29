@@ -67,6 +67,12 @@ public class MundusHome implements JsonManager {
         return projectRef;
     }
 
+    public void purgeModelCache() {
+        for(FileHandle f : Gdx.files.absolute(MundusHome.MODEL_CACHE_DIR).list()) {
+            f.deleteDirectory();
+        }
+    }
+
     public void load() {
         // settings
         FileHandle file = Gdx.files.absolute(SETTINGS_JSON);
