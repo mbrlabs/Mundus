@@ -11,8 +11,10 @@ import com.kotcrab.vis.ui.widget.VisList;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.mbrlabs.mundus.MyStage;
 import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
+import com.mbrlabs.mundus.ui.components.dialogs.ImportModelDialog;
 import com.mbrlabs.mundus.ui.components.dialogs.NewProjectDialog;
 import com.mbrlabs.mundus.ui.components.dialogs.OpenProjectDialog;
 import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
@@ -28,7 +30,7 @@ import com.mbrlabs.mundus.ui.handler.toolbar.ToolbarImportHandler;
  * @author Marcus Brummer
  * @version 27-11-2015
  */
-public class Ui extends Stage {
+public class Ui extends MyStage {
 
     private VisTable root;
     private MundusMenuBar menuBar;
@@ -41,6 +43,7 @@ public class Ui extends Stage {
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
     private OpenProjectDialog openProjectDialog;
+    private ImportModelDialog importModelDialog;
 
     private static Ui INSTANCE;
 
@@ -83,6 +86,7 @@ public class Ui extends Stage {
         settingsDialog = new SettingsDialog();
         newProjectDialog = new NewProjectDialog();
         openProjectDialog = new OpenProjectDialog();
+        importModelDialog = new ImportModelDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -135,5 +139,9 @@ public class Ui extends Stage {
 
     public OpenProjectDialog getOpenProjectDialog() {
         return openProjectDialog;
+    }
+
+    public ImportModelDialog getImportModelDialog() {
+        return importModelDialog;
     }
 }

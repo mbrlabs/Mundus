@@ -27,7 +27,7 @@ void main(void) {
     float brightness = u_lightIntensity * max(nDot1, 0.2);
 
     vec3 light =  LIGHT_COLOR;
-    //vec4 color =  texture2D(u_texture, v_texCoord0);
-    vec4 color = COLOR_TURQUOISE * brightness;
+    vec4 color =  brightness * texture2D(u_texture, v_texCoord0);
+    //vec4 color = COLOR_TURQUOISE * brightness;
     gl_FragColor = color;
 }

@@ -1,11 +1,8 @@
-package com.mbrlabs.mundus.importer;
+package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
-import com.mbrlabs.mundus.utils.Callback;
-import com.mbrlabs.mundus.utils.Log;
-import com.mbrlabs.mundus.utils.Os;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;

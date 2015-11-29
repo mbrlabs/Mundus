@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Frustum;
+import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.ProjectContext;
@@ -37,6 +40,7 @@ public class Mundus implements ApplicationListener {
     public Model axesModel;
     public ModelInstance axesInstance;
 
+
     // input
     private InputMultiplexer inputMultiplexer;
     private FreeCamController camController;
@@ -64,6 +68,7 @@ public class Mundus implements ApplicationListener {
         FileChooser.setFavoritesPrefsName(Mundus.class.getPackage().getName());
         // cam
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         cam.position.set(0, 1, 3);
         cam.lookAt(0,1,1);
         cam.near = 0.2f;
@@ -82,6 +87,7 @@ public class Mundus implements ApplicationListener {
         if(MundusHome.getInstance().getProjectRefs().getProjects().size() == 0) {
             ProjectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
         }
+
     }
 
     private void setupInput() {
@@ -94,7 +100,8 @@ public class Mundus implements ApplicationListener {
             @Override
             public boolean keyDown(int keycode) {
                 if(keycode == Input.Keys.F1) {
-                    entityShader.toggleWireframe();
+                    //entityShader.toggleWireframe();
+
                 }
                 if(keycode == Input.Keys.F2) {
                     if(context.models.size > 0) {
@@ -165,6 +172,7 @@ public class Mundus implements ApplicationListener {
         entityShader.dispose();
         modelBatch.dispose();
         VisUI.dispose();
+
     }
 
 

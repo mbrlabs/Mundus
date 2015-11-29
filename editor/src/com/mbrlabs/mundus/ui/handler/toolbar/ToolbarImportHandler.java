@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.Mundus;
-import com.mbrlabs.mundus.importer.FbxConv;
+import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
@@ -35,8 +35,9 @@ public class ToolbarImportHandler extends ChangeListener {
     @Override
     public void changed(ChangeEvent event, Actor actor) {
         final Ui ui = Ui.getInstance();
-        ui.getFileChooser().setListener(fileChooserAdapter);
-        ui.addActor(ui.getFileChooser().fadeIn());
+//        ui.getFileChooser().setListener(fileChooserAdapter);
+//        ui.addActor(ui.getFileChooser().fadeIn());
+        ui.showDialog(ui.getImportModelDialog());
     }
 
     private class FCAdapterImportModel extends FileChooserAdapter {

@@ -11,6 +11,7 @@ public class BaseDialog extends VisDialog {
     public BaseDialog(String title) {
         super(title);
         addCloseButton();
+
     }
 
 //    @Override
