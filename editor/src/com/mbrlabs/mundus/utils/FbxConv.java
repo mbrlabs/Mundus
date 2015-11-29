@@ -87,16 +87,19 @@ public class FbxConv {
         if(input == null || output == null) {
             result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_PARAM_ERROR);
+            Log.error("FbxCov input or output not defined");
+            return result;
         }
 
-        if(!input.endsWith("fbx") || !input.endsWith("dae")) {
+        if(!input.endsWith("fbx")) {
             result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_WRONG_INPUT_FORMAT);
+            Log.error("FbxCov input format not supported");
         }
 
         // build arguments
         String outputFilename = FilenameUtils.getBaseName(input);
-        List<String> args = new ArrayList<>(6);
+        List<String> args = new ArrayList<String>(6);
         if(flipTexture) args.add("-f");
         if(verbose) args.add("-v");
         if(outputFormat == OUTPUT_FORMAT_G3DJ) {

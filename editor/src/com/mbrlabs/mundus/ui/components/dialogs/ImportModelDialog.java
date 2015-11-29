@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FbxConv;
@@ -25,12 +29,12 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class ImportModelDialog extends BaseDialog {
 
-    private Actor fake3dViewport;
+    private Container fake3dViewport;
 
-    private VisTextField path = new VisTextField();
-    private VisTextField name = new VisTextField();;
+    private VisTextField modelPath = new VisTextField();
+    private VisTextField texturePath = new VisTextField();
     private VisTextButton importBtn = new VisTextButton("IMPORT");
-    private VisTextButton fileChooserBtn = new VisTextButton("Add");
+    private VisTextButton fileChooserBtn = new VisTextButton("Select Model & Textures");
 
     private Model previewModel;
     private ModelInstance previewInstance;
@@ -45,18 +49,19 @@ public class ImportModelDialog extends BaseDialog {
         add(root);
 
         VisTable inputTable = new VisTable();
-        fake3dViewport = new Actor();
+        fake3dViewport = new Container();
+        fake3dViewport.setBackground(VisUI.getSkin().getDrawable("default-pane"));
 
-        root.add(inputTable).width(300).height(300);
+        root.add(inputTable).width(300).height(300).padRight(10);
         root.add(fake3dViewport).width(300).height(300);
 
         inputTable.left().top();
-        inputTable.add(new VisLabel("Model:")).padRight(10);
-        inputTable.add(path).width(200);
-        inputTable.add(fileChooserBtn).padLeft(20).row();
-        inputTable.add(new VisLabel("Name: ")).padRight(10).padTop(10);
-        inputTable.add(name).width(200).padTop(10).colspan(2).row();
-        inputTable.add(importBtn).width(100).padTop(15).colspan(3).center();
+        inputTable.add(fileChooserBtn).fillX().expandX().padBottom(10).row();
+        inputTable.add(new VisLabel("Model File")).left().padBottom(5).row();
+        inputTable.add(modelPath).fillX().expandX().padBottom(10).row();
+        inputTable.add(new VisLabel("Texture File")).left().padBottom(5).row();
+        inputTable.add(texturePath).fillX().expandX().row();
+        inputTable.add(importBtn).fillX().expand().bottom();
 
         importBtn.addListener(new ClickListener() {
             @Override
@@ -66,30 +71,64 @@ public class ImportModelDialog extends BaseDialog {
             }
         });
 
+        // button launches file chooser
         fileChooserBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                // add handler
                 Ui.getInstance().getFileChooser().setListener(new FileChooserAdapter() {
                     @Override
-                    public void selected(FileHandle file) {
-                        super.selected(file);
-                        path.setText(file.path());
-                        FbxConv.FbxConvResult result = new FbxConv().input(file.path())
-                                .output(FilenameUtils.getFullPath(file.file().getAbsolutePath())).flipTexture(true).execute();
-
-                        removePreview();
-                        previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(Gdx.files.absolute(result.getOutputFile()));
-                        previewInstance = new ModelInstance(previewModel);
-                        showPreview();
+                    public void selected(Array<FileHandle> files) {
+                        super.selected(files);
+                        handleInputFiles(files);
                     }
                 });
-
+                // show file chooser
+                Ui ui = Ui.getInstance();
+                FileChooser fileChooser = ui.getFileChooser();
+                fileChooser.setMultiSelectionEnabled(true);
                 Ui.getInstance().addActor(Ui.getInstance().getFileChooser().fadeIn());
             }
         });
+    }
 
+    private void handleInputFiles(Array<FileHandle> files) {
+        if(files.size == 2) {
+            FbxConv.FbxConvResult result = null;
 
+            // get model
+            FileHandle modelFile = null;
+            if(files.get(0).path().endsWith("fbx")) {
+                modelFile = files.get(0);
+            } else if(files.get(1).path().endsWith("fbx")) {
+                modelFile = files.get(1);
+            }
+            if(modelFile != null) {
+                result = new FbxConv().input(modelFile.path())
+                        .output(FilenameUtils.getFullPath(modelFile.file().getAbsolutePath())).
+                                flipTexture(true).execute();
+                modelPath.setText(modelFile.path());
+            }
+            // get texture
+            FileHandle textureFile = null;
+            if(files.get(0).path().endsWith("png")) {
+                textureFile = files.get(0);
+            } else if(files.get(1).path().endsWith("png")) {
+                textureFile = files.get(1);
+            }
+            if(textureFile != null) {
+                texturePath.setText(textureFile.path());
+            }
+
+            if(result != null && result.isSuccess()) {
+                removePreview();
+                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(Gdx.files.absolute(result.getOutputFile()));
+                previewInstance = new ModelInstance(previewModel);
+                showPreview();
+            }
+
+        }
     }
 
     @Override

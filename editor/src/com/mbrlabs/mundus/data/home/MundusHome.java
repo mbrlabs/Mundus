@@ -17,6 +17,7 @@ public class MundusHome implements JsonManager {
 
     public static final String HOME_DIR = FilenameUtils.concat(FileUtils.getUserDirectoryPath(), ".mundus/");
     public static final String LOGS_DIR = FilenameUtils.concat(HOME_DIR, "logs/");
+    public static final String MODEL_CACHE_DIR = FilenameUtils.concat(HOME_DIR, "model_cache/");
     public static final String SETTINGS_JSON = FilenameUtils.concat(HOME_DIR, "settings.json");
     public static final String PROJECTS_JSON = FilenameUtils.concat(HOME_DIR, "projects.json");
 
@@ -42,6 +43,7 @@ public class MundusHome implements JsonManager {
     public static void bootstrap() {
         new File(HOME_DIR).mkdirs();
         new File(LOGS_DIR).mkdirs();
+        new File(MODEL_CACHE_DIR).mkdirs();
     }
 
     public ProjectRefs getProjectRefs() {
