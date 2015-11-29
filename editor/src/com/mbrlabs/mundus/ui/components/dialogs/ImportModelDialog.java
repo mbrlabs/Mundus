@@ -19,9 +19,12 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FbxConv;
 import org.apache.commons.io.FilenameUtils;
+
+import java.util.UUID;
 
 /**
  * @author Marcus Brummer
@@ -39,6 +42,8 @@ public class ImportModelDialog extends BaseDialog {
     private Model previewModel;
     private ModelInstance previewInstance;
 
+    private FileHandle tempModelCache;
+
     public ImportModelDialog() {
         super("Import Model");
         setModal(true);
@@ -51,6 +56,7 @@ public class ImportModelDialog extends BaseDialog {
         VisTable inputTable = new VisTable();
         fake3dViewport = new Container();
         fake3dViewport.setBackground(VisUI.getSkin().getDrawable("default-pane"));
+        fake3dViewport.setActor(new VisLabel("PREVIEW"));
 
         root.add(inputTable).width(300).height(300).padRight(10);
         root.add(fake3dViewport).width(300).height(300);
@@ -95,7 +101,7 @@ public class ImportModelDialog extends BaseDialog {
 
     private void handleInputFiles(Array<FileHandle> files) {
         if(files.size == 2) {
-            FbxConv.FbxConvResult result = null;
+            tempModelCache = createTempModelFolder();
 
             // get model
             FileHandle modelFile = null;
@@ -104,12 +110,7 @@ public class ImportModelDialog extends BaseDialog {
             } else if(files.get(1).path().endsWith("fbx")) {
                 modelFile = files.get(1);
             }
-            if(modelFile != null) {
-                result = new FbxConv().input(modelFile.path())
-                        .output(FilenameUtils.getFullPath(modelFile.file().getAbsolutePath())).
-                                flipTexture(true).execute();
-                modelPath.setText(modelFile.path());
-            }
+
             // get texture
             FileHandle textureFile = null;
             if(files.get(0).path().endsWith("png")) {
@@ -117,13 +118,25 @@ public class ImportModelDialog extends BaseDialog {
             } else if(files.get(1).path().endsWith("png")) {
                 textureFile = files.get(1);
             }
+
+            // copy (& evtentually convert) model & texture into temp folder
             if(textureFile != null) {
                 texturePath.setText(textureFile.path());
+                textureFile.copyTo(tempModelCache);
+            }
+            FbxConv.FbxConvResult result = null;
+            if(modelFile != null) {
+                result = new FbxConv().input(modelFile.path())
+                        .output(tempModelCache.file().getAbsolutePath()).
+                                flipTexture(true).execute();
+                modelPath.setText(modelFile.path());
             }
 
+            // load Model & texture and show preview
             if(result != null && result.isSuccess()) {
                 removePreview();
-                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(Gdx.files.absolute(result.getOutputFile()));
+                FileHandle convertedModel = Gdx.files.absolute(result.getOutputFile());
+                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(convertedModel);
                 previewInstance = new ModelInstance(previewModel);
                 showPreview();
             }
@@ -131,13 +144,28 @@ public class ImportModelDialog extends BaseDialog {
         }
     }
 
+    private FileHandle createTempModelFolder() {
+        String tempFolderPath = FilenameUtils.concat(
+                MundusHome.MODEL_CACHE_DIR, UUID.randomUUID().toString()) + "/";
+        FileHandle tempFolder = Gdx.files.absolute(tempFolderPath);
+        tempFolder.mkdirs();
+
+        return tempFolder;
+    }
+
     @Override
     protected void close() {
+        for(FileHandle f : Gdx.files.absolute(MundusHome.MODEL_CACHE_DIR).list()) {
+            f.deleteDirectory();
+        }
         Ui.getInstance().unwire(fake3dViewport);
         super.close();
     }
 
     private void showPreview() {
+        if(fake3dViewport.getActor() != null) {
+            fake3dViewport.removeActor(fake3dViewport.getActor());
+        }
         previewInstance = new ModelInstance(previewModel);
         Ui.getInstance().wireModelToActor(fake3dViewport, previewInstance);
     }
@@ -149,8 +177,5 @@ public class ImportModelDialog extends BaseDialog {
             previewModel = null;
         }
     }
-
-
-
 
 }
