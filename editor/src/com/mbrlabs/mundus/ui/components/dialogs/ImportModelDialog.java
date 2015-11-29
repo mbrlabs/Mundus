@@ -5,12 +5,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -23,34 +23,43 @@ import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
+import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
-
-import java.util.UUID;
 
 /**
  * @author Marcus Brummer
  * @version 29-11-2015
  */
-public class ImportModelDialog extends BaseDialog {
+public class ImportModelDialog extends BaseDialog implements Disposable {
 
+    private static final String TAG = ImportModelDialog.class.getSimpleName();
 
-
+    // UI elements
     private Container fake3dViewport;
-
+    private FileChooser fileChooser;
     private VisTextField modelPath = new VisTextField();
     private VisTextField texturePath = new VisTextField();
     private VisTextButton importBtn = new VisTextButton("IMPORT");
     private VisTextButton fileChooserBtn = new VisTextButton("Select Model & Textures");
 
+    // preview model + instance
     private Model previewModel;
     private ModelInstance previewInstance;
 
+    // temp files/dirs
     private FileHandle tempModelCache;
+    private FileHandle tempModelFile;
+    private FileHandle tempTextureFile;
 
     public ImportModelDialog() {
         super("Import Model");
         setModal(true);
         setMovable(false);
+        setupUI();
+        setupListener();
+    }
+
+    private void setupUI() {
         Table root = new Table();
         //root.debugAll();
         root.padTop(6).padRight(6).padBottom(22);
@@ -72,6 +81,12 @@ public class ImportModelDialog extends BaseDialog {
         inputTable.add(texturePath).fillX().expandX().row();
         inputTable.add(importBtn).fillX().expand().bottom();
 
+        fileChooser = new FileChooser(FileChooser.Mode.OPEN);
+        fileChooser.setMultiSelectionEnabled(true);
+    }
+
+    private void setupListener() {
+        // import btn
         importBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -85,94 +100,83 @@ public class ImportModelDialog extends BaseDialog {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // add handler
-                Ui.getInstance().getFileChooser().setListener(new FileChooserAdapter() {
-                    @Override
-                    public void selected(Array<FileHandle> files) {
-                        super.selected(files);
-                        handleInputFiles(files);
-                    }
-                });
-                // show file chooser
-                Ui ui = Ui.getInstance();
-                FileChooser fileChooser = ui.getFileChooser();
-                fileChooser.setMultiSelectionEnabled(true);
-                Ui.getInstance().addActor(Ui.getInstance().getFileChooser().fadeIn());
+                dispose();
+                Ui.getInstance().addActor(fileChooser.fadeIn());
+            }
+        });
+
+        fileChooser.setListener(new FileChooserAdapter() {
+            @Override
+            public void selected(Array<FileHandle> files) {
+                super.selected(files);
+                loadAndShowPreview(files);
             }
         });
     }
 
-    private void handleInputFiles(Array<FileHandle> files) {
+
+    private void loadAndShowPreview(Array<FileHandle> files) {
         if(files.size == 2) {
-            tempModelCache = createTempModelFolder();
+            tempModelCache = MundusHome.getInstance().createTempModelFolder();
 
             // get model
-            FileHandle modelFile = null;
+            FileHandle origModelFile = null;
             if(FileFormatUtils.isFBX(files.get(0)) || FileFormatUtils.isG3DB(files.get(0))) {
-                modelFile = files.get(0);
+                origModelFile = files.get(0);
             } else if(FileFormatUtils.isFBX(files.get(1)) || FileFormatUtils.isG3DB(files.get(1))) {
-                modelFile = files.get(1);
+                origModelFile = files.get(1);
             }
 
             // get texture
-            FileHandle textureFile = null;
+            FileHandle origTextureFile = null;
             if(FileFormatUtils.isPNG(files.get(0))) {
-                textureFile = files.get(0);
+                origTextureFile = files.get(0);
             } else if(FileFormatUtils.isPNG(files.get(1))) {
-                textureFile = files.get(1);
+                origTextureFile = files.get(1);
             }
 
-            // copy (& evtentually convert) model & texture into temp folder
-            if(textureFile != null) {
-                texturePath.setText(textureFile.path());
-                textureFile.copyTo(tempModelCache);
-            }
-
-            String tempModelFile = null;
-
-            if(modelFile != null) {
-                // fbx format
-                if(FileFormatUtils.isFBX(modelFile)) {
-                    FbxConv.FbxConvResult result = new FbxConv().input(modelFile.path())
-                            .output(tempModelCache.file().getAbsolutePath()).
-                                    flipTexture(true).execute();
-                    if(result.isSuccess()) {
-                        tempModelFile = result.getOutputFile();
-                    }
-                // g3db format
-                } else if(FileFormatUtils.isG3DB(modelFile)) {
-                    modelFile.copyTo(tempModelCache);
-                    tempModelFile = FilenameUtils.concat(tempModelCache.file().getAbsolutePath(), modelFile.name());
+            // load and show preview
+            if(origModelFile != null && origTextureFile != null) {
+                if(origModelFile.exists() && origTextureFile.exists()) {
+                    copyToTempFolder(origModelFile, origTextureFile);
+                    previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(tempModelFile);
+                    previewInstance = new ModelInstance(previewModel);
+                    showPreview();
+                } else {
+                    Log.error(TAG, "input files does not exist");
                 }
-                modelPath.setText(modelFile.path());
-            }
-
-            // load Model & texture and show preview
-            if(tempModelFile != null) {
-                removePreview();
-                FileHandle convertedModel = Gdx.files.absolute(tempModelFile);
-                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(convertedModel);
-                previewInstance = new ModelInstance(previewModel);
-                showPreview();
+            } else {
+                Log.error(TAG, "input files are null");
             }
         }
     }
 
+    private void copyToTempFolder(FileHandle origModel, FileHandle origTexture) {
+        // copy texture
+        texturePath.setText(origTexture.path());
+        origTexture.copyTo(tempModelCache);
+        tempTextureFile = Gdx.files.absolute(FilenameUtils.concat(
+                origTexture.file().getAbsolutePath(), origTexture.name()));
 
-
-    private FileHandle createTempModelFolder() {
-        String tempFolderPath = FilenameUtils.concat(
-                MundusHome.MODEL_CACHE_DIR, UUID.randomUUID().toString()) + "/";
-        FileHandle tempFolder = Gdx.files.absolute(tempFolderPath);
-        tempFolder.mkdirs();
-
-        return tempFolder;
+        // copy (and eventually convert) model
+        if(FileFormatUtils.isFBX(origModel)) {   // fbx -> convert first
+            FbxConv.FbxConvResult result = new FbxConv().input(origModel.path())
+                    .output(tempModelCache.file().getAbsolutePath()).
+                            flipTexture(true).execute();
+            if(result.isSuccess()) {
+                tempModelFile = Gdx.files.absolute(result.getOutputFile());
+            }
+        } else if(FileFormatUtils.isG3DB(origModel)) {  // g3db -> just copy
+            origModel.copyTo(tempModelCache);
+            tempModelFile = Gdx.files.absolute(FilenameUtils.concat(
+                    tempModelCache.file().getAbsolutePath(), origModel.name()));
+        }
+        modelPath.setText(origModel.path());
     }
 
     @Override
     protected void close() {
-        MundusHome.getInstance().purgeModelCache();
-        Ui.getInstance().unwire(fake3dViewport);
+        dispose();
         super.close();
     }
 
@@ -184,12 +188,16 @@ public class ImportModelDialog extends BaseDialog {
         Ui.getInstance().wireModelToActor(fake3dViewport, previewInstance);
     }
 
-    private void removePreview() {
+    @Override
+    public void dispose() {
+        MundusHome.getInstance().purgeModelCache();
         Ui.getInstance().unwire(fake3dViewport);
         if(previewModel != null) {
             previewModel.dispose();
             previewModel = null;
         }
+        tempModelCache = null;
+        tempModelFile = null;
+        tempTextureFile = null;
     }
-
 }

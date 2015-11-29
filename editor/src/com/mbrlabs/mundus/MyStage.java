@@ -25,7 +25,7 @@ import java.util.Map;
 public class MyStage extends Stage {
 
     private PerspectiveCamera cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    private Map<Actor, ModelInstance> models = new HashMap<>();
+    private Map<Actor, ModelInstance> models = new HashMap<Actor, ModelInstance>();
     private ModelBatch modelBatch = new ModelBatch();
     private Environment environment = new Environment();
 

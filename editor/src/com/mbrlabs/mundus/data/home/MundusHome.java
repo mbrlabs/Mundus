@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * @author Marcus Brummer
@@ -71,6 +72,15 @@ public class MundusHome implements JsonManager {
         for(FileHandle f : Gdx.files.absolute(MundusHome.MODEL_CACHE_DIR).list()) {
             f.deleteDirectory();
         }
+    }
+
+    public FileHandle createTempModelFolder() {
+        String tempFolderPath = FilenameUtils.concat(
+                MundusHome.MODEL_CACHE_DIR, UUID.randomUUID().toString()) + "/";
+        FileHandle tempFolder = Gdx.files.absolute(tempFolderPath);
+        tempFolder.mkdirs();
+
+        return tempFolder;
     }
 
     public void load() {
