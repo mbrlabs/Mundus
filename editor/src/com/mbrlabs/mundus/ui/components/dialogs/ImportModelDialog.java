@@ -105,6 +105,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             }
         });
 
+        // file chooser
         fileChooser.setListener(new FileChooserAdapter() {
             @Override
             public void selected(Array<FileHandle> files) {
@@ -121,9 +122,9 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
             // get model
             FileHandle origModelFile = null;
-            if(FileFormatUtils.isFBX(files.get(0)) || FileFormatUtils.isG3DB(files.get(0))) {
+            if(FileFormatUtils.is3DFormat(files.get(0))) {
                 origModelFile = files.get(0);
-            } else if(FileFormatUtils.isFBX(files.get(1)) || FileFormatUtils.isG3DB(files.get(1))) {
+            } else if(FileFormatUtils.is3DFormat(files.get(1))) {
                 origModelFile = files.get(1);
             }
 
@@ -159,7 +160,11 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
                 origTexture.file().getAbsolutePath(), origTexture.name()));
 
         // copy (and eventually convert) model
-        if(FileFormatUtils.isFBX(origModel)) {   // fbx -> convert first
+        boolean convert = FileFormatUtils.isFBX(origModel)
+                || FileFormatUtils.isCollada(origModel)
+                || FileFormatUtils.isWavefont(origModel);
+        // fbx/collada/obj -> convert first
+        if(convert) {
             FbxConv.FbxConvResult result = new FbxConv().input(origModel.path())
                     .output(tempModelCache.file().getAbsolutePath()).
                             flipTexture(true).execute();
@@ -184,6 +189,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
         if(fake3dViewport.getActor() != null) {
             fake3dViewport.removeActor(fake3dViewport.getActor());
         }
+
         previewInstance = new ModelInstance(previewModel);
         Ui.getInstance().wireModelToActor(fake3dViewport, previewInstance);
     }
@@ -199,5 +205,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
         tempModelCache = null;
         tempModelFile = null;
         tempTextureFile = null;
+        modelPath.setText("");
+        texturePath.setText("");
     }
 }
