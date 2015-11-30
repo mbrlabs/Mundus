@@ -18,6 +18,7 @@ import com.mbrlabs.mundus.input.navigation.FreeCamController;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.Log;
@@ -65,6 +66,7 @@ public class Mundus implements ApplicationListener {
     private void init() {
 
         VisUI.load();
+        UiImages.load();
         FileChooser.setFavoritesPrefsName(Mundus.class.getPackage().getName());
         // cam
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

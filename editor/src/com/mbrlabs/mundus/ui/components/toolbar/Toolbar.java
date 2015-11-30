@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.ui.components;
+package com.mbrlabs.mundus.ui.components.toolbar;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
