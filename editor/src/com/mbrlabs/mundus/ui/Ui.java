@@ -1,14 +1,8 @@
 package com.mbrlabs.mundus.ui;
 
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisDialog;
-import com.kotcrab.vis.ui.widget.VisList;
-import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.MyStage;
@@ -19,7 +13,7 @@ import com.mbrlabs.mundus.ui.components.dialogs.NewProjectDialog;
 import com.mbrlabs.mundus.ui.components.dialogs.OpenProjectDialog;
 import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
-import com.mbrlabs.mundus.ui.dto.ModelDTO;
+import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
 import com.mbrlabs.mundus.ui.handler.menu.MenuNewProjectHandler;
 import com.mbrlabs.mundus.ui.handler.menu.MenuSettingsHandler;
 import com.mbrlabs.mundus.ui.handler.menu.NewProjectHandler;
@@ -37,8 +31,8 @@ public class Ui extends MyStage {
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
     private StatusBar statusBar;
-    private List<Model> modelList;
-
+    //private List<Model> modelList;
+    private Sidebar sidebar;
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
@@ -72,11 +66,14 @@ public class Ui extends MyStage {
         toolbar = new MundusToolbar();
         root.add(toolbar).fillX().expandX().row();
 
-        // row 3: content
-        modelList = new VisList<Model>();
-        modelList.getStyle().background = VisUI.getSkin().getDrawable("default-pane");
-        VisScrollPane scrollPane = new VisScrollPane(modelList);
-        root.add(scrollPane).width(300).top().left().expandY().fillY().row();
+        // row 3: sidebar
+//        modelList = new VisList<Model>();
+//        modelList.getStyle().background = VisUI.getSkin().getDrawable("default-pane");
+//        VisScrollPane scrollPane = new VisScrollPane(modelList);
+        sidebar = new Sidebar();
+        root.add(sidebar.getTable()).width(300).top().left().row();
+
+        root.add(sidebar.getContentContainer()).width(300).top().left().expandY().fillY().row();
 
         // row 4: status bar
         statusBar = new StatusBar();
@@ -109,9 +106,9 @@ public class Ui extends MyStage {
         dialog.show(this);
     }
 
-    public List<Model> getModelList() {
-        return modelList;
-    }
+//    public List<Model> getModelList() {
+//        return modelList;
+//    }
 
     public MundusMenuBar getMenuBar() {
         return menuBar;

@@ -22,14 +22,12 @@ import org.apache.commons.io.FilenameUtils;
 public class ToolbarImportHandler extends ChangeListener {
 
     private FbxConv fbxConv;
-    private FCAdapterImportModel fileChooserAdapter;
 
     private G3dModelLoader g3dbLoader;
 
     public ToolbarImportHandler() {
         fbxConv = new FbxConv();
         g3dbLoader = new G3dModelLoader(new UBJsonReader());
-        fileChooserAdapter = new FCAdapterImportModel();
     }
 
     @Override
@@ -40,27 +38,27 @@ public class ToolbarImportHandler extends ChangeListener {
         ui.showDialog(ui.getImportModelDialog());
     }
 
-    private class FCAdapterImportModel extends FileChooserAdapter {
-        @Override
-        public void selected(FileHandle file) {
-            Ui ui = Ui.getInstance();
-
-            String pathToFile = file.path();
-            String outputPath = FilenameUtils.getFullPath(pathToFile);
-
-            fbxConv.clear();
-            fbxConv.input(pathToFile).output(outputPath).flipTexture(true).outputFormat(FbxConv.OUTPUT_FORMAT_G3DB);
-            fbxConv.execute(result -> {
-                Log.debug("Import result: " + result.isSuccess());
-                Log.debug("Import log: " + result.getLog());
-                Model model = g3dbLoader.loadModel(Gdx.files.absolute(result.getOutputFile()));
-                Mundus.context.models.add(model);
-                ui.getModelList().getItems().add(model);
-                Mundus.context.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
-                ui.getModelList().layout();
-            });
-
-        }
-    }
+//    private class FCAdapterImportModel extends FileChooserAdapter {
+//        @Override
+//        public void selected(FileHandle file) {
+//            Ui ui = Ui.getInstance();
+//
+//            String pathToFile = file.path();
+//            String outputPath = FilenameUtils.getFullPath(pathToFile);
+//
+//            fbxConv.clear();
+//            fbxConv.input(pathToFile).output(outputPath).flipTexture(true).outputFormat(FbxConv.OUTPUT_FORMAT_G3DB);
+//            fbxConv.execute(result -> {
+//                Log.debug("Import result: " + result.isSuccess());
+//                Log.debug("Import log: " + result.getLog());
+//                Model model = g3dbLoader.loadModel(Gdx.files.absolute(result.getOutputFile()));
+//                Mundus.context.models.add(model);
+//                ui.getModelList().getItems().add(model);
+//                Mundus.context.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
+//                ui.getModelList().layout();
+//            });
+//
+//        }
+//    }
 
 }
