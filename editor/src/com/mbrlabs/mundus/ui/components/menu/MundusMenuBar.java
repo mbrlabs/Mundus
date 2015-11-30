@@ -1,8 +1,6 @@
 package com.mbrlabs.mundus.ui.components.menu;
 
-import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuBar;
-
 
 /**
  * @author Marcus Brummer
@@ -13,15 +11,17 @@ public class MundusMenuBar extends MenuBar {
     private FileMenu fileMenu;
     private EditMenu editMenu;
     private WindowMenu windowMenu;
+    private TerrainMenu terrainMenu;
 
     public MundusMenuBar() {
         super();
         fileMenu = new FileMenu();
         editMenu = new EditMenu();
+        terrainMenu = new TerrainMenu();
         windowMenu = new WindowMenu();
-
         addMenu(fileMenu);
         addMenu(editMenu);
+        addMenu(terrainMenu);
         addMenu(windowMenu);
     }
 
@@ -35,6 +35,10 @@ public class MundusMenuBar extends MenuBar {
 
     public WindowMenu getWindowMenu() {
         return windowMenu;
+    }
+
+    public TerrainMenu getTerrainMenu() {
+        return terrainMenu;
     }
 
 }
