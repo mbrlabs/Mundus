@@ -6,18 +6,12 @@ import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.MyStage;
+import com.mbrlabs.mundus.ui.components.dialogs.*;
 import com.mbrlabs.mundus.ui.components.toolbar.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
-import com.mbrlabs.mundus.ui.components.dialogs.ImportModelDialog;
-import com.mbrlabs.mundus.ui.components.dialogs.NewProjectDialog;
-import com.mbrlabs.mundus.ui.components.dialogs.OpenProjectDialog;
-import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
-import com.mbrlabs.mundus.ui.handler.menu.MenuNewProjectHandler;
-import com.mbrlabs.mundus.ui.handler.menu.MenuSettingsHandler;
-import com.mbrlabs.mundus.ui.handler.menu.NewProjectHandler;
-import com.mbrlabs.mundus.ui.handler.menu.OpenProjectHandler;
+import com.mbrlabs.mundus.ui.handler.menu.*;
 import com.mbrlabs.mundus.ui.handler.toolbar.ToolbarImportHandler;
 
 /**
@@ -31,13 +25,13 @@ public class Ui extends MyStage {
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
     private StatusBar statusBar;
-    //private List<Model> modelList;
     private Sidebar sidebar;
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
     private OpenProjectDialog openProjectDialog;
     private ImportModelDialog importModelDialog;
+    private AddTerrainDialog addTerrainDialog;
 
     private static Ui INSTANCE;
 
@@ -67,9 +61,6 @@ public class Ui extends MyStage {
         root.add(toolbar).fillX().expandX().row();
 
         // row 3: sidebar
-//        modelList = new VisList<Model>();
-//        modelList.getStyle().background = VisUI.getSkin().getDrawable("default-pane");
-//        VisScrollPane scrollPane = new VisScrollPane(modelList);
         sidebar = new Sidebar();
         root.add(sidebar.getTable()).width(300).top().left().row();
 
@@ -84,6 +75,7 @@ public class Ui extends MyStage {
         newProjectDialog = new NewProjectDialog();
         openProjectDialog = new OpenProjectDialog();
         importModelDialog = new ImportModelDialog();
+        addTerrainDialog = new AddTerrainDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -97,6 +89,7 @@ public class Ui extends MyStage {
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
         menuBar.getFileMenu().getNewProject().addListener(new NewProjectHandler());
         menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
+        menuBar.getTerrainMenu().getAddTerrain().addListener(new AddTerrainHandler());
 
         // Toolbar
         toolbar.getImportBtn().addListener(new ToolbarImportHandler());
@@ -105,10 +98,6 @@ public class Ui extends MyStage {
     public void showDialog(VisDialog dialog) {
         dialog.show(this);
     }
-
-//    public List<Model> getModelList() {
-//        return modelList;
-//    }
 
     public MundusMenuBar getMenuBar() {
         return menuBar;
@@ -141,4 +130,9 @@ public class Ui extends MyStage {
     public ImportModelDialog getImportModelDialog() {
         return importModelDialog;
     }
+
+    public AddTerrainDialog getAddTerrainDialog() {
+        return addTerrainDialog;
+    }
+
 }
