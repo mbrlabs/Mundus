@@ -16,6 +16,7 @@ import com.mbrlabs.mundus.data.ProjectManager;
 import com.mbrlabs.mundus.input.navigation.FreeCamController;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
+import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainTest;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
@@ -35,7 +36,7 @@ public class Mundus implements ApplicationListener {
     public PerspectiveCamera cam;
 
     private Ui ui;
-    public static ProjectContext context;
+    public static ProjectContext projectContext;
 
     // axes
     public Model axesModel;
@@ -48,8 +49,6 @@ public class Mundus implements ApplicationListener {
 
     private long vertexCount = 0;
 
-    private TerrainTest terrainTest;
-
     RenderContext renderContext;
 
 	@Override
@@ -58,7 +57,7 @@ public class Mundus implements ApplicationListener {
         Log.init();
         init();
 
-        context = new ProjectContext();
+        projectContext = new ProjectContext();
         ui = Ui.getInstance();
 
         axesModel = UsefulMeshs.createAxes();
@@ -67,7 +66,7 @@ public class Mundus implements ApplicationListener {
         setupInput();
 
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
-        terrainTest = new TerrainTest(terrainShader);
+        projectContext.terrains.add(new TerrainTest().terrain);
     }
 
     private void init() {
@@ -113,14 +112,14 @@ public class Mundus implements ApplicationListener {
 
                 }
                 if(keycode == Input.Keys.F2) {
-                    if(context.models.size > 0) {
+                    if(projectContext.models.size > 0) {
                         Random rand = new Random();
                         for(int i = 0; i < 200; i++) {
-                            ModelInstance instance = new ModelInstance(context.models.first());
+                            ModelInstance instance = new ModelInstance(projectContext.models.first());
 
                             instance.transform.translate(rand.nextFloat() * 1000, 0, rand.nextFloat()*1000);
                             instance.transform.rotate(0, rand.nextFloat(), 0, rand.nextFloat()*360);
-                            context.entities.add(instance);
+                            projectContext.entities.add(instance);
 
                         }
                     }
@@ -146,13 +145,15 @@ public class Mundus implements ApplicationListener {
         // render model instances
         modelBatch.begin(cam);
         modelBatch.render(axesInstance);
-        modelBatch.render(context.entities, context.environment, entityShader);
+        modelBatch.render(projectContext.entities, projectContext.environment, entityShader);
         modelBatch.end();
 
         // render terrain
         terrainShader.begin(cam, renderContext);
-        terrainTest.terrainRenderable.environment = context.environment;
-        terrainShader.render(terrainTest.terrainRenderable);
+        for(Terrain terrain : projectContext.terrains) {
+            terrain.renderable.environment = projectContext.environment;
+            terrainShader.render(terrain.renderable);
+        }
         terrainShader.end();
 
         // render UI
@@ -180,7 +181,7 @@ public class Mundus implements ApplicationListener {
         ui = null;
         axesModel.dispose();
         axesModel = null;
-        context.dispose();
+        projectContext.dispose();
 
         terrainShader.dispose();
         entityShader.dispose();

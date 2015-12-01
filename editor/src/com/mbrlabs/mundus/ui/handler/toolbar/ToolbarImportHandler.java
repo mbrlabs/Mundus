@@ -52,9 +52,9 @@ public class ToolbarImportHandler extends ChangeListener {
 //                Log.debug("Import result: " + result.isSuccess());
 //                Log.debug("Import log: " + result.getLog());
 //                Model model = g3dbLoader.loadModel(Gdx.files.absolute(result.getOutputFile()));
-//                Mundus.context.models.add(model);
+//                Mundus.projectContext.models.add(model);
 //                ui.getModelList().getItems().add(model);
-//                Mundus.context.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
+//                Mundus.projectContext.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
 //                ui.getModelList().layout();
 //            });
 //

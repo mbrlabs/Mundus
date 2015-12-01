@@ -1,8 +1,10 @@
 package com.mbrlabs.mundus.terrain;
 
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Vector3;
@@ -26,6 +28,7 @@ public class Terrain {
     public int width;
     public int height;
     public Mesh mesh;
+    public Renderable renderable;
 
     private float vertices[];
     private int stride;
@@ -91,6 +94,12 @@ public class Terrain {
             }
         }
         mesh.setVertices(vertices);
+        renderable = new Renderable();
+        renderable.meshPart.mesh = mesh;
+        renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
+        renderable.meshPart.offset = 0;
+        renderable.meshPart.size = mesh.getNumIndices();
+        renderable.meshPart.update();
     }
 
     private VertexInfo calculateVertexAt(final VertexInfo out, int x, int y) {
