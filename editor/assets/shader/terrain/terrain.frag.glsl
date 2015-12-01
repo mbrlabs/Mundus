@@ -4,7 +4,6 @@ precision mediump float;
 
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
 
-varying vec2 v_texCoord0;
 varying vec3 v_vectorToLight;
 varying vec3 v_surfaceNormal;
 
@@ -25,5 +24,5 @@ void main(void) {
     float brightness = max(nDot1, 0.2);
 
 
-    gl_FragColor = vec4(brightness,brightness,brightness, 1.0);
+    gl_FragColor = COLOR_TURQUOISE * vec4(brightness,brightness,brightness, 1.0);
 }

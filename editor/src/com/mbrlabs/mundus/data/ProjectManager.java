@@ -28,7 +28,7 @@ public class ProjectManager {
         ProjectContext context = new ProjectContext();
         context.setRef(projectRef);
 
-        // TODO load project data
+        // TODO load project heightData
 
         return context;
     }

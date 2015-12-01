@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
+import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Frustum;
-import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.ProjectContext;
@@ -17,6 +16,7 @@ import com.mbrlabs.mundus.data.ProjectManager;
 import com.mbrlabs.mundus.input.navigation.FreeCamController;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
+import com.mbrlabs.mundus.terrain.TerrainTest;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Colors;
@@ -48,6 +48,10 @@ public class Mundus implements ApplicationListener {
 
     private long vertexCount = 0;
 
+    private TerrainTest terrainTest;
+
+    RenderContext renderContext;
+
 	@Override
 	public void create () {
         MundusHome.bootstrap();
@@ -61,7 +65,10 @@ public class Mundus implements ApplicationListener {
         axesInstance = new ModelInstance(axesModel);
 
         setupInput();
-	}
+
+        renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
+        terrainTest = new TerrainTest(terrainShader);
+    }
 
     private void init() {
 
@@ -123,25 +130,30 @@ public class Mundus implements ApplicationListener {
         });
         inputMultiplexer.addProcessor(ui);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
     }
 
 	@Override
 	public void render () {
         GlUtils.clearScreen(Colors.GRAY_222);
 
-        // ui updates
+        // updates
         ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
         ui.getStatusBar().setVertexCount(vertexCount);
         ui.act(Gdx.graphics.getDeltaTime());
-
         camController.update();
 
+        // render model instances
         modelBatch.begin(cam);
         modelBatch.render(axesInstance);
         modelBatch.render(context.entities, context.environment, entityShader);
         modelBatch.end();
 
-        // TODO render terrains
+        // render terrain
+        terrainShader.begin(cam, renderContext);
+        terrainTest.terrainRenderable.environment = context.environment;
+        terrainShader.render(terrainTest.terrainRenderable);
+        terrainShader.end();
 
         // render UI
         ui.draw();

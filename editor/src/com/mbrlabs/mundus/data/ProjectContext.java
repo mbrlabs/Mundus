@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.data.home.ProjectRef;
+import com.mbrlabs.mundus.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
@@ -21,12 +22,15 @@ public class ProjectContext implements Disposable {
     public Array<Model> models;
     public PointLight light;
 
+    public Array<Terrain> terrains;
+
     public ProjectContext() {
         entities = new Array<>();
         models = new Array<>();
+        terrains = new Array<>();
 
         light = new PointLight();
-        light.setPosition(0,10,-10);
+        light.setPosition(0,50,-10);
         light.setIntensity(1);
         environment.add(light);
     }
