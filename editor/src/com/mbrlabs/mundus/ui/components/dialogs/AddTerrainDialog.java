@@ -1,7 +1,5 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -137,6 +135,7 @@ public class AddTerrainDialog extends BaseDialog {
         terrain.position.z = posZ;
         terrain.terrainWidth = terrainWidth;
         terrain.terrainDepth = terrainDepth;
+        terrain.update();
 
         return terrain;
     }
