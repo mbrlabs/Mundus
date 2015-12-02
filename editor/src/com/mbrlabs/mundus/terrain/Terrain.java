@@ -18,15 +18,14 @@ import java.nio.ByteBuffer;
  */
 public class Terrain {
 
-    public final Vector3 corner00 = new Vector3(-10, 0, -10);
-    public final Vector3 corner10 = new Vector3(10, 0, -10);
-    public final Vector3 corner01 = new Vector3(-10, 0, 10);
-    public final Vector3 corner11 = new Vector3(10, 0, 10);
     public final Vector3 magnitude = new Vector3(0, 5, 0);
+    public final Vector3 position = new Vector3(-10, 0, -10);
+    public int terrainWidth = 20;
+    public int terrainDepth = 20;
 
     public float[] heightData;
-    public int width;
-    public int height;
+    public int verticesOnX;
+    public int verticesOnZ;
     public Mesh mesh;
     public Renderable renderable;
 
@@ -40,18 +39,18 @@ public class Terrain {
     private final Vector3 tmpV1 = new Vector3();
     private final Vector3 tmpV2 = new Vector3();
 
-    public Terrain(int width, int height, int attributes) {
+    public Terrain(int verticesOnX, int verticesOnZ, int attributes) {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
         this.norPos = attribs.getOffset(VertexAttributes.Usage.Normal, -1);
 
-        this.width = width;
-        this.height = height;
-        this.heightData = new float[width * height];
+        this.verticesOnX = verticesOnX;
+        this.verticesOnZ = verticesOnZ;
+        this.heightData = new float[verticesOnX * verticesOnZ];
         this.stride = attribs.vertexSize / 4;
 
-        final int numVertices = width * height;
-        final int numIndices = (width - 1) * (height - 1) * 6;
+        final int numVertices = verticesOnX * verticesOnZ;
+        final int numIndices = (verticesOnX - 1) * (verticesOnZ - 1) * 6;
         this.mesh = new Mesh(false, numVertices, numIndices, attribs);
         this.vertices = new float[numVertices * stride];
         setIndices();
@@ -59,22 +58,22 @@ public class Terrain {
     }
 
     public void loadHeightMap(Pixmap map) {
-        if (map.getWidth() != width || map.getHeight() != height) throw new GdxRuntimeException("Incorrect map size");
-        heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.width, this.height);
+        if (map.getWidth() != verticesOnX || map.getHeight() != verticesOnZ) throw new GdxRuntimeException("Incorrect map size");
+        heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.verticesOnX, this.verticesOnZ);
         update();
     }
 
     private void setIndices () {
-        final int w = width - 1;
-        final int h = height - 1;
+        final int w = verticesOnX - 1;
+        final int h = verticesOnZ - 1;
         short indices[] = new short[w * h * 6];
         int i = -1;
         for (int y = 0; y < h; ++y) {
             for (int x = 0; x < w; ++x) {
-                final int c00 = y * width + x;
+                final int c00 = y * verticesOnX + x;
                 final int c10 = c00 + 1;
-                final int c01 = c00 + width;
-                final int c11 = c10 + width;
+                final int c01 = c00 + verticesOnX;
+                final int c11 = c10 + verticesOnX;
                 indices[++i] = (short)c11;
                 indices[++i] = (short)c10;
                 indices[++i] = (short)c00;
@@ -87,10 +86,10 @@ public class Terrain {
     }
 
     public void update () {
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < verticesOnX; ++x) {
+            for (int y = 0; y < verticesOnZ; ++y) {
                 VertexInfo v = calculateVertexAt(tempVInfo, x, y);
-                setVertex(y * width + x, v);
+                setVertex(y * verticesOnX + x, v);
             }
         }
         mesh.setVertices(vertices);
@@ -109,12 +108,12 @@ public class Terrain {
     }
 
     /**
-     * Calculates normal of a vertex at x,y based on the height of the surrounding vertices
+     * Calculates normal of a vertex at x,y based on the verticesOnZ of the surrounding vertices
      */
     private Vector3 calculateSimpleNormalAt(Vector3 out, int x, int y) {
         // handle edges of terrain
-        int xP1 = (x+1 >= width) ? width-1 : x+1;
-        int yP1 = (y+1 >= height) ? height-1 : y+1;
+        int xP1 = (x+1 >= verticesOnX) ? verticesOnX -1 : x+1;
+        int yP1 = (y+1 >= verticesOnZ) ? verticesOnZ -1 : y+1;
         int xM1 = (x-1 < 0) ? 0 : x-1;
         int yM1 = (y-1 < 0) ? 0 : y-1;
 
@@ -132,11 +131,13 @@ public class Terrain {
 
 
     private Vector3 calculatePositionAt(Vector3 out, int x, int y) {
-        final float dx = (float)x / (float)(width - 1);
-        final float dy = (float)y / (float)(height - 1);
-        final float height = heightData[y * width + x];
-        out.set(corner00).lerp(corner10, dx).lerp(tmpV1.set(corner01).lerp(corner11, dx), dy);
+        final float dx = (float)x / (float)(verticesOnX - 1);
+        final float dz = (float)y / (float)(verticesOnZ - 1);
+        final float height = heightData[y * verticesOnX + x];
+
+        out.set(position.x + dx*this.terrainWidth, 0, position.z + dz*this.terrainDepth);
         out.add(tmpV1.set(magnitude).scl(height));
+
         return out;
     }
 

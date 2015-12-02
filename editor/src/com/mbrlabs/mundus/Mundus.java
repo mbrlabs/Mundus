@@ -66,7 +66,7 @@ public class Mundus implements ApplicationListener {
         setupInput();
 
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
-        //projectContext.terrains.add(new TerrainTest().terrain);
+        projectContext.terrains.add(new TerrainTest().terrain);
     }
 
     private void init() {
