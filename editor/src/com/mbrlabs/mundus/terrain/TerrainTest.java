@@ -14,7 +14,7 @@ public class TerrainTest {
     public TerrainTest() {
         terrain = new Terrain(64, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         Pixmap heightMap = new Pixmap(Gdx.files.internal("data/heightmap.png"));
-        terrain.loadHeightMap(heightMap, 50);
+        terrain.loadHeightMap(heightMap, 150);
         terrain.update();
         heightMap.dispose();
     }

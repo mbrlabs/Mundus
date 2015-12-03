@@ -39,6 +39,12 @@ public class Terrain {
     private final Vector3 tmpV1 = new Vector3();
     private final Vector3 tmpV2 = new Vector3();
 
+    // used for collision detection
+    private final Vector3 c00 = new Vector3();
+    private final Vector3 c01 = new Vector3();
+    private final Vector3 c10 = new Vector3();
+    private final Vector3 c11 = new Vector3();
+
     public Terrain(int vertexResolution, int attributes) {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
@@ -77,20 +83,17 @@ public class Terrain {
         float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
         float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
 
-        Vector3 c00 = new Vector3(0,heightData[gridZ * vertexResolution + gridX], 0);
-        Vector3 c01 = new Vector3(1,heightData[(gridZ+1) * vertexResolution + gridX], 0);
-        Vector3 c11 = new Vector3(1,heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
-        Vector3 c10 = new Vector3(0,heightData[gridZ * vertexResolution + gridX+1], 1);
+        c00.set(0,heightData[gridZ * vertexResolution + gridX], 0);
+        c01.set(1,heightData[(gridZ+1) * vertexResolution + gridX], 0);
+        c11.set(1,heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
+        c10.set(0,heightData[gridZ * vertexResolution + gridX+1], 1);
 
 
         // we are in upper left triangle of the square
         if(xCoord <= (1 - zCoord)) {
             return MathUtils.barryCentric(c00, c10, c01, new Vector2(zCoord, xCoord));
-          //  return -100000;
         } else { // bottom right triangle
            return MathUtils.barryCentric(c10, c11, c01, new Vector2(zCoord, xCoord));
-            //return -100000;
-
         }
 
     }
