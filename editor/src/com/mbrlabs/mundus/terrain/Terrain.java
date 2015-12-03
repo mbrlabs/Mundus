@@ -21,8 +21,8 @@ import java.nio.ByteBuffer;
 public class Terrain {
 
     public final Vector3 position = new Vector3(0, 0, 0);
-    public int terrainWidth = 800;
-    public int terrainDepth = 800;
+    public int terrainWidth = 400;
+    public int terrainDepth = 400;
 
     public float[] heightData;
     public int vertexResolution;
