@@ -17,7 +17,7 @@ public class Main {
         int width = (int) maximumWindowBounds.getWidth();
         int height = (int) maximumWindowBounds.getHeight();
 
-        System.out.println("verticesOnX: " + height);
+        System.out.println("vertexResolution: " + height);
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = width;

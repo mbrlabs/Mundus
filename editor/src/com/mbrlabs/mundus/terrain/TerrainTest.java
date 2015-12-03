@@ -12,9 +12,10 @@ public class TerrainTest {
     public Terrain terrain;
 
     public TerrainTest() {
-        terrain = new Terrain(64, 64, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal  );
+        terrain = new Terrain(64, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         Pixmap heightMap = new Pixmap(Gdx.files.internal("data/heightmap.png"));
-        terrain.loadHeightMap(heightMap);
+        terrain.loadHeightMap(heightMap, 150);
+        terrain.update();
         heightMap.dispose();
     }
 

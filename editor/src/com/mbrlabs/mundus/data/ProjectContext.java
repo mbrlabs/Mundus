@@ -30,7 +30,7 @@ public class ProjectContext implements Disposable {
         terrains = new Array<>();
 
         light = new PointLight();
-        light.setPosition(0,50,-10);
+        light.setPosition(400,300,400);
         light.setIntensity(1);
         environment.add(light);
     }

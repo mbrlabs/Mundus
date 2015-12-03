@@ -26,8 +26,7 @@ public class AddTerrainDialog extends BaseDialog {
     private VisTextField name = new VisTextField();
     private MinimapWidget minimap;
 
-    private VisTextField verticesOnX = new VisTextField("64");
-    private VisTextField verticesOnZ = new VisTextField("64");
+    private VisTextField vertexResolution = new VisTextField("64");
 
     private VisTextField terrainWidth = new VisTextField("50");
     private VisTextField terrainDepth = new VisTextField("50");
@@ -58,10 +57,8 @@ public class AddTerrainDialog extends BaseDialog {
         leftTable.left().top();
         leftTable.add(new VisLabel("Name: ")).left().padBottom(10);
         leftTable.add(name).fillX().expandX().row();
-        leftTable.add(new VisLabel("Vertices on x-axis: ")).left().padBottom(10);
-        leftTable.add(verticesOnX).fillX().expandX().row();
-        leftTable.add(new VisLabel("Vertices on z-axis: ")).left().padBottom(10);
-        leftTable.add(verticesOnZ).fillX().expandX().row();
+        leftTable.add(new VisLabel("Vertex resolution: ")).left().padBottom(10);
+        leftTable.add(vertexResolution).fillX().expandX().row();
         leftTable.add(new VisLabel("Position on x-axis:")).left().padBottom(10);
         leftTable.add(positionX).fillX().expandX().row();
         leftTable.add(new VisLabel("Position on z-axis: ")).left().padBottom(10);
@@ -94,15 +91,14 @@ public class AddTerrainDialog extends BaseDialog {
                 try {
                     String nom = name.getText();
 
-                    int vertsX = Integer.valueOf(verticesOnX.getText());
-                    int vertsZ = Integer.valueOf(verticesOnZ.getText());
+                    int res = Integer.valueOf(vertexResolution.getText());
                     int width = Integer.valueOf(terrainWidth.getText());
                     int depth = Integer.valueOf(terrainDepth.getText());
                     float posX = Float.valueOf(positionX.getText());
                     float posZ = Float.valueOf(positionZ.getText());
 
 
-                    Terrain terrain = generateTerrain(nom, posX, posZ, width, depth, vertsX, vertsZ);
+                    Terrain terrain = generateTerrain(nom, posX, posZ, width, depth, res);
                     Mundus.projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {
@@ -129,8 +125,8 @@ public class AddTerrainDialog extends BaseDialog {
     }
 
     private Terrain generateTerrain(String name, float posX, float posZ, int terrainWidth, int terrainDepth,
-                                 int vertCountX, int vertCountZ) {
-        Terrain terrain = new Terrain(vertCountX, vertCountZ, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+                                 int res) {
+        Terrain terrain = new Terrain(res, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         terrain.position.x = posX;
         terrain.position.z = posZ;
         terrain.terrainWidth = terrainWidth;

@@ -1,23 +1,34 @@
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.ProjectContext;
 import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.data.ProjectManager;
 import com.mbrlabs.mundus.input.navigation.FreeCamController;
+import com.mbrlabs.mundus.shader.BrushShader;
 import com.mbrlabs.mundus.shader.EntityShader;
 import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainTest;
+import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Colors;
@@ -32,6 +43,8 @@ public class Mundus implements ApplicationListener {
     // render stuff
     public TerrainShader terrainShader;
     public EntityShader entityShader;
+    public BrushShader brushShader;
+
     public ModelBatch modelBatch;
     public PerspectiveCamera cam;
 
@@ -42,14 +55,18 @@ public class Mundus implements ApplicationListener {
     public Model axesModel;
     public ModelInstance axesInstance;
 
-
     // input
     private InputMultiplexer inputMultiplexer;
     private FreeCamController camController;
 
     private long vertexCount = 0;
-
     RenderContext renderContext;
+    private SphereBrush brush;
+
+    private Model boxModel;
+    private Array<ModelInstance> boxInstances = new Array<>();
+
+    private Vector3 tempV3 = new Vector3();
 
 	@Override
 	public void create () {
@@ -67,6 +84,26 @@ public class Mundus implements ApplicationListener {
 
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
         projectContext.terrains.add(new TerrainTest().terrain);
+
+        brush = new SphereBrush();
+
+        float boxSize = 0.5f;
+        boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize, new Material(ColorAttribute.createDiffuse(Color.RED)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        Random rand = new Random();
+        Terrain t = projectContext.terrains.first();
+        for(int i = 0; i < 10000; i++) {
+            ModelInstance mi = new ModelInstance(boxModel);
+
+            mi.transform.setTranslation(t.position);
+            float x = t.terrainWidth*rand.nextFloat();
+            float z = t.terrainDepth*rand.nextFloat();
+            float y = t.getHeightAtWorldCoord(x, z);
+            mi.transform.translate(x,  y, z);
+            boxInstances.add(mi);
+        }
+
+
     }
 
     private void init() {
@@ -77,8 +114,8 @@ public class Mundus implements ApplicationListener {
         // cam
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        cam.position.set(0, 1, 3);
-        cam.lookAt(0,1,1);
+        cam.position.set(0, 1, -3);
+        cam.lookAt(0,1,-1);
         cam.near = 0.2f;
         cam.far = 3000f;
         cam.update();
@@ -89,6 +126,8 @@ public class Mundus implements ApplicationListener {
         terrainShader.init();
         entityShader = new EntityShader();
         entityShader.init();
+        brushShader = new BrushShader();
+        brushShader.init();
 
         modelBatch = new ModelBatch();
 
@@ -156,6 +195,31 @@ public class Mundus implements ApplicationListener {
         }
         terrainShader.end();
 
+        // render brushes
+        // TODO move this somewhere reasonable. also think about different input mechanism for different states of the app
+        // TODO also think about states and how they affect the input & layout of the program.
+        if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+
+            // update
+            float screenX = Gdx.input.getX();
+            float screenY = Gdx.input.getY();
+
+
+
+
+
+            // render
+            modelBatch.begin(cam);
+            modelBatch.render(brush.getRenderable(), brushShader);
+            modelBatch.end();
+        }
+
+        // render
+        modelBatch.begin(cam);
+        modelBatch.render(boxInstances);
+        modelBatch.end();
+
+
         // render UI
         ui.draw();
 	}
@@ -185,6 +249,7 @@ public class Mundus implements ApplicationListener {
 
         terrainShader.dispose();
         entityShader.dispose();
+        brushShader.dispose();
         modelBatch.dispose();
         VisUI.dispose();
 

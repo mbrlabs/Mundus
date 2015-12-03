@@ -18,14 +18,12 @@ import java.nio.ByteBuffer;
  */
 public class Terrain {
 
-    public final Vector3 magnitude = new Vector3(0, 5, 0);
     public final Vector3 position = new Vector3(-10, 0, -10);
-    public int terrainWidth = 20;
-    public int terrainDepth = 20;
+    public int terrainWidth = 800;
+    public int terrainDepth = 800;
 
     public float[] heightData;
-    public int verticesOnX;
-    public int verticesOnZ;
+    public int vertexResolution;
     public Mesh mesh;
     public Renderable renderable;
 
@@ -39,59 +37,82 @@ public class Terrain {
     private final Vector3 tmpV1 = new Vector3();
     private final Vector3 tmpV2 = new Vector3();
 
-    public Terrain(int verticesOnX, int verticesOnZ, int attributes) {
+    public Terrain(int vertexResolution, int attributes) {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
         this.norPos = attribs.getOffset(VertexAttributes.Usage.Normal, -1);
 
-        this.verticesOnX = verticesOnX;
-        this.verticesOnZ = verticesOnZ;
-        this.heightData = new float[verticesOnX * verticesOnZ];
+        this.vertexResolution = vertexResolution;
+        this.heightData = new float[this.vertexResolution * vertexResolution];
         this.stride = attribs.vertexSize / 4;
 
-        final int numVertices = verticesOnX * verticesOnZ;
-        final int numIndices = (verticesOnX - 1) * (verticesOnZ - 1) * 6;
+        final int numVertices = this.vertexResolution * vertexResolution;
+        final int numIndices = (this.vertexResolution - 1) * (vertexResolution - 1) * 6;
         this.mesh = new Mesh(false, numVertices, numIndices, attribs);
         this.vertices = new float[numVertices * stride];
-        setIndices();
+        buildIndices();
+
         update();
     }
 
-    public void loadHeightMap(Pixmap map) {
-        if (map.getWidth() != verticesOnX || map.getHeight() != verticesOnZ) throw new GdxRuntimeException("Incorrect map size");
-        heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.verticesOnX, this.verticesOnZ);
-        update();
+    public void loadHeightMap(Pixmap map, float maxHeight) {
+        if (map.getWidth() != vertexResolution || map.getHeight() != vertexResolution) throw new GdxRuntimeException("Incorrect map size");
+        heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
     }
 
-    private void setIndices () {
-        final int w = verticesOnX - 1;
-        final int h = verticesOnZ - 1;
-        short indices[] = new short[w * h * 6];
-        int i = -1;
-        for (int y = 0; y < h; ++y) {
-            for (int x = 0; x < w; ++x) {
-                final int c00 = y * verticesOnX + x;
+    public float getHeightAtWorldCoord(float worldX, float worldZ) {
+        float terrainX = worldX - position.x;
+        float terrainZ = worldZ - position.z;
+
+        float gridSquareSize = terrainWidth / ((float) vertexResolution - 1);
+        int gridX = (int) Math.floor(terrainX / gridSquareSize);
+        int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
+        if(gridX >= vertexResolution -1 || gridZ >= vertexResolution - 1 || gridX < 0 || gridZ < 0) {
+            return 0;
+        }
+
+        float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
+        float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
+
+        return heightData[gridZ * vertexResolution + gridX];
+    }
+
+    private void buildIndices() {
+        final int x = vertexResolution - 1;
+        final int z = vertexResolution - 1;
+        short indices[] = new short[x * z * 6];
+        int index = 0;
+        for (int curX = 0; curX < x; curX++) {
+            for (int curZ = 0; curZ < z; curZ++) {
+                final int c00 = curZ * vertexResolution + curX;
                 final int c10 = c00 + 1;
-                final int c01 = c00 + verticesOnX;
-                final int c11 = c10 + verticesOnX;
-                indices[++i] = (short)c11;
-                indices[++i] = (short)c10;
-                indices[++i] = (short)c00;
-                indices[++i] = (short)c00;
-                indices[++i] = (short)c01;
-                indices[++i] = (short)c11;
+                final int c01 = c00 + vertexResolution;
+                final int c11 = c10 + vertexResolution;
+                indices[index++] = (short)c00;
+                indices[index++] = (short)c01;
+                indices[index++] = (short)c11;
+                indices[index++] = (short)c11;
+                indices[index++] = (short)c00;
+                indices[index++] = (short)c10;
             }
         }
+
         mesh.setIndices(indices);
     }
 
-    public void update () {
-        for (int x = 0; x < verticesOnX; ++x) {
-            for (int y = 0; y < verticesOnZ; ++y) {
-                VertexInfo v = calculateVertexAt(tempVInfo, x, y);
-                setVertex(y * verticesOnX + x, v);
+    private void buildVertices() {
+        for (int x = 0; x < vertexResolution; x++) {
+            for (int z = 0; z < vertexResolution; z++) {
+                calculatePositionAt(tempVInfo.position, x, z);
+                calculateSimpleNormalAt(tempVInfo.normal, x, z);
+                setVertex(z * vertexResolution + x, tempVInfo);
             }
         }
+    }
+
+
+    public void update () {
+        buildVertices();
         mesh.setVertices(vertices);
         renderable = new Renderable();
         renderable.meshPart.mesh = mesh;
@@ -101,19 +122,13 @@ public class Terrain {
         renderable.meshPart.update();
     }
 
-    private VertexInfo calculateVertexAt(final VertexInfo out, int x, int y) {
-        calculatePositionAt(out.position, x, y);
-        calculateSimpleNormalAt(out.normal, x, y);
-        return out;
-    }
-
     /**
      * Calculates normal of a vertex at x,y based on the verticesOnZ of the surrounding vertices
      */
     private Vector3 calculateSimpleNormalAt(Vector3 out, int x, int y) {
         // handle edges of terrain
-        int xP1 = (x+1 >= verticesOnX) ? verticesOnX -1 : x+1;
-        int yP1 = (y+1 >= verticesOnZ) ? verticesOnZ -1 : y+1;
+        int xP1 = (x+1 >= vertexResolution) ? vertexResolution -1 : x+1;
+        int yP1 = (y+1 >= vertexResolution) ? vertexResolution -1 : y+1;
         int xM1 = (x-1 < 0) ? 0 : x-1;
         int yM1 = (y-1 < 0) ? 0 : y-1;
 
@@ -130,13 +145,13 @@ public class Terrain {
     }
 
 
-    private Vector3 calculatePositionAt(Vector3 out, int x, int y) {
-        final float dx = (float)x / (float)(verticesOnX - 1);
-        final float dz = (float)y / (float)(verticesOnZ - 1);
-        final float height = heightData[y * verticesOnX + x];
+    private Vector3 calculatePositionAt(Vector3 out, int x, int z) {
+        final float dx = (float)x / (float)(vertexResolution - 1);
+        final float dz = (float)z / (float)(vertexResolution - 1);
+        final float height = heightData[z * vertexResolution + x];
 
-        out.set(position.x + dx*this.terrainWidth, 0, position.z + dz*this.terrainDepth);
-        out.add(tmpV1.set(magnitude).scl(height));
+        out.set(position.x + dx*this.terrainWidth, height, position.z + dz*this.terrainDepth);
+
 
         return out;
     }
@@ -156,7 +171,7 @@ public class Terrain {
     }
 
     /** Simply creates an array containing only all the red components of the heightData. */
-    private static float[] heightColorsToMap (final ByteBuffer data, final Pixmap.Format format, int width, int height) {
+    private float[] heightColorsToMap (final ByteBuffer data, final Pixmap.Format format, int width, int height, float maxHeight) {
         final int bytesPerColor = (format == Pixmap.Format.RGB888 ? 3 : (format == Pixmap.Format.RGBA8888 ? 4 : 0));
         if (bytesPerColor == 0) throw new GdxRuntimeException("Unsupported format, should be either RGB8 or RGBA8");
         if (data.remaining() < (width * height * bytesPerColor)) throw new GdxRuntimeException("Incorrect map size");
@@ -177,7 +192,7 @@ public class Terrain {
         for (int i = 0; i < dest.length; ++i) {
             int v = source[sourceOffset + i * 3];
             v = v < 0 ? 256 + v : v;
-            dest[i] = (float)v / 255f;
+            dest[i] = maxHeight * ((float)v / 255f);
         }
 
         return dest;
