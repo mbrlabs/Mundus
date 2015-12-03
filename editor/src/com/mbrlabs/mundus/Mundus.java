@@ -220,6 +220,7 @@ public class Mundus implements ApplicationListener {
         modelBatch.end();
 
 
+
         // render UI
         ui.draw();
 	}

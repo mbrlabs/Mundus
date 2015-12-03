@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.mbrlabs.mundus.utils.MathUtils;
 
 import java.nio.ByteBuffer;
 
@@ -18,7 +20,7 @@ import java.nio.ByteBuffer;
  */
 public class Terrain {
 
-    public final Vector3 position = new Vector3(-10, 0, -10);
+    public final Vector3 position = new Vector3(0, 0, 0);
     public int terrainWidth = 800;
     public int terrainDepth = 800;
 
@@ -67,6 +69,7 @@ public class Terrain {
         float gridSquareSize = terrainWidth / ((float) vertexResolution - 1);
         int gridX = (int) Math.floor(terrainX / gridSquareSize);
         int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
+
         if(gridX >= vertexResolution -1 || gridZ >= vertexResolution - 1 || gridX < 0 || gridZ < 0) {
             return 0;
         }
@@ -74,7 +77,22 @@ public class Terrain {
         float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
         float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
 
-        return heightData[gridZ * vertexResolution + gridX];
+        Vector3 c00 = new Vector3(0,heightData[gridZ * vertexResolution + gridX], 0);
+        Vector3 c01 = new Vector3(1,heightData[(gridZ+1) * vertexResolution + gridX], 0);
+        Vector3 c11 = new Vector3(1,heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
+        Vector3 c10 = new Vector3(0,heightData[gridZ * vertexResolution + gridX+1], 1);
+
+
+        // we are in upper left triangle of the square
+        if(xCoord <= (1 - zCoord)) {
+            return MathUtils.barryCentric(c00, c10, c01, new Vector2(zCoord, xCoord));
+          //  return -100000;
+        } else { // bottom right triangle
+           return MathUtils.barryCentric(c10, c11, c01, new Vector2(zCoord, xCoord));
+            //return -100000;
+
+        }
+
     }
 
     private void buildIndices() {
