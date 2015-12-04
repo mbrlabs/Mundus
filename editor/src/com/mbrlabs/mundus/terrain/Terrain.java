@@ -112,7 +112,7 @@ public class Terrain {
             ray.getEndPoint(out, curDistance);
 
             boolean u = isUnderTerrain(out);
-            if(u != isUnder || rounds == 5000) {
+            if(u != isUnder || rounds == 10000) {
                 return out;
             }
 
