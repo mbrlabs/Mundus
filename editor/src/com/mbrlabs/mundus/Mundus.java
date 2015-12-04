@@ -103,7 +103,6 @@ public class Mundus implements ApplicationListener {
             boxInstances.add(mi);
         }
 
-
     }
 
     private void init() {
