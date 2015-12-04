@@ -198,7 +198,7 @@ public class Terrain {
     }
 
 
-    private Vector3 calculatePositionAt(Vector3 out, int x, int z) {
+    public Vector3 calculatePositionAt(Vector3 out, int x, int z) {
         final float dx = (float)x / (float)(vertexResolution - 1);
         final float dz = (float)z / (float)(vertexResolution - 1);
         final float height = heightData[z * vertexResolution + x];

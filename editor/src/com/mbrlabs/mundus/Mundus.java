@@ -198,15 +198,20 @@ public class Mundus implements ApplicationListener {
         // render brushes
         // TODO move this somewhere reasonable. also think about different input mechanism for different states of the app
         // TODO also think about states and how they affect the input & layout of the program.
-        if(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
 
             // update
             float screenX = Gdx.input.getX();
             float screenY = Gdx.input.getY();
 
+            Terrain terrain = projectContext.terrains.first();
             Ray ray = cam.getPickRay(screenX, screenY);
-            projectContext.terrains.first().getRayIntersection(tempV3, ray);
+            terrain.getRayIntersection(tempV3, ray);
             brush.getRenderable().transform.setTranslation(tempV3);
+
+            if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                brush.apply(terrain);
+            }
 
 
             // render
@@ -299,9 +304,9 @@ public class Mundus implements ApplicationListener {
         @Override
         public boolean scrolled(int amount) {
             if(amount < 0) {
-                brush.getRenderable().transform.scl(0.9f);
+                brush.scale(0.9f);
             } else {
-                brush.getRenderable().transform.scl(1.1f);
+                brush.scale(1.1f);
             }
             return false;
         }
