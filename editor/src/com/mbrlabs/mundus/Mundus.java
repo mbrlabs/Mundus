@@ -167,6 +167,7 @@ public class Mundus implements ApplicationListener {
             }
         });
         inputMultiplexer.addProcessor(ui);
+        inputMultiplexer.addProcessor(new BrushInput());
         Gdx.input.setInputProcessor(inputMultiplexer);
 
     }
@@ -204,8 +205,9 @@ public class Mundus implements ApplicationListener {
             float screenX = Gdx.input.getX();
             float screenY = Gdx.input.getY();
 
-
-
+            Ray ray = cam.getPickRay(screenX, screenY);
+            projectContext.terrains.first().getRayIntersection(tempV3, ray);
+            brush.getRenderable().transform.setTranslation(tempV3);
 
 
             // render
@@ -254,6 +256,56 @@ public class Mundus implements ApplicationListener {
         modelBatch.dispose();
         VisUI.dispose();
 
+    }
+
+    // TODO move this somewhere reasonable. also think about different input mechanism for different states of the app
+    // TODO also think about states and how they affect the input & layout of the program.
+    private class BrushInput implements InputProcessor {
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(int amount) {
+            if(amount < 0) {
+                brush.getRenderable().transform.scl(0.9f);
+            } else {
+                brush.getRenderable().transform.scl(1.1f);
+            }
+            return false;
+        }
     }
 
 

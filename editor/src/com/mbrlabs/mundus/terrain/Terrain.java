@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mbrlabs.mundus.utils.MathUtils;
 
@@ -21,8 +22,8 @@ import java.nio.ByteBuffer;
 public class Terrain {
 
     public final Vector3 position = new Vector3(0, 0, 0);
-    public int terrainWidth = 400;
-    public int terrainDepth = 400;
+    public int terrainWidth = 1200;
+    public int terrainDepth = 1200;
 
     public float[] heightData;
     public int vertexResolution;
@@ -83,19 +84,50 @@ public class Terrain {
         float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
         float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
 
-        c00.set(0,heightData[gridZ * vertexResolution + gridX], 0);
         c01.set(1,heightData[(gridZ+1) * vertexResolution + gridX], 0);
-        c11.set(1,heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
         c10.set(0,heightData[gridZ * vertexResolution + gridX+1], 1);
-
 
         // we are in upper left triangle of the square
         if(xCoord <= (1 - zCoord)) {
+            c00.set(0,heightData[gridZ * vertexResolution + gridX], 0);
             return MathUtils.barryCentric(c00, c10, c01, new Vector2(zCoord, xCoord));
-        } else { // bottom right triangle
-           return MathUtils.barryCentric(c10, c11, c01, new Vector2(zCoord, xCoord));
+        }
+        // bottom right triangle
+        c11.set(1,heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
+        return MathUtils.barryCentric(c10, c11, c01, new Vector2(zCoord, xCoord));
+    }
+
+    public Vector3 getRayIntersection(Vector3 out, Ray ray) {
+        // TODO improve performance. use binary search
+        float stopCreteria = 0.1f;
+        float curDistance = 2;
+
+        int rounds = 0;
+
+        ray.getEndPoint(out, curDistance);
+        boolean isUnder = isUnderTerrain(out);
+
+        while(true) {
+            rounds++;
+            ray.getEndPoint(out, curDistance);
+
+            boolean u = isUnderTerrain(out);
+            if(u != isUnder || rounds == 5000) {
+                return out;
+            }
+
+            if(u) {
+                curDistance -= 0.1f;
+            } else {
+                curDistance += 0.1f;
+            }
         }
 
+    }
+
+    private boolean isUnderTerrain(Vector3 pointInWorldCoordinates) {
+        float terrainHeight = getHeightAtWorldCoord(pointInWorldCoordinates.x, pointInWorldCoordinates.z);
+        return terrainHeight > pointInWorldCoordinates.y;
     }
 
     private void buildIndices() {
