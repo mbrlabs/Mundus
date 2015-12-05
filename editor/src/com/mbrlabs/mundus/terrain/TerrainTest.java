@@ -14,10 +14,10 @@ public class TerrainTest {
 
     public TerrainTest() {
         terrain = new Terrain(180, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
-        Pixmap heightMap = new Pixmap(Gdx.files.internal("heightmaps/hm3.jpg"));
+        Pixmap heightMap = new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png"));
         terrain.loadHeightMap(heightMap, 190);
         terrain.update();
-        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/grass.png"));
+        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
 
         terrain.setTexture(tex);
         heightMap.dispose();

@@ -37,7 +37,7 @@ public class SphereBrush implements Brush {
         sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
         sphereModelInstance = new ModelInstance(sphereModel);
         sphereModelInstance.calculateBoundingBox(boundingBox);
-        radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
+        scale(15);
     }
 
     public void scale(float amount) {

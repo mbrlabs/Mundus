@@ -55,6 +55,9 @@ public class Mundus implements ApplicationListener {
     public Model axesModel;
     public ModelInstance axesInstance;
 
+    // compass
+    private Compass compass;
+
     // input
     private InputMultiplexer inputMultiplexer;
     private FreeCamController camController;
@@ -85,13 +88,11 @@ public class Mundus implements ApplicationListener {
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
         projectContext.terrains.add(new TerrainTest().terrain);
 
-        brush = new SphereBrush();
-
-        float boxSize = 0.5f;
-        boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize, new Material(ColorAttribute.createDiffuse(Color.RED)),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        Random rand = new Random();
-        Terrain t = projectContext.terrains.first();
+//        float boxSize = 0.5f;
+//        boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize, new Material(ColorAttribute.createDiffuse(Color.RED)),
+//                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+//        Random rand = new Random();
+//        Terrain t = projectContext.terrains.first();
 //        for(int i = 0; i < 10000; i++) {
 //            ModelInstance mi = new ModelInstance(boxModel);
 //
@@ -129,6 +130,9 @@ public class Mundus implements ApplicationListener {
         brushShader.init();
 
         modelBatch = new ModelBatch();
+
+        brush = new SphereBrush();
+        compass = new Compass(cam);
 
         if(MundusHome.getInstance().getProjectRefs().getProjects().size() == 0) {
             ProjectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
@@ -206,6 +210,7 @@ public class Mundus implements ApplicationListener {
         modelBatch.render(boxInstances);
         modelBatch.end();
 
+        compass.render(modelBatch);
 
 
         // render UI
