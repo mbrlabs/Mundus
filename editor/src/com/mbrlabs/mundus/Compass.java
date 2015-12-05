@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -19,6 +18,11 @@ import com.badlogic.gdx.utils.Disposable;
  * @version 05-12-2015
  */
 public class Compass implements Disposable {
+
+    private final float ARROW_LENGTH = 0.05f;
+    private final float ARROW_THIKNESS = 0.4f;
+    private final float ARROW_CAP_SIZE = 0.2f;
+    private final int ARROW_DIVISIONS = 5;
 
     private PerspectiveCamera ownCam;
     private PerspectiveCamera worldCam;
@@ -31,22 +35,22 @@ public class Compass implements Disposable {
         this.worldCam = worldCam;
         this.ownCam = new PerspectiveCamera();
 
-
-
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
 
-        MeshPartBuilder builder = modelBuilder.part("compass", GL20.GL_LINES, VertexAttributes.Usage.Position
+        MeshPartBuilder builder = modelBuilder.part("compass", GL20.GL_TRIANGLES, VertexAttributes.Usage.Position
                 | VertexAttributes.Usage.ColorUnpacked, new Material());
-
         builder.setColor(Color.RED);
-        builder.line(0, 0, 0, 0.1f, 0, 0);
+        builder.arrow(0, 0, 0, ARROW_LENGTH, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS);
         builder.setColor(Color.GREEN);
-        builder.line(0, 0, 0, 0, 0.1f, 0);
+        builder.arrow(0, 0, 0, 0, ARROW_LENGTH, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS);
         builder.setColor(Color.BLUE);
-        builder.line(0, 0, 0, 0, 0, 0.1f);
+        builder.arrow(0, 0, 0, 0, 0, ARROW_LENGTH, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS);
         compassModel =  modelBuilder.end();
         compassInstance = new ModelInstance(compassModel);
+
+        // translate to top right corner
+        compassInstance.transform.translate(0.95f,0.8f,0);
     }
 
     public void render(ModelBatch batch) {
@@ -57,9 +61,6 @@ public class Compass implements Disposable {
     }
 
     private void update() {
-       // compassInstance.transform.setTranslation(ownCam.position.x, ownCam.position.y-1, ownCam.position.z);
-        //ownCam.direction.set(worldCam.direction);
-      //  ownCam.update();
         compassInstance.transform.getTranslation(tempV3);
         compassInstance.transform.set(worldCam.view);
         compassInstance.transform.setTranslation(tempV3);
@@ -67,6 +68,7 @@ public class Compass implements Disposable {
 
     @Override
     public void dispose() {
-
+        compassModel.dispose();
     }
+
 }

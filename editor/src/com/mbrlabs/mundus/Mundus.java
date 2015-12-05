@@ -238,6 +238,7 @@ public class Mundus implements ApplicationListener {
         ui = null;
         axesModel.dispose();
         axesModel = null;
+        compass.dispose();
         projectContext.dispose();
 
         terrainShader.dispose();
