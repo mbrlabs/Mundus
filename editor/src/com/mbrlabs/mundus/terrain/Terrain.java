@@ -22,8 +22,8 @@ import java.nio.ByteBuffer;
 public class Terrain {
 
     public final Vector3 position = new Vector3(0, 0, 0);
-    public int terrainWidth = 200;
-    public int terrainDepth = 200;
+    public int terrainWidth = 1200;
+    public int terrainDepth = 1200;
 
     public float[] heightData;
     public int vertexResolution;
@@ -38,7 +38,7 @@ public class Terrain {
     private int uvPos;
 
     public final Vector2 uvOffset = new Vector2(0, 0);
-    public final Vector2 uvScale = new Vector2(1, 1);
+    public final Vector2 uvScale = new Vector2(20, 20);
 
 
     private final VertexInfo tempVInfo = new VertexInfo();
@@ -176,7 +176,7 @@ public class Terrain {
         renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
         renderable.meshPart.offset = 0;
         renderable.meshPart.size = mesh.getNumIndices();
-        renderable.material = new Material(TextureAttribute.createDiffuse(new Texture(Gdx.files.internal("data/badlogic.jpg"))));
+        renderable.material = new Material();
         renderable.meshPart.update();
     }
 
@@ -214,7 +214,12 @@ public class Terrain {
         final float height = heightData[z * vertexResolution + x];
 
         out.position.set(position.x + dx * this.terrainWidth, height, position.z + dz * this.terrainDepth);
-        out.uv.set(dx, dz).scl(uvScale).add(uvOffset);
+        out.uv.set(dx, dz).scl(uvScale);
+        out.uv.x %= 1;
+        out.uv.y %= 1;
+
+        out.uv.add(uvOffset);
+
 
         return out;
     }
