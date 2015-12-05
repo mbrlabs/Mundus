@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.PointLightsAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -26,6 +27,7 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
+    protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
 
     protected final int UNIFORM_WIREFRAME = register(new Uniform("u_wireframe"));
 
@@ -75,6 +77,13 @@ public class TerrainShader extends BaseShader {
     @Override
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
+
+
+        // texture uniform
+        TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
+        if(textureAttribute != null) {
+            set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
+        }
 
         final PointLightsAttribute pla =
                 renderable.environment.get(PointLightsAttribute.class, PointLightsAttribute.Type);

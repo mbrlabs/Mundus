@@ -12,11 +12,12 @@ public class TerrainTest {
     public Terrain terrain;
 
     public TerrainTest() {
-        terrain = new Terrain(180, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        Pixmap heightMap = new Pixmap(Gdx.files.internal("data/hm3.jpg"));
-        terrain.loadHeightMap(heightMap, 190);
+        terrain = new Terrain(180, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+       //Pixmap heightMap = new Pixmap(Gdx.files.internal("data/hm3.jpg"));
+       //terrain.loadHeightMap(heightMap, 190);
+      //  terrain.setTexture(new Texture(Gdx.files.internal("data/badlogic.jpg")));
         terrain.update();
-        heightMap.dispose();
+        //heightMap.dispose();
 
         //TerrainIO.exportBinary(terrain, "/home/marcus/Desktop/test.ter");
 

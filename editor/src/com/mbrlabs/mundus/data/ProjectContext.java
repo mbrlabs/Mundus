@@ -27,7 +27,7 @@ public class ProjectContext implements Disposable {
     public ProjectContext() {
         entities = new Array<>();
         models = new Array<>();
-        terrains = new Array<>();
+        terrains = new Array<Terrain>();
 
         light = new PointLight();
         light.setPosition(400,300,400);

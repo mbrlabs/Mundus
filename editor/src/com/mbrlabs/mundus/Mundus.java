@@ -92,16 +92,16 @@ public class Mundus implements ApplicationListener {
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
         Random rand = new Random();
         Terrain t = projectContext.terrains.first();
-        for(int i = 0; i < 10000; i++) {
-            ModelInstance mi = new ModelInstance(boxModel);
-
-            mi.transform.setTranslation(t.position);
-            float x = t.terrainWidth*rand.nextFloat();
-            float z = t.terrainDepth*rand.nextFloat();
-            float y = t.getHeightAtWorldCoord(x, z);
-            mi.transform.translate(x,  y, z);
-            boxInstances.add(mi);
-        }
+//        for(int i = 0; i < 10000; i++) {
+//            ModelInstance mi = new ModelInstance(boxModel);
+//
+//            mi.transform.setTranslation(t.position);
+//            float x = t.terrainWidth*rand.nextFloat();
+//            float z = t.terrainDepth*rand.nextFloat();
+//            float y = t.getHeightAtWorldCoord(x, z);
+//            mi.transform.translate(x,  y, z);
+//            boxInstances.add(mi);
+//        }
 
     }
 
@@ -142,29 +142,6 @@ public class Mundus implements ApplicationListener {
 
         // 3 input processors: stage, free cam nav, F1, F2 keys...
         inputMultiplexer.addProcessor(camController);
-        inputMultiplexer.addProcessor(new InputAdapter() {
-            @Override
-            public boolean keyDown(int keycode) {
-                if(keycode == Input.Keys.F1) {
-                    //entityShader.toggleWireframe();
-
-                }
-                if(keycode == Input.Keys.F2) {
-                    if(projectContext.models.size > 0) {
-                        Random rand = new Random();
-                        for(int i = 0; i < 200; i++) {
-                            ModelInstance instance = new ModelInstance(projectContext.models.first());
-
-                            instance.transform.translate(rand.nextFloat() * 1000, 0, rand.nextFloat()*1000);
-                            instance.transform.rotate(0, rand.nextFloat(), 0, rand.nextFloat()*360);
-                            projectContext.entities.add(instance);
-
-                        }
-                    }
-                }
-                return true;
-            }
-        });
         inputMultiplexer.addProcessor(ui);
         inputMultiplexer.addProcessor(new BrushInput());
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -210,7 +187,11 @@ public class Mundus implements ApplicationListener {
             brush.getRenderable().transform.setTranslation(tempV3);
 
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                brush.apply(terrain);
+                brush.draw(projectContext.terrains, true);
+            }
+
+            if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                brush.draw(projectContext.terrains, false);
             }
 
 

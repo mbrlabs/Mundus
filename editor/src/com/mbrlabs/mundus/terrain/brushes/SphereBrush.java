@@ -4,18 +4,21 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
  * @version 03-12-2015
  */
-public class SphereBrush implements Brush, Disposable {
+public class SphereBrush implements Brush {
+
+    public enum Mode {
+        SHARP, SMOOTH
+    }
 
     private static final float SIZE = 1;
 
@@ -23,6 +26,8 @@ public class SphereBrush implements Brush, Disposable {
     private ModelInstance sphereModelInstance;
     private BoundingBox boundingBox = new BoundingBox();
     private float radius;
+
+    private Mode mode = Mode.SMOOTH;
 
     private Vector3 tVec0 = new Vector3();
     private Vector3 tVec1 = new Vector3();
@@ -40,23 +45,23 @@ public class SphereBrush implements Brush, Disposable {
         radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
     }
 
-    public float getRadius() {
-        return radius;
-    }
-
-    public void apply(Terrain terrain) {
+    public void draw(Array<Terrain> terrains, boolean up) {
+        // TODO extend to work for all terrains
+        Terrain terrain = terrains.first();
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
-                terrain.calculatePositionAt(tVec0, x, z);
+                terrain.getVertexPosition(tVec0, x, z);
                 float distance = tVec0.dst(this.sphereModelInstance.transform.getTranslation(tVec1));
-                if(distance <= radius*2) {
-                    int heightIndex = z * terrain.vertexResolution + x;
-//                    if(terrain.heightData[heightIndex] <= 0) {
-//                        terrain.heightData[heightIndex] = 0.01f;
-//                    } else {
-//                        terrain.heightData[z * terrain.vertexResolution + x] *= 1.01f;
-//                    }
-                    terrain.heightData[z * terrain.vertexResolution + x] += 0.4f;
+
+                if(distance <= radius) {
+                    float dir = up ? 1 : -1;
+                    float elevation = 0;
+                    if(mode == Mode.SMOOTH) {
+                        elevation = (radius - distance) * 0.1f * dir;
+                    } else {
+                        elevation = dir;
+                    }
+                    terrain.heightData[z * terrain.vertexResolution + x] += elevation;
                 }
             }
         }
@@ -71,7 +76,5 @@ public class SphereBrush implements Brush, Disposable {
     public ModelInstance getRenderable() {
         return this.sphereModelInstance;
     }
-
-
 
 }

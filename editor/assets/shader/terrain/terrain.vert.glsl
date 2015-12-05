@@ -1,5 +1,6 @@
 attribute vec3 a_position;
 attribute vec3 a_normal;
+attribute vec2 a_texCoord0;
 
 uniform mat4 u_transMatrix;
 uniform mat4 u_projViewMatrix;
@@ -17,6 +18,8 @@ void main(void) {
     // for diffuse lighting
     v_surfaceNormal = (u_transMatrix * vec4(a_normal, 0.0)).xyz;
     v_vectorToLight = u_lightPos - worldPos.xyz;
+
+    v_texCoord0 = a_texCoord0;
 
     gl_Position = u_projViewMatrix * worldPos;
 }

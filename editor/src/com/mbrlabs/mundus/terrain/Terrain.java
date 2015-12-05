@@ -1,10 +1,10 @@
 package com.mbrlabs.mundus.terrain;
 
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Vector2;
@@ -22,8 +22,8 @@ import java.nio.ByteBuffer;
 public class Terrain {
 
     public final Vector3 position = new Vector3(0, 0, 0);
-    public int terrainWidth = 1200;
-    public int terrainDepth = 1200;
+    public int terrainWidth = 200;
+    public int terrainDepth = 200;
 
     public float[] heightData;
     public int vertexResolution;
@@ -35,6 +35,11 @@ public class Terrain {
 
     private int posPos;
     private int norPos;
+    private int uvPos;
+
+    public final Vector2 uvOffset = new Vector2(0, 0);
+    public final Vector2 uvScale = new Vector2(1, 1);
+
 
     private final VertexInfo tempVInfo = new VertexInfo();
     private final Vector3 tmpV1 = new Vector3();
@@ -50,6 +55,7 @@ public class Terrain {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
         this.norPos = attribs.getOffset(VertexAttributes.Usage.Normal, -1);
+        this.uvPos = attribs.getOffset(VertexAttributes.Usage.TextureCoordinates, -1);
 
         this.vertexResolution = vertexResolution;
         this.heightData = new float[this.vertexResolution * vertexResolution];
@@ -99,9 +105,7 @@ public class Terrain {
 
     public Vector3 getRayIntersection(Vector3 out, Ray ray) {
         // TODO improve performance. use binary search
-        float stopCreteria = 0.1f;
         float curDistance = 2;
-
         int rounds = 0;
 
         ray.getEndPoint(out, curDistance);
@@ -156,8 +160,8 @@ public class Terrain {
     private void buildVertices() {
         for (int x = 0; x < vertexResolution; x++) {
             for (int z = 0; z < vertexResolution; z++) {
-                calculatePositionAt(tempVInfo.position, x, z);
-                calculateSimpleNormalAt(tempVInfo.normal, x, z);
+                calculateVertexAt(tempVInfo, x, z);
+                calculateSimpleNormalAt(tempVInfo, x, z);
                 setVertex(z * vertexResolution + x, tempVInfo);
             }
         }
@@ -172,40 +176,54 @@ public class Terrain {
         renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
         renderable.meshPart.offset = 0;
         renderable.meshPart.size = mesh.getNumIndices();
+        renderable.material = new Material(TextureAttribute.createDiffuse(new Texture(Gdx.files.internal("data/badlogic.jpg"))));
+        renderable.meshPart.update();
+    }
+
+    public void setTexture(Texture texture) {
+        renderable.material = new Material(TextureAttribute.createDiffuse(texture));
         renderable.meshPart.update();
     }
 
     /**
      * Calculates normal of a vertex at x,y based on the verticesOnZ of the surrounding vertices
      */
-    private Vector3 calculateSimpleNormalAt(Vector3 out, int x, int y) {
+    private VertexInfo calculateSimpleNormalAt(VertexInfo out, int x, int y) {
         // handle edges of terrain
         int xP1 = (x+1 >= vertexResolution) ? vertexResolution -1 : x+1;
         int yP1 = (y+1 >= vertexResolution) ? vertexResolution -1 : y+1;
         int xM1 = (x-1 < 0) ? 0 : x-1;
         int yM1 = (y-1 < 0) ? 0 : y-1;
 
-        float hL = calculatePositionAt(tmpV2, xM1, y).y;
-        float hR = calculatePositionAt(tmpV2, xP1, y).y;
-        float hD = calculatePositionAt(tmpV2, x, yM1).y;
-        float hU = calculatePositionAt(tmpV2, x, yP1).y;
-        out.x = hL - hR;
-        out.y = 2;
-        out.z = hD - hU;
-        out.nor();
+        float hL = heightData[y * vertexResolution + xM1];
+        float hR = heightData[y * vertexResolution + xP1];
+        float hD = heightData[yM1 * vertexResolution + x];
+        float hU = heightData[yP1 * vertexResolution + x];
+        out.normal.x = hL - hR;
+        out.normal.y = 2;
+        out.normal.z = hD - hU;
+        out.normal.nor();
 
         return out;
     }
 
 
-    public Vector3 calculatePositionAt(Vector3 out, int x, int z) {
+    public VertexInfo calculateVertexAt(VertexInfo out, int x, int z) {
         final float dx = (float)x / (float)(vertexResolution - 1);
         final float dz = (float)z / (float)(vertexResolution - 1);
         final float height = heightData[z * vertexResolution + x];
 
-        out.set(position.x + dx*this.terrainWidth, height, position.z + dz*this.terrainDepth);
+        out.position.set(position.x + dx * this.terrainWidth, height, position.z + dz * this.terrainDepth);
+        out.uv.set(dx, dz).scl(uvScale).add(uvOffset);
 
+        return out;
+    }
 
+    public Vector3 getVertexPosition(Vector3 out, int x, int z) {
+        final float dx = (float)x / (float)(vertexResolution - 1);
+        final float dz = (float)z / (float)(vertexResolution - 1);
+        final float height = heightData[z * vertexResolution + x];
+        out.set(position.x + dx * this.terrainWidth, height, position.z + dz * this.terrainDepth);
         return out;
     }
 
@@ -215,6 +233,10 @@ public class Terrain {
             vertices[index + posPos + 0] = info.position.x;
             vertices[index + posPos + 1] = info.position.y;
             vertices[index + posPos + 2] = info.position.z;
+        }
+        if (uvPos >= 0) {
+            vertices[index + uvPos + 0] = info.uv.x;
+            vertices[index + uvPos + 1] = info.uv.y;
         }
         if (norPos >= 0) {
             vertices[index + norPos + 0] = info.normal.x;
