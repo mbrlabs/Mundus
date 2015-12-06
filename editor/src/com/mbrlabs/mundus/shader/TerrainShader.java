@@ -67,8 +67,12 @@ public class TerrainShader extends BaseShader {
     @Override
     public void begin(Camera camera, RenderContext context) {
         this.context = context;
-        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        Gdx.gl.glDepthFunc(GL20.GL_LINEAR);
+        context.begin();
+        this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
+        this.context.setDepthMask(true);
+
+//        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+//        Gdx.gl.glDepthFunc(GL20.GL_LINEAR);
         program.begin();
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
@@ -80,6 +84,7 @@ public class TerrainShader extends BaseShader {
 
 
         // texture uniform
+
         TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
         if(textureAttribute != null) {
             set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
@@ -103,7 +108,7 @@ public class TerrainShader extends BaseShader {
 
     @Override
     public void end() {
-        Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+        context.end();
         program.end();
     }
 

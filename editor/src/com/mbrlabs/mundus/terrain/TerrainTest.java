@@ -20,6 +20,8 @@ public class TerrainTest {
         Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
 
         terrain.setTexture(tex);
+
+
         heightMap.dispose();
 
         //TerrainIO.exportBinary(terrain, "/home/marcus/Desktop/test.ter");

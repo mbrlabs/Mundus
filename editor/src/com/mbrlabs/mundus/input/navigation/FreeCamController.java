@@ -20,7 +20,7 @@ public class FreeCamController extends InputAdapter {
     private int BACKWARD = Input.Keys.S;
     private int UP = Input.Keys.Q;
     private int DOWN = Input.Keys.E;
-    private float velocity = 100;
+    private float velocity = 200;
     private float degreesPerPixel = 0.5f;
     private final Vector3 tmp = new Vector3();
 

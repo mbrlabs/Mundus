@@ -51,6 +51,8 @@ public class Terrain {
     private final Vector3 c10 = new Vector3();
     private final Vector3 c11 = new Vector3();
 
+    private Texture texture;
+
     public Terrain(int vertexResolution, int attributes) {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
@@ -177,12 +179,16 @@ public class Terrain {
         renderable.meshPart.offset = 0;
         renderable.meshPart.size = mesh.getNumIndices();
         renderable.material = new Material();
+        if(this.texture != null) {
+            renderable.material.set(TextureAttribute.createDiffuse(this.texture));
+        }
+
         renderable.meshPart.update();
     }
 
     public void setTexture(Texture texture) {
-        renderable.material = new Material(TextureAttribute.createDiffuse(texture));
-        renderable.meshPart.update();
+        this.texture = texture;
+        renderable.material.set(TextureAttribute.createDiffuse(this.texture));
     }
 
     /**

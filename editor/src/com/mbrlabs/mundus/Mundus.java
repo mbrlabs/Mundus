@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.ProjectContext;
@@ -104,6 +106,7 @@ public class Mundus implements ApplicationListener {
 //            boxInstances.add(mi);
 //        }
 
+
     }
 
     private void init() {
@@ -117,7 +120,7 @@ public class Mundus implements ApplicationListener {
         cam.position.set(0, 1, -3);
         cam.lookAt(0,1,-1);
         cam.near = 0.2f;
-        cam.far = 3000f;
+        cam.far = 10000;
         cam.update();
 
         // shaders
