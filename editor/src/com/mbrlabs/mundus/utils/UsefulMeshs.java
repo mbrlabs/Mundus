@@ -5,8 +5,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.terrain.Terrain;
+
+import java.util.Random;
 
 /**
  * @author Marcus Brummer
@@ -37,6 +42,5 @@ public class UsefulMeshs {
         builder.line(0, 0, 0, 0, 0, 100);
         return modelBuilder.end();
     }
-
 
 }

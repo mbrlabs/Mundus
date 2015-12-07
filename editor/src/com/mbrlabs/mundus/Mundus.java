@@ -24,6 +24,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.ProjectContext;
 import com.mbrlabs.mundus.data.home.MundusHome;
 import com.mbrlabs.mundus.data.ProjectManager;
+import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.input.navigation.FreeCamController;
 import com.mbrlabs.mundus.shader.BrushShader;
 import com.mbrlabs.mundus.shader.EntityShader;
@@ -33,10 +34,7 @@ import com.mbrlabs.mundus.terrain.TerrainTest;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
-import com.mbrlabs.mundus.utils.Colors;
-import com.mbrlabs.mundus.utils.GlUtils;
-import com.mbrlabs.mundus.utils.Log;
-import com.mbrlabs.mundus.utils.UsefulMeshs;
+import com.mbrlabs.mundus.utils.*;
 
 import java.util.Random;
 
@@ -48,10 +46,12 @@ public class Mundus implements ApplicationListener {
     public BrushShader brushShader;
 
     public ModelBatch modelBatch;
-    public PerspectiveCamera cam;
+    public static PerspectiveCamera cam;
 
     private Ui ui;
     public static ProjectContext projectContext;
+
+    private InputManager inputManager;
 
     // axes
     public Model axesModel;
@@ -60,16 +60,11 @@ public class Mundus implements ApplicationListener {
     // compass
     private Compass compass;
 
-    // input
-    private InputMultiplexer inputMultiplexer;
-    private FreeCamController camController;
-
     private long vertexCount = 0;
-    RenderContext renderContext;
+    private RenderContext renderContext;
     private SphereBrush brush;
 
     private Model boxModel;
-    private Array<ModelInstance> boxInstances = new Array<>();
 
     private Vector3 tempV3 = new Vector3();
 
@@ -90,27 +85,10 @@ public class Mundus implements ApplicationListener {
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
         projectContext.terrains.add(new TerrainTest().terrain);
 
-//        float boxSize = 0.5f;
-//        boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize, new Material(ColorAttribute.createDiffuse(Color.RED)),
-//                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-//        Random rand = new Random();
-//        Terrain t = projectContext.terrains.first();
-//        for(int i = 0; i < 10000; i++) {
-//            ModelInstance mi = new ModelInstance(boxModel);
-//
-//            mi.transform.setTranslation(t.position);
-//            float x = t.terrainWidth*rand.nextFloat();
-//            float z = t.terrainDepth*rand.nextFloat();
-//            float y = t.getHeightAtWorldCoord(x, z);
-//            mi.transform.translate(x,  y, z);
-//            boxInstances.add(mi);
-//        }
-
-
+        createBoxesOnTerrain();
     }
 
     private void init() {
-
         VisUI.load();
         UiImages.load();
         FileChooser.setFavoritesPrefsName(Mundus.class.getPackage().getName());
@@ -144,26 +122,20 @@ public class Mundus implements ApplicationListener {
     }
 
     private void setupInput() {
-        camController = new FreeCamController(cam);
-        inputMultiplexer = new InputMultiplexer();
-
-        // 3 input processors: stage, free cam nav, F1, F2 keys...
-        inputMultiplexer.addProcessor(camController);
-        inputMultiplexer.addProcessor(ui);
-        inputMultiplexer.addProcessor(new BrushInput());
-        Gdx.input.setInputProcessor(inputMultiplexer);
-
+        inputManager = new InputManager(ui);
+        inputManager.setWorldNavigation(new FreeCamController(cam));
+        inputManager.setCurrentToolInput(brush.getInputProcessor());
     }
 
 	@Override
 	public void render () {
         GlUtils.clearScreen(Colors.GRAY_222);
 
-        // updates
+        inputManager.update();
+
+        // update status bar
         ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
         ui.getStatusBar().setVertexCount(vertexCount);
-        ui.act(Gdx.graphics.getDeltaTime());
-        camController.update();
 
         // render model instances
         modelBatch.begin(cam);
@@ -179,38 +151,9 @@ public class Mundus implements ApplicationListener {
         }
         terrainShader.end();
 
-        // render brushes
-        // TODO move this somewhere reasonable. also think about different input mechanism for different states of the app
-        // TODO also think about states and how they affect the input & layout of the program.
-        if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-
-            // update
-            float screenX = Gdx.input.getX();
-            float screenY = Gdx.input.getY();
-
-            Terrain terrain = projectContext.terrains.first();
-            Ray ray = cam.getPickRay(screenX, screenY);
-            terrain.getRayIntersection(tempV3, ray);
-            brush.getRenderable().transform.setTranslation(tempV3);
-
-            if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                brush.draw(projectContext.terrains, true);
-            }
-
-            if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-                brush.draw(projectContext.terrains, false);
-            }
-
-
-            // render
-            modelBatch.begin(cam);
-            modelBatch.render(brush.getRenderable(), brushShader);
-            modelBatch.end();
-        }
-
-        // render
+        // render brush
         modelBatch.begin(cam);
-        modelBatch.render(boxInstances);
+        modelBatch.render(brush.getRenderable(), brushShader);
         modelBatch.end();
 
         compass.render(modelBatch);
@@ -219,6 +162,17 @@ public class Mundus implements ApplicationListener {
         // render UI
         ui.draw();
 	}
+
+    // do not use..just for testing height calculation of terrain
+    @Deprecated
+    private void createBoxesOnTerrain() {
+        if(projectContext.terrains.first() != null) {
+            float boxSize = 0.5f;
+            boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize, new Material(ColorAttribute.createDiffuse(Color.RED)),
+                    VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+            projectContext.entities.addAll(TestUtils.createABunchOfModelsOnTheTerrain(10000, boxModel, projectContext.terrains.first()));
+        }
+    }
 
     @Override
     public void pause() {
@@ -249,58 +203,6 @@ public class Mundus implements ApplicationListener {
         brushShader.dispose();
         modelBatch.dispose();
         VisUI.dispose();
-
     }
-
-    // TODO move this somewhere reasonable. also think about different input mechanism for different states of the app
-    // TODO also think about states and how they affect the input & layout of the program.
-    private class BrushInput implements InputProcessor {
-
-        @Override
-        public boolean keyDown(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            if(amount < 0) {
-                brush.scale(0.9f);
-            } else {
-                brush.scale(1.1f);
-            }
-            return false;
-        }
-    }
-
 
 }

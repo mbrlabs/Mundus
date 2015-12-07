@@ -1,5 +1,7 @@
 package com.mbrlabs.mundus.terrain.brushes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -7,14 +9,17 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.Mundus;
+import com.mbrlabs.mundus.input.UpdatableInputProcessor;
 import com.mbrlabs.mundus.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
  * @version 03-12-2015
  */
-public class SphereBrush implements Brush {
+public class SphereBrush implements TerrainHeightBrush {
 
     public enum Mode {
         SHARP, SMOOTH
@@ -29,6 +34,8 @@ public class SphereBrush implements Brush {
 
     private Mode mode = Mode.SMOOTH;
 
+    private UpdatableInputProcessor inputProcessor;
+
     private Vector3 tVec0 = new Vector3();
     private Vector3 tVec1 = new Vector3();
 
@@ -38,6 +45,8 @@ public class SphereBrush implements Brush {
         sphereModelInstance = new ModelInstance(sphereModel);
         sphereModelInstance.calculateBoundingBox(boundingBox);
         scale(15);
+
+        inputProcessor = new SphereBrushInputController();
     }
 
     public void scale(float amount) {
@@ -73,8 +82,85 @@ public class SphereBrush implements Brush {
         sphereModel.dispose();
     }
 
+    @Override
+    public UpdatableInputProcessor getInputProcessor() {
+        return this.inputProcessor;
+    }
+
     public ModelInstance getRenderable() {
         return this.sphereModelInstance;
+    }
+
+    /**
+     *
+     */
+    private class SphereBrushInputController implements UpdatableInputProcessor {
+
+        private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
+        private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
+
+        private Vector3 tempV3 = new Vector3();
+
+        @Override
+        public boolean scrolled(int amount) {
+            if(amount < 0) {
+                scale(0.9f);
+            } else {
+                scale(1.1f);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            Terrain terrain = Mundus.projectContext.terrains.first();
+            Ray ray = Mundus.cam.getPickRay(screenX, screenY);
+            terrain.getRayIntersection(tempV3, ray);
+            sphereModelInstance.transform.setTranslation(tempV3);
+            return false;
+        }
+
+        @Override
+        public void update() {
+            if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
+                draw(Mundus.projectContext.terrains, true);
+            }
+
+            if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
+                draw(Mundus.projectContext.terrains, false);
+            }
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            return mouseMoved(screenX, screenY);
+        }
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
     }
 
 }

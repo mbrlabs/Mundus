@@ -6,12 +6,13 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntIntMap;
+import com.mbrlabs.mundus.input.UpdatableInputProcessor;
 
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
  */
-public class FreeCamController extends InputAdapter {
+public class FreeCamController extends InputAdapter implements UpdatableInputProcessor {
     private final Camera camera;
     private final IntIntMap keys = new IntIntMap();
     private int STRAFE_LEFT = Input.Keys.A;
