@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+
 /**
  * @author Marcus Brummer
  * @version 07-12-2015
@@ -39,8 +40,10 @@ public class InputManager extends InputMultiplexer {
 
     public void update() {
         worldNavigation.update();
-        currentTool.update();
         uiInput.act();
+        if(currentTool != null) {
+            currentTool.update();
+        }
     }
 
 }

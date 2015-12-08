@@ -1,6 +1,7 @@
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.InputProcessor;
+import com.mbrlabs.mundus.input.UpdatableInputProcessor;
 
 /**
  * @author Marcus Brummer
@@ -8,6 +9,6 @@ import com.badlogic.gdx.InputProcessor;
  */
 public interface Tool {
 
-    public InputProcessor getInputProcessor();
+    public UpdatableInputProcessor getInputProcessor();
 
 }

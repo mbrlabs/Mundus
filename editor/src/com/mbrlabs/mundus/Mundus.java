@@ -9,16 +9,12 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.data.ProjectContext;
@@ -32,11 +28,10 @@ import com.mbrlabs.mundus.shader.TerrainShader;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainTest;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
+import com.mbrlabs.mundus.terrain.brushes.TerrainHeightBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.*;
-
-import java.util.Random;
 
 public class Mundus implements ApplicationListener {
 
@@ -51,7 +46,7 @@ public class Mundus implements ApplicationListener {
     private Ui ui;
     public static ProjectContext projectContext;
 
-    private InputManager inputManager;
+    public static InputManager inputManager;
 
     // axes
     public Model axesModel;
@@ -62,7 +57,10 @@ public class Mundus implements ApplicationListener {
 
     private long vertexCount = 0;
     private RenderContext renderContext;
-    private SphereBrush brush;
+
+    // brushes
+    public static Array<TerrainHeightBrush> brushes;
+    private TerrainHeightBrush currentBrush;
 
     private Model boxModel;
 
@@ -71,6 +69,10 @@ public class Mundus implements ApplicationListener {
 	@Override
 	public void create () {
         MundusHome.bootstrap();
+
+        brushes = new Array<>();
+        brushes.add(new SphereBrush());
+
         Log.init();
         init();
 
@@ -112,7 +114,6 @@ public class Mundus implements ApplicationListener {
 
         modelBatch = new ModelBatch();
 
-        brush = new SphereBrush();
         compass = new Compass(cam);
 
         if(MundusHome.getInstance().getProjectRefs().getProjects().size() == 0) {
@@ -124,7 +125,6 @@ public class Mundus implements ApplicationListener {
     private void setupInput() {
         inputManager = new InputManager(ui);
         inputManager.setWorldNavigation(new FreeCamController(cam));
-        inputManager.setCurrentToolInput(brush.getInputProcessor());
     }
 
 	@Override
@@ -152,9 +152,11 @@ public class Mundus implements ApplicationListener {
         terrainShader.end();
 
         // render brush
-        modelBatch.begin(cam);
-        modelBatch.render(brush.getRenderable(), brushShader);
-        modelBatch.end();
+        if(currentBrush != null) {
+            modelBatch.begin(cam);
+            modelBatch.render(currentBrush.getRenderable(), brushShader);
+            modelBatch.end();
+        }
 
         compass.render(modelBatch);
 

@@ -2,7 +2,9 @@ package com.mbrlabs.mundus.terrain.brushes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -10,6 +12,8 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.Mundus;
 import com.mbrlabs.mundus.input.UpdatableInputProcessor;
@@ -21,6 +25,8 @@ import com.mbrlabs.mundus.terrain.Terrain;
  */
 public class SphereBrush implements TerrainHeightBrush {
 
+    public static final String NAME = "Sphere Brush";
+
     public enum Mode {
         SHARP, SMOOTH
     }
@@ -31,6 +37,7 @@ public class SphereBrush implements TerrainHeightBrush {
     private ModelInstance sphereModelInstance;
     private BoundingBox boundingBox = new BoundingBox();
     private float radius;
+    private Drawable icon;
 
     private Mode mode = Mode.SMOOTH;
 
@@ -46,12 +53,24 @@ public class SphereBrush implements TerrainHeightBrush {
         sphereModelInstance.calculateBoundingBox(boundingBox);
         scale(15);
 
+        icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/brushes/sphereBrush.png"))));
+
         inputProcessor = new SphereBrushInputController();
     }
 
     public void scale(float amount) {
         sphereModelInstance.transform.scl(amount);
         radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
+    }
+
+    @Override
+    public Drawable getIcon() {
+        return this.icon;
+    }
+
+    @Override
+    public String getName() {
+        return SphereBrush.NAME;
     }
 
     public void draw(Array<Terrain> terrains, boolean up) {
