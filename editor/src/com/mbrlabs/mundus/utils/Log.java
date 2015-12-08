@@ -2,7 +2,7 @@ package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mbrlabs.mundus.data.home.MundusHome;
+import com.mbrlabs.mundus.core.data.home.MundusHome;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.*;

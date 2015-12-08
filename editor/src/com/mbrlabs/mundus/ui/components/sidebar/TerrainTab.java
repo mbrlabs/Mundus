@@ -8,12 +8,13 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
+import com.mbrlabs.mundus.ui.ReloadableData;
 
 /**
  * @author Marcus Brummer
  * @version 30-11-2015
  */
-public class TerrainTab extends Tab {
+public class TerrainTab extends Tab implements ReloadableData {
 
     private static final String TITLE = "Terrain";
 
@@ -44,6 +45,11 @@ public class TerrainTab extends Tab {
     @Override
     public Table getContentTable() {
         return content;
+    }
+
+    @Override
+    public void reloadData() {
+
     }
 
 }

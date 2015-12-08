@@ -36,6 +36,18 @@ public class Sidebar extends TabbedPane implements TabbedPaneListener {
         addListener(this);
     }
 
+    public TerrainTab getTerrainTab() {
+        return terrainTab;
+    }
+
+    public EntityTab getEntityTab() {
+        return entityTab;
+    }
+
+    public ModelTab getModelTab() {
+        return modelTab;
+    }
+
     public Container getContentContainer() {
         return contentContainer;
     }

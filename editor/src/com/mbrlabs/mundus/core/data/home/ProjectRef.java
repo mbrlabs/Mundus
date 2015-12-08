@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.data.home;
+package com.mbrlabs.mundus.core.data.home;
 
 /**
  * @author Marcus Brummer

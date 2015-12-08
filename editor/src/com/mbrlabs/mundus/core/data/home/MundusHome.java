@@ -1,9 +1,9 @@
-package com.mbrlabs.mundus.data.home;
+package com.mbrlabs.mundus.core.data.home;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.mbrlabs.mundus.data.JsonManager;
+import com.mbrlabs.mundus.core.data.JsonManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 

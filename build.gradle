@@ -19,7 +19,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.6.0'
         aiVersion = '1.6.0'
-        visuiVersion = '0.9.4'
+        visuiVersion = '0.9.5'
     }
 
     repositories {

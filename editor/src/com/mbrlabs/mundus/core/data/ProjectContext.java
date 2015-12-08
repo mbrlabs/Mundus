@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.data;
+package com.mbrlabs.mundus.core.data;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.data.home.ProjectRef;
+import com.mbrlabs.mundus.core.data.home.ProjectRef;
 import com.mbrlabs.mundus.terrain.Terrain;
 
 /**

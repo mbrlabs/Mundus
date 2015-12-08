@@ -4,8 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
-import com.mbrlabs.mundus.data.home.MundusHome;
-import com.mbrlabs.mundus.data.home.Settings;
+import com.mbrlabs.mundus.core.data.home.MundusHome;
+import com.mbrlabs.mundus.core.data.home.Settings;
 
 /**
  * @author Marcus Brummer

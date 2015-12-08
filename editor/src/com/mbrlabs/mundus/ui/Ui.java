@@ -138,4 +138,7 @@ public class Ui extends MyStage {
         return addTerrainDialog;
     }
 
+    public Sidebar getSidebar() {
+        return sidebar;
+    }
 }
