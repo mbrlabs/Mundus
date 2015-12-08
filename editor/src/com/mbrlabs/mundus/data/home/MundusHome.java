@@ -30,6 +30,9 @@ public class MundusHome implements JsonManager {
     private Settings settings;
 
     private MundusHome() {
+        new File(HOME_DIR).mkdirs();
+        new File(LOGS_DIR).mkdirs();
+        new File(MODEL_CACHE_DIR).mkdirs();
         json = new Json();
         load();
     }
@@ -39,12 +42,6 @@ public class MundusHome implements JsonManager {
             instance = new MundusHome();
         }
         return instance;
-    }
-
-    public static void bootstrap() {
-        new File(HOME_DIR).mkdirs();
-        new File(LOGS_DIR).mkdirs();
-        new File(MODEL_CACHE_DIR).mkdirs();
     }
 
     public ProjectRefs getProjectRefs() {

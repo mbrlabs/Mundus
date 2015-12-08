@@ -23,7 +23,7 @@ public class Main {
         config.width = width;
         config.height = (int) (height - height * .05);
         config.backgroundFPS = 0;
-        new LwjglApplication(new Mundus(), config);
+        new LwjglApplication(new Editor(), config);
     }
 
 }

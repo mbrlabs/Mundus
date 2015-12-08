@@ -1,19 +1,11 @@
 package com.mbrlabs.mundus.ui.handler.toolbar;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.UBJsonReader;
-import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
-import com.mbrlabs.mundus.Mundus;
 import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.utils.Log;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Marcus Brummer

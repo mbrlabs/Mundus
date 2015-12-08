@@ -1,7 +1,7 @@
 package com.mbrlabs.mundus.ui.screens;
 
 import com.badlogic.gdx.Screen;
-import com.mbrlabs.mundus.Mundus;
+import com.mbrlabs.mundus.Editor;
 
 /**
  * @author Marcus Brummer
@@ -9,14 +9,14 @@ import com.mbrlabs.mundus.Mundus;
  */
 public abstract class BaseScreen implements Screen {
 
-    final protected Mundus mundus;
+    final protected Editor editor;
 
-    public BaseScreen(Mundus mundus) {
-        this.mundus = mundus;
+    public BaseScreen(Editor editor) {
+        this.editor = editor;
     }
 
-    public Mundus getMundus() {
-        return mundus;
+    public Editor getEditor() {
+        return editor;
     }
 
     @Override

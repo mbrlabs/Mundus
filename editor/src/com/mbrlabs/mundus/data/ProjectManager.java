@@ -15,7 +15,7 @@ public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
 
-    public static void createProject(String name, String folder) {
+    public void createProject(String name, String folder) {
         ProjectRef ref = MundusHome.getInstance().createProjectRef(name, folder);
 
         String path = ref.getPath();
@@ -24,7 +24,7 @@ public class ProjectManager {
 
     }
 
-    public static ProjectContext loadProject(ProjectRef projectRef) {
+    public ProjectContext loadProject(ProjectRef projectRef) {
         ProjectContext context = new ProjectContext();
         context.setRef(projectRef);
 
@@ -33,7 +33,7 @@ public class ProjectManager {
         return context;
     }
 
-    public static void loadProject(ProjectRef ref, Callback<ProjectContext> callback) {
+    public void loadProject(ProjectRef ref, Callback<ProjectContext> callback) {
         new Thread() {
             @Override
             public void run() {

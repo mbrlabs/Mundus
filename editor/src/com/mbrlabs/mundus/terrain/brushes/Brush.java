@@ -11,7 +11,7 @@ import com.mbrlabs.mundus.terrain.Terrain;
  * @author Marcus Brummer
  * @version 03-12-2015
  */
-public interface TerrainHeightBrush extends Disposable, Tool {
+public interface Brush extends Disposable, Tool {
 
     public void draw(Array<Terrain> terrains, boolean up);
     public ModelInstance getRenderable();

@@ -15,7 +15,8 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.Mundus;
+import com.mbrlabs.mundus.Editor;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.input.UpdatableInputProcessor;
 import com.mbrlabs.mundus.terrain.Terrain;
 
@@ -23,7 +24,7 @@ import com.mbrlabs.mundus.terrain.Terrain;
  * @author Marcus Brummer
  * @version 03-12-2015
  */
-public class SphereBrush implements TerrainHeightBrush {
+public class SphereBrush implements Brush {
 
     public static final String NAME = "Sphere Brush";
 

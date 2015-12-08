@@ -1,7 +1,6 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -9,7 +8,8 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
-import com.mbrlabs.mundus.Mundus;
+import com.mbrlabs.mundus.Editor;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.ui.components.MinimapWidget;
 import com.mbrlabs.mundus.utils.Log;
