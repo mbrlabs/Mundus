@@ -7,7 +7,6 @@ import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.mbrlabs.mundus.core.Mundus;
 
-
 /**
  * @author Marcus Brummer
  * @version 22-11-2015
@@ -16,6 +15,7 @@ public class FileMenu extends Menu {
 
     private MenuItem newProject;
     private MenuItem openProject;
+    private MenuItem importProject;
     private MenuItem saveProject;
     private MenuItem exit;
 
@@ -26,12 +26,14 @@ public class FileMenu extends Menu {
         newProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.N);
         openProject = new MenuItem("Open Project");
         openProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.O);
+        importProject = new MenuItem("Import Project");
         saveProject = new MenuItem("Save Project");
         saveProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.S);
         exit = new MenuItem("Exit");
 
         addItem(newProject);
         addItem(openProject);
+        addItem(importProject);
         addItem(saveProject);
         addSeparator();
         addItem(exit);
@@ -46,6 +48,14 @@ public class FileMenu extends Menu {
                 Mundus.ui.showDialog(Mundus.ui.getNewProjectDialog());
             }
         });
+
+        importProject.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // TODO
+            }
+        });
+
     }
 
     public MenuItem getNewProject() {

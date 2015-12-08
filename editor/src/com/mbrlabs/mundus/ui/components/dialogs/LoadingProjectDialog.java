@@ -4,9 +4,7 @@ import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.data.ProjectContext;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
-import com.mbrlabs.mundus.utils.Callback;
 
 /**
  * @author Marcus Brummer

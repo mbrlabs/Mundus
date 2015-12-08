@@ -7,6 +7,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.data.home.MundusHome;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
 import com.mbrlabs.mundus.utils.Callback;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
@@ -27,17 +28,11 @@ public class ProjectManager {
         return ref;
     }
 
+    public ProjectRef importExistingProject(String path) {
+        // TODO
+        return null;
+    }
 
-    /**
-     * Loads the whole ProjectContext of a project.
-     *
-     * It does however not change the ui or any global data in Mundus.
-     * This should be done in the callback of the asynchron method
-     * {@link com.mbrlabs.mundus.core.data.ProjectManager#loadProject}.
-     *
-     *
-     * @param ref    the project to load
-     */
     private ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = new ProjectContext();
         context.setRef(ref);
@@ -65,13 +60,16 @@ public class ProjectManager {
         }.start();
     }
 
-
     public void changeProject(ProjectContext context) {
         Mundus.projectContext = context;
         Mundus.ui.getSidebar().getEntityTab().reloadData();
         Mundus.ui.getSidebar().getTerrainTab().reloadData();
         Mundus.ui.getSidebar().getModelTab().reloadData();
         Gdx.graphics.setTitle(Mundus.projectContext.getRef().getName() + " - " + Main.TITLE);
+    }
+
+    public void saveProject(ProjectContext projectContext) {
+
     }
 
 
