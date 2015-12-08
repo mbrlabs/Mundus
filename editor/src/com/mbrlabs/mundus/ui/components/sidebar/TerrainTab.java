@@ -9,6 +9,7 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.Editor;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.brushes.Brush;
+import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 
 /**
  * @author Marcus Brummer
@@ -23,17 +24,18 @@ public class TerrainTab extends Tab {
     public TerrainTab() {
         super(false, false);
         content = new VisTable();
-        //content.add(new VisLabel("Terrain tab"));
-        for(Brush brush : Mundus.brushes) {
-            VisImageButton btn = new VisImageButton(brush.getIcon());
-            btn.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Mundus.input.setCurrentToolInput(brush.getInputProcessor());
-                }
-            });
-            content.add(btn).row();
-        }
+
+        // Sphere brush
+        SphereBrush sb = Mundus.brushes.sphereBrush;
+        VisImageButton btn = new VisImageButton(sb.getIcon());
+        btn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Mundus.brushes.activate(sb);
+            }
+        });
+        content.add(btn).row();
+
     }
 
     @Override

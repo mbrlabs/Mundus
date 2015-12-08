@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus;
+package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
@@ -15,7 +16,6 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.Editor;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.input.UpdatableInputProcessor;
 import com.mbrlabs.mundus.terrain.Terrain;
@@ -107,17 +107,21 @@ public class SphereBrush implements Brush {
         return this.inputProcessor;
     }
 
-    public ModelInstance getRenderable() {
-        return this.sphereModelInstance;
+    public void render(ModelBatch batch) {
+        batch.begin(Mundus.cam);
+        batch.render(sphereModelInstance, Mundus.shaders.brushShader);
+        batch.end();
     }
 
     /**
-     *
+     * The input processor of this brush.
+     * Must be updated every frame in render loop.
      */
     private class SphereBrushInputController implements UpdatableInputProcessor {
 
         private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
         private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
+        private static final int KEY_DEACTIVATE = Input.Keys.ESCAPE;
 
         private Vector3 tempV3 = new Vector3();
 
@@ -158,6 +162,9 @@ public class SphereBrush implements Brush {
 
         @Override
         public boolean keyDown(int keycode) {
+            if(keycode == KEY_DEACTIVATE) {
+                Mundus.brushes.deactivate();
+            }
             return false;
         }
 

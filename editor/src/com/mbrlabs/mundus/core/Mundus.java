@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.mbrlabs.mundus.Compass;
+import com.mbrlabs.mundus.utils.Compass;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.data.ProjectContext;
 import com.mbrlabs.mundus.data.ProjectManager;
@@ -56,7 +56,7 @@ public class Mundus {
     /**
      * Holds all available brushes
      */
-    public static Array<Brush> brushes;
+    public static Brushes brushes;
 
     /**
      * Holdes all shaders.
@@ -111,8 +111,7 @@ public class Mundus {
         projectManager = new ProjectManager();
 
         // brushes
-        brushes = new Array<>();
-        brushes.add(new SphereBrush());
+        brushes = new Brushes();
 
         if(home.getProjectRefs().getProjects().size() == 0) {
             projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
@@ -134,9 +133,7 @@ public class Mundus {
         VisUI.dispose();
         modelBatch.dispose();
         shaders.dispose();
-        for(Brush brush : brushes) {
-            brush.dispose();
-        }
+        brushes.sphereBrush.dispose();
         for(Model model : testModels) {
             model.dispose();
         }

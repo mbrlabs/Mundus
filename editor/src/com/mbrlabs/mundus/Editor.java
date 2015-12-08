@@ -49,9 +49,11 @@ public class Editor implements ApplicationListener {
         Mundus.modelBatch.render(axesInstance);
         Mundus.modelBatch.render(Mundus.projectContext.entities,
                 Mundus.projectContext.environment, Mundus.shaders.entityShader);
+        Mundus.modelBatch.render(Mundus.testInstances,
+                Mundus.projectContext.environment, Mundus.shaders.entityShader);
         Mundus.modelBatch.end();
 
-        // render terrain
+        // render terrains
         Mundus.shaders.terrainShader.begin(Mundus.cam, renderContext);
         for(Terrain terrain : Mundus.projectContext.terrains) {
             terrain.renderable.environment = Mundus.projectContext.environment;
@@ -59,19 +61,12 @@ public class Editor implements ApplicationListener {
         }
         Mundus.shaders.terrainShader.end();
 
-        // render test models
-        Mundus.modelBatch.begin(Mundus.cam);
-        Mundus.modelBatch.render(Mundus.testInstances,
-                Mundus.projectContext.environment, Mundus.shaders.entityShader);
-        Mundus.modelBatch.end();
+        // render active brush
+        if(Mundus.brushes.getActiveBrush() != null) {
+            Mundus.brushes.getActiveBrush().render(Mundus.modelBatch);
+        }
 
-        // render brush
-//        if(currentBrush != null) {
-//            modelBatch.begin(cam);
-//            modelBatch.render(currentBrush.getRenderable(), brushShader);
-//            modelBatch.end();
-//        }
-
+        // render compass
         Mundus.compass.render(Mundus.modelBatch);
 
         // render UI
