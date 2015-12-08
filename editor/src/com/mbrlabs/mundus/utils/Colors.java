@@ -13,5 +13,6 @@ public class Colors {
     public static final Color GRAY_222 = new Color(0x222222ff);
     public static final Color GRAY_111 = new Color(0x111111ff);
 
+    public static final Color TURQUOISE = new Color(0f,0.714f,0.586f, 1f);
 
 }

@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.ui.handler.toolbar;
+package com.mbrlabs.mundus.ui.handler;
 
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -11,13 +11,13 @@ import com.mbrlabs.mundus.ui.Ui;
  * @author Marcus Brummer
  * @version 28-11-2015
  */
-public class ToolbarImportHandler extends ChangeListener {
+public class ModelImportHandler extends ChangeListener {
 
     private FbxConv fbxConv;
 
     private G3dModelLoader g3dbLoader;
 
-    public ToolbarImportHandler() {
+    public ModelImportHandler() {
         fbxConv = new FbxConv();
         g3dbLoader = new G3dModelLoader(new UBJsonReader());
     }

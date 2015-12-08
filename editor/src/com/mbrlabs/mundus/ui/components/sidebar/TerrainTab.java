@@ -6,9 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.Editor;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.terrain.brushes.Brush;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 
 /**

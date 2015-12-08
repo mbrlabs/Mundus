@@ -12,7 +12,7 @@ import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
 import com.mbrlabs.mundus.ui.handler.menu.*;
-import com.mbrlabs.mundus.ui.handler.toolbar.ToolbarImportHandler;
+import com.mbrlabs.mundus.ui.handler.ModelImportHandler;
 
 /**
  * @author Marcus Brummer
@@ -84,15 +84,18 @@ public class Ui extends MyStage {
     }
 
     private void setHandlers() {
+        ModelImportHandler modelImportHandler = new ModelImportHandler();
+
         // Menu
         menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
         menuBar.getFileMenu().getNewProject().addListener(new NewProjectHandler());
         menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
         menuBar.getTerrainMenu().getAddTerrain().addListener(new AddTerrainHandler());
+        menuBar.getModelsMenu().getImportModel().addListener(modelImportHandler);
 
         // Toolbar
-        toolbar.getImportBtn().addListener(new ToolbarImportHandler());
+        toolbar.getImportBtn().addListener(modelImportHandler);
     }
 
     public void showDialog(VisDialog dialog) {

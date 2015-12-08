@@ -5,6 +5,7 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 project.ext.mainClassName = "com.mbrlabs.mundus.Main"
 project.ext.assetsDir = new File("assets");
 
+
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
@@ -13,7 +14,10 @@ task run(dependsOn: classes, type: JavaExec) {
     ignoreExitValue = true
 }
 
-task dist(type: Jar) {
+task distEditor(type: Jar) {
+    baseName = 'Mundus'
+    version = '0.0.1'
+
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
     from {configurations.compile.collect {zipTree(it)}}
@@ -23,7 +27,10 @@ task dist(type: Jar) {
     }
 }
 
-dist.dependsOn classes
+task distRuntime(type: Jar) {
+    baseName = 'mundus-libgdx-runtime'
+    version = '0'
+}
 
 eclipse {
     project {
