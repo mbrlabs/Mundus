@@ -56,7 +56,8 @@ public class OpenProjectDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 RadioButtonGroup.RadioButton selected = projectList.getButtonGroup().getChecked();
                 ProjectRef projectRef = (ProjectRef)selected.getRefObject();
-                System.out.println(projectRef.getName());
+                close();
+                Mundus.ui.getLoadingProjectDialog().loadProjectAsync(projectRef);
             }
         });
 
