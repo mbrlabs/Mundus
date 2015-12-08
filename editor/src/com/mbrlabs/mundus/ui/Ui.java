@@ -32,6 +32,7 @@ public class Ui extends MyStage {
     private OpenProjectDialog openProjectDialog;
     private ImportModelDialog importModelDialog;
     private AddTerrainDialog addTerrainDialog;
+    private LoadingProjectDialog loadingProjectDialog;
 
     private static Ui INSTANCE;
 
@@ -76,6 +77,7 @@ public class Ui extends MyStage {
         openProjectDialog = new OpenProjectDialog();
         importModelDialog = new ImportModelDialog();
         addTerrainDialog = new AddTerrainDialog();
+        loadingProjectDialog = new LoadingProjectDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -89,7 +91,6 @@ public class Ui extends MyStage {
         // Menu
         menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
-        menuBar.getFileMenu().getNewProject().addListener(new NewProjectHandler());
         menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
         menuBar.getTerrainMenu().getAddTerrain().addListener(new AddTerrainHandler());
         menuBar.getModelsMenu().getImportModel().addListener(modelImportHandler);
@@ -136,6 +137,10 @@ public class Ui extends MyStage {
 
     public AddTerrainDialog getAddTerrainDialog() {
         return addTerrainDialog;
+    }
+
+    public LoadingProjectDialog getLoadingProjectDialog() {
+        return loadingProjectDialog;
     }
 
     public Sidebar getSidebar() {

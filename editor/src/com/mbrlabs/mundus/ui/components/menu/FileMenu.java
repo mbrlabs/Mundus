@@ -1,8 +1,11 @@
 package com.mbrlabs.mundus.ui.components.menu;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
+import com.mbrlabs.mundus.core.Mundus;
 
 
 /**
@@ -32,6 +35,17 @@ public class FileMenu extends Menu {
         addItem(saveProject);
         addSeparator();
         addItem(exit);
+
+        setupListeners();
+    }
+
+    private void setupListeners() {
+        newProject.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Mundus.ui.showDialog(Mundus.ui.getNewProjectDialog());
+            }
+        });
     }
 
     public MenuItem getNewProject() {

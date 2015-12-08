@@ -18,12 +18,13 @@ public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
 
-    public void createProject(String name, String folder) {
-        ProjectRef ref = MundusHome.getInstance().createProjectRef(name, folder);
-
+    public ProjectRef createProject(String name, String folder) {
+        ProjectRef ref = Mundus.home.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
+
+        return ref;
     }
 
 
@@ -35,10 +36,11 @@ public class ProjectManager {
      * {@link com.mbrlabs.mundus.core.data.ProjectManager#loadProject}.
      *
      *
-     * @param projectRef    the project to load
+     * @param ref    the project to load
      */
-    private ProjectContext loadProject(ProjectRef projectRef) {
+    private ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = new ProjectContext();
+        context.setRef(ref);
 
         return context;
     }
@@ -46,7 +48,7 @@ public class ProjectManager {
     /**
      * Loads project asynchronously.
      *
-     * This method is tottaly self contained. It does not change global data in
+     * This method is totally self contained. It does not change global data in
      * {@link com.mbrlabs.mundus.core.Mundus} in any way.
      * The callback should update the global refrences & the UI.
      *
@@ -69,7 +71,7 @@ public class ProjectManager {
         Mundus.ui.getSidebar().getEntityTab().reloadData();
         Mundus.ui.getSidebar().getTerrainTab().reloadData();
         Mundus.ui.getSidebar().getModelTab().reloadData();
-        Gdx.graphics.setTitle(Main.TITLE + " - " + context.getRef().getName());
+        Gdx.graphics.setTitle(Mundus.projectContext.getRef().getName() + " - " + Main.TITLE);
     }
 
 

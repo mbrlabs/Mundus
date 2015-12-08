@@ -1,6 +1,10 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.home.ProjectRef;
 
 /**
  * @author Marcus Brummer
@@ -8,7 +12,7 @@ import com.kotcrab.vis.ui.widget.*;
  */
 public class NewProjectDialog extends BaseDialog {
 
-    private VisTextField path;
+    private VisTextField projectPath;
     private VisTextField projectName;
 
     private VisTextButton createBtn;
@@ -26,13 +30,41 @@ public class NewProjectDialog extends BaseDialog {
         root.add(this.projectName).height(21).width(300).fillX();
         root.row().padTop(10);
         root.add(new VisLabel("Project Folder:")).right().padRight(5);
-        path = new VisTextField();
-        root.add(path).width(300).padBottom(15).row();
+        projectPath = new VisTextField();
+        root.add(projectPath).width(300).padBottom(15).row();
         //mainTable.add(new Separator()).padTop(2).padBottom(2).fill().expand();
 
         createBtn = new VisTextButton("Create");
         root.add(createBtn).width(93).height(25).colspan(2);
+
+        setupListeners();
     }
+
+    private void setupListeners() {
+
+        createBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String name = projectName.getText();
+                String path = projectPath.getText();
+                if(validateInput(name, path)) {
+                    ProjectRef ref = Mundus.projectManager.createProject(name, path);
+                    close();
+                    Mundus.ui.getLoadingProjectDialog().loadProjectAsync(ref);
+                }
+
+            }
+        });
+
+    }
+
+    private boolean validateInput(String name, String path) {
+        return name != null && name.length() > 0 && path != null && path.length() > 0;
+    }
+
+
+
+
 
 
 }
