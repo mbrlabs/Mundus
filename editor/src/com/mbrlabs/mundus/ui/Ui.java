@@ -7,6 +7,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.MyStage;
 import com.mbrlabs.mundus.ui.components.dialogs.*;
+import com.mbrlabs.mundus.ui.components.docker.DockerBar;
 import com.mbrlabs.mundus.ui.components.toolbar.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
@@ -26,6 +27,8 @@ public class Ui extends MyStage {
     private FileChooser fileChooser;
     private StatusBar statusBar;
     private Sidebar sidebar;
+
+    private DockerBar docker;
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
@@ -67,7 +70,11 @@ public class Ui extends MyStage {
 
         root.add(sidebar.getContentContainer()).width(300).top().left().expandY().fillY().row();
 
-        // row 4: status bar
+        // row 4: DOCKER
+        docker = new DockerBar();
+        root.add(docker).expandX().fillX().row();
+
+        // row 5: status bar
         statusBar = new StatusBar();
         root.add(statusBar).expandX().fillX().height(20).row();
 

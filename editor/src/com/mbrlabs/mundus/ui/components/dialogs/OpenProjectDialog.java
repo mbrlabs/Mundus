@@ -24,7 +24,6 @@ public class OpenProjectDialog extends BaseDialog {
         super("Open Project");
         setModal(true);
 
-
         VisTable root = new VisTable();
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
