@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.ui.components.docker;
+package com.mbrlabs.mundus.ui.components.docker.assets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,14 +13,14 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class DockerAssets {
+public class AssetsDock {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
     private GridGroup filesView;
     private AssetsTab assetsTab;
 
-    public DockerAssets() {
+    public AssetsDock() {
         initUi();
     }
 
@@ -30,6 +30,7 @@ public class DockerAssets {
         filesView = new GridGroup(92, 4);
 
         VisTable contentsTable = new VisTable(false);
+        contentsTable.add(new VisLabel("Assets")).left().padLeft(3).row();
         contentsTable.add(new Separator()).padTop(3).expandX().fillX();
         contentsTable.row();
         contentsTable.add(filesViewContextContainer).expandX().fillX();
@@ -54,6 +55,12 @@ public class DockerAssets {
                 return false;
             }
         });
+
+        for(int i = 1; i <= 300; i++) {
+            filesView.addActor(new AssetItem("Asset " + i));
+        }
+
+
     }
 
     private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
