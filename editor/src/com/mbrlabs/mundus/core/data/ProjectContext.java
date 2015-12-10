@@ -15,7 +15,7 @@ import com.mbrlabs.mundus.terrain.Terrain;
  */
 public class ProjectContext implements Disposable {
 
-    private ProjectRef ref;
+    private ProjectRef ref = null;
 
     public Environment environment = new Environment();
     public Array<ModelInstance> entities;
@@ -33,6 +33,14 @@ public class ProjectContext implements Disposable {
         light.setPosition(400,300,400);
         light.setIntensity(1);
         environment.add(light);
+    }
+
+    public void copyFrom(ProjectContext other) {
+        ref = other.ref;
+        environment = other.environment;
+        entities = other.entities;
+        models = other.models;
+        light = other.light;
     }
 
     public ProjectRef getRef() {

@@ -8,4 +8,6 @@ public interface Callback<T> {
 
     public void done(T result);
 
+    public void error(String msg);
+
 }

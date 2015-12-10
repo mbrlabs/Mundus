@@ -1,6 +1,12 @@
 package com.mbrlabs.mundus.ui.components.toolbar;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisImageButton;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.ProjectContext;
+import com.mbrlabs.mundus.core.data.ProjectManager;
 import com.mbrlabs.mundus.ui.UiImages;
 
 /**
@@ -13,8 +19,14 @@ public class MundusToolbar extends Toolbar {
     private VisImageButton importBtn;
     private VisImageButton runBtn;
 
+    @Inject
+    private ProjectManager projectManager;
+    @Inject
+    private ProjectContext projectContext;
+
     public MundusToolbar() {
         super();
+        Mundus.inject(this);
         saveBtn = new VisImageButton(UiImages.saveIcon);
         saveBtn.pad(7);
         importBtn = new VisImageButton(UiImages.importIcon);
@@ -25,6 +37,15 @@ public class MundusToolbar extends Toolbar {
         addItem(saveBtn);
         addItem(importBtn);
         addItem(runBtn);
+
+        saveBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(projectContext.getRef() != null) {
+                    projectManager.saveProject(projectContext);
+                }
+            }
+        });
     }
 
     public VisImageButton getSaveBtn() {

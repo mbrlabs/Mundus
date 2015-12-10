@@ -135,7 +135,7 @@ public class Mundus {
      */
     private static void injectField(Object o, Field field) throws IllegalAccessException {
         for(Field f : Mundus.class.getDeclaredFields()) {
-            if(Modifier.isStatic(f.getModifiers())) {
+            if(Modifier.isStatic(f.getModifiers()) && Modifier.isPrivate(f.getModifiers())) {
                 if(f.getType().equals(field.getType())) {
                     field.setAccessible(true);
                     field.set(o, f.get(null));

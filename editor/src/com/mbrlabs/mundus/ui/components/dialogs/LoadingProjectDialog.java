@@ -1,13 +1,16 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.ProjectContext;
 import com.mbrlabs.mundus.core.data.ProjectManager;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.utils.Callback;
 
 /**
  * @author Marcus Brummer
@@ -38,10 +41,18 @@ public class LoadingProjectDialog extends VisDialog {
         this.projectName.setText("Loading project: " + ref.getName());
         Ui.getInstance().showDialog(this);
 
-        // open loading dialog & async load project
-        projectManager.loadProject(ref, result -> {
-            projectManager.changeProject(result);
-            close();
+        projectManager.loadProject(ref, new Callback<ProjectContext>() {
+            @Override
+            public void done(ProjectContext result) {
+                projectManager.changeProject(result);
+                close();
+            }
+
+            @Override
+            public void error(String msg) {
+                close();
+                DialogUtils.showErrorDialog(Ui.getInstance(), msg);
+            }
         });
     }
 

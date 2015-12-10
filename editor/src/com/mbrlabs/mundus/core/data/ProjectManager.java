@@ -7,8 +7,12 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.data.home.MundusHome;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Callback;
+import com.mbrlabs.mundus.utils.Log;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -20,6 +24,7 @@ import java.io.File;
 public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
+    public static final String PROJECT_TERRAIN_DIR = "terrains/";
 
     private ProjectContext projectContext;
     private MundusHome home;
@@ -34,6 +39,7 @@ public class ProjectManager {
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
+        new File(path, PROJECT_TERRAIN_DIR).mkdirs();
 
         return ref;
     }
@@ -50,28 +56,23 @@ public class ProjectManager {
         return context;
     }
 
-    /**
-     * Loads project asynchronously.
-     *
-     * This method is totally self contained. It does not change global data in
-     * {@link com.mbrlabs.mundus.core.Mundus} in any way.
-     * The callback should update the global refrences & the UI.
-     *
-     * @param ref
-     * @param callback
-     */
     public void loadProject(ProjectRef ref, Callback<ProjectContext> callback) {
         new Thread() {
             @Override
             public void run() {
                 ProjectContext context = loadProject(ref);
-                Gdx.app.postRunnable(() -> callback.done(context));
+                if(new File(context.getRef().getPath()).exists()) {
+                    Gdx.app.postRunnable(() -> callback.done(context));
+                } else {
+                    Gdx.app.postRunnable(() -> callback.error("Project " + context.getRef().getPath() + " not found."));
+                }
             }
         }.start();
     }
 
     public void changeProject(ProjectContext context) {
-        projectContext = context;
+        projectContext.dispose();
+        projectContext.copyFrom(context);
         Ui.getInstance().getSidebar().getEntityTab().reloadData();
         Ui.getInstance().getSidebar().getTerrainTab().reloadData();
         Ui.getInstance().getSidebar().getModelTab().reloadData();
@@ -79,7 +80,11 @@ public class ProjectManager {
     }
 
     public void saveProject(ProjectContext projectContext) {
+        Log.debug("Saving project " + projectContext.getRef().getName() + " [" + projectContext.getRef().getPath() + "]");
 
+        for(Terrain t : projectContext.terrains) {
+            TerrainIO.exportBinary(t, FilenameUtils.concat(projectContext.getRef().getPath(), ProjectManager.PROJECT_TERRAIN_DIR) + "test.ter");
+        }
     }
 
 

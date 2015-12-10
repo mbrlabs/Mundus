@@ -12,7 +12,6 @@ import com.mbrlabs.mundus.core.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.brushes.Brush;
-import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.ui.ReloadableData;
 
 /**
@@ -36,7 +35,6 @@ public class TerrainTab extends Tab implements ReloadableData {
         Mundus.inject(this);
         content = new VisTable();
         content.align(Align.left | Align.top);
-
         meshBrushGrid = new GridGroup(40, 5);
         textureBrushGrid = new GridGroup(40, 5);
 
@@ -44,16 +42,23 @@ public class TerrainTab extends Tab implements ReloadableData {
             meshBrushGrid.addActor(new BrushGridItem(brush));
         }
 
+        // add more sphere brushes to test the grid
+        // TODO remove
+        for(int i = 0; i < 10; i++) {
+            meshBrushGrid.addActor(new BrushGridItem(brushManager.brushes.first()));
+        }
+
+
         // add mesh brushes
         content.add(new VisLabel("Mesh brushes")).left().pad(5).row();
         content.addSeparator();
-        content.add(meshBrushGrid).left().row();
+        content.add(meshBrushGrid).expandX().fillX().row();
 
 
         // add texture brushes
         content.add(new VisLabel("Texture brushes")).left().pad(5).row();
         content.addSeparator();
-        content.add(textureBrushGrid).left().row();
+        content.add(textureBrushGrid).expandX().fillX().row();
     }
 
     @Override
@@ -78,11 +83,12 @@ public class TerrainTab extends Tab implements ReloadableData {
         private BrushGridItem(Brush brush) {
             super();
             this.brush = brush;
-            setBackground("window-bg");
+            setBackground("menu-bg");
+            align(Align.center);
             VisImage img = new VisImage(brush.getIcon());
             img.setScaling(Scaling.fit);
             new Tooltip(img, brush.getName());
-            add(img).expand().fill().pad(2).row();
+            add(img).expand().fill().pad(2);
 
             addListener(new ClickListener() {
                 @Override
@@ -96,7 +102,5 @@ public class TerrainTab extends Tab implements ReloadableData {
             return brush;
         }
     }
-
-
 
 }
