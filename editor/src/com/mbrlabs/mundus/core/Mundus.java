@@ -20,6 +20,12 @@ import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Log;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Core class.
  *
@@ -122,6 +128,51 @@ public class Mundus {
         // input
         input = new InputManager(ui);
         input.setWorldNavigation(new FreeCamController(cam));
+    }
+
+    public static void inject(Object o) {
+        // get fields that are annotated with @Inject
+        List<Field> injectableFields = new ArrayList<>();
+        Class clazz = o.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        for(Field f : fields) {
+            Annotation[] annotations = f.getDeclaredAnnotations();
+            for(Annotation a : annotations) {
+                if(a instanceof Inject) {
+                    injectableFields.add(f);
+                    Log.debug("DI: found injectable field: " + f.getName());
+                }
+            }
+        }
+
+        // inject
+        try {
+            for(Field f : injectableFields) {
+                injectField(o, f);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Looks at own static fields and injects value into object if found.
+     *
+     * @param o     object, in which field should be injected
+     * @param field the injectable field
+     *
+     * @throws IllegalAccessException
+     */
+    private static void injectField(Object o, Field field) throws IllegalAccessException {
+        for(Field f : Mundus.class.getDeclaredFields()) {
+            if(Modifier.isStatic(f.getModifiers())) {
+                if(f.getType().equals(field.getType())) {
+                    field.setAccessible(true);
+                    field.set(o, f.get(null));
+                }
+            }
+        }
     }
 
     /**
