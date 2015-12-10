@@ -41,6 +41,7 @@ public class ProjectContext implements Disposable {
         entities = other.entities;
         models = other.models;
         light = other.light;
+        terrains = other.terrains;
     }
 
     public ProjectRef getRef() {

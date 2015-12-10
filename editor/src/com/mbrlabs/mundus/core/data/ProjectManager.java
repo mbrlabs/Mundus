@@ -52,6 +52,7 @@ public class ProjectManager {
     private ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = new ProjectContext();
         context.setRef(ref);
+        context.terrains.add(TerrainIO.importBinary(FilenameUtils.concat(ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR) + "test.ter"));
 
         return context;
     }
@@ -67,7 +68,7 @@ public class ProjectManager {
                     Gdx.app.postRunnable(() -> callback.error("Project " + context.getRef().getPath() + " not found."));
                 }
             }
-        }.start();
+        }.run(); // FIXME run() is intended because of openGL context...either remove thread or find a way to run it async
     }
 
     public void changeProject(ProjectContext context) {

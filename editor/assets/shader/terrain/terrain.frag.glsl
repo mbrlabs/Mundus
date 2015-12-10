@@ -4,6 +4,8 @@ precision mediump float;
 
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
 const vec4 COLOR_WHITE = vec4(1,1,1, 1.0);
+const vec4 COLOR_DARK = vec4(0.05,0.05,0.05, 1.0);
+const vec4 COLOR_BRIGHT = vec4(0.8,0.8,0.8, 1.0);
 
 varying vec3 v_vectorToLight;
 varying vec3 v_surfaceNormal;
@@ -27,8 +29,7 @@ void main(void) {
     // diffuse
     float brightness = max(nDot1, 0.2);
 
-
-//    gl_FragColor = COLOR_TURQUOISE * vec4(brightness,brightness,brightness, 1.0);
+   // gl_FragColor = COLOR_DARK * vec4(brightness,brightness,brightness, 1.0);
     gl_FragColor = brightness * texture2D(u_texture, v_texCoord0);
 
 }

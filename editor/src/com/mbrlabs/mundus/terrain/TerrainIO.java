@@ -1,8 +1,11 @@
 package com.mbrlabs.mundus.terrain;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.TextureUtils;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
@@ -60,9 +63,11 @@ public class TerrainIO {
         }
         Log.debug("Terrain import. floats: " + floatArray.size);
         Terrain terrain = new Terrain((int)Math.sqrt(floatArray.size),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
         terrain.heightData = floatArray.toArray();
         terrain.update();
+        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
+        terrain.setTexture(tex);
 
         return terrain;
     }
