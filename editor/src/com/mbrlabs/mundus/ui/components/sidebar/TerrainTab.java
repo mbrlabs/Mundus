@@ -3,8 +3,10 @@ package com.mbrlabs.mundus.ui.components.sidebar;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.kotcrab.vis.ui.widget.VisImageButton;
-import com.kotcrab.vis.ui.widget.VisTable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
+import com.kotcrab.vis.ui.layout.GridGroup;
+import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
@@ -26,26 +28,32 @@ public class TerrainTab extends Tab implements ReloadableData {
     @Inject
     private BrushManager brushManager;
 
+    private GridGroup meshBrushGrid;
+    private GridGroup textureBrushGrid;
+
     public TerrainTab() {
         super(false, false);
         Mundus.inject(this);
         content = new VisTable();
+        content.align(Align.left | Align.top);
 
-        // Sphere brush
-
+        meshBrushGrid = new GridGroup(40, 5);
+        textureBrushGrid = new GridGroup(40, 5);
 
         for(Brush brush : brushManager.brushes) {
-            VisImageButton btn = new VisImageButton(brush.getIcon());
-            btn.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    brushManager.activate(brush);
-                }
-            });
-            content.add(btn).row();
+            meshBrushGrid.addActor(new BrushGridItem(brush));
         }
 
+        // add mesh brushes
+        content.add(new VisLabel("Mesh brushes")).left().pad(5).row();
+        content.addSeparator();
+        content.add(meshBrushGrid).left().row();
 
+
+        // add texture brushes
+        content.add(new VisLabel("Texture brushes")).left().pad(5).row();
+        content.addSeparator();
+        content.add(textureBrushGrid).left().row();
     }
 
     @Override
@@ -62,5 +70,33 @@ public class TerrainTab extends Tab implements ReloadableData {
     public void reloadData() {
 
     }
+
+    private class BrushGridItem extends VisTable {
+
+        private Brush brush;
+
+        private BrushGridItem(Brush brush) {
+            super();
+            this.brush = brush;
+            setBackground("window-bg");
+            VisImage img = new VisImage(brush.getIcon());
+            img.setScaling(Scaling.fit);
+            new Tooltip(img, brush.getName());
+            add(img).expand().fill().pad(2).row();
+
+            addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    brushManager.activate(brush);
+                }
+            });
+        }
+
+        public Brush getBrush() {
+            return brush;
+        }
+    }
+
+
 
 }

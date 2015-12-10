@@ -42,7 +42,6 @@ public class Mundus {
 
     private static MundusHome home;
     private static PerspectiveCamera cam;
-    private static Compass compass;
     private static ModelBatch modelBatch;
 
     private static ProjectManager projectManager;
@@ -77,8 +76,6 @@ public class Mundus {
         cam.near = 0.2f;
         cam.far = 10000;
         cam.update();
-        // create compass
-        compass = new Compass(cam);
         // model batch
         modelBatch = new ModelBatch();
         // shaders

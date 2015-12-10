@@ -1,10 +1,11 @@
-package com.mbrlabs.mundus.ui.components.docker.assets;
+package com.mbrlabs.mundus.ui.components.dock.assets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
@@ -97,5 +98,20 @@ public class AssetsDock {
         public Table getContentTable() {
             return root;
         }
+    }
+
+    private class AssetItem extends VisTable {
+
+        private VisLabel nameLabel;
+
+        public AssetItem(String name) {
+            super();
+            setBackground("menu-bg");
+            align(Align.center);
+            nameLabel = new VisLabel(name, "small");
+            nameLabel.setWrap(true);
+            add(nameLabel).fill().expand().row();
+        }
+
     }
 }

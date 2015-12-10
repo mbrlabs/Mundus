@@ -41,7 +41,6 @@ public class Editor implements ApplicationListener {
     private BrushManager brushManager;
     @Inject
     private ProjectContext projectContext;
-    @Inject
     private Compass compass;
     @Inject
     private Shaders shaders;
@@ -57,6 +56,7 @@ public class Editor implements ApplicationListener {
         inputManager.addProcessor(ui);
         camController = new FreeCamController(cam);
         inputManager.addProcessor(camController);
+        compass = new Compass(cam);
 
 
         Model axesModel = UsefulMeshs.createAxes();

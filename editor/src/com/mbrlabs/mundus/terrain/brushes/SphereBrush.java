@@ -50,7 +50,7 @@ public class SphereBrush implements Brush {
         sphereModelInstance.calculateBoundingBox(boundingBox);
         scale(15);
 
-        icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/brushes/sphereBrush.png"))));
+        icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/brushes/sphere.png"))));
     }
 
     public void scale(float amount) {

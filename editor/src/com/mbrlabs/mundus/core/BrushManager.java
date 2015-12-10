@@ -23,11 +23,9 @@ public class BrushManager implements InputProcessor, Disposable {
     private static final int KEY_DEACTIVATE = Input.Keys.ESCAPE;
 
     public Array<Brush> brushes;
-
     private Brush activeBrush;
 
     private ProjectContext projectContext;
-
     private PerspectiveCamera cam;
 
     public BrushManager(ProjectContext projectContext, PerspectiveCamera camera) {

@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.ui.components.docker;
+package com.mbrlabs.mundus.ui.components.dock;
 
 
 import com.badlogic.gdx.Gdx;
@@ -8,7 +8,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
-import com.mbrlabs.mundus.ui.components.docker.assets.AssetsDock;
+import com.mbrlabs.mundus.ui.components.dock.assets.AssetsDock;
 
 /**
  * @author Marcus Brummer

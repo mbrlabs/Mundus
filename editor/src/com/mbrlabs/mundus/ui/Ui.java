@@ -7,7 +7,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.MyStage;
 import com.mbrlabs.mundus.ui.components.dialogs.*;
-import com.mbrlabs.mundus.ui.components.docker.DockBar;
+import com.mbrlabs.mundus.ui.components.dock.DockBar;
 import com.mbrlabs.mundus.ui.components.toolbar.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
