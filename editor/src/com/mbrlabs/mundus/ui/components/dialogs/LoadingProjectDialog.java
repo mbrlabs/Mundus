@@ -3,8 +3,11 @@ package com.mbrlabs.mundus.ui.components.dialogs;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.ProjectManager;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -13,9 +16,12 @@ import com.mbrlabs.mundus.core.data.home.ProjectRef;
 public class LoadingProjectDialog extends VisDialog {
 
     private VisLabel projectName;
+    @Inject
+    private ProjectManager projectManager;
 
     public LoadingProjectDialog() {
         super("Loading Project");
+        Mundus.inject(this);
         setModal(true);
         setMovable(false);
 
@@ -30,11 +36,11 @@ public class LoadingProjectDialog extends VisDialog {
 
     public void loadProjectAsync(ProjectRef ref) {
         this.projectName.setText("Loading project: " + ref.getName());
-        Mundus.ui.showDialog(this);
+        Ui.getInstance().showDialog(this);
 
         // open loading dialog & async load project
-        Mundus.projectManager.loadProject(ref, result -> {
-            Mundus.projectManager.changeProject(result);
+        projectManager.loadProject(ref, result -> {
+            projectManager.changeProject(result);
             close();
         });
     }

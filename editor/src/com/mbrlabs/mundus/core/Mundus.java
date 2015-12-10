@@ -10,6 +10,7 @@ import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.core.data.ProjectContext;
 import com.mbrlabs.mundus.core.data.ProjectManager;
+import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.utils.Compass;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.data.home.MundusHome;
@@ -36,43 +37,17 @@ import java.util.List;
  */
 public class Mundus {
 
-    public static MundusHome home;
+    private static ProjectContext projectContext;
+    private static BrushManager brushManager;
 
-    /**
-     * Main camera for 3d viewport.
-     */
-    public static PerspectiveCamera cam;
+    private static MundusHome home;
+    private static PerspectiveCamera cam;
+    private static Compass compass;
+    private static ModelBatch modelBatch;
 
-    public static Compass compass;
-
-    /**
-     * For batching 3d model rendering.
-     */
-    public static ModelBatch modelBatch;
-
-    /**
-     * The current project context.
-     */
-    public static ProjectContext projectContext;
-
-    public static ProjectManager projectManager;
-
-    /**
-     * Holds all available brushes
-     */
-    public static Brushes brushes;
-
-    /**
-     * Holdes all shaders.
-     */
-    public static Shaders shaders;
-
-    /**
-     * Main UI stage.
-     */
-    public static Ui ui;
-
-    public static InputManager input;
+    private static ProjectManager projectManager;
+    private static InputManager input;
+    private static Shaders shaders;
 
     public static Array<Model> testModels = new Array<>();
     public static Array<ModelInstance> testInstances = new Array<>();
@@ -112,22 +87,19 @@ public class Mundus {
         projectContext = new ProjectContext();
         projectContext.terrains.add(new TerrainTest().terrain);
         // project manager
-        projectManager = new ProjectManager();
+        projectManager = new ProjectManager(projectContext, home);
 
         // brushes
-        brushes = new Brushes();
+        brushManager = new BrushManager(projectContext, cam);
+        brushManager.addBrush(new SphereBrush(shaders.brushShader));
 
         if(home.getProjectRefs().getProjects().size() == 0) {
             projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
         }
 
-
-        // ui
-        ui = Ui.getInstance();
-
         // input
-        input = new InputManager(ui);
-        input.setWorldNavigation(new FreeCamController(cam));
+        input = new InputManager();
+        input.addProcessor(brushManager);
     }
 
     public static void inject(Object o) {
@@ -182,7 +154,7 @@ public class Mundus {
         VisUI.dispose();
         modelBatch.dispose();
         shaders.dispose();
-        brushes.sphereBrush.dispose();
+        brushManager.dispose();
         for(Model model : testModels) {
             model.dispose();
         }

@@ -3,8 +3,11 @@ package com.mbrlabs.mundus.ui.components.dialogs;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
+import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.ProjectManager;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -17,8 +20,12 @@ public class NewProjectDialog extends BaseDialog {
 
     private VisTextButton createBtn;
 
+    @Inject
+    private ProjectManager projectManager;
+
     public NewProjectDialog() {
         super("Create New Project");
+        Mundus.inject(this);
         setModal(true);
 
         VisTable root = new VisTable();
@@ -48,9 +55,9 @@ public class NewProjectDialog extends BaseDialog {
                 String name = projectName.getText();
                 String path = projectPath.getText();
                 if(validateInput(name, path)) {
-                    ProjectRef ref = Mundus.projectManager.createProject(name, path);
+                    ProjectRef ref = projectManager.createProject(name, path);
                     close();
-                    Mundus.ui.getLoadingProjectDialog().loadProjectAsync(ref);
+                    Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(ref);
                 }
 
             }

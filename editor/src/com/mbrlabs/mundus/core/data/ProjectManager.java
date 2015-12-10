@@ -3,9 +3,11 @@ package com.mbrlabs.mundus.core.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.mbrlabs.mundus.Main;
+import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.data.home.MundusHome;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Callback;
 import org.apache.commons.io.FilenameUtils;
 
@@ -19,8 +21,16 @@ public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
 
+    private ProjectContext projectContext;
+    private MundusHome home;
+
+    public ProjectManager(ProjectContext projectContext, MundusHome home) {
+        this.projectContext = projectContext;
+        this.home = home;
+    }
+
     public ProjectRef createProject(String name, String folder) {
-        ProjectRef ref = Mundus.home.createProjectRef(name, folder);
+        ProjectRef ref = home.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
@@ -61,11 +71,11 @@ public class ProjectManager {
     }
 
     public void changeProject(ProjectContext context) {
-        Mundus.projectContext = context;
-        Mundus.ui.getSidebar().getEntityTab().reloadData();
-        Mundus.ui.getSidebar().getTerrainTab().reloadData();
-        Mundus.ui.getSidebar().getModelTab().reloadData();
-        Gdx.graphics.setTitle(Mundus.projectContext.getRef().getName() + " - " + Main.TITLE);
+        projectContext = context;
+        Ui.getInstance().getSidebar().getEntityTab().reloadData();
+        Ui.getInstance().getSidebar().getTerrainTab().reloadData();
+        Ui.getInstance().getSidebar().getModelTab().reloadData();
+        Gdx.graphics.setTitle(projectContext.getRef().getName() + " - " + Main.TITLE);
     }
 
     public void saveProject(ProjectContext projectContext) {

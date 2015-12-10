@@ -33,6 +33,8 @@ public class DockBar extends VisTable implements TabbedPaneListener {
         assetsDock = new AssetsDock();
         tabbedPane.add(assetsDock.getAssetsTab());
 
+        switchedTab(null);
+
     }
 
     @Override

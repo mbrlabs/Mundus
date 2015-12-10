@@ -11,39 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class InputManager extends InputMultiplexer {
 
-    private Stage uiInput;
-    private UpdatableInputProcessor worldNavigation;
-    private UpdatableInputProcessor currentTool;
-
-    public InputManager(Stage uiInput) {
-        this.uiInput = uiInput;
-
-        addProcessor(this.uiInput);
+    public InputManager() {
         Gdx.input.setInputProcessor(this);
     }
 
-    public void setCurrentToolInput(UpdatableInputProcessor inputProcessor) {
-        currentTool = inputProcessor;
-        if(currentTool != null) {
-            removeProcessor(currentTool);
-        }
-        addProcessor(currentTool);
-    }
-
-    public void setWorldNavigation(UpdatableInputProcessor inputProcessor) {
-        if(worldNavigation != null) {
-            removeProcessor(worldNavigation);
-        }
-        this.worldNavigation = inputProcessor;
-        addProcessor(worldNavigation);
-    }
-
-    public void update() {
-        worldNavigation.update();
-        uiInput.act();
-        if(currentTool != null) {
-            currentTool.update();
-        }
-    }
 
 }

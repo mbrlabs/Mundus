@@ -9,7 +9,9 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.Editor;
+import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.ProjectContext;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.ui.components.MinimapWidget;
 import com.mbrlabs.mundus.utils.Log;
@@ -38,8 +40,12 @@ public class AddTerrainDialog extends BaseDialog {
 
     private VisTextButton generateBtn = new VisTextButton("GENERATE TERRAIN");
 
+    @Inject
+    private ProjectContext projectContext;
+
     public AddTerrainDialog() {
         super("Add Terrain");
+        Mundus.inject(this);
         setupUI();
         setupListeners();
     }
@@ -50,7 +56,7 @@ public class AddTerrainDialog extends BaseDialog {
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
 
-        minimap = new MinimapWidget(Mundus.projectContext.terrains);
+        minimap = new MinimapWidget(projectContext.terrains);
 
         // left table
         VisTable leftTable = new VisTable();
@@ -99,7 +105,7 @@ public class AddTerrainDialog extends BaseDialog {
 
 
                     Terrain terrain = generateTerrain(nom, posX, posZ, width, depth, res);
-                    Mundus.projectContext.terrains.add(terrain);
+                    projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {
                     Log.error(TAG, nfe.getMessage());

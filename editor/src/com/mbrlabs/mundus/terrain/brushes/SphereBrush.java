@@ -1,23 +1,18 @@
 package com.mbrlabs.mundus.terrain.brushes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.input.UpdatableInputProcessor;
 import com.mbrlabs.mundus.terrain.Terrain;
 
 /**
@@ -42,12 +37,13 @@ public class SphereBrush implements Brush {
 
     private Mode mode = Mode.SMOOTH;
 
-    private UpdatableInputProcessor inputProcessor;
-
     private Vector3 tVec0 = new Vector3();
     private Vector3 tVec1 = new Vector3();
 
-    public SphereBrush() {
+    private Shader shader;
+
+    public SphereBrush(Shader shader) {
+        this.shader = shader;
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
         sphereModelInstance = new ModelInstance(sphereModel);
@@ -55,8 +51,6 @@ public class SphereBrush implements Brush {
         scale(15);
 
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/brushes/sphereBrush.png"))));
-
-        inputProcessor = new SphereBrushInputController();
     }
 
     public void scale(float amount) {
@@ -102,92 +96,16 @@ public class SphereBrush implements Brush {
         sphereModel.dispose();
     }
 
-    @Override
-    public UpdatableInputProcessor getInputProcessor() {
-        return this.inputProcessor;
-    }
-
-    public void render(ModelBatch batch) {
-        batch.begin(Mundus.cam);
-        batch.render(sphereModelInstance, Mundus.shaders.brushShader);
+    public void render(PerspectiveCamera cam, ModelBatch batch) {
+        batch.begin(cam);
+        batch.render(sphereModelInstance, shader);
         batch.end();
     }
 
-    /**
-     * The input processor of this brush.
-     * Must be updated every frame in render loop.
-     */
-    private class SphereBrushInputController implements UpdatableInputProcessor {
-
-        private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
-        private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
-        private static final int KEY_DEACTIVATE = Input.Keys.ESCAPE;
-
-        private Vector3 tempV3 = new Vector3();
-
-        @Override
-        public boolean scrolled(int amount) {
-            if(amount < 0) {
-                scale(0.9f);
-            } else {
-                scale(1.1f);
-            }
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            Terrain terrain = Mundus.projectContext.terrains.first();
-            Ray ray = Mundus.cam.getPickRay(screenX, screenY);
-            terrain.getRayIntersection(tempV3, ray);
-            sphereModelInstance.transform.setTranslation(tempV3);
-            return false;
-        }
-
-        @Override
-        public void update() {
-            if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
-                draw(Mundus.projectContext.terrains, true);
-            }
-
-            if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
-                draw(Mundus.projectContext.terrains, false);
-            }
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return mouseMoved(screenX, screenY);
-        }
-
-        @Override
-        public boolean keyDown(int keycode) {
-            if(keycode == KEY_DEACTIVATE) {
-                Mundus.brushes.deactivate();
-            }
-            return false;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
+    @Override
+    public void setTranslation(Vector3 translation) {
+        sphereModelInstance.transform.setTranslation(translation);
     }
+
 
 }

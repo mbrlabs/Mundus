@@ -6,8 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
+import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.data.home.MundusHome;
 import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.components.RadioButtonGroup;
 
 /**
@@ -20,8 +23,12 @@ public class OpenProjectDialog extends BaseDialog {
     private VisTextButton openBtn;
     private RadioButtonGroup<ProjectRef> projectList;
 
+    @Inject
+    private MundusHome home;
+
     public OpenProjectDialog() {
         super("Open Project");
+        Mundus.inject(this);
         setModal(true);
 
         VisTable root = new VisTable();
@@ -36,7 +43,7 @@ public class OpenProjectDialog extends BaseDialog {
 
         root.add(scrollPane).minWidth(350).maxHeight(400).left().row();
 
-        for(ProjectRef project : Mundus.home.getProjectRefs().getProjects()) {
+        for(ProjectRef project : home.getProjectRefs().getProjects()) {
             String text = project.getName() + " [" + project.getPath() + "]";
             RadioButtonGroup.RadioButton btn = new RadioButtonGroup.RadioButton(text, project);
             projectList.add(btn);
@@ -56,7 +63,7 @@ public class OpenProjectDialog extends BaseDialog {
                 RadioButtonGroup.RadioButton selected = projectList.getButtonGroup().getChecked();
                 ProjectRef projectRef = (ProjectRef)selected.getRefObject();
                 close();
-                Mundus.ui.getLoadingProjectDialog().loadProjectAsync(projectRef);
+                Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectRef);
             }
         });
 
