@@ -1,9 +1,10 @@
-package com.mbrlabs.mundus.core.data.home;
+package com.mbrlabs.mundus.core.home;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.mbrlabs.mundus.core.data.JsonManager;
+import com.mbrlabs.mundus.core.JsonManager;
+import com.mbrlabs.mundus.core.project.ProjectRef;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -56,6 +57,7 @@ public class MundusHome implements JsonManager {
         String path = FilenameUtils.concat(folder, name);
         ProjectRef projectRef = new ProjectRef();
         projectRef.setName(name);
+        projectRef.setId(UUID.randomUUID().toString());
         projectRef.setPath(path);
         projectRef.setCreated(System.currentTimeMillis());
         projectRef.setLastOpened(System.currentTimeMillis());

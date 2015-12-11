@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.terrain.brushes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.core.data.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.brushes.Brush;
 

@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.data.ProjectManager;
-import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**

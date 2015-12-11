@@ -1,21 +1,17 @@
-package com.mbrlabs.mundus.core.data;
+package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.core.Inject;
-import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.data.home.MundusHome;
-import com.mbrlabs.mundus.core.data.home.ProjectRef;
+import com.mbrlabs.mundus.core.home.MundusHome;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Callback;
 import com.mbrlabs.mundus.utils.Log;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * @author Marcus Brummer

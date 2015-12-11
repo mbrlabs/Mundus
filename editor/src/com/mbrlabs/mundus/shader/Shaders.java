@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.mbrlabs.mundus.shader.BrushShader;

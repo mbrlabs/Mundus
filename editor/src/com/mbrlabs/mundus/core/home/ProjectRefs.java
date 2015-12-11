@@ -1,4 +1,6 @@
-package com.mbrlabs.mundus.core.data.home;
+package com.mbrlabs.mundus.core.home;
+
+import com.mbrlabs.mundus.core.project.ProjectRef;
 
 import java.util.ArrayList;
 import java.util.List;
