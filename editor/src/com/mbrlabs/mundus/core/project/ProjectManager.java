@@ -12,6 +12,8 @@ import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.model.PersistableModel;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ReloadAllModelsEvent;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.ui.Ui;
@@ -36,10 +38,13 @@ public class ProjectManager {
     private HomeManager homeManager;
     private KryoManager kryoManager;
 
-    public ProjectManager(ProjectContext projectContext, KryoManager kryoManager, HomeManager homeManager) {
+    private EventBus eventBus;
+
+    public ProjectManager(ProjectContext projectContext, KryoManager kryoManager, HomeManager homeManager, EventBus eventBus) {
         this.projectContext = projectContext;
         this.homeManager = homeManager;
         this.kryoManager = kryoManager;
+        this.eventBus = eventBus;
     }
 
     public ProjectRef createProject(String name, String folder) {
@@ -53,8 +58,15 @@ public class ProjectManager {
     }
 
     private ProjectContext loadProject(ProjectRef ref) {
-        ProjectContext context = new ProjectContext();
+        ProjectContext context = kryoManager.loadProjectContext(ref);
         context.ref = ref;
+
+        // load g3db models
+        G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
+        for(PersistableModel model : context.models) {
+            String g3dbPath = model.getRelG3dbPath();
+            model.setModel(loader.loadModel(Gdx.files.absolute(g3dbPath)));
+        }
 
         return context;
     }
@@ -78,8 +90,8 @@ public class ProjectManager {
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
-        // TODO send notification to event bus for ui updates
         Gdx.graphics.setTitle(projectContext.ref.getName() + " - " + Main.TITLE);
+        eventBus.post(new ReloadAllModelsEvent());
     }
 
     public PersistableModel importG3dbModel(ImportManager.ImportedModel importedModel) {
@@ -100,6 +112,7 @@ public class ProjectManager {
         persistableModel.setModel(model);
         persistableModel.setName(finalG3db.name());
         persistableModel.setId(id);
+        persistableModel.setRelG3dbPath(finalG3db.path());
         projectContext.models.add(persistableModel);
 
         // save whole project

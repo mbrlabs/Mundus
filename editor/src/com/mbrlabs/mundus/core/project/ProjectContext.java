@@ -1,14 +1,9 @@
 package com.mbrlabs.mundus.core.project;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.UBJsonReader;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.model.PersistableModel;
 import com.mbrlabs.mundus.core.model.PersistableModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;

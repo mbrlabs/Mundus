@@ -92,16 +92,11 @@ public class Mundus {
         brushManager = new BrushManager(projectContext, cam);
         brushManager.addBrush(new SphereBrush(shaders.brushShader));
 
+        eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
-        projectManager = new ProjectManager(projectContext, kryoManager, homeManager);
+        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, eventBus);
         importManager = new ImportManager(homeManager);
-
-        eventBus = new EventBus();
-
-//        if(homeManager.homeData.projects.size() == 0) {
-//            projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
-//        }
 
         // input
         input = new InputManager();

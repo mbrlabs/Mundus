@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ReloadAllModelsEvent;
 import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -52,6 +54,8 @@ public class Editor implements ApplicationListener {
     private ProjectManager projectManager;
     @Inject
     private HomeManager homeManager;
+    @Inject
+    private EventBus eventBus;
 
 	@Override
 	public void create () {
@@ -73,7 +77,6 @@ public class Editor implements ApplicationListener {
         createTestModels();
 
         openLastOpenedProject();
-
     }
 
 	@Override
