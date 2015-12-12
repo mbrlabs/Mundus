@@ -50,7 +50,7 @@ public class ProjectManager {
 
     private ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = new ProjectContext();
-        context.setRef(ref);
+        context.ref = ref;
 
         return context;
     }
@@ -60,22 +60,22 @@ public class ProjectManager {
             @Override
             public void run() {
                 ProjectContext context = loadProject(ref);
-                if(new File(context.getRef().getPath()).exists()) {
+                if(new File(context.ref.getPath()).exists()) {
                     Gdx.app.postRunnable(() -> callback.done(context));
                 } else {
-                    Gdx.app.postRunnable(() -> callback.error("Project " + context.getRef().getPath() + " not found."));
+                    Gdx.app.postRunnable(() -> callback.error("Project " + context.ref.getPath() + " not found."));
                 }
             }
         }.run(); // FIXME run() is intended because of openGL context...either remove thread or find a way to run it async
     }
 
     public void changeProject(ProjectContext context) {
-        homeManager.homeData.lastProject = context.getRef().getId();
+        homeManager.homeData.lastProject = context.ref.getId();
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
         // TODO send notification to event bus for ui updates
-        Gdx.graphics.setTitle(projectContext.getRef().getName() + " - " + Main.TITLE);
+        Gdx.graphics.setTitle(projectContext.ref.getName() + " - " + Main.TITLE);
     }
 
     public void saveProject(ProjectContext projectContext) {
@@ -83,12 +83,12 @@ public class ProjectManager {
 
         // save terrains
         for(Terrain terrain : projectContext.terrains) {
-            String path = FilenameUtils.concat(projectContext.getRef().getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
+            String path = FilenameUtils.concat(projectContext.ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.getName() + "-" + terrain.getId();
             TerrainIO.exportBinary(terrain, path);
         }
 
-        Log.debug("Saving project " + projectContext.getRef().getName() + " [" + projectContext.getRef().getPath() + "]");
+        Log.debug("Saving project " + projectContext.ref.getName() + " [" + projectContext.ref.getPath() + "]");
     }
 
 

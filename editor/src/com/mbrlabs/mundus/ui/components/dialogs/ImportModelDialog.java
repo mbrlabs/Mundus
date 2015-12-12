@@ -21,7 +21,6 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.model.MundusModel;
 import com.mbrlabs.mundus.core.model.MundusModelInstance;
@@ -137,7 +136,9 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
                 if(previewModel != null && previewInstance != null) {
                     MundusModel mundusModel = new MundusModel(previewModel);
                     mundusModel.setName(tempModelFile.name());
+                    mundusModel.setId(projectContext.requestUniqueID());
                     projectContext.models.add(mundusModel);
+                    // TODO remove this instance
                     projectContext.entities.add(new MundusModelInstance(mundusModel));
                     previewModel = null;
                     eventBus.post(new ModelImportEvent(mundusModel));

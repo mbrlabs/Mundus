@@ -36,9 +36,8 @@ public class Terrain {
     private int norPos;
     private int uvPos;
 
-    public final Vector2 uvOffset = new Vector2(0, 0);
-    public final Vector2 uvScale = new Vector2(20, 20);
-
+    private final Vector2 uvOffset = new Vector2(0, 0);
+    private final Vector2 uvScale = new Vector2(20, 20);
 
     private final VertexInfo tempVInfo = new VertexInfo();
     private final Vector3 tmpV1 = new Vector3();
@@ -53,7 +52,7 @@ public class Terrain {
     private Texture texture;
 
     private String name;
-    private String id;
+    private long id;
 
     public Terrain(int vertexResolution, int attributes) {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
@@ -82,11 +81,11 @@ public class Terrain {
         this.name = name;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -109,7 +109,7 @@ public class AddTerrainDialog extends BaseDialog {
 
                     Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
                     terrain.setName(nom);
-                    terrain.setId(UUID.randomUUID().toString());
+                    terrain.setId(projectContext.requestUniqueID());
                     projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {

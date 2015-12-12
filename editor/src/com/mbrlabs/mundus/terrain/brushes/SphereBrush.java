@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.Terrain;
 
+import java.util.List;
+
 /**
  * @author Marcus Brummer
  * @version 03-12-2015
@@ -68,9 +70,9 @@ public class SphereBrush implements Brush {
         return SphereBrush.NAME;
     }
 
-    public void draw(Array<Terrain> terrains, boolean up) {
+    public void draw(List<Terrain> terrains, boolean up) {
         // TODO extend to work for all terrains
-        Terrain terrain = terrains.first();
+        Terrain terrain = terrains.get(0);
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
                 terrain.getVertexPosition(tVec0, x, z);

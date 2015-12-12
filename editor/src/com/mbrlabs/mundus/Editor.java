@@ -120,14 +120,14 @@ public class Editor implements ApplicationListener {
     @Deprecated
     private void createTestModels() {
         // boxes to test terrain height
-        if(projectContext.terrains.size > 0) {
+        if(projectContext.terrains.size() > 0) {
             float boxSize = 0.5f;
             Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
                     new Material(ColorAttribute.createDiffuse(Color.RED)),
                     VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
             Mundus.testModels.add(boxModel);
             Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-                    boxModel, projectContext.terrains.first()));
+                    boxModel, projectContext.terrains.get(0)));
         }
     }
 

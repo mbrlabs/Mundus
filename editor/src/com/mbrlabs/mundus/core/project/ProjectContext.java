@@ -8,27 +8,31 @@ import com.mbrlabs.mundus.core.model.MundusModel;
 import com.mbrlabs.mundus.core.model.MundusModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Marcus Brummer
  * @version 28-11-2015
  */
 public class ProjectContext implements Disposable {
 
-    private ProjectRef ref = null;
+    public ProjectRef ref = null;
 
     public Environment environment = new Environment();
-    public Array<MundusModelInstance> entities;
-    public Array<MundusModel> models;
-    public PointLight light;
+    public List<MundusModelInstance> entities;
+    public List<MundusModel> models;
 
-    public Array<Terrain> terrains;
+    public List<Terrain> terrains;
+
+    private long nextAvailableID = 0;
 
     public ProjectContext() {
-        entities = new Array<>();
-        models = new Array<>();
-        terrains = new Array<Terrain>();
+        entities = new ArrayList<>();
+        models = new ArrayList<>();
+        terrains = new ArrayList<Terrain>();
 
-        light = new PointLight();
+        PointLight light = new PointLight();
         light.setPosition(400,300,400);
         light.setIntensity(1);
         environment.add(light);
@@ -39,16 +43,11 @@ public class ProjectContext implements Disposable {
         environment = other.environment;
         entities = other.entities;
         models = other.models;
-        light = other.light;
         terrains = other.terrains;
     }
 
-    public ProjectRef getRef() {
-        return ref;
-    }
-
-    public void setRef(ProjectRef ref) {
-        this.ref = ref;
+    public synchronized long requestUniqueID() {
+        return nextAvailableID++;
     }
 
     @Override

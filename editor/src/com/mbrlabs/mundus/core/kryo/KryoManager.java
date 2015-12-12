@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.core.Files;
 import com.mbrlabs.mundus.core.home.HomeData;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 
 import java.io.FileInputStream;
@@ -31,6 +32,7 @@ public class KryoManager {
         kryo.register(ProjectRef.class, 2);
         kryo.register(HomeData.class, 3);
         kryo.register(HomeData.Settings.class, 4);
+        kryo.register(ProjectContext.class, 5);
     }
 
     public HomeData loadHomeData() {

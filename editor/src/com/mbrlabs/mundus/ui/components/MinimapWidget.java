@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.terrain.Terrain;
 
+import java.util.List;
+
 /**
  * @author Marcus Brummer
  * @version 01-12-2015
@@ -19,7 +21,7 @@ public class MinimapWidget extends Widget {
 
     private static final float WORLD_TO_MINIMAP = 1f;
 
-    protected Array<Terrain> terrains;
+    protected List<Terrain> terrains;
 
     protected Texture terrainTexture;
     protected Texture backgroundTexture;
@@ -29,7 +31,7 @@ public class MinimapWidget extends Widget {
 
     private Matrix4 originalBatchProjMatrix = new Matrix4();
 
-    public MinimapWidget(Array<Terrain> terrains) {
+    public MinimapWidget(List<Terrain> terrains) {
         super();
         this.terrains = terrains;
         // terrain texture
