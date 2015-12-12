@@ -84,7 +84,7 @@ public class ProjectManager {
         // save terrains
         for(Terrain terrain : projectContext.terrains) {
             String path = FilenameUtils.concat(projectContext.ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
-            path += terrain.getName() + "-" + terrain.getId();
+            path += terrain.getName() + "-" + terrain.getId() + "." + TerrainIO.FILE_EXTENSION;
             TerrainIO.exportBinary(terrain, path);
         }
 

@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.model.MundusModel;
 import com.mbrlabs.mundus.core.model.MundusModelInstance;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
@@ -134,9 +135,20 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(previewModel != null && previewInstance != null) {
-                    MundusModel mundusModel = new MundusModel(previewModel);
+                    // create model
+                    MundusModel mundusModel = new MundusModel();
+                    mundusModel.setModel(previewModel);
                     mundusModel.setName(tempModelFile.name());
                     mundusModel.setId(projectContext.requestUniqueID());
+
+                    // copy to project folder
+                    String folder = projectContext.ref.getPath() +"/"+ ProjectManager.PROJECT_MODEL_DIR+"/"+ mundusModel.getId() + "/";
+                    String g3dbPath = folder + mundusModel.getName() + "-" + mundusModel.getId() + ".g3db";
+                    tempModelFile.copyTo(Gdx.files.absolute(g3dbPath));
+                    tempTextureFile.copyTo(Gdx.files.absolute(folder));
+
+                    mundusModel.setG3dbPath(g3dbPath);
+
                     projectContext.models.add(mundusModel);
                     // TODO remove this instance
                     projectContext.entities.add(new MundusModelInstance(mundusModel));
@@ -188,8 +200,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
         // copy texture
         texturePath.setText(origTexture.path());
         origTexture.copyTo(tempModelCache);
-        tempTextureFile = Gdx.files.absolute(FilenameUtils.concat(
-                origTexture.file().getAbsolutePath(), origTexture.name()));
+        tempTextureFile = Gdx.files.absolute( origTexture.file().getAbsolutePath());
 
         // copy (and eventually convert) model
         boolean convert = FileFormatUtils.isFBX(origModel)

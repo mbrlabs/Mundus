@@ -26,7 +26,7 @@ public class KryoManager {
     public KryoManager() {
         kryo = new Kryo();
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
-        // !!!!! DO NOT CHANGE THIS, OTHERWISE ALREADY SERIALIZED OBJECT WILL BE UNREADABLE !!!!
+        // !!!!! DO NOT CHANGE THIS, OTHERWISE ALREADY SERIALIZED OBJECTS WILL BE UNREADABLE !!!!
         kryo.register(ArrayList.class, 0);
         kryo.register(Date.class, 1);
         kryo.register(ProjectRef.class, 2);

@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.g3d.Model;
  */
 public class MundusModel {
 
-    private long id;
-    private String name;
     private Model model;
 
-    public MundusModel(Model model) {
-        this.model = model;
+    private long id;
+    private String name;
+    private String g3dbPath;
+
+    public MundusModel() {
+
     }
 
     public long getId() {
@@ -39,5 +41,14 @@ public class MundusModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getG3dbPath() {
+        return g3dbPath;
+    }
+
+    public void setG3dbPath(String g3dbPath) {
+        this.g3dbPath = g3dbPath;
+    }
+
 
 }

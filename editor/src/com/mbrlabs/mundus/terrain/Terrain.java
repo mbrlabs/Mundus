@@ -51,6 +51,7 @@ public class Terrain {
 
     private Texture texture;
 
+    private String terraPath;
     private String name;
     private long id;
 

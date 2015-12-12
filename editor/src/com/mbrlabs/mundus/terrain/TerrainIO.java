@@ -21,6 +21,8 @@ import java.util.zip.GZIPOutputStream;
  */
 public class TerrainIO {
 
+    public static final String FILE_EXTENSION = "terra";
+
     /**
      * Binary gziped format.
      *
