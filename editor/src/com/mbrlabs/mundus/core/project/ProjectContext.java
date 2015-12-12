@@ -1,11 +1,16 @@
 package com.mbrlabs.mundus.core.project;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.core.model.MundusModel;
-import com.mbrlabs.mundus.core.model.MundusModelInstance;
+import com.badlogic.gdx.utils.UBJsonReader;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.mbrlabs.mundus.core.ImportManager;
+import com.mbrlabs.mundus.core.model.PersistableModel;
+import com.mbrlabs.mundus.core.model.PersistableModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 
 import java.util.ArrayList;
@@ -20,11 +25,12 @@ public class ProjectContext implements Disposable {
     public ProjectRef ref = null;
 
     public Environment environment = new Environment();
-    public List<MundusModelInstance> entities;
-    public List<MundusModel> models;
+    public List<PersistableModelInstance> entities;
+    @Tag(0)
+    public List<PersistableModel> models;
 
     public List<Terrain> terrains;
-
+    @Tag(1)
     private long nextAvailableID = 0;
 
     public ProjectContext() {
@@ -52,7 +58,7 @@ public class ProjectContext implements Disposable {
 
     @Override
     public void dispose() {
-        for(MundusModel model : models) {
+        for(PersistableModel model : models) {
             model.getModel().dispose();
         }
         models = null;

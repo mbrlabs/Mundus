@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.core.Files;
 import com.mbrlabs.mundus.core.home.HomeData;
+import com.mbrlabs.mundus.core.model.PersistableModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 
@@ -33,6 +34,7 @@ public class KryoManager {
         kryo.register(HomeData.class, 3);
         kryo.register(HomeData.Settings.class, 4);
         kryo.register(ProjectContext.class, 5);
+        kryo.register(PersistableModel.class, 6);
     }
 
     public HomeData loadHomeData() {
@@ -59,6 +61,32 @@ public class KryoManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void saveProjectContext(ProjectContext context) {
+        try {
+            Output output = new Output(new FileOutputStream(context.ref.getPath() + "/" + context.ref.getName() + ".mundus"));
+            kryo.writeObject(output, context);
+            output.flush();
+            output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ProjectContext loadProjectContext(ProjectRef ref) {
+        try {
+            Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".mundus"));
+            ProjectContext projectContext = kryo.readObjectOrNull(input, ProjectContext.class);
+            if(projectContext == null) {
+                projectContext = new ProjectContext();
+            }
+            return projectContext;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return new ProjectContext();
     }
 
 

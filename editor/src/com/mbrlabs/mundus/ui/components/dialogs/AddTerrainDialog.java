@@ -29,15 +29,15 @@ public class AddTerrainDialog extends BaseDialog {
     private static final String TAG = AddTerrainDialog.class.getSimpleName();
 
     // UI elements
-    private VisTextField name = new VisTextField();
+    private VisTextField name = new VisTextField("Name");
     private MinimapWidget minimap;
 
-    private VisTextField vertexResolution = new VisTextField("64");
+    private VisTextField vertexResolution = new VisTextField("180");
 
-    private VisTextField terrainWidth = new VisTextField("50");
-    private VisTextField terrainDepth = new VisTextField("50");
-    private VisTextField positionX = new VisTextField();
-    private VisTextField positionZ = new VisTextField();
+    private VisTextField terrainWidth = new VisTextField("1200");
+    private VisTextField terrainDepth = new VisTextField("1200");
+    private VisTextField positionX = new VisTextField("0");
+    private VisTextField positionZ = new VisTextField("0");
 
     private VisTextButton minimapZoomIn = new VisTextButton("+ zoom");
     private VisTextButton minimapZoomOut = new VisTextButton("- zoom");

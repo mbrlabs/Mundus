@@ -19,20 +19,17 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.home.HomeManager;
-import com.mbrlabs.mundus.core.model.MundusModel;
-import com.mbrlabs.mundus.core.model.MundusModelInstance;
+import com.mbrlabs.mundus.core.model.PersistableModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
-import com.mbrlabs.mundus.utils.Log;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Marcus Brummer
@@ -54,17 +51,18 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
     private Model previewModel;
     private ModelInstance previewInstance;
 
-    // temp files/dirs
-    private FileHandle tempModelCache;
-    private FileHandle tempModelFile;
-    private FileHandle tempTextureFile;
+    private ImportManager.ImportedModel importedModel;
 
     @Inject
     private HomeManager homeManager;
     @Inject
     private ProjectContext projectContext;
     @Inject
+    private ProjectManager projectManager;
+    @Inject
     private EventBus eventBus;
+    @Inject
+    private ImportManager importManager;
 
     public ImportModelDialog() {
         super("Import Model");
@@ -136,24 +134,9 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             public void clicked(InputEvent event, float x, float y) {
                 if(previewModel != null && previewInstance != null) {
                     // create model
-                    MundusModel mundusModel = new MundusModel();
-                    mundusModel.setModel(previewModel);
-                    mundusModel.setName(tempModelFile.name());
-                    mundusModel.setId(projectContext.requestUniqueID());
-
-                    // copy to project folder
-                    String folder = projectContext.ref.getPath() +"/"+ ProjectManager.PROJECT_MODEL_DIR+"/"+ mundusModel.getId() + "/";
-                    String g3dbPath = folder + mundusModel.getName() + "-" + mundusModel.getId() + ".g3db";
-                    tempModelFile.copyTo(Gdx.files.absolute(g3dbPath));
-                    tempTextureFile.copyTo(Gdx.files.absolute(folder));
-
-                    mundusModel.setG3dbPath(g3dbPath);
-
-                    projectContext.models.add(mundusModel);
-                    // TODO remove this instance
-                    projectContext.entities.add(new MundusModelInstance(mundusModel));
-                    previewModel = null;
-                    eventBus.post(new ModelImportEvent(mundusModel));
+                    PersistableModel persistableModel = projectManager.importG3dbModel(importedModel);
+                    eventBus.post(new ModelImportEvent(persistableModel));
+                    close();
                 }
             }
         });
@@ -162,7 +145,6 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
     private void loadAndShowPreview(Array<FileHandle> files) {
         if(files.size == 2) {
-            tempModelCache = homeManager.createTempModelFolder();
 
             // get model
             FileHandle origModelFile = null;
@@ -180,47 +162,18 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
                 origTextureFile = files.get(1);
             }
 
+            this.importedModel = importManager.importToTempFolder(origModelFile, origTextureFile);
+
             // load and show preview
-            if(origModelFile != null && origTextureFile != null) {
-                if(origModelFile.exists() && origTextureFile.exists()) {
-                    copyToTempFolder(origModelFile, origTextureFile);
-                    previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(tempModelFile);
-                    previewInstance = new ModelInstance(previewModel);
-                    showPreview();
-                } else {
-                    Log.error(TAG, "input files does not exist");
-                }
-            } else {
-                Log.error(TAG, "input files are null");
+            if(importedModel != null) {
+                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
+                previewInstance = new ModelInstance(previewModel);
+                showPreview();
             }
+
         }
     }
 
-    private void copyToTempFolder(FileHandle origModel, FileHandle origTexture) {
-        // copy texture
-        texturePath.setText(origTexture.path());
-        origTexture.copyTo(tempModelCache);
-        tempTextureFile = Gdx.files.absolute( origTexture.file().getAbsolutePath());
-
-        // copy (and eventually convert) model
-        boolean convert = FileFormatUtils.isFBX(origModel)
-                || FileFormatUtils.isCollada(origModel)
-                || FileFormatUtils.isWavefont(origModel);
-        // fbx/collada/obj -> convert first
-        if(convert) {
-            FbxConv.FbxConvResult result = new FbxConv().input(origModel.path())
-                    .output(tempModelCache.file().getAbsolutePath()).
-                            flipTexture(true).execute();
-            if(result.isSuccess()) {
-                tempModelFile = Gdx.files.absolute(result.getOutputFile());
-            }
-        } else if(FileFormatUtils.isG3DB(origModel)) {  // g3db -> just copy
-            origModel.copyTo(tempModelCache);
-            tempModelFile = Gdx.files.absolute(FilenameUtils.concat(
-                    tempModelCache.file().getAbsolutePath(), origModel.name()));
-        }
-        modelPath.setText(origModel.path());
-    }
 
     @Override
     protected void close() {
@@ -245,9 +198,6 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             previewModel.dispose();
             previewModel = null;
         }
-        tempModelCache = null;
-        tempModelFile = null;
-        tempTextureFile = null;
         modelPath.setText("");
         texturePath.setText("");
     }

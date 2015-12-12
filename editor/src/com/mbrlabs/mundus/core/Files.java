@@ -13,8 +13,8 @@ public class Files {
 
     public static final String HOME_DIR = FilenameUtils.concat(FileUtils.getUserDirectoryPath(), ".mundus/");
     public static final String LOGS_DIR = FilenameUtils.concat(HOME_DIR, "logs/");
-    public static final String MODEL_CACHE_DIR = FilenameUtils.concat(HOME_DIR, "model_cache/");
+    public static final String TEMP_DIR = FilenameUtils.concat(HOME_DIR, "temp/");
 
-    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "home.kryo");
+    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "mundus.home");
 
 }

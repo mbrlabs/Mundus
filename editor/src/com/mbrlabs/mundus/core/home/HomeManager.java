@@ -29,9 +29,9 @@ public class HomeManager {
         kryoManager.saveHomeData(this.homeData);
     }
 
-    public FileHandle createTempModelFolder() {
+    public FileHandle createTempFolder() {
         String tempFolderPath = FilenameUtils.concat(
-                Files.MODEL_CACHE_DIR, UUID.randomUUID().toString()) + "/";
+                Files.TEMP_DIR, UUID.randomUUID().toString()) + "/";
         FileHandle tempFolder = Gdx.files.absolute(tempFolderPath);
         tempFolder.mkdirs();
 
@@ -39,7 +39,7 @@ public class HomeManager {
     }
 
     public void purgeModelCache() {
-        for(FileHandle f : Gdx.files.absolute(Files.MODEL_CACHE_DIR).list()) {
+        for(FileHandle f : Gdx.files.absolute(Files.TEMP_DIR).list()) {
             f.deleteDirectory();
         }
     }

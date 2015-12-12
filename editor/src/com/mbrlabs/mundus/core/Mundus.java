@@ -33,8 +33,6 @@ import java.util.List;
 /**
  * Core class.
  *
- * Holds static references to shared resources & application states.
- *
  * @author Marcus Brummer
  * @version 08-12-2015
  */
@@ -46,12 +44,13 @@ public class Mundus {
     private static PerspectiveCamera cam;
     private static ModelBatch modelBatch;
 
-    private static ProjectManager projectManager;
     private static InputManager input;
     private static Shaders shaders;
 
-    private static HomeManager homeManager;
     private static KryoManager kryoManager;
+    private static ProjectManager projectManager;
+    private static HomeManager homeManager;
+    private static ImportManager importManager;
 
     private static EventBus eventBus;
 
@@ -95,13 +94,14 @@ public class Mundus {
 
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
-        projectManager = new ProjectManager(projectContext, homeManager);
+        projectManager = new ProjectManager(projectContext, kryoManager, homeManager);
+        importManager = new ImportManager(homeManager);
 
         eventBus = new EventBus();
 
-        if(homeManager.homeData.projects.size() == 0) {
-            projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
-        }
+//        if(homeManager.homeData.projects.size() == 0) {
+//            projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
+//        }
 
         // input
         input = new InputManager();

@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class MundusModelInstance extends ModelInstance {
+public class PersistableModelInstance extends ModelInstance {
 
     private long id;
     private long modelId;
 
-    public MundusModelInstance(MundusModel model) {
+    public PersistableModelInstance(PersistableModel model) {
         super(model.getModel());
         modelId = model.getId();
     }

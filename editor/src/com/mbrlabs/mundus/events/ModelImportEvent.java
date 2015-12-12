@@ -1,6 +1,6 @@
 package com.mbrlabs.mundus.events;
 
-import com.mbrlabs.mundus.core.model.MundusModel;
+import com.mbrlabs.mundus.core.model.PersistableModel;
 
 /**
  * @author Marcus Brummer
@@ -8,17 +8,17 @@ import com.mbrlabs.mundus.core.model.MundusModel;
  */
 public class ModelImportEvent {
 
-    private MundusModel model;
+    private PersistableModel model;
 
-    public ModelImportEvent(MundusModel model) {
+    public ModelImportEvent(PersistableModel model) {
         this.model = model;
     }
 
-    public MundusModel getModel() {
+    public PersistableModel getModel() {
         return model;
     }
 
-    public void setModel(MundusModel model) {
+    public void setModel(PersistableModel model) {
         this.model = model;
     }
 

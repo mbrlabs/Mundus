@@ -1,10 +1,17 @@
 package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.Files;
+import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.kryo.KryoManager;
+import com.mbrlabs.mundus.core.model.PersistableModel;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.ui.Ui;
@@ -27,10 +34,12 @@ public class ProjectManager {
 
     private ProjectContext projectContext;
     private HomeManager homeManager;
+    private KryoManager kryoManager;
 
-    public ProjectManager(ProjectContext projectContext, HomeManager homeManager) {
+    public ProjectManager(ProjectContext projectContext, KryoManager kryoManager, HomeManager homeManager) {
         this.projectContext = projectContext;
         this.homeManager = homeManager;
+        this.kryoManager = kryoManager;
     }
 
     public ProjectRef createProject(String name, String folder) {
@@ -41,11 +50,6 @@ public class ProjectManager {
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
 
         return ref;
-    }
-
-    public ProjectRef importExistingProject(String path) {
-        // TODO
-        return null;
     }
 
     private ProjectContext loadProject(ProjectRef ref) {
@@ -78,15 +82,44 @@ public class ProjectManager {
         Gdx.graphics.setTitle(projectContext.ref.getName() + " - " + Main.TITLE);
     }
 
+    public PersistableModel importG3dbModel(ImportManager.ImportedModel importedModel) {
+        long id = projectContext.requestUniqueID();
+
+        // copy to project's model folder
+        String folder = projectContext.ref.getPath() + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
+        FileHandle finalG3db = Gdx.files.absolute(folder + importedModel.g3dbFile.nameWithoutExtension() + "-" + id + ".g3db");
+        importedModel.g3dbFile.copyTo(finalG3db);
+        importedModel.textureFile.copyTo(Gdx.files.absolute(folder));
+
+        // load model
+        G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
+        Model model = loader.loadModel(finalG3db);
+
+        // create persistable model
+        PersistableModel persistableModel = new PersistableModel();
+        persistableModel.setModel(model);
+        persistableModel.setName(finalG3db.name());
+        persistableModel.setId(id);
+        projectContext.models.add(persistableModel);
+
+        // save whole project
+        saveProject(projectContext);
+
+        return persistableModel;
+    }
+
     public void saveProject(ProjectContext projectContext) {
         // TODO save
 
-        // save terrains
+        // save terrain data in .terra files
         for(Terrain terrain : projectContext.terrains) {
             String path = FilenameUtils.concat(projectContext.ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.getName() + "-" + terrain.getId() + "." + TerrainIO.FILE_EXTENSION;
             TerrainIO.exportBinary(terrain, path);
         }
+
+        // save context in .mundus file
+        kryoManager.saveProjectContext(projectContext);
 
         Log.debug("Saving project " + projectContext.ref.getName() + " [" + projectContext.ref.getPath() + "]");
     }

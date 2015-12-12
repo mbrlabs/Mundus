@@ -1,20 +1,24 @@
 package com.mbrlabs.mundus.core.model;
 
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class MundusModel {
+public class PersistableModel {
+
+    @Tag(0)
+    private long id;
+    @Tag(1)
+    private String name;
+    @Tag(2)
+    private String relG3dbPath;
 
     private Model model;
 
-    private long id;
-    private String name;
-    private String g3dbPath;
-
-    public MundusModel() {
+    public PersistableModel() {
 
     }
 
@@ -42,12 +46,12 @@ public class MundusModel {
         this.name = name;
     }
 
-    public String getG3dbPath() {
-        return g3dbPath;
+    public String getRelG3dbPath() {
+        return relG3dbPath;
     }
 
-    public void setG3dbPath(String g3dbPath) {
-        this.g3dbPath = g3dbPath;
+    public void setRelG3dbPath(String g3dbPath) {
+        this.relG3dbPath = g3dbPath;
     }
 
 

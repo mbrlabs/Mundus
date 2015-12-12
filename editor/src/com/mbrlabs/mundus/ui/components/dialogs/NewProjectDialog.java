@@ -55,6 +55,9 @@ public class NewProjectDialog extends BaseDialog {
                 String name = projectName.getText();
                 String path = projectPath.getText();
                 if(validateInput(name, path)) {
+                    if(!path.endsWith("/")) {
+                        path += "/";
+                    }
                     ProjectRef ref = projectManager.createProject(name, path);
                     close();
                     Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(ref);
