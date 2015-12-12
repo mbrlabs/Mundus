@@ -3,7 +3,7 @@ package com.mbrlabs.mundus.core.home;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mbrlabs.mundus.core.Files;
-import com.mbrlabs.mundus.core.KryoManager;
+import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import org.apache.commons.io.FilenameUtils;
 

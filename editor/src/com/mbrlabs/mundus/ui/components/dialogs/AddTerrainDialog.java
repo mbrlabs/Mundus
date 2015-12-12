@@ -107,7 +107,6 @@ public class AddTerrainDialog extends BaseDialog {
                     float posX = Float.valueOf(positionX.getText());
                     float posZ = Float.valueOf(positionZ.getText());
 
-
                     Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
                     terrain.setName(nom);
                     terrain.setId(UUID.randomUUID().toString());

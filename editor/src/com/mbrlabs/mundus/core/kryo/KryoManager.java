@@ -1,9 +1,10 @@
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.core.kryo;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
+import com.mbrlabs.mundus.core.Files;
 import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 
