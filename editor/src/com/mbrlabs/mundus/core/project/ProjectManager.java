@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.core.Files;
 import com.mbrlabs.mundus.core.ImportManager;
-import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.model.PersistableModel;
@@ -16,12 +14,9 @@ import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ReloadAllModelsEvent;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
-import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Callback;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -53,7 +48,6 @@ public class ProjectManager {
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
-
         return ref;
     }
 
@@ -95,7 +89,7 @@ public class ProjectManager {
     }
 
     public PersistableModel importG3dbModel(ImportManager.ImportedModel importedModel) {
-        long id = projectContext.requestUniqueID();
+        long id = projectContext.obtainAvailableID();
 
         // copy to project's model folder
         String folder = projectContext.ref.getPath() + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";

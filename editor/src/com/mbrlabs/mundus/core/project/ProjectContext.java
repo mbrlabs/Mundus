@@ -26,12 +26,13 @@ public class ProjectContext implements Disposable {
 
     public List<Terrain> terrains;
     @Tag(1)
-    private long nextAvailableID = 0;
+    private long nextAvailableID;
 
     public ProjectContext() {
         entities = new ArrayList<>();
         models = new ArrayList<>();
         terrains = new ArrayList<Terrain>();
+        nextAvailableID = 0;
 
         PointLight light = new PointLight();
         light.setPosition(400,300,400);
@@ -45,10 +46,16 @@ public class ProjectContext implements Disposable {
         entities = other.entities;
         models = other.models;
         terrains = other.terrains;
+        nextAvailableID = other.nextAvailableID;
     }
 
-    public synchronized long requestUniqueID() {
-        return nextAvailableID++;
+    public synchronized long obtainAvailableID() {
+        nextAvailableID += 1;
+        return nextAvailableID - 1;
+    }
+
+    public synchronized long getNextAvailableID() {
+        return nextAvailableID;
     }
 
     @Override

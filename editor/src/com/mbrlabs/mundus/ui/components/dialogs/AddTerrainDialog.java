@@ -18,8 +18,6 @@ import com.mbrlabs.mundus.ui.components.MinimapWidget;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.TextureUtils;
 
-import java.util.UUID;
-
 /**
  * @author Marcus Brummer
  * @version 01-12-2015
@@ -109,7 +107,7 @@ public class AddTerrainDialog extends BaseDialog {
 
                     Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
                     terrain.setName(nom);
-                    terrain.setId(projectContext.requestUniqueID());
+                    terrain.setId(projectContext.obtainAvailableID());
                     projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {

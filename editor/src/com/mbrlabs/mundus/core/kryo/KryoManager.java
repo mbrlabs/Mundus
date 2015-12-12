@@ -81,6 +81,7 @@ public class KryoManager {
             if(projectContext == null) {
                 projectContext = new ProjectContext();
             }
+
             return projectContext;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
