@@ -19,7 +19,10 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
-import com.mbrlabs.mundus.core.home.MundusHome;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.home.HomeData;
+import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
@@ -51,8 +54,12 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
     private FileHandle tempModelFile;
     private FileHandle tempTextureFile;
 
+    @Inject
+    private HomeManager homeManager;
+
     public ImportModelDialog() {
         super("Import Model");
+        Mundus.inject(this);
         setModal(true);
         setMovable(false);
         setupUI();
@@ -118,7 +125,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
     private void loadAndShowPreview(Array<FileHandle> files) {
         if(files.size == 2) {
-            tempModelCache = MundusHome.getInstance().createTempModelFolder();
+            tempModelCache = homeManager.createTempModelFolder();
 
             // get model
             FileHandle origModelFile = null;
@@ -196,7 +203,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
     @Override
     public void dispose() {
-        MundusHome.getInstance().purgeModelCache();
+        homeManager.purgeModelCache();
         Ui.getInstance().unwire(fake3dViewport);
         if(previewModel != null) {
             previewModel.dispose();

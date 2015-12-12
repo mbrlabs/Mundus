@@ -6,15 +6,17 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.kryo.Kryo;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.core.home.MundusHome;
+import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.terrain.TerrainTest;
 import com.mbrlabs.mundus.ui.UiImages;
@@ -39,13 +41,16 @@ public class Mundus {
     private static ProjectContext projectContext;
     private static BrushManager brushManager;
 
-    private static MundusHome home;
     private static PerspectiveCamera cam;
     private static ModelBatch modelBatch;
 
     private static ProjectManager projectManager;
     private static InputManager input;
     private static Shaders shaders;
+
+    private static HomeManager homeManager;
+
+    private static KryoManager kryoManager;
 
     public static Array<Model> testModels = new Array<>();
     public static Array<ModelInstance> testInstances = new Array<>();
@@ -66,8 +71,6 @@ public class Mundus {
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
         // load images
         UiImages.load();
-        // home
-        home = MundusHome.getInstance();
         // Camera
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);
@@ -82,14 +85,17 @@ public class Mundus {
         // project context
         projectContext = new ProjectContext();
         projectContext.terrains.add(new TerrainTest().terrain);
-        // project manager
-        projectManager = new ProjectManager(projectContext, home);
+
 
         // brushes
         brushManager = new BrushManager(projectContext, cam);
         brushManager.addBrush(new SphereBrush(shaders.brushShader));
 
-        if(home.getProjectRefs().getProjects().size() == 0) {
+        kryoManager = new KryoManager();
+        homeManager = new HomeManager(kryoManager);
+        projectManager = new ProjectManager(projectContext, homeManager);
+
+        if(homeManager.homeData.projects.size() == 0) {
             projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");
         }
 

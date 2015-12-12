@@ -1,22 +1,30 @@
 package com.mbrlabs.mundus.core.project;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+import java.util.Date;
+
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
  */
 public class ProjectRef {
-
+    @Tag(0)
     private String name;
+    @Tag(1)
     private String path;
-    private long created;
-    private long lastOpened;
+    @Tag(2)
+    private Date created;
+    @Tag(3)
+    private Date lastOpened;
+    @Tag(4)
     private String id;
 
-    public long getLastOpened() {
+    public Date getLastOpened() {
         return lastOpened;
     }
 
-    public void setLastOpened(long lastOpened) {
+    public void setLastOpened(Date lastOpened) {
         this.lastOpened = lastOpened;
     }
 
@@ -36,11 +44,11 @@ public class ProjectRef {
         this.path = path;
     }
 
-    public long getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

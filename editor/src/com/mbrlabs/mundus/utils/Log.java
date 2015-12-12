@@ -2,7 +2,8 @@ package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mbrlabs.mundus.core.home.MundusHome;
+import com.mbrlabs.mundus.core.Files;
+import com.mbrlabs.mundus.core.home.HomeData;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.*;
@@ -48,7 +49,7 @@ public class Log {
     }
 
     private static void prepareLogFile () {
-        File logDirectory = new File(MundusHome.HOME_DIR, "logs");
+        File logDirectory = new File(Files.HOME_DIR, "logs");
         logDirectory.mkdir();
 
         SimpleDateFormat fileDateFormat = new SimpleDateFormat("yy-MM-dd");

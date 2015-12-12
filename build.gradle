@@ -20,6 +20,7 @@ allprojects {
         ashleyVersion = '1.6.0'
         aiVersion = '1.6.0'
         visuiVersion = '0.9.5'
+        kryoVersion = '3.0.3'
     }
 
     repositories {
@@ -46,6 +47,8 @@ project(":editor") {
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+        compile "com.esotericsoftware:kryo:$kryoVersion"
 
         compile 'org.apache.commons:commons-lang3:3.4'
         compile 'commons-io:commons-io:2.4'

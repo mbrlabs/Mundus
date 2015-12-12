@@ -4,8 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
-import com.mbrlabs.mundus.core.home.MundusHome;
-import com.mbrlabs.mundus.core.home.Settings;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.home.HomeData;
+import com.mbrlabs.mundus.core.home.HomeManager;
 
 /**
  * @author Marcus Brummer
@@ -21,9 +23,12 @@ public class SettingsDialog extends BaseDialog {
 
     private VisTextButton save;
 
+    @Inject
+    private HomeManager homeManager;
+
     public SettingsDialog() {
         super("Settings");
-
+        Mundus.inject(this);
         VisTable root = new VisTable();
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
@@ -55,8 +60,7 @@ public class SettingsDialog extends BaseDialog {
     }
 
     public void reloadSettings() {
-        Settings settings = MundusHome.getInstance().getSettings();
-        path.setText(settings.getFbxConvBinary());
+        path.setText(homeManager.homeData.settings.fbxConvBinary);
     }
 
     private void addHandlers() {
@@ -65,8 +69,8 @@ public class SettingsDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 String fbxPath = path.getText();
-                MundusHome.getInstance().getSettings().setFbxConvBinary(fbxPath);
-                MundusHome.getInstance().save();
+                homeManager.homeData.settings.fbxConvBinary = fbxPath;
+                homeManager.save();
             }
         });
     }

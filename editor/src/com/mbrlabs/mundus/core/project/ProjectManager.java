@@ -2,7 +2,8 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.core.home.MundusHome;
+import com.mbrlabs.mundus.core.home.HomeData;
+import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.ui.Ui;
@@ -11,7 +12,6 @@ import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.UUID;
 
 /**
  * @author Marcus Brummer
@@ -23,15 +23,15 @@ public class ProjectManager {
     public static final String PROJECT_TERRAIN_DIR = "terrains/";
 
     private ProjectContext projectContext;
-    private MundusHome home;
+    private HomeManager homeManager;
 
-    public ProjectManager(ProjectContext projectContext, MundusHome home) {
+    public ProjectManager(ProjectContext projectContext, HomeManager homeManager) {
         this.projectContext = projectContext;
-        this.home = home;
+        this.homeManager = homeManager;
     }
 
     public ProjectRef createProject(String name, String folder) {
-        ProjectRef ref = home.createProjectRef(name, folder);
+        ProjectRef ref = homeManager.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
@@ -48,7 +48,6 @@ public class ProjectManager {
     private ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = new ProjectContext();
         context.setRef(ref);
-        context.terrains.add(TerrainIO.importBinary(FilenameUtils.concat(ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR) + "test.ter"));
 
         return context;
     }
@@ -68,6 +67,8 @@ public class ProjectManager {
     }
 
     public void changeProject(ProjectContext context) {
+        homeManager.homeData.lastProject = context.getRef().getId();
+        homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
         Ui.getInstance().getSidebar().getEntityTab().reloadData();
@@ -77,11 +78,8 @@ public class ProjectManager {
     }
 
     public void saveProject(ProjectContext projectContext) {
+        // TODO save
         Log.debug("Saving project " + projectContext.getRef().getName() + " [" + projectContext.getRef().getPath() + "]");
-
-        for(Terrain t : projectContext.terrains) {
-            TerrainIO.exportBinary(t, FilenameUtils.concat(projectContext.getRef().getPath(), ProjectManager.PROJECT_TERRAIN_DIR) + "test.ter");
-        }
     }
 
 

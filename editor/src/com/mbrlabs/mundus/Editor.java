@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
+import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -44,7 +47,10 @@ public class Editor implements ApplicationListener {
     private Compass compass;
     @Inject
     private Shaders shaders;
-
+    @Inject
+    private ProjectManager projectManager;
+    @Inject
+    private HomeManager homeManager;
 
     private FreeCamController camController;
 
@@ -66,6 +72,9 @@ public class Editor implements ApplicationListener {
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
 
         createTestModels();
+
+        openLastOpenedProject();
+
     }
 
 	@Override
@@ -120,6 +129,23 @@ public class Editor implements ApplicationListener {
             Mundus.testModels.add(boxModel);
             Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
                     boxModel, projectContext.terrains.first()));
+        }
+    }
+
+    private void openLastOpenedProject() {
+        ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
+        if(lastOpenedProject != null) {
+            projectManager.loadProject(lastOpenedProject, new Callback<ProjectContext>() {
+                @Override
+                public void done(ProjectContext result) {
+                    projectManager.changeProject(result);
+                }
+
+                @Override
+                public void error(String msg) {
+                    Log.error("Failed to load last opened project");
+                }
+            });
         }
     }
 
