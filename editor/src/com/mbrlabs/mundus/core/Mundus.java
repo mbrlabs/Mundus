@@ -13,6 +13,7 @@ import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
@@ -50,8 +51,9 @@ public class Mundus {
     private static Shaders shaders;
 
     private static HomeManager homeManager;
-
     private static KryoManager kryoManager;
+
+    private static EventBus eventBus;
 
     public static Array<Model> testModels = new Array<>();
     public static Array<ModelInstance> testInstances = new Array<>();
@@ -87,7 +89,6 @@ public class Mundus {
         projectContext = new ProjectContext();
         //projectContext.terrains.add(new TerrainTest().terrain);
 
-
         // brushes
         brushManager = new BrushManager(projectContext, cam);
         brushManager.addBrush(new SphereBrush(shaders.brushShader));
@@ -95,6 +96,8 @@ public class Mundus {
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
         projectManager = new ProjectManager(projectContext, homeManager);
+
+        eventBus = new EventBus();
 
         if(homeManager.homeData.projects.size() == 0) {
             projectManager.createProject("Skyrim", "/home/marcus/MundusProjects");

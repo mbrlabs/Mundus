@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 public class MundusModel {
 
     private long id;
+    private String name;
     private Model model;
 
     public MundusModel(Model model) {
@@ -30,4 +31,13 @@ public class MundusModel {
     public void setModel(Model model) {
         this.model = model;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

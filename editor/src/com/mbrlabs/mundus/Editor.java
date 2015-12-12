@@ -30,10 +30,12 @@ public class Editor implements ApplicationListener {
 
     // axes
     private RenderContext renderContext;
-
     private ModelInstance axesInstance;
 
     private Ui ui;
+    private Compass compass;
+    private FreeCamController camController;
+
     @Inject
     private InputManager inputManager;
     @Inject
@@ -44,15 +46,12 @@ public class Editor implements ApplicationListener {
     private BrushManager brushManager;
     @Inject
     private ProjectContext projectContext;
-    private Compass compass;
     @Inject
     private Shaders shaders;
     @Inject
     private ProjectManager projectManager;
     @Inject
     private HomeManager homeManager;
-
-    private FreeCamController camController;
 
 	@Override
 	public void create () {

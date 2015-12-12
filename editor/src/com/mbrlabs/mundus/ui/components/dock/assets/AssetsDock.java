@@ -9,6 +9,12 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ModelImportEvent;
+import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -21,7 +27,12 @@ public class AssetsDock {
     private GridGroup filesView;
     private AssetsTab assetsTab;
 
+    @Inject
+    private EventBus eventBus;
+
     public AssetsDock() {
+        Mundus.inject(this);
+        eventBus.register(this);
         initUi();
     }
 
@@ -51,17 +62,20 @@ public class AssetsDock {
         filesView.addListener(new InputListener() {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-
-
                 return false;
             }
         });
 
-        for(int i = 1; i <= 300; i++) {
-            filesView.addActor(new AssetItem("Asset " + i));
-        }
+//        for(int i = 1; i <= 300; i++) {
+//            filesView.addActor(new AssetItem("Asset " + i));
+//        }
+    }
 
-
+    @Subscribe
+    public void modelImported(ModelImportEvent modelImportEvent) {
+        Log.debug("@Subscribe modelImported called");
+        AssetItem assetItem = new AssetItem(modelImportEvent.getModel().getName());
+        filesView.addActor(assetItem);
     }
 
     private VisScrollPane createScrollPane (Actor actor, boolean disableX) {

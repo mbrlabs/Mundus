@@ -74,9 +74,7 @@ public class ProjectManager {
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
-        Ui.getInstance().getSidebar().getEntityTab().reloadData();
-        Ui.getInstance().getSidebar().getTerrainTab().reloadData();
-        Ui.getInstance().getSidebar().getModelTab().reloadData();
+        // TODO send notification to event bus for ui updates
         Gdx.graphics.setTitle(projectContext.getRef().getName() + " - " + Main.TITLE);
     }
 

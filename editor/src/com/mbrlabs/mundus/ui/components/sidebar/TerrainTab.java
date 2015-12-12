@@ -12,13 +12,12 @@ import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.brushes.Brush;
-import com.mbrlabs.mundus.ui.ReloadableData;
 
 /**
  * @author Marcus Brummer
  * @version 30-11-2015
  */
-public class TerrainTab extends Tab implements ReloadableData {
+public class TerrainTab extends Tab {
 
     private static final String TITLE = "Terrain";
 
@@ -69,11 +68,6 @@ public class TerrainTab extends Tab implements ReloadableData {
     @Override
     public Table getContentTable() {
         return content;
-    }
-
-    @Override
-    public void reloadData() {
-
     }
 
     private class BrushGridItem extends VisTable {

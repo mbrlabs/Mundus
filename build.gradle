@@ -21,6 +21,7 @@ allprojects {
         aiVersion = '1.6.0'
         visuiVersion = '0.9.5'
         kryoVersion = '3.0.3'
+        ottoVersion = '1.3.8'
     }
 
     repositories {
@@ -50,8 +51,8 @@ project(":editor") {
 
         compile "com.esotericsoftware:kryo:$kryoVersion"
 
-        compile 'org.apache.commons:commons-lang3:3.4'
-        compile 'commons-io:commons-io:2.4'
+        compile "org.apache.commons:commons-lang3:3.4"
+        compile "commons-io:commons-io:2.4"
     }
 }
 
