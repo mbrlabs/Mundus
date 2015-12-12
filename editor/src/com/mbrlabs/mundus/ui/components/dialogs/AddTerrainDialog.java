@@ -1,5 +1,7 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -14,6 +16,9 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.ui.components.MinimapWidget;
 import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.TextureUtils;
+
+import java.util.UUID;
 
 /**
  * @author Marcus Brummer
@@ -103,7 +108,9 @@ public class AddTerrainDialog extends BaseDialog {
                     float posZ = Float.valueOf(positionZ.getText());
 
 
-                    Terrain terrain = generateTerrain(nom, posX, posZ, width, depth, res);
+                    Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
+                    terrain.setName(nom);
+                    terrain.setId(UUID.randomUUID().toString());
                     projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {
@@ -129,14 +136,16 @@ public class AddTerrainDialog extends BaseDialog {
 
     }
 
-    private Terrain generateTerrain(String name, float posX, float posZ, int terrainWidth, int terrainDepth,
+    private Terrain generateTerrain(float posX, float posZ, int terrainWidth, int terrainDepth,
                                  int res) {
-        Terrain terrain = new Terrain(res, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
+        Terrain terrain = new Terrain(res, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
         terrain.position.x = posX;
         terrain.position.z = posZ;
         terrain.terrainWidth = terrainWidth;
         terrain.terrainDepth = terrainDepth;
         terrain.update();
+        terrain.setTexture(tex);
 
         return terrain;
     }

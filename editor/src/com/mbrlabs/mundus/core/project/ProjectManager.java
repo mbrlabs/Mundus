@@ -2,6 +2,7 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
 import com.mbrlabs.mundus.Main;
+import com.mbrlabs.mundus.core.Files;
 import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.terrain.Terrain;
@@ -10,6 +11,8 @@ import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Callback;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -79,6 +82,14 @@ public class ProjectManager {
 
     public void saveProject(ProjectContext projectContext) {
         // TODO save
+
+        // save terrains
+        for(Terrain terrain : projectContext.terrains) {
+            String path = FilenameUtils.concat(projectContext.getRef().getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
+            path += terrain.getName() + "-" + terrain.getId();
+            TerrainIO.exportBinary(terrain, path);
+        }
+
         Log.debug("Saving project " + projectContext.getRef().getName() + " [" + projectContext.getRef().getPath() + "]");
     }
 

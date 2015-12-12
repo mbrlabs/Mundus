@@ -121,7 +121,7 @@ public class Editor implements ApplicationListener {
     @Deprecated
     private void createTestModels() {
         // boxes to test terrain height
-        if(projectContext.terrains.first() != null) {
+        if(projectContext.terrains.size > 0) {
             float boxSize = 0.5f;
             Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
                     new Material(ColorAttribute.createDiffuse(Color.RED)),

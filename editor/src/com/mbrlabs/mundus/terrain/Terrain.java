@@ -51,7 +51,9 @@ public class Terrain {
     private final Vector3 c11 = new Vector3();
 
     private Texture texture;
+
     private String name;
+    private String id;
 
     public Terrain(int vertexResolution, int attributes) {
         VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
@@ -78,6 +80,14 @@ public class Terrain {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void loadHeightMap(Pixmap map, float maxHeight) {

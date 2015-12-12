@@ -84,7 +84,7 @@ public class Mundus {
         shaders = new Shaders();
         // project context
         projectContext = new ProjectContext();
-        projectContext.terrains.add(new TerrainTest().terrain);
+        //projectContext.terrains.add(new TerrainTest().terrain);
 
 
         // brushes
