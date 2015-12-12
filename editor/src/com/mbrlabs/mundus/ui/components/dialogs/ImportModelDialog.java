@@ -23,6 +23,9 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.model.MundusModel;
+import com.mbrlabs.mundus.core.model.MundusModelInstance;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
@@ -56,6 +59,8 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
     @Inject
     private HomeManager homeManager;
+    @Inject
+    private ProjectContext projectContext;
 
     public ImportModelDialog() {
         super("Import Model");
@@ -118,6 +123,20 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             public void selected(Array<FileHandle> files) {
                 super.selected(files);
                 loadAndShowPreview(files);
+            }
+        });
+
+        // import btn
+        importBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(previewModel != null && previewInstance != null) {
+                    MundusModel mundusModel = new MundusModel(previewModel);
+                    projectContext.models.add(mundusModel);
+                    projectContext.entities.add(new MundusModelInstance(mundusModel));
+                    previewModel = null;
+
+                }
             }
         });
     }
