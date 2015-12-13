@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.MathUtils;
 
 import java.nio.ByteBuffer;
@@ -128,6 +129,8 @@ public class Terrain {
         float curDistance = 2;
         int rounds = 0;
 
+        long start = System.currentTimeMillis();
+
         ray.getEndPoint(out, curDistance);
         boolean isUnder = isUnderTerrain(out);
 
@@ -137,6 +140,7 @@ public class Terrain {
 
             boolean u = isUnderTerrain(out);
             if(u != isUnder || rounds == 10000) {
+                Log.debug("getRayIntersection rounds: " + rounds+ " time: " + (System.currentTimeMillis() - start));
                 return out;
             }
 
@@ -146,6 +150,7 @@ public class Terrain {
                 curDistance += 0.1f;
             }
         }
+
 
     }
 
