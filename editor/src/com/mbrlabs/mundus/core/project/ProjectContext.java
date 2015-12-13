@@ -7,6 +7,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.mbrlabs.mundus.core.model.PersistableModel;
 import com.mbrlabs.mundus.core.model.PersistableModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.Terrains;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +25,14 @@ public class ProjectContext implements Disposable {
     @Tag(0)
     public List<PersistableModel> models;
 
-    public List<Terrain> terrains;
+    public Terrains terrains;
     @Tag(1)
     private long nextAvailableID;
 
     public ProjectContext() {
         entities = new ArrayList<>();
         models = new ArrayList<>();
-        terrains = new ArrayList<Terrain>();
+        terrains = new Terrains();
         nextAvailableID = 0;
 
         PointLight light = new PointLight();

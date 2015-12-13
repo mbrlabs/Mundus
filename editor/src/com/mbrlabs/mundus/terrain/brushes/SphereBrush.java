@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.Terrains;
 
 import java.util.List;
 
@@ -70,13 +71,19 @@ public class SphereBrush implements Brush {
         return SphereBrush.NAME;
     }
 
-    public void draw(List<Terrain> terrains, boolean up) {
-        // TODO extend to work for all terrains
-        Terrain terrain = terrains.get(0);
+    public void draw(Terrains terrains, boolean up) {
+        // tVec1 holds sphere transformation
+        sphereModelInstance.transform.getTranslation(tVec1);
+
+        Terrain terrain = terrains.getTerrain(tVec1.x, tVec1.z);
+        if(terrain == null) {
+            return;
+        }
+
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
                 terrain.getVertexPosition(tVec0, x, z);
-                float distance = tVec0.dst(this.sphereModelInstance.transform.getTranslation(tVec1));
+                float distance = tVec0.dst(tVec1);
 
                 if(distance <= radius) {
                     float dir = up ? 1 : -1;

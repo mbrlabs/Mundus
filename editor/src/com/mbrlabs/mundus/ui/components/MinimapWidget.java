@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.Terrains;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class MinimapWidget extends Widget {
 
     private static final float WORLD_TO_MINIMAP = 1f;
 
-    protected List<Terrain> terrains;
+    protected Terrains terrains;
 
     protected Texture terrainTexture;
     protected Texture backgroundTexture;
@@ -31,7 +32,7 @@ public class MinimapWidget extends Widget {
 
     private Matrix4 originalBatchProjMatrix = new Matrix4();
 
-    public MinimapWidget(List<Terrain> terrains) {
+    public MinimapWidget(Terrains terrains) {
         super();
         this.terrains = terrains;
         // terrain texture
@@ -82,7 +83,7 @@ public class MinimapWidget extends Widget {
 
         batch.setProjectionMatrix(cam.combined);
         // draw terrains
-        for(Terrain terrain : terrains) {
+        for(Terrain terrain : terrains.getTerrains()) {
             drawTerrain(batch, terrain);
         }
 

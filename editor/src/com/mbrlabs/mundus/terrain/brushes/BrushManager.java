@@ -80,9 +80,8 @@ public class BrushManager implements InputProcessor, Disposable {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if(activeBrush != null && projectContext.terrains.size() > 0) {
-            Terrain terrain = projectContext.terrains.get(0);
             Ray ray = cam.getPickRay(screenX, screenY);
-            terrain.getRayIntersection(tempV3, ray);
+            projectContext.terrains.getRayIntersection(tempV3, ray);
             activeBrush.setTranslation(tempV3);
         }
         return false;

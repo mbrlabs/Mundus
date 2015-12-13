@@ -140,7 +140,7 @@ public class Terrain {
 
             boolean u = isUnderTerrain(out);
             if(u != isUnder || rounds == 10000) {
-                Log.debug("getRayIntersection rounds: " + rounds+ " time: " + (System.currentTimeMillis() - start));
+           //     Log.debug("getRayIntersection rounds: " + rounds+ " time: " + (System.currentTimeMillis() - start));
                 return out;
             }
 

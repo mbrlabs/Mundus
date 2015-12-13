@@ -102,7 +102,7 @@ public class Editor implements ApplicationListener {
 
         // render terrains
         shaders.terrainShader.begin(cam, renderContext);
-        for(Terrain terrain : projectContext.terrains) {
+        for(Terrain terrain : projectContext.terrains.getTerrains()) {
             terrain.renderable.environment = projectContext.environment;
             shaders.terrainShader.render(terrain.renderable);
         }
@@ -130,7 +130,7 @@ public class Editor implements ApplicationListener {
                     VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
             Mundus.testModels.add(boxModel);
             Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-                    boxModel, projectContext.terrains.get(0)));
+                    boxModel, projectContext.terrains.first()));
         }
     }
 

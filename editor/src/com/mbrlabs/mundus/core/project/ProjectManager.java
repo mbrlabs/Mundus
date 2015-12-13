@@ -119,7 +119,7 @@ public class ProjectManager {
         // TODO save
 
         // save terrain data in .terra files
-        for(Terrain terrain : projectContext.terrains) {
+        for(Terrain terrain : projectContext.terrains.getTerrains()) {
             String path = FilenameUtils.concat(projectContext.ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.getName() + "-" + terrain.getId() + "." + TerrainIO.FILE_EXTENSION;
             TerrainIO.exportBinary(terrain, path);
