@@ -52,7 +52,28 @@ public class TerrainIO {
                 + (System.currentTimeMillis() - start) + " ms");
     }
 
-    public static Terrain importBinary(String path) {
+//    public static Terrain importTerrain(String path) {
+//        FloatArray floatArray = new FloatArray();
+//        try {
+//            DataInputStream is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(path))));
+//            while (is.available() > 0) {
+//                floatArray.add(is.readFloat());
+//            }
+//            is.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Log.debug("Terrain import. floats: " + floatArray.size);
+//        Terrain terrain = new Terrain((int)Math.sqrt(floatArray.size));
+//        terrain.heightData = floatArray.toArray();
+//        terrain.update();
+//        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
+//        terrain.setTexture(tex);
+//
+//        return terrain;
+//    }
+
+    public static Terrain importTerrain(Terrain terrain, String path) {
         FloatArray floatArray = new FloatArray();
         try {
             DataInputStream is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(path))));
@@ -64,8 +85,8 @@ public class TerrainIO {
             e.printStackTrace();
         }
         Log.debug("Terrain import. floats: " + floatArray.size);
-        Terrain terrain = new Terrain((int)Math.sqrt(floatArray.size),
-                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+
+        terrain.init();
         terrain.heightData = floatArray.toArray();
         terrain.update();
         Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));

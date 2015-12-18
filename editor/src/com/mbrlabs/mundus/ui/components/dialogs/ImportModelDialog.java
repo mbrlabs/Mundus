@@ -1,6 +1,5 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -22,8 +21,8 @@ import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.home.HomeManager;
-import com.mbrlabs.mundus.core.model.PersistableModel;
+import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
@@ -134,8 +133,8 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             public void clicked(InputEvent event, float x, float y) {
                 if(previewModel != null && previewInstance != null) {
                     // create model
-                    PersistableModel persistableModel = projectManager.importG3dbModel(importedModel);
-                    eventBus.post(new ModelImportEvent(persistableModel));
+                    MModel mModel = projectManager.importG3dbModel(importedModel);
+                    eventBus.post(new ModelImportEvent(mModel));
                     close();
                 }
             }

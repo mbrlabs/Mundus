@@ -13,20 +13,13 @@ public class TerrainTest {
     public Terrain terrain;
 
     public TerrainTest() {
-        terrain = new Terrain(180, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+        terrain = new Terrain(180);
         Pixmap heightMap = new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png"));
         terrain.loadHeightMap(heightMap, 190);
         terrain.update();
         Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
-
         terrain.setTexture(tex);
-
-
         heightMap.dispose();
-
-        //TerrainIO.exportBinary(terrain, "/home/marcus/Desktop/test.ter");
-
-      // terrain = TerrainIO.importBinary("/home/marcus/Desktop/test.ter");
     }
 
 }

@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.ImportManager;
-import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
-import com.mbrlabs.mundus.core.model.PersistableModel;
+import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ReloadAllModelsEvent;
 import com.mbrlabs.mundus.terrain.Terrain;
@@ -53,13 +53,20 @@ public class ProjectManager {
 
     private ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = kryoManager.loadProjectContext(ref);
-        context.ref = ref;
+        context.path = ref.getPath();
+        context.name = ref.getName();
+        context.id = ref.getId();
 
         // load g3db models
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
-        for(PersistableModel model : context.models) {
-            String g3dbPath = model.getRelG3dbPath();
+        for(MModel model : context.models) {
+            String g3dbPath = model.g3dbPath;
             model.setModel(loader.loadModel(Gdx.files.absolute(g3dbPath)));
+        }
+
+        // load terrain .terra files
+        for(Terrain terrain : context.terrains.getTerrains()) {
+            TerrainIO.importTerrain(terrain, terrain.terraPath);
         }
 
         return context;
@@ -70,29 +77,30 @@ public class ProjectManager {
             @Override
             public void run() {
                 ProjectContext context = loadProject(ref);
-                if(new File(context.ref.getPath()).exists()) {
+                if(new File(context.path).exists()) {
                     Gdx.app.postRunnable(() -> callback.done(context));
                 } else {
-                    Gdx.app.postRunnable(() -> callback.error("Project " + context.ref.getPath() + " not found."));
+                    Gdx.app.postRunnable(() -> callback.error("Project " + context.path + " not found."));
                 }
             }
         }.run(); // FIXME run() is intended because of openGL context...either remove thread or find a way to run it async
     }
 
     public void changeProject(ProjectContext context) {
-        homeManager.homeData.lastProject = context.ref.getId();
+        homeManager.homeDescriptor.lastProject = context.id;
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
-        Gdx.graphics.setTitle(projectContext.ref.getName() + " - " + Main.TITLE);
+        projectContext.loaded = true;
+        Gdx.graphics.setTitle(projectContext.path + " - " + Main.TITLE);
         eventBus.post(new ReloadAllModelsEvent());
     }
 
-    public PersistableModel importG3dbModel(ImportManager.ImportedModel importedModel) {
+    public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
         long id = projectContext.obtainAvailableID();
 
         // copy to project's model folder
-        String folder = projectContext.ref.getPath() + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
+        String folder = projectContext.path + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
         FileHandle finalG3db = Gdx.files.absolute(folder + importedModel.g3dbFile.nameWithoutExtension() + "-" + id + ".g3db");
         importedModel.g3dbFile.copyTo(finalG3db);
         importedModel.textureFile.copyTo(Gdx.files.absolute(folder));
@@ -102,17 +110,17 @@ public class ProjectManager {
         Model model = loader.loadModel(finalG3db);
 
         // create persistable model
-        PersistableModel persistableModel = new PersistableModel();
-        persistableModel.setModel(model);
-        persistableModel.setName(finalG3db.name());
-        persistableModel.setId(id);
-        persistableModel.setRelG3dbPath(finalG3db.path());
-        projectContext.models.add(persistableModel);
+        MModel mModel = new MModel();
+        mModel.setModel(model);
+        mModel.name = finalG3db.name();
+        mModel.id = id;
+        mModel.g3dbPath = finalG3db.path();
+        projectContext.models.add(mModel);
 
         // save whole project
         saveProject(projectContext);
 
-        return persistableModel;
+        return mModel;
     }
 
     public void saveProject(ProjectContext projectContext) {
@@ -120,15 +128,16 @@ public class ProjectManager {
 
         // save terrain data in .terra files
         for(Terrain terrain : projectContext.terrains.getTerrains()) {
-            String path = FilenameUtils.concat(projectContext.ref.getPath(), ProjectManager.PROJECT_TERRAIN_DIR);
-            path += terrain.getName() + "-" + terrain.getId() + "." + TerrainIO.FILE_EXTENSION;
+            String path = FilenameUtils.concat(projectContext.path, ProjectManager.PROJECT_TERRAIN_DIR);
+            path += terrain.name + "-" + terrain.id + "." + TerrainIO.FILE_EXTENSION;
+            terrain.terraPath = path;
             TerrainIO.exportBinary(terrain, path);
         }
 
         // save context in .mundus file
         kryoManager.saveProjectContext(projectContext);
 
-        Log.debug("Saving project " + projectContext.ref.getName() + " [" + projectContext.ref.getPath() + "]");
+        Log.debug("Saving project " + projectContext.name+ " [" + projectContext.path + "]");
     }
 
 

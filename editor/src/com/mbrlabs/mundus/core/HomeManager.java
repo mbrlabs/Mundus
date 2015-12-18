@@ -1,9 +1,9 @@
-package com.mbrlabs.mundus.core.home;
+package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mbrlabs.mundus.core.Files;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
+import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import org.apache.commons.io.FilenameUtils;
 
@@ -16,17 +16,17 @@ import java.util.UUID;
  */
 public class HomeManager {
 
-    public HomeData homeData;
+    public HomeDescriptor homeDescriptor;
 
     private KryoManager kryoManager;
 
     public HomeManager(KryoManager kryoManager) {
         this.kryoManager = kryoManager;
-        homeData = kryoManager.loadHomeData();
+        homeDescriptor = kryoManager.loadHomeDescriptor();
     }
 
     public void save() {
-        kryoManager.saveHomeData(this.homeData);
+        kryoManager.saveHomeDescriptor(this.homeDescriptor);
     }
 
     public FileHandle createTempFolder() {
@@ -52,21 +52,21 @@ public class HomeManager {
         projectRef.setPath(path);
         projectRef.setCreated(new Date());
         projectRef.setLastOpened(new Date());
-        homeData.projects.add(projectRef);
+        homeDescriptor.projects.add(projectRef);
         save();
 
         return projectRef;
     }
 
     public ProjectRef getLastOpenedProject() {
-        if(homeData.lastProject != null) {
-            return findProjectById(homeData.lastProject);
+        if(homeDescriptor.lastProject != null) {
+            return findProjectById(homeDescriptor.lastProject);
         }
         return null;
     }
 
     public ProjectRef findProjectById(String id) {
-        for(ProjectRef projectRef : homeData.projects) {
+        for(ProjectRef projectRef : homeDescriptor.projects) {
             if(projectRef.getId().endsWith(id)) {
                 return projectRef;
             }

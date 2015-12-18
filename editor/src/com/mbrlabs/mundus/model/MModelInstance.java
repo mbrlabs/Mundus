@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus.core.model;
+package com.mbrlabs.mundus.model;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 
@@ -6,14 +6,14 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class PersistableModelInstance extends ModelInstance {
+public class MModelInstance extends ModelInstance {
 
     private long id;
     private long modelId;
 
-    public PersistableModelInstance(PersistableModel model) {
+    public MModelInstance(MModel model) {
         super(model.getModel());
-        modelId = model.getId();
+        modelId = model.id;
     }
 
     public long getId() {

@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.kryo.Kryo;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.mbrlabs.mundus.core.home.HomeManager;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -18,9 +16,7 @@ import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.core.home.HomeData;
 import com.mbrlabs.mundus.input.InputManager;
-import com.mbrlabs.mundus.terrain.TerrainTest;
 import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -85,7 +81,8 @@ public class Mundus {
         // shaders
         shaders = new Shaders();
         // project context
-        projectContext = new ProjectContext();
+        projectContext = new ProjectContext(-1);
+        projectContext.loaded = false;
         //projectContext.terrains.add(new TerrainTest().terrain);
 
         // brushes

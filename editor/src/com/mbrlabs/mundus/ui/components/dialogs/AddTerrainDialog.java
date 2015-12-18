@@ -106,8 +106,8 @@ public class AddTerrainDialog extends BaseDialog {
                     float posZ = Float.valueOf(positionZ.getText());
 
                     Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
-                    terrain.setName(nom);
-                    terrain.setId(projectContext.obtainAvailableID());
+                    terrain.name = nom;
+                    terrain.id = projectContext.obtainAvailableID();
                     projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {
@@ -136,11 +136,12 @@ public class AddTerrainDialog extends BaseDialog {
     private Terrain generateTerrain(float posX, float posZ, int terrainWidth, int terrainDepth,
                                  int res) {
         Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
-        Terrain terrain = new Terrain(res, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+        Terrain terrain = new Terrain(res);
         terrain.position.x = posX;
         terrain.position.z = posZ;
         terrain.terrainWidth = terrainWidth;
         terrain.terrainDepth = terrainDepth;
+        terrain.init();
         terrain.update();
         terrain.setTexture(tex);
 

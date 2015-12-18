@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainDescriptor;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.MathUtils;
 
@@ -21,17 +22,24 @@ import java.nio.ByteBuffer;
  */
 public class Terrain {
 
+    public long id;
+    public String name;
+    public String terraPath;
+
     public final Vector3 position = new Vector3(0, 0, 0);
     public int terrainWidth = 1200;
     public int terrainDepth = 1200;
+
 
     public float[] heightData;
     public int vertexResolution;
     public Mesh mesh;
     public Renderable renderable;
 
+    private VertexAttributes attribs;
     private float vertices[];
     private int stride;
+
 
     private int posPos;
     private int norPos;
@@ -41,8 +49,6 @@ public class Terrain {
     private final Vector2 uvScale = new Vector2(20, 20);
 
     private final VertexInfo tempVInfo = new VertexInfo();
-    private final Vector3 tmpV1 = new Vector3();
-    private final Vector3 tmpV2 = new Vector3();
 
     // used for collision detection
     private final Vector3 c00 = new Vector3();
@@ -52,43 +58,24 @@ public class Terrain {
 
     private Texture texture;
 
-    private String terraPath;
-    private String name;
-    private long id;
-
-    public Terrain(int vertexResolution, int attributes) {
-        VertexAttributes attribs = MeshBuilder.createAttributes(attributes);
+    public Terrain(int vertexResolution) {
+        attribs = MeshBuilder.createAttributes(VertexAttributes.Usage.Position |
+                VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
         this.norPos = attribs.getOffset(VertexAttributes.Usage.Normal, -1);
         this.uvPos = attribs.getOffset(VertexAttributes.Usage.TextureCoordinates, -1);
-
-        this.vertexResolution = vertexResolution;
-        this.heightData = new float[this.vertexResolution * vertexResolution];
         this.stride = attribs.vertexSize / 4;
+        this.vertexResolution = vertexResolution;
+    }
 
+    public void init() {
         final int numVertices = this.vertexResolution * vertexResolution;
         final int numIndices = (this.vertexResolution - 1) * (vertexResolution - 1) * 6;
+
+        this.heightData = new float[this.vertexResolution * vertexResolution];
         this.mesh = new Mesh(false, numVertices, numIndices, attribs);
         this.vertices = new float[numVertices * stride];
         buildIndices();
-
-        update();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void loadHeightMap(Pixmap map, float maxHeight) {
@@ -306,6 +293,7 @@ public class Terrain {
 
         return dest;
     }
+
 
 
 }

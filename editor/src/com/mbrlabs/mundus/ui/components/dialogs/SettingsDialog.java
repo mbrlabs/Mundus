@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.HomeManager;
 
 /**
  * @author Marcus Brummer
@@ -59,7 +59,7 @@ public class SettingsDialog extends BaseDialog {
     }
 
     public void reloadSettings() {
-        path.setText(homeManager.homeData.settings.fbxConvBinary);
+        path.setText(homeManager.homeDescriptor.settings.fbxConvBinary);
     }
 
     private void addHandlers() {
@@ -68,7 +68,7 @@ public class SettingsDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 String fbxPath = path.getText();
-                homeManager.homeData.settings.fbxConvBinary = fbxPath;
+                homeManager.homeDescriptor.settings.fbxConvBinary = fbxPath;
                 homeManager.save();
             }
         });

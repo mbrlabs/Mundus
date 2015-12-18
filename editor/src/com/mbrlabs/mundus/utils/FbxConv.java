@@ -3,8 +3,7 @@ package com.mbrlabs.mundus.utils;
 import com.badlogic.gdx.Gdx;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.home.HomeData;
-import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -52,7 +51,7 @@ public class FbxConv {
             throw new OsNotSupported();
         }
 
-        pb = new ProcessBuilder(homeManager.homeData.settings.fbxConvBinary);
+        pb = new ProcessBuilder(homeManager.homeDescriptor.settings.fbxConvBinary);
     }
 
     public void clear() {
@@ -61,7 +60,7 @@ public class FbxConv {
         flipTexture = false;
         input = null;
         output = null;
-        pb = new ProcessBuilder(homeManager.homeData.settings.fbxConvBinary);
+        pb = new ProcessBuilder(homeManager.homeDescriptor.settings.fbxConvBinary);
     }
 
     public FbxConv input(String pathToFile) {

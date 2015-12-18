@@ -6,8 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.home.HomeData;
-import com.mbrlabs.mundus.core.home.HomeManager;
+import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.components.RadioButtonGroup;
@@ -42,7 +41,7 @@ public class OpenProjectDialog extends BaseDialog {
 
         root.add(scrollPane).minWidth(350).maxHeight(400).left().row();
 
-        for(ProjectRef project : homeManager.homeData.projects) {
+        for(ProjectRef project : homeManager.homeDescriptor.projects) {
             String text = project.getName() + " [" + project.getPath() + "]";
             RadioButtonGroup.RadioButton btn = new RadioButtonGroup.RadioButton(text, project);
             projectList.add(btn);

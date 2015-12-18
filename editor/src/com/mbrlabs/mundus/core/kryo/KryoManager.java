@@ -5,8 +5,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.core.Files;
-import com.mbrlabs.mundus.core.home.HomeData;
-import com.mbrlabs.mundus.core.model.PersistableModel;
+import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 
@@ -31,31 +30,32 @@ public class KryoManager {
         kryo.register(ArrayList.class, 0);
         kryo.register(Date.class, 1);
         kryo.register(ProjectRef.class, 2);
-        kryo.register(HomeData.class, 3);
-        kryo.register(HomeData.Settings.class, 4);
-        kryo.register(ProjectContext.class, 5);
-        kryo.register(PersistableModel.class, 6);
+        kryo.register(HomeDescriptor.class, 3);
+        kryo.register(HomeDescriptor.Settings.class, 4);
+        kryo.register(ProjectDescriptor.class, 5);
+        kryo.register(TerrainDescriptor.class, 6);
+        kryo.register(ModelDescriptor.class, 7);
     }
 
-    public HomeData loadHomeData() {
+    public HomeDescriptor loadHomeDescriptor() {
         try {
             Input input = new Input(new FileInputStream(Files.HOME_DATA_FILE));
-            HomeData homeData = kryo.readObjectOrNull(input, HomeData.class);
-            if(homeData == null) {
-                homeData = new HomeData();
+            HomeDescriptor homeDescriptor = kryo.readObjectOrNull(input, HomeDescriptor.class);
+            if(homeDescriptor == null) {
+                homeDescriptor = new HomeDescriptor();
             }
-            return homeData;
+            return homeDescriptor;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return new HomeData();
+        return new HomeDescriptor();
     }
 
-    public void saveHomeData(HomeData homeData) {
+    public void saveHomeDescriptor(HomeDescriptor homeDescriptor) {
         try {
             Output output = new Output(new FileOutputStream(Files.HOME_DATA_FILE));
-            kryo.writeObject(output, homeData);
+            kryo.writeObject(output, homeDescriptor);
             output.flush();
             output.close();
         } catch (FileNotFoundException e) {
@@ -65,8 +65,11 @@ public class KryoManager {
 
     public void saveProjectContext(ProjectContext context) {
         try {
-            Output output = new Output(new FileOutputStream(context.ref.getPath() + "/" + context.ref.getName() + ".mundus"));
-            kryo.writeObject(output, context);
+            Output output = new Output(new FileOutputStream(context.path + "/" + context.name + ".mundus"));
+
+            ProjectDescriptor descriptor = DescriptorConverter.convert(context);
+            kryo.writeObject(output, descriptor);
+
             output.flush();
             output.close();
         } catch (FileNotFoundException e) {
@@ -77,17 +80,13 @@ public class KryoManager {
     public ProjectContext loadProjectContext(ProjectRef ref) {
         try {
             Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".mundus"));
-            ProjectContext projectContext = kryo.readObjectOrNull(input, ProjectContext.class);
-            if(projectContext == null) {
-                projectContext = new ProjectContext();
-            }
-
-            return projectContext;
+            ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
+            return DescriptorConverter.convert(projectDescriptor);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return new ProjectContext();
+        return new ProjectContext(-1);
     }
 
 

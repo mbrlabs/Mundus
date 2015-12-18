@@ -3,10 +3,8 @@ package com.mbrlabs.mundus.core.project;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Disposable;
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.mbrlabs.mundus.core.model.PersistableModel;
-import com.mbrlabs.mundus.core.model.PersistableModelInstance;
-import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.Terrains;
 
 import java.util.ArrayList;
@@ -18,22 +16,26 @@ import java.util.List;
  */
 public class ProjectContext implements Disposable {
 
-    public ProjectRef ref = null;
+    public String path;
+    public String name;
+    public String id;
 
     public Environment environment = new Environment();
-    public List<PersistableModelInstance> entities;
-    @Tag(0)
-    public List<PersistableModel> models;
+    public List<MModelInstance> entities;
+
+    public List<MModel> models;
 
     public Terrains terrains;
-    @Tag(1)
+
     private long nextAvailableID;
 
-    public ProjectContext() {
+    public boolean loaded = false;
+
+    public ProjectContext(long nextAvailableID) {
         entities = new ArrayList<>();
         models = new ArrayList<>();
         terrains = new Terrains();
-        nextAvailableID = 0;
+        this.nextAvailableID = nextAvailableID;
 
         PointLight light = new PointLight();
         light.setPosition(400,300,400);
@@ -42,7 +44,9 @@ public class ProjectContext implements Disposable {
     }
 
     public void copyFrom(ProjectContext other) {
-        ref = other.ref;
+        path = other.path;
+        name = other.name;
+        id = other.id;
         environment = other.environment;
         entities = other.entities;
         models = other.models;
@@ -61,7 +65,7 @@ public class ProjectContext implements Disposable {
 
     @Override
     public void dispose() {
-        for(PersistableModel model : models) {
+        for(MModel model : models) {
             model.getModel().dispose();
         }
         models = null;
