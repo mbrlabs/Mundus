@@ -19,8 +19,12 @@ public class TerrainDescriptor {
     @Tag(3)
     private int depth;
     @Tag(4)
-    private int vertexResolution;
+    private float posX;
     @Tag(5)
+    private float posZ;
+    @Tag(6)
+    private int vertexResolution;
+    @Tag(7)
     private String path;
 
     public long getId() {
@@ -53,6 +57,22 @@ public class TerrainDescriptor {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public float getPosX() {
+        return posX;
+    }
+
+    public void setPosX(float posX) {
+        this.posX = posX;
+    }
+
+    public float getPosZ() {
+        return posZ;
+    }
+
+    public void setPosZ(float posZ) {
+        this.posZ = posZ;
     }
 
     public String getPath() {
