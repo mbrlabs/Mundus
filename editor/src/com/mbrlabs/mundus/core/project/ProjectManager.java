@@ -115,6 +115,7 @@ public class ProjectManager {
         mModel.name = finalG3db.name();
         mModel.id = id;
         mModel.g3dbPath = finalG3db.path();
+        System.out.println(finalG3db);
         projectContext.models.add(mModel);
 
         // save whole project

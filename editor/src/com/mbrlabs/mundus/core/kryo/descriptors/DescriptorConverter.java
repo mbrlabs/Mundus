@@ -14,6 +14,7 @@ public class DescriptorConverter {
         ModelDescriptor descriptor = new ModelDescriptor();
         descriptor.setName(model.name);
         descriptor.setId(model.id);
+        descriptor.setG3dbPath(model.g3dbPath);
         return descriptor;
     }
 
