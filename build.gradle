@@ -14,7 +14,7 @@ allprojects {
 
     ext {
         appName = "Mundus"
-        gdxVersion = '1.7.1'
+        gdxVersion = '1.7.2'
         roboVMVersion = '1.9.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.6.0'
