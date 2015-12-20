@@ -26,6 +26,8 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
+    protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
+
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
     protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
 
@@ -71,11 +73,11 @@ public class TerrainShader extends BaseShader {
         this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
         this.context.setDepthMask(true);
 
-//        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-//        Gdx.gl.glDepthFunc(GL20.GL_LINEAR);
         program.begin();
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
+        set(UNIFORM_CAM_POS, camera.position);
+
     }
 
     @Override
