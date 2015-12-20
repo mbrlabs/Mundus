@@ -32,16 +32,23 @@ public class TerrainIO {
     public static void exportBinary(Terrain terrain, String path) {
         float[] data = terrain.heightData;
         long start = System.currentTimeMillis();
+
+        // create file
+        File file = new File(path);
         try {
-            File file = new File(path);
             FileUtils.touch(file);
-            DataOutputStream outputStream = new DataOutputStream(
-                    new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(file))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // write data
+        try(DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(
+                new GZIPOutputStream(new FileOutputStream(file))))) {
+
             for(float f : data) {
                 outputStream.writeFloat(f);
             }
             outputStream.flush();
-            outputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -52,35 +59,15 @@ public class TerrainIO {
                 + (System.currentTimeMillis() - start) + " ms");
     }
 
-//    public static Terrain importTerrain(String path) {
-//        FloatArray floatArray = new FloatArray();
-//        try {
-//            DataInputStream is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(path))));
-//            while (is.available() > 0) {
-//                floatArray.add(is.readFloat());
-//            }
-//            is.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Log.debug("Terrain import. floats: " + floatArray.size);
-//        Terrain terrain = new Terrain((int)Math.sqrt(floatArray.size));
-//        terrain.heightData = floatArray.toArray();
-//        terrain.update();
-//        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
-//        terrain.setTexture(tex);
-//
-//        return terrain;
-//    }
-
     public static Terrain importTerrain(Terrain terrain, String path) {
         FloatArray floatArray = new FloatArray();
-        try {
-            DataInputStream is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(path))));
+
+        try(DataInputStream is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(path))))) {
             while (is.available() > 0) {
                 floatArray.add(is.readFloat());
             }
-            is.close();
+        } catch (EOFException e) {
+            //e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
