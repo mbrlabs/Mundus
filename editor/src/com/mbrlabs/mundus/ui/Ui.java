@@ -99,7 +99,6 @@ public class Ui extends MyStage {
         menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
         menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
-        menuBar.getTerrainMenu().getAddTerrain().addListener(new AddTerrainHandler());
         menuBar.getModelsMenu().getImportModel().addListener(modelImportHandler);
 
         // Toolbar
