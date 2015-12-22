@@ -28,7 +28,7 @@ import java.io.File;
 public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
-    public static final String PROJECT_SCEENS_DIR = "scenes/";
+    public static final String PROJECT_SCENES_DIR = "scenes/";
     public static final String PROJECT_TERRAIN_DIR = "terrains/";
 
     private ProjectContext projectContext;
@@ -49,7 +49,8 @@ public class ProjectManager {
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
-        new File(path, PROJECT_SCEENS_DIR).mkdirs();
+        new File(path, PROJECT_TERRAIN_DIR).mkdirs();
+        new File(path, PROJECT_SCENES_DIR).mkdirs();
         return ref;
     }
 
@@ -99,7 +100,7 @@ public class ProjectManager {
     }
 
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
-        long id = projectContext.obtainAvailableID();
+        long id = projectContext.obtainUUID();
 
         // copy to project's model folder
         String folder = projectContext.path + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
@@ -147,7 +148,7 @@ public class ProjectManager {
 
     public Scene createScene(ProjectContext projectContext, String name) {
         Scene scene = new Scene();
-        long id = projectContext.obtainAvailableID();
+        long id = projectContext.obtainUUID();
         scene.setId(id);
         scene.setName(name);
 

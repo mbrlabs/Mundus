@@ -84,6 +84,7 @@ public class KryoManager {
         try {
             Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".pro"));
             ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
+            System.err.println(projectDescriptor.getNextAvailableID());
             return DescriptorConverter.convert(projectDescriptor);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -57,7 +57,7 @@ public class DescriptorConverter {
         ProjectDescriptor descriptor = new ProjectDescriptor();
         descriptor.setName(project.name);
         descriptor.setId(project.id);
-        descriptor.setNextAvailableID(project.getNextAvailableID());
+        descriptor.setNextAvailableID(project.getCurrentUUID());
         // terrains
         for(Terrain terrain : project.terrains.getTerrains()) {
             descriptor.getTerrains().add(convert(terrain));

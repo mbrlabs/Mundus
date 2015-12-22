@@ -27,14 +27,14 @@ public class ProjectContext implements Disposable {
 
     public List<MModel> models;
     public Terrains terrains;
-    private long nextAvailableID;
+    private long uuidProvider;
     public boolean loaded = false;
 
-    public ProjectContext(long nextAvailableID) {
+    public ProjectContext(long uuidProvider) {
         models = new ArrayList<MModel>();
         scenes = new ArrayList<>();
         terrains = new Terrains();
-        this.nextAvailableID = nextAvailableID;
+        this.uuidProvider = uuidProvider;
 
         environment = new Environment();
         PointLight pointLight = new PointLight();
@@ -42,7 +42,6 @@ public class ProjectContext implements Disposable {
         pointLight.setPosition(0, 400, 0);
         pointLight.setColor(1,1,1,1);
         environment.add(pointLight);
-
     }
 
     public void copyFrom(ProjectContext other) {
@@ -52,16 +51,16 @@ public class ProjectContext implements Disposable {
         terrains = other.terrains;
         id = other.id;
         models = other.models;
-        nextAvailableID = other.nextAvailableID;
+        uuidProvider = other.uuidProvider;
     }
 
-    public synchronized long obtainAvailableID() {
-        nextAvailableID += 1;
-        return nextAvailableID - 1;
+    public synchronized long obtainUUID() {
+        uuidProvider += 1;
+        return uuidProvider;
     }
 
-    public synchronized long getNextAvailableID() {
-        return nextAvailableID;
+    public synchronized long getCurrentUUID() {
+        return uuidProvider;
     }
 
     @Override

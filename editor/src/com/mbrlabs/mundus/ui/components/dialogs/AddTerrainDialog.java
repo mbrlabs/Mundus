@@ -2,7 +2,6 @@ package com.mbrlabs.mundus.ui.components.dialogs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -107,7 +106,7 @@ public class AddTerrainDialog extends BaseDialog {
 
                     Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
                     terrain.name = nom;
-                    terrain.id = projectContext.obtainAvailableID();
+                    terrain.id = projectContext.obtainUUID();
                     projectContext.terrains.add(terrain);
 
                 } catch (NumberFormatException nfe) {
