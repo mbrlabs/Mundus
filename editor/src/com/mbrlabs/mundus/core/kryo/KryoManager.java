@@ -5,6 +5,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.core.Files;
+import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectRef;
@@ -35,6 +36,8 @@ public class KryoManager {
         kryo.register(ProjectDescriptor.class, 5);
         kryo.register(TerrainDescriptor.class, 6);
         kryo.register(ModelDescriptor.class, 7);
+        kryo.register(ModelInstanceDescriptor.class, 8);
+        kryo.register(SceneDescriptor.class, 9);
     }
 
     public HomeDescriptor loadHomeDescriptor() {
@@ -65,7 +68,7 @@ public class KryoManager {
 
     public void saveProjectContext(ProjectContext context) {
         try {
-            Output output = new Output(new FileOutputStream(context.path + "/" + context.name + ".mundus"));
+            Output output = new Output(new FileOutputStream(context.path + "/" + context.name + ".pro"));
 
             ProjectDescriptor descriptor = DescriptorConverter.convert(context);
             kryo.writeObject(output, descriptor);
@@ -79,7 +82,7 @@ public class KryoManager {
 
     public ProjectContext loadProjectContext(ProjectRef ref) {
         try {
-            Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".mundus"));
+            Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".pro"));
             ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
             return DescriptorConverter.convert(projectDescriptor);
         } catch (FileNotFoundException e) {
@@ -88,6 +91,18 @@ public class KryoManager {
 
         return new ProjectContext(-1);
     }
+
+//    public Scene loadScene(SceneDescriptor sceneDescriptor) {
+//        try {
+//            Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".mundus"));
+//            ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
+//            return DescriptorConverter.convert(projectDescriptor);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return new ProjectContext(-1);
+//    }
 
 
 

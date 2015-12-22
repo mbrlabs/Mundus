@@ -14,7 +14,6 @@ public class ProjectDescriptor {
     private List<ModelDescriptor> models;
     @Tag(1)
     private List<TerrainDescriptor> terrains;
-
     @Tag(2)
     private String name;
     @Tag(3)

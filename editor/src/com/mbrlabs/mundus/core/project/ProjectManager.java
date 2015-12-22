@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.events.EventBus;
@@ -27,6 +28,7 @@ import java.io.File;
 public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
+    public static final String PROJECT_SCEENS_DIR = "scenes/";
     public static final String PROJECT_TERRAIN_DIR = "terrains/";
 
     private ProjectContext projectContext;
@@ -47,7 +49,7 @@ public class ProjectManager {
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
-        new File(path, PROJECT_TERRAIN_DIR).mkdirs();
+        new File(path, PROJECT_SCEENS_DIR).mkdirs();
         return ref;
     }
 
@@ -92,7 +94,7 @@ public class ProjectManager {
         projectContext.dispose();
         projectContext.copyFrom(context);
         projectContext.loaded = true;
-        Gdx.graphics.setTitle(projectContext.path + " - " + Main.TITLE);
+        Gdx.graphics.setTitle(projectContext.name+" ["+projectContext.path+"]" + " - " + Main.TITLE);
         eventBus.post(new ReloadAllModelsEvent());
     }
 
@@ -135,10 +137,32 @@ public class ProjectManager {
             TerrainIO.exportBinary(terrain, path);
         }
 
-        // save context in .mundus file
+        // save context in .pro file
         kryoManager.saveProjectContext(projectContext);
 
         Log.debug("Saving project " + projectContext.name+ " [" + projectContext.path + "]");
+    }
+
+
+
+    public Scene createScene(ProjectContext projectContext, String name) {
+        Scene scene = new Scene();
+        long id = projectContext.obtainAvailableID();
+        scene.setId(id);
+        scene.setName(name);
+
+        String sceneDir = FilenameUtils.concat(projectContext.path, scene.getName());
+        String terrainsDir = FilenameUtils.concat(sceneDir, PROJECT_TERRAIN_DIR);
+        new File(sceneDir).mkdir();
+        new File(terrainsDir).mkdir();
+
+        projectContext.scenes.add(scene);
+
+        return scene;
+    }
+
+    public void saveScene() {
+
     }
 
 

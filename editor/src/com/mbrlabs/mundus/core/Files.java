@@ -15,6 +15,6 @@ public class Files {
     public static final String LOGS_DIR = FilenameUtils.concat(HOME_DIR, "logs/");
     public static final String TEMP_DIR = FilenameUtils.concat(HOME_DIR, "temp/");
 
-    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "mundus.home");
+    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "home.mundus");
 
 }
