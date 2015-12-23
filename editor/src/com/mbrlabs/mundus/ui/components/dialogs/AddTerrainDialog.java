@@ -13,6 +13,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.ui.components.MinimapWidget;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.TextureUtils;
@@ -27,7 +28,7 @@ public class AddTerrainDialog extends BaseDialog {
 
     // UI elements
     private VisTextField name = new VisTextField("Name");
-    private MinimapWidget minimap;
+   // private MinimapWidget minimap;
 
     private VisTextField vertexResolution = new VisTextField("180");
 
@@ -57,7 +58,7 @@ public class AddTerrainDialog extends BaseDialog {
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
 
-        minimap = new MinimapWidget(projectContext.terrains);
+       // minimap = new MinimapWidget(projectContext.terrains);
 
         // left table
         VisTable leftTable = new VisTable();
@@ -79,7 +80,8 @@ public class AddTerrainDialog extends BaseDialog {
         // right table
         VisTable rightTable = new VisTable();
         rightTable.top();
-        rightTable.add(minimap).expand().fill().padBottom(5).colspan(2).row();
+        // TODO add minimap again
+        rightTable.add(new VisLabel("minmap")).expand().fill().padBottom(5).colspan(2).row();
         rightTable.add(minimapZoomIn).fillX().expandX().padRight(5);
         rightTable.add(minimapZoomOut).fillX().expandX().padLeft(5);
 
@@ -104,10 +106,16 @@ public class AddTerrainDialog extends BaseDialog {
                     float posX = Float.valueOf(positionX.getText());
                     float posZ = Float.valueOf(positionZ.getText());
 
-                    Terrain terrain = generateTerrain(posX, posZ, width, depth, res);
+                    // create model
+                    Terrain terrain = generateTerrain(width, depth, res);
                     terrain.name = nom;
                     terrain.id = projectContext.obtainUUID();
                     projectContext.terrains.add(terrain);
+
+                    // create Instance
+                    TerrainInstance terrainInstance = new TerrainInstance(terrain);
+                    terrainInstance.transform.setTranslation(posX, 0, posZ);
+                    projectContext.terrainGroup.add(terrainInstance);
 
                 } catch (NumberFormatException nfe) {
                     Log.error(TAG, nfe.getMessage());
@@ -116,28 +124,25 @@ public class AddTerrainDialog extends BaseDialog {
             }
         });
 
-        minimapZoomIn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                minimap.zoom(-0.03f);
-            }
-        });
-
-        minimapZoomOut.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                minimap.zoom(0.03f);
-            }
-        });
+//        minimapZoomIn.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                minimap.zoom(-0.03f);
+//            }
+//        });
+//
+//        minimapZoomOut.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                minimap.zoom(0.03f);
+//            }
+//        });
 
     }
 
-    private Terrain generateTerrain(float posX, float posZ, int terrainWidth, int terrainDepth,
-                                 int res) {
+    private Terrain generateTerrain(int terrainWidth, int terrainDepth, int res) {
         Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
         Terrain terrain = new Terrain(res);
-        terrain.position.x = posX;
-        terrain.position.z = posZ;
         terrain.terrainWidth = terrainWidth;
         terrain.terrainDepth = terrainDepth;
         terrain.init();

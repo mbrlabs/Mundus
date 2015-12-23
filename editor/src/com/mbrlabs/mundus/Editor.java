@@ -16,6 +16,7 @@ import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -101,9 +102,10 @@ public class Editor implements ApplicationListener {
 
         // render terrains
         shaders.terrainShader.begin(cam, renderContext);
-        for(Terrain terrain : projectContext.terrains.getTerrains()) {
-            terrain.renderable.environment = projectContext.environment;
-            shaders.terrainShader.render(terrain.renderable);
+        for(TerrainInstance terrain : projectContext.terrainGroup.getTerrains()) {
+            terrain.terrain.renderable.environment = projectContext.environment;
+            terrain.terrain.renderable.worldTransform.set(terrain.transform);
+            shaders.terrainShader.render(terrain.terrain.renderable);
         }
         shaders.terrainShader.end();
 
@@ -122,14 +124,14 @@ public class Editor implements ApplicationListener {
     @Deprecated
     private void createTestModels() {
         // boxes to test terrain height
-        if(projectContext.terrains.size() > 0) {
+        if(projectContext.terrainGroup.size() > 0) {
             float boxSize = 0.5f;
             Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
                     new Material(ColorAttribute.createDiffuse(Color.RED)),
                     VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
             Mundus.testModels.add(boxModel);
             Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-                    boxModel, projectContext.terrains.first()));
+                    boxModel, projectContext.terrainGroup.first()));
         }
     }
 

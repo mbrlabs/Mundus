@@ -11,12 +11,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.Terrains;
-
-import java.util.List;
+import com.mbrlabs.mundus.terrain.TerrainGroup;
+import com.mbrlabs.mundus.terrain.TerrainInstance;
 
 /**
  * @author Marcus Brummer
@@ -71,18 +68,22 @@ public class SphereBrush implements Brush {
         return SphereBrush.NAME;
     }
 
-    public void draw(Terrains terrains, boolean up) {
+    public void draw(TerrainGroup terrainGroup, boolean up) {
         // tVec1 holds sphere transformation
         sphereModelInstance.transform.getTranslation(tVec1);
 
-        Terrain terrain = terrains.getTerrain(tVec1.x, tVec1.z);
-        if(terrain == null) {
+        TerrainInstance terrainInstance = terrainGroup.getTerrain(tVec1.x, tVec1.z);
+        if(terrainInstance == null) {
             return;
         }
 
-        for (int x = 0; x < terrain.vertexResolution; x++) {
-            for (int z = 0; z <  terrain.vertexResolution; z++) {
-                terrain.getVertexPosition(tVec0, x, z);
+        final Vector3 terPos = terrainInstance.getPosition();
+
+        for (int x = 0; x < terrainInstance.terrain.vertexResolution; x++) {
+            for (int z = 0; z <  terrainInstance.terrain.vertexResolution; z++) {
+                terrainInstance.terrain.getVertexPosition(tVec0, x, z);
+                tVec0.x += terPos.x;
+                tVec0.z += terPos.z;
                 float distance = tVec0.dst(tVec1);
 
                 if(distance <= radius) {
@@ -93,11 +94,11 @@ public class SphereBrush implements Brush {
                     } else {
                         elevation = dir;
                     }
-                    terrain.heightData[z * terrain.vertexResolution + x] += elevation;
+                    terrainInstance.terrain.heightData[z * terrainInstance.terrain.vertexResolution + x] += elevation;
                 }
             }
         }
-        terrain.update();
+        terrainInstance.terrain.update();
     }
 
     @Override

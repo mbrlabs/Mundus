@@ -68,7 +68,7 @@ public class ProjectManager {
         }
 
         // load terrain .terra files
-        for(Terrain terrain : context.terrains.getTerrains()) {
+        for(Terrain terrain : context.terrains) {
             TerrainIO.importTerrain(terrain, terrain.terraPath);
         }
 
@@ -131,7 +131,7 @@ public class ProjectManager {
         // TODO save
 
         // save terrain data in .terra files
-        for(Terrain terrain : projectContext.terrains.getTerrains()) {
+        for(Terrain terrain : projectContext.terrains) {
             String path = FilenameUtils.concat(projectContext.path, ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.name + "-" + terrain.id + "." + TerrainIO.FILE_EXTENSION;
             terrain.terraPath = path;

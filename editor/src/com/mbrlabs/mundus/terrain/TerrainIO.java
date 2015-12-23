@@ -2,7 +2,6 @@ package com.mbrlabs.mundus.terrain;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.TextureUtils;

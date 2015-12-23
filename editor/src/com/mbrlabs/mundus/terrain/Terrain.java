@@ -26,10 +26,8 @@ public class Terrain {
     public String name;
     public String terraPath;
 
-    public final Vector3 position = new Vector3(0, 0, 0);
     public int terrainWidth = 1200;
     public int terrainDepth = 1200;
-
 
     public float[] heightData;
     public int vertexResolution;
@@ -49,12 +47,6 @@ public class Terrain {
     private final Vector2 uvScale = new Vector2(20, 20);
 
     private final VertexInfo tempVInfo = new VertexInfo();
-
-    // used for collision detection
-    private final Vector3 c00 = new Vector3();
-    private final Vector3 c01 = new Vector3();
-    private final Vector3 c10 = new Vector3();
-    private final Vector3 c11 = new Vector3();
 
     private Texture texture;
 
@@ -81,69 +73,6 @@ public class Terrain {
     public void loadHeightMap(Pixmap map, float maxHeight) {
         if (map.getWidth() != vertexResolution || map.getHeight() != vertexResolution) throw new GdxRuntimeException("Incorrect map size");
         heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
-    }
-
-    public float getHeightAtWorldCoord(float worldX, float worldZ) {
-        float terrainX = worldX - position.x;
-        float terrainZ = worldZ - position.z;
-
-        float gridSquareSize = terrainWidth / ((float) vertexResolution - 1);
-        int gridX = (int) Math.floor(terrainX / gridSquareSize);
-        int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
-
-        if(gridX >= vertexResolution -1 || gridZ >= vertexResolution - 1 || gridX < 0 || gridZ < 0) {
-            return 0;
-        }
-
-        float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
-        float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
-
-        c01.set(1,heightData[(gridZ+1) * vertexResolution + gridX], 0);
-        c10.set(0,heightData[gridZ * vertexResolution + gridX+1], 1);
-
-        // we are in upper left triangle of the square
-        if(xCoord <= (1 - zCoord)) {
-            c00.set(0,heightData[gridZ * vertexResolution + gridX], 0);
-            return MathUtils.barryCentric(c00, c10, c01, new Vector2(zCoord, xCoord));
-        }
-        // bottom right triangle
-        c11.set(1,heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
-        return MathUtils.barryCentric(c10, c11, c01, new Vector2(zCoord, xCoord));
-    }
-
-    public Vector3 getRayIntersection(Vector3 out, Ray ray) {
-        // TODO improve performance. use binary search
-        float curDistance = 2;
-        int rounds = 0;
-
-        long start = System.currentTimeMillis();
-
-        ray.getEndPoint(out, curDistance);
-        boolean isUnder = isUnderTerrain(out);
-
-        while(true) {
-            rounds++;
-            ray.getEndPoint(out, curDistance);
-
-            boolean u = isUnderTerrain(out);
-            if(u != isUnder || rounds == 10000) {
-           //     Log.debug("getRayIntersection rounds: " + rounds+ " time: " + (System.currentTimeMillis() - start));
-                return out;
-            }
-
-            if(u) {
-                curDistance -= 0.1f;
-            } else {
-                curDistance += 0.1f;
-            }
-        }
-
-
-    }
-
-    private boolean isUnderTerrain(Vector3 pointInWorldCoordinates) {
-        float terrainHeight = getHeightAtWorldCoord(pointInWorldCoordinates.x, pointInWorldCoordinates.z);
-        return terrainHeight > pointInWorldCoordinates.y;
     }
 
     private void buildIndices() {
@@ -229,7 +158,7 @@ public class Terrain {
         final float dz = (float)z / (float)(vertexResolution - 1);
         final float height = heightData[z * vertexResolution + x];
 
-        out.position.set(position.x + dx * this.terrainWidth, height, position.z + dz * this.terrainDepth);
+        out.position.set(dx * this.terrainWidth, height, dz * this.terrainDepth);
         out.uv.set(dx, dz).scl(uvScale);
         out.uv.x %= 1;
         out.uv.y %= 1;
@@ -244,7 +173,7 @@ public class Terrain {
         final float dx = (float)x / (float)(vertexResolution - 1);
         final float dz = (float)z / (float)(vertexResolution - 1);
         final float height = heightData[z * vertexResolution + x];
-        out.set(position.x + dx * this.terrainWidth, height, position.z + dz * this.terrainDepth);
+        out.set(dx * this.terrainWidth, height, dz * this.terrainDepth);
         return out;
     }
 

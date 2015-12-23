@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.terrain.Terrains;
+import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.TerrainGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,17 @@ public class ProjectContext implements Disposable {
     public Scene currScene;
 
     public List<MModel> models;
-    public Terrains terrains;
+    public List<Terrain> terrains;
+
+    public TerrainGroup terrainGroup = new TerrainGroup();
+
     private long uuidProvider;
     public boolean loaded = false;
 
     public ProjectContext(long uuidProvider) {
         models = new ArrayList<MModel>();
         scenes = new ArrayList<>();
-        terrains = new Terrains();
+        terrains = new ArrayList<>();
         this.uuidProvider = uuidProvider;
 
         environment = new Environment();

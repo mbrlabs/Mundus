@@ -34,8 +34,6 @@ public class DescriptorConverter {
         descriptor.setPath(terrain.terraPath);
         descriptor.setWidth(terrain.terrainWidth);
         descriptor.setDepth(terrain.terrainDepth);
-        descriptor.setPosX(terrain.position.x);
-        descriptor.setPosZ(terrain.position.z);
         descriptor.setVertexResolution(terrain.vertexResolution);
         return descriptor;
     }
@@ -44,8 +42,6 @@ public class DescriptorConverter {
         Terrain terrain = new Terrain(terrainDescriptor.getVertexResolution());
         terrain.terrainWidth = terrainDescriptor.getWidth();
         terrain.terrainDepth = terrainDescriptor.getDepth();
-        terrain.position.x = terrainDescriptor.getPosX();
-        terrain.position.z = terrainDescriptor.getPosZ();
         terrain.terraPath = terrainDescriptor.getPath();
         terrain.id = terrainDescriptor.getId();
         terrain.name = terrainDescriptor.getName();
@@ -59,7 +55,7 @@ public class DescriptorConverter {
         descriptor.setId(project.id);
         descriptor.setNextAvailableID(project.getCurrentUUID());
         // terrains
-        for(Terrain terrain : project.terrains.getTerrains()) {
+        for(Terrain terrain : project.terrains) {
             descriptor.getTerrains().add(convert(terrain));
         }
         // models

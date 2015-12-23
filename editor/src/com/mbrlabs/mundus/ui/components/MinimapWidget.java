@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.Terrains;
-
-import java.util.List;
+import com.mbrlabs.mundus.terrain.TerrainGroup;
+import com.mbrlabs.mundus.terrain.TerrainInstance;
 
 /**
  * @author Marcus Brummer
@@ -22,7 +21,7 @@ public class MinimapWidget extends Widget {
 
     private static final float WORLD_TO_MINIMAP = 1f;
 
-    protected Terrains terrains;
+    protected TerrainGroup terrainGroup;
 
     protected Texture terrainTexture;
     protected Texture backgroundTexture;
@@ -32,9 +31,11 @@ public class MinimapWidget extends Widget {
 
     private Matrix4 originalBatchProjMatrix = new Matrix4();
 
-    public MinimapWidget(Terrains terrains) {
+    private Vector3 tv3 = new Vector3();
+
+    public MinimapWidget(TerrainGroup terrainGroup) {
         super();
-        this.terrains = terrains;
+        this.terrainGroup = terrainGroup;
         // terrain texture
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(0f,0.714f,0.586f, 1.0f);
@@ -83,7 +84,7 @@ public class MinimapWidget extends Widget {
 
         batch.setProjectionMatrix(cam.combined);
         // draw terrains
-        for(Terrain terrain : terrains.getTerrains()) {
+        for(TerrainInstance terrain : terrainGroup.getTerrains()) {
             drawTerrain(batch, terrain);
         }
 
@@ -96,11 +97,12 @@ public class MinimapWidget extends Widget {
         cam.update();
     }
 
-    private void drawTerrain(Batch batch, Terrain terrain) {
-        float x = getX() + terrain.position.x * WORLD_TO_MINIMAP;
-        float y = getY() + terrain.position.z * WORLD_TO_MINIMAP;
-        float width = terrain.terrainWidth * WORLD_TO_MINIMAP;
-        float height = terrain.terrainDepth * WORLD_TO_MINIMAP;
+    private void drawTerrain(Batch batch, TerrainInstance terrain) {
+        terrain.transform.getTranslation(tv3);
+        float x = getX() + tv3.x * WORLD_TO_MINIMAP;
+        float y = getY() + tv3.z * WORLD_TO_MINIMAP;
+        float width = terrain.terrain.terrainWidth * WORLD_TO_MINIMAP;
+        float height = terrain.terrain.terrainDepth * WORLD_TO_MINIMAP;
 
         batch.draw(terrainTexture, x, y, width, height);
     }

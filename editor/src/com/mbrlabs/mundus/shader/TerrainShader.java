@@ -84,9 +84,7 @@ public class TerrainShader extends BaseShader {
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
-
         // texture uniform
-
         TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
         if(textureAttribute != null) {
             set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);

@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.brushes.Brush;
 
 /**
  * @author Marcus Brummer
@@ -53,11 +51,11 @@ public class BrushManager implements InputProcessor, Disposable {
     public void act() {
         if(activeBrush != null) {
             if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
-                activeBrush.draw(projectContext.terrains, true);
+                activeBrush.draw(projectContext.terrainGroup, true);
             }
 
             if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
-                activeBrush.draw(projectContext.terrains, false);
+                activeBrush.draw(projectContext.terrainGroup, false);
             }
         }
     }
@@ -79,9 +77,9 @@ public class BrushManager implements InputProcessor, Disposable {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if(activeBrush != null && projectContext.terrains.size() > 0) {
+        if(activeBrush != null && projectContext.terrainGroup.size() > 0) {
             Ray ray = cam.getPickRay(screenX, screenY);
-            projectContext.terrains.getRayIntersection(tempV3, ray);
+            projectContext.terrainGroup.getRayIntersection(tempV3, ray);
             activeBrush.setTranslation(tempV3);
         }
         return false;
