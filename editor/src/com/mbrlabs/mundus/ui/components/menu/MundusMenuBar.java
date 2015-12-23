@@ -14,6 +14,7 @@ public class MundusMenuBar extends MenuBar {
     private TerrainMenu terrainMenu;
     private ModelsMenu modelsMenu;
     private EnvironmentMenu environmentMenu;
+    private SceneMenu sceneMenu;
 
     public MundusMenuBar() {
         super();
@@ -23,11 +24,13 @@ public class MundusMenuBar extends MenuBar {
         terrainMenu = new TerrainMenu();
         windowMenu = new WindowMenu();
         environmentMenu = new EnvironmentMenu();
+        sceneMenu = new SceneMenu();
         addMenu(fileMenu);
         addMenu(editMenu);
         addMenu(modelsMenu);
         addMenu(terrainMenu);
         addMenu(environmentMenu);
+        addMenu(sceneMenu);
         addMenu(windowMenu);
     }
 

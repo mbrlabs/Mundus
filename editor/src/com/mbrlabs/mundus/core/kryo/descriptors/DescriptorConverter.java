@@ -1,8 +1,14 @@
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
+import com.badlogic.gdx.math.Vector3;
+import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.utils.Log;
+
+import java.util.List;
 
 /**
  * @author Marcus Brummer
@@ -49,6 +55,76 @@ public class DescriptorConverter {
         return terrain;
     }
 
+    public static TerrainInstanceDescriptor convert(TerrainInstance terrain) {
+        TerrainInstanceDescriptor descriptor = new TerrainInstanceDescriptor();
+        descriptor.setId(terrain.id);
+        descriptor.setName(terrain.name);
+        descriptor.setTerrainID(terrain.terrain.id);
+        Vector3 pos = terrain.getPosition();
+        descriptor.setPosX(pos.x);
+        descriptor.setPosZ(pos.z);
+
+        return descriptor;
+    }
+
+    public static TerrainInstance convert(TerrainInstanceDescriptor terrainDescriptor, List<Terrain> terrains) {
+        // find terrain
+        Terrain terrain = null;
+        for(Terrain t : terrains) {
+            if(terrainDescriptor.getTerrainID() == t.id) {
+                terrain = t;
+                break;
+            }
+        }
+
+        if(terrain == null) {
+            Log.fatal("Terrain for TerrainInstance not found");
+            return null;
+        }
+
+        final TerrainInstance terrainInstance = new TerrainInstance(terrain);
+        terrainInstance.transform.setTranslation(terrainDescriptor.getPosX(), 0, terrainDescriptor.getPosZ());
+        terrainInstance.name = terrainDescriptor.getName();
+        terrainInstance.id = terrainDescriptor.getId();
+
+        return terrainInstance;
+    }
+
+
+    public static SceneDescriptor convert(Scene scene) {
+        // TODO enviroenment, entities
+        SceneDescriptor descriptor = new SceneDescriptor();
+        descriptor.setName(scene.getName());
+        descriptor.setId(scene.getId());
+
+        // entities
+//        for(MModelInstance entity : scene.entities) {
+//            descriptor.getEntities().add(convert(entity));
+//        }
+
+        // terrains
+        for(TerrainInstance terrain : scene.terrains) {
+            descriptor.getTerrains().add(convert(terrain));
+        }
+
+        return descriptor;
+    }
+
+    public static Scene convert(SceneDescriptor sceneDescriptor, List<Terrain> terrains, List<MModel> models) {
+        // TODO enviroenment, entities
+        Scene scene = new Scene();
+        scene.setId(sceneDescriptor.getId());
+        scene.setName(sceneDescriptor.getName());
+
+        // terrains
+        for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
+            scene.terrains.add(convert(terrainDescriptor, terrains));
+        }
+
+        return scene;
+    }
+
+
     public static ProjectDescriptor convert(ProjectContext project) {
         ProjectDescriptor descriptor = new ProjectDescriptor();
         descriptor.setName(project.name);
@@ -62,7 +138,10 @@ public class DescriptorConverter {
         for(MModel model : project.models) {
             descriptor.getModels().add(convert(model));
         }
-        // TODO instances
+        // scenes
+        for(Scene scene : project.scenes) {
+            descriptor.getScenes().add(convert(scene));
+        }
 
         return descriptor;
     }
@@ -78,10 +157,15 @@ public class DescriptorConverter {
         for(TerrainDescriptor terrain : projectDescriptor.getTerrains()) {
             context.terrains.add(convert(terrain));
         }
+        // scenes
+        for(SceneDescriptor scene : projectDescriptor.getScenes()) {
+            context.scenes.add(convert(scene, context.terrains, context.models));
+        }
 
         context.loaded = false;
         return context;
     }
+
 
 
 

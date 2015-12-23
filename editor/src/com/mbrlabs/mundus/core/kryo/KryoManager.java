@@ -38,6 +38,7 @@ public class KryoManager {
         kryo.register(ModelDescriptor.class, 7);
         kryo.register(ModelInstanceDescriptor.class, 8);
         kryo.register(SceneDescriptor.class, 9);
+        kryo.register(TerrainInstanceDescriptor.class, 10);
     }
 
     public HomeDescriptor loadHomeDescriptor() {
@@ -91,19 +92,5 @@ public class KryoManager {
 
         return new ProjectContext(-1);
     }
-
-//    public Scene loadScene(SceneDescriptor sceneDescriptor) {
-//        try {
-//            Input input = new Input(new FileInputStream(ref.getPath() + "/" + ref.getName() + ".mundus"));
-//            ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
-//            return DescriptorConverter.convert(projectDescriptor);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return new ProjectContext(-1);
-//    }
-
-
 
 }

@@ -15,15 +15,18 @@ public class ProjectDescriptor {
     @Tag(1)
     private List<TerrainDescriptor> terrains;
     @Tag(2)
-    private String name;
+    private List<SceneDescriptor> scenes;
     @Tag(3)
-    private String id;
+    private String name;
     @Tag(4)
+    private String id;
+    @Tag(5)
     private long nextAvailableID;
 
     public ProjectDescriptor() {
         models = new ArrayList<>();
         terrains = new ArrayList<>();
+        scenes = new ArrayList<>();
     }
 
     public List<ModelDescriptor> getModels() {
@@ -56,5 +59,9 @@ public class ProjectDescriptor {
 
     public void setNextAvailableID(long nextAvailableID) {
         this.nextAvailableID = nextAvailableID;
+    }
+
+    public List<SceneDescriptor> getScenes() {
+        return scenes;
     }
 }

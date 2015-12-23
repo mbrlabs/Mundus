@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.events.EventBus;
@@ -77,12 +78,12 @@ public class Editor implements ApplicationListener {
         createTestModels();
 
         openLastOpenedProject();
+
     }
 
 	@Override
 	public void render () {
         GlUtils.clearScreen(Color.WHITE);
-
         ui.act();
         camController.update();
         brushManager.act();

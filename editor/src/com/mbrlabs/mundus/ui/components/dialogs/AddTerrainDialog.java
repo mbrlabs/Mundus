@@ -115,6 +115,7 @@ public class AddTerrainDialog extends BaseDialog {
                     // create Instance
                     TerrainInstance terrainInstance = new TerrainInstance(terrain);
                     terrainInstance.transform.setTranslation(posX, 0, posZ);
+                    terrainInstance.id = projectContext.obtainUUID();
                     projectContext.terrainGroup.add(terrainInstance);
 
                 } catch (NumberFormatException nfe) {

@@ -37,6 +37,7 @@ public class ProjectContext implements Disposable {
     public ProjectContext(long uuidProvider) {
         models = new ArrayList<MModel>();
         scenes = new ArrayList<>();
+        currScene = null;
         terrains = new ArrayList<>();
         this.uuidProvider = uuidProvider;
 
@@ -53,6 +54,7 @@ public class ProjectContext implements Disposable {
         name = other.name;
         environment = other.environment;
         terrains = other.terrains;
+        scenes = other.scenes;
         id = other.id;
         models = other.models;
         uuidProvider = other.uuidProvider;

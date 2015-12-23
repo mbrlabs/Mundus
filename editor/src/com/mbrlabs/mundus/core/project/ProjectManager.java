@@ -28,8 +28,9 @@ import java.io.File;
 public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
-    public static final String PROJECT_SCENES_DIR = "scenes/";
     public static final String PROJECT_TERRAIN_DIR = "terrains/";
+
+    private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
     private ProjectContext projectContext;
     private HomeManager homeManager;
@@ -50,7 +51,23 @@ public class ProjectManager {
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
-        new File(path, PROJECT_SCENES_DIR).mkdirs();
+
+        // create project context
+        ProjectContext newProjectContext = new ProjectContext(-1);
+        newProjectContext.path = ref.getPath();
+        newProjectContext.name = ref.getName();
+        newProjectContext.id = ref.getId();
+
+        // create default scene
+        Scene scene = new Scene();
+        scene.setName(DEFAULT_SCENE_NAME);
+        scene.setId(newProjectContext.obtainUUID());
+        newProjectContext.scenes.add(scene);
+
+        // save .pro file
+        saveProject(newProjectContext);
+
+
         return ref;
     }
 
@@ -144,8 +161,6 @@ public class ProjectManager {
         Log.debug("Saving project " + projectContext.name+ " [" + projectContext.path + "]");
     }
 
-
-
     public Scene createScene(ProjectContext projectContext, String name) {
         Scene scene = new Scene();
         long id = projectContext.obtainUUID();
@@ -164,6 +179,10 @@ public class ProjectManager {
 
     public void saveScene() {
 
+    }
+
+    public void changeScene(Scene scene) {
+        // TODO implement
     }
 
 
