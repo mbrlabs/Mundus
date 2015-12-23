@@ -30,7 +30,7 @@ void main(void) {
     v_texCoord0 = a_texCoord0;
 
     // fog intensity
-    v_fog = distance(worldPos, u_camPos);
+    v_fog = distance(worldPos, vec4(u_camPos, 1.0));
     v_fog = exp(-pow(v_fog * FOG_DENSITY, FOG_GRADIENT));
-    v_fog = 1 - clamp(v_fog, 0, 1);
+    v_fog = 1.0 - clamp(v_fog, 0.0, 1.0);
 }
