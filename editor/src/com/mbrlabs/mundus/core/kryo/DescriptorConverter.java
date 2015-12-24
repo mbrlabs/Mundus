@@ -1,7 +1,8 @@
-package com.mbrlabs.mundus.core.kryo.descriptors;
+package com.mbrlabs.mundus.core.kryo;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.terrain.Terrain;

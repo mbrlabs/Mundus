@@ -1,6 +1,7 @@
 package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.TerrainGroup;
 
@@ -24,6 +25,11 @@ public class Scene {
         entities = new ArrayList<>();
         terrainGroup = new TerrainGroup();
         environment = new Environment();
+        PointLight pointLight = new PointLight();
+        pointLight.setIntensity(1);
+        pointLight.setPosition(0, 400, 0);
+        pointLight.setColor(1,1,1,1);
+        environment.add(pointLight);
     }
 
     public String getName() {

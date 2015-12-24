@@ -1,12 +1,9 @@
 package com.mbrlabs.mundus.core.project;
 
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +13,6 @@ import java.util.List;
  * @version 28-11-2015
  */
 public class ProjectContext implements Disposable {
-
-    public Environment environment;
 
     public String path;
     public String name;
@@ -39,18 +34,11 @@ public class ProjectContext implements Disposable {
         terrains = new ArrayList<>();
         this.uuidProvider = uuidProvider;
 
-        environment = new Environment();
-        PointLight pointLight = new PointLight();
-        pointLight.setIntensity(1);
-        pointLight.setPosition(0, 400, 0);
-        pointLight.setColor(1,1,1,1);
-        environment.add(pointLight);
     }
 
     public void copyFrom(ProjectContext other) {
         path = other.path;
         name = other.name;
-        environment = other.environment;
         terrains = other.terrains;
         currScene = other.currScene;
         scenes = other.scenes;

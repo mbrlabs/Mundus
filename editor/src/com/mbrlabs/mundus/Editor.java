@@ -100,13 +100,13 @@ public class Editor implements ApplicationListener {
 //       batch.render(projectContext.entities,
 //                projectContext.environment, shaders.entityShader);
         batch.render(Mundus.testInstances,
-                projectContext.environment, shaders.entityShader);
+                projectContext.currScene.environment, shaders.entityShader);
         batch.end();
 
         // render terrains
         shaders.terrainShader.begin(cam, renderContext);
         for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
-            terrain.terrain.renderable.environment = projectContext.environment;
+            terrain.terrain.renderable.environment = projectContext.currScene.environment;
             terrain.terrain.renderable.worldTransform.set(terrain.transform);
             shaders.terrainShader.render(terrain.terrain.renderable);
         }
