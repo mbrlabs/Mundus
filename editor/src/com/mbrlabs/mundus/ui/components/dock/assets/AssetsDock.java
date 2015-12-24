@@ -11,12 +11,9 @@ import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.*;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.events.EventBus;
-import com.mbrlabs.mundus.events.ModelImportEvent;
-import com.mbrlabs.mundus.events.ReloadAllModelsEvent;
-import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -78,14 +75,12 @@ public class AssetsDock {
 
     @Subscribe
     public void modelImported(ModelImportEvent modelImportEvent) {
-        Log.debug("@Subscribe modelImported called");
         AssetItem assetItem = new AssetItem(modelImportEvent.getModel().name);
         filesView.addActor(assetItem);
     }
 
     @Subscribe
-    public void reloadAllModels(ReloadAllModelsEvent reloadAllModelsEvent) {
-        Log.debug("@Subscribe reload models");
+    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
         filesView.clearChildren();
         for(MModel model : projectContext.models) {
             filesView.addActor(new AssetItem(model.name));

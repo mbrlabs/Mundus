@@ -10,6 +10,10 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.model.MModel;
 
 /**
  * @author Marcus Brummer
@@ -22,12 +26,21 @@ public class SceneMenu extends Menu {
     @Inject
     private ProjectManager projectManager;
 
+    @Inject
+    private EventBus eventBus;
+
     private Array<MenuItem> sceneItems = new Array<>();
 
     public SceneMenu() {
         super("Scenes");
         Mundus.inject(this);
+        eventBus.register(this);
 
+        buildSceneUi();
+    }
+
+    @Subscribe
+    public void projectChanged(ProjectChangedEvent projectChangedEvent) {
         buildSceneUi();
     }
 

@@ -10,12 +10,11 @@ import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.events.EventBus;
-import com.mbrlabs.mundus.events.ReloadAllModelsEvent;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
-import com.mbrlabs.mundus.utils.Callback;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
@@ -115,7 +114,7 @@ public class ProjectManager {
         projectContext.copyFrom(context);
         projectContext.loaded = true;
         Gdx.graphics.setTitle(projectContext.name+" ["+projectContext.path+"]" + " - " + Main.TITLE);
-        eventBus.post(new ReloadAllModelsEvent());
+        eventBus.post(new ProjectChangedEvent());
     }
 
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
