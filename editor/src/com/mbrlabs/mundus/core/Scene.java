@@ -2,7 +2,7 @@ package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.terrain.TerrainGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ public class Scene {
     private long id;
 
     public List<MModelInstance> entities;
-    public List<TerrainInstance> terrains;
+    public TerrainGroup terrainGroup;
     public Environment environment;
 
     public Scene() {
         entities = new ArrayList<>();
-        terrains = new ArrayList<>();
+        terrainGroup = new TerrainGroup();
         environment = new Environment();
     }
 

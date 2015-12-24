@@ -60,7 +60,7 @@ public class TerrainMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("asdfadf");
                 // TODO dialog for selecting terrain + heightmap
-                if(projectContext.terrainGroup.size() > 0) {
+                if(projectContext.currScene.terrainGroup.size() > 0) {
                     Terrain terrain = projectContext.terrains.get(0);
                     terrain.loadHeightMap(new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png")), 200);
                     terrain.update();

@@ -51,11 +51,11 @@ public class BrushManager implements InputProcessor, Disposable {
     public void act() {
         if(activeBrush != null) {
             if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
-                activeBrush.draw(projectContext.terrainGroup, true);
+                activeBrush.draw(projectContext.currScene.terrainGroup, true);
             }
 
             if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
-                activeBrush.draw(projectContext.terrainGroup, false);
+                activeBrush.draw(projectContext.currScene.terrainGroup, false);
             }
         }
     }
@@ -77,9 +77,9 @@ public class BrushManager implements InputProcessor, Disposable {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if(activeBrush != null && projectContext.terrainGroup.size() > 0) {
+        if(activeBrush != null && projectContext.currScene.terrainGroup.size() > 0) {
             Ray ray = cam.getPickRay(screenX, screenY);
-            projectContext.terrainGroup.getRayIntersection(tempV3, ray);
+            projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
             activeBrush.setTranslation(tempV3);
         }
         return false;

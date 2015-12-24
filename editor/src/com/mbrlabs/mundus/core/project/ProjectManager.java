@@ -62,7 +62,9 @@ public class ProjectManager {
         Scene scene = new Scene();
         scene.setName(DEFAULT_SCENE_NAME);
         scene.setId(newProjectContext.obtainUUID());
+
         newProjectContext.scenes.add(scene);
+        newProjectContext.currScene = scene;
 
         // save .pro file
         saveProject(newProjectContext);
@@ -160,22 +162,17 @@ public class ProjectManager {
 
         Log.debug("Saving project " + projectContext.name+ " [" + projectContext.path + "]");
     }
-
-    public Scene createScene(ProjectContext projectContext, String name) {
-        Scene scene = new Scene();
-        long id = projectContext.obtainUUID();
-        scene.setId(id);
-        scene.setName(name);
-
-        String sceneDir = FilenameUtils.concat(projectContext.path, scene.getName());
-        String terrainsDir = FilenameUtils.concat(sceneDir, PROJECT_TERRAIN_DIR);
-        new File(sceneDir).mkdir();
-        new File(terrainsDir).mkdir();
-
-        projectContext.scenes.add(scene);
-
-        return scene;
-    }
+//
+//    public Scene createScene(ProjectContext projectContext, String name) {
+//        Scene scene = new Scene();
+//        long id = projectContext.obtainUUID();
+//        scene.setId(id);
+//        scene.setName(name);
+//
+//        projectContext.scenes.add(scene);
+//
+//        return scene;
+//    }
 
     public void saveScene() {
 

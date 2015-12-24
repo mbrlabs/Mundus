@@ -103,7 +103,7 @@ public class DescriptorConverter {
 //        }
 
         // terrains
-        for(TerrainInstance terrain : scene.terrains) {
+        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
             descriptor.getTerrains().add(convert(terrain));
         }
 
@@ -118,7 +118,7 @@ public class DescriptorConverter {
 
         // terrains
         for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
-            scene.terrains.add(convert(terrainDescriptor, terrains));
+            scene.terrainGroup.add(convert(terrainDescriptor, terrains));
         }
 
         return scene;
@@ -129,6 +129,7 @@ public class DescriptorConverter {
         ProjectDescriptor descriptor = new ProjectDescriptor();
         descriptor.setName(project.name);
         descriptor.setId(project.id);
+        descriptor.setCurrentSceneID(project.currScene.getId());
         descriptor.setNextAvailableID(project.getCurrentUUID());
         // terrains
         for(Terrain terrain : project.terrains) {
@@ -159,7 +160,13 @@ public class DescriptorConverter {
         }
         // scenes
         for(SceneDescriptor scene : projectDescriptor.getScenes()) {
-            context.scenes.add(convert(scene, context.terrains, context.models));
+            Scene s = convert(scene, context.terrains, context.models);
+            context.scenes.add(s);
+
+            // set current scene
+            if(scene.getId() == projectDescriptor.getCurrentSceneID()) {
+                context.currScene = s;
+            }
         }
 
         context.loaded = false;

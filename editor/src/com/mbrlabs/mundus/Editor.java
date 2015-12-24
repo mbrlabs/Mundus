@@ -75,15 +75,15 @@ public class Editor implements ApplicationListener {
 
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
 
-        createTestModels();
 
         openLastOpenedProject();
-
+        //createTestModels();
     }
 
 	@Override
 	public void render () {
         GlUtils.clearScreen(Color.WHITE);
+
         ui.act();
         camController.update();
         brushManager.act();
@@ -103,7 +103,7 @@ public class Editor implements ApplicationListener {
 
         // render terrains
         shaders.terrainShader.begin(cam, renderContext);
-        for(TerrainInstance terrain : projectContext.terrainGroup.getTerrains()) {
+        for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
             terrain.terrain.renderable.environment = projectContext.environment;
             terrain.terrain.renderable.worldTransform.set(terrain.transform);
             shaders.terrainShader.render(terrain.terrain.renderable);
@@ -125,14 +125,14 @@ public class Editor implements ApplicationListener {
     @Deprecated
     private void createTestModels() {
         // boxes to test terrain height
-        if(projectContext.terrainGroup.size() > 0) {
+        if(projectContext.currScene.terrainGroup.size() > 0) {
             float boxSize = 0.5f;
             Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
                     new Material(ColorAttribute.createDiffuse(Color.RED)),
                     VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
             Mundus.testModels.add(boxModel);
             Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-                    boxModel, projectContext.terrainGroup.first()));
+                    boxModel, projectContext.currScene.terrainGroup.first()));
         }
     }
 

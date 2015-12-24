@@ -17,10 +17,12 @@ public class ProjectDescriptor {
     @Tag(2)
     private List<SceneDescriptor> scenes;
     @Tag(3)
-    private String name;
+    private long currentSceneID;
     @Tag(4)
-    private String id;
+    private String name;
     @Tag(5)
+    private String id;
+    @Tag(6)
     private long nextAvailableID;
 
     public ProjectDescriptor() {
@@ -64,4 +66,13 @@ public class ProjectDescriptor {
     public List<SceneDescriptor> getScenes() {
         return scenes;
     }
+
+    public long getCurrentSceneID() {
+        return currentSceneID;
+    }
+
+    public void setCurrentSceneID(long currentSceneID) {
+        this.currentSceneID = currentSceneID;
+    }
+
 }

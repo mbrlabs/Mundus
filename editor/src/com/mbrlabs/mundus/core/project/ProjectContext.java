@@ -29,13 +29,11 @@ public class ProjectContext implements Disposable {
     public List<MModel> models;
     public List<Terrain> terrains;
 
-    public TerrainGroup terrainGroup = new TerrainGroup();
-
     private long uuidProvider;
     public boolean loaded = false;
 
     public ProjectContext(long uuidProvider) {
-        models = new ArrayList<MModel>();
+        models = new ArrayList<>();
         scenes = new ArrayList<>();
         currScene = null;
         terrains = new ArrayList<>();
@@ -54,6 +52,7 @@ public class ProjectContext implements Disposable {
         name = other.name;
         environment = other.environment;
         terrains = other.terrains;
+        currScene = other.currScene;
         scenes = other.scenes;
         id = other.id;
         models = other.models;
