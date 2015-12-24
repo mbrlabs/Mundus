@@ -29,6 +29,8 @@ import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.*;
 
+import java.io.File;
+
 public class Editor implements ApplicationListener {
 
     // axes
@@ -77,7 +79,7 @@ public class Editor implements ApplicationListener {
 
 
         openLastOpenedProject();
-        //createTestModels();
+        createTestModels();
     }
 
 	@Override
@@ -139,17 +141,12 @@ public class Editor implements ApplicationListener {
     private void openLastOpenedProject() {
         ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
         if(lastOpenedProject != null) {
-            projectManager.loadProject(lastOpenedProject, new Callback<ProjectContext>() {
-                @Override
-                public void done(ProjectContext result) {
-                    projectManager.changeProject(result);
-                }
-
-                @Override
-                public void error(String msg) {
-                    Log.error("Failed to load last opened project");
-                }
-            });
+            ProjectContext context = projectManager.loadProject(lastOpenedProject);
+            if(new File(context.path).exists()) {
+                projectManager.changeProject(context);
+            } else {
+                Log.error("Failed to load last opened project");
+            }
         }
     }
 

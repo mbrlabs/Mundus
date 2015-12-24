@@ -12,6 +12,8 @@ import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Callback;
 
+import java.io.File;
+
 /**
  * @author Marcus Brummer
  * @version 08-12-2015
@@ -37,23 +39,20 @@ public class LoadingProjectDialog extends VisDialog {
         root.add(projectName).right().padRight(5);
     }
 
+
     public void loadProjectAsync(ProjectRef ref) {
         this.projectName.setText("Loading project: " + ref.getName());
         Ui.getInstance().showDialog(this);
 
-        projectManager.loadProject(ref, new Callback<ProjectContext>() {
-            @Override
-            public void done(ProjectContext result) {
-                projectManager.changeProject(result);
-                close();
-            }
+        ProjectContext context = projectManager.loadProject(ref);
+        if(new File(context.path).exists()) {
+            projectManager.changeProject(context);
+            close();
+        } else {
+            close();
+            DialogUtils.showErrorDialog(Ui.getInstance(), "Faild to load project " + ref.getPath());
+        }
 
-            @Override
-            public void error(String msg) {
-                close();
-                DialogUtils.showErrorDialog(Ui.getInstance(), msg);
-            }
-        });
     }
 
 

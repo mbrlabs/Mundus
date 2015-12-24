@@ -73,7 +73,7 @@ public class ProjectManager {
         return ref;
     }
 
-    private ProjectContext loadProject(ProjectRef ref) {
+    public ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.path = ref.getPath();
         context.name = ref.getName();
@@ -94,19 +94,19 @@ public class ProjectManager {
         return context;
     }
 
-    public void loadProject(ProjectRef ref, Callback<ProjectContext> callback) {
-        new Thread() {
-            @Override
-            public void run() {
-                ProjectContext context = loadProject(ref);
-                if(new File(context.path).exists()) {
-                    Gdx.app.postRunnable(() -> callback.done(context));
-                } else {
-                    Gdx.app.postRunnable(() -> callback.error("Project " + context.path + " not found."));
-                }
-            }
-        }.run(); // FIXME run() is intended because of openGL context...either remove thread or find a way to run it async
-    }
+//    public void loadProject(ProjectRef ref, Callback<ProjectContext> callback) {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                ProjectContext context = loadProject(ref);
+//                if(new File(context.path).exists()) {
+//                    Gdx.app.postRunnable(() -> callback.done(context));
+//                } else {
+//                    Gdx.app.postRunnable(() -> callback.error("Project " + context.path + " not found."));
+//                }
+//            }
+//        }.run(); // FIXME run() is intended because of openGL context...either remove thread or find a way to run it async
+//    }
 
     public void changeProject(ProjectContext context) {
         homeManager.homeDescriptor.lastProject = context.id;
