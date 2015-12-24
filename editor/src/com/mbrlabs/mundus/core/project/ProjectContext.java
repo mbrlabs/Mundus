@@ -30,7 +30,7 @@ public class ProjectContext implements Disposable {
     public ProjectContext(long uuidProvider) {
         models = new ArrayList<>();
         scenes = new ArrayList<>();
-        currScene = null;
+        currScene = new Scene();
         terrains = new ArrayList<>();
         this.uuidProvider = uuidProvider;
 
