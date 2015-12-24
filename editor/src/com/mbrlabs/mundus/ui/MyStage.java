@@ -1,4 +1,4 @@
-package com.mbrlabs.mundus;
+package com.mbrlabs.mundus.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
