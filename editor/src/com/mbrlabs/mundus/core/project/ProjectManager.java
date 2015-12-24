@@ -107,6 +107,11 @@ public class ProjectManager {
         return context;
     }
 
+    public String constructWindowTitle() {
+        return projectContext.name + " - " + projectContext.currScene.getName() +
+                " [" + projectContext.path +"]" + " - " + Main.TITLE;
+    }
+
     public void changeProject(ProjectContext context) {
         homeManager.homeDescriptor.lastProject = new ProjectRef();
         homeManager.homeDescriptor.lastProject.setName(context.name);
@@ -115,7 +120,7 @@ public class ProjectManager {
         projectContext.dispose();
         projectContext.copyFrom(context);
         projectContext.loaded = true;
-        Gdx.graphics.setTitle(projectContext.name+" ["+projectContext.path+"]" + " - " + Main.TITLE);
+        Gdx.graphics.setTitle(constructWindowTitle());
         eventBus.post(new ProjectChangedEvent());
     }
 
