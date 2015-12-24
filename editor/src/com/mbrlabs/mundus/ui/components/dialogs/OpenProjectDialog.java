@@ -23,6 +23,8 @@ import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.components.RadioButtonGroup;
@@ -39,6 +41,8 @@ public class OpenProjectDialog extends BaseDialog {
 
     @Inject
     private HomeManager homeManager;
+    @Inject
+    private ProjectManager projectManager;
 
     public OpenProjectDialog() {
         super("Open Project");
@@ -76,8 +80,9 @@ public class OpenProjectDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 RadioButtonGroup.RadioButton selected = projectList.getButtonGroup().getChecked();
                 ProjectRef projectRef = (ProjectRef)selected.getRefObject();
+                ProjectContext projectContext = projectManager.loadProject(projectRef);
                 close();
-                Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectRef);
+                Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectContext);
             }
         });
 

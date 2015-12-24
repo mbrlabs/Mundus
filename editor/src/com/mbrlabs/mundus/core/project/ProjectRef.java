@@ -29,20 +29,6 @@ public class ProjectRef {
     private String name;
     @Tag(1)
     private String path;
-    @Tag(2)
-    private Date created;
-    @Tag(3)
-    private Date lastOpened;
-    @Tag(4)
-    private String id;
-
-    public Date getLastOpened() {
-        return lastOpened;
-    }
-
-    public void setLastOpened(Date lastOpened) {
-        this.lastOpened = lastOpened;
-    }
 
     public String getName() {
         return name;
@@ -60,19 +46,4 @@ public class ProjectRef {
         this.path = path;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }

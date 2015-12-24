@@ -60,7 +60,7 @@ public class ProjectManager {
         this.eventBus = eventBus;
     }
 
-    public ProjectRef createProject(String name, String folder) {
+    public ProjectContext createProject(String name, String folder) {
         ProjectRef ref = homeManager.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
@@ -71,7 +71,6 @@ public class ProjectManager {
         ProjectContext newProjectContext = new ProjectContext(-1);
         newProjectContext.path = ref.getPath();
         newProjectContext.name = ref.getName();
-        newProjectContext.id = ref.getId();
 
         // create default scene
         Scene scene = new Scene();
@@ -85,14 +84,13 @@ public class ProjectManager {
         saveProject(newProjectContext);
 
 
-        return ref;
+        return newProjectContext;
     }
 
     public ProjectContext loadProject(ProjectRef ref) {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.path = ref.getPath();
         context.name = ref.getName();
-        context.id = ref.getId();
 
         // load g3db models
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
@@ -109,28 +107,31 @@ public class ProjectManager {
         return context;
     }
 
-//    public void loadProject(ProjectRef ref, Callback<ProjectContext> callback) {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                ProjectContext context = loadProject(ref);
-//                if(new File(context.path).exists()) {
-//                    Gdx.app.postRunnable(() -> callback.done(context));
-//                } else {
-//                    Gdx.app.postRunnable(() -> callback.error("Project " + context.path + " not found."));
-//                }
-//            }
-//        }.run(); // FIXME run() is intended because of openGL context...either remove thread or find a way to run it async
-//    }
-
     public void changeProject(ProjectContext context) {
-        homeManager.homeDescriptor.lastProject = context.id;
+        homeManager.homeDescriptor.lastProject = new ProjectRef();
+        homeManager.homeDescriptor.lastProject.setName(context.name);
+        homeManager.homeDescriptor.lastProject.setPath(context.path);
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
         projectContext.loaded = true;
         Gdx.graphics.setTitle(projectContext.name+" ["+projectContext.path+"]" + " - " + Main.TITLE);
         eventBus.post(new ProjectChangedEvent());
+    }
+
+    public boolean openLastOpenedProject() {
+        ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
+        if(lastOpenedProject != null) {
+            ProjectContext context = loadProject(lastOpenedProject);
+            if(new File(context.path).exists()) {
+                changeProject(context);
+                return true;
+            } else {
+                Log.error("Failed to load last opened project");
+            }
+        }
+
+        return false;
     }
 
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {

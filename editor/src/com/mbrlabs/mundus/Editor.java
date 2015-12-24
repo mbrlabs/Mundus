@@ -44,6 +44,8 @@ import com.mbrlabs.mundus.input.navigation.FreeCamController;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 
@@ -93,8 +95,12 @@ public class Editor implements ApplicationListener {
 
         renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
 
+        // open last edited project or create default project
+        boolean projectOpened = projectManager.openLastOpenedProject();
+        if(!projectOpened) {
+            createDefaultProject();
+        }
 
-        openLastOpenedProject();
         createTestModels();
     }
 
@@ -154,15 +160,14 @@ public class Editor implements ApplicationListener {
         }
     }
 
-    private void openLastOpenedProject() {
-        ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
-        if(lastOpenedProject != null) {
-            ProjectContext context = projectManager.loadProject(lastOpenedProject);
-            if(new File(context.path).exists()) {
-                projectManager.changeProject(context);
-            } else {
-                Log.error("Failed to load last opened project");
-            }
+    private void createDefaultProject() {
+        if(homeManager.homeDescriptor.lastProject == null || homeManager.homeDescriptor.projects.size() == 0) {
+            String name = "Default Project";
+            String path = FileUtils.getUserDirectoryPath();
+            path = FilenameUtils.concat(path, "MundusProjects");
+
+            ProjectContext project = projectManager.createProject(name, path);
+            projectManager.changeProject(project);
         }
     }
 

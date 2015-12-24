@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
@@ -74,9 +75,9 @@ public class NewProjectDialog extends BaseDialog {
                     if(!path.endsWith("/")) {
                         path += "/";
                     }
-                    ProjectRef ref = projectManager.createProject(name, path);
+                    ProjectContext projectContext = projectManager.createProject(name, path);
                     close();
-                    Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(ref);
+                    Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectContext);
                 }
 
             }

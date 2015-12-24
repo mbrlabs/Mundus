@@ -56,17 +56,17 @@ public class LoadingProjectDialog extends VisDialog {
     }
 
 
-    public void loadProjectAsync(ProjectRef ref) {
-        this.projectName.setText("Loading project: " + ref.getName());
+    public void loadProjectAsync(ProjectContext projectContext) {
+        this.projectName.setText("Loading project: " + projectContext.name);
         Ui.getInstance().showDialog(this);
 
-        ProjectContext context = projectManager.loadProject(ref);
-        if(new File(context.path).exists()) {
-            projectManager.changeProject(context);
+
+        if(new File(projectContext.path).exists()) {
+            projectManager.changeProject(projectContext);
             close();
         } else {
             close();
-            DialogUtils.showErrorDialog(Ui.getInstance(), "Faild to load project " + ref.getPath());
+            DialogUtils.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.path);
         }
 
     }

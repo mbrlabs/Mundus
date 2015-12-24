@@ -64,10 +64,7 @@ public class HomeManager {
         String path = FilenameUtils.concat(folder, name);
         ProjectRef projectRef = new ProjectRef();
         projectRef.setName(name);
-        projectRef.setId(UUID.randomUUID().toString());
         projectRef.setPath(path);
-        projectRef.setCreated(new Date());
-        projectRef.setLastOpened(new Date());
         homeDescriptor.projects.add(projectRef);
         save();
 
@@ -75,19 +72,16 @@ public class HomeManager {
     }
 
     public ProjectRef getLastOpenedProject() {
-        if(homeDescriptor.lastProject != null) {
-            return findProjectById(homeDescriptor.lastProject);
-        }
-        return null;
+        return homeDescriptor.lastProject;
     }
 
-    public ProjectRef findProjectById(String id) {
-        for(ProjectRef projectRef : homeDescriptor.projects) {
-            if(projectRef.getId().endsWith(id)) {
-                return projectRef;
-            }
-        }
-        return null;
-    }
+//    public ProjectRef findProjectById(String id) {
+//        for(ProjectRef projectRef : homeDescriptor.projects) {
+//            if(projectRef.getId().endsWith(id)) {
+//                return projectRef;
+//            }
+//        }
+//        return null;
+//    }
 
 }

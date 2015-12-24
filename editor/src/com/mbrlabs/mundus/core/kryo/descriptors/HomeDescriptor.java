@@ -33,7 +33,7 @@ public class HomeDescriptor {
     @Tag(1)
     public List<ProjectRef> projects;
     @Tag(2)
-    public String lastProject;
+    public ProjectRef lastProject = null;
 
     public HomeDescriptor() {
         projects = new ArrayList<>();
