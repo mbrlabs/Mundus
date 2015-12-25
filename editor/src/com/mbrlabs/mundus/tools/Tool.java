@@ -14,29 +14,38 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain.brushes;
+package com.mbrlabs.mundus.tools;
 
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.terrain.TerrainGroup;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 
 /**
  * @author Marcus Brummer
- * @version 03-12-2015
+ * @version 25-12-2015
  */
-public interface Brush extends Disposable {
+public abstract class Tool extends InputAdapter implements Disposable {
 
-    public void draw(TerrainGroup terrainGroup, boolean up);
-    public void scale(float scale);
+    protected ProjectContext projectContext;
+    protected ModelBatch batch;
+    protected PerspectiveCamera cam;
+    protected Shader shader;
 
-    public Drawable getIcon();
-    public String getName();
+    public Tool(ProjectContext projectContext, PerspectiveCamera cam, Shader shader, ModelBatch batch) {
+        this.projectContext = projectContext;
+        this.batch = batch;
+        this.shader = shader;
+        this.cam = cam;
+    }
 
-    public void render(PerspectiveCamera cam, ModelBatch modelBatch);
+    public abstract String getName();
+    public abstract Drawable getIcon();
 
-    public void setTranslation(Vector3 translation);
+    public abstract void render();
+    public abstract void act();
 
 }

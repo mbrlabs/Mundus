@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.terrain.brushes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -25,24 +26,28 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainGroup;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.tools.Tool;
 
 /**
  * @author Marcus Brummer
- * @version 03-12-2015
+ * @version 25-12-2015
  */
-public class SphereBrush implements Brush {
+public class SphereBrushTool extends Tool {
 
-    public static final String NAME = "Sphere Brush";
+    private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
+    private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
+    private static final int KEY_DEACTIVATE = Input.Keys.ESCAPE;
 
     public enum Mode {
         SHARP, SMOOTH
     }
 
+    public static final String NAME = "Sphere Brush";
     private static final float SIZE = 1;
 
     private Model sphereModel;
@@ -55,11 +60,10 @@ public class SphereBrush implements Brush {
 
     private Vector3 tVec0 = new Vector3();
     private Vector3 tVec1 = new Vector3();
+    private Vector3 tempV3 = new Vector3();
 
-    private Shader shader;
-
-    public SphereBrush(Shader shader) {
-        this.shader = shader;
+    public SphereBrushTool(ProjectContext projectContext, PerspectiveCamera cam, Shader shader, ModelBatch modelBatch) {
+        super(projectContext, cam, shader, modelBatch);
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
         sphereModelInstance = new ModelInstance(sphereModel);
@@ -75,20 +79,37 @@ public class SphereBrush implements Brush {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public Drawable getIcon() {
         return this.icon;
     }
 
     @Override
-    public String getName() {
-        return SphereBrush.NAME;
+    public void render() {
+        batch.begin(cam);
+        batch.render(sphereModelInstance, shader);
+        batch.end();
     }
 
-    public void draw(TerrainGroup terrainGroup, boolean up) {
+    @Override
+    public void act() {
+        boolean up = true;
+        if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
+            up = true;
+        } else if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
+            up = false;
+        } else {
+            return;
+        }
+
         // tVec1 holds sphere transformation
         sphereModelInstance.transform.getTranslation(tVec1);
 
-        TerrainInstance terrainInstance = terrainGroup.getTerrain(tVec1.x, tVec1.z);
+        TerrainInstance terrainInstance = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
         if(terrainInstance == null) {
             return;
         }
@@ -122,15 +143,29 @@ public class SphereBrush implements Brush {
         sphereModel.dispose();
     }
 
-    public void render(PerspectiveCamera cam, ModelBatch batch) {
-        batch.begin(cam);
-        batch.render(sphereModelInstance, shader);
-        batch.end();
+    @Override
+    public boolean scrolled(int amount) {
+        if(amount < 0) {
+            scale(0.9f);
+        } else {
+            scale(1.1f);
+        }
+        return false;
     }
 
     @Override
-    public void setTranslation(Vector3 translation) {
-        sphereModelInstance.transform.setTranslation(translation);
+    public boolean mouseMoved(int screenX, int screenY) {
+        if(projectContext.currScene.terrainGroup.size() > 0) {
+            Ray ray = cam.getPickRay(screenX, screenY);
+            projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
+            sphereModelInstance.transform.setTranslation(tempV3);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return mouseMoved(screenX, screenY);
     }
 
 

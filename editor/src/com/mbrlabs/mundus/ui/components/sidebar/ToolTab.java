@@ -29,8 +29,8 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.terrain.brushes.Brush;
-import com.mbrlabs.mundus.terrain.brushes.BrushManager;
+import com.mbrlabs.mundus.tools.Tool;
+import com.mbrlabs.mundus.tools.ToolManager;
 
 /**
  * @author Marcus Brummer
@@ -43,7 +43,7 @@ public class ToolTab extends Tab {
     private VisTable content;
 
     @Inject
-    private BrushManager brushManager;
+    private ToolManager toolManager;
 
     private GridGroup meshBrushGrid;
     private GridGroup textureBrushGrid;
@@ -62,14 +62,13 @@ public class ToolTab extends Tab {
 
     private void createTerrainMeshTools() {
         meshBrushGrid = new GridGroup(40, 5);
-        for(Brush brush : brushManager.brushes) {
-            meshBrushGrid.addActor(new BrushGridItem(brush));
-        }
+
+        meshBrushGrid.addActor(new BrushGridItem(toolManager.sphereBrushTool));
 
         // TODO remove
-        for(int i = 0; i < 10; i++) {
-            meshBrushGrid.addActor(new BrushGridItem(brushManager.brushes.first()));
-        }
+//        for(int i = 0; i < 10; i++) {
+//            meshBrushGrid.addActor(new BrushGridItem(toolManager.brushes.first()));
+//        }
 
         // add to sidebar
         content.add(new VisLabel("Terrain mesh brushes")).left().pad(5).row();
@@ -105,9 +104,9 @@ public class ToolTab extends Tab {
 
     private class BrushGridItem extends VisTable {
 
-        private Brush brush;
+        private Tool brush;
 
-        private BrushGridItem(Brush brush) {
+        private BrushGridItem(Tool brush) {
             super();
             this.brush = brush;
             setBackground("menu-bg");
@@ -120,12 +119,12 @@ public class ToolTab extends Tab {
             addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    brushManager.activate(brush);
+                    toolManager.activateTool(brush);
                 }
             });
         }
 
-        public Brush getBrush() {
+        public Tool getBrush() {
             return brush;
         }
     }

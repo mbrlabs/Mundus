@@ -29,10 +29,9 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.terrain.brushes.BrushManager;
-import com.mbrlabs.mundus.terrain.brushes.SphereBrush;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.input.InputManager;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -51,7 +50,10 @@ import java.util.List;
 public class Mundus {
 
     private static ProjectContext projectContext;
-    private static BrushManager brushManager;
+
+
+    //private static BrushManager brushManager;
+    private static ToolManager toolManager;
 
     private static PerspectiveCamera cam;
     private static ModelBatch modelBatch;
@@ -102,8 +104,8 @@ public class Mundus {
         //projectContext.terrains.add(new TerrainTest().terrain);
 
         // brushes
-        brushManager = new BrushManager(projectContext, cam);
-        brushManager.addBrush(new SphereBrush(shaders.brushShader));
+//        brushManager = new BrushManager(projectContext, cam);
+//        brushManager.addBrush(new SphereBrush(shaders.brushShader));
 
         eventBus = new EventBus();
         kryoManager = new KryoManager();
@@ -113,7 +115,10 @@ public class Mundus {
 
         // input
         input = new InputManager();
-        input.addProcessor(brushManager);
+        //input.addProcessor(brushManager);
+
+        toolManager = new ToolManager(input, cam, projectContext, modelBatch, shaders);
+
     }
 
     public static void inject(Object o) {
@@ -168,7 +173,7 @@ public class Mundus {
         VisUI.dispose();
         modelBatch.dispose();
         shaders.dispose();
-        brushManager.dispose();
+        //brushManager.dispose();
         for(Model model : testModels) {
             model.dispose();
         }

@@ -34,7 +34,6 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
-import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.shader.Shaders;
@@ -42,6 +41,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.input.navigation.FreeCamController;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.*;
 import org.apache.commons.io.FileUtils;
@@ -66,8 +66,6 @@ public class Editor implements ApplicationListener {
     @Inject
     private ModelBatch batch;
     @Inject
-    private BrushManager brushManager;
-    @Inject
     private ProjectContext projectContext;
     @Inject
     private Shaders shaders;
@@ -77,6 +75,8 @@ public class Editor implements ApplicationListener {
     private HomeManager homeManager;
     @Inject
     private EventBus eventBus;
+    @Inject
+    private ToolManager toolManager;
 
 	@Override
 	public void create () {
@@ -110,7 +110,7 @@ public class Editor implements ApplicationListener {
 
         ui.act();
         camController.update();
-        brushManager.act();
+        toolManager.act();
 
         // update status bar
         ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
@@ -121,23 +121,20 @@ public class Editor implements ApplicationListener {
        batch.render(axesInstance);
 //       batch.render(projectContext.entities,
 //                projectContext.environment, shaders.entityShader);
-        batch.render(Mundus.testInstances,
+       batch.render(Mundus.testInstances,
                 projectContext.currScene.environment, shaders.entityShader);
-        batch.end();
+       batch.end();
 
-        // render terrains
-        shaders.terrainShader.begin(cam, renderContext);
-        for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
-            terrain.terrain.renderable.environment = projectContext.currScene.environment;
-            terrain.terrain.renderable.worldTransform.set(terrain.transform);
-            shaders.terrainShader.render(terrain.terrain.renderable);
-        }
-        shaders.terrainShader.end();
+       // render terrains
+       shaders.terrainShader.begin(cam, renderContext);
+       for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
+           terrain.terrain.renderable.environment = projectContext.currScene.environment;
+           terrain.terrain.renderable.worldTransform.set(terrain.transform);
+           shaders.terrainShader.render(terrain.terrain.renderable);
+       }
+       shaders.terrainShader.end();
 
-        // render active brush
-        if(brushManager.getActiveBrush() != null) {
-            brushManager.getActiveBrush().render(cam, batch);
-        }
+       toolManager.render();
 
         // render compass
         compass.render(batch);
