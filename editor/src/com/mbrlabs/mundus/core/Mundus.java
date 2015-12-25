@@ -53,7 +53,7 @@ public class Mundus {
 
     private static ToolManager toolManager;
 
-    private static PerspectiveCamera cam;
+    //private static PerspectiveCamera cam;
     private static ModelBatch modelBatch;
 
     private static InputManager input;
@@ -86,12 +86,12 @@ public class Mundus {
         // load images
         UiImages.load();
         // Camera
-        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(0, 1, -3);
-        cam.lookAt(0,1,-1);
-        cam.near = 0.2f;
-        cam.far = 10000;
-        cam.update();
+//        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        cam.position.set(0, 1, -3);
+//        cam.lookAt(0,1,-1);
+//        cam.near = 0.2f;
+//        cam.far = 10000;
+//        cam.update();
         // model batch
         modelBatch = new ModelBatch();
         // shaders
@@ -109,7 +109,7 @@ public class Mundus {
         // input
         input = new InputManager();
 
-        toolManager = new ToolManager(input, cam, projectContext, modelBatch, shaders);
+        toolManager = new ToolManager(input, projectContext, modelBatch, shaders);
     }
 
     public static void inject(Object o) {

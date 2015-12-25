@@ -37,6 +37,19 @@ public class SceneDescriptor {
     @Tag(3)
     private List<TerrainInstanceDescriptor> terrains;
 
+    @Tag(4)
+    private float camPosX;
+    @Tag(5)
+    private float camPosY;
+    @Tag(6)
+    private float camPosZ;
+    @Tag(7)
+    private float camDirX = 0;
+    @Tag(8)
+    private float camDirY = 0;
+    @Tag(9)
+    private float camDirZ = 0;
+
     public SceneDescriptor() {
         entities = new ArrayList<>();
         terrains = new ArrayList<>();
@@ -74,4 +87,51 @@ public class SceneDescriptor {
         this.terrains = terrains;
     }
 
+    public float getCamPosX() {
+        return camPosX;
+    }
+
+    public void setCamPosX(float camPosX) {
+        this.camPosX = camPosX;
+    }
+
+    public float getCamPosY() {
+        return camPosY;
+    }
+
+    public void setCamPosY(float camPosY) {
+        this.camPosY = camPosY;
+    }
+
+    public float getCamPosZ() {
+        return camPosZ;
+    }
+
+    public void setCamPosZ(float camPosZ) {
+        this.camPosZ = camPosZ;
+    }
+
+    public float getCamDirX() {
+        return camDirX;
+    }
+
+    public void setCamDirX(float camDirX) {
+        this.camDirX = camDirX;
+    }
+
+    public float getCamDirY() {
+        return camDirY;
+    }
+
+    public void setCamDirY(float camDirY) {
+        this.camDirY = camDirY;
+    }
+
+    public float getCamDirZ() {
+        return camDirZ;
+    }
+
+    public void setCamDirZ(float camDirZ) {
+        this.camDirZ = camDirZ;
+    }
 }

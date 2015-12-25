@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.mbrlabs.mundus.model.MModelInstance;
@@ -37,10 +39,19 @@ public class Scene {
     public TerrainGroup terrainGroup;
     public Environment environment;
 
+    public PerspectiveCamera cam;
+
     public Scene() {
         entities = new ArrayList<>();
         terrainGroup = new TerrainGroup();
         environment = new Environment();
+
+        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.position.set(0, 1, -3);
+        cam.lookAt(0,1,-1);
+        cam.near = 0.2f;
+        cam.far = 10000;
+
         PointLight pointLight = new PointLight();
         pointLight.setIntensity(1);
         pointLight.setPosition(0, 400, 0);

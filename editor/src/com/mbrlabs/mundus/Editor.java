@@ -58,8 +58,6 @@ public class Editor implements ApplicationListener {
     @Inject
     private InputManager inputManager;
     @Inject
-    private PerspectiveCamera cam;
-    @Inject
     private ModelBatch batch;
     @Inject
     private ProjectContext projectContext;
@@ -80,10 +78,7 @@ public class Editor implements ApplicationListener {
         Mundus.inject(this);
         ui = Ui.getInstance();
         inputManager.addProcessor(ui);
-        camController = new FreeCamController(cam);
-        inputManager.addProcessor(camController);
-        compass = new Compass(cam);
-
+        compass = new Compass(projectContext.currScene.cam);
 
         Model axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
@@ -99,7 +94,8 @@ public class Editor implements ApplicationListener {
 
         createTestModels();
 
-        toolManager.activateTool(toolManager.modelPlacementTool);
+        camController = new FreeCamController(projectContext.currScene.cam);
+        inputManager.addProcessor(camController);
     }
 
 	@Override
@@ -115,7 +111,7 @@ public class Editor implements ApplicationListener {
         ui.getStatusBar().setVertexCount(0);
 
         // render model instances
-        batch.begin(cam);
+        batch.begin(projectContext.currScene.cam);
         batch.render(axesInstance);
         for(MModelInstance mModelInstance : projectContext.currScene.entities) {
            batch.render(mModelInstance.modelInstance,
@@ -126,7 +122,7 @@ public class Editor implements ApplicationListener {
         batch.end();
 
         // render terrains
-        shaders.terrainShader.begin(cam, renderContext);
+        shaders.terrainShader.begin(projectContext.currScene.cam, renderContext);
         for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
             terrain.terrain.renderable.environment = projectContext.currScene.environment;
             terrain.terrain.renderable.worldTransform.set(terrain.transform);

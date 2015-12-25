@@ -41,8 +41,8 @@ public class ModelPlacementTool extends Tool {
     private MModel model;
     private MModelInstance curEntity;
 
-    public ModelPlacementTool(ProjectContext projectContext, PerspectiveCamera cam, Shader shader, ModelBatch batch) {
-        super(projectContext, cam, shader, batch);
+    public ModelPlacementTool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
+        super(projectContext, shader, batch);
         model = null;
         curEntity = null;
     }
@@ -65,7 +65,7 @@ public class ModelPlacementTool extends Tool {
     @Override
     public void render() {
         if(curEntity != null) {
-            batch.begin(cam);
+            batch.begin(projectContext.currScene.cam);
             batch.render(curEntity.modelInstance, projectContext.currScene.environment, shader);
             batch.end();
         }
@@ -88,7 +88,7 @@ public class ModelPlacementTool extends Tool {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if(projectContext.currScene.terrainGroup.size() > 0 && curEntity != null) {
-            Ray ray = cam.getPickRay(screenX, screenY);
+            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
             projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
             curEntity.modelInstance.transform.setTranslation(tempV3);
         }

@@ -61,8 +61,8 @@ public class SphereBrushTool extends Tool {
     private Vector3 tVec1 = new Vector3();
     private Vector3 tempV3 = new Vector3();
 
-    public SphereBrushTool(ProjectContext projectContext, PerspectiveCamera cam, Shader shader, ModelBatch modelBatch) {
-        super(projectContext, cam, shader, modelBatch);
+    public SphereBrushTool(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
+        super(projectContext, shader, modelBatch);
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
         sphereModelInstance = new ModelInstance(sphereModel);
@@ -89,7 +89,7 @@ public class SphereBrushTool extends Tool {
 
     @Override
     public void render() {
-        batch.begin(cam);
+        batch.begin(projectContext.currScene.cam);
         batch.render(sphereModelInstance, shader);
         batch.end();
     }
@@ -155,7 +155,7 @@ public class SphereBrushTool extends Tool {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if(projectContext.currScene.terrainGroup.size() > 0) {
-            Ray ray = cam.getPickRay(screenX, screenY);
+            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
             projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
             sphereModelInstance.transform.setTranslation(tempV3);
         }

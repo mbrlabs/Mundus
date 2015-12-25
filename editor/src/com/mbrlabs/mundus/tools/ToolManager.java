@@ -41,20 +41,18 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     private ProjectContext projectContext;
     private InputManager inputManager;
-    private PerspectiveCamera cam;
     private ModelBatch modelBatch;
     private Shaders shaders;
 
-    public ToolManager(InputManager inputManager, PerspectiveCamera cam, ProjectContext projectContext, ModelBatch modelBatch, Shaders shaders) {
+    public ToolManager(InputManager inputManager, ProjectContext projectContext, ModelBatch modelBatch, Shaders shaders) {
         this.projectContext = projectContext;
         this.inputManager = inputManager;
         this.modelBatch = modelBatch;
         this.activeTool = null;
         this.shaders = shaders;
-        this.cam = cam;
 
-        sphereBrushTool = new SphereBrushTool(projectContext, cam, shaders.brushShader, modelBatch);
-        modelPlacementTool = new ModelPlacementTool(projectContext, cam, shaders.entityShader, modelBatch);
+        sphereBrushTool = new SphereBrushTool(projectContext, shaders.brushShader, modelBatch);
+        modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch);
 
         this.inputManager.addProcessor(this);
     }

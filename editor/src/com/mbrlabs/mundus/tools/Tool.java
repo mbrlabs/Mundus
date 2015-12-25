@@ -32,14 +32,12 @@ public abstract class Tool extends InputAdapter implements Disposable {
 
     protected ProjectContext projectContext;
     protected ModelBatch batch;
-    protected PerspectiveCamera cam;
     protected Shader shader;
 
-    public Tool(ProjectContext projectContext, PerspectiveCamera cam, Shader shader, ModelBatch batch) {
+    public Tool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         this.projectContext = projectContext;
         this.batch = batch;
         this.shader = shader;
-        this.cam = cam;
     }
 
     public abstract String getName();

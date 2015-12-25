@@ -173,6 +173,13 @@ public class DescriptorConverter {
             descriptor.getTerrains().add(convert(terrain));
         }
 
+        // camera
+        descriptor.setCamPosX(scene.cam.position.x);
+        descriptor.setCamPosY(scene.cam.position.y);
+        descriptor.setCamPosZ(scene.cam.position.z);
+        descriptor.setCamDirX(scene.cam.direction.x);
+        descriptor.setCamDirY(scene.cam.direction.y);
+        descriptor.setCamDirZ(scene.cam.direction.z);
         return descriptor;
     }
 
@@ -191,6 +198,14 @@ public class DescriptorConverter {
         for(ModelInstanceDescriptor descriptor : sceneDescriptor.getEntities()) {
             scene.entities.add(convert(descriptor, models));
         }
+
+        // camera
+        scene.cam.position.x = sceneDescriptor.getCamPosX();
+        scene.cam.position.y = sceneDescriptor.getCamPosY();
+        scene.cam.position.z = sceneDescriptor.getCamPosZ();
+        scene.cam.direction.set(sceneDescriptor.getCamDirX(), sceneDescriptor.getCamDirY(),
+                sceneDescriptor.getCamDirZ());
+        scene.cam.update();
 
 
         return scene;
