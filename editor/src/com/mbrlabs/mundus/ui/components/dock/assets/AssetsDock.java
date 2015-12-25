@@ -81,12 +81,6 @@ public class AssetsDock {
         assetsTab = new AssetsTab();
 
         filesView.setTouchable(Touchable.enabled);
-//        filesView.addListener(new InputListener() {
-//            @Override
-//            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-//                return false;
-//            }
-//        });
 
     }
 

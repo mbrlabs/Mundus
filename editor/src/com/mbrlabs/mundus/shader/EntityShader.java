@@ -83,6 +83,7 @@ public class EntityShader extends BaseShader {
     @Override
     public void begin(Camera camera, RenderContext context) {
         this.context = context;
+        context.begin();
         this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
         this.context.setDepthMask(true);
 
@@ -125,6 +126,7 @@ public class EntityShader extends BaseShader {
 
     @Override
     public void end() {
+        context.end();
         program.end();
     }
 

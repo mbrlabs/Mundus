@@ -16,13 +16,13 @@
 
 package com.mbrlabs.mundus.tools;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
@@ -78,8 +78,7 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("TOUCH DOWN");
-        if(curEntity != null) {
+        if(curEntity != null && button == Input.Buttons.LEFT) {
             projectContext.currScene.entities.add(curEntity);
             curEntity = new MModelInstance(model);
         }
