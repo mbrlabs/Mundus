@@ -16,14 +16,12 @@
 
 package com.mbrlabs.mundus.ui.components.sidebar;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
-import org.lwjgl.openal.AL10;
 
 /**
  * @author Marcus Brummer
@@ -31,41 +29,34 @@ import org.lwjgl.openal.AL10;
  */
 public class Sidebar extends TabbedPane implements TabbedPaneListener {
 
-    private TerrainTab terrainTab;
+    private ToolTab toolTab;
     private EntityTab entityTab;
-    private ModelTab modelTab;
 
     private VisTable contentContainer;
 
     public Sidebar() {
         super();
-        terrainTab = new TerrainTab();
+        toolTab = new ToolTab();
         entityTab = new EntityTab();
-        modelTab = new ModelTab();
         contentContainer = new VisTable();
         contentContainer.setBackground(VisUI.getSkin().getDrawable("default-pane"));
         contentContainer.align(Align.topLeft);
 
-        add(modelTab);
-        add(terrainTab);
+        add(toolTab);
         add(entityTab);
 
-        switchTab(modelTab);
-        switchedTab(modelTab);
+        switchTab(toolTab);
+        switchedTab(toolTab);
 
         addListener(this);
     }
 
-    public TerrainTab getTerrainTab() {
-        return terrainTab;
+    public ToolTab getToolTab() {
+        return toolTab;
     }
 
     public EntityTab getEntityTab() {
         return entityTab;
-    }
-
-    public ModelTab getModelTab() {
-        return modelTab;
     }
 
     public VisTable getContentContainer() {

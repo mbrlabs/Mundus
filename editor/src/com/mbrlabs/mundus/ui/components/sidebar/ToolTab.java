@@ -22,20 +22,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.kotcrab.vis.ui.layout.GridGroup;
-import com.kotcrab.vis.ui.widget.*;
+import com.kotcrab.vis.ui.widget.Tooltip;
+import com.kotcrab.vis.ui.widget.VisImage;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.brushes.Brush;
+import com.mbrlabs.mundus.terrain.brushes.BrushManager;
 
 /**
  * @author Marcus Brummer
- * @version 30-11-2015
+ * @version 25-12-2015
  */
-public class TerrainTab extends Tab {
+public class ToolTab extends Tab {
 
-    private static final String TITLE = "Terrain";
+    private static final String TITLE = "Tools";
 
     private VisTable content;
 
@@ -44,36 +47,50 @@ public class TerrainTab extends Tab {
 
     private GridGroup meshBrushGrid;
     private GridGroup textureBrushGrid;
+    private GridGroup transformationToolsGrid;
 
-    public TerrainTab() {
+    public ToolTab() {
         super(false, false);
         Mundus.inject(this);
         content = new VisTable();
         content.align(Align.left | Align.top);
-        meshBrushGrid = new GridGroup(40, 5);
-        textureBrushGrid = new GridGroup(40, 5);
 
+        createTransfornamtionTools();
+        createTerrainMeshTools();
+        createTerrainTextureTools();
+    }
+
+    private void createTerrainMeshTools() {
+        meshBrushGrid = new GridGroup(40, 5);
         for(Brush brush : brushManager.brushes) {
             meshBrushGrid.addActor(new BrushGridItem(brush));
         }
 
-        // add more sphere brushes to test the grid
         // TODO remove
         for(int i = 0; i < 10; i++) {
             meshBrushGrid.addActor(new BrushGridItem(brushManager.brushes.first()));
         }
 
-
-        // add mesh brushes
-        content.add(new VisLabel("Mesh brushes")).left().pad(5).row();
+        // add to sidebar
+        content.add(new VisLabel("Terrain mesh brushes")).left().pad(5).row();
         content.addSeparator();
         content.add(meshBrushGrid).expandX().fillX().row();
+    }
 
+    private void createTerrainTextureTools() {
+        textureBrushGrid = new GridGroup(40, 5);
 
-        // add texture brushes
-        content.add(new VisLabel("Texture brushes")).left().pad(5).row();
+        content.add(new VisLabel("Terrain texture brushes")).left().pad(5).row();
         content.addSeparator();
         content.add(textureBrushGrid).expandX().fillX().row();
+    }
+
+    private void createTransfornamtionTools() {
+        transformationToolsGrid = new GridGroup(40, 5);
+
+        content.add(new VisLabel("Transformation tools")).left().pad(5).row();
+        content.addSeparator();
+        content.add(transformationToolsGrid).expandX().fillX().row();
     }
 
     @Override
