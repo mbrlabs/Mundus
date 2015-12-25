@@ -29,9 +29,7 @@ import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.core.HomeManager;
-import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.core.Inject;
@@ -40,14 +38,11 @@ import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.input.navigation.FreeCamController;
-import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
 
 public class Editor implements ApplicationListener {
 
@@ -102,6 +97,8 @@ public class Editor implements ApplicationListener {
         }
 
         createTestModels();
+
+        toolManager.activateTool(toolManager.modelPlacementTool);
     }
 
 	@Override
@@ -119,8 +116,8 @@ public class Editor implements ApplicationListener {
         // render model instances
        batch.begin(cam);
        batch.render(axesInstance);
-//       batch.render(projectContext.entities,
-//                projectContext.environment, shaders.entityShader);
+       batch.render(projectContext.currScene.entities,
+               projectContext.currScene.environment, shaders.entityShader);
        batch.render(Mundus.testInstances,
                 projectContext.currScene.environment, shaders.entityShader);
        batch.end();

@@ -41,7 +41,6 @@ public class SphereBrushTool extends Tool {
 
     private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
     private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
-    private static final int KEY_DEACTIVATE = Input.Keys.ESCAPE;
 
     public enum Mode {
         SHARP, SMOOTH

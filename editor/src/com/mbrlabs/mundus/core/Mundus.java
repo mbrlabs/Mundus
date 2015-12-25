@@ -51,8 +51,6 @@ public class Mundus {
 
     private static ProjectContext projectContext;
 
-
-    //private static BrushManager brushManager;
     private static ToolManager toolManager;
 
     private static PerspectiveCamera cam;
@@ -101,11 +99,6 @@ public class Mundus {
         // project context
         projectContext = new ProjectContext(-1);
         projectContext.loaded = false;
-        //projectContext.terrains.add(new TerrainTest().terrain);
-
-        // brushes
-//        brushManager = new BrushManager(projectContext, cam);
-//        brushManager.addBrush(new SphereBrush(shaders.brushShader));
 
         eventBus = new EventBus();
         kryoManager = new KryoManager();
@@ -115,10 +108,8 @@ public class Mundus {
 
         // input
         input = new InputManager();
-        //input.addProcessor(brushManager);
 
         toolManager = new ToolManager(input, cam, projectContext, modelBatch, shaders);
-
     }
 
     public static void inject(Object o) {

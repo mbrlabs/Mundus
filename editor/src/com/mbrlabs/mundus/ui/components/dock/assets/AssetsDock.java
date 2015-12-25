@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.*;
@@ -30,6 +31,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.events.*;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -47,6 +49,8 @@ public class AssetsDock {
     private EventBus eventBus;
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private ToolManager toolManager;
 
     public AssetsDock() {
         Mundus.inject(this);
@@ -77,21 +81,18 @@ public class AssetsDock {
         assetsTab = new AssetsTab();
 
         filesView.setTouchable(Touchable.enabled);
-        filesView.addListener(new InputListener() {
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                return false;
-            }
-        });
+//        filesView.addListener(new InputListener() {
+//            @Override
+//            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+//                return false;
+//            }
+//        });
 
-//        for(int i = 1; i <= 300; i++) {
-//            filesView.addActor(new AssetItem("Asset " + i));
-//        }
     }
 
     @Subscribe
     public void modelImported(ModelImportEvent modelImportEvent) {
-        AssetItem assetItem = new AssetItem(modelImportEvent.getModel().name);
+        AssetItem assetItem = new AssetItem(modelImportEvent.getModel());
         filesView.addActor(assetItem);
     }
 
@@ -99,7 +100,8 @@ public class AssetsDock {
     public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
         filesView.clearChildren();
         for(MModel model : projectContext.models) {
-            filesView.addActor(new AssetItem(model.name));
+            AssetItem assetItem = new AssetItem(model);
+            filesView.addActor(assetItem);
         }
     }
 
@@ -120,7 +122,7 @@ public class AssetsDock {
     }
 
     /**
-     *
+     * Assets Tab in the dock.
      */
     private class AssetsTab extends Tab {
 
@@ -139,17 +141,32 @@ public class AssetsDock {
         }
     }
 
+    /**
+     * Asset item in the grid.
+     */
     private class AssetItem extends VisTable {
 
         private VisLabel nameLabel;
+        private MModel model;
 
-        public AssetItem(String name) {
+        public AssetItem(MModel mModel) {
             super();
             setBackground("menu-bg");
             align(Align.center);
-            nameLabel = new VisLabel(name, "small");
+            nameLabel = new VisLabel(mModel.name, "small");
             nameLabel.setWrap(true);
+            model = mModel;
             add(nameLabel).fill().expand().row();
+
+            // active ModelPlacementTool when selecting this model
+            addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    toolManager.modelPlacementTool.setModel(model);
+                    toolManager.activateTool(toolManager.modelPlacementTool);
+                }
+            });
+
         }
 
     }

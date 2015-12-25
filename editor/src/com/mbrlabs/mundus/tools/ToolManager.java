@@ -20,26 +20,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.brushes.SphereBrushTool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Marcus Brummer
  * @version 25-12-2015
  */
-public class ToolManager extends InputAdapter {
+public class ToolManager extends InputAdapter implements Disposable {
 
     private static final int KEY_DEACTIVATE = Input.Keys.ESCAPE;
 
     private Tool activeTool;
-    private List<Tool> tools;
 
     public Tool sphereBrushTool;
+    public ModelPlacementTool modelPlacementTool;
 
     private ProjectContext projectContext;
     private InputManager inputManager;
@@ -51,13 +49,12 @@ public class ToolManager extends InputAdapter {
         this.projectContext = projectContext;
         this.inputManager = inputManager;
         this.modelBatch = modelBatch;
+        this.activeTool = null;
         this.shaders = shaders;
         this.cam = cam;
 
         sphereBrushTool = new SphereBrushTool(projectContext, cam, shaders.brushShader, modelBatch);
-
-        tools = new ArrayList<>();
-        activeTool = null;
+        modelPlacementTool = new ModelPlacementTool(projectContext, cam, shaders.entityShader, modelBatch);
 
         this.inputManager.addProcessor(this);
     }
@@ -94,6 +91,11 @@ public class ToolManager extends InputAdapter {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void dispose() {
+        sphereBrushTool.dispose();
     }
 
 }
