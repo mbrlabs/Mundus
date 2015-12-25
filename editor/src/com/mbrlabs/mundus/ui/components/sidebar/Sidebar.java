@@ -30,20 +30,20 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
 public class Sidebar extends TabbedPane implements TabbedPaneListener {
 
     private ToolTab toolTab;
-    private EntityTab entityTab;
+    private OutlineTab outlineTab;
 
     private VisTable contentContainer;
 
     public Sidebar() {
         super();
         toolTab = new ToolTab();
-        entityTab = new EntityTab();
+        outlineTab = new OutlineTab();
         contentContainer = new VisTable();
         contentContainer.setBackground(VisUI.getSkin().getDrawable("default-pane"));
         contentContainer.align(Align.topLeft);
 
         add(toolTab);
-        add(entityTab);
+        add(outlineTab);
 
         switchTab(toolTab);
         switchedTab(toolTab);
@@ -55,8 +55,8 @@ public class Sidebar extends TabbedPane implements TabbedPaneListener {
         return toolTab;
     }
 
-    public EntityTab getEntityTab() {
-        return entityTab;
+    public OutlineTab getOutlineTab() {
+        return outlineTab;
     }
 
     public VisTable getContentContainer() {

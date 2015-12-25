@@ -17,19 +17,30 @@
 package com.mbrlabs.mundus.model;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.math.Matrix4;
 
 /**
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class MModelInstance extends ModelInstance {
+public class MModelInstance {
 
     private long id;
     private long modelId;
 
+    // used to store transformation that comes directly from the ModelInstanceDescriptor.
+    // since the actual loading of the g3db model takes place after the deserialazion
+    // i need to store the transformation somewhere else (here) until the model is loaded.
+    // then this transformation can be applied to the actual model instance.
+    public Matrix4 kryoTransform = new Matrix4();
+
+    public ModelInstance modelInstance = null;
+
     public MModelInstance(MModel model) {
-        super(model.getModel());
         modelId = model.id;
+        if(model.getModel() != null) {
+            modelInstance = new ModelInstance(model.getModel());
+        }
     }
 
     public long getId() {

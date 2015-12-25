@@ -31,6 +31,7 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -114,24 +115,26 @@ public class Editor implements ApplicationListener {
         ui.getStatusBar().setVertexCount(0);
 
         // render model instances
-       batch.begin(cam);
-       batch.render(axesInstance);
-       batch.render(projectContext.currScene.entities,
-               projectContext.currScene.environment, shaders.entityShader);
-       batch.render(Mundus.testInstances,
+        batch.begin(cam);
+        batch.render(axesInstance);
+        for(MModelInstance mModelInstance : projectContext.currScene.entities) {
+           batch.render(mModelInstance.modelInstance,
+                   projectContext.currScene.environment, shaders.entityShader);
+        }
+        batch.render(Mundus.testInstances,
                 projectContext.currScene.environment, shaders.entityShader);
-       batch.end();
+        batch.end();
 
-       // render terrains
-       shaders.terrainShader.begin(cam, renderContext);
-       for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
-           terrain.terrain.renderable.environment = projectContext.currScene.environment;
-           terrain.terrain.renderable.worldTransform.set(terrain.transform);
-           shaders.terrainShader.render(terrain.terrain.renderable);
-       }
-       shaders.terrainShader.end();
+        // render terrains
+        shaders.terrainShader.begin(cam, renderContext);
+        for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
+            terrain.terrain.renderable.environment = projectContext.currScene.environment;
+            terrain.terrain.renderable.worldTransform.set(terrain.transform);
+            shaders.terrainShader.render(terrain.terrain.renderable);
+        }
+        shaders.terrainShader.end();
 
-       toolManager.render();
+        toolManager.render();
 
         // render compass
         compass.render(batch);

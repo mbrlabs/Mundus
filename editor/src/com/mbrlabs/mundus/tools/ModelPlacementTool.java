@@ -66,7 +66,7 @@ public class ModelPlacementTool extends Tool {
     public void render() {
         if(curEntity != null) {
             batch.begin(cam);
-            batch.render(curEntity, projectContext.currScene.environment, shader);
+            batch.render(curEntity.modelInstance, projectContext.currScene.environment, shader);
             batch.end();
         }
     }
@@ -90,7 +90,7 @@ public class ModelPlacementTool extends Tool {
         if(projectContext.currScene.terrainGroup.size() > 0 && curEntity != null) {
             Ray ray = cam.getPickRay(screenX, screenY);
             projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
-            curEntity.transform.setTranslation(tempV3);
+            curEntity.modelInstance.transform.setTranslation(tempV3);
         }
         return false;
     }

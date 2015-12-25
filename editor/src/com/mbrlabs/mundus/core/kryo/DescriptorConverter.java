@@ -16,11 +16,13 @@
 
 package com.mbrlabs.mundus.core.kryo;
 
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.utils.Log;
@@ -107,6 +109,53 @@ public class DescriptorConverter {
         return terrainInstance;
     }
 
+    public static MModelInstance convert(ModelInstanceDescriptor descriptor, List<MModel> models) {
+        // find model
+        MModel model = null;
+        for(MModel m : models) {
+            if(descriptor.getModelID() == m.id) {
+                model = m;
+                break;
+            }
+        }
+
+        if(model == null) {
+            Log.fatal("MModel for MModelInstance not found: " + descriptor.getModelID());
+            return null;
+        }
+
+        MModelInstance mModelInstance = new MModelInstance(model);
+        mModelInstance.kryoTransform.translate(descriptor.getPosX(), descriptor.getPosY(), descriptor.getPosZ());
+        mModelInstance.kryoTransform.rotate(descriptor.getRotX(), descriptor.getRotY(), descriptor.getRotZ(), 0);
+        mModelInstance.kryoTransform.scl(descriptor.getScaleX(), descriptor.getScaleY(), descriptor.getScaleZ());
+        return mModelInstance;
+    }
+
+    public static ModelInstanceDescriptor convert(MModelInstance modelInstance) {
+        Vector3 vec3 = new Vector3();
+        Quaternion quat = new Quaternion();
+
+        ModelInstanceDescriptor descriptor = new ModelInstanceDescriptor();
+        descriptor.setModelID(modelInstance.getModelId());
+
+        // translation
+        modelInstance.modelInstance.transform.getTranslation(vec3);
+        descriptor.setPosX(vec3.x);
+        descriptor.setPosY(vec3.y);
+        descriptor.setPosZ(vec3.z);
+        // rotation
+        modelInstance.modelInstance.transform.getRotation(quat);
+        descriptor.setRotX(quat.x);
+        descriptor.setRotY(quat.y);
+        descriptor.setRotZ(quat.z);
+        // scaling
+        modelInstance.modelInstance.transform.getScale(vec3);
+        descriptor.setScaleX(vec3.x);
+        descriptor.setScaleY(vec3.y);
+        descriptor.setScaleZ(vec3.z);
+
+        return descriptor;
+    }
 
     public static SceneDescriptor convert(Scene scene) {
         // TODO enviroenment, entities
@@ -115,9 +164,9 @@ public class DescriptorConverter {
         descriptor.setId(scene.getId());
 
         // entities
-//        for(MModelInstance entity : scene.entities) {
-//            descriptor.getEntities().add(convert(entity));
-//        }
+        for(MModelInstance entity : scene.entities) {
+            descriptor.getEntities().add(convert(entity));
+        }
 
         // terrains
         for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
@@ -137,6 +186,12 @@ public class DescriptorConverter {
         for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
             scene.terrainGroup.add(convert(terrainDescriptor, terrains));
         }
+
+        // entities
+        for(ModelInstanceDescriptor descriptor : sceneDescriptor.getEntities()) {
+            scene.entities.add(convert(descriptor, models));
+        }
+
 
         return scene;
     }

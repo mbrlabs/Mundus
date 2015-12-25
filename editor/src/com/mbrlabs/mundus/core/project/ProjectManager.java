@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.core.project;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
@@ -29,12 +30,14 @@ import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Marcus Brummer
@@ -99,12 +102,34 @@ public class ProjectManager {
             model.setModel(loader.loadModel(Gdx.files.absolute(g3dbPath)));
         }
 
+        // create ModelInstances for MModelInstaces
+        for(MModelInstance mModelInstance : context.currScene.entities) {
+            MModel model = findModelById(context.models, mModelInstance.getModelId());
+            if(model != null) {
+                mModelInstance.modelInstance = new ModelInstance(model.getModel());
+                mModelInstance.modelInstance.transform.set(mModelInstance.kryoTransform);
+            } else {
+                Log.fatal("model for modelInstance not found: " + mModelInstance.getModelId());
+            }
+
+        }
+
         // load terrain .terra files
         for(Terrain terrain : context.terrains) {
             TerrainIO.importTerrain(terrain, terrain.terraPath);
         }
 
         return context;
+    }
+
+    private MModel findModelById(List<MModel> models, long id) {
+        for(MModel m : models) {
+            if(m.id == id) {
+                return m;
+            }
+        }
+
+        return null;
     }
 
     public String constructWindowTitle() {

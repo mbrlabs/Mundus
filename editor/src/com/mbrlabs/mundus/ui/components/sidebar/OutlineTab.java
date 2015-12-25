@@ -25,16 +25,16 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
  * @author Marcus Brummer
  * @version 30-11-2015
  */
-public class EntityTab extends Tab {
+public class OutlineTab extends Tab {
 
-    private static final String TITLE = "Entities";
+    private static final String TITLE = "Outline";
 
     private VisTable content;
 
-    public EntityTab() {
+    public OutlineTab() {
         super(false, false);
         content = new VisTable();
-        content.add(new VisLabel("Entity tab"));
+        content.add(new VisLabel("Outline tab"));
     }
 
     @Override
