@@ -78,7 +78,7 @@ public class Editor implements ApplicationListener {
         Mundus.inject(this);
         ui = Ui.getInstance();
         inputManager.addProcessor(ui);
-        compass = new Compass(projectContext.currScene.cam);
+
 
         Model axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
@@ -91,6 +91,8 @@ public class Editor implements ApplicationListener {
         if(!projectOpened) {
             createDefaultProject();
         }
+
+        compass = new Compass(projectContext.currScene.cam);
 
         createTestModels();
 

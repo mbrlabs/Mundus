@@ -32,5 +32,5 @@ void main(void) {
 
    // gl_FragColor = COLOR_DARK * vec4(brightness,brightness,brightness, 1.0);
     gl_FragColor = brightness * texture2D(u_texture, v_texCoord0);
-    gl_FragColor = mix(gl_FragColor, COLOR_FOG, v_fog);
+   // gl_FragColor = mix(gl_FragColor, COLOR_FOG, v_fog);
 }

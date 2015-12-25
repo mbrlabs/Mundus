@@ -28,7 +28,7 @@ import java.awt.*;
  */
 public class Main {
 
-    public static final String TITLE = "Mundus v0.0.1";
+    public static final String TITLE = "Mundus v0.0.2";
 
     public static void main (String[] arg) {
 
