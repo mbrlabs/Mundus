@@ -16,8 +16,6 @@
 
 package com.mbrlabs.mundus.core;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -53,7 +51,6 @@ public class Mundus {
 
     private static ToolManager toolManager;
 
-    //private static PerspectiveCamera cam;
     private static ModelBatch modelBatch;
 
     private static InputManager input;
@@ -85,13 +82,6 @@ public class Mundus {
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
         // load images
         UiImages.load();
-        // Camera
-//        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        cam.position.set(0, 1, -3);
-//        cam.lookAt(0,1,-1);
-//        cam.near = 0.2f;
-//        cam.far = 10000;
-//        cam.update();
         // model batch
         modelBatch = new ModelBatch();
         // shaders

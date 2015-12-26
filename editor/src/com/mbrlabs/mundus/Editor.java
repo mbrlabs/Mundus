@@ -18,7 +18,6 @@ package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
