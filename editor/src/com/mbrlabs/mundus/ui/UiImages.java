@@ -31,11 +31,13 @@ public class UiImages {
     public static Drawable saveIcon;
     public static Drawable importIcon;
     public static Drawable runIcon;
+    public static Drawable exportIcon;
 
     public static void load() {
         saveIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/save.png"))));
         importIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/import.png"))));
         runIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/run.png"))));
+        exportIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/export.png"))));
     }
 
     public static void dispose() {

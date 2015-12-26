@@ -36,8 +36,6 @@ public class Exporter {
 
     }
 
-
-
     public static ModelDTO convert(MModel model) {
         ModelDTO dto = new ModelDTO();
         dto.setName(model.name);

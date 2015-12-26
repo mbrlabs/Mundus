@@ -27,7 +27,6 @@ import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
 import com.mbrlabs.mundus.ui.handler.menu.*;
-import com.mbrlabs.mundus.ui.handler.ModelImportHandler;
 
 /**
  * @author Marcus Brummer
@@ -50,6 +49,7 @@ public class Ui extends MyStage {
     private ImportModelDialog importModelDialog;
     private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
+    private ExportDialog exportDialog;
 
     private static Ui INSTANCE;
 
@@ -99,6 +99,7 @@ public class Ui extends MyStage {
         importModelDialog = new ImportModelDialog();
         addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
+        exportDialog = new ExportDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -107,16 +108,11 @@ public class Ui extends MyStage {
     }
 
     private void setHandlers() {
-        ModelImportHandler modelImportHandler = new ModelImportHandler();
 
         // Menu
         menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
         menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
-        menuBar.getModelsMenu().getImportModel().addListener(modelImportHandler);
-
-        // Toolbar
-        toolbar.getImportBtn().addListener(modelImportHandler);
     }
 
     public void showDialog(VisDialog dialog) {
@@ -161,6 +157,10 @@ public class Ui extends MyStage {
 
     public LoadingProjectDialog getLoadingProjectDialog() {
         return loadingProjectDialog;
+    }
+
+    public ExportDialog getExportDialog() {
+        return exportDialog;
     }
 
     public Sidebar getSidebar() {

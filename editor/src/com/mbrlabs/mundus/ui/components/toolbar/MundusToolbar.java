@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.components.toolbar;
 
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisImageButton;
@@ -24,6 +23,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
 
 /**
@@ -35,6 +35,7 @@ public class MundusToolbar extends Toolbar {
     private VisImageButton saveBtn;
     private VisImageButton importBtn;
     private VisImageButton runBtn;
+    private VisImageButton exportBtn;
 
     @Inject
     private ProjectManager projectManager;
@@ -46,15 +47,22 @@ public class MundusToolbar extends Toolbar {
         Mundus.inject(this);
         saveBtn = new VisImageButton(UiImages.saveIcon);
         saveBtn.pad(7);
+
         importBtn = new VisImageButton(UiImages.importIcon);
         importBtn.pad(7);
+
         runBtn = new VisImageButton(UiImages.runIcon);
         runBtn.pad(7);
 
+        exportBtn = new VisImageButton(UiImages.exportIcon);
+        exportBtn.pad(7);
+
         addItem(saveBtn);
         addItem(importBtn);
+        addItem(exportBtn);
         addItem(runBtn);
 
+        // save btn
         saveBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -63,6 +71,25 @@ public class MundusToolbar extends Toolbar {
                 }
             }
         });
+
+        // export btn
+        exportBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                final Ui ui = Ui.getInstance();
+                ui.showDialog(ui.getExportDialog());
+            }
+        });
+
+        // import btn
+        importBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                final Ui ui = Ui.getInstance();
+                ui.showDialog(ui.getImportModelDialog());
+            }
+        });
+
     }
 
     public VisImageButton getSaveBtn() {
