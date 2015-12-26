@@ -1,6 +1,9 @@
 [0.0.3]
-- Model/asset selection moved to sidebar
+- Model/asset selection moved to sidebar for better UX
 - selection tool
+- translate tool
+- export dialog
+- project export (for runtime) functionality
 
 [0.0.2]
 - generic Tool system

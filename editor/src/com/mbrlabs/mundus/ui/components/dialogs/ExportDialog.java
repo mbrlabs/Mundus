@@ -17,14 +17,22 @@
 package com.mbrlabs.mundus.ui.components.dialogs;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.mbrlabs.mundus.core.Exporter;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.ui.Ui;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -43,9 +51,12 @@ public class ExportDialog extends BaseDialog {
     private VisCheckBox gzipCheckbox = new VisCheckBox("Compress");
     private VisCheckBox prettyPrintCheckbox = new VisCheckBox("Pretty print");
 
+    @Inject
+    private ProjectContext projectContext;
+
     public ExportDialog() {
         super("Export");
-        //Mundus.inject(this);
+        Mundus.inject(this);
         setModal(true);
         setMovable(false);
         setupUI();
@@ -70,11 +81,34 @@ public class ExportDialog extends BaseDialog {
     }
 
     private void setupListener() {
+
+        // disable pretty print when compression is enabled
+        gzipCheckbox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                prettyPrintCheckbox.setDisabled(gzipCheckbox.isChecked());
+            }
+        });
+
         // import btn
         exportBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                String folder = output.getText();
+                if(validateInput(folder)) {
+                    boolean compress = gzipCheckbox.isChecked();
+                    boolean pretty = prettyPrintCheckbox.isChecked();
+
+                    try {
+                        Exporter.export(projectContext, folder, compress, pretty);
+                    } catch (IOException e) {
+                        // TODO show error dialog
+                        e.printStackTrace();
+                    }
+
+
+                }
             }
         });
 
@@ -96,6 +130,15 @@ public class ExportDialog extends BaseDialog {
             }
         });
 
+    }
+
+    private boolean validateInput(String folder) {
+        File f = new File(folder);
+        if(!f.exists() || !f.isDirectory()) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

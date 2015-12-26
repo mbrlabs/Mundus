@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus;
+package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
 import com.mbrlabs.mundus.commons.exporter.dto.*;
-import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.utils.Log;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @author Marcus Brummer
@@ -32,8 +41,22 @@ import com.mbrlabs.mundus.terrain.TerrainInstance;
  */
 public class Exporter {
 
-    public Exporter() {
+    public static void export(ProjectContext projectContext, String folder,
+                              boolean compress, boolean prettyPrint) throws IOException {
+        // TODO g3db files, terra files
+        ProjectDTO dto = convert(projectContext);
 
+
+        OutputStream outputStream = new FileOutputStream(
+                FilenameUtils.concat(folder, projectContext.name) + ".mundus");
+        if(compress) {
+            outputStream = new GZIPOutputStream(outputStream);
+        }
+
+        Json json = new Json();
+        String output = prettyPrint ? json.prettyPrint(dto) : json.toJson(dto);
+
+        IOUtils.write(output, outputStream);
     }
 
     public static ModelDTO convert(MModel model) {
@@ -105,7 +128,6 @@ public class Exporter {
         for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
             dto.getTerrains().add(convert(terrain));
         }
-
 
         return dto;
     }
