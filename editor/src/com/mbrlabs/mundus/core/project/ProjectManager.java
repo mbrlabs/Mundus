@@ -108,6 +108,7 @@ public class ProjectManager {
             if(model != null) {
                 mModelInstance.modelInstance = new ModelInstance(model.getModel());
                 mModelInstance.modelInstance.transform.set(mModelInstance.kryoTransform);
+                mModelInstance.calculateBounds();
             } else {
                 Log.fatal("model for modelInstance not found: " + mModelInstance.getModelId());
             }

@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.GLTexture;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.PointLightsAttribute;
@@ -45,25 +44,14 @@ public class EntityShader extends BaseShader {
     protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
 
-    protected final int UNIFORM_WIREFRAME = register(new Uniform("u_wireframe"));
+    protected final int UNIFORM_SELECTED = register(new Uniform("u_selected"));
 
     private ShaderProgram program;
-
-    private int primitiveType = GL20.GL_TRIANGLES;
 
     public EntityShader() {
         super();
         program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
     }
-
-    public void toggleWireframe() {
-        if(primitiveType == GL20.GL_TRIANGLES) {
-            primitiveType = GL20.GL_LINES;
-        } else {
-            primitiveType = GL20.GL_TRIANGLES;
-        }
-    }
-
 
     @Override
     public void init() {
@@ -90,11 +78,6 @@ public class EntityShader extends BaseShader {
         program.begin();
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
-        if(primitiveType == GL20.GL_TRIANGLES) {
-            set(UNIFORM_WIREFRAME, 0);
-        } else {
-            set(UNIFORM_WIREFRAME, 1);
-        }
     }
 
     @Override
@@ -117,10 +100,8 @@ public class EntityShader extends BaseShader {
             set(UNIFORM_LIGHT_INTENSITY, light.intensity);
         }
 
-        renderable.meshPart.primitiveType = primitiveType;
         // bind attributes, bind mesh & render; then unbinds everything
         renderable.meshPart.render(program);
-
     }
 
 

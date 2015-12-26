@@ -38,6 +38,8 @@ public class ToolManager extends InputAdapter implements Disposable {
     public Tool sphereBrushTool;
     public ModelPlacementTool modelPlacementTool;
     public TranslateTool translateTool;
+    public SelectionTool selectionTool;
+
 
     private ProjectContext projectContext;
     private InputManager inputManager;
@@ -53,7 +55,8 @@ public class ToolManager extends InputAdapter implements Disposable {
 
         sphereBrushTool = new SphereBrushTool(projectContext, shaders.brushShader, modelBatch);
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch);
-        translateTool = new TranslateTool(projectContext, shaders.entityShader, modelBatch);
+        translateTool = new TranslateTool(projectContext, shaders.brushShader, modelBatch);
+        selectionTool = new SelectionTool(projectContext, shaders.brushShader, modelBatch);
 
         this.inputManager.addProcessor(this);
     }

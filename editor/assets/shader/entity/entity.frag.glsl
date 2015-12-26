@@ -12,14 +12,8 @@ varying vec3 v_surfaceNormal;
 uniform sampler2D u_texture;
 
 uniform float u_lightIntensity;
-uniform int u_wireframe;
 
 void main(void) {
-    // Wireframe mode
-    if(u_wireframe == 1) {
-        gl_FragColor = COLOR_TURQUOISE;
-        return;
-    }
     vec3 unitNormal = normalize(v_surfaceNormal);
     vec3 unitLightVector = normalize(v_vectorToLight);
     float nDot1 = u_lightIntensity * dot(unitNormal, unitLightVector);

@@ -21,4 +21,4 @@ Android & iOS are obviously not supported as development platforms (but of cours
 ## Building
 Gradle is used as build tool. You can simply import this project into Eclipse/Netbeans/IntelliJ as Gradle project
 and execute the editor:run task. Dependencies will be fetched automagically.
-If you're more of a terminal guy, type gradle editor:run and hit enter.
+If you're more of a terminal guy, type "gradle editor:run" and hit enter.

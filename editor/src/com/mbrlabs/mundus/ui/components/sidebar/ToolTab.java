@@ -81,6 +81,7 @@ public class ToolTab extends Tab {
 
     private void createTransfornamtionTools() {
         transformationToolsGrid = new GridGroup(40, 5);
+        transformationToolsGrid.addActor(new ToolGridItem(toolManager.selectionTool));
         transformationToolsGrid.addActor(new ToolGridItem(toolManager.translateTool));
 
         content.add(new VisLabel("Transformation tools")).left().pad(5).row();
