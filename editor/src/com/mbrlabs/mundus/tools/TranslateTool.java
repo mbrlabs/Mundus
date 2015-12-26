@@ -14,31 +14,56 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui;
+package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 
 /**
  * @author Marcus Brummer
- * @version 30-11-2015
+ * @version 26-12-2015
  */
-public class UiImages {
+public class TranslateTool extends Tool {
 
-    public static Drawable saveIcon;
-    public static Drawable importIcon;
-    public static Drawable runIcon;
+    public static final String NAME = "Translate";
 
-    public static void load() {
-        saveIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/save.png"))));
-        importIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/import.png"))));
-        runIcon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/toolbar/run.png"))));
+    private Drawable icon;
+
+
+    public TranslateTool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
+        super(projectContext, shader, batch);
+
+        icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/translateTool.png"))));
     }
 
-    public static void dispose() {
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public Drawable getIcon() {
+        return icon;
+    }
+
+    @Override
+    public void render() {
+
+    }
+
+    @Override
+    public void act() {
+
+    }
+
+    @Override
+    public void dispose() {
 
     }
 

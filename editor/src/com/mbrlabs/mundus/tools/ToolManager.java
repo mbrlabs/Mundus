@@ -18,13 +18,12 @@ package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.terrain.brushes.SphereBrushTool;
+import com.mbrlabs.mundus.tools.brushes.SphereBrushTool;
 
 /**
  * @author Marcus Brummer
@@ -38,6 +37,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     public Tool sphereBrushTool;
     public ModelPlacementTool modelPlacementTool;
+    public TranslateTool translateTool;
 
     private ProjectContext projectContext;
     private InputManager inputManager;
@@ -53,6 +53,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
         sphereBrushTool = new SphereBrushTool(projectContext, shaders.brushShader, modelBatch);
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch);
+        translateTool = new TranslateTool(projectContext, shaders.entityShader, modelBatch);
 
         this.inputManager.addProcessor(this);
     }

@@ -41,32 +41,7 @@ public class ModelImportHandler extends ChangeListener {
     @Override
     public void changed(ChangeEvent event, Actor actor) {
         final Ui ui = Ui.getInstance();
-//        ui.getFileChooser().setListener(fileChooserAdapter);
-//        ui.addActor(ui.getFileChooser().fadeIn());
         ui.showDialog(ui.getImportModelDialog());
     }
-
-//    private class FCAdapterImportModel extends FileChooserAdapter {
-//        @Override
-//        public void selected(FileHandle file) {
-//            Ui ui = Ui.getInstance();
-//
-//            String pathToFile = file.path();
-//            String outputPath = FilenameUtils.getFullPath(pathToFile);
-//
-//            fbxConv.clear();
-//            fbxConv.input(pathToFile).output(outputPath).flipTexture(true).outputFormat(FbxConv.OUTPUT_FORMAT_G3DB);
-//            fbxConv.execute(result -> {
-//                Log.debug("Import result: " + result.isSuccess());
-//                Log.debug("Import log: " + result.getLog());
-//                Model model = g3dbLoader.loadModel(Gdx.files.absolute(result.getOutputFile()));
-//                Mundus.projectContext.models.add(model);
-//                ui.getModelList().getItems().add(model);
-//                Mundus.projectContext.entities.add(new ModelInstance(ui.getModelList().getItems().first()));
-//                ui.getModelList().layout();
-//            });
-//
-//        }
-//    }
 
 }

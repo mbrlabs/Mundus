@@ -133,11 +133,7 @@ public class Editor implements ApplicationListener {
         shaders.terrainShader.end();
 
         toolManager.render();
-
-        // render compass
         compass.render(batch);
-
-        // render UI
         ui.draw();
 	}
 

@@ -1,0 +1,11 @@
+[0.0.3]
+
+[0.0.2]
+- generic Tool system
+- support for scenes in one project
+- placement of models inside the world
+- libGDX updated to version 1.7.2
+- terrain brushes can be applied to all terrains in one scene
+
+[0.0.1]
+- first version ever pushed to Github

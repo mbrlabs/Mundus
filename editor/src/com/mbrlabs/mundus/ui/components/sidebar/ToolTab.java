@@ -63,7 +63,7 @@ public class ToolTab extends Tab {
     private void createTerrainMeshTools() {
         meshBrushGrid = new GridGroup(40, 5);
 
-        meshBrushGrid.addActor(new BrushGridItem(toolManager.sphereBrushTool));
+        meshBrushGrid.addActor(new ToolGridItem(toolManager.sphereBrushTool));
 
         // add to sidebar
         content.add(new VisLabel("Terrain mesh brushes")).left().pad(5).row();
@@ -81,6 +81,7 @@ public class ToolTab extends Tab {
 
     private void createTransfornamtionTools() {
         transformationToolsGrid = new GridGroup(40, 5);
+        transformationToolsGrid.addActor(new ToolGridItem(toolManager.translateTool));
 
         content.add(new VisLabel("Transformation tools")).left().pad(5).row();
         content.addSeparator();
@@ -97,30 +98,30 @@ public class ToolTab extends Tab {
         return content;
     }
 
-    private class BrushGridItem extends VisTable {
+    private class ToolGridItem extends VisTable {
 
-        private Tool brush;
+        private Tool tool;
 
-        private BrushGridItem(Tool brush) {
+        private ToolGridItem(Tool tool) {
             super();
-            this.brush = brush;
+            this.tool = tool;
             setBackground("menu-bg");
             align(Align.center);
-            VisImage img = new VisImage(brush.getIcon());
+            VisImage img = new VisImage(tool.getIcon());
             img.setScaling(Scaling.fit);
-            new Tooltip(img, brush.getName());
+            new Tooltip(img, tool.getName());
             add(img).expand().fill().pad(2);
 
             addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    toolManager.activateTool(brush);
+                    toolManager.activateTool(tool);
                 }
             });
         }
 
-        public Tool getBrush() {
-            return brush;
+        public Tool getTool() {
+            return tool;
         }
     }
 

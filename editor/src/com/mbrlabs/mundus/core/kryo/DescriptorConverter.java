@@ -158,7 +158,7 @@ public class DescriptorConverter {
     }
 
     public static SceneDescriptor convert(Scene scene) {
-        // TODO enviroenment, entities
+        // TODO enviroenment
         SceneDescriptor descriptor = new SceneDescriptor();
         descriptor.setName(scene.getName());
         descriptor.setId(scene.getId());
@@ -184,7 +184,7 @@ public class DescriptorConverter {
     }
 
     public static Scene convert(SceneDescriptor sceneDescriptor, List<Terrain> terrains, List<MModel> models) {
-        // TODO enviroenment, entities
+        // TODO enviroenment
         Scene scene = new Scene();
         scene.setId(sceneDescriptor.getId());
         scene.setName(sceneDescriptor.getName());

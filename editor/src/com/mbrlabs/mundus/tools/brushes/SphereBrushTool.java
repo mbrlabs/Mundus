@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain.brushes;
+package com.mbrlabs.mundus.tools.brushes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
