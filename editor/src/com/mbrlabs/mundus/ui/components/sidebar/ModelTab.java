@@ -14,126 +14,86 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.components.dock.assets;
+package com.mbrlabs.mundus.ui.components.sidebar;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
-import com.kotcrab.vis.ui.widget.*;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.events.*;
-import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ModelImportEvent;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.tools.ToolManager;
-import com.mbrlabs.mundus.utils.Log;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Marcus Brummer
- * @version 08-12-2015
+ * @version 26-12-2015
  */
-@Deprecated
-public class AssetsDock {
+public class ModelTab extends Tab {
 
-    private VisTable root;
-    private VisTable filesViewContextContainer;
-    private GridGroup filesView;
-    private AssetsTab assetsTab;
+    private static final String TITLE = "Models";
+
+    private VisTable content;
+    private GridGroup modelGrid;
 
     @Inject
-    private EventBus eventBus;
+    private ToolManager toolManager;
     @Inject
     private ProjectContext projectContext;
     @Inject
-    private ToolManager toolManager;
+    private EventBus eventBus;
 
-    public AssetsDock() {
+    public ModelTab() {
+        super(false, false);
         Mundus.inject(this);
         eventBus.register(this);
-        initUi();
-    }
 
-    public void initUi () {
-        root = new VisTable();
-        filesViewContextContainer = new VisTable(false);
-        filesView = new GridGroup(92, 4);
-        filesView.setTouchable(Touchable.enabled);
+        content = new VisTable();
+        content.align(Align.left | Align.top);
+        modelGrid = new GridGroup(60, 4);
+        modelGrid.setTouchable(Touchable.enabled);
 
-        VisTable contentsTable = new VisTable(false);
-        contentsTable.add(new VisLabel("Assets")).left().padLeft(3).row();
-        contentsTable.add(new Separator()).padTop(3).expandX().fillX();
-        contentsTable.row();
-        contentsTable.add(filesViewContextContainer).expandX().fillX();
-        contentsTable.row();
-        contentsTable.add(createScrollPane(filesView, true)).expand().fill();
+        content.add(new VisLabel("Imported models")).left().pad(5).row();
+        content.addSeparator();
+        content.add(modelGrid).expandX().fillX().row();
 
-        VisSplitPane splitPane = new VisSplitPane(new VisLabel("file tree here"), contentsTable, false);
-        splitPane.setSplitAmount(0.2f);
-
-        root = new VisTable();
-        root.setBackground("window-bg");
-        root.add(splitPane).expand().fill();
-
-        assetsTab = new AssetsTab();
-
-
+        reloadAllModels(null);
     }
 
     @Subscribe
     public void modelImported(ModelImportEvent modelImportEvent) {
         AssetItem assetItem = new AssetItem(modelImportEvent.getModel());
-        filesView.addActor(assetItem);
+        modelGrid.addActor(assetItem);
     }
 
     @Subscribe
     public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
-        filesView.clearChildren();
+        modelGrid.clearChildren();
         for(MModel model : projectContext.models) {
             AssetItem assetItem = new AssetItem(model);
-            filesView.addActor(assetItem);
+            modelGrid.addActor(assetItem);
         }
     }
 
-    private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
-        VisScrollPane scrollPane = new VisScrollPane(actor);
-        scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(disableX, false);
-        return scrollPane;
+    @Override
+    public String getTabTitle() {
+        return TITLE;
     }
 
-
-    public AssetsTab getAssetsTab() {
-        return assetsTab;
-    }
-
-    public VisTable getRoot() {
-        return root;
-    }
-
-    /**
-     * Assets Tab in the dock.
-     */
-    private class AssetsTab extends Tab {
-
-        public AssetsTab() {
-            super(false, false);
-        }
-
-        @Override
-        public String getTabTitle() {
-            return "Assets";
-        }
-
-        @Override
-        public Table getContentTable() {
-            return root;
-        }
+    @Override
+    public Table getContentTable() {
+        return content;
     }
 
     /**
@@ -148,7 +108,8 @@ public class AssetsDock {
             super();
             setBackground("menu-bg");
             align(Align.center);
-            nameLabel = new VisLabel(mModel.name, "small");
+            String basename = FilenameUtils.getBaseName(mModel.name);
+            nameLabel = new VisLabel(basename.substring(0, basename.indexOf("-")), "small");
             nameLabel.setWrap(true);
             model = mModel;
             add(nameLabel).fill().expand().row();
@@ -165,4 +126,5 @@ public class AssetsDock {
         }
 
     }
+
 }

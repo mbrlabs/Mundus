@@ -35,7 +35,7 @@ public class DockBar extends VisTable implements TabbedPaneListener {
     private AssetsDock assetsDock;
     private TabbedPane tabbedPane;
 
-    public DockBar() {
+    private DockBar() {
         super();
         TabbedPane.TabbedPaneStyle tabStyle = new TabbedPane.TabbedPaneStyle(VisUI.getSkin().get(TabbedPane.TabbedPaneStyle.class));
         tabStyle.buttonStyle = new VisTextButton.VisTextButtonStyle(VisUI.getSkin().get("toggle", VisTextButton.VisTextButtonStyle.class));

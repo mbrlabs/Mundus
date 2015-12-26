@@ -1,4 +1,5 @@
 [0.0.3]
+- Model/asset selection moved to sidebar
 
 [0.0.2]
 - generic Tool system
