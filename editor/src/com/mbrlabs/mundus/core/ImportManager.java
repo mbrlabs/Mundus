@@ -62,14 +62,13 @@ public class ImportManager {
         }
 
         // copy model file
-
         modelFile.copyTo(tempModelCache);
         FileHandle rawModelFile = Gdx.files.absolute(FilenameUtils.concat(tempModelCache.path(), modelFile.name()));
         if(!rawModelFile.exists()) {
             return null;
         }
 
-        // convert copied model
+        // convert copied dto
         boolean convert = FileFormatUtils.isFBX(rawModelFile)
                 || FileFormatUtils.isCollada(rawModelFile)
                 || FileFormatUtils.isWavefont(rawModelFile);
