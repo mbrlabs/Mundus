@@ -29,7 +29,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
  * @author Marcus Brummer
  * @version 26-12-2015
  */
-public class TranslateTool extends Tool {
+public class TranslateTool extends SelectionTool {
 
     public static final String NAME = "Translate";
 
@@ -54,17 +54,17 @@ public class TranslateTool extends Tool {
 
     @Override
     public void render() {
-
+        super.render();
     }
 
     @Override
     public void act() {
-
+        super.act();
     }
 
     @Override
     public void dispose() {
-
+        super.dispose();
     }
 
 }

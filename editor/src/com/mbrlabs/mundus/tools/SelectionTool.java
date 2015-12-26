@@ -117,7 +117,7 @@ public class SelectionTool extends Tool {
 
     @Override
     public void dispose() {
-
+        boxOutlineModel.dispose();
     }
 
 }
