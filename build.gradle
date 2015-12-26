@@ -28,15 +28,25 @@ allprojects {
     }
 }
 
-project(":editor") {
+project(":commons") {
     apply plugin: "java"
 
     dependencies {
-        // libGDX core & extensions
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    }
+}
+
+project(":editor") {
+    apply plugin: "java"
+
+    dependencies {
+        compile project(":commons")
+
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
@@ -47,6 +57,15 @@ project(":editor") {
         compile "com.esotericsoftware:kryo:$kryoVersion"
         compile "org.apache.commons:commons-lang3:3.4"
         compile "commons-io:commons-io:2.4"
+    }
+}
+
+project(":libgdx-runtime") {
+    apply plugin: "java"
+
+    dependencies {
+        compile project(":commons")
+
     }
 }
 
