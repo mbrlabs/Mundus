@@ -184,6 +184,7 @@ public class ProjectManager {
         mModel.name = finalG3db.name();
         mModel.id = id;
         mModel.g3dbPath = finalG3db.path();
+        mModel.texturePath = FilenameUtils.concat(Gdx.files.absolute(folder).path(), importedModel.textureFile.name());
         System.out.println(finalG3db);
         projectContext.models.add(mModel);
 

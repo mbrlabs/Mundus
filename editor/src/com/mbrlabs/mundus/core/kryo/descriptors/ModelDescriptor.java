@@ -30,6 +30,8 @@ public class ModelDescriptor {
     private String name;
     @Tag(2)
     private String g3dbPath;
+    @Tag(3)
+    private String texturePath;
 
     public long getId() {
         return id;
@@ -53,6 +55,14 @@ public class ModelDescriptor {
 
     public void setG3dbPath(String g3dbPath) {
         this.g3dbPath = g3dbPath;
+    }
+
+    public String getTexturePath() {
+        return texturePath;
+    }
+
+    public void setTexturePath(String texturePath) {
+        this.texturePath = texturePath;
     }
 
 }

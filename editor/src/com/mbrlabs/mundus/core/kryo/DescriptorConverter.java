@@ -40,6 +40,7 @@ public class DescriptorConverter {
         descriptor.setName(model.name);
         descriptor.setId(model.id);
         descriptor.setG3dbPath(model.g3dbPath);
+        descriptor.setTexturePath(model.texturePath);
         return descriptor;
     }
 
@@ -48,7 +49,7 @@ public class DescriptorConverter {
         model.id = modelDescriptor.getId();
         model.name = modelDescriptor.getName();
         model.g3dbPath = modelDescriptor.getG3dbPath();
-
+        model.texturePath = modelDescriptor.getTexturePath();
         return model;
     }
 

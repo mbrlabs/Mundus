@@ -40,7 +40,9 @@ public class Terrain {
 
     public long id;
     public String name;
+
     public String terraPath;
+    //public String texturePath;
 
     public int terrainWidth = 1200;
     public int terrainDepth = 1200;

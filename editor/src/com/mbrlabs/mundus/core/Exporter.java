@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
@@ -25,11 +27,9 @@ import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
-import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,17 +46,31 @@ public class Exporter {
         // TODO g3db files, terra files
         ProjectDTO dto = convert(projectContext);
 
-
+        // json stream
         OutputStream outputStream = new FileOutputStream(
                 FilenameUtils.concat(folder, projectContext.name) + ".mundus");
         if(compress) {
             outputStream = new GZIPOutputStream(outputStream);
         }
 
+        // write json
         Json json = new Json();
         String output = prettyPrint ? json.prettyPrint(dto) : json.toJson(dto);
-
         IOUtils.write(output, outputStream);
+
+        // copy assets
+        FileHandle assets = Gdx.files.absolute(FilenameUtils.concat(folder, "assets/"));
+        if(!assets.exists()) {
+            assets.mkdirs();
+        }
+        for(MModel model : projectContext.models) {
+            Gdx.files.absolute(model.g3dbPath).copyTo(assets);
+            Gdx.files.absolute(model.texturePath).copyTo(assets);
+        }
+        for(Terrain terrain : projectContext.terrains) {
+            Gdx.files.absolute(terrain.terraPath).copyTo(assets);
+            // TODO terrain texture
+        }
     }
 
     public static ModelDTO convert(MModel model) {
