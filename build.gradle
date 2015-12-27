@@ -33,11 +33,6 @@ project(":commons") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     }
 }
 
@@ -46,6 +41,10 @@ project(":editor") {
 
     dependencies {
         compile project(":commons")
+
+        compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -65,7 +64,6 @@ project(":libgdx-runtime") {
 
     dependencies {
         compile project(":commons")
-
     }
 }
 

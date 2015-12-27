@@ -105,7 +105,6 @@ public class SelectionTool extends Tool {
             outlineInstance.transform.translate(0, 0, 0);
             outlineInstance.transform.translate(selectedEntity.center);
             outlineInstance.transform.scl(selectedEntity.dimensions);
-            System.out.println(selectedEntity);
         }
         return false;
     }

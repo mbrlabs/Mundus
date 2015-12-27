@@ -43,11 +43,6 @@ task distEditor(type: Jar) {
     }
 }
 
-task distRuntime(type: Jar) {
-    baseName = 'mundus-libgdx-runtime'
-    version = '0.0.2'
-}
-
 eclipse {
     project {
         name = appName + "-desktop"

@@ -14,12 +14,29 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons;
+package com.mbrlabs.mundus.runtime.libgdx;
+
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * @author Marcus Brummer
- * @version 26-12-2015
+ * @version 27-12-2015
  */
-public class Commons {
+public class Scene {
+
+    public String name;
+
+    public Array<Model> models;
+    public Array<ModelInstance> modelInstances;
+
+    public Scene() {
+        models = new Array<>();
+        modelInstances = new Array<>();
+    }
+
+
+
 
 }

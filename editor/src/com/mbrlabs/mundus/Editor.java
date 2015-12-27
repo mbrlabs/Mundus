@@ -37,7 +37,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
-import com.mbrlabs.mundus.input.navigation.FreeCamController;
+import com.mbrlabs.mundus.commons.FreeCamController;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.*;

@@ -6,4 +6,10 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 task distRuntime(type: Jar) {
     baseName = 'mundus-libgdx-runtime'
     version = '0.0.1'
+
+    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.resourcesDir)
+    from {configurations.compile.collect {zipTree(it)}}
 }
+
+distRuntime.dependsOn classes
