@@ -59,6 +59,8 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
     private FileChooser fileChooser;
     private VisTextField modelPath = new VisTextField();
     private VisTextField texturePath = new VisTextField();
+    private VisTextField name = new VisTextField();
+
     private VisTextButton importBtn = new VisTextButton("IMPORT");
     private VisTextButton fileChooserBtn = new VisTextButton("Select Model & Textures");
 
@@ -108,6 +110,8 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
         inputTable.add(modelPath).fillX().expandX().padBottom(10).row();
         inputTable.add(new VisLabel("Texture File")).left().padBottom(5).row();
         inputTable.add(texturePath).fillX().expandX().row();
+        inputTable.add(new VisLabel("Name")).left().padBottom(5).row();
+        inputTable.add(name).fillX().expandX().padBottom(10).row();
         inputTable.add(importBtn).fillX().expand().bottom();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
@@ -147,8 +151,9 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
         importBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(previewModel != null && previewInstance != null) {
+                if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
                     // create model
+                    importedModel.name = name.getText();
                     MModel mModel = projectManager.importG3dbModel(importedModel);
                     eventBus.post(new ModelImportEvent(mModel));
                     close();

@@ -108,8 +108,7 @@ public class ModelTab extends Tab {
             super();
             setBackground("menu-bg");
             align(Align.center);
-            String basename = FilenameUtils.getBaseName(mModel.name);
-            nameLabel = new VisLabel(basename.substring(0, basename.indexOf("-")), "small");
+            nameLabel = new VisLabel(mModel.name, "small");
             nameLabel.setWrap(true);
             model = mModel;
             add(nameLabel).fill().expand().row();

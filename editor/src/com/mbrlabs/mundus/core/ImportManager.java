@@ -29,6 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 public class ImportManager {
 
     public static class ImportedModel {
+        public String name;
         public FileHandle g3dbFile;
         public FileHandle textureFile;
     }

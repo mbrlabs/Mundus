@@ -171,7 +171,7 @@ public class ProjectManager {
 
         // copy to project's model folder
         String folder = projectContext.path + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
-        FileHandle finalG3db = Gdx.files.absolute(folder + importedModel.g3dbFile.nameWithoutExtension() + "-" + id + ".g3db");
+        FileHandle finalG3db = Gdx.files.absolute(folder + id + ".g3db");
         importedModel.g3dbFile.copyTo(finalG3db);
         importedModel.textureFile.copyTo(Gdx.files.absolute(folder));
 
@@ -182,7 +182,7 @@ public class ProjectManager {
         // create persistable model
         MModel mModel = new MModel();
         mModel.setModel(model);
-        mModel.name = finalG3db.name();
+        mModel.name = importedModel.name;
         mModel.id = id;
         mModel.g3dbPath = finalG3db.path();
         mModel.texturePath = FilenameUtils.concat(Gdx.files.absolute(folder).path(), importedModel.textureFile.name());
@@ -201,7 +201,7 @@ public class ProjectManager {
         // save terrain data in .terra files
         for(Terrain terrain : projectContext.terrains) {
             String path = FilenameUtils.concat(projectContext.path, ProjectManager.PROJECT_TERRAIN_DIR);
-            path += terrain.name + "-" + terrain.id + "." + TerrainIO.FILE_EXTENSION;
+            path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
             terrain.terraPath = path;
             TerrainIO.exportBinary(terrain, path);
         }
