@@ -29,7 +29,7 @@ import com.badlogic.gdx.utils.IntIntMap;
  * @version 24-11-2015
  */
 public class FreeCamController extends InputAdapter implements InputProcessor {
-    private final Camera camera;
+    private Camera camera;
     private final IntIntMap keys = new IntIntMap();
     private int STRAFE_LEFT = Input.Keys.A;
     private int STRAFE_RIGHT = Input.Keys.D;
@@ -42,6 +42,10 @@ public class FreeCamController extends InputAdapter implements InputProcessor {
     private final Vector3 tmp = new Vector3();
 
     public FreeCamController (Camera camera) {
+        this.camera = camera;
+    }
+
+    public void setCamera(Camera camera) {
         this.camera = camera;
     }
 

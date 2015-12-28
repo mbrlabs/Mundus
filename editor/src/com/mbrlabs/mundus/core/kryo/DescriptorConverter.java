@@ -208,7 +208,6 @@ public class DescriptorConverter {
                 sceneDescriptor.getCamDirZ());
         scene.cam.update();
 
-
         return scene;
     }
 

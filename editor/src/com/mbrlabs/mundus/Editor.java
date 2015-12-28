@@ -30,6 +30,8 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.core.Inject;
@@ -75,6 +77,7 @@ public class Editor implements ApplicationListener {
 	public void create () {
         Mundus.init();
         Mundus.inject(this);
+        eventBus.register(this);
         ui = Ui.getInstance();
         inputManager.addProcessor(ui);
 
@@ -102,7 +105,6 @@ public class Editor implements ApplicationListener {
 	@Override
 	public void render () {
         GlUtils.clearScreen(Color.WHITE);
-
         ui.act();
         camController.update();
         toolManager.act();
@@ -135,6 +137,16 @@ public class Editor implements ApplicationListener {
         compass.render(batch);
         ui.draw();
 	}
+
+    @Subscribe
+    public void projectChanged(ProjectChangedEvent changedEvent) {
+        if(compass != null) {
+            compass.setWorldCam(projectContext.currScene.cam);
+        }
+        if(camController != null) {
+            camController.setCamera(projectContext.currScene.cam);
+        }
+    }
 
     @Deprecated
     private void createTestModels() {

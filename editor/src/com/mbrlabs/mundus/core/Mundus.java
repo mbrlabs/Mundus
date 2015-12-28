@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.mbrlabs.mundus.commons.FreeCamController;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -54,6 +55,7 @@ public class Mundus {
     private static ModelBatch modelBatch;
 
     private static InputManager input;
+    private static FreeCamController camController;
     private static Shaders shaders;
 
     private static KryoManager kryoManager;

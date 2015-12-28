@@ -181,6 +181,8 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
             // load and show preview
             if(importedModel != null) {
+                modelPath.setText(origModelFile.path());
+                texturePath.setText(origTextureFile.path());
                 previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
                 previewInstance = new ModelInstance(previewModel);
                 showPreview();

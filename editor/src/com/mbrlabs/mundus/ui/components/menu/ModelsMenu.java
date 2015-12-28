@@ -16,8 +16,11 @@
 
 package com.mbrlabs.mundus.ui.components.menu;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -31,8 +34,19 @@ public class ModelsMenu extends Menu {
         super("Models");
 
         importModel = new MenuItem("Import Model");
-
         addItem(importModel);
+
+        addListeners();
+    }
+
+    private void addListeners() {
+        importModel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui ui = Ui.getInstance();
+                ui.showDialog(ui.getImportModelDialog());
+            }
+        });
     }
 
     public MenuItem getImportModel() {
