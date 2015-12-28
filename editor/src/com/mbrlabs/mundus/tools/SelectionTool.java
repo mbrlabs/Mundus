@@ -31,6 +31,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
 
+import java.util.List;
+
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
@@ -56,19 +58,24 @@ public class SelectionTool extends Tool {
     }
 
     private MModelInstance getEntity(int screenX, int screenY) {
+        List<MModelInstance> entites = projectContext.currScene.entities;
         Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
         MModelInstance modelInstance = null;
         float distance = -1;
-        for (int i = 0; i < projectContext.currScene.entities.size(); i++) {
-            final MModelInstance instance =  projectContext.currScene.entities.get(i);
+        for (int i = 0; i < entites.size(); i++) {
+            final MModelInstance instance =  entites.get(i);
             instance.modelInstance.transform.getTranslation(tempV3);
             tempV3.add(instance.center);
             float dist2 = ray.origin.dst2(tempV3);
             if (distance >= 0f && dist2 > distance) continue;
-            if (Intersector.intersectRaySphere(ray, tempV3, instance.radius, null)) {
-                modelInstance = projectContext.currScene.entities.get(i);
+
+            entites.get(i).modelInstance.transform.getTranslation(tempV3);
+            tempV3.add(projectContext.currScene.entities.get(i).center);
+            if(Intersector.intersectRayBoundsFast(ray, tempV3, entites.get(i).dimensions)) {
+                modelInstance = entites.get(i);
                 distance = dist2;
             }
+
         }
         return modelInstance;
     }
@@ -101,10 +108,12 @@ public class SelectionTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.LEFT) {
             selectedEntity = getEntity(screenX, screenY);
-            outlineInstance.transform.set(selectedEntity.modelInstance.transform);
-            outlineInstance.transform.translate(0, 0, 0);
-            outlineInstance.transform.translate(selectedEntity.center);
-            outlineInstance.transform.scl(selectedEntity.dimensions);
+            if(selectedEntity != null) {
+                outlineInstance.transform.set(selectedEntity.modelInstance.transform);
+                outlineInstance.transform.translate(0, 0, 0);
+                outlineInstance.transform.translate(selectedEntity.center);
+                outlineInstance.transform.scl(selectedEntity.dimensions);
+            }
         }
         return false;
     }

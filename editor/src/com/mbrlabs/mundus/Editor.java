@@ -104,6 +104,7 @@ public class Editor implements ApplicationListener {
 
 	@Override
 	public void render () {
+
         GlUtils.clearScreen(Color.WHITE);
         ui.act();
         camController.update();

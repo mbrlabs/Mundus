@@ -39,7 +39,7 @@ public class BrushShader extends BaseShader {
 
     private ShaderProgram program;
 
-    private int primitiveType = GL20.GL_LINES;
+    private int primitiveType = GL20.GL_LINE_LOOP;
 
     public BrushShader() {
         super();

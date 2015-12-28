@@ -50,6 +50,7 @@ public class ModelPlacementTool extends Tool {
     public void setModel(MModel model) {
         this.model = model;
         curEntity = new MModelInstance(model);
+        curEntity.calculateBounds();
     }
 
     @Override
@@ -81,17 +82,21 @@ public class ModelPlacementTool extends Tool {
         if(curEntity != null && button == Input.Buttons.LEFT) {
             projectContext.currScene.entities.add(curEntity);
             curEntity = new MModelInstance(model);
+            curEntity.calculateBounds();
         }
         return false;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
         if(projectContext.currScene.terrainGroup.size() > 0 && curEntity != null) {
-            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
             projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
-            curEntity.modelInstance.transform.setTranslation(tempV3);
+        } else {
+            tempV3.set(projectContext.currScene.cam.position);
+            tempV3.add(ray.direction.nor().scl(200));
         }
+        curEntity.modelInstance.transform.setTranslation(tempV3);
         return false;
     }
 
