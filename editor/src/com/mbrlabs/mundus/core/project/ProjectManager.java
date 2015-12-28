@@ -21,6 +21,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.ImportManager;
@@ -123,7 +124,7 @@ public class ProjectManager {
         return context;
     }
 
-    private MModel findModelById(List<MModel> models, long id) {
+    private MModel findModelById(Array<MModel> models, long id) {
         for(MModel m : models) {
             if(m.id == id) {
                 return m;

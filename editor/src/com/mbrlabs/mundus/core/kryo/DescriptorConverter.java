@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.core.kryo;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -87,7 +88,7 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static TerrainInstance convert(TerrainInstanceDescriptor terrainDescriptor, List<Terrain> terrains) {
+    public static TerrainInstance convert(TerrainInstanceDescriptor terrainDescriptor, Array<Terrain> terrains) {
         // find terrain
         Terrain terrain = null;
         for(Terrain t : terrains) {
@@ -110,7 +111,7 @@ public class DescriptorConverter {
         return terrainInstance;
     }
 
-    public static MModelInstance convert(ModelInstanceDescriptor descriptor, List<MModel> models) {
+    public static MModelInstance convert(ModelInstanceDescriptor descriptor, Array<MModel> models) {
         // find model
         MModel model = null;
         for(MModel m : models) {
@@ -126,9 +127,13 @@ public class DescriptorConverter {
         }
 
         MModelInstance mModelInstance = new MModelInstance(model);
-        mModelInstance.kryoTransform.translate(descriptor.getPosX(), descriptor.getPosY(), descriptor.getPosZ());
-        mModelInstance.kryoTransform.rotate(descriptor.getRotX(), descriptor.getRotY(), descriptor.getRotZ(), 0);
-        mModelInstance.kryoTransform.scl(descriptor.getScaleX(), descriptor.getScaleY(), descriptor.getScaleZ());
+        float[] pos = descriptor.getPosition();
+        float[] rot = descriptor.getRotation();
+        float[] scl = descriptor.getScale();
+
+        mModelInstance.kryoTransform.translate(pos[0], pos[1], pos[2]);
+        mModelInstance.kryoTransform.rotate(rot[0], rot[1], rot[2], 0);
+        mModelInstance.kryoTransform.scl(scl[0], scl[0], scl[0]);
         return mModelInstance;
     }
 
@@ -141,20 +146,21 @@ public class DescriptorConverter {
 
         // translation
         modelInstance.modelInstance.transform.getTranslation(vec3);
-        descriptor.setPosX(vec3.x);
-        descriptor.setPosY(vec3.y);
-        descriptor.setPosZ(vec3.z);
+        descriptor.getPosition()[0] = vec3.x;
+        descriptor.getPosition()[1] = vec3.y;
+        descriptor.getPosition()[2] = vec3.z;
+
         // rotation
         modelInstance.modelInstance.transform.getRotation(quat);
-        descriptor.setRotX(quat.x);
-        descriptor.setRotY(quat.y);
-        descriptor.setRotZ(quat.z);
+        descriptor.getRotation()[0] = quat.x;
+        descriptor.getRotation()[1] = quat.y;
+        descriptor.getRotation()[2] = quat.z;
+
         // scaling
         modelInstance.modelInstance.transform.getScale(vec3);
-        descriptor.setScaleX(vec3.x);
-        descriptor.setScaleY(vec3.y);
-        descriptor.setScaleZ(vec3.z);
-
+        descriptor.getScale()[0] = vec3.x;
+        descriptor.getScale()[1] = vec3.y;
+        descriptor.getScale()[2] = vec3.z;
         return descriptor;
     }
 
@@ -184,7 +190,7 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static Scene convert(SceneDescriptor sceneDescriptor, List<Terrain> terrains, List<MModel> models) {
+    public static Scene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<MModel> models) {
         // TODO enviroenment
         Scene scene = new Scene();
         scene.setId(sceneDescriptor.getId());

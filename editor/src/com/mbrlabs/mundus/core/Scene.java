@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.TerrainGroup;
 
@@ -35,14 +36,14 @@ public class Scene {
     private String name;
     private long id;
 
-    public List<MModelInstance> entities;
+    public Array<MModelInstance> entities;
     public TerrainGroup terrainGroup;
     public Environment environment;
 
     public PerspectiveCamera cam;
 
     public Scene() {
-        entities = new ArrayList<>();
+        entities = new Array<>();
         terrainGroup = new TerrainGroup();
         environment = new Environment();
 

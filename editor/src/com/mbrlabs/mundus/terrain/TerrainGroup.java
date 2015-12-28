@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.terrain;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,24 +29,24 @@ import java.util.List;
  */
 public class TerrainGroup {
 
-    private List<TerrainInstance> terrains;
+    private Array<TerrainInstance> terrains;
 
     private Vector3 tv3 = new Vector3();
 
     public TerrainGroup() {
-        this.terrains = new ArrayList<>();
+        this.terrains = new Array<>();
     }
 
     public void add(TerrainInstance terrain) {
         this.terrains.add(terrain);
     }
 
-    public List<TerrainInstance> getTerrains() {
+    public Array<TerrainInstance> getTerrains() {
         return this.terrains;
     }
 
     public int size() {
-        return terrains.size();
+        return terrains.size;
     }
 
     public TerrainInstance get(int index) {

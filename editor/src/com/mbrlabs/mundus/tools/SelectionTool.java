@@ -28,6 +28,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
 
@@ -58,21 +59,19 @@ public class SelectionTool extends Tool {
     }
 
     private MModelInstance getEntity(int screenX, int screenY) {
-        List<MModelInstance> entites = projectContext.currScene.entities;
         Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
         MModelInstance modelInstance = null;
         float distance = -1;
-        for (int i = 0; i < entites.size(); i++) {
-            final MModelInstance instance =  entites.get(i);
-            instance.modelInstance.transform.getTranslation(tempV3);
-            tempV3.add(instance.center);
+        for (MModelInstance entity : projectContext.currScene.entities) {
+            entity.modelInstance.transform.getTranslation(tempV3);
+            tempV3.add(entity.center);
             float dist2 = ray.origin.dst2(tempV3);
             if (distance >= 0f && dist2 > distance) continue;
 
-            entites.get(i).modelInstance.transform.getTranslation(tempV3);
-            tempV3.add(projectContext.currScene.entities.get(i).center);
-            if(Intersector.intersectRayBoundsFast(ray, tempV3, entites.get(i).dimensions)) {
-                modelInstance = entites.get(i);
+            entity.modelInstance.transform.getTranslation(tempV3);
+            tempV3.add(entity.center);
+            if(Intersector.intersectRayBoundsFast(ray, tempV3, entity.dimensions)) {
+                modelInstance = entity;
                 distance = dist2;
             }
 

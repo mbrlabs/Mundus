@@ -30,25 +30,11 @@ public class ModelInstanceDescriptor {
     private long modelID;
 
     @Tag(2)
-    private float posX;
+    private float[] position = new float[3];
     @Tag(3)
-    private float posY;
+    private float[] rotation = new float[3];
     @Tag(4)
-    private float posZ;
-
-    @Tag(5)
-    private float rotX;
-    @Tag(6)
-    private float rotY;
-    @Tag(7)
-    private float rotZ;
-
-    @Tag(8)
-    private float scaleX;
-    @Tag(9)
-    private float scaleY;
-    @Tag(10)
-    private float scaleZ;
+    private float[] scale = new float[3];
 
     public long getId() {
         return id;
@@ -66,76 +52,16 @@ public class ModelInstanceDescriptor {
         this.modelID = modelID;
     }
 
-    public float getPosX() {
-        return posX;
+    public float[] getPosition() {
+        return position;
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
+    public float[] getRotation() {
+        return rotation;
     }
 
-    public float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
-
-    public float getPosZ() {
-        return posZ;
-    }
-
-    public void setPosZ(float posZ) {
-        this.posZ = posZ;
-    }
-
-    public float getRotX() {
-        return rotX;
-    }
-
-    public void setRotX(float rotX) {
-        this.rotX = rotX;
-    }
-
-    public float getRotY() {
-        return rotY;
-    }
-
-    public void setRotY(float rotY) {
-        this.rotY = rotY;
-    }
-
-    public float getRotZ() {
-        return rotZ;
-    }
-
-    public void setRotZ(float rotZ) {
-        this.rotZ = rotZ;
-    }
-
-    public float getScaleX() {
-        return scaleX;
-    }
-
-    public void setScaleX(float scaleX) {
-        this.scaleX = scaleX;
-    }
-
-    public float getScaleY() {
-        return scaleY;
-    }
-
-    public void setScaleY(float scaleY) {
-        this.scaleY = scaleY;
-    }
-
-    public float getScaleZ() {
-        return scaleZ;
-    }
-
-    public void setScaleZ(float scaleZ) {
-        this.scaleZ = scaleZ;
+    public float[] getScale() {
+        return scale;
     }
 
 }
