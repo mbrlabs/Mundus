@@ -43,7 +43,7 @@ public class Main {
         config.backgroundFPS = 0;
         config.title = TITLE;
 
-       // new Lwjgl3Application(new Editor(), config);
+        //new Lwjgl3Application(new Editor(), config);
         new LwjglApplication(new Editor(), config);
     }
 

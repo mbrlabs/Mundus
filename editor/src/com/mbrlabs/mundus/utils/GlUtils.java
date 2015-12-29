@@ -32,6 +32,12 @@ public class GlUtils {
         Gdx.gl.glClearColor(color.r, color.g, color.b, 1);
     }
 
+    /**
+     * OpenGL functionality, that goes beyond OpenGL ES.
+     *
+     * It's not 'unsafe' to run this on a desktop, but this kind of functionality uses raw
+     * LWJGL and is not available on mobile devices or in the browser.
+     */
     public static class Unsafe {
 
         public static void polygonModeFill() {

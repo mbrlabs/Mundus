@@ -43,7 +43,7 @@ public class SelectionTool extends Tool {
     public static final String NAME = "Selection Tool";
     private Drawable icon;
 
-    private MModelInstance selectedEntity;
+    protected MModelInstance selectedEntity;
     private Model boxOutlineModel;
     private ModelInstance outlineInstance;
 
@@ -79,6 +79,13 @@ public class SelectionTool extends Tool {
         return modelInstance;
     }
 
+    public void modelSelected(MModelInstance modelInstance) {
+        outlineInstance.transform.set(modelInstance.modelInstance.transform);
+        outlineInstance.transform.translate(0, 0, 0);
+        outlineInstance.transform.translate(modelInstance.center);
+        outlineInstance.transform.scl(modelInstance.dimensions);
+    }
+
     @Override
     public String getName() {
         return NAME;
@@ -109,10 +116,7 @@ public class SelectionTool extends Tool {
         if(button == Input.Buttons.LEFT) {
             selectedEntity = getEntity(screenX, screenY);
             if(selectedEntity != null) {
-                outlineInstance.transform.set(selectedEntity.modelInstance.transform);
-                outlineInstance.transform.translate(0, 0, 0);
-                outlineInstance.transform.translate(selectedEntity.center);
-                outlineInstance.transform.scl(selectedEntity.dimensions);
+                modelSelected(selectedEntity);
             }
         }
         return false;

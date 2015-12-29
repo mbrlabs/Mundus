@@ -2,8 +2,7 @@
 - Model/asset selection moved to sidebar for better UX
 - selection tool
 - translate tool
-- export dialog
-- project export (for runtime) functionality
+- project export to JSON + assets (loadable by runtime)
 
 [0.0.2]
 - generic Tool system

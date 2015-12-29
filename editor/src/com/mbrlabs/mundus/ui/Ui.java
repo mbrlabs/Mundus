@@ -108,7 +108,6 @@ public class Ui extends MyStage {
     }
 
     private void setHandlers() {
-
         // Menu
         menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
         menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
