@@ -83,6 +83,7 @@ public class ModelPlacementTool extends Tool {
             projectContext.currScene.entities.add(curEntity);
             curEntity = new MModelInstance(model);
             curEntity.calculateBounds();
+            mouseMoved(screenX, screenY);
         }
         return false;
     }

@@ -54,7 +54,7 @@ public class SimpleMundusLoader {
 
     public Array<Scene> load() {
         Json json = new Json();
-        FileHandle mundusFile = Gdx.files.internal(folder + "pro.mundus");
+        FileHandle mundusFile = findProjectDescriptor(folder);
         projectDTO = json.fromJson(ProjectDTO.class, mundusFile);
 
         // load models
@@ -78,6 +78,16 @@ public class SimpleMundusLoader {
         }
 
         return scenes;
+    }
+
+    private FileHandle findProjectDescriptor(String folder) {
+        for(FileHandle f : Gdx.files.internal(folder).list("mundus")) {
+            if(!f.isDirectory()) {
+                return f;
+            }
+        }
+
+        return null;
     }
 
     public Map<Long, Model> getModels() {

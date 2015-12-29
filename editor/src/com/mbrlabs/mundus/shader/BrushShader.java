@@ -23,7 +23,10 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.ShaderUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 /**
  * @author Marcus Brummer
@@ -38,8 +41,6 @@ public class BrushShader extends BaseShader {
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
 
     private ShaderProgram program;
-
-    private int primitiveType = GL20.GL_LINE_LOOP;
 
     public BrushShader() {
         super();
@@ -75,12 +76,14 @@ public class BrushShader extends BaseShader {
     @Override
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
-        renderable.meshPart.primitiveType = primitiveType;
+        GlUtils.Unsafe.polygonModeWireframe();
+
         renderable.meshPart.render(program);
     }
 
     @Override
     public void end() {
+        GlUtils.Unsafe.polygonModeFill();
         program.end();
     }
 

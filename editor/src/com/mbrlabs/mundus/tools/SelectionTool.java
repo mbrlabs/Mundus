@@ -93,7 +93,8 @@ public class SelectionTool extends Tool {
     public void render() {
         if(selectedEntity != null) {
             batch.begin(projectContext.currScene.cam);
-            batch.render(outlineInstance, shader);
+           // batch.render(outlineInstance, shader);
+            batch.render(selectedEntity.modelInstance, shader);
             batch.end();
         }
     }
