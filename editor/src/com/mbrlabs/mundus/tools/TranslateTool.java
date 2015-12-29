@@ -64,15 +64,16 @@ public class TranslateTool extends SelectionTool {
 
         ModelBuilder modelBuilder = new ModelBuilder();
 
-        xHandleModel =  modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS, GL20.GL_TRIANGLES,
+        xHandleModel =  modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
+                ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(Color.RED)),
                 VertexAttributes.Usage.Position);
-
-        yHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS, GL20.GL_TRIANGLES,
+        yHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
+                ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(Color.GREEN)),
                 VertexAttributes.Usage.Position);
-
-        zHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS, GL20.GL_TRIANGLES,
+        zHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS,
+                ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position);
 
@@ -103,13 +104,14 @@ public class TranslateTool extends SelectionTool {
     @Override
     public void render() {
         super.render();
-
-        batch.begin(projectContext.currScene.cam);
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        batch.render(xHandle);
-        batch.render(yHandle);
-        batch.render(zHandle);
-        batch.end();
+        if(selectedEntity != null) {
+            batch.begin(projectContext.currScene.cam);
+            GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+            batch.render(xHandle);
+            batch.render(yHandle);
+            batch.render(zHandle);
+            batch.end();
+        }
     }
 
     @Override

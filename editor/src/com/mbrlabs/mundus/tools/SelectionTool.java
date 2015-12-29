@@ -79,11 +79,12 @@ public class SelectionTool extends Tool {
         return modelInstance;
     }
 
-    public void modelSelected(MModelInstance modelInstance) {
-        outlineInstance.transform.set(modelInstance.modelInstance.transform);
+    public void modelSelected(MModelInstance selection) {
+        selectedEntity = selection;
+        outlineInstance.transform.set(selectedEntity.modelInstance.transform);
         outlineInstance.transform.translate(0, 0, 0);
-        outlineInstance.transform.translate(modelInstance.center);
-        outlineInstance.transform.scl(modelInstance.dimensions);
+        outlineInstance.transform.translate(selectedEntity.center);
+        outlineInstance.transform.scl(selectedEntity.dimensions);
     }
 
     @Override
@@ -114,9 +115,9 @@ public class SelectionTool extends Tool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.LEFT) {
-            selectedEntity = getEntity(screenX, screenY);
-            if(selectedEntity != null) {
-                modelSelected(selectedEntity);
+            MModelInstance selection = getEntity(screenX, screenY);
+            if(selection != null) {
+                modelSelected(selection);
             }
         }
         return false;
