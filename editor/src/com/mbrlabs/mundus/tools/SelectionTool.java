@@ -98,6 +98,11 @@ public class SelectionTool extends Tool {
     }
 
     @Override
+    public void reset() {
+        selectedEntity = null;
+    }
+
+    @Override
     public void render() {
         if(selectedEntity != null) {
             batch.begin(projectContext.currScene.cam);

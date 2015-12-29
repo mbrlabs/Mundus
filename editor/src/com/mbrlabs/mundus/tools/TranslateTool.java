@@ -42,7 +42,7 @@ public class TranslateTool extends SelectionTool {
 
     private final float ARROW_THIKNESS = 0.2f;
     private final float ARROW_CAP_SIZE = 0.1f;
-    private final int ARROW_DIVISIONS = 5;
+    private final int ARROW_DIVISIONS = 10;
 
     public static final String NAME = "Translate";
     private Drawable icon;

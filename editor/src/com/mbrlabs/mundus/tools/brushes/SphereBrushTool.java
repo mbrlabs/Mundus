@@ -88,6 +88,11 @@ public class SphereBrushTool extends Tool {
     }
 
     @Override
+    public void reset() {
+
+    }
+
+    @Override
     public void render() {
         batch.begin(projectContext.currScene.cam);
         batch.render(sphereModelInstance, shader);

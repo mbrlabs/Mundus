@@ -59,6 +59,7 @@ public class ToolManager extends InputAdapter implements Disposable {
         selectionTool = new SelectionTool(projectContext, shaders.brushShader, modelBatch);
 
         this.inputManager.addProcessor(this);
+        setDefaultTool();
     }
 
     public void activateTool(Tool tool) {
@@ -72,6 +73,11 @@ public class ToolManager extends InputAdapter implements Disposable {
             inputManager.removeProcessor(activeTool);
             activeTool = null;
         }
+    }
+
+    public void setDefaultTool() {
+        deactivateTool();
+        activateTool(translateTool);
     }
 
     public void render() {
@@ -89,7 +95,11 @@ public class ToolManager extends InputAdapter implements Disposable {
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == KEY_DEACTIVATE) {
-            deactivateTool();
+            if(activeTool != null) {
+                activeTool.reset();
+                setDefaultTool();
+                activeTool.reset();
+            }
             return true;
         }
         return false;

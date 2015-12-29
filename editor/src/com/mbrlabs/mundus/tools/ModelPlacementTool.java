@@ -64,6 +64,11 @@ public class ModelPlacementTool extends Tool {
     }
 
     @Override
+    public void reset() {
+
+    }
+
+    @Override
     public void render() {
         if(curEntity != null) {
             batch.begin(projectContext.currScene.cam);
