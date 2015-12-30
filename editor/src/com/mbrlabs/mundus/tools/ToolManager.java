@@ -109,6 +109,7 @@ public class ToolManager extends InputAdapter implements Disposable {
     @Override
     public void dispose() {
         sphereBrushTool.dispose();
+        translateTool.dispose();
     }
 
 }

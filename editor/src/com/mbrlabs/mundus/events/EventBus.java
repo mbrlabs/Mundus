@@ -27,8 +27,10 @@ import java.util.List;
 /**
  * Simple Event bus via reflection.
  *
- * Subscibers need to provide a public method, annotated with @Subscribe and
+ * Subscribers need to provide a public method, annotated with @Subscribe and
  * 1 parameter as event type.
+ *
+ * Inspired by the Otto Event Bus for Android.
  *
  * @author Marcus Brummer
  * @version 12-12-2015

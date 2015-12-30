@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.components;
+package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.kotcrab.vis.ui.widget.VisCheckBox;

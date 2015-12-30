@@ -7,6 +7,19 @@ if someone writes a runtime/parser for that engine.
 This project is at a very early stage in development, so expect large
 changes in the future.
 
+## Current features
+Please note, that a lot of the UI contains dummy controls for functionality that still needs to be
+implemented.
+Below are some of the more interesting features, that already work
+
+- Creation of multiple Terrains
+- Basic support for loading heightmaps
+- Editing terrain height with brushes
+- loading of g3db files
+- loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv fbx-conv) binary must be set in the settings)
+- Placement of models in the world
+- basic export of the project into a json format + assets
+
 ## Runtime
 Currently there is no runtime.
 Since Mundus is built on top of the awesome libGDX framework, the first runtime that i'm going to write

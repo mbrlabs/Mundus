@@ -22,7 +22,7 @@ import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.ui.components.dialogs.*;
-import com.mbrlabs.mundus.ui.components.toolbar.MundusToolbar;
+import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;

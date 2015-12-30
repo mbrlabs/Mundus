@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.components.toolbar;
+package com.mbrlabs.mundus.ui.components;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
+import com.mbrlabs.mundus.ui.widgets.Toolbar;
 
 /**
  * @author Marcus Brummer

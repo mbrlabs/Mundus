@@ -27,7 +27,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.components.RadioButtonGroup;
+import com.mbrlabs.mundus.ui.widgets.RadioButtonGroup;
 
 /**
  * @author Marcus Brummer

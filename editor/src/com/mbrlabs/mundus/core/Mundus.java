@@ -156,6 +156,7 @@ public class Mundus {
         VisUI.dispose();
         modelBatch.dispose();
         shaders.dispose();
+        toolManager.dispose();
         //brushManager.dispose();
         for(Model model : testModels) {
             model.dispose();
