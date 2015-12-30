@@ -36,13 +36,15 @@ public class FileChooserField extends VisTable {
         public void selected(FileHandle fileHandle);
     }
 
-    private FileSelected fileSelected;
+    private int width;
 
+    private FileSelected fileSelected;
     private VisTextField textField;
     private VisTextButton fcBtn;
     private FileChooser fileChooser;
 
-    private int width;
+    private String path;
+    private FileHandle fileHandle;
 
     public FileChooserField(int width) {
         super();
@@ -56,15 +58,23 @@ public class FileChooserField extends VisTable {
     }
 
     public void setEditable(boolean editable) {
-        textField.setDisabled(editable);
+        textField.setDisabled(!editable);
     }
 
     public String getPath() {
         return textField.getText();
     }
 
+    public FileHandle getFile() {
+        return this.fileHandle;
+    }
+
     public void setCallback(FileSelected fileSelected) {
         this.fileSelected = fileSelected;
+    }
+
+    public void clear() {
+        textField.setText("");
     }
 
     private void setupUI() {
@@ -79,7 +89,9 @@ public class FileChooserField extends VisTable {
         fileChooser.setListener(new FileChooserAdapter() {
             @Override
             public void selected(FileHandle file) {
-                super.selected(file);
+                fileHandle = file;
+                path = file.path();
+
                 textField.setText(file.path());
                 if(fileSelected != null) {
                     fileSelected.selected(file);

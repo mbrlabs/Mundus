@@ -1,5 +1,6 @@
 [0.0.3]
 - Model/asset selection moved to sidebar for better UX
+- Overall improved UI
 - selection tool
 - translate tool
 - project export to JSON + assets (loadable by runtime)

@@ -44,6 +44,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
@@ -56,13 +57,10 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
     // UI elements
     private Container fake3dViewport;
-    private FileChooser fileChooser;
-    private VisTextField modelPath = new VisTextField();
-    private VisTextField texturePath = new VisTextField();
     private VisTextField name = new VisTextField();
-
     private VisTextButton importBtn = new VisTextButton("IMPORT");
-    private VisTextButton fileChooserBtn = new VisTextButton("Select Model & Textures");
+    private FileChooserField modelInput = new FileChooserField(300);
+    private FileChooserField textureInput = new FileChooserField(300);
 
     // preview model + instance
     private Model previewModel;
@@ -105,17 +103,16 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
         root.add(fake3dViewport).width(300).height(300);
 
         inputTable.left().top();
-        inputTable.add(fileChooserBtn).fillX().expandX().padBottom(10).row();
         inputTable.add(new VisLabel("Model File")).left().padBottom(5).row();
-        inputTable.add(modelPath).fillX().expandX().padBottom(10).row();
+        inputTable.add(modelInput).fillX().expandX().padBottom(10).row();
         inputTable.add(new VisLabel("Texture File")).left().padBottom(5).row();
-        inputTable.add(texturePath).fillX().expandX().row();
+        inputTable.add(textureInput).fillX().expandX().row();
         inputTable.add(new VisLabel("Name")).left().padBottom(5).row();
         inputTable.add(name).fillX().expandX().padBottom(10).row();
         inputTable.add(importBtn).fillX().expand().bottom();
 
-        fileChooser = new FileChooser(FileChooser.Mode.OPEN);
-        fileChooser.setMultiSelectionEnabled(true);
+        modelInput.setEditable(false);
+        textureInput.setEditable(false);
     }
 
     private void setupListener() {
@@ -128,22 +125,21 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             }
         });
 
-        // button launches file chooser
-        fileChooserBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                dispose();
-                Ui.getInstance().addActor(fileChooser.fadeIn());
+        // texture chooser
+        textureInput.setCallback(fileHandle -> {
+            if(fileHandle.exists()) {
+                if(modelInput.getFile() != null && modelInput.getFile().exists()) {
+                    loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
+                }
             }
         });
 
-        // file chooser
-        fileChooser.setListener(new FileChooserAdapter() {
-            @Override
-            public void selected(Array<FileHandle> files) {
-                super.selected(files);
-                loadAndShowPreview(files);
+        // model chooser
+        modelInput.setCallback(fileHandle -> {
+            if(fileHandle.exists()) {
+                if(textureInput.getFile() != null && textureInput.getFile().exists()) {
+                    loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
+                }
             }
         });
 
@@ -163,39 +159,16 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
     }
 
 
-    private void loadAndShowPreview(Array<FileHandle> files) {
-        if(files.size == 2) {
+    private void loadAndShowPreview(FileHandle model, FileHandle texture) {
+        this.importedModel = importManager.importToTempFolder(model, texture);
 
-            // get model
-            FileHandle origModelFile = null;
-            if(FileFormatUtils.is3DFormat(files.get(0))) {
-                origModelFile = files.get(0);
-            } else if(FileFormatUtils.is3DFormat(files.get(1))) {
-                origModelFile = files.get(1);
-            }
-
-            // get texture
-            FileHandle origTextureFile = null;
-            if(FileFormatUtils.isPNG(files.get(0))) {
-                origTextureFile = files.get(0);
-            } else if(FileFormatUtils.isPNG(files.get(1))) {
-                origTextureFile = files.get(1);
-            }
-
-            this.importedModel = importManager.importToTempFolder(origModelFile, origTextureFile);
-
-            // load and show preview
-            if(importedModel != null) {
-                modelPath.setText(origModelFile.path());
-                texturePath.setText(origTextureFile.path());
-                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
-                previewInstance = new ModelInstance(previewModel);
-                showPreview();
-            }
-
+        // load and show preview
+        if(importedModel != null) {
+            previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
+            previewInstance = new ModelInstance(previewModel);
+            showPreview();
         }
     }
-
 
     @Override
     protected void close() {
@@ -220,7 +193,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             previewModel.dispose();
             previewModel = null;
         }
-        modelPath.setText("");
-        texturePath.setText("");
+        modelInput.clear();
+        textureInput.clear();
     }
 }
