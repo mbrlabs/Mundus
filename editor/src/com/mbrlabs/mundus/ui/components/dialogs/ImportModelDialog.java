@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
@@ -145,6 +146,8 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
                     importedModel.name = name.getText();
                     MModel mModel = projectManager.importG3dbModel(importedModel);
                     eventBus.post(new ModelImportEvent(mModel));
+                    modelInput.clear();
+                    textureInput.clear();
                     close();
                 }
             }
@@ -166,9 +169,13 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
         // load and show preview
         if(importedModel != null) {
-            previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
-            previewInstance = new ModelInstance(previewModel);
-            showPreview();
+            try {
+                previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
+                previewInstance = new ModelInstance(previewModel);
+                showPreview();
+            } catch (GdxRuntimeException e) {
+                DialogUtils.showErrorDialog(getStage(), e.getMessage());
+            }
         }
     }
 

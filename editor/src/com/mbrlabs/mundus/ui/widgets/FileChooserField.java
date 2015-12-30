@@ -75,6 +75,7 @@ public class FileChooserField extends VisTable {
 
     public void clear() {
         textField.setText("");
+        fileHandle = null;
     }
 
     public void setText(String text) {

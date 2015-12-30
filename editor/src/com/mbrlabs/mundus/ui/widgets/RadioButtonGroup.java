@@ -29,7 +29,6 @@ public class RadioButtonGroup<T> extends VisTable {
 
     /**
      * A checkbox with a reference object.
-
      */
     public static class RadioButton extends VisRadioButton {
 
