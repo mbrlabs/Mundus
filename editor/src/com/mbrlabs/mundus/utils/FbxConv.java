@@ -152,9 +152,11 @@ public class FbxConv {
 
         } catch (IOException e) {
             e.printStackTrace();
+            result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_IO_ERROR);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_INTERRUPTED);
         }
 

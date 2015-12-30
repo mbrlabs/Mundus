@@ -23,6 +23,7 @@ import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
 /**
  * @author Marcus Brummer
@@ -34,7 +35,7 @@ public class SettingsDialog extends BaseDialog {
     private VerticalGroup settingsSelection;
     private VisTable content;
 
-    private VisTextField path;
+    private FileChooserField fbxBinary;
 
     private VisTextButton save;
 
@@ -65,8 +66,8 @@ public class SettingsDialog extends BaseDialog {
         root.add(splitPane).width(700).minHeight(400).fill().expand();
 
         content.add(new VisLabel("fbx-conv:")).padRight(5);
-        path = new VisTextField();
-        content.add(path).width(300).row();
+        fbxBinary = new FileChooserField(300);
+        content.add(fbxBinary).row();
 
         save = new VisTextButton("Save");
         content.add(save).width(93).height(25).padTop(15).colspan(2);
@@ -75,7 +76,7 @@ public class SettingsDialog extends BaseDialog {
     }
 
     public void reloadSettings() {
-        path.setText(homeManager.homeDescriptor.settings.fbxConvBinary);
+        fbxBinary.setText(homeManager.homeDescriptor.settings.fbxConvBinary);
     }
 
     private void addHandlers() {
@@ -83,7 +84,7 @@ public class SettingsDialog extends BaseDialog {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                String fbxPath = path.getText();
+                String fbxPath = fbxBinary.getPath();
                 homeManager.homeDescriptor.settings.fbxConvBinary = fbxPath;
                 homeManager.save();
             }

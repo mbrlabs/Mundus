@@ -77,6 +77,10 @@ public class FileChooserField extends VisTable {
         textField.setText("");
     }
 
+    public void setText(String text) {
+        textField.setText(text);
+    }
+
     private void setupUI() {
         pad(5);
         add(textField).width(width*0.75f).padRight(5);

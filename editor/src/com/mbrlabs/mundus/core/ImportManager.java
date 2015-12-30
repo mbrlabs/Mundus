@@ -32,6 +32,7 @@ public class ImportManager {
         public String name;
         public FileHandle g3dbFile;
         public FileHandle textureFile;
+        public FbxConv.FbxConvResult convResult;
     }
 
     private FbxConv fbxConv;
@@ -40,6 +41,7 @@ public class ImportManager {
     public ImportManager(HomeManager homeManager) {
         this.fbxConv = new FbxConv();
         this.homeManager = homeManager;
+
     }
 
     public ImportedModel importToTempFolder(FileHandle modelFile, FileHandle textureFile) {
@@ -74,11 +76,11 @@ public class ImportManager {
                 || FileFormatUtils.isCollada(rawModelFile)
                 || FileFormatUtils.isWavefont(rawModelFile);
         if(convert) {
-            FbxConv.FbxConvResult result = new FbxConv().input(rawModelFile.path())
+            imported.convResult = new FbxConv().input(rawModelFile.path())
                     .output(tempModelCache.file().getAbsolutePath()).
                             flipTexture(true).execute();
-            if(result.isSuccess()) {
-                imported.g3dbFile = Gdx.files.absolute(result.getOutputFile());
+            if(imported.convResult.isSuccess()) {
+                imported.g3dbFile = Gdx.files.absolute(imported.convResult.getOutputFile());
             }
         } else if(FileFormatUtils.isG3DB(rawModelFile)) {
             imported.g3dbFile = rawModelFile;

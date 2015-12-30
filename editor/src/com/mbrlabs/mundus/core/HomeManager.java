@@ -39,6 +39,9 @@ public class HomeManager {
     public HomeManager(KryoManager kryoManager) {
         this.kryoManager = kryoManager;
         homeDescriptor = kryoManager.loadHomeDescriptor();
+        if(homeDescriptor.settings.fbxConvBinary == null) {
+            homeDescriptor.settings.fbxConvBinary = "";
+        }
     }
 
     public void save() {

@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -116,14 +117,6 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
     }
 
     private void setupListener() {
-        // import btn
-        importBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                showPreview();
-            }
-        });
 
         // texture chooser
         textureInput.setCallback(fileHandle -> {
@@ -161,6 +154,15 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
     private void loadAndShowPreview(FileHandle model, FileHandle texture) {
         this.importedModel = importManager.importToTempFolder(model, texture);
+
+        if(importedModel == null) {
+            if(FileFormatUtils.isCollada(model) || FileFormatUtils.isFBX(model) || FileFormatUtils.isWavefont(model)) {
+                DialogUtils.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right " +
+                        "files & have set the correct fbc-conv binary in the settings menu.");
+            } else {
+                DialogUtils.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right files");
+            }
+        }
 
         // load and show preview
         if(importedModel != null) {

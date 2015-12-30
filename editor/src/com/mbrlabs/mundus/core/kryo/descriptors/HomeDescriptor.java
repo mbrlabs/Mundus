@@ -45,7 +45,7 @@ public class HomeDescriptor {
      */
     public static class Settings {
         @Tag(0)
-        public String fbxConvBinary;
+        public String fbxConvBinary = "";
     }
 
 }
