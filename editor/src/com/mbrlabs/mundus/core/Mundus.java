@@ -92,16 +92,16 @@ public class Mundus {
         projectContext = new ProjectContext(-1);
         projectContext.loaded = false;
 
+        input = new InputManager();
+        toolManager = new ToolManager(input, projectContext, modelBatch, shaders);
+
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
-        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, eventBus);
+        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, eventBus, toolManager);
         importManager = new ImportManager(homeManager);
 
         // input
-        input = new InputManager();
-
-        toolManager = new ToolManager(input, projectContext, modelBatch, shaders);
     }
 
     public static void inject(Object o) {

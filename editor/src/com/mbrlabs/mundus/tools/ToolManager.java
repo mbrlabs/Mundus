@@ -70,6 +70,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     public void deactivateTool() {
         if(activeTool != null) {
+            activeTool.reset();
             inputManager.removeProcessor(activeTool);
             activeTool = null;
         }

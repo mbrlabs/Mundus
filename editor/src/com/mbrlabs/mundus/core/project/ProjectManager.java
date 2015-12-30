@@ -34,6 +34,7 @@ import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
@@ -56,12 +57,15 @@ public class ProjectManager {
     private KryoManager kryoManager;
 
     private EventBus eventBus;
+    private ToolManager toolManager;
 
-    public ProjectManager(ProjectContext projectContext, KryoManager kryoManager, HomeManager homeManager, EventBus eventBus) {
+    public ProjectManager(ProjectContext projectContext, KryoManager kryoManager,
+                          HomeManager homeManager, EventBus eventBus, ToolManager toolManager) {
         this.projectContext = projectContext;
         this.homeManager = homeManager;
         this.kryoManager = kryoManager;
         this.eventBus = eventBus;
+        this.toolManager = toolManager;
     }
 
     public ProjectContext createProject(String name, String folder) {
@@ -140,6 +144,7 @@ public class ProjectManager {
     }
 
     public void changeProject(ProjectContext context) {
+        toolManager.deactivateTool();
         homeManager.homeDescriptor.lastProject = new ProjectRef();
         homeManager.homeDescriptor.lastProject.setName(context.name);
         homeManager.homeDescriptor.lastProject.setPath(context.path);
@@ -149,6 +154,7 @@ public class ProjectManager {
         projectContext.loaded = true;
         Gdx.graphics.setTitle(constructWindowTitle());
         eventBus.post(new ProjectChangedEvent());
+        toolManager.setDefaultTool();
     }
 
     public boolean openLastOpenedProject() {
