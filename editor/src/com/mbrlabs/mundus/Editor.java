@@ -96,7 +96,7 @@ public class Editor implements ApplicationListener {
 
         compass = new Compass(projectContext.currScene.cam);
 
-        createTestModels();
+        //createTestModels();
 
         camController = new FreeCamController(projectContext.currScene.cam);
         inputManager.addProcessor(camController);
@@ -109,6 +109,7 @@ public class Editor implements ApplicationListener {
         ui.act();
         camController.update();
         toolManager.act();
+        projectContext.currScene.cam.update();
 
         // update status bar
         ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());

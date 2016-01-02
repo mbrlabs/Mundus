@@ -1,16 +1,17 @@
 [0.0.3]
 - Model/asset selection moved to sidebar for better UX
 - Overall improved UI
-- selection tool
-- translate tool
-- project export to JSON + assets (loadable by runtime)
+- Selection tool
+- Translate tool
+- Project export to JSON + assets (loadable by runtime)
+- Improved error handling
 
 [0.0.2]
-- generic Tool system
-- support for scenes in one project
-- placement of models inside the world
-- libGDX updated to version 1.7.2
-- terrain brushes can be applied to all terrains in one scene
+- Generic Tool system
+- Support for scenes in one project
+- Placement of models inside the world
+- LibGDX updated to version 1.7.2
+- Terrain brushes can be applied to all terrains in one scene
 
 [0.0.1]
-- first version ever pushed to Github
+- First version ever pushed to Github

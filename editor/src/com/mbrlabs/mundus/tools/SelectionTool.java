@@ -70,6 +70,7 @@ public class SelectionTool extends Tool {
 
             entity.modelInstance.transform.getTranslation(tempV3);
             tempV3.add(entity.center);
+
             if(Intersector.intersectRayBoundsFast(ray, tempV3, entity.dimensions)) {
                 modelInstance = entity;
                 distance = dist2;
@@ -82,7 +83,6 @@ public class SelectionTool extends Tool {
     public void modelSelected(MModelInstance selection) {
         selectedEntity = selection;
         outlineInstance.transform.set(selectedEntity.modelInstance.transform);
-        outlineInstance.transform.translate(0, 0, 0);
         outlineInstance.transform.translate(selectedEntity.center);
         outlineInstance.transform.scl(selectedEntity.dimensions);
     }
@@ -121,7 +121,7 @@ public class SelectionTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.LEFT) {
             MModelInstance selection = getEntity(screenX, screenY);
-            if(selection != null) {
+            if(selection != null && !selection.equals(selectedEntity)) {
                 modelSelected(selection);
             }
         }
