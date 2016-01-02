@@ -43,6 +43,10 @@ import org.lwjgl.opengl.GL11;
  */
 public class TranslateTool extends SelectionTool {
 
+    private enum State {
+        TRANSLATE_X, TRANSLATE_Y, TRANSLATE_Z, IDLE
+    }
+
     private static final boolean DEBUG = false;
 
     private final float ARROW_THIKNESS = 0.2f;
@@ -51,6 +55,8 @@ public class TranslateTool extends SelectionTool {
 
     public static final String NAME = "Translate";
     private Drawable icon;
+
+    private State state = State.IDLE;
 
     private Model xHandleModel;
     private Model yHandleModel;
@@ -152,9 +158,45 @@ public class TranslateTool extends SelectionTool {
 
         if(button == Input.Buttons.LEFT) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-            System.out.println(xHandle.isSelected(ray));
+            if(xHandle.isSelected(ray))
+                state = State.TRANSLATE_X;
+            else if(yHandle.isSelected(ray))
+                state = State.TRANSLATE_Y;
+            else if(zHandle.isSelected(ray))
+                state = State.TRANSLATE_Z;
+            else
+                state = State.IDLE;
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        super.touchDragged(screenX, screenY, pointer);
+
+        float x = -Gdx.input.getDeltaX();
+        float y = -Gdx.input.getDeltaY();
+
+
+        // FIXME draw speed
+
+        if(state == State.TRANSLATE_X) {
+            // FIXME draw direction
+            selectedEntity.modelInstance.transform.translate(x, 0, 0);
+        } else if(state == State.TRANSLATE_Y) {
+            selectedEntity.modelInstance.transform.translate(0, y, 0);
+        } else if(state == State.TRANSLATE_Z) {
+            // TODO
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        super.touchUp(screenX, screenY, pointer, button);
+        state = State.IDLE;
         return false;
     }
 
@@ -170,6 +212,11 @@ public class TranslateTool extends SelectionTool {
         zHandle.dispose();
     }
 
+    /**
+     *
+     * @author Marcus Brummer
+     * @version 02-1-2016
+     */
     private class Handle extends ModelInstance implements Disposable {
 
         public BoundingBox boundingBox;
