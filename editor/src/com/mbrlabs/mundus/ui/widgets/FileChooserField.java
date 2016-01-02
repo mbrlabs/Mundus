@@ -73,6 +73,14 @@ public class FileChooserField extends VisTable {
         this.fileSelected = fileSelected;
     }
 
+    public void setFileMode(boolean fileMode) {
+        if(fileMode) {
+            fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
+        } else {
+            fileChooser.setSelectionMode(FileChooser.SelectionMode.DIRECTORIES);
+        }
+    }
+
     public void clear() {
         textField.setText("");
         fileHandle = null;

@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
  * @author Marcus Brummer
@@ -66,11 +67,10 @@ public class StatusBar extends Container {
     }
 
     public void setCamPos(Vector3 pos) {
-        camPos.setText("cam x,y,z: " + round(pos.x) + "," + round(pos.y) + "," + round(pos.z));
+        camPos.setText("cam x,y,z: " + StringUtils.formatFloat(pos.x, 3) + "," +
+                StringUtils.formatFloat(pos.y, 3) + "," +
+                StringUtils.formatFloat(pos.z, 3));
     }
 
-    private String round(float f) {
-        return String.format("%.3f", f);
-    }
 
 }

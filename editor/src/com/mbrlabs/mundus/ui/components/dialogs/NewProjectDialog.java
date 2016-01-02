@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
 /**
  * @author Marcus Brummer
@@ -32,10 +33,9 @@ import com.mbrlabs.mundus.ui.Ui;
  */
 public class NewProjectDialog extends BaseDialog {
 
-    private VisTextField projectPath;
     private VisTextField projectName;
-
     private VisTextButton createBtn;
+    private FileChooserField projectPath;
 
     @Inject
     private ProjectManager projectManager;
@@ -54,14 +54,15 @@ public class NewProjectDialog extends BaseDialog {
         root.add(this.projectName).height(21).width(300).fillX();
         root.row().padTop(10);
         root.add(new VisLabel("Project Folder:")).right().padRight(5);
-        projectPath = new VisTextField();
-        root.add(projectPath).width(300).padBottom(15).row();
-        //mainTable.add(new Separator()).padTop(2).padBottom(2).fill().expand();
+        projectPath = new FileChooserField(300);
+        projectPath.setFileMode(false);
+        root.add(projectPath).row();
 
         createBtn = new VisTextButton("Create");
         root.add(createBtn).width(93).height(25).colspan(2);
 
         setupListeners();
+
     }
 
     private void setupListeners() {
@@ -70,7 +71,7 @@ public class NewProjectDialog extends BaseDialog {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 String name = projectName.getText();
-                String path = projectPath.getText();
+                String path = projectPath.getPath();
                 if(validateInput(name, path)) {
                     if(!path.endsWith("/")) {
                         path += "/";
@@ -88,10 +89,5 @@ public class NewProjectDialog extends BaseDialog {
     private boolean validateInput(String name, String path) {
         return name != null && name.length() > 0 && path != null && path.length() > 0;
     }
-
-
-
-
-
 
 }
