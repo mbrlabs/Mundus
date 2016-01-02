@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.components;
 
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.utils.Align;
@@ -32,6 +33,8 @@ public class StatusBar extends Container {
 
     private VisLabel verticesLabel;
     private VisLabel fpsLabel;
+    private VisLabel camPos;
+
 
     public StatusBar() {
         super();
@@ -44,9 +47,12 @@ public class StatusBar extends Container {
 
         verticesLabel = new VisLabel();
         fpsLabel = new VisLabel();
+        camPos = new VisLabel();
         setFps(60);
         setVertexCount(0);
 
+
+        group.addActor(camPos);
         group.addActor(verticesLabel);
         group.addActor(fpsLabel);
     }
@@ -57,6 +63,14 @@ public class StatusBar extends Container {
 
     public void setVertexCount(long vertexCount) {
         this.verticesLabel.setText("vertices: " + vertexCount);
+    }
+
+    public void setCamPos(Vector3 pos) {
+        camPos.setText("cam x,y,z: " + round(pos.x) + "," + round(pos.y) + "," + round(pos.z));
+    }
+
+    private String round(float f) {
+        return String.format("%.3f", f);
     }
 
 }

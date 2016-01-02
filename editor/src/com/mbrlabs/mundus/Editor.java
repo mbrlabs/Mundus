@@ -113,6 +113,7 @@ public class Editor implements ApplicationListener {
 
         // update status bar
         ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
+        ui.getStatusBar().setCamPos(projectContext.currScene.cam.position);
         ui.getStatusBar().setVertexCount(0);
 
         // render model instances

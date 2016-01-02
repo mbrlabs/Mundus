@@ -143,20 +143,38 @@ public class TranslateTool extends SelectionTool {
         super.act();
 
         if(selectedEntity != null) {
-            selectedEntity.modelInstance.transform.getTranslation(temp0);
-            temp0.add(selectedEntity.center);
-            xHandle.setTranslation(temp0);
-            yHandle.setTranslation(temp0);
-            zHandle.setTranslation(temp0);
-        }
+            Vector3 selectionPos = selectedEntity.modelInstance.transform.getTranslation(temp0);
+            selectionPos.add(selectedEntity.center);
+            xHandle.setTranslation(selectionPos);
+            yHandle.setTranslation(selectionPos);
+            zHandle.setTranslation(selectionPos);
 
+            if(state == State.IDLE) return;
+
+            Ray ray = projectContext.currScene.cam.getPickRay(Gdx.input.getX(), Gdx.input.getY());
+            Vector3 rayEnd = selectedEntity.modelInstance.transform.getTranslation(temp1);
+            float dst = projectContext.currScene.cam.position.dst(rayEnd);
+            rayEnd = ray.getEndPoint(rayEnd, dst);
+
+            selectionPos = selectedEntity.modelInstance.transform.getTranslation(temp0);
+            if(state == State.TRANSLATE_X) {
+                selectedEntity.modelInstance.transform.setTranslation(rayEnd.x += Gdx.input.getDeltaX(),
+                        selectionPos.y, selectionPos.z);
+            } else if(state == State.TRANSLATE_Y) {
+                selectedEntity.modelInstance.transform.setTranslation(selectionPos.x,
+                        rayEnd.y - Gdx.input.getDeltaY(), selectionPos.z);
+            } else if(state == State.TRANSLATE_Z) {
+                selectedEntity.modelInstance.transform.setTranslation(selectionPos.x, selectionPos.y,
+                        rayEnd.z + Gdx.input.getDeltaX());
+            }
+        }
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
 
-        if(button == Input.Buttons.LEFT) {
+        if(button == Input.Buttons.LEFT && selectedEntity != null) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
             if(xHandle.isSelected(ray))
                 state = State.TRANSLATE_X;
@@ -166,27 +184,6 @@ public class TranslateTool extends SelectionTool {
                 state = State.TRANSLATE_Z;
             else
                 state = State.IDLE;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        super.touchDragged(screenX, screenY, pointer);
-
-        float x = -Gdx.input.getDeltaX() * 0.4f;
-        float y = -Gdx.input.getDeltaY() * 0.4f;
-
-        // FIXME draw speed
-
-        if(state == State.TRANSLATE_X) {
-            // FIXME draw direction
-            selectedEntity.modelInstance.transform.translate(x, 0, 0);
-        } else if(state == State.TRANSLATE_Y) {
-            selectedEntity.modelInstance.transform.translate(0, y, 0);
-        } else if(state == State.TRANSLATE_Z) {
-            // TODO
         }
 
         return false;
