@@ -158,14 +158,14 @@ public class TranslateTool extends SelectionTool {
 
             selectionPos = selectedEntity.modelInstance.transform.getTranslation(temp0);
             if(state == State.TRANSLATE_X) {
-                selectedEntity.modelInstance.transform.setTranslation(rayEnd.x += Gdx.input.getDeltaX(),
+                selectedEntity.modelInstance.transform.setTranslation(rayEnd.x,
                         selectionPos.y, selectionPos.z);
             } else if(state == State.TRANSLATE_Y) {
                 selectedEntity.modelInstance.transform.setTranslation(selectionPos.x,
-                        rayEnd.y - Gdx.input.getDeltaY(), selectionPos.z);
+                        rayEnd.y, selectionPos.z);
             } else if(state == State.TRANSLATE_Z) {
                 selectedEntity.modelInstance.transform.setTranslation(selectionPos.x, selectionPos.y,
-                        rayEnd.z + Gdx.input.getDeltaX());
+                        rayEnd.z);
             }
         }
     }
