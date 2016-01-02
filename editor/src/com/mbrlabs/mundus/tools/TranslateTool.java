@@ -175,9 +175,8 @@ public class TranslateTool extends SelectionTool {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         super.touchDragged(screenX, screenY, pointer);
 
-        float x = -Gdx.input.getDeltaX();
-        float y = -Gdx.input.getDeltaY();
-
+        float x = -Gdx.input.getDeltaX() * 0.4f;
+        float y = -Gdx.input.getDeltaY() * 0.4f;
 
         // FIXME draw speed
 
