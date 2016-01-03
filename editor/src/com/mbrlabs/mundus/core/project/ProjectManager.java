@@ -39,7 +39,6 @@ import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * @author Marcus Brummer
@@ -108,16 +107,18 @@ public class ProjectManager {
         }
 
         // create ModelInstances for MModelInstaces
-        for(MModelInstance mModelInstance : context.currScene.entities) {
-            MModel model = findModelById(context.models, mModelInstance.getModelId());
-            if(model != null) {
-                mModelInstance.modelInstance = new ModelInstance(model.getModel());
-                mModelInstance.modelInstance.transform.set(mModelInstance.kryoTransform);
-                mModelInstance.calculateBounds();
-            } else {
-                Log.fatal("model for modelInstance not found: " + mModelInstance.getModelId());
-            }
+        for(Scene scene : context.scenes) {
+            for(MModelInstance mModelInstance : scene.entities) {
+                MModel model = findModelById(context.models, mModelInstance.getModelId());
+                if(model != null) {
+                    mModelInstance.modelInstance = new ModelInstance(model.getModel());
+                    mModelInstance.modelInstance.transform.set(mModelInstance.kryoTransform);
+                    mModelInstance.calculateBounds();
+                } else {
+                    Log.fatal("model for modelInstance not found: " + mModelInstance.getModelId());
+                }
 
+            }
         }
 
         // load terrain .terra files
@@ -209,7 +210,7 @@ public class ProjectManager {
             String path = FilenameUtils.concat(projectContext.path, ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
             terrain.terraPath = path;
-            TerrainIO.exportBinary(terrain, path);
+            TerrainIO.exportTerrain(terrain, path);
         }
 
         // save context in .pro file
@@ -217,25 +218,23 @@ public class ProjectManager {
 
         Log.debug("Saving project " + projectContext.name+ " [" + projectContext.path + "]");
     }
-//
-//    public Scene createScene(ProjectContext projectContext, String name) {
-//        Scene scene = new Scene();
-//        long id = projectContext.obtainUUID();
-//        scene.setId(id);
-//        scene.setName(name);
-//
-//        projectContext.scenes.add(scene);
-//
-//        return scene;
-//    }
 
-    public void saveScene() {
+    public Scene createScene(ProjectContext projectContext, String name) {
+        Scene scene = new Scene();
+        long id = projectContext.obtainUUID();
+        scene.setId(id);
+        scene.setName(name);
+        projectContext.scenes.add(scene);
 
+        return scene;
     }
 
     public void changeScene(Scene scene) {
-        // TODO implement
+        toolManager.deactivateTool();
+        projectContext.currScene = scene;
+        Gdx.graphics.setTitle(constructWindowTitle());
+        eventBus.post(new ProjectChangedEvent());
+        toolManager.setDefaultTool();
     }
-
 
 }

@@ -106,7 +106,6 @@ public class Mundus {
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
         faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.025f);
         fa = faBuilder
-                .addIcon(Fa.HEART)
                 .addIcon(Fa.SAVE)
                 .addIcon(Fa.DOWNLOAD)
                 .addIcon(Fa.GIFT)

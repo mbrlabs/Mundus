@@ -36,10 +36,9 @@ public class StatusBar extends Container {
     private VisLabel fpsLabel;
     private VisLabel camPos;
 
-
     public StatusBar() {
         super();
-        setBackground(VisUI.getSkin().getDrawable("default-pane"));
+        setBackground(VisUI.getSkin().getDrawable("menu-bg"));
         align(Align.right | Align.center);
         group = new HorizontalGroup();
         group.space(10);
@@ -51,7 +50,6 @@ public class StatusBar extends Container {
         camPos = new VisLabel();
         setFps(60);
         setVertexCount(0);
-
 
         group.addActor(camPos);
         group.addActor(verticesLabel);

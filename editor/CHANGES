@@ -1,5 +1,6 @@
 [0.0.4]
 - Font Awesome as icon font
+- Adding scenes & switching between them
 
 [0.0.3] ~ 02/01/2016
 - Model/asset selection moved to sidebar

@@ -18,8 +18,6 @@ package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
-import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.widget.Tooltip;
 import com.kotcrab.vis.ui.widget.VisTable;
 
 /**

@@ -44,7 +44,7 @@ public class TerrainIO {
      * @param terrain
      * @param path
      */
-    public static void exportBinary(Terrain terrain, String path) {
+    public static void exportTerrain(Terrain terrain, String path) {
         float[] data = terrain.heightData;
         long start = System.currentTimeMillis();
 

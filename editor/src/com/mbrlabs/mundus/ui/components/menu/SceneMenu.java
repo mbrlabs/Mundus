@@ -19,6 +19,8 @@ package com.mbrlabs.mundus.ui.components.menu;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.mbrlabs.mundus.core.Inject;
@@ -30,6 +32,7 @@ import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -46,12 +49,29 @@ public class SceneMenu extends Menu {
     private EventBus eventBus;
 
     private Array<MenuItem> sceneItems = new Array<>();
+    private MenuItem addScene;
 
     public SceneMenu() {
         super("Scenes");
         Mundus.inject(this);
         eventBus.register(this);
 
+        addScene = new MenuItem("Add scene");
+        addScene.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                DialogUtils.showInputDialog(Ui.getInstance(), "Add Scene", "Name:", new InputDialogAdapter() {
+                    @Override
+                    public void finished(String input) {
+                        Scene scene = projectManager.createScene(projectContext, input);
+                        projectManager.changeScene(scene);
+                    }
+                });
+            }
+        });
+        addItem(addScene);
+
+        addSeparator();
         buildSceneUi();
     }
 
@@ -75,7 +95,9 @@ public class SceneMenu extends Menu {
                 }
             });
             addItem(menuItem);
+            sceneItems.add(menuItem);
         }
+
     }
 
 

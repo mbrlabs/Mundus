@@ -48,24 +48,24 @@ public class MundusToolbar extends Toolbar {
         super();
         Mundus.inject(this);
         saveBtn = new FaTextButton(Fa.SAVE);
-        saveBtn.pad(5).padRight(10);
+        saveBtn.pad(5).padRight(7).padLeft(7);
         new Tooltip(saveBtn, "Save project");
 
         importBtn = new FaTextButton(Fa.DOWNLOAD);
-        importBtn.pad(5).padRight(10);
+        importBtn.pad(5).padRight(7).padLeft(7);
         new Tooltip(importBtn, "Import model");
 
         runBtn = new FaTextButton(Fa.PLAY);
-        runBtn.pad(5).padRight(10);
+        runBtn.pad(5).padRight(7).padLeft(7);
         new Tooltip(runBtn, "FPS mode");
 
         exportBtn = new FaTextButton(Fa.GIFT);
-        exportBtn.pad(5);
+        exportBtn.pad(5).padRight(7).padLeft(7);
         new Tooltip(exportBtn, "Export project");
 
         addItem(saveBtn, true);
         addItem(importBtn, true);
-        addItem(exportBtn, false);
+        addItem(exportBtn, true);
         addItem(runBtn, false);
 
         // save btn
