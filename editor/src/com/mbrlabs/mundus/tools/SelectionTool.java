@@ -31,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.utils.Fa;
 
 import java.util.List;
 
@@ -95,6 +96,11 @@ public class SelectionTool extends Tool {
     @Override
     public Drawable getIcon() {
         return icon;
+    }
+
+    @Override
+    public String getIconFont() {
+        return Fa.MOUSE_POINTER;
     }
 
     @Override

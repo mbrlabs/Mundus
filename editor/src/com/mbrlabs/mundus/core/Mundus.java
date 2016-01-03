@@ -33,7 +33,6 @@ import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.tools.ToolManager;
-import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -87,8 +86,6 @@ public class Mundus {
         // init visUI
         VisUI.load();
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
-        // load images
-        UiImages.load();
         // model batch
         modelBatch = new ModelBatch();
         // shaders
@@ -112,8 +109,11 @@ public class Mundus {
                 .addIcon(Fa.HEART)
                 .addIcon(Fa.SAVE)
                 .addIcon(Fa.DOWNLOAD)
-                .addIcon(Fa.UPLOAD)
+                .addIcon(Fa.GIFT)
                 .addIcon(Fa.PLAY)
+                .addIcon(Fa.MOUSE_POINTER)
+                .addIcon(Fa.ARROWS)
+                .addIcon(Fa.CIRCLE_O)
                 .build();
 
         // input

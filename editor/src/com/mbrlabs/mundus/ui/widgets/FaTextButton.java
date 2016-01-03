@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Mundus;
 
@@ -28,10 +30,15 @@ public class FaTextButton extends VisTextButton {
     public FaTextButton(String text) {
         super(text);
 
-        TextButtonStyle style = getStyle();
+        final TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = Mundus.fa;
+        style.fontColor = Color.WHITE;
+        style.pressedOffsetX = 1;
+        style.unpressedOffsetX = 0;
+        style.pressedOffsetY = -1;
+        style.down = getStyle().down;
+        style.up = getStyle().up;
         setStyle(style);
     }
-
 
 }

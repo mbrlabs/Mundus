@@ -35,6 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -53,7 +54,7 @@ public class TranslateTool extends SelectionTool {
     private final float ARROW_CAP_SIZE = 0.1f;
     private final int ARROW_DIVISIONS = 10;
 
-    public static final String NAME = "Translate";
+    public static final String NAME = "Translate Tool";
     private Drawable icon;
 
     private State state = State.IDLE;
@@ -104,6 +105,11 @@ public class TranslateTool extends SelectionTool {
     @Override
     public Drawable getIcon() {
         return icon;
+    }
+
+    @Override
+    public String getIconFont() {
+        return Fa.ARROWS;
     }
 
     @Override

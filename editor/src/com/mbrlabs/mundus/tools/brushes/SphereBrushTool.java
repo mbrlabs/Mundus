@@ -32,6 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.terrain.TerrainInstance;
 import com.mbrlabs.mundus.tools.Tool;
+import com.mbrlabs.mundus.utils.Fa;
 
 /**
  * @author Marcus Brummer
@@ -85,6 +86,11 @@ public class SphereBrushTool extends Tool {
     @Override
     public Drawable getIcon() {
         return this.icon;
+    }
+
+    @Override
+    public String getIconFont() {
+        return Fa.CIRCLE_O;
     }
 
     @Override

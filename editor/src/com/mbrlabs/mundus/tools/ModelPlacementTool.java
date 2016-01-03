@@ -26,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.utils.Fa;
 
 /**
  * @author Marcus Brummer
@@ -60,6 +61,11 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public Drawable getIcon() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getIconFont() {
         throw new UnsupportedOperationException();
     }
 

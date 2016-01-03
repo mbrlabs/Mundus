@@ -17,29 +17,48 @@
 package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.Tooltip;
+import com.kotcrab.vis.ui.widget.VisTable;
 
 /**
  * @author Marcus Brummer
- * @version 24-11-2015
+ * @version 03-01-2016
  */
-public class Toolbar extends Container {
+public class Toolbar {
 
-    private HorizontalGroup group;
+    private VisTable root;
+
+    private VisTable left;
+    private VisTable right;
 
     public Toolbar() {
         super();
-        setBackground(VisUI.getSkin().getDrawable("default-pane"));
-        align(Align.left | Align.center);
-        group = new HorizontalGroup();
-        setActor(group);
+        root = new VisTable();
+        root.setBackground("menu-bg");
+        root.align(Align.left | Align.center);
+
+        left = new VisTable();
+        left.left().top();
+        root.add(left).expandX().fillX();
+
+        right = new VisTable();
+        right.right().top();
+        root.add(right).expandX().fillX().row();
+        root.addSeparator().colspan(2);
     }
 
-    public void addItem(Actor actor) {
-        group.addActor(actor);
+    public void addItem(Actor actor, boolean addLeft) {
+        if(addLeft) {
+            left.add(actor);
+        } else {
+            right.add(actor);
+        }
+    }
+
+    public VisTable getRoot() {
+        return this.root;
     }
 
 }

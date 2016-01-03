@@ -76,7 +76,7 @@ public class Ui extends MyStage {
 
         // row 2: toolbar
         toolbar = new MundusToolbar();
-        root.add(toolbar).fillX().expandX().row();
+        root.add(toolbar.getRoot()).fillX().expandX().row();
 
         // row 3: sidebar
         sidebar = new Sidebar();

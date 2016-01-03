@@ -16,24 +16,14 @@
 
 package com.mbrlabs.mundus.ui.components;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.kotcrab.vis.ui.widget.VisImageButton;
-import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.Tooltip;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.UiImages;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.ui.widgets.Toolbar;
 import com.mbrlabs.mundus.utils.Fa;
@@ -59,20 +49,24 @@ public class MundusToolbar extends Toolbar {
         Mundus.inject(this);
         saveBtn = new FaTextButton(Fa.SAVE);
         saveBtn.pad(5).padRight(10);
+        new Tooltip(saveBtn, "Save project");
 
         importBtn = new FaTextButton(Fa.DOWNLOAD);
         importBtn.pad(5).padRight(10);
+        new Tooltip(importBtn, "Import model");
 
         runBtn = new FaTextButton(Fa.PLAY);
         runBtn.pad(5).padRight(10);
+        new Tooltip(runBtn, "FPS mode");
 
-        exportBtn = new FaTextButton(Fa.UPLOAD);
+        exportBtn = new FaTextButton(Fa.GIFT);
         exportBtn.pad(5);
+        new Tooltip(exportBtn, "Export project");
 
-        addItem(saveBtn);
-        addItem(importBtn);
-        addItem(exportBtn);
-        addItem(runBtn);
+        addItem(saveBtn, true);
+        addItem(importBtn, true);
+        addItem(exportBtn, false);
+        addItem(runBtn, false);
 
         // save btn
         saveBtn.addListener(new ClickListener() {

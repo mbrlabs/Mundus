@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.tools.Tool;
 import com.mbrlabs.mundus.tools.ToolManager;
+import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 
 /**
  * @author Marcus Brummer
@@ -108,10 +109,9 @@ public class ToolTab extends Tab {
             this.tool = tool;
             setBackground("menu-bg");
             align(Align.center);
-            VisImage img = new VisImage(tool.getIcon());
-            img.setScaling(Scaling.fit);
-            new Tooltip(img, tool.getName());
-            add(img).expand().fill().pad(2);
+            FaTextButton btn = new FaTextButton(tool.getIconFont());
+            add(btn).expand().fill();
+            new Tooltip(this, tool.getName());
 
             addListener(new ClickListener() {
                 @Override
