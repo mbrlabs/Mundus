@@ -16,16 +16,27 @@
 
 package com.mbrlabs.mundus.ui.components;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.widget.VisImageButton;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.UiImages;
+import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.ui.widgets.Toolbar;
+import com.mbrlabs.mundus.utils.Fa;
 
 /**
  * @author Marcus Brummer
@@ -33,10 +44,10 @@ import com.mbrlabs.mundus.ui.widgets.Toolbar;
  */
 public class MundusToolbar extends Toolbar {
 
-    private VisImageButton saveBtn;
-    private VisImageButton importBtn;
-    private VisImageButton runBtn;
-    private VisImageButton exportBtn;
+    private FaTextButton saveBtn;
+    private FaTextButton importBtn;
+    private FaTextButton runBtn;
+    private FaTextButton exportBtn;
 
     @Inject
     private ProjectManager projectManager;
@@ -46,17 +57,17 @@ public class MundusToolbar extends Toolbar {
     public MundusToolbar() {
         super();
         Mundus.inject(this);
-        saveBtn = new VisImageButton(UiImages.saveIcon);
-        saveBtn.pad(7);
+        saveBtn = new FaTextButton(Fa.SAVE);
+        saveBtn.pad(5).padRight(10);
 
-        importBtn = new VisImageButton(UiImages.importIcon);
-        importBtn.pad(7);
+        importBtn = new FaTextButton(Fa.DOWNLOAD);
+        importBtn.pad(5).padRight(10);
 
-        runBtn = new VisImageButton(UiImages.runIcon);
-        runBtn.pad(7);
+        runBtn = new FaTextButton(Fa.PLAY);
+        runBtn.pad(5).padRight(10);
 
-        exportBtn = new VisImageButton(UiImages.exportIcon);
-        exportBtn.pad(7);
+        exportBtn = new FaTextButton(Fa.UPLOAD);
+        exportBtn.pad(5);
 
         addItem(saveBtn);
         addItem(importBtn);
@@ -93,15 +104,15 @@ public class MundusToolbar extends Toolbar {
 
     }
 
-    public VisImageButton getSaveBtn() {
+    public FaTextButton getSaveBtn() {
         return saveBtn;
     }
 
-    public VisImageButton getImportBtn() {
+    public FaTextButton getImportBtn() {
         return importBtn;
     }
 
-    public VisImageButton getRunBtn() {
+    public FaTextButton getRunBtn() {
         return runBtn;
     }
 

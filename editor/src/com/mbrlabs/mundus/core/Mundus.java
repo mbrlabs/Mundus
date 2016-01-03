@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -32,6 +34,7 @@ import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.UiImages;
+import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 
 import java.lang.annotation.Annotation;
@@ -68,6 +71,8 @@ public class Mundus {
     public static Array<Model> testModels = new Array<>();
     public static Array<ModelInstance> testInstances = new Array<>();
 
+    public static BitmapFont fa;
+
 
     /**
      * Loads & initializes everything.
@@ -100,6 +105,16 @@ public class Mundus {
         homeManager = new HomeManager(kryoManager);
         projectManager = new ProjectManager(projectContext, kryoManager, homeManager, eventBus, toolManager);
         importManager = new ImportManager(homeManager);
+
+        Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
+        faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.025f);
+        fa = faBuilder
+                .addIcon(Fa.HEART)
+                .addIcon(Fa.SAVE)
+                .addIcon(Fa.DOWNLOAD)
+                .addIcon(Fa.UPLOAD)
+                .addIcon(Fa.PLAY)
+                .build();
 
         // input
     }
@@ -157,6 +172,7 @@ public class Mundus {
         modelBatch.dispose();
         shaders.dispose();
         toolManager.dispose();
+        fa.dispose();
         //brushManager.dispose();
         for(Model model : testModels) {
             model.dispose();
