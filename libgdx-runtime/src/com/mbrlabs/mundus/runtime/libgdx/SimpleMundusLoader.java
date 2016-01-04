@@ -18,19 +18,23 @@ package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.UBJsonReader;
-import com.mbrlabs.mundus.commons.exporter.dto.ModelDTO;
-import com.mbrlabs.mundus.commons.exporter.dto.ModelInstanceDTO;
-import com.mbrlabs.mundus.commons.exporter.dto.ProjectDTO;
-import com.mbrlabs.mundus.commons.exporter.dto.SceneDTO;
+import com.mbrlabs.mundus.commons.exporter.dto.*;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author Marcus Brummer
@@ -43,11 +47,13 @@ public class SimpleMundusLoader {
     private G3dModelLoader modelLoader;
 
     private Map<Long, Model> models;
+    private Map<Long, Terrain> terrains;
     private Array<Scene> scenes;
 
     public SimpleMundusLoader(String folder) {
         this.folder = folder;
         modelLoader = new G3dModelLoader(new UBJsonReader());
+        terrains = new HashMap<>();
         models = new HashMap<>();
         scenes = new Array<>();
     }
@@ -63,6 +69,11 @@ public class SimpleMundusLoader {
             models.put(model.getId(), m);
         }
 
+        // load Terrains
+        for(TerrainDTO dto : projectDTO.getTerrains()) {
+            terrains.put(dto.getId(), loadTerrain(dto));
+        }
+
         // build scenes
         for(SceneDTO sceneDTO : projectDTO.getScenes()) {
             Scene scene = new Scene();
@@ -73,6 +84,11 @@ public class SimpleMundusLoader {
                 mi.transform.rotate(dto.getRotation()[0], dto.getRotation()[1], dto.getRotation()[2], 0);
                 mi.transform.scl(dto.getScale()[0], dto.getScale()[1], dto.getScale()[2]);
                 scene.modelInstances.add(mi);
+            }
+            for(TerrainInstanceDTO dto : sceneDTO.getTerrains()) {
+                TerrainInstance terrainInstance = new TerrainInstance(terrains.get(dto.getTerrainID()));
+                scene.terrainInstances.add(terrainInstance);
+                terrainInstance.transform.translate(dto.getPosition()[0], dto.getPosition()[1], dto.getPosition()[2]);
             }
             scenes.add(scene);
         }
@@ -90,6 +106,30 @@ public class SimpleMundusLoader {
         return null;
     }
 
+    private Terrain loadTerrain(TerrainDTO dto) {
+        FloatArray floatArray = new FloatArray();
+
+        Terrain terrain = new Terrain(dto.getVertexResolution());
+        try(DataInputStream is = new DataInputStream(
+                new BufferedInputStream(new GZIPInputStream(new FileInputStream(getTerrainPath(dto.getId())))))) {
+            while (is.available() > 0) {
+                floatArray.add(is.readFloat());
+            }
+        } catch (EOFException e) {
+            //e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        terrain.init();
+        terrain.heightData = floatArray.toArray();
+        terrain.update();
+        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
+        terrain.setTexture(tex);
+
+        return terrain;
+    }
+
     public Map<Long, Model> getModels() {
         return models;
     }
@@ -102,6 +142,8 @@ public class SimpleMundusLoader {
         return folder + "assets/" + id + ".g3db";
     }
 
-
+    private String getTerrainPath(long id) {
+        return folder + "assets/" + id + ".terra";
+    }
 
 }

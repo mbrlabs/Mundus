@@ -18,6 +18,8 @@ apply plugin: "java"
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.resources.srcDirs = [ "src/" ]
+
 project.ext.mainClassName = "com.mbrlabs.mundus.Main"
 project.ext.assetsDir = new File("assets");
 

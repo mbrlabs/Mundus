@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons;
+package com.mbrlabs.mundus.commons.nav;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

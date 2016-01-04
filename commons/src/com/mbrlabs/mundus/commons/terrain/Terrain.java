@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -24,11 +24,7 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.mbrlabs.mundus.core.kryo.descriptors.TerrainDescriptor;
-import com.mbrlabs.mundus.utils.Log;
-import com.mbrlabs.mundus.utils.MathUtils;
 
 import java.nio.ByteBuffer;
 

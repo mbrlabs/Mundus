@@ -22,10 +22,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.terrain.TerrainGroup;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
 
 /**
  * @author Marcus Brummer

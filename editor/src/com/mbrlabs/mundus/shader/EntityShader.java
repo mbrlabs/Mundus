@@ -27,7 +27,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.utils.ShaderUtils;
+import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
  * @author Marcus Brummer
@@ -50,7 +50,7 @@ public class EntityShader extends BaseShader {
 
     public EntityShader() {
         super();
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, false);
     }
 
     @Override

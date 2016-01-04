@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Marcus Brummer

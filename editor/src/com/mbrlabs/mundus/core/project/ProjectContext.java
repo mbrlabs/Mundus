@@ -20,10 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.terrain.Terrain;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
  * @author Marcus Brummer

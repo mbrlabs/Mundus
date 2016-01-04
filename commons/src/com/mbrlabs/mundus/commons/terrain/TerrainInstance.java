@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
-import com.mbrlabs.mundus.utils.MathUtils;
+import com.mbrlabs.mundus.commons.utils.MathUtils;
 
 /**
  * @author Marcus Brummer

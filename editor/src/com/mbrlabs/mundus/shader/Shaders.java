@@ -17,9 +17,7 @@
 package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.mbrlabs.mundus.shader.BrushShader;
-import com.mbrlabs.mundus.shader.EntityShader;
-import com.mbrlabs.mundus.shader.TerrainShader;
+import com.mbrlabs.mundus.commons.terrain.TerrainShader;
 
 /**
  * @author Marcus Brummer

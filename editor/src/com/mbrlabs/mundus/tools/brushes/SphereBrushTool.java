@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.tools.brushes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,7 +29,7 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.tools.Tool;
 import com.mbrlabs.mundus.utils.Fa;
 

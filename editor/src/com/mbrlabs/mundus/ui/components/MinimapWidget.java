@@ -25,9 +25,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainGroup;
-import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 
 /**
  * @author Marcus Brummer

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.utils;
+package com.mbrlabs.mundus.commons.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -29,16 +29,24 @@ public class ShaderUtils {
     /**
      * Compiles and links shader.
      *
-     * The shader source files must be in the assets folder.
-     *
      * @param vertexShader      path to vertex shader
      * @param fragmentShader    path to fragment shader
+     * @param classpath         true if shader in classpath
+     *                          false if shader in assets folder
      *
      * @return                  compiled shader program
      */
-    public static ShaderProgram compile(String vertexShader, String fragmentShader) {
-        String vert = Gdx.files.internal(vertexShader).readString();
-        String frag = Gdx.files.internal(fragmentShader).readString();
+    public static ShaderProgram compile(String vertexShader, String fragmentShader, boolean classpath) {
+        String vert;
+        String frag;
+        if(classpath) {
+            vert = Gdx.files.classpath(vertexShader).readString();
+            frag = Gdx.files.classpath(fragmentShader).readString();
+        } else {
+            vert = Gdx.files.internal(vertexShader).readString();
+            frag = Gdx.files.internal(fragmentShader).readString();
+        }
+
         ShaderProgram program = new ShaderProgram(vert, frag);
         if (!program.isCompiled()) {
             throw new GdxRuntimeException(program.getLog());

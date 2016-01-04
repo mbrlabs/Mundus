@@ -24,11 +24,9 @@ import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.utils.Log;
-
-import java.util.List;
 
 /**
  * @author Marcus Brummer

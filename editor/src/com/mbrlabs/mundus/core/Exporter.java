@@ -25,8 +25,8 @@ import com.mbrlabs.mundus.commons.exporter.dto.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 

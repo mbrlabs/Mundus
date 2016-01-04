@@ -19,6 +19,8 @@ package com.mbrlabs.mundus.runtime.libgdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 
 /**
  * @author Marcus Brummer
@@ -30,12 +32,15 @@ public class Scene {
 
     public Array<Model> models;
     public Array<ModelInstance> modelInstances;
+    public Array<Terrain> terrains;
+    public Array<TerrainInstance> terrainInstances;
 
     public Scene() {
         models = new Array<>();
         modelInstances = new Array<>();
+        terrains = new Array<>();
+        terrainInstances = new Array<>();
     }
-
 
 
 

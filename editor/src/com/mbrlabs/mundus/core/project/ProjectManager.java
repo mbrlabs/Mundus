@@ -32,7 +32,7 @@ import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;

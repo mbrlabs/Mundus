@@ -24,9 +24,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.mbrlabs.mundus.utils.GlUtils;
-import com.mbrlabs.mundus.utils.ShaderUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
+import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
  * @author Marcus Brummer
@@ -44,7 +42,7 @@ public class BrushShader extends BaseShader {
 
     public BrushShader() {
         super();
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, false);
     }
 
     @Override
