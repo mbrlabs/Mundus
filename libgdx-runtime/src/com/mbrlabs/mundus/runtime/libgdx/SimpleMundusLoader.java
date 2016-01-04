@@ -87,7 +87,7 @@ public class SimpleMundusLoader {
             }
             for(TerrainInstanceDTO dto : sceneDTO.getTerrains()) {
                 TerrainInstance terrainInstance = new TerrainInstance(terrains.get(dto.getTerrainID()));
-                scene.terrainInstances.add(terrainInstance);
+                scene.terrainGroup.add(terrainInstance);
                 terrainInstance.transform.translate(dto.getPosition()[0], dto.getPosition()[1], dto.getPosition()[2]);
             }
             scenes.add(scene);

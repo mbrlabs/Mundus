@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
+import com.mbrlabs.mundus.commons.nav.FpsNavigation;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
@@ -39,7 +40,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
-import com.mbrlabs.mundus.commons.nav.FreeCamController;
+import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.*;
@@ -55,6 +56,7 @@ public class Editor implements ApplicationListener {
     private Ui ui;
     private Compass compass;
     private FreeCamController camController;
+    private FpsNavigation fpsNavigation;
 
     @Inject
     private InputManager inputManager;
@@ -81,7 +83,6 @@ public class Editor implements ApplicationListener {
         ui = Ui.getInstance();
         inputManager.addProcessor(ui);
 
-
         Model axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
         Mundus.testModels.add(axesModel);
@@ -99,6 +100,7 @@ public class Editor implements ApplicationListener {
         //createTestModels();
 
         camController = new FreeCamController(projectContext.currScene.cam);
+        fpsNavigation = new FpsNavigation(projectContext.currScene.cam, projectContext.currScene.terrainGroup);
         inputManager.addProcessor(camController);
     }
 
@@ -108,6 +110,7 @@ public class Editor implements ApplicationListener {
         GlUtils.clearScreen(Color.WHITE);
         ui.act();
         camController.update();
+        //fpsNavigation.update();
         toolManager.act();
         projectContext.currScene.cam.update();
 

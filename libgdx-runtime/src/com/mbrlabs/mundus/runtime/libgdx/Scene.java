@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 
 /**
@@ -35,7 +36,7 @@ public class Scene {
     public Array<Model> models;
     public Array<ModelInstance> modelInstances;
     public Array<Terrain> terrains;
-    public Array<TerrainInstance> terrainInstances;
+    public TerrainGroup terrainGroup;
 
     public Env environment;
 
@@ -43,7 +44,7 @@ public class Scene {
         models = new Array<>();
         modelInstances = new Array<>();
         terrains = new Array<>();
-        terrainInstances = new Array<>();
+        terrainGroup = new TerrainGroup();
         environment = new Env();
 
         SunLight sunLight = new SunLight();

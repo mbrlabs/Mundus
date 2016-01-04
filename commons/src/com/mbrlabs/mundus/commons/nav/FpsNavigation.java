@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,23 @@ package com.mbrlabs.mundus.commons.nav;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntIntMap;
+import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
+import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 
 /**
  * @author Marcus Brummer
- * @version 24-11-2015
+ * @version 04-01-2016
  */
-public class FreeCamController extends InputAdapter implements InputProcessor {
+public class FpsNavigation extends InputAdapter {
+
+    public static final float playerHeight = 10f;
+
     private Camera camera;
+    private TerrainGroup terrainGroup;
+
     private final IntIntMap keys = new IntIntMap();
     private int STRAFE_LEFT = Input.Keys.A;
     private int STRAFE_RIGHT = Input.Keys.D;
@@ -41,8 +47,13 @@ public class FreeCamController extends InputAdapter implements InputProcessor {
     private float degreesPerPixel = 0.5f;
     private final Vector3 tmp = new Vector3();
 
-    public FreeCamController (Camera camera) {
+    public FpsNavigation (Camera camera, TerrainGroup terrainGroup) {
         this.camera = camera;
+        this.terrainGroup = terrainGroup;
+    }
+
+    public void setTerrainGroup(TerrainGroup terrainGroup) {
+        this.terrainGroup = terrainGroup;
     }
 
     public void setCamera(Camera camera) {
@@ -74,14 +85,13 @@ public class FreeCamController extends InputAdapter implements InputProcessor {
     }
 
     @Override
-    public boolean touchDragged (int screenX, int screenY, int pointer) {
-        if(Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
-            float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
-            float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
-            camera.direction.rotate(camera.up, deltaX);
-            tmp.set(camera.direction).crs(camera.up).nor();
-            camera.direction.rotate(tmp, deltaY);
-        }
+    public boolean mouseMoved(int screenX, int screenY) {
+        float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
+        float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
+        camera.direction.rotate(camera.up, deltaX);
+        tmp.set(camera.direction).crs(camera.up).nor();
+        camera.direction.rotate(tmp, deltaY);
+
         return false;
     }
 
@@ -114,6 +124,13 @@ public class FreeCamController extends InputAdapter implements InputProcessor {
             tmp.set(camera.up).nor().scl(-deltaTime * velocity);
             camera.position.add(tmp);
         }
+
+        TerrainInstance terrain = terrainGroup.getTerrain(camera.position.x, camera.position.z);
+        if(terrain != null) {
+            camera.position.y = terrain.getHeightAtWorldCoord(camera.position.x, camera.position.z) + playerHeight;
+        }
+
         camera.update(true);
     }
+
 }

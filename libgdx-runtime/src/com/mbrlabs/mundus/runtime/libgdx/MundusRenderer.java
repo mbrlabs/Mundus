@@ -50,7 +50,7 @@ public class MundusRenderer {
 
         // render terrains
         terrainShader.begin(camera, renderContext);
-        for(TerrainInstance terrain : scene.terrainInstances) {
+        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
             terrain.terrain.renderable.environment = scene.environment;
             terrain.terrain.renderable.worldTransform.set(terrain.transform);
             terrainShader.render(terrain.terrain.renderable);
