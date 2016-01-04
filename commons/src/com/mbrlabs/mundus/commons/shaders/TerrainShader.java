@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.terrain;
+package com.mbrlabs.mundus.commons.shaders;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -27,6 +27,8 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.env.SunLight;
+import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
@@ -35,8 +37,8 @@ import com.mbrlabs.mundus.commons.utils.ShaderUtils;
  */
 public class TerrainShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.vert.glsl";
-    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.frag.glsl";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
@@ -92,11 +94,11 @@ public class TerrainShader extends BaseShader {
             set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
         }
 
-        final PointLightsAttribute pla =
-                renderable.environment.get(PointLightsAttribute.class, PointLightsAttribute.Type);
-        final Array<PointLight> points = pla == null ? null : pla.lights;
+        final SunLightsAttribute sla =
+                renderable.environment.get(SunLightsAttribute.class, SunLightsAttribute.Type);
+        final Array<SunLight> points = sla == null ? null : sla.lights;
         if(points != null && points.size > 0) {
-            PointLight light = points.first();
+            SunLight light = points.first();
             set(UNIFORM_LIGHT_POS, light.position);
             set(UNIFORM_LIGHT_INTENSITY, light.intensity);
         }

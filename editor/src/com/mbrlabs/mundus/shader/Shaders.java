@@ -17,7 +17,8 @@
 package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.mbrlabs.mundus.commons.terrain.TerrainShader;
+import com.mbrlabs.mundus.commons.shaders.EntityShader;
+import com.mbrlabs.mundus.commons.shaders.TerrainShader;
 
 /**
  * @author Marcus Brummer
@@ -27,7 +28,7 @@ public class Shaders {
 
     public BrushShader   brushShader;
     public TerrainShader terrainShader;
-    public EntityShader  entityShader;
+    public EntityShader entityShader;
 
     public Shaders() {
         ShaderProgram.pedantic = false;

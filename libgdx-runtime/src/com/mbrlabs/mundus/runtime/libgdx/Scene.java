@@ -19,6 +19,8 @@ package com.mbrlabs.mundus.runtime.libgdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.env.Env;
+import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 
@@ -35,13 +37,19 @@ public class Scene {
     public Array<Terrain> terrains;
     public Array<TerrainInstance> terrainInstances;
 
+    public Env environment;
+
     public Scene() {
         models = new Array<>();
         modelInstances = new Array<>();
         terrains = new Array<>();
         terrainInstances = new Array<>();
+        environment = new Env();
+
+        SunLight sunLight = new SunLight();
+        sunLight.setColor(1, 1, 1, 1);
+        sunLight.position.set(600, 400, 600);
+        environment.add(sunLight);
     }
-
-
 
 }

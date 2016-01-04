@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.shader;
+package com.mbrlabs.mundus.commons.shaders;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -27,6 +27,8 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.env.SunLight;
+import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
@@ -35,8 +37,8 @@ import com.mbrlabs.mundus.commons.utils.ShaderUtils;
  */
 public class EntityShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "shader/entity/entity.vert.glsl";
-    private static final String FRAGMENT_SHADER = "shader/entity/entity.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/entity.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/entity.frag.glsl";
 
     protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
@@ -44,13 +46,11 @@ public class EntityShader extends BaseShader {
     protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
 
-    protected final int UNIFORM_SELECTED = register(new Uniform("u_selected"));
-
     private ShaderProgram program;
 
     public EntityShader() {
         super();
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, false);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, true);
     }
 
     @Override
@@ -91,11 +91,11 @@ public class EntityShader extends BaseShader {
         }
 
         // Point light uniform
-        final PointLightsAttribute pla =
-                renderable.environment.get(PointLightsAttribute.class, PointLightsAttribute.Type);
-        final Array<PointLight> points = pla == null ? null : pla.lights;
+        final SunLightsAttribute sla =
+                renderable.environment.get(SunLightsAttribute.class, SunLightsAttribute.Type);
+        final Array<SunLight> points = sla == null ? null : sla.lights;
         if(points != null && points.size > 0) {
-            PointLight light = points.first();
+            SunLight light = points.first();
             set(UNIFORM_LIGHT_POS, light.position);
             set(UNIFORM_LIGHT_INTENSITY, light.intensity);
         }
