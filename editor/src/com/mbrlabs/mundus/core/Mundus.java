@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.kotcrab.vis.ui.widget.file.FileUtils;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -36,6 +37,7 @@ import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -81,6 +83,10 @@ public class Mundus {
      *
      */
     public static void init() {
+        File homeDir = new File(Files.HOME_DIR);
+        if(!homeDir.exists()) {
+            homeDir.mkdir();
+        }
         // init logging
         Log.init();
         // init visUI
