@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Env;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.model.MModelInstance;
@@ -46,6 +47,7 @@ public class Scene {
         entities = new Array<>();
         terrainGroup = new TerrainGroup();
         environment = new Env();
+        environment.setFog(new Fog());
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);

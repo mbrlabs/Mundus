@@ -27,6 +27,8 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.env.Env;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
@@ -44,9 +46,11 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
-
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
     protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
+
+    protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
+    protected final int UNIFORM_FOG_GRADIENT = register(new Uniform("u_fogGradient"));
 
     private ShaderProgram program;
 
@@ -101,6 +105,16 @@ public class TerrainShader extends BaseShader {
             SunLight light = points.first();
             set(UNIFORM_LIGHT_POS, light.position);
             set(UNIFORM_LIGHT_INTENSITY, light.intensity);
+        }
+
+        // Fog
+        Fog fog = ((Env)renderable.environment).getFog();
+        if(fog == null) {
+            set(UNIFORM_FOG_DENSITY, 0);
+            set(UNIFORM_FOG_GRADIENT, 0);
+        } else {
+            set(UNIFORM_FOG_DENSITY, fog.density);
+            set(UNIFORM_FOG_GRADIENT, fog.gradient);
         }
 
         // bind attributes, bind mesh & render; then unbinds everything

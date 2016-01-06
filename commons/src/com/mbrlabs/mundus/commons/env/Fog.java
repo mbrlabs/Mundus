@@ -16,29 +16,13 @@
 
 package com.mbrlabs.mundus.commons.env;
 
-import com.badlogic.gdx.graphics.g3d.Environment;
-
 /**
  * @author Marcus Brummer
- * @version 04-01-2016
+ * @version 06-01-2016
  */
-public class Env extends Environment {
+public class Fog {
 
-    private Fog fog = null;
-
-    public Env add (SunLight light) {
-        SunLightsAttribute sunLights = ((SunLightsAttribute)get(SunLightsAttribute.Type));
-        if (sunLights == null) set(sunLights = new SunLightsAttribute());
-        sunLights.lights.add(light);
-        return this;
-    }
-
-    public Fog getFog() {
-        return fog;
-    }
-
-    public void setFog(Fog fog) {
-        this.fog = fog;
-    }
+    public float density = 0.001f;
+    public float gradient = 1.5f;
 
 }
