@@ -110,8 +110,8 @@ public class TerrainShader extends BaseShader {
         // Fog
         Fog fog = ((Env)renderable.environment).getFog();
         if(fog == null) {
-            set(UNIFORM_FOG_DENSITY, 0);
-            set(UNIFORM_FOG_GRADIENT, 0);
+            set(UNIFORM_FOG_DENSITY, 0f);
+            set(UNIFORM_FOG_GRADIENT, 0f);
         } else {
             set(UNIFORM_FOG_DENSITY, fog.density);
             set(UNIFORM_FOG_GRADIENT, fog.gradient);

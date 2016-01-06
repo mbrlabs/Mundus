@@ -50,6 +50,7 @@ public class Ui extends MyStage {
     private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
     private ExportDialog exportDialog;
+    private FogDialog fogDialog;
 
     private static Ui INSTANCE;
 
@@ -100,6 +101,7 @@ public class Ui extends MyStage {
         addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
         exportDialog = new ExportDialog();
+        fogDialog = new FogDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -164,5 +166,9 @@ public class Ui extends MyStage {
 
     public Sidebar getSidebar() {
         return sidebar;
+    }
+
+    public FogDialog getFogDialog() {
+        return fogDialog;
     }
 }

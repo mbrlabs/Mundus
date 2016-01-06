@@ -16,8 +16,11 @@
 
 package com.mbrlabs.mundus.ui.components.menu;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -36,6 +39,17 @@ public class EnvironmentMenu extends Menu {
 
         addItem(addLight);
         addItem(fog);
+
+        setupListeners();
+    }
+
+    private void setupListeners() {
+        fog.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui.getInstance().showDialog(Ui.getInstance().getFogDialog());
+            }
+        });
     }
 
     public MenuItem getAddLight() {

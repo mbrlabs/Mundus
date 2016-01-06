@@ -47,7 +47,7 @@ public class Scene {
         entities = new Array<>();
         terrainGroup = new TerrainGroup();
         environment = new Env();
-        environment.setFog(new Fog());
+        //environment.setFog(new Fog());
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);
