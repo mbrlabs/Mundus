@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.core.kryo;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -165,8 +166,13 @@ public class DescriptorConverter {
     public static SceneDescriptor convert(Scene scene) {
         // TODO enviroenment
         SceneDescriptor descriptor = new SceneDescriptor();
+
+        // meta
         descriptor.setName(scene.getName());
         descriptor.setId(scene.getId());
+
+        // fog
+        descriptor.setFog(convert(scene.environment.getFog()));
 
         // entities
         for(MModelInstance entity : scene.entities) {
@@ -191,8 +197,13 @@ public class DescriptorConverter {
     public static Scene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<MModel> models) {
         // TODO enviroenment
         Scene scene = new Scene();
+
+        // meta
         scene.setId(sceneDescriptor.getId());
         scene.setName(sceneDescriptor.getName());
+
+        // fog
+        scene.environment.setFog(convert(sceneDescriptor.getFog()));
 
         // terrains
         for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
@@ -215,6 +226,23 @@ public class DescriptorConverter {
         return scene;
     }
 
+    public static Fog convert(FogDescriptor fogDescriptor) {
+        if(fogDescriptor == null) return null;
+        Fog fog = new Fog();
+        fog.density = fogDescriptor.getDensity();
+        fog.gradient = fogDescriptor.getGradient();
+
+        return fog;
+    }
+
+    public static FogDescriptor convert(Fog fog) {
+        if(fog == null) return null;
+        FogDescriptor fogDescriptor = new FogDescriptor();
+        fogDescriptor.setDensity(fog.density);
+        fogDescriptor.setGradient(fog.gradient);
+
+        return fogDescriptor;
+    }
 
     public static ProjectDescriptor convert(ProjectContext project) {
         ProjectDescriptor descriptor = new ProjectDescriptor();

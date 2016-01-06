@@ -2,6 +2,7 @@
 - Terrain loading
 - Custom entity & terrain shader
 - MundusRenderer for easy rendering of scenes
+- Fog
 
 [0.0.3]
 - Simple Model loading & rendering

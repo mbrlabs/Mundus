@@ -26,6 +26,10 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.model.MModel;
 
 /**
  * @author Marcus Brummer
@@ -39,10 +43,13 @@ public class FogDialog extends BaseDialog {
 
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private EventBus eventBus;
 
     public FogDialog() {
         super("Fog");
         Mundus.inject(this);
+        eventBus.register(this);
 
         setupUI();
         setupListeners();
@@ -60,15 +67,7 @@ public class FogDialog extends BaseDialog {
         root.add(new VisLabel("Gradient: ")).left().padBottom(10);
         root.add(gradient).fillX().expandX().padBottom(10).row();
 
-        Fog fog = projectContext.currScene.environment.getFog();
-        if(fog == null) {
-            density.setDisabled(true);
-            gradient.setDisabled(true);
-        } else {
-            useFog.setChecked(true);
-            density.setText(String.valueOf(fog.density));
-            gradient.setText(String.valueOf(fog.gradient));
-        }
+        setValues(null);
     }
 
     private void setupListeners() {
@@ -117,6 +116,19 @@ public class FogDialog extends BaseDialog {
         });
 
 
+    }
+
+    @Subscribe
+    public void setValues(ProjectChangedEvent projectChangedEvent) {
+        Fog fog = projectContext.currScene.environment.getFog();
+        if(fog == null) {
+            density.setDisabled(true);
+            gradient.setDisabled(true);
+        } else {
+            useFog.setChecked(true);
+            density.setText(String.valueOf(fog.density));
+            gradient.setText(String.valueOf(fog.gradient));
+        }
     }
 
     private Float convert(String input) {
