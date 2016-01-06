@@ -54,6 +54,7 @@ public class KryoManager {
         kryo.register(ModelInstanceDescriptor.class, 8);
         kryo.register(SceneDescriptor.class, 9);
         kryo.register(TerrainInstanceDescriptor.class, 10);
+        kryo.register(FogDescriptor.class, 11);
     }
 
     public HomeDescriptor loadHomeDescriptor() {
