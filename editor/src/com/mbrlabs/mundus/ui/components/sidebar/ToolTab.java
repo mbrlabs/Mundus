@@ -102,9 +102,9 @@ public class ToolTab extends Tab {
 
     private class ToolGridItem extends VisTable {
 
-        private Tool tool;
+        private final Tool tool;
 
-        private ToolGridItem(Tool tool) {
+        private ToolGridItem(final Tool tool) {
             super();
             this.tool = tool;
             setBackground("menu-bg");

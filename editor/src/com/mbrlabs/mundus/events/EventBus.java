@@ -64,12 +64,12 @@ public class EventBus {
             for(Object subscriber : subscribers) {
                 for(Method method : subscriber.getClass().getDeclaredMethods()) {
                     if(isSubscriber(method)) {
-                        if(method.getParameterCount() != 1) {
+                        if(method.getParameterTypes().length != 1) {
                             throw new EventBusExcetion("Size of parameter list of method " + method.getName() +
                                     " in " + subscriber.getClass().getName() + " must be 1");
                         }
 
-                        if(method.getParameters()[0].getType().equals(eventType)) {
+                        if(method.getParameterTypes()[0].equals(eventType)) {
                             method.invoke(subscriber, eventType.cast(event));
                         }
                     }

@@ -120,19 +120,25 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
     private void setupListener() {
 
         // texture chooser
-        textureInput.setCallback(fileHandle -> {
-            if(fileHandle.exists()) {
-                if(modelInput.getFile() != null && modelInput.getFile().exists()) {
-                    loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
+        textureInput.setCallback(new FileChooserField.FileSelected() {
+            @Override
+            public void selected(FileHandle fileHandle) {
+                if(fileHandle.exists()) {
+                    if(modelInput.getFile() != null && modelInput.getFile().exists()) {
+                        loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
+                    }
                 }
             }
         });
 
         // model chooser
-        modelInput.setCallback(fileHandle -> {
-            if(fileHandle.exists()) {
-                if(textureInput.getFile() != null && textureInput.getFile().exists()) {
-                    loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
+        modelInput.setCallback(new FileChooserField.FileSelected() {
+            @Override
+            public void selected(FileHandle fileHandle) {
+                if(fileHandle.exists()) {
+                    if(textureInput.getFile() != null && textureInput.getFile().exists()) {
+                        loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
+                    }
                 }
             }
         });

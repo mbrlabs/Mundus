@@ -62,7 +62,7 @@ public class FileMenu extends Menu {
 
         // setup recent projects
         PopupMenu recentPrjectsPopup = new PopupMenu();
-        for(ProjectRef ref : homeManager.homeDescriptor.projects) {
+        for(final ProjectRef ref : homeManager.homeDescriptor.projects) {
             MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getPath() + "]");
             pro.addListener(new ClickListener() {
                 @Override

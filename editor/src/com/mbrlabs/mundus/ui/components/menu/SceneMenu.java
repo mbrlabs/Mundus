@@ -44,7 +44,6 @@ public class SceneMenu extends Menu {
     private ProjectContext projectContext;
     @Inject
     private ProjectManager projectManager;
-
     @Inject
     private EventBus eventBus;
 
@@ -86,7 +85,7 @@ public class SceneMenu extends Menu {
             removeActor(item);
         }
         // add new items
-        for(Scene scene : projectContext.scenes) {
+        for(final Scene scene : projectContext.scenes) {
             MenuItem menuItem = new MenuItem(scene.getName());
             menuItem.addListener(new ClickListener() {
                 @Override

@@ -44,11 +44,13 @@ public class Log {
 
     public static void init () {
         System.setErr(new ErrorStreamInterceptor(System.err));
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-            Log.exception(e);
-            Log.fatal("Uncaught exception occurred, error report will be saved");
-
-            logFileWriter.flush();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable throwable) {
+                Log.exception(throwable);
+                Log.fatal("Uncaught exception occurred, error report will be saved");
+                logFileWriter.flush();
+            }
         });
 
         prepareLogFile();
