@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.commons.nav.FpsNavigation;
+import com.mbrlabs.mundus.commons.skybox.SkyboxDraft;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
@@ -57,6 +58,8 @@ public class Editor implements ApplicationListener {
     private Compass compass;
     private FreeCamController camController;
     private FpsNavigation fpsNavigation;
+
+    private SkyboxDraft skybox;
 
     @Inject
     private InputManager inputManager;
@@ -102,6 +105,22 @@ public class Editor implements ApplicationListener {
         camController = new FreeCamController(projectContext.currScene.cam);
         fpsNavigation = new FpsNavigation(projectContext.currScene.cam, projectContext.currScene.terrainGroup);
         inputManager.addProcessor(camController);
+
+     /*   skybox = new SkyboxDraft(
+                Gdx.files.internal("textures/skybox/cloudy/pos-x.png"),
+                Gdx.files.internal("textures/skybox/cloudy/neg-x.png"),
+                Gdx.files.internal("textures/skybox/cloudy/pos-y.jpg"),
+                Gdx.files.internal("textures/skybox/cloudy/neg-y.jpg"),
+                Gdx.files.internal("textures/skybox/cloudy/pos-z.png"),
+                Gdx.files.internal("textures/skybox/cloudy/neg-z.png")); */
+
+        skybox = new SkyboxDraft(
+                Gdx.files.internal("textures/skybox/cloudy/right.png"),
+                Gdx.files.internal("textures/skybox/cloudy/left.png"),
+                Gdx.files.internal("textures/skybox/cloudy/top.png"),
+                Gdx.files.internal("textures/skybox/cloudy/bottom.png"),
+                Gdx.files.internal("textures/skybox/cloudy/back.png"),
+                Gdx.files.internal("textures/skybox/cloudy/front.png"));
     }
 
 	@Override
@@ -118,6 +137,9 @@ public class Editor implements ApplicationListener {
         ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
         ui.getStatusBar().setCamPos(projectContext.currScene.cam.position);
         ui.getStatusBar().setVertexCount(0);
+
+        skybox.render(projectContext.currScene.cam);
+
 
         // render model instances
         batch.begin(projectContext.currScene.cam);
@@ -138,6 +160,7 @@ public class Editor implements ApplicationListener {
             shaders.terrainShader.render(terrain.terrain.renderable);
         }
         shaders.terrainShader.end();
+
 
         toolManager.render();
         compass.render(batch);
