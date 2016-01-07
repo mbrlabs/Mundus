@@ -21,6 +21,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.exporter.dto.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
@@ -43,7 +44,6 @@ public class Exporter {
 
     public static void export(ProjectContext projectContext, String folder,
                               boolean compress, boolean prettyPrint) throws IOException {
-        // TODO g3db files, terra files
         ProjectDTO dto = convert(projectContext);
 
         // json stream
@@ -127,11 +127,22 @@ public class Exporter {
         return dto;
     }
 
+    public static FogDTO convert(Fog fog) {
+        FogDTO fogDTO = new FogDTO();
+        fogDTO.setGradient(fog.gradient);
+        fogDTO.setDensity(fog.density);
+
+        return fogDTO;
+    }
+
     public static SceneDTO convert(Scene scene) {
         // TODO enviroenment
         SceneDTO dto = new SceneDTO();
         dto.setName(scene.getName());
         dto.setId(scene.getId());
+
+        // fog
+        dto.setFog(convert(scene.environment.getFog()));
 
         // entities
         for(MModelInstance entity : scene.entities) {

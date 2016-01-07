@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.exporter.dto.*;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
@@ -78,6 +79,14 @@ public class SimpleMundusLoader {
         for(SceneDTO sceneDTO : projectDTO.getScenes()) {
             Scene scene = new Scene();
             scene.name = sceneDTO.getName();
+            FogDTO fogDTO = sceneDTO.getFog();
+            if(fogDTO != null) {
+                Fog fog = new Fog();
+                fog.density = fogDTO.getDensity();
+                fog.gradient = fogDTO.getGradient();
+                scene.environment.setFog(fog);
+            }
+
             for(ModelInstanceDTO dto: sceneDTO.getEntities()) {
                 ModelInstance mi = new ModelInstance(models.get(dto.getModelID()));
                 mi.transform.translate(dto.getPosition()[0], dto.getPosition()[1], dto.getPosition()[2]);
@@ -90,6 +99,7 @@ public class SimpleMundusLoader {
                 scene.terrainGroup.add(terrainInstance);
                 terrainInstance.transform.translate(dto.getPosition()[0], dto.getPosition()[1], dto.getPosition()[2]);
             }
+
             scenes.add(scene);
         }
 

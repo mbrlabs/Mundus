@@ -31,6 +31,7 @@ public class SceneDTO {
 
     private List<ModelInstanceDTO> entities;
     private List<TerrainInstanceDTO> terrains;
+    private FogDTO fog;
 
     public SceneDTO() {
         entities = new ArrayList<>();
@@ -69,4 +70,11 @@ public class SceneDTO {
         this.terrains = terrains;
     }
 
+    public FogDTO getFog() {
+        return fog;
+    }
+
+    public void setFog(FogDTO fog) {
+        this.fog = fog;
+    }
 }
