@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.components.dialogs;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -30,6 +31,7 @@ import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
 
 /**
  * @author Marcus Brummer
@@ -40,6 +42,8 @@ public class FogDialog extends BaseDialog {
     private VisCheckBox useFog = new VisCheckBox("Use fog");
     private VisTextField density = new VisTextField("0");
     private VisTextField gradient = new VisTextField("0");
+
+    private ColorPickerField colorPickerField = new ColorPickerField(150);
 
     @Inject
     private ProjectContext projectContext;
@@ -66,7 +70,8 @@ public class FogDialog extends BaseDialog {
         root.add(density).fillX().expandX().padBottom(10).row();
         root.add(new VisLabel("Gradient: ")).left().padBottom(10);
         root.add(gradient).fillX().expandX().padBottom(10).row();
-
+        root.add(new VisLabel("Color: ")).left().padBottom(10).colspan(2).row();
+        root.add(colorPickerField).fillX().expandX().padBottom(10).colspan(2).row();
         setValues(null);
     }
 
@@ -112,6 +117,14 @@ public class FogDialog extends BaseDialog {
                 if(d != null) {
                     projectContext.currScene.environment.getFog().density = d;
                 }
+            }
+        });
+
+        // color
+        colorPickerField.setCallback(new ColorPickerField.ColorSelected() {
+            @Override
+            public void selected(Color color) {
+                projectContext.currScene.environment.getFog().color.set(color);
             }
         });
 
