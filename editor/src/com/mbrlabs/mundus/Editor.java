@@ -118,8 +118,6 @@ public class Editor implements ApplicationListener {
                 Gdx.files.internal("textures/skybox/cloudy/bottom.png"),
                 Gdx.files.internal("textures/skybox/cloudy/back.png"),
                 Gdx.files.internal("textures/skybox/cloudy/front.png"));
-
-
     }
 
 	@Override
