@@ -18,6 +18,7 @@ package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cubemap;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -59,7 +60,10 @@ public class Editor implements ApplicationListener {
     private FreeCamController camController;
     private FpsNavigation fpsNavigation;
 
-    private Skybox skybox;
+    private Skybox skybox1;
+    private Skybox skybox2;
+
+    private Cubemap cubemap;
 
     @Inject
     private InputManager inputManager;
@@ -106,13 +110,16 @@ public class Editor implements ApplicationListener {
         fpsNavigation = new FpsNavigation(projectContext.currScene.cam, projectContext.currScene.terrainGroup);
         inputManager.addProcessor(camController);
 
-        skybox = new Skybox(
+
+        skybox1 = new Skybox(
                 Gdx.files.internal("textures/skybox/cloudy/right.png"),
                 Gdx.files.internal("textures/skybox/cloudy/left.png"),
                 Gdx.files.internal("textures/skybox/cloudy/top.jpg"),
                 Gdx.files.internal("textures/skybox/cloudy/bottom.png"),
                 Gdx.files.internal("textures/skybox/cloudy/back.png"),
                 Gdx.files.internal("textures/skybox/cloudy/front.png"));
+
+
     }
 
 	@Override
@@ -130,7 +137,11 @@ public class Editor implements ApplicationListener {
         ui.getStatusBar().setCamPos(projectContext.currScene.cam.position);
         ui.getStatusBar().setVertexCount(0);
 
-        skybox.render(projectContext.currScene.cam);
+        // render the skybox
+        batch.begin(projectContext.currScene.cam);
+        batch.render(skybox1.getSkyboxInstance(),
+                projectContext.currScene.environment, shaders.skyboxShader);
+        batch.end();
 
 
         // render model instances

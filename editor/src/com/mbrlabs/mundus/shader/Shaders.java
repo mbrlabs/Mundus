@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.mbrlabs.mundus.commons.shaders.EntityShader;
+import com.mbrlabs.mundus.commons.shaders.SkyboxShader;
 import com.mbrlabs.mundus.commons.shaders.TerrainShader;
 
 /**
@@ -29,6 +30,7 @@ public class Shaders {
     public BrushShader   brushShader;
     public TerrainShader terrainShader;
     public EntityShader entityShader;
+    public SkyboxShader skyboxShader;
 
     public Shaders() {
         ShaderProgram.pedantic = false;
@@ -38,12 +40,15 @@ public class Shaders {
         terrainShader.init();
         entityShader = new EntityShader();
         entityShader.init();
+        skyboxShader = new SkyboxShader();
+        skyboxShader.init();
     }
 
     public void dispose() {
         brushShader.dispose();
         terrainShader.dispose();
         entityShader.dispose();
+        skyboxShader.dispose();
     }
 
 }
