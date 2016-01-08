@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.commons.env;
 
+import com.badlogic.gdx.graphics.Color;
+
 /**
  * @author Marcus Brummer
  * @version 06-01-2016
@@ -24,5 +26,6 @@ public class Fog {
 
     public float density = 0.001f;
     public float gradient = 1.5f;
+    public Color color = new Color(Color.WHITE);
 
 }

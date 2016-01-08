@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
@@ -51,6 +52,7 @@ public class TerrainShader extends BaseShader {
 
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
     protected final int UNIFORM_FOG_GRADIENT = register(new Uniform("u_fogGradient"));
+    protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
 
     private ShaderProgram program;
 
@@ -115,6 +117,7 @@ public class TerrainShader extends BaseShader {
         } else {
             set(UNIFORM_FOG_DENSITY, fog.density);
             set(UNIFORM_FOG_GRADIENT, fog.gradient);
+            set(UNIFORM_FOG_COLOR, fog.color);
         }
 
         // bind attributes, bind mesh & render; then unbinds everything

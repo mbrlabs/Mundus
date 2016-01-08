@@ -42,6 +42,7 @@ public class SkyboxShader extends BaseShader {
     protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
 
     protected final int UNIFORM_FOG = register(new Uniform("u_fog"));
+    protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
 
     private ShaderProgram program;
 
@@ -94,6 +95,7 @@ public class SkyboxShader extends BaseShader {
             set(UNIFORM_FOG, 0);
         } else {
             set(UNIFORM_FOG, 1);
+            set(UNIFORM_FOG_COLOR, fog.color);
         }
 
         renderable.meshPart.render(program);

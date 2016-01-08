@@ -51,6 +51,7 @@ public class EntityShader extends BaseShader {
 
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
     protected final int UNIFORM_FOG_GRADIENT = register(new Uniform("u_fogGradient"));
+    protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
 
     private ShaderProgram program;
 
@@ -115,6 +116,7 @@ public class EntityShader extends BaseShader {
         } else {
             set(UNIFORM_FOG_DENSITY, fog.density);
             set(UNIFORM_FOG_GRADIENT, fog.gradient);
+            set(UNIFORM_FOG_COLOR, fog.color);
         }
 
         // bind attributes, bind mesh & render; then unbinds everything

@@ -2,10 +2,10 @@
 precision mediump float;
 #endif
 
-const vec4 COLOR_FOG = vec4(1 ,1, 1, 1.0);
 
 uniform samplerCube u_texture;
 uniform int u_fog;
+uniform vec4 u_fogColor;
 
 varying vec3 v_cubeMapUV;
 
@@ -18,7 +18,7 @@ void main() {
     if(u_fog == 1) {
        vec4 foggyFactor = (v_cubeMapUV.y - lowerFogLimit) / (upperFogLimit - lowerFogLimit);
        foggyFactor = clamp(foggyFactor, 0.0, 1.0);
-       gl_FragColor = mix(COLOR_FOG, gl_FragColor, foggyFactor);
+       gl_FragColor = mix(u_fogColor, gl_FragColor, foggyFactor);
     }
 
 }
