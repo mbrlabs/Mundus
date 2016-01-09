@@ -130,21 +130,11 @@ public class Exporter {
         return dto;
     }
 
-    public static ColorDTO convert(Color color) {
-        ColorDTO colorDTO = new ColorDTO();
-        colorDTO.setR(color.r);
-        colorDTO.setG(color.g);
-        colorDTO.setB(color.b);
-        colorDTO.setA(color.a);
-
-        return colorDTO;
-    }
-
     public static FogDTO convert(Fog fog) {
         FogDTO fogDTO = new FogDTO();
         fogDTO.setGradient(fog.gradient);
         fogDTO.setDensity(fog.density);
-        fogDTO.setColor(convert(fog.color));
+        fogDTO.setColor(Color.rgba8888(fog.color));
 
         return fogDTO;
     }

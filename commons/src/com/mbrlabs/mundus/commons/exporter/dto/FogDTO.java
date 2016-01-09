@@ -24,7 +24,7 @@ public class FogDTO {
 
     private float density;
     private float gradient;
-    private ColorDTO color;
+    private int color;
 
     public float getDensity() {
         return density;
@@ -42,11 +42,11 @@ public class FogDTO {
         this.gradient = gradient;
     }
 
-    public ColorDTO getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(ColorDTO color) {
+    public void setColor(int color) {
         this.color = color;
     }
 

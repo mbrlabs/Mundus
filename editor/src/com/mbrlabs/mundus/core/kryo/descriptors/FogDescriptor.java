@@ -29,7 +29,7 @@ public class FogDescriptor {
     @Tag(1)
     private float gradient;
     @Tag(2)
-    private ColorDescriptor color;
+    private int color;
 
 
     public float getDensity() {
@@ -48,11 +48,11 @@ public class FogDescriptor {
         this.gradient = gradient;
     }
 
-    public ColorDescriptor getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(ColorDescriptor color) {
+    public void setColor(int color) {
         this.color = color;
     }
 

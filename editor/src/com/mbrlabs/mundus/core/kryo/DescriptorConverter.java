@@ -176,30 +176,6 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                              Color
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static Color convert(ColorDescriptor colorDescriptor) {
-        Color color = new Color();
-        color.r = colorDescriptor.getR();
-        color.g = colorDescriptor.getG();
-        color.b = colorDescriptor.getB();
-        color.a = colorDescriptor.getA();
-
-        return color;
-    }
-
-    public static ColorDescriptor convert(Color color) {
-        ColorDescriptor colorDescriptor = new ColorDescriptor();
-        colorDescriptor.setR(color.r);
-        colorDescriptor.setG(color.g);
-        colorDescriptor.setB(color.b);
-        colorDescriptor.setA(color.a);
-
-        return colorDescriptor;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                              Fog
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -208,7 +184,7 @@ public class DescriptorConverter {
         Fog fog = new Fog();
         fog.density = fogDescriptor.getDensity();
         fog.gradient = fogDescriptor.getGradient();
-        fog.color = convert(fogDescriptor.getColor());
+        fog.color = new Color(fogDescriptor.getColor());
 
         return fog;
     }
@@ -218,7 +194,7 @@ public class DescriptorConverter {
         FogDescriptor fogDescriptor = new FogDescriptor();
         fogDescriptor.setDensity(fog.density);
         fogDescriptor.setGradient(fog.gradient);
-        fogDescriptor.setColor(convert(fog.color));
+        fogDescriptor.setColor(Color.rgba8888(fog.color));
 
         return fogDescriptor;
     }
