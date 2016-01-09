@@ -38,6 +38,8 @@ import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
 
+import javax.print.DocFlavor;
+
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
@@ -45,7 +47,7 @@ import org.lwjgl.opengl.GL11;
 public class TranslateTool extends SelectionTool {
 
     private enum State {
-        TRANSLATE_X, TRANSLATE_Y, TRANSLATE_Z, IDLE
+        TRANSLATE_X, TRANSLATE_Y, TRANSLATE_Z, TRANSLATE_XZ, IDLE
     }
 
     private static final boolean DEBUG = false;
@@ -63,10 +65,12 @@ public class TranslateTool extends SelectionTool {
     private Model xHandleModel;
     private Model yHandleModel;
     private Model zHandleModel;
+    private Model xzPlaneHandleModel;
 
     private Handle xHandle;
     private Handle yHandle;
     private Handle zHandle;
+    private Handle xzPlaneHandle;
 
     private Vector3 lastPos = new Vector3();
 
@@ -94,10 +98,14 @@ public class TranslateTool extends SelectionTool {
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position);
+        xzPlaneHandleModel = modelBuilder.createSphere(1, 1, 1, 20, 20,
+                new Material(ColorAttribute.createDiffuse(Color.CORAL)),
+                VertexAttributes.Usage.Position);
 
         xHandle = new Handle(xHandleModel);
         yHandle = new Handle(yHandleModel);
         zHandle = new Handle(zHandleModel);
+        xzPlaneHandle = new Handle(xzPlaneHandleModel);
     }
 
     @Override
@@ -123,6 +131,7 @@ public class TranslateTool extends SelectionTool {
         xHandle.setToScaling(radius * 0.7f, radius / 2, radius / 2);
         yHandle.setToScaling(radius / 2, radius * 0.7f, radius / 2);
         zHandle.setToScaling(radius / 2, radius / 2, radius * 0.7f);
+        xzPlaneHandle.setToScaling(radius*0.2f,radius*0.2f, radius*0.2f);
 
         selectedEntity.modelInstance.transform.getTranslation(temp0);
     }
@@ -136,6 +145,7 @@ public class TranslateTool extends SelectionTool {
             batch.render(xHandle);
             batch.render(yHandle);
             batch.render(zHandle);
+            batch.render(xzPlaneHandle);
 
             if(DEBUG) {
                 batch.render(xHandle.boundingBoxModelInst, shader);
@@ -158,6 +168,7 @@ public class TranslateTool extends SelectionTool {
             xHandle.setTranslation(selectionPos);
             yHandle.setTranslation(selectionPos);
             zHandle.setTranslation(selectionPos);
+            xzPlaneHandle.setTranslation(selectionPos);
 
             if(state == State.IDLE) return;
 
@@ -171,7 +182,10 @@ public class TranslateTool extends SelectionTool {
                 lastPos.set(rayEnd);
             }
 
-            if(state == State.TRANSLATE_X) {
+            if(state == State.TRANSLATE_XZ) {
+                selectedEntity.modelInstance.transform.translate(rayEnd.x - lastPos.x,
+                        0, rayEnd.z - lastPos.z);
+            } else if(state == State.TRANSLATE_X) {
                 selectedEntity.modelInstance.transform.translate(rayEnd.x - lastPos.x,
                         0, 0);
             } else if(state == State.TRANSLATE_Y) {
@@ -192,7 +206,10 @@ public class TranslateTool extends SelectionTool {
 
         if(button == Input.Buttons.LEFT && selectedEntity != null) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-            if(xHandle.isSelected(ray)) {
+            if(xzPlaneHandle.isSelected(ray)) {
+                state = State.TRANSLATE_XZ;
+                initTranslate = true;
+            } else if(xHandle.isSelected(ray)) {
                 state = State.TRANSLATE_X;
                 initTranslate = true;
             } else if(yHandle.isSelected(ray)) {
@@ -222,10 +239,12 @@ public class TranslateTool extends SelectionTool {
         xHandleModel.dispose();
         yHandleModel.dispose();
         zHandleModel.dispose();
+        xzPlaneHandleModel.dispose();
 
         xHandle.dispose();
         yHandle.dispose();
         zHandle.dispose();
+        xzPlaneHandle.dispose();
     }
 
     /**
