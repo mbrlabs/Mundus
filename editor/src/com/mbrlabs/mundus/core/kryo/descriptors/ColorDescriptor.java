@@ -20,40 +20,49 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
  * @author Marcus Brummer
- * @version 06-01-2016
+ * @version 09-01-2016
  */
-public class FogDescriptor {
+public class ColorDescriptor {
 
     @Tag(0)
-    private float density;
+    private float r;
     @Tag(1)
-    private float gradient;
+    private float g;
     @Tag(2)
-    private ColorDescriptor color;
+    private float b;
+    @Tag(3)
+    private float a;
 
-
-    public float getDensity() {
-        return density;
+    public float getR() {
+        return r;
     }
 
-    public void setDensity(float density) {
-        this.density = density;
+    public void setR(float r) {
+        this.r = r;
     }
 
-    public float getGradient() {
-        return gradient;
+    public float getG() {
+        return g;
     }
 
-    public void setGradient(float gradient) {
-        this.gradient = gradient;
+    public void setG(float g) {
+        this.g = g;
     }
 
-    public ColorDescriptor getColor() {
-        return color;
+    public float getB() {
+        return b;
     }
 
-    public void setColor(ColorDescriptor color) {
-        this.color = color;
+    public void setB(float b) {
+        this.b = b;
+    }
+
+    public float getA() {
+        return a;
+    }
+
+    public void setA(float a) {
+        this.a = a;
     }
 
 }

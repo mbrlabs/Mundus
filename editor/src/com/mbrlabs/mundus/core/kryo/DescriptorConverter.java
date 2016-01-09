@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.core.kryo;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -30,10 +31,17 @@ import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
+ * Converts runtime formats into Kryo compatible formats for internal
+ * project persistence.
+ *
  * @author Marcus Brummer
  * @version 17-12-2015
  */
 public class DescriptorConverter {
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                     Model & ModelInstance
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static ModelDescriptor convert(MModel model) {
         ModelDescriptor descriptor = new ModelDescriptor();
@@ -52,6 +60,63 @@ public class DescriptorConverter {
         model.texturePath = modelDescriptor.getTexturePath();
         return model;
     }
+
+    public static MModelInstance convert(ModelInstanceDescriptor descriptor, Array<MModel> models) {
+        // find model
+        MModel model = null;
+        for(MModel m : models) {
+            if(descriptor.getModelID() == m.id) {
+                model = m;
+                break;
+            }
+        }
+
+        if(model == null) {
+            Log.fatal("MModel for MModelInstance not found: " + descriptor.getModelID());
+            return null;
+        }
+
+        MModelInstance mModelInstance = new MModelInstance(model);
+        float[] pos = descriptor.getPosition();
+        float[] rot = descriptor.getRotation();
+        float[] scl = descriptor.getScale();
+
+        mModelInstance.kryoTransform.translate(pos[0], pos[1], pos[2]);
+        mModelInstance.kryoTransform.rotate(rot[0], rot[1], rot[2], 0);
+        mModelInstance.kryoTransform.scl(scl[0], scl[0], scl[0]);
+        return mModelInstance;
+    }
+
+    public static ModelInstanceDescriptor convert(MModelInstance modelInstance) {
+        Vector3 vec3 = new Vector3();
+        Quaternion quat = new Quaternion();
+
+        ModelInstanceDescriptor descriptor = new ModelInstanceDescriptor();
+        descriptor.setModelID(modelInstance.getModelId());
+
+        // translation
+        modelInstance.modelInstance.transform.getTranslation(vec3);
+        descriptor.getPosition()[0] = vec3.x;
+        descriptor.getPosition()[1] = vec3.y;
+        descriptor.getPosition()[2] = vec3.z;
+
+        // rotation
+        modelInstance.modelInstance.transform.getRotation(quat);
+        descriptor.getRotation()[0] = quat.x;
+        descriptor.getRotation()[1] = quat.y;
+        descriptor.getRotation()[2] = quat.z;
+
+        // scaling
+        modelInstance.modelInstance.transform.getScale(vec3);
+        descriptor.getScale()[0] = vec3.x;
+        descriptor.getScale()[1] = vec3.y;
+        descriptor.getScale()[2] = vec3.z;
+        return descriptor;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                               Terrain & TerrainInstance
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static TerrainDescriptor convert(Terrain terrain) {
         TerrainDescriptor descriptor = new TerrainDescriptor();
@@ -110,58 +175,57 @@ public class DescriptorConverter {
         return terrainInstance;
     }
 
-    public static MModelInstance convert(ModelInstanceDescriptor descriptor, Array<MModel> models) {
-        // find model
-        MModel model = null;
-        for(MModel m : models) {
-            if(descriptor.getModelID() == m.id) {
-                model = m;
-                break;
-            }
-        }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                              Color
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        if(model == null) {
-            Log.fatal("MModel for MModelInstance not found: " + descriptor.getModelID());
-            return null;
-        }
+    public static Color convert(ColorDescriptor colorDescriptor) {
+        Color color = new Color();
+        color.r = colorDescriptor.getR();
+        color.g = colorDescriptor.getG();
+        color.b = colorDescriptor.getB();
+        color.a = colorDescriptor.getA();
 
-        MModelInstance mModelInstance = new MModelInstance(model);
-        float[] pos = descriptor.getPosition();
-        float[] rot = descriptor.getRotation();
-        float[] scl = descriptor.getScale();
-
-        mModelInstance.kryoTransform.translate(pos[0], pos[1], pos[2]);
-        mModelInstance.kryoTransform.rotate(rot[0], rot[1], rot[2], 0);
-        mModelInstance.kryoTransform.scl(scl[0], scl[0], scl[0]);
-        return mModelInstance;
+        return color;
     }
 
-    public static ModelInstanceDescriptor convert(MModelInstance modelInstance) {
-        Vector3 vec3 = new Vector3();
-        Quaternion quat = new Quaternion();
+    public static ColorDescriptor convert(Color color) {
+        ColorDescriptor colorDescriptor = new ColorDescriptor();
+        colorDescriptor.setR(color.r);
+        colorDescriptor.setG(color.g);
+        colorDescriptor.setB(color.b);
+        colorDescriptor.setA(color.a);
 
-        ModelInstanceDescriptor descriptor = new ModelInstanceDescriptor();
-        descriptor.setModelID(modelInstance.getModelId());
-
-        // translation
-        modelInstance.modelInstance.transform.getTranslation(vec3);
-        descriptor.getPosition()[0] = vec3.x;
-        descriptor.getPosition()[1] = vec3.y;
-        descriptor.getPosition()[2] = vec3.z;
-
-        // rotation
-        modelInstance.modelInstance.transform.getRotation(quat);
-        descriptor.getRotation()[0] = quat.x;
-        descriptor.getRotation()[1] = quat.y;
-        descriptor.getRotation()[2] = quat.z;
-
-        // scaling
-        modelInstance.modelInstance.transform.getScale(vec3);
-        descriptor.getScale()[0] = vec3.x;
-        descriptor.getScale()[1] = vec3.y;
-        descriptor.getScale()[2] = vec3.z;
-        return descriptor;
+        return colorDescriptor;
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                              Fog
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static Fog convert(FogDescriptor fogDescriptor) {
+        if(fogDescriptor == null) return null;
+        Fog fog = new Fog();
+        fog.density = fogDescriptor.getDensity();
+        fog.gradient = fogDescriptor.getGradient();
+        fog.color = convert(fogDescriptor.getColor());
+
+        return fog;
+    }
+
+    public static FogDescriptor convert(Fog fog) {
+        if(fog == null) return null;
+        FogDescriptor fogDescriptor = new FogDescriptor();
+        fogDescriptor.setDensity(fog.density);
+        fogDescriptor.setGradient(fog.gradient);
+        fogDescriptor.setColor(convert(fog.color));
+
+        return fogDescriptor;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                          Scene
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static SceneDescriptor convert(Scene scene) {
         // TODO enviroenment
@@ -226,23 +290,9 @@ public class DescriptorConverter {
         return scene;
     }
 
-    public static Fog convert(FogDescriptor fogDescriptor) {
-        if(fogDescriptor == null) return null;
-        Fog fog = new Fog();
-        fog.density = fogDescriptor.getDensity();
-        fog.gradient = fogDescriptor.getGradient();
-
-        return fog;
-    }
-
-    public static FogDescriptor convert(Fog fog) {
-        if(fog == null) return null;
-        FogDescriptor fogDescriptor = new FogDescriptor();
-        fogDescriptor.setDensity(fog.density);
-        fogDescriptor.setGradient(fog.gradient);
-
-        return fogDescriptor;
-    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                          Project
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static ProjectDescriptor convert(ProjectContext project) {
         ProjectDescriptor descriptor = new ProjectDescriptor();
@@ -291,8 +341,6 @@ public class DescriptorConverter {
         context.loaded = false;
         return context;
     }
-
-
 
 
 }

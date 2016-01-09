@@ -141,6 +141,7 @@ public class FogDialog extends BaseDialog {
             useFog.setChecked(true);
             density.setText(String.valueOf(fog.density));
             gradient.setText(String.valueOf(fog.gradient));
+            colorPickerField.setColor(fog.color);
         }
     }
 
