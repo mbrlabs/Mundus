@@ -18,16 +18,13 @@ package com.mbrlabs.mundus.tools.brushes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.tools.Tool;
@@ -37,7 +34,7 @@ import com.mbrlabs.mundus.utils.Fa;
  * @author Marcus Brummer
  * @version 25-12-2015
  */
-public class SphereBrushTool extends Tool {
+public class SphereBrush extends Tool {
 
     private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
     private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
@@ -46,30 +43,27 @@ public class SphereBrushTool extends Tool {
         SHARP, SMOOTH
     }
 
-    public static final String NAME = "Sphere Brush";
+    private static final String NAME = "Sphere Brush";
     private static final float SIZE = 1;
 
     private Model sphereModel;
-    private ModelInstance sphereModelInstance;
-    private BoundingBox boundingBox = new BoundingBox();
-    private float radius;
-    private Drawable icon;
+    protected ModelInstance sphereModelInstance;
+    protected BoundingBox boundingBox = new BoundingBox();
+    protected float radius;
 
     private Mode mode = Mode.SMOOTH;
 
-    private Vector3 tVec0 = new Vector3();
-    private Vector3 tVec1 = new Vector3();
-    private Vector3 tempV3 = new Vector3();
+    protected Vector3 tVec0 = new Vector3();
+    protected Vector3 tVec1 = new Vector3();
+    protected Vector3 tVec2 = new Vector3();
 
-    public SphereBrushTool(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
+    public SphereBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
         sphereModelInstance = new ModelInstance(sphereModel);
         sphereModelInstance.calculateBoundingBox(boundingBox);
         scale(15);
-
-        icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/brushes/sphere.png"))));
     }
 
     public void scale(float amount) {
@@ -84,7 +78,7 @@ public class SphereBrushTool extends Tool {
 
     @Override
     public Drawable getIcon() {
-        return this.icon;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -166,8 +160,8 @@ public class SphereBrushTool extends Tool {
     public boolean mouseMoved(int screenX, int screenY) {
         if(projectContext.currScene.terrainGroup.size() > 0) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-            projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
-            sphereModelInstance.transform.setTranslation(tempV3);
+            projectContext.currScene.terrainGroup.getRayIntersection(tVec2, ray);
+            sphereModelInstance.transform.setTranslation(tVec2);
         }
         return false;
     }

@@ -65,6 +65,7 @@ public class ToolTab extends Tab {
         meshBrushGrid = new GridGroup(40, 5);
 
         meshBrushGrid.addActor(new ToolGridItem(toolManager.sphereBrushTool));
+        meshBrushGrid.addActor(new ToolGridItem(toolManager.flattenBrush));
 
         // add to sidebar
         content.add(new VisLabel("Terrain mesh brushes")).left().pad(5).row();

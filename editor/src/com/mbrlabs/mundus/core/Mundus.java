@@ -119,6 +119,7 @@ public class Mundus {
                 .addIcon(Fa.MOUSE_POINTER)
                 .addIcon(Fa.ARROWS)
                 .addIcon(Fa.CIRCLE_O)
+                .addIcon(Fa.MINUS)
                 .build();
 
         // input

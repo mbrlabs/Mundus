@@ -1,6 +1,7 @@
 [0.0.4]
 - Font Awesome as icon font
 - Adding scenes & switching between them
+- New Terrain brush: Flatten
 - Customizable Fog
 - A Skybox
 
