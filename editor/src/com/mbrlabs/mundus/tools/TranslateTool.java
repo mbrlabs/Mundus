@@ -58,6 +58,7 @@ public class TranslateTool extends SelectionTool {
     private Drawable icon;
 
     private State state = State.IDLE;
+    private boolean initTranslate = true;
 
     private Model xHandleModel;
     private Model yHandleModel;
@@ -66,6 +67,8 @@ public class TranslateTool extends SelectionTool {
     private Handle xHandle;
     private Handle yHandle;
     private Handle zHandle;
+
+    private Vector3 lastPos = new Vector3();
 
     private Vector3 temp0 = new Vector3();
     private Vector3 temp1 = new Vector3();
@@ -150,6 +153,7 @@ public class TranslateTool extends SelectionTool {
 
         if(selectedEntity != null) {
             Vector3 selectionPos = selectedEntity.modelInstance.transform.getTranslation(temp0);
+
             selectionPos.add(selectedEntity.center);
             xHandle.setTranslation(selectionPos);
             yHandle.setTranslation(selectionPos);
@@ -162,17 +166,23 @@ public class TranslateTool extends SelectionTool {
             float dst = projectContext.currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
 
-            selectionPos = selectedEntity.modelInstance.transform.getTranslation(temp0);
-            if(state == State.TRANSLATE_X) {
-                selectedEntity.modelInstance.transform.setTranslation(rayEnd.x,
-                        selectionPos.y, selectionPos.z);
-            } else if(state == State.TRANSLATE_Y) {
-                selectedEntity.modelInstance.transform.setTranslation(selectionPos.x,
-                        rayEnd.y, selectionPos.z);
-            } else if(state == State.TRANSLATE_Z) {
-                selectedEntity.modelInstance.transform.setTranslation(selectionPos.x, selectionPos.y,
-                        rayEnd.z);
+            if(initTranslate) {
+                initTranslate = false;
+                lastPos.set(rayEnd);
             }
+
+            if(state == State.TRANSLATE_X) {
+                selectedEntity.modelInstance.transform.translate(rayEnd.x - lastPos.x,
+                        0, 0);
+            } else if(state == State.TRANSLATE_Y) {
+                selectedEntity.modelInstance.transform.translate(0,
+                        rayEnd.y - lastPos.y, 0);
+            } else if(state == State.TRANSLATE_Z) {
+                selectedEntity.modelInstance.transform.translate(0, 0,
+                        rayEnd.z - lastPos.z);
+            }
+
+            lastPos.set(rayEnd);
         }
     }
 
@@ -182,14 +192,18 @@ public class TranslateTool extends SelectionTool {
 
         if(button == Input.Buttons.LEFT && selectedEntity != null) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-            if(xHandle.isSelected(ray))
+            if(xHandle.isSelected(ray)) {
                 state = State.TRANSLATE_X;
-            else if(yHandle.isSelected(ray))
+                initTranslate = true;
+            } else if(yHandle.isSelected(ray)) {
                 state = State.TRANSLATE_Y;
-            else if(zHandle.isSelected(ray))
+                initTranslate = true;
+            } else if(zHandle.isSelected(ray)) {
                 state = State.TRANSLATE_Z;
-            else
+                initTranslate = true;
+            } else {
                 state = State.IDLE;
+            }
         }
 
         return false;
