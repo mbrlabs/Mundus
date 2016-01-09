@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.exporter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.exporter.dto.*;
+import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.core.kryo.descriptors.ColorDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
@@ -127,10 +130,21 @@ public class Exporter {
         return dto;
     }
 
+    public static ColorDTO convert(Color color) {
+        ColorDTO colorDTO = new ColorDTO();
+        colorDTO.setR(color.r);
+        colorDTO.setG(color.g);
+        colorDTO.setB(color.b);
+        colorDTO.setA(color.a);
+
+        return colorDTO;
+    }
+
     public static FogDTO convert(Fog fog) {
         FogDTO fogDTO = new FogDTO();
         fogDTO.setGradient(fog.gradient);
         fogDTO.setDensity(fog.density);
+        fogDTO.setColor(convert(fog.color));
 
         return fogDTO;
     }

@@ -18,36 +18,45 @@ package com.mbrlabs.mundus.commons.exporter.dto;
 
 /**
  * @author Marcus Brummer
- * @version 07-01-2016
+ * @version 09-01-2016
  */
-public class FogDTO {
+public class ColorDTO {
 
-    private float density;
-    private float gradient;
-    private ColorDTO color;
+    private float r;
+    private float g;
+    private float b;
+    private float a;
 
-    public float getDensity() {
-        return density;
+    public float getR() {
+        return r;
     }
 
-    public void setDensity(float density) {
-        this.density = density;
+    public void setR(float r) {
+        this.r = r;
     }
 
-    public float getGradient() {
-        return gradient;
+    public float getG() {
+        return g;
     }
 
-    public void setGradient(float gradient) {
-        this.gradient = gradient;
+    public void setG(float g) {
+        this.g = g;
     }
 
-    public ColorDTO getColor() {
-        return color;
+    public float getB() {
+        return b;
     }
 
-    public void setColor(ColorDTO color) {
-        this.color = color;
+    public void setB(float b) {
+        this.b = b;
+    }
+
+    public float getA() {
+        return a;
+    }
+
+    public void setA(float a) {
+        this.a = a;
     }
 
 }
