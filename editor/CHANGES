@@ -1,10 +1,10 @@
-[0.0.4]
+[0.0.4] ~ 10/01/2016
 - Font Awesome as icon font
 - Implemented adding & switching between scenes
 - Improved Translate tool
 - New Terrain brush: Flatten
 - Customizable Fog
-- A Skybox
+- A basic Skybox (editable, but not savable/exportable)
 
 [0.0.3] ~ 02/01/2016
 - Model/asset selection moved to sidebar

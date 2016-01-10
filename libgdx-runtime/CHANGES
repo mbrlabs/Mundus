@@ -1,4 +1,4 @@
-[0.0.4]
+[0.0.4] ~ 10/01/2016
 - Terrain loading
 - Custom entity & terrain shader
 - MundusRenderer for easy rendering of scenes

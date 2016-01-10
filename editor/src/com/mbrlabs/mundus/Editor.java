@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.nav.FpsNavigation;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -185,6 +186,8 @@ public class Editor implements ApplicationListener {
             path = FilenameUtils.concat(path, "MundusProjects");
 
             ProjectContext project = projectManager.createProject(name, path);
+            project.currScene.environment.setFog(new Fog());
+            projectManager.saveProject(project);
             projectManager.changeProject(project);
         }
     }
