@@ -69,9 +69,15 @@ public class ImageChooserField extends VisTable {
         if(texture != null) {
             texture.dispose();
         }
+
         this.fileHandle = fileHandle;
-        texture = new Texture(fileHandle);
-        img.setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
+
+        if(fileHandle != null) {
+            texture = new Texture(fileHandle);
+            img.setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
+        } else {
+            img.setDrawable(null);
+        }
     }
 
     private void setupUI() {

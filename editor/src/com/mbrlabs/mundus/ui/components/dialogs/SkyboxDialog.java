@@ -42,7 +42,10 @@ public class SkyboxDialog extends BaseDialog {
     private ImageChooserField negativeY;
     private ImageChooserField positiveZ;
     private ImageChooserField negativeZ;
-    private VisTextButton submitBtn;
+
+    private VisTextButton createBtn;
+    private VisTextButton defaultBtn;
+    private VisTextButton deletBtn;
 
 
     @Inject
@@ -73,7 +76,9 @@ public class SkyboxDialog extends BaseDialog {
         negativeZ = new ImageChooserField(100);
         negativeZ.setButtonText("negativeZ");
 
-        submitBtn = new VisTextButton("Create skybox");
+        createBtn = new VisTextButton("Create skybox");
+        defaultBtn = new VisTextButton("Create default skybox");
+        deletBtn = new VisTextButton("Remove Skybox");
 
         VisTable root = new VisTable();
         // root.debugAll();
@@ -87,25 +92,53 @@ public class SkyboxDialog extends BaseDialog {
         root.add(negativeY);
         root.add(positiveZ);
         root.add(negativeZ).row();
-        root.add(submitBtn).padTop(15).padLeft(6).padRight(6).expandX().fillX().colspan(3).row();
+        root.add(createBtn).padTop(15).padLeft(6).padRight(6).expandX().fillX().colspan(3).row();
+
+        VisTable tab = new VisTable();
+        tab.add(defaultBtn).expandX().padRight(3).fillX();
+        tab.add(deletBtn).expandX().fillX().padLeft(3).row();
+        root.add(tab).fillX().expandX().padTop(5).padLeft(6).padRight(6).colspan(3).row();
     }
 
     private void setupListeners() {
 
-        // submit btn
-        submitBtn.addListener(new ClickListener() {
+        // create btn
+        createBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Skybox oldSkybox = projectContext.currScene.skybox;
-                if(oldSkybox != null) {
+                if (oldSkybox != null) {
                     oldSkybox.dispose();
                 }
 
                 projectContext.currScene.skybox = new Skybox(positiveX.getFile(), negativeX.getFile(),
                         positiveY.getFile(), negativeY.getFile(), positiveZ.getFile(), negativeZ.getFile());
-
+                setImages(null);
             }
         });
+
+        // default skybox btn
+        defaultBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(projectContext.currScene.skybox != null) {
+                    projectContext.currScene.skybox.dispose();
+                }
+                projectContext.currScene.skybox = Skybox.createDefaultSkybox();
+                setImages(null);
+            }
+        });
+
+        // delete skybox btn
+        deletBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                projectContext.currScene.skybox.dispose();
+                projectContext.currScene.skybox = null;
+                setImages(null);
+            }
+        });
+
     }
 
     @Subscribe
@@ -118,6 +151,13 @@ public class SkyboxDialog extends BaseDialog {
             negativeY.setImage(skybox.getNegativeY());
             positiveZ.setImage(skybox.getPositiveY());
             negativeZ.setImage(skybox.getNegativeZ());
+        } else {
+            positiveX.setImage(null);
+            negativeX.setImage(null);
+            positiveY.setImage(null);
+            negativeY.setImage(null);
+            positiveZ.setImage(null);
+            negativeZ.setImage(null);
         }
     }
 

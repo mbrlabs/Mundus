@@ -84,6 +84,8 @@ public class Scene implements Disposable {
 
     @Override
     public void dispose() {
-        skybox.dispose();
+        if(skybox != null) {
+            skybox.dispose();
+        }
     }
 }
