@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
+import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
 /**
  * @author Marcus Brummer
@@ -123,7 +124,7 @@ public class SkyboxDialog extends BaseDialog {
                 if(projectContext.currScene.skybox != null) {
                     projectContext.currScene.skybox.dispose();
                 }
-                projectContext.currScene.skybox = Skybox.createDefaultSkybox();
+                projectContext.currScene.skybox = SkyboxBuilder.createDefaultSkybox();
                 setImages(null);
             }
         });

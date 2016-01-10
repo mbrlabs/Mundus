@@ -104,16 +104,6 @@ public class Skybox implements Disposable {
         return negativeZ;
     }
 
-    public static Skybox createDefaultSkybox() {
-        return new Skybox(
-                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
-                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
-                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
-                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
-                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
-                Gdx.files.internal("textures/skybox/default/skybox_default.png"));
-    }
-
     @Override
     public void dispose() {
         boxModel.dispose();

@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
+import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
 /**
  * @author Marcus Brummer
@@ -50,7 +51,6 @@ public class Scene implements Disposable {
         entities = new Array<>();
         terrainGroup = new TerrainGroup();
         environment = new Env();
-        //environment.setFog(new Fog());
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);
@@ -63,7 +63,7 @@ public class Scene implements Disposable {
         sunLight.position.set(600, 400, 600);
         environment.add(sunLight);
 
-        skybox = Skybox.createDefaultSkybox();
+        skybox = SkyboxBuilder.createDefaultSkybox();
     }
 
     public String getName() {
