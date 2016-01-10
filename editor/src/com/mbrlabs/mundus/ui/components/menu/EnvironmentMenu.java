@@ -40,8 +40,8 @@ public class EnvironmentMenu extends Menu {
         skybox = new MenuItem("Skybox");
 
         addItem(addLight);
-        addItem(fog);
         addItem(skybox);
+        addItem(fog);
 
         setupListeners();
     }

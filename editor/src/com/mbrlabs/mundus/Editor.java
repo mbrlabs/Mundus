@@ -104,16 +104,6 @@ public class Editor implements ApplicationListener {
         camController = new FreeCamController(projectContext.currScene.cam);
         fpsNavigation = new FpsNavigation(projectContext.currScene.cam, projectContext.currScene.terrainGroup);
         inputManager.addProcessor(camController);
-
-
-        Skybox skybox = new Skybox(
-                Gdx.files.internal("textures/skybox/cloudy/right.png"),
-                Gdx.files.internal("textures/skybox/cloudy/left.png"),
-                Gdx.files.internal("textures/skybox/cloudy/top.jpg"),
-                Gdx.files.internal("textures/skybox/cloudy/bottom.png"),
-                Gdx.files.internal("textures/skybox/cloudy/back.png"),
-                Gdx.files.internal("textures/skybox/cloudy/front.png"));
-        projectContext.currScene.skybox = skybox;
     }
 
 	@Override

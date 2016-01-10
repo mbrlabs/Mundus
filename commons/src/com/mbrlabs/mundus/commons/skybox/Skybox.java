@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.commons.skybox;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -101,6 +102,16 @@ public class Skybox implements Disposable {
 
     public FileHandle getNegativeZ() {
         return negativeZ;
+    }
+
+    public static Skybox createDefaultSkybox() {
+        return new Skybox(
+                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
+                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
+                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
+                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
+                Gdx.files.internal("textures/skybox/default/skybox_default.png"),
+                Gdx.files.internal("textures/skybox/default/skybox_default.png"));
     }
 
     @Override

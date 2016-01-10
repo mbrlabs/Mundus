@@ -63,13 +63,7 @@ public class Scene implements Disposable {
         sunLight.position.set(600, 400, 600);
         environment.add(sunLight);
 
-        skybox = new Skybox(
-                Gdx.files.internal("textures/skybox/cloudy/right.png"),
-                Gdx.files.internal("textures/skybox/cloudy/left.png"),
-                Gdx.files.internal("textures/skybox/cloudy/top.jpg"),
-                Gdx.files.internal("textures/skybox/cloudy/bottom.png"),
-                Gdx.files.internal("textures/skybox/cloudy/back.png"),
-                Gdx.files.internal("textures/skybox/cloudy/front.png"));
+        skybox = Skybox.createDefaultSkybox();
     }
 
     public String getName() {
