@@ -35,6 +35,6 @@ void main(void) {
         v_fog = exp(-pow(v_fog * u_fogDensity, u_fogGradient));
         v_fog = 1.0 - clamp(v_fog, 0.0, 1.0);
     } else {
-        v_fog = 0;
+        v_fog = 0.0;
     }
 }
