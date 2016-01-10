@@ -16,12 +16,14 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -32,9 +34,13 @@ import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
- * Created by marcus on 1/10/16.
+ * @author Marcus Brummer
+ * @version 10-01-2016
  */
 public class ImageChooserField extends VisTable {
+
+    private static final Drawable PLACEHOLDER_IMG = new TextureRegionDrawable(
+            new TextureRegion(new Texture(Gdx.files.internal("ui/img_placeholder.png"))));
 
     private int width;
 
@@ -50,7 +56,7 @@ public class ImageChooserField extends VisTable {
         this.width = width;
         fcBtn = new VisTextButton("Select");
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
-        img = new Image();
+        img = new Image(PLACEHOLDER_IMG);
 
         setupUI();
         setupListeners();
@@ -76,7 +82,7 @@ public class ImageChooserField extends VisTable {
             texture = new Texture(fileHandle);
             img.setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
         } else {
-            img.setDrawable(null);
+            img.setDrawable(PLACEHOLDER_IMG);
         }
     }
 

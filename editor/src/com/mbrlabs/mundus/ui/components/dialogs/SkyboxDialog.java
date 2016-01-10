@@ -47,7 +47,6 @@ public class SkyboxDialog extends BaseDialog {
     private VisTextButton defaultBtn;
     private VisTextButton deletBtn;
 
-
     @Inject
     private ProjectContext projectContext;
     @Inject
