@@ -60,10 +60,6 @@ public class Editor implements ApplicationListener {
     private FreeCamController camController;
     private FpsNavigation fpsNavigation;
 
-    private Skybox skybox;
-
-    private Cubemap cubemap;
-
     @Inject
     private InputManager inputManager;
     @Inject
@@ -110,13 +106,14 @@ public class Editor implements ApplicationListener {
         inputManager.addProcessor(camController);
 
 
-        skybox = new Skybox(
+        Skybox skybox = new Skybox(
                 Gdx.files.internal("textures/skybox/cloudy/right.png"),
                 Gdx.files.internal("textures/skybox/cloudy/left.png"),
                 Gdx.files.internal("textures/skybox/cloudy/top.jpg"),
                 Gdx.files.internal("textures/skybox/cloudy/bottom.png"),
                 Gdx.files.internal("textures/skybox/cloudy/back.png"),
                 Gdx.files.internal("textures/skybox/cloudy/front.png"));
+        projectContext.currScene.skybox = skybox;
     }
 
 	@Override
@@ -135,10 +132,12 @@ public class Editor implements ApplicationListener {
         ui.getStatusBar().setVertexCount(0);
 
         // render the skybox
-        batch.begin(projectContext.currScene.cam);
-        batch.render(skybox.getSkyboxInstance(),
-                projectContext.currScene.environment, shaders.skyboxShader);
-        batch.end();
+        if(projectContext.currScene.skybox != null) {
+            batch.begin(projectContext.currScene.cam);
+            batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
+                    projectContext.currScene.environment, shaders.skyboxShader);
+            batch.end();
+        }
 
 
         // render model instances

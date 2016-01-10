@@ -75,6 +75,9 @@ public class ProjectContext implements Disposable {
         for(MModel model : models) {
             model.getModel().dispose();
         }
+        for(Scene scene : scenes) {
+            scene.dispose();
+        }
         models = null;
     }
 

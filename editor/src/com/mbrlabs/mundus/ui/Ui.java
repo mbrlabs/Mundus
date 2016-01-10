@@ -51,6 +51,7 @@ public class Ui extends MyStage {
     private LoadingProjectDialog loadingProjectDialog;
     private ExportDialog exportDialog;
     private FogDialog fogDialog;
+    private SkyboxDialog skyboxDialog;
 
     private static Ui INSTANCE;
 
@@ -102,6 +103,7 @@ public class Ui extends MyStage {
         loadingProjectDialog = new LoadingProjectDialog();
         exportDialog = new ExportDialog();
         fogDialog = new FogDialog();
+        skyboxDialog = new SkyboxDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -170,5 +172,9 @@ public class Ui extends MyStage {
 
     public FogDialog getFogDialog() {
         return fogDialog;
+    }
+
+    public SkyboxDialog getSkyboxDialog() {
+        return skyboxDialog;
     }
 }

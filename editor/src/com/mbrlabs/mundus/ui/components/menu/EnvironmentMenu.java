@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.ui.Ui;
 public class EnvironmentMenu extends Menu {
 
     private MenuItem addLight;
+    private MenuItem skybox;
     private MenuItem fog;
 
     public EnvironmentMenu() {
@@ -36,20 +37,33 @@ public class EnvironmentMenu extends Menu {
 
         addLight = new MenuItem("Add Light");
         fog = new MenuItem("Fog");
+        skybox = new MenuItem("Skybox");
 
         addItem(addLight);
         addItem(fog);
+        addItem(skybox);
 
         setupListeners();
     }
 
     private void setupListeners() {
+
+        // fog
         fog.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui.getInstance().showDialog(Ui.getInstance().getFogDialog());
             }
         });
+
+        // skybox
+        skybox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui.getInstance().showDialog(Ui.getInstance().getSkyboxDialog());
+            }
+        });
+
     }
 
     public MenuItem getAddLight() {
@@ -59,5 +73,10 @@ public class EnvironmentMenu extends Menu {
     public MenuItem getFog() {
         return fog;
     }
+
+    public MenuItem getSkybox() {
+        return skybox;
+    }
+
 }
 

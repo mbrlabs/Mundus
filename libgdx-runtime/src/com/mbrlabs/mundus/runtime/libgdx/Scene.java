@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.SunLight;
+import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
