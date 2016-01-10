@@ -10,7 +10,7 @@ uniform vec4 u_fogColor;
 varying vec3 v_cubeMapUV;
 
 const float lowerFogLimit = 0.0;
-const float upperFogLimit = 0.3;
+const float upperFogLimit = 0.1;
 
 void main() {
     gl_FragColor = vec4(textureCube(u_texture, v_cubeMapUV).rgb, 1.0);
