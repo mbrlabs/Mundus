@@ -146,7 +146,9 @@ public class Exporter {
         dto.setId(scene.getId());
 
         // fog
-        dto.setFog(convert(scene.environment.getFog()));
+        if(scene.environment.getFog() != null) {
+            dto.setFog(convert(scene.environment.getFog()));
+        }
 
         // entities
         for(MModelInstance entity : scene.entities) {

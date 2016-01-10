@@ -31,8 +31,6 @@ import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
  */
 public class FpsNavigation extends InputAdapter {
 
-    public static final float playerHeight = 10f;
-
     private Camera camera;
     private TerrainGroup terrainGroup;
 
@@ -46,6 +44,8 @@ public class FpsNavigation extends InputAdapter {
     private float velocity = 200;
     private float degreesPerPixel = 0.5f;
     private final Vector3 tmp = new Vector3();
+
+    private float height = 10f;
 
     public FpsNavigation (Camera camera, TerrainGroup terrainGroup) {
         this.camera = camera;
@@ -76,6 +76,14 @@ public class FpsNavigation extends InputAdapter {
      * @param velocity the velocity in units per second */
     public void setVelocity (float velocity) {
         this.velocity = velocity;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getHeight() {
+        return this.height;
     }
 
     /** Sets how many degrees to rotate per pixel the mouse moved.
@@ -127,7 +135,7 @@ public class FpsNavigation extends InputAdapter {
 
         TerrainInstance terrain = terrainGroup.getTerrain(camera.position.x, camera.position.z);
         if(terrain != null) {
-            camera.position.y = terrain.getHeightAtWorldCoord(camera.position.x, camera.position.z) + playerHeight;
+            camera.position.y = terrain.getHeightAtWorldCoord(camera.position.x, camera.position.z) + height;
         }
 
         camera.update(true);

@@ -99,7 +99,7 @@ public class TranslateTool extends SelectionTool {
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position);
         xzPlaneHandleModel = modelBuilder.createSphere(1, 1, 1, 20, 20,
-                new Material(ColorAttribute.createDiffuse(Color.CORAL)),
+                new Material(ColorAttribute.createDiffuse(Color.CYAN)),
                 VertexAttributes.Usage.Position);
 
         xHandle = new Handle(xHandleModel);
@@ -126,14 +126,7 @@ public class TranslateTool extends SelectionTool {
     @Override
     public void modelSelected(MModelInstance modelInstance) {
         super.modelSelected(modelInstance);
-        float radius = modelInstance.radius;
-
-        xHandle.setToScaling(radius * 0.7f, radius / 2, radius / 2);
-        yHandle.setToScaling(radius / 2, radius * 0.7f, radius / 2);
-        zHandle.setToScaling(radius / 2, radius / 2, radius * 0.7f);
-        xzPlaneHandle.setToScaling(radius*0.2f,radius*0.2f, radius*0.2f);
-
-        selectedEntity.modelInstance.transform.getTranslation(temp0);
+        scaleHandles();
     }
 
     @Override
@@ -198,6 +191,15 @@ public class TranslateTool extends SelectionTool {
 
             lastPos.set(rayEnd);
         }
+    }
+
+    private void scaleHandles() {
+        selectedEntity.modelInstance.transform.getTranslation(temp0);
+        float scaleFactor = projectContext.currScene.cam.position.dst(temp0) * 0.25f;
+        xHandle.setToScaling(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
+        yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
+        zHandle.setToScaling(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
+        xzPlaneHandle.setToScaling(scaleFactor*0.1f,scaleFactor*0.1f, scaleFactor*0.1f);
     }
 
     @Override
