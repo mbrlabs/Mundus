@@ -92,7 +92,7 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 final Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getImportModelDialog());
+                ui.showDialog(ui.getImportDialog());
             }
         });
 

@@ -24,6 +24,7 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.ui.components.dialogs.*;
 import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
+import com.mbrlabs.mundus.ui.components.dialogs.importer.ImportDialog;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
 import com.mbrlabs.mundus.ui.handler.menu.*;
@@ -46,7 +47,7 @@ public class Ui extends MyStage {
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
     private OpenProjectDialog openProjectDialog;
-    private ImportModelDialog importModelDialog;
+    private ImportDialog importDialog;
     private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
     private ExportDialog exportDialog;
@@ -98,7 +99,7 @@ public class Ui extends MyStage {
         settingsDialog = new SettingsDialog();
         newProjectDialog = new NewProjectDialog();
         openProjectDialog = new OpenProjectDialog();
-        importModelDialog = new ImportModelDialog();
+        importDialog = new ImportDialog();
         addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
         exportDialog = new ExportDialog();
@@ -150,8 +151,8 @@ public class Ui extends MyStage {
         return openProjectDialog;
     }
 
-    public ImportModelDialog getImportModelDialog() {
-        return importModelDialog;
+    public ImportDialog getImportDialog() {
+        return importDialog;
     }
 
     public AddTerrainDialog getAddTerrainDialog() {

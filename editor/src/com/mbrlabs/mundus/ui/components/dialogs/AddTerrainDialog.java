@@ -63,11 +63,13 @@ public class AddTerrainDialog extends BaseDialog {
     public AddTerrainDialog() {
         super("Add Terrain");
         Mundus.inject(this);
+        setResizable(true);
         setupUI();
         setupListeners();
     }
 
     private void setupUI() {
+        debugAll();
         Table root = new Table();
         //root.debugAll();
         root.padTop(6).padRight(6).padBottom(22);
