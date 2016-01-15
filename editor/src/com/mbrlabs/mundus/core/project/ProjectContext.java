@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.model.MTexture;
 
 /**
  * @author Marcus Brummer
@@ -37,17 +38,18 @@ public class ProjectContext implements Disposable {
 
     public Array<MModel> models;
     public Array<Terrain> terrains;
+    public Array<MTexture> textures;
 
     private long uuidProvider;
     public boolean loaded = false;
 
     public ProjectContext(long uuidProvider) {
         models = new Array<>();
+        textures = new Array<>();
         scenes = new Array<>();
         currScene = new Scene();
         terrains = new Array<>();
         this.uuidProvider = uuidProvider;
-
     }
 
     public void copyFrom(ProjectContext other) {

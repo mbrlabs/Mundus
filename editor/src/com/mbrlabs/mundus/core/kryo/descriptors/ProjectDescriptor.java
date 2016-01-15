@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.core.kryo.descriptors;
 import java.util.ArrayList;
 import java.util.List;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.mbrlabs.mundus.model.MTexture;
 
 /**
  * @author Marcus Brummer
@@ -29,22 +30,25 @@ public class ProjectDescriptor {
     @Tag(0)
     private List<ModelDescriptor> models;
     @Tag(1)
-    private List<TerrainDescriptor> terrains;
+    private List<TextureDescriptor> textures;
     @Tag(2)
-    private List<SceneDescriptor> scenes;
+    private List<TerrainDescriptor> terrains;
     @Tag(3)
-    private long currentSceneID;
+    private List<SceneDescriptor> scenes;
     @Tag(4)
-    private String name;
+    private long currentSceneID;
     @Tag(5)
-    private String id;
+    private String name;
     @Tag(6)
+    private String id;
+    @Tag(7)
     private long nextAvailableID;
 
     public ProjectDescriptor() {
         models = new ArrayList<>();
         terrains = new ArrayList<>();
         scenes = new ArrayList<>();
+        textures = new ArrayList<>();
     }
 
     public List<ModelDescriptor> getModels() {
@@ -89,6 +93,10 @@ public class ProjectDescriptor {
 
     public void setCurrentSceneID(long currentSceneID) {
         this.currentSceneID = currentSceneID;
+    }
+
+    public List<TextureDescriptor> getTextures() {
+        return textures;
     }
 
 }

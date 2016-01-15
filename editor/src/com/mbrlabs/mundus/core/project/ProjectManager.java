@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
@@ -33,6 +34,7 @@ import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
@@ -48,6 +50,7 @@ public class ProjectManager {
 
     public static final String PROJECT_MODEL_DIR = "models/";
     public static final String PROJECT_TERRAIN_DIR = "terrains/";
+    public static final String PROJECT_TEXTURE_DIR = "textures/";
 
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
@@ -73,6 +76,7 @@ public class ProjectManager {
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
+        new File(path, PROJECT_TEXTURE_DIR).mkdirs();
 
         // create project context
         ProjectContext newProjectContext = new ProjectContext(-1);
@@ -98,6 +102,12 @@ public class ProjectManager {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.path = ref.getPath();
         context.name = ref.getName();
+
+        // load textures
+        for(MTexture tex : context.textures) {
+            tex.texture = new Texture(Gdx.files.absolute(FilenameUtils.concat(context.path, tex.path)));
+            Log.debug("Loaded texture: " + tex.path);
+        }
 
         // load g3db models
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
@@ -202,9 +212,28 @@ public class ProjectManager {
         return mModel;
     }
 
-    public void saveProject(ProjectContext projectContext) {
-        // TODO save
+    public MTexture importTexture(String name, FileHandle textureFile) {
+        long id = projectContext.obtainUUID();
 
+        // copy file
+        String internalName = id + "." + textureFile.extension();
+        String importPath = FilenameUtils.concat(projectContext.path, PROJECT_TEXTURE_DIR + internalName);
+        textureFile.copyTo(Gdx.files.absolute(importPath));
+
+        MTexture tex = new MTexture();
+        tex.setId(id);
+        tex.setName(name);
+        tex.texture = new Texture(textureFile);
+        tex.path = PROJECT_TEXTURE_DIR + internalName;
+        projectContext.textures.add(tex);
+
+        // save whole project
+        saveProject(projectContext);
+
+        return tex;
+    }
+
+    public void saveProject(ProjectContext projectContext) {
         // save terrain data in .terra files
         for(Terrain terrain : projectContext.terrains) {
             String path = FilenameUtils.concat(projectContext.path, ProjectManager.PROJECT_TERRAIN_DIR);

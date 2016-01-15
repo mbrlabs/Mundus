@@ -69,7 +69,6 @@ public class AddTerrainDialog extends BaseDialog {
     }
 
     private void setupUI() {
-        debugAll();
         Table root = new Table();
         //root.debugAll();
         root.padTop(6).padRight(6).padBottom(22);

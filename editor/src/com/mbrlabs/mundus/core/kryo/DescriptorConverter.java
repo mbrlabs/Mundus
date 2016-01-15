@@ -16,7 +16,9 @@
 
 package com.mbrlabs.mundus.core.kryo;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -28,6 +30,7 @@ import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -176,6 +179,27 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                       Texture
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static MTexture convert(TextureDescriptor textureDescriptor) {
+        MTexture tex = new MTexture();
+        tex.path = textureDescriptor.getPath();
+        tex.setId(textureDescriptor.getId());
+
+        return tex;
+    }
+
+    public static TextureDescriptor convert(MTexture tex) {
+        TextureDescriptor textureDescriptor = new TextureDescriptor();
+        textureDescriptor.setId(tex.getId());
+        textureDescriptor.setName(tex.getName());
+        textureDescriptor.setPath(tex.path);
+
+        return textureDescriptor;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                              Fog
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -276,6 +300,11 @@ public class DescriptorConverter {
         descriptor.setId(project.id);
         descriptor.setCurrentSceneID(project.currScene.getId());
         descriptor.setNextAvailableID(project.getCurrentUUID());
+
+        // textures
+        for(MTexture texture : project.textures) {
+            descriptor.getTextures().add(convert(texture));
+        }
         // terrains
         for(Terrain terrain : project.terrains) {
             descriptor.getTerrains().add(convert(terrain));
@@ -295,6 +324,11 @@ public class DescriptorConverter {
     public static ProjectContext convert(ProjectDescriptor projectDescriptor) {
         ProjectContext context = new ProjectContext(projectDescriptor.getNextAvailableID());
         context.name = projectDescriptor.getName();
+
+        // textures
+        for(TextureDescriptor texture : projectDescriptor.getTextures()) {
+            context.textures.add(convert(texture));
+        }
         // models
         for(ModelDescriptor model : projectDescriptor.getModels()) {
             context.models.add(convert(model));
