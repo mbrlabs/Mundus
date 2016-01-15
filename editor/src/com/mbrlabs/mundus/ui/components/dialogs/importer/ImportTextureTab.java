@@ -16,7 +16,10 @@
 
 package com.mbrlabs.mundus.ui.components.dialogs.importer;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -30,7 +33,9 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
+import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
  * @author Marcus Brummer
@@ -39,6 +44,7 @@ import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 public class ImportTextureTab extends Tab {
 
     private ImportTextureTable importTextureTable;
+    private ImportDialog dialog;
 
     @Inject
     private HomeManager homeManager;
@@ -49,11 +55,11 @@ public class ImportTextureTab extends Tab {
     @Inject
     private EventBus eventBus;
 
-    public ImportTextureTab() {
+    public ImportTextureTab(ImportDialog dialog) {
         super(false, false);
         Mundus.inject(this);
+        this.dialog = dialog;
         importTextureTable = new ImportTextureTable();
-
     }
 
     @Override
@@ -64,6 +70,12 @@ public class ImportTextureTab extends Tab {
     @Override
     public Table getContentTable() {
         return importTextureTable;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        importTextureTable.dispose();
     }
 
     /**
@@ -102,9 +114,19 @@ public class ImportTextureTab extends Tab {
         }
 
         private void setupListener() {
-
-
-
+            importBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    FileHandle texture = imageChooserField.getFile();
+                    String texName = name.getText();
+                    if(texName != null && texName.length() > 0 && texture.exists() && FileFormatUtils.isImage(texture)) {
+                        MTexture tex = projectManager.importTexture(texName, texture);
+                        dialog.close();
+                    } else {
+                        // TODO show error msg
+                    }
+                }
+            });
         }
 
 

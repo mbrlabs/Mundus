@@ -61,8 +61,8 @@ public class ImportDialog extends BaseDialog implements Disposable {
         root = new VisTable();
         add(root).expand().fill();
 
-        modelImportTab = new ImportModelTab();
-        importTextureTab = new ImportTextureTab();
+        modelImportTab = new ImportModelTab(this);
+        importTextureTab = new ImportTextureTab(this);
 
         tabbedPane = new TabbedPane();
         tabbedPane.add(modelImportTab);
@@ -85,7 +85,6 @@ public class ImportDialog extends BaseDialog implements Disposable {
         };
 
         tabbedPane.addListener(tabbedPaneAdapter);
-
         tabbedPane.switchTab(modelImportTab);
     }
 
@@ -93,6 +92,8 @@ public class ImportDialog extends BaseDialog implements Disposable {
     @Override
     protected void close() {
         dispose();
+        modelImportTab.dispose();
+        importTextureTab.dispose();
         super.close();
     }
 

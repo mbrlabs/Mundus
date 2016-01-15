@@ -55,6 +55,8 @@ public class ImportModelTab extends Tab {
 
     private ImportModelTable importModelTable;
 
+    private ImportDialog dialog;
+
     @Inject
     private HomeManager homeManager;
     @Inject
@@ -66,9 +68,10 @@ public class ImportModelTab extends Tab {
     @Inject
     private ImportManager importManager;
 
-    public ImportModelTab() {
+    public ImportModelTab(ImportDialog dialog) {
         super(false, false);
         Mundus.inject(this);
+        this.dialog = dialog;
         importModelTable = new ImportModelTable();
     }
 
@@ -80,6 +83,12 @@ public class ImportModelTab extends Tab {
     @Override
     public Table getContentTable() {
         return importModelTable;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        importModelTable.dispose();
     }
 
     /**
@@ -167,8 +176,8 @@ public class ImportModelTab extends Tab {
                         importedModel.name = name.getText();
                         MModel mModel = projectManager.importG3dbModel(importedModel);
                         eventBus.post(new ModelImportEvent(mModel));
-                        modelInput.clear();
-                        textureInput.clear();
+                        dispose();
+                        dialog.close();
                     }
                 }
             });
@@ -209,6 +218,7 @@ public class ImportModelTab extends Tab {
 
         @Override
         public void dispose() {
+            System.out.println("wgfsdfgfsfsdfsdfsdfsdfsdfs");
             Ui.getInstance().unwire(fake3dViewport);
             if(previewModel != null) {
                 previewModel.dispose();
