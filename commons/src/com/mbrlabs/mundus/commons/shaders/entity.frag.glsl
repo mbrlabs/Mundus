@@ -23,6 +23,11 @@ void main(void) {
 
     vec3 light =  LIGHT_COLOR;
 
-    gl_FragColor = brightness * texture2D(u_texture, v_texCoord0);
+    vec4 tex = texture2D(u_texture, v_texCoord0);
+    if(tex.a < 0.5) {
+        discard;
+    }
+
+    gl_FragColor = brightness * tex;
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
 }
