@@ -36,7 +36,9 @@ public class GameObject implements Node {
     private Matrix4 transform;
 
     public GameObject() {
-        this.tags = new Array<>(1);
+        this.name = "Game Object";
+        this.id = -1;
+        this.tags = null;
         this.childs = null;
         this.components = new Array<>(3);
         this.transform = new Matrix4();
@@ -71,6 +73,15 @@ public class GameObject implements Node {
     @Override
     public Array<String> getTags() {
         return this.tags;
+    }
+
+    @Override
+    public void addTag(String tag) {
+        if(this.tags == null) {
+            this.tags = new Array<>(2);
+        }
+
+        this.tags.add(tag);
     }
 
     @Override

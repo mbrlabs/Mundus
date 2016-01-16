@@ -55,14 +55,21 @@ public class SceneGraphTester extends SceneGraph {
 
         root.addChild(new GameObject("wertwsaerf", 0));
         root.addChild(new GameObject("ddas", 0));
+        root.addChild(nested);
 
         GameObject nested2 = new GameObject("ghj7645", 0);
         root.addChild(nested2);
         nested2.addChild(new GameObject("#1234", 23));
-        nested2.addChild(new GameObject("sdfgsdg", 23));
+        nested2.addChild(new GameObject("sfger", 23));
+        nested2.addChild(new GameObject("345sss", 23));
+        nested2.addChild(new GameObject("dfgdds", 23));
+        nested2.addChild(new GameObject("gjsffghjdcv", 23));
+        nested2.addChild(new GameObject("dfgsssds", 23));
 
         root.addChild(new GameObject("wefrslfd", 3));
+        root.addChild(nested2);
         root.addChild(new GameObject("das#adfs", 3));
+        root.addChild(nested);
 
 
     }

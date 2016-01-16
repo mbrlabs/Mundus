@@ -40,6 +40,7 @@ public interface Node {
     public void setParent(Node parent);
 
     public Array<String> getTags();
+    public void addTag(String tag);
 
     public Matrix4 getTransform();
     public void setTransform(Matrix4 matrix4, boolean copy);

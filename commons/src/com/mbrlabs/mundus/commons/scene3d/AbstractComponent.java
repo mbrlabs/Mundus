@@ -23,9 +23,20 @@ package com.mbrlabs.mundus.commons.scene3d;
 public abstract class AbstractComponent implements Component {
 
     protected Node node;
+    protected Type type;
 
     public AbstractComponent(Node node) {
         this.node = node;
+    }
+
+    @Override
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    @Override
+    public Type getType() {
+        return this.type;
     }
 
     @Override

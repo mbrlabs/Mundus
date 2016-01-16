@@ -31,5 +31,6 @@ public interface Component {
     public void render(float delta);
     public void update(float delta);
     public Type getType();
+    public void setType(Type type);
 
 }

@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.ui.components.sidebar;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.utils.Align;
@@ -46,6 +47,7 @@ public class OutlineTab extends Tab {
 
     private VisTable content;
     private Tree tree;
+    private ScrollPane scrollPane;
 
     @Inject
     private ProjectContext projectContext;
@@ -59,8 +61,12 @@ public class OutlineTab extends Tab {
 
         content = new VisTable();
         content.align(Align.left | Align.top);
+
         tree = new VisTree();
-        content.add(tree).fill().expand();
+        scrollPane = new ScrollPane(tree);
+        scrollPane.setSmoothScrolling(true);
+
+        content.add(scrollPane).fill().expand();
     }
 
     @Subscribe
