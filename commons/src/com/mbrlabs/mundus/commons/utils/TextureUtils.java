@@ -31,4 +31,9 @@ public class TextureUtils {
         return texture;
     }
 
+    public static Texture load(FileHandle fileHandle) {
+        Texture texture = new Texture(fileHandle, false);
+        return texture;
+    }
+
 }

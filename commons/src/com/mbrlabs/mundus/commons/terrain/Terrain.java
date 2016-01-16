@@ -57,8 +57,7 @@ public class Terrain {
     private int norPos;
     private int uvPos;
 
-    private final Vector2 uvOffset = new Vector2(0, 0);
-    private final Vector2 uvScale = new Vector2(20, 20);
+    private final Vector2 uvScale = new Vector2(30, 30);
 
     private final VertexInfo tempVInfo = new VertexInfo();
 
@@ -96,16 +95,17 @@ public class Terrain {
         int index = 0;
         for (int curX = 0; curX < x; curX++) {
             for (int curZ = 0; curZ < z; curZ++) {
-                final int c00 = curZ * vertexResolution + curX;
-                final int c10 = c00 + 1;
-                final int c01 = c00 + vertexResolution;
-                final int c11 = c10 + vertexResolution;
-                indices[index++] = (short)c00;
-                indices[index++] = (short)c01;
-                indices[index++] = (short)c11;
-                indices[index++] = (short)c11;
-                indices[index++] = (short)c00;
-                indices[index++] = (short)c10;
+                int topLeft = curZ * vertexResolution + curX;
+                int topRight = topLeft + 1;
+                int bottomLeft = (curZ+1) * vertexResolution + curX;
+                int bottomRight = bottomLeft + 1;
+
+                indices[index++] = (short) topLeft;
+                indices[index++] = (short) bottomLeft;
+                indices[index++] = (short) bottomRight;
+                indices[index++] = (short) bottomRight;
+                indices[index++] = (short) topLeft;
+                indices[index++] = (short) topRight;
             }
         }
 
@@ -174,11 +174,6 @@ public class Terrain {
 
         out.position.set(dx * this.terrainWidth, height, dz * this.terrainDepth);
         out.uv.set(dx, dz).scl(uvScale);
-        out.uv.x %= 1;
-        out.uv.y %= 1;
-
-        out.uv.add(uvOffset);
-
 
         return out;
     }
