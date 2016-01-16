@@ -26,9 +26,11 @@ import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
+import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
+import com.mbrlabs.mundus.utils.SceneGraphTester;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
 /**
@@ -41,6 +43,7 @@ public class Scene implements Disposable {
     private long id;
 
     public Array<MModelInstance> entities;
+    public SceneGraph sceneGraph;
     public TerrainGroup terrainGroup;
     public Env environment;
     public Skybox skybox;
@@ -51,6 +54,7 @@ public class Scene implements Disposable {
         entities = new Array<>();
         terrainGroup = new TerrainGroup();
         environment = new Env();
+        sceneGraph = new SceneGraphTester();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);

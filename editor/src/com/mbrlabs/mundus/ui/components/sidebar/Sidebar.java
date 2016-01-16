@@ -44,12 +44,12 @@ public class Sidebar extends TabbedPane implements TabbedPaneListener {
         contentContainer.setBackground(VisUI.getSkin().getDrawable("default-pane"));
         contentContainer.align(Align.topLeft);
 
-        add(toolTab);
-        add(modelTab);
         add(outlineTab);
+        add(modelTab);
+        add(toolTab);
 
-        switchTab(toolTab);
-        switchedTab(toolTab);
+        switchTab(outlineTab);
+        switchedTab(outlineTab);
 
         addListener(this);
     }

@@ -24,7 +24,7 @@ import com.badlogic.gdx.Gdx;
  */
 public class SceneGraph {
 
-    private GameObject root;
+    protected GameObject root;
 
     public SceneGraph() {
         root = new GameObject();

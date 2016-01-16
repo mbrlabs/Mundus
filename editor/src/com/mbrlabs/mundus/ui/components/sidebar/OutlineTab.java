@@ -16,10 +16,25 @@
 
 package com.mbrlabs.mundus.ui.components.sidebar;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextField;
+import com.kotcrab.vis.ui.widget.VisTree;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.Node;
+import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.model.MModel;
 
 /**
  * @author Marcus Brummer
@@ -30,11 +45,54 @@ public class OutlineTab extends Tab {
     private static final String TITLE = "Outline";
 
     private VisTable content;
+    private Tree tree;
+
+    @Inject
+    private ProjectContext projectContext;
+    @Inject
+    private EventBus eventBus;
 
     public OutlineTab() {
         super(false, false);
+        Mundus.inject(this);
+        eventBus.register(this);
+
         content = new VisTable();
-        content.add(new VisLabel("Outline tab"));
+        content.align(Align.left | Align.top);
+        tree = new VisTree();
+        content.add(tree).fill().expand();
+    }
+
+    @Subscribe
+    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
+        buildTree(projectContext.currScene.sceneGraph);
+    }
+
+    private void buildTree(SceneGraph sceneGraph) {
+        tree.clearChildren();
+
+        GameObject rootGo = sceneGraph.getRoot();
+
+        Tree.Node treeRoot = new Tree.Node(new TreeNode(rootGo));
+        tree.add(treeRoot);
+
+        for(Node goChild : rootGo.getChilds()) {
+            addGameObject(treeRoot, goChild);
+        }
+
+    }
+
+    private void addGameObject(Tree.Node treeParentNode, Node gameObject) {
+        System.out.println("Adding gameObject: " + gameObject.getName());
+
+        Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
+        treeParentNode.add(leaf);
+
+        if(gameObject.getChilds() != null) {
+            for(Node goChild : gameObject.getChilds()) {
+                addGameObject(leaf, goChild);
+            }
+        }
     }
 
     @Override
@@ -47,6 +105,32 @@ public class OutlineTab extends Tab {
         return content;
     }
 
+    /**
+     * A node of the ui tree hierarchy.
+     */
+    private class TreeNode extends Table {
+
+        private VisLabel name;
+
+        private Node go;
+
+        public TreeNode() {
+            super();
+            name = new VisLabel();
+            add(name).left().top().expandX().fillX();
+        }
+
+        public TreeNode(Node go) {
+            this();
+            setGameObject(go);
+        }
+
+        public void setGameObject(Node go) {
+            this.go = go;
+            name.setText(go.getName());
+        }
+
+    }
 
 }
 
