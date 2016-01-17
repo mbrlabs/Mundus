@@ -32,7 +32,6 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
@@ -52,8 +51,6 @@ public class ImportTextureTab extends Tab {
     private ProjectContext projectContext;
     @Inject
     private ProjectManager projectManager;
-    @Inject
-    private EventBus eventBus;
 
     public ImportTextureTab(ImportDialog dialog) {
         super(false, false);

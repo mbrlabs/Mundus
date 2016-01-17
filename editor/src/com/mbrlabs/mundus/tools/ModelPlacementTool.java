@@ -23,9 +23,13 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.ModelInstanceAddedEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.ModelComponent;
 import com.mbrlabs.mundus.utils.Fa;
 
 /**
@@ -90,8 +94,23 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         if(curEntity != null && button == Input.Buttons.LEFT) {
-            projectContext.currScene.entities.add(curEntity);
+            GameObject selected = projectContext.currScene.sceneGraph.getSelected();
+
+            GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, -1);
+            ModelComponent modelComponent = new ModelComponent(modelGo, shader);
+            modelComponent.setModel(curEntity);
+            modelGo.addComponent(modelComponent);
+
+            if(selected == null) {
+                projectContext.currScene.sceneGraph.getRoot().addChild(modelGo);
+            } else {
+                selected.addChild(modelGo);
+            }
+
+            Mundus.postEvent(new ModelInstanceAddedEvent());
+
             curEntity = new MModelInstance(model);
             curEntity.calculateBounds();
             mouseMoved(screenX, screenY);

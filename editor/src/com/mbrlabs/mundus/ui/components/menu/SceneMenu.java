@@ -28,10 +28,8 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
-import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -44,8 +42,6 @@ public class SceneMenu extends Menu {
     private ProjectContext projectContext;
     @Inject
     private ProjectManager projectManager;
-    @Inject
-    private EventBus eventBus;
 
     private Array<MenuItem> sceneItems = new Array<>();
     private MenuItem addScene;
@@ -53,7 +49,7 @@ public class SceneMenu extends Menu {
     public SceneMenu() {
         super("Scenes");
         Mundus.inject(this);
-        eventBus.register(this);
+        Mundus.registerEventListener(this);
 
         addScene = new MenuItem("Add scene");
         addScene.addListener(new ClickListener() {

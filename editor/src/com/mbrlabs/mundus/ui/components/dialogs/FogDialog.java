@@ -27,10 +27,8 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
-import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
 
 /**
@@ -47,13 +45,11 @@ public class FogDialog extends BaseDialog {
 
     @Inject
     private ProjectContext projectContext;
-    @Inject
-    private EventBus eventBus;
 
     public FogDialog() {
         super("Fog");
         Mundus.inject(this);
-        eventBus.register(this);
+        Mundus.registerEventListener(this);
 
         setupUI();
         setupListeners();

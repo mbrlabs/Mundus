@@ -28,13 +28,11 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.tools.ToolManager;
-import org.apache.commons.io.FilenameUtils;
 
 /**
  * @author Marcus Brummer
@@ -51,13 +49,11 @@ public class ModelTab extends Tab {
     private ToolManager toolManager;
     @Inject
     private ProjectContext projectContext;
-    @Inject
-    private EventBus eventBus;
 
     public ModelTab() {
         super(false, false);
         Mundus.inject(this);
-        eventBus.register(this);
+        Mundus.registerEventListener(this);
 
         content = new VisTable();
         content.align(Align.left | Align.top);

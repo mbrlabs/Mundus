@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.kotcrab.vis.ui.widget.file.FileUtils;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -65,14 +64,12 @@ public class Mundus {
     private static HomeManager homeManager;
     private static ImportManager importManager;
 
-    private static EventBus eventBus;
-
     public static Array<Model> testModels = new Array<>();
-    public static Array<ModelInstance> testInstances = new Array<>();
 
+    public static Array<ModelInstance> testInstances = new Array<>();
     public static BitmapFont fa;
     public static ModelBatch modelBatch;
-
+    public static EventBus eventBus;
 
     /**
      * Loads & initializes everything.
@@ -105,7 +102,7 @@ public class Mundus {
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
-        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, eventBus, toolManager);
+        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager);
         importManager = new ImportManager(homeManager);
 
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
@@ -122,6 +119,18 @@ public class Mundus {
                 .build();
 
         // input
+    }
+
+    public static void postEvent(Object event) {
+        eventBus.post(event);
+    }
+
+    public static void registerEventListener(Object listener) {
+        eventBus.register(listener);
+    }
+
+    public static void unregisterEventListener(Object listener) {
+        eventBus.unregister(listener);
     }
 
     public static void inject(Object o) {

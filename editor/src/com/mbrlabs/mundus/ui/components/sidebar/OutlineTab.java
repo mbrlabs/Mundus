@@ -16,20 +16,23 @@
 
 package com.mbrlabs.mundus.ui.components.sidebar;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTree;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.events.ModelInstanceAddedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 
@@ -42,18 +45,16 @@ public class OutlineTab extends Tab {
     private static final String TITLE = "Outline";
 
     private VisTable content;
-    private Tree tree;
+    private VisTree tree;
     private ScrollPane scrollPane;
 
     @Inject
     private ProjectContext projectContext;
-    @Inject
-    private EventBus eventBus;
 
     public OutlineTab() {
         super(false, false);
         Mundus.inject(this);
-        eventBus.register(this);
+        Mundus.registerEventListener(this);
 
         content = new VisTable();
         content.align(Align.left | Align.top);
@@ -70,13 +71,29 @@ public class OutlineTab extends Tab {
         buildTree(projectContext.currScene.sceneGraph);
     }
 
+    @Subscribe
+    public void newModelAdded(ModelInstanceAddedEvent modelInstanceAddedEvent) {
+        buildTree(projectContext.currScene.sceneGraph);
+    }
+
     private void buildTree(SceneGraph sceneGraph) {
         tree.clearChildren();
 
         GameObject rootGo = sceneGraph.getRoot();
-
-        Tree.Node treeRoot = new Tree.Node(new TreeNode(rootGo));
+        VisTree.Node treeRoot = new VisTree.Node(new TreeNode(rootGo));
         tree.add(treeRoot);
+
+        tree.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Selection<Tree.Node> selection =  tree.getSelection();
+                if(selection != null && selection.size() > 0) {
+                    GameObject go = ((TreeNode)selection.first().getActor()).go;
+                    projectContext.currScene.sceneGraph.setSelected(go);
+                    System.out.println("Outline selected: " + projectContext.currScene.sceneGraph.getSelected().getName());
+                }
+            }
+        });
 
         for(GameObject goChild : rootGo.getChilds()) {
             addGameObject(treeRoot, goChild);
@@ -86,8 +103,6 @@ public class OutlineTab extends Tab {
     }
 
     private void addGameObject(Tree.Node treeParentNode, GameObject gameObject) {
-        System.out.println("Adding gameObject: " + gameObject.getName());
-
         Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
         treeParentNode.add(leaf);
 
@@ -111,27 +126,21 @@ public class OutlineTab extends Tab {
     /**
      * A node of the ui tree hierarchy.
      */
-    private class TreeNode extends Table {
+    private class TreeNode extends VisTable {
 
         private VisLabel name;
 
         private GameObject go;
 
-        public TreeNode() {
+        public TreeNode(final GameObject go) {
             super();
-            name = new VisLabel();
-            add(name).left().top().expandX().fillX();
-        }
-
-        public TreeNode(GameObject go) {
-            this();
-            setGameObject(go);
-        }
-
-        public void setGameObject(GameObject go) {
             this.go = go;
+
+            name = new VisLabel();
+            add(name).expand().fill();
             name.setText(go.getName());
         }
+
 
     }
 

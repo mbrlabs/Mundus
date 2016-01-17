@@ -31,7 +31,6 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.nav.FpsNavigation;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.model.MModelInstance;
@@ -72,16 +71,14 @@ public class Editor implements ApplicationListener {
     @Inject
     private HomeManager homeManager;
     @Inject
-    private EventBus eventBus;
-    @Inject
     private ToolManager toolManager;
 
 	@Override
 	public void create () {
         Mundus.init();
+        Mundus.registerEventListener(this);
         Mundus.inject(this);
         batch = Mundus.modelBatch;
-        eventBus.register(this);
         ui = Ui.getInstance();
         inputManager.addProcessor(ui);
 

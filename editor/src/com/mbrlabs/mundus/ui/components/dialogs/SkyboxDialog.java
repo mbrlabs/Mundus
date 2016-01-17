@@ -25,7 +25,6 @@ import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
@@ -50,13 +49,11 @@ public class SkyboxDialog extends BaseDialog {
 
     @Inject
     private ProjectContext projectContext;
-    @Inject
-    private EventBus eventBus;
 
     public SkyboxDialog() {
         super("Skybox");
         Mundus.inject(this);
-        eventBus.register(this);
+        Mundus.registerEventListener(this);
 
         setupUI();
         setupListeners();

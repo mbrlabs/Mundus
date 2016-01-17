@@ -47,15 +47,13 @@ public class AssetsDock {
     private AssetsTab assetsTab;
 
     @Inject
-    private EventBus eventBus;
-    @Inject
     private ProjectContext projectContext;
     @Inject
     private ToolManager toolManager;
 
     public AssetsDock() {
         Mundus.inject(this);
-        eventBus.register(this);
+        Mundus.registerEventListener(this);
         initUi();
     }
 

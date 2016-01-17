@@ -40,7 +40,6 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.ui.Ui;
@@ -63,8 +62,6 @@ public class ImportModelTab extends Tab {
     private ProjectContext projectContext;
     @Inject
     private ProjectManager projectManager;
-    @Inject
-    private EventBus eventBus;
     @Inject
     private ImportManager importManager;
 
@@ -175,7 +172,7 @@ public class ImportModelTab extends Tab {
                         // create model
                         importedModel.name = name.getText();
                         MModel mModel = projectManager.importG3dbModel(importedModel);
-                        eventBus.post(new ModelImportEvent(mModel));
+                        Mundus.postEvent(new ModelImportEvent(mModel));
                         dispose();
                         dialog.close();
                     }

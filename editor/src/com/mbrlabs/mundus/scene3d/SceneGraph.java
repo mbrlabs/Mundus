@@ -31,6 +31,8 @@ public class SceneGraph {
     public Scene scene;
     public ModelBatch batch;
 
+    private GameObject selected;
+
     public SceneGraph(Scene scene, ModelBatch modelBatch) {
         root = new GameObject(this);
         this.batch = modelBatch;
@@ -59,6 +61,14 @@ public class SceneGraph {
 
     public void update(float delta) {
         root.update(delta);
+    }
+
+    public GameObject getSelected() {
+        return selected;
+    }
+
+    public void setSelected(GameObject selected) {
+        this.selected = selected;
     }
 
 }

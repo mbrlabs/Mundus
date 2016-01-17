@@ -27,11 +27,11 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
@@ -58,15 +58,13 @@ public class ProjectManager {
     private HomeManager homeManager;
     private KryoManager kryoManager;
 
-    private EventBus eventBus;
     private ToolManager toolManager;
 
     public ProjectManager(ProjectContext projectContext, KryoManager kryoManager,
-                          HomeManager homeManager, EventBus eventBus, ToolManager toolManager) {
+                          HomeManager homeManager, ToolManager toolManager) {
         this.projectContext = projectContext;
         this.homeManager = homeManager;
         this.kryoManager = kryoManager;
-        this.eventBus = eventBus;
         this.toolManager = toolManager;
     }
 
@@ -164,7 +162,7 @@ public class ProjectManager {
         projectContext.copyFrom(context);
         projectContext.loaded = true;
         Gdx.graphics.setTitle(constructWindowTitle());
-        eventBus.post(new ProjectChangedEvent());
+        Mundus.postEvent(new ProjectChangedEvent());
         toolManager.setDefaultTool();
     }
 
@@ -262,7 +260,7 @@ public class ProjectManager {
         toolManager.deactivateTool();
         projectContext.currScene = scene;
         Gdx.graphics.setTitle(constructWindowTitle());
-        eventBus.post(new ProjectChangedEvent());
+        Mundus.postEvent(new ProjectChangedEvent());
         toolManager.setDefaultTool();
     }
 
