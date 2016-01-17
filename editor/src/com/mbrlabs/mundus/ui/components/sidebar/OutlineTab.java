@@ -180,6 +180,9 @@ public class OutlineTab extends Tab {
 
     }
 
+    /**
+     * 
+     */
     private class RightClickMenu extends PopupMenu {
 
         private MenuItem add;
@@ -201,6 +204,18 @@ public class OutlineTab extends Tab {
                     if(selectedGO != null) {
                         selectedGO.addChild(new GameObject(selectedGO.sceneGraph));
                         Mundus.postEvent(new SceneGraphModified());
+                    }
+                }
+            });
+
+            delete.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if(selectedGO != null) {
+                        if(selectedGO.remove()) {
+                            selectedGO = null;
+                            Mundus.postEvent(new SceneGraphModified());
+                        }
                     }
                 }
             });

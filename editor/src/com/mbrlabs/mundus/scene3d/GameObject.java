@@ -101,7 +101,17 @@ public class GameObject {
         if(this.childs == null) {
             childs = new Array<>();
         }
+        child.setParent(this);
         childs.add(child);
+    }
+
+    public boolean remove() {
+        if(parent != null) {
+            parent.getChilds().removeValue(this, true);
+            return true;
+        }
+
+        return false;
     }
 
     public GameObject getParent() {
