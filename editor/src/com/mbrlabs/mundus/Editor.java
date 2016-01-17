@@ -150,7 +150,6 @@ public class Editor implements ApplicationListener {
         }
         shaders.terrainShader.end();
 
-
         toolManager.render();
         compass.render(batch);
         ui.draw();

@@ -18,14 +18,10 @@ package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.env.Env;
-import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
-import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.model.MModelInstance;
@@ -64,7 +60,7 @@ public class Scene implements Disposable {
 
         SunLight sunLight = new SunLight();
         sunLight.setColor(1, 1, 1, 1);
-        sunLight.intensity = 1.5f;
+        sunLight.intensity = 1f;
         sunLight.position.set(600, 400, 600);
         environment.add(sunLight);
 

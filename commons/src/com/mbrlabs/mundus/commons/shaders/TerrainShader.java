@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.commons.shaders;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -98,6 +99,8 @@ public class TerrainShader extends BaseShader {
         TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
         if(textureAttribute != null) {
             set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
+            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
+            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
         }
 
         final SunLightsAttribute sla =

@@ -35,7 +35,6 @@ public class Main {
         int width = (int) maximumWindowBounds.getWidth();
         int height = (int) maximumWindowBounds.getHeight();
 
-        //Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
         config.width = width;
@@ -43,7 +42,6 @@ public class Main {
         config.backgroundFPS = 0;
         config.title = TITLE;
 
-        //new Lwjgl3Application(new Editor(), config);
         new LwjglApplication(new Editor(), config);
     }
 
