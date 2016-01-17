@@ -25,6 +25,8 @@ import com.badlogic.gdx.utils.Array;
  */
 public class GameObject {
 
+    public static final String DEFAULT_NAME = "Game Object";
+
     private long id;
     private String name;
 
@@ -38,7 +40,7 @@ public class GameObject {
     public SceneGraph sceneGraph;
 
     public GameObject(SceneGraph sceneGraph) {
-        this.name = "Game Object";
+        this.name = DEFAULT_NAME;
         this.id = -1;
         this.tags = null;
         this.childs = null;

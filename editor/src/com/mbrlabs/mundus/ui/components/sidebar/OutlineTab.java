@@ -175,13 +175,13 @@ public class OutlineTab extends Tab {
 
             name = new VisLabel();
             add(name).expand().fill();
-            name.setText(go.getName());
+            name.setText(go.getName() + " [" + go.getId() + "]");
         }
 
     }
 
     /**
-     * 
+     *
      */
     private class RightClickMenu extends PopupMenu {
 
@@ -202,7 +202,8 @@ public class OutlineTab extends Tab {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if(selectedGO != null) {
-                        selectedGO.addChild(new GameObject(selectedGO.sceneGraph));
+                        long id = projectContext.obtainUUID();
+                        selectedGO.addChild(new GameObject(selectedGO.sceneGraph, GameObject.DEFAULT_NAME, id));
                         Mundus.postEvent(new SceneGraphModified());
                     }
                 }

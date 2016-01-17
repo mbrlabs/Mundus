@@ -96,7 +96,9 @@ public class ModelPlacementTool extends Tool {
         if(curEntity != null && button == Input.Buttons.LEFT) {
             GameObject selected = projectContext.currScene.sceneGraph.getSelected();
 
-            GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, -1);
+            long id = projectContext.obtainUUID();
+
+            GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, id);
             ModelComponent modelComponent = new ModelComponent(modelGo, shader);
             modelComponent.setModel(curEntity);
             modelGo.addComponent(modelComponent);
