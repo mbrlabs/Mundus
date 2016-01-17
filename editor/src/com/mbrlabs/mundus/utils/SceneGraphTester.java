@@ -16,8 +16,12 @@
 
 package com.mbrlabs.mundus.utils;
 
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.SceneGraph;
+import com.mbrlabs.mundus.core.Mundus;
 
 /**
  * // TODO remove
@@ -30,45 +34,46 @@ import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 @Deprecated
 public class SceneGraphTester extends SceneGraph {
 
-    public SceneGraphTester() {
-        super();
-        root.setName("root");
+    public SceneGraphTester(Scene scene, ModelBatch modelBatch) {
+        super(scene, modelBatch);
 
-        root.addChild(new GameObject("c1", 0));
-        root.addChild(new GameObject("c2", 0));
-        root.addChild(new GameObject("c3", 0));
+        root.setName("ROOT");
 
-        GameObject go = new GameObject("c4", 0);
+        root.addChild(new GameObject(this, "c1", 0));
+        root.addChild(new GameObject(this, "c2", 0));
+        root.addChild(new GameObject(this, "c3", 0));
+
+        GameObject go = new GameObject(this, "c4", 0);
         root.addChild(go);
-        go.addChild(new GameObject("adsf", 0));
-        go.addChild(new GameObject("ad333sdsfgf", 0));
-        go.addChild(new GameObject("adsdfgfghaa3456f", 0));
+        go.addChild(new GameObject(this, "adsf", 0));
+        go.addChild(new GameObject(this, "ad333sdsfgf", 0));
+        go.addChild(new GameObject(this, "adsdfgfghaa3456f", 0));
 
-        GameObject nested = new GameObject("2345245", 0);
+        GameObject nested = new GameObject(this, "2345245", 0);
         go.addChild(nested);
-        nested.addChild(new GameObject("3sdfgsfg", 9));
-        nested.addChild(new GameObject("325", 9));
-        nested.addChild(new GameObject("dsfsssgdfgh", 9));
+        nested.addChild(new GameObject(this, "3sdfgsfg", 9));
+        nested.addChild(new GameObject(this, "325", 9));
+        nested.addChild(new GameObject(this, "dsfsssgdfgh", 9));
 
-        go.addChild(new GameObject("asdf", 0));
-        go.addChild(new GameObject("212a", 0));
+        go.addChild(new GameObject(this, "asdf", 0));
+        go.addChild(new GameObject(this, "212a", 0));
 
-        root.addChild(new GameObject("wertwsaerf", 0));
-        root.addChild(new GameObject("ddas", 0));
+        root.addChild(new GameObject(this, "wertwsaerf", 0));
+        root.addChild(new GameObject(this, "ddas", 0));
         root.addChild(nested);
 
-        GameObject nested2 = new GameObject("ghj7645", 0);
+        GameObject nested2 = new GameObject(this, "ghj7645", 0);
         root.addChild(nested2);
-        nested2.addChild(new GameObject("#1234", 23));
-        nested2.addChild(new GameObject("sfger", 23));
-        nested2.addChild(new GameObject("345sss", 23));
-        nested2.addChild(new GameObject("dfgdds", 23));
-        nested2.addChild(new GameObject("gjsffghjdcv", 23));
-        nested2.addChild(new GameObject("dfgsssds", 23));
+        nested2.addChild(new GameObject(this, "#1234", 23));
+        nested2.addChild(new GameObject(this, "sfger", 23));
+        nested2.addChild(new GameObject(this, "345sss", 23));
+        nested2.addChild(new GameObject(this, "dfgdds", 23));
+        nested2.addChild(new GameObject(this, "gjsffghjdcv", 23));
+        nested2.addChild(new GameObject(this, "dfgsssds", 23));
 
-        root.addChild(new GameObject("wefrslfd", 3));
+        root.addChild(new GameObject(this, "wefrslfd", 3));
         root.addChild(nested2);
-        root.addChild(new GameObject("das#adfs", 3));
+        root.addChild(new GameObject(this, "das#adfs", 3));
         root.addChild(nested);
 
 

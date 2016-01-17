@@ -14,38 +14,23 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.scene3d;
-
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.Array;
+package com.mbrlabs.mundus.scene3d;
 
 /**
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public interface Node {
+public interface Component {
 
-    public long getId();
-    public void setId(long id);
-    public String getName();
-    public void setName(String name);
+    public static enum Type {
+        MODEL, TERRAIN, LIGHT, PARTICLE_SYSTEM
+    }
 
-    public Array<Component> getComponents();
-    public void addComponent(Component component);
-
-    public Array<Node> getChilds();
-    public void addChild(Node child);
-
-    public Node getParent();
-    public void setParent(Node parent);
-
-    public Array<String> getTags();
-    public void addTag(String tag);
-
-    public Matrix4 getTransform();
-    public void setTransform(Matrix4 matrix4, boolean copy);
+    public GameObject getGameObject();
 
     public void render(float delta);
     public void update(float delta);
+    public Type getType();
+    public void setType(Type type);
 
 }

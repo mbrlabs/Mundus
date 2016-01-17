@@ -56,8 +56,6 @@ public class Mundus {
 
     private static ToolManager toolManager;
 
-    private static ModelBatch modelBatch;
-
     private static InputManager input;
     private static FreeCamController camController;
     private static Shaders shaders;
@@ -73,6 +71,7 @@ public class Mundus {
     public static Array<ModelInstance> testInstances = new Array<>();
 
     public static BitmapFont fa;
+    public static ModelBatch modelBatch;
 
 
     /**

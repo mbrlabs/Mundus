@@ -14,34 +14,37 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.scene3d;
+package com.mbrlabs.mundus.scene3d;
+
+import com.badlogic.gdx.graphics.g3d.Shader;
+import com.mbrlabs.mundus.model.MModelInstance;
 
 /**
  * @author Marcus Brummer
- * @version 16-01-2016
+ * @version 17-01-2016
  */
-public abstract class AbstractComponent implements Component {
+public class ModelComponent extends AbstractComponent {
 
-    protected Node node;
-    protected Type type;
+    private MModelInstance model;
+    private Shader shader;
 
-    public AbstractComponent(Node node) {
-        this.node = node;
+    public ModelComponent(GameObject go, Shader shader) {
+        super(go);
+        this.shader = shader;
+    }
+
+    public void setModel(MModelInstance model) {
+        this.model = model;
     }
 
     @Override
-    public void setType(Type type) {
-        this.type = type;
+    public void render(float delta) {
+        gameObject.sceneGraph.batch.render(model.modelInstance, gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override
-    public Type getType() {
-        return this.type;
-    }
+    public void update(float delta) {
 
-    @Override
-    public Node getNode() {
-        return this.node;
     }
 
 }

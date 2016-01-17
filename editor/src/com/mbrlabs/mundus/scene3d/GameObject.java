@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.scene3d;
+package com.mbrlabs.mundus.scene3d;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
@@ -23,59 +23,60 @@ import com.badlogic.gdx.utils.Array;
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class GameObject implements Node {
+public class GameObject {
 
     private long id;
     private String name;
 
     private Array<String> tags;
     private Array<Component> components;
-    private Array<Node> childs;
-    private Node parent;
+    private Array<GameObject> childs;
+    private GameObject parent;
 
     private Matrix4 transform;
 
-    public GameObject() {
+    public SceneGraph sceneGraph;
+
+    public GameObject(SceneGraph sceneGraph) {
         this.name = "Game Object";
         this.id = -1;
         this.tags = null;
         this.childs = null;
         this.components = new Array<>(3);
         this.transform = new Matrix4();
+        this.sceneGraph = sceneGraph;
     }
 
-    public GameObject(String name, long id) {
-        this();
+    public GameObject(SceneGraph sceneGraph, String name, long id) {
+        this(sceneGraph);
         this.name = name;
         this.id = id;
     }
 
-    @Override
     public long getId() {
         return this.id;
     }
 
-    @Override
     public void setId(long id) {
         this.id = id;
     }
 
-    @Override
     public String getName() {
         return this.name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public Array<String> getTags() {
         return this.tags;
     }
 
-    @Override
+    public SceneGraph getSceneGraph() {
+        return sceneGraph;
+    }
+
     public void addTag(String tag) {
         if(this.tags == null) {
             this.tags = new Array<>(2);
@@ -84,45 +85,37 @@ public class GameObject implements Node {
         this.tags.add(tag);
     }
 
-    @Override
     public Array<Component> getComponents() {
         return this.components;
     }
 
-    @Override
     public void addComponent(Component component) {
         components.add(component);
     }
 
-    @Override
-    public Array<Node> getChilds() {
+    public Array<GameObject> getChilds() {
         return this.childs;
     }
 
-    @Override
-    public void addChild(Node child) {
+    public void addChild(GameObject child) {
         if(this.childs == null) {
             childs = new Array<>();
         }
         childs.add(child);
     }
 
-    @Override
-    public Node getParent() {
+    public GameObject getParent() {
         return this.parent;
     }
 
-    @Override
-    public void setParent(Node parent) {
+    public void setParent(GameObject parent) {
         this.parent = parent;
     }
 
-    @Override
     public Matrix4 getTransform() {
         return this.transform;
     }
 
-    @Override
     public void setTransform(Matrix4 transform, boolean copy) {
         if(copy) {
             this.transform.set(transform);
@@ -131,25 +124,27 @@ public class GameObject implements Node {
         }
     }
 
-    @Override
     public void render(float delta) {
         for(Component component : this.components) {
             component.render(delta);
         }
 
-        for(Node node : this.childs) {
-            node.render(delta);
+        if(childs != null) {
+            for (GameObject node : this.childs) {
+                node.render(delta);
+            }
         }
     }
 
-    @Override
     public void update(float delta) {
         for(Component component : this.components) {
             component.update(delta);
         }
 
-        for(Node node : this.childs) {
-            node.update(delta);
+        if(childs != null) {
+            for(GameObject node : this.childs) {
+                node.update(delta);
+            }
         }
     }
 

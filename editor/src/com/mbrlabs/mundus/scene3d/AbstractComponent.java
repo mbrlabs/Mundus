@@ -14,40 +14,34 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.scene3d;
-
-import com.badlogic.gdx.Gdx;
+package com.mbrlabs.mundus.scene3d;
 
 /**
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class SceneGraph {
+public abstract class AbstractComponent implements Component {
 
-    protected GameObject root;
+    public GameObject gameObject;
+    protected Type type;
 
-    public SceneGraph() {
-        root = new GameObject();
+    public AbstractComponent(GameObject go) {
+        this.gameObject = go;
     }
 
-    public GameObject getRoot() {
-        return this.root;
+    @Override
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public void render() {
-        root.render(Gdx.graphics.getDeltaTime());
+    @Override
+    public Type getType() {
+        return this.type;
     }
 
-    public void render(float delta) {
-        root.render(delta);
-    }
-
-    public void update() {
-        root.update(Gdx.graphics.getDeltaTime());
-    }
-
-    public void update(float delta) {
-        root.update(delta);
+    @Override
+    public GameObject getGameObject() {
+        return this.gameObject;
     }
 
 }

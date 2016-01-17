@@ -29,7 +29,6 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.nav.FpsNavigation;
-import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
@@ -60,10 +59,10 @@ public class Editor implements ApplicationListener {
     private FreeCamController camController;
     private FpsNavigation fpsNavigation;
 
+    private ModelBatch batch;
+
     @Inject
     private InputManager inputManager;
-    @Inject
-    private ModelBatch batch;
     @Inject
     private ProjectContext projectContext;
     @Inject
@@ -81,6 +80,7 @@ public class Editor implements ApplicationListener {
 	public void create () {
         Mundus.init();
         Mundus.inject(this);
+        batch = Mundus.modelBatch;
         eventBus.register(this);
         ui = Ui.getInstance();
         inputManager.addProcessor(ui);
@@ -140,6 +140,13 @@ public class Editor implements ApplicationListener {
         batch.render(Mundus.testInstances,
                 projectContext.currScene.environment, shaders.entityShader);
         batch.end();
+
+        // TODO ======================================================================================
+
+        projectContext.currScene.sceneGraph.update();
+        projectContext.currScene.sceneGraph.render();
+
+        // TODO ======================================================================================
 
         // render terrains
         shaders.terrainShader.begin(projectContext.currScene.cam, renderContext);

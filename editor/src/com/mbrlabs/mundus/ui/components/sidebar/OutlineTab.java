@@ -16,26 +16,22 @@
 
 package com.mbrlabs.mundus.ui.components.sidebar;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.VisTree;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.Node;
-import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
-import com.mbrlabs.mundus.model.MModel;
 
 /**
  * @author Marcus Brummer
@@ -82,20 +78,21 @@ public class OutlineTab extends Tab {
         Tree.Node treeRoot = new Tree.Node(new TreeNode(rootGo));
         tree.add(treeRoot);
 
-        for(Node goChild : rootGo.getChilds()) {
+        for(GameObject goChild : rootGo.getChilds()) {
             addGameObject(treeRoot, goChild);
         }
 
+        treeRoot.setExpanded(true);
     }
 
-    private void addGameObject(Tree.Node treeParentNode, Node gameObject) {
+    private void addGameObject(Tree.Node treeParentNode, GameObject gameObject) {
         System.out.println("Adding gameObject: " + gameObject.getName());
 
         Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
         treeParentNode.add(leaf);
 
         if(gameObject.getChilds() != null) {
-            for(Node goChild : gameObject.getChilds()) {
+            for(GameObject goChild : gameObject.getChilds()) {
                 addGameObject(leaf, goChild);
             }
         }
@@ -118,7 +115,7 @@ public class OutlineTab extends Tab {
 
         private VisLabel name;
 
-        private Node go;
+        private GameObject go;
 
         public TreeNode() {
             super();
@@ -126,12 +123,12 @@ public class OutlineTab extends Tab {
             add(name).left().top().expandX().fillX();
         }
 
-        public TreeNode(Node go) {
+        public TreeNode(GameObject go) {
             this();
             setGameObject(go);
         }
 
-        public void setGameObject(Node go) {
+        public void setGameObject(GameObject go) {
             this.go = go;
             name.setText(go.getName());
         }
