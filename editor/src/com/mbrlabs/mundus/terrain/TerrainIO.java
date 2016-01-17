@@ -92,7 +92,7 @@ public class TerrainIO {
         terrain.init();
         terrain.heightData = floatArray.toArray();
         terrain.update();
-        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
+        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/grid.png"));
         terrain.setTexture(tex);
 
         return terrain;

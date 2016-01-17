@@ -56,7 +56,7 @@ public class Scene implements Disposable {
 
         SunLight sunLight = new SunLight();
         sunLight.setColor(1, 1, 1, 1);
-        sunLight.intensity = 1.5f;
+        sunLight.intensity = 1f;
         sunLight.position.set(600, 400, 600);
         environment.add(sunLight);
 
