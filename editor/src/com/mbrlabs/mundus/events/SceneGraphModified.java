@@ -20,5 +20,6 @@ package com.mbrlabs.mundus.events;
  * @author Marcus Brummer
  * @version 17-01-2016
  */
-public class ModelInstanceAddedEvent {
+public class SceneGraphModified {
+
 }

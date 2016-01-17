@@ -30,7 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.events.ModelInstanceAddedEvent;
+import com.mbrlabs.mundus.events.SceneGraphModified;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.Inject;
@@ -83,7 +83,7 @@ public class OutlineTab extends Tab {
     }
 
     @Subscribe
-    public void newModelAdded(ModelInstanceAddedEvent modelInstanceAddedEvent) {
+    public void newModelAdded(SceneGraphModified sceneGraphModified) {
         buildTree(projectContext.currScene.sceneGraph);
     }
 
@@ -99,9 +99,7 @@ public class OutlineTab extends Tab {
                 if (node == null) return;
 
                 GameObject go = ((TreeNode) node.getActor()).go;
-                System.out.println(go.getName());
-
-                rightClickMenu.showMenu(Ui.getInstance(), x, y);
+                rightClickMenu.show(go, x, y);
             }
 
             @Override
@@ -184,11 +182,37 @@ public class OutlineTab extends Tab {
 
     private class RightClickMenu extends PopupMenu {
 
+        private MenuItem add;
+        private MenuItem rename;
+        private MenuItem delete;
+
+        private GameObject selectedGO;
+
         public RightClickMenu() {
             super();
-            addItem(new MenuItem("Add Game Object"));
-            addItem(new MenuItem("Rename"));
-            addItem(new MenuItem("Delete"));
+
+            add = new MenuItem("Add empty Game Object");
+            rename = new MenuItem("Rename");
+            delete = new MenuItem("Delete");
+
+            add.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if(selectedGO != null) {
+                        selectedGO.addChild(new GameObject(selectedGO.sceneGraph));
+                        Mundus.postEvent(new SceneGraphModified());
+                    }
+                }
+            });
+
+            addItem(add);
+            addItem(rename);
+            addItem(delete);
+        }
+
+        public void show(GameObject go, float x, float y) {
+            selectedGO = go;
+            showMenu(Ui.getInstance(), x, y);
         }
 
     }
