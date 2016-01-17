@@ -16,16 +16,19 @@
 
 package com.mbrlabs.mundus.ui.components.sidebar;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
-import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.VisTree;
+import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.events.ModelInstanceAddedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
@@ -35,6 +38,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -48,6 +52,8 @@ public class OutlineTab extends Tab {
     private VisTree tree;
     private ScrollPane scrollPane;
 
+    private RightClickMenu rightClickMenu;
+
     @Inject
     private ProjectContext projectContext;
 
@@ -56,14 +62,19 @@ public class OutlineTab extends Tab {
         Mundus.inject(this);
         Mundus.registerEventListener(this);
 
+        rightClickMenu = new RightClickMenu();
+
         content = new VisTable();
         content.align(Align.left | Align.top);
 
         tree = new VisTree();
+        tree.setTouchable(Touchable.enabled);
         scrollPane = new ScrollPane(tree);
         scrollPane.setSmoothScrolling(true);
 
         content.add(scrollPane).fill().expand();
+
+        setupListeners();
     }
 
     @Subscribe
@@ -76,13 +87,30 @@ public class OutlineTab extends Tab {
         buildTree(projectContext.currScene.sceneGraph);
     }
 
-    private void buildTree(SceneGraph sceneGraph) {
-        tree.clearChildren();
+    private void setupListeners() {
 
-        GameObject rootGo = sceneGraph.getRoot();
-        VisTree.Node treeRoot = new VisTree.Node(new TreeNode(rootGo));
-        tree.add(treeRoot);
+        // right click menu listener
+        tree.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (Input.Buttons.RIGHT != button) return;
 
+                Tree.Node node = tree.getNodeAt(y);
+                if (node == null) return;
+
+                GameObject go = ((TreeNode) node.getActor()).go;
+                System.out.println(go.getName());
+
+                rightClickMenu.showMenu(Ui.getInstance(), x, y);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+        // select listener
         tree.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -95,8 +123,19 @@ public class OutlineTab extends Tab {
             }
         });
 
-        for(GameObject goChild : rootGo.getChilds()) {
-            addGameObject(treeRoot, goChild);
+    }
+
+    private void buildTree(SceneGraph sceneGraph) {
+        tree.clearChildren();
+
+        GameObject rootGo = sceneGraph.getRoot();
+        VisTree.Node treeRoot = new VisTree.Node(new TreeNode(rootGo));
+        tree.add(treeRoot);
+
+        if(rootGo.getChilds() != null) {
+            for(GameObject goChild : rootGo.getChilds()) {
+                addGameObject(treeRoot, goChild);
+            }
         }
 
         treeRoot.setExpanded(true);
@@ -141,6 +180,16 @@ public class OutlineTab extends Tab {
             name.setText(go.getName());
         }
 
+    }
+
+    private class RightClickMenu extends PopupMenu {
+
+        public RightClickMenu() {
+            super();
+            addItem(new MenuItem("Add Game Object"));
+            addItem(new MenuItem("Rename"));
+            addItem(new MenuItem("Delete"));
+        }
 
     }
 

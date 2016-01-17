@@ -43,6 +43,7 @@ public class Main {
         config.title = TITLE;
 
         new LwjglApplication(new Editor(), config);
+
     }
 
 }

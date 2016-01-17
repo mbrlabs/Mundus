@@ -26,7 +26,6 @@ import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
-import com.mbrlabs.mundus.utils.SceneGraphTester;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
 /**
@@ -65,7 +64,8 @@ public class Scene implements Disposable {
 
         skybox = SkyboxBuilder.createDefaultSkybox();
 
-        sceneGraph = new SceneGraphTester(this, Mundus.modelBatch);
+        //sceneGraph = new SceneGraphTester(this, Mundus.modelBatch);
+        sceneGraph = new SceneGraph(this, Mundus.modelBatch);
     }
 
     public String getName() {
