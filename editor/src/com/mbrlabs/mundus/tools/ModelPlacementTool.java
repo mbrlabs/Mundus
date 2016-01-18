@@ -99,9 +99,12 @@ public class ModelPlacementTool extends Tool {
             long id = projectContext.obtainUUID();
 
             GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, id);
-            ModelComponent modelComponent = new ModelComponent(modelGo, shader);
+            modelGo.transform = curEntity.modelInstance.transform;
+            ModelComponent modelComponent = new ModelComponent(modelGo);
+            modelComponent.setShader(shader);
             modelComponent.setModel(curEntity);
             modelGo.addComponent(modelComponent);
+
 
             if(selected == null) {
                 projectContext.currScene.sceneGraph.getRoot().addChild(modelGo);

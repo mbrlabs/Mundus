@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,31 +18,15 @@ package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
+
 /**
  * @author Marcus Brummer
- * @version 22-12-2015
+ * @version 18-01-2016
  */
-public class ModelInstanceDescriptor {
+public class ModelComponentDescriptor {
 
     @Tag(0)
-    private long id;
-    @Tag(1)
     private long modelID;
-
-    @Tag(2)
-    private float[] position = new float[3];
-    @Tag(3)
-    private float[] rotation = new float[3];
-    @Tag(4)
-    private float[] scale = new float[3];
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public long getModelID() {
         return modelID;
@@ -50,18 +34,6 @@ public class ModelInstanceDescriptor {
 
     public void setModelID(long modelID) {
         this.modelID = modelID;
-    }
-
-    public float[] getPosition() {
-        return position;
-    }
-
-    public float[] getRotation() {
-        return rotation;
-    }
-
-    public float[] getScale() {
-        return scale;
     }
 
 }

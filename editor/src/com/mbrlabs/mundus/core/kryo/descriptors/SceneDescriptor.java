@@ -33,7 +33,7 @@ public class SceneDescriptor {
     @Tag(1)
     private String name;
     @Tag(2)
-    private List<ModelInstanceDescriptor> entities;
+    private GameObjectDescriptor sceneGraphRoot;
     @Tag(3)
     private List<TerrainInstanceDescriptor> terrains;
     @Tag(4)
@@ -52,7 +52,6 @@ public class SceneDescriptor {
     private float camDirZ = 0;
 
     public SceneDescriptor() {
-        entities = new ArrayList<>();
         terrains = new ArrayList<>();
     }
 
@@ -70,14 +69,6 @@ public class SceneDescriptor {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<ModelInstanceDescriptor> getEntities() {
-        return entities;
-    }
-
-    public void setEntities(List<ModelInstanceDescriptor> entities) {
-        this.entities = entities;
     }
 
     public List<TerrainInstanceDescriptor> getTerrains() {
@@ -143,4 +134,13 @@ public class SceneDescriptor {
     public void setFog(FogDescriptor fog) {
         this.fog = fog;
     }
+
+    public GameObjectDescriptor getSceneGraphRoot() {
+        return sceneGraphRoot;
+    }
+
+    public void setSceneGraphRoot(GameObjectDescriptor sceneGraphRoot) {
+        this.sceneGraphRoot = sceneGraphRoot;
+    }
+
 }

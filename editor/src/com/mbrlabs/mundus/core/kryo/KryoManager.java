@@ -45,6 +45,7 @@ public class KryoManager {
         // !!!!! DO NOT CHANGE THIS, OTHERWISE ALREADY SERIALIZED OBJECTS WILL BE UNREADABLE !!!!
         kryo.register(ArrayList.class, 0);
         kryo.register(Date.class, 1);
+
         kryo.register(ProjectRef.class, 2);
         kryo.register(HomeDescriptor.class, 3);
         kryo.register(HomeDescriptor.Settings.class, 4);
@@ -52,10 +53,12 @@ public class KryoManager {
         kryo.register(TerrainDescriptor.class, 6);
         kryo.register(ModelDescriptor.class, 7);
         kryo.register(TextureDescriptor.class, 8);
-        kryo.register(ModelInstanceDescriptor.class, 9);
-        kryo.register(SceneDescriptor.class, 10);
-        kryo.register(TerrainInstanceDescriptor.class, 11);
-        kryo.register(FogDescriptor.class, 12);
+        kryo.register(TerrainInstanceDescriptor.class, 9);
+        kryo.register(FogDescriptor.class, 10);
+
+        kryo.register(SceneDescriptor.class, 11);
+        kryo.register(GameObjectDescriptor.class, 12);
+        kryo.register(ModelComponentDescriptor.class, 13);
     }
 
     public HomeDescriptor loadHomeDescriptor() {

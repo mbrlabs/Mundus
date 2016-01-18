@@ -35,7 +35,7 @@ public class GameObject {
     private Array<GameObject> childs;
     private GameObject parent;
 
-    private Matrix4 transform;
+    public Matrix4 transform;
 
     public SceneGraph sceneGraph;
 

@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
@@ -35,6 +36,10 @@ import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
+import com.mbrlabs.mundus.scene3d.Component;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.ModelComponent;
+import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
@@ -59,13 +64,17 @@ public class ProjectManager {
     private KryoManager kryoManager;
 
     private ToolManager toolManager;
+    private ModelBatch modelBatch;
+    private Shaders shaders;
 
     public ProjectManager(ProjectContext projectContext, KryoManager kryoManager,
-                          HomeManager homeManager, ToolManager toolManager) {
+                          HomeManager homeManager, ToolManager toolManager, ModelBatch batch, Shaders shaders) {
         this.projectContext = projectContext;
         this.homeManager = homeManager;
         this.kryoManager = kryoManager;
         this.toolManager = toolManager;
+        this.modelBatch = batch;
+        this.shaders = shaders;
     }
 
     public ProjectContext createProject(String name, String folder) {
@@ -114,19 +123,10 @@ public class ProjectManager {
             model.setModel(loader.loadModel(Gdx.files.absolute(g3dbPath)));
         }
 
-        // create ModelInstances for MModelInstaces
+        // load scene graph for every scene
         for(Scene scene : context.scenes) {
-            for(MModelInstance mModelInstance : scene.entities) {
-                MModel model = findModelById(context.models, mModelInstance.getModelId());
-                if(model != null) {
-                    mModelInstance.modelInstance = new ModelInstance(model.getModel());
-                    mModelInstance.modelInstance.transform.set(mModelInstance.kryoTransform);
-                    mModelInstance.calculateBounds();
-                } else {
-                    Log.fatal("model for modelInstance not found: " + mModelInstance.getModelId());
-                }
-
-            }
+            scene.sceneGraph.batch = modelBatch;
+            initSceneGraph(context, scene.sceneGraph.getRoot());
         }
 
         // load terrain .terra files
@@ -135,6 +135,33 @@ public class ProjectManager {
         }
 
         return context;
+    }
+
+    private void initSceneGraph(ProjectContext context, GameObject root) {
+        initComponents(context, root);
+        if(root.getChilds() != null) {
+            for(GameObject c : root.getChilds()) {
+                initSceneGraph(context, c);
+            }
+        }
+    }
+
+    private void initComponents(ProjectContext context, GameObject go) {
+        for(Component c : go.getComponents()) {
+            // Model component
+            if(c.getType() == Component.Type.MODEL) {
+                ModelComponent modelComponent = (ModelComponent) c;
+                MModel model = findModelById(context.models, modelComponent.getModel().getModelId());
+                if(model != null) {
+                    modelComponent.getModel().modelInstance = new ModelInstance(model.getModel());
+                    modelComponent.getModel().modelInstance.transform = go.transform;
+                    modelComponent.getModel().calculateBounds();
+                    modelComponent.setShader(shaders.entityShader);
+                } else {
+                    Log.fatal("model for modelInstance not found: " + modelComponent.getModel().getModelId());
+                }
+            }
+        }
     }
 
     private MModel findModelById(Array<MModel> models, long id) {

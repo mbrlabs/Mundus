@@ -18,13 +18,11 @@ package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
-import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
@@ -37,7 +35,6 @@ public class Scene implements Disposable {
     private String name;
     private long id;
 
-    public Array<MModelInstance> entities;
     public SceneGraph sceneGraph;
     public TerrainGroup terrainGroup;
     public Env environment;
@@ -46,7 +43,6 @@ public class Scene implements Disposable {
     public PerspectiveCamera cam;
 
     public Scene() {
-        entities = new Array<>();
         terrainGroup = new TerrainGroup();
         environment = new Env();
 
@@ -64,8 +60,8 @@ public class Scene implements Disposable {
 
         skybox = SkyboxBuilder.createDefaultSkybox();
 
-        //sceneGraph = new SceneGraphTester(this, Mundus.modelBatch);
-        sceneGraph = new SceneGraph(this, Mundus.modelBatch);
+        sceneGraph = new SceneGraph(this);
+        sceneGraph.setBatch(Mundus.modelBatch);
     }
 
     public String getName() {

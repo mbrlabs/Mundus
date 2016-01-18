@@ -31,12 +31,6 @@ public class MModelInstance {
     private long modelId;
     private boolean isSelected;
 
-    // used to store transformation that comes directly from the ModelInstanceDescriptor.
-    // since the actual loading of the g3db model takes place after the deserialazion
-    // i need to store the transformation somewhere else (here) until the model is loaded.
-    // then this transformation can be applied to the actual model instance.
-    public Matrix4 kryoTransform = new Matrix4();
-
     public ModelInstance modelInstance = null;
 
     private final static BoundingBox bounds = new BoundingBox();

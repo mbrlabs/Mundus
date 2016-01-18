@@ -151,9 +151,10 @@ public class Exporter {
         }
 
         // entities
-        for(MModelInstance entity : scene.entities) {
-            dto.getEntities().add(convert(entity));
-        }
+        // TODO make compatiple with scene graph
+//        for(MModelInstance entity : scene.entities) {
+//            dto.getEntities().add(convert(entity));
+//        }
 
         // terrains
         for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {

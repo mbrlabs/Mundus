@@ -35,8 +35,8 @@ import com.mbrlabs.mundus.core.Mundus;
 public class SceneGraphTester extends SceneGraph {
 
     public SceneGraphTester(Scene scene, ModelBatch modelBatch) {
-        super(scene, modelBatch);
-
+        super(scene);
+        setBatch(modelBatch);
         root.setName("ROOT");
 
         root.addChild(new GameObject(this, "c1", 0));

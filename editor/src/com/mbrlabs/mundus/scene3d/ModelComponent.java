@@ -28,13 +28,25 @@ public class ModelComponent extends AbstractComponent {
     private MModelInstance model;
     private Shader shader;
 
-    public ModelComponent(GameObject go, Shader shader) {
+    public ModelComponent(GameObject go) {
         super(go);
+        type = Type.MODEL;
+    }
+
+    public Shader getShader() {
+        return shader;
+    }
+
+    public void setShader(Shader shader) {
         this.shader = shader;
     }
 
     public void setModel(MModelInstance model) {
         this.model = model;
+    }
+
+    public MModelInstance getModel() {
+        return model;
     }
 
     @Override

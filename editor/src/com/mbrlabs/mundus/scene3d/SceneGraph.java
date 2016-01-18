@@ -20,11 +20,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.mbrlabs.mundus.core.Scene;
 
+import java.util.Iterator;
+
 /**
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class SceneGraph {
+public class SceneGraph implements Iterable<GameObject> {
 
     protected GameObject root;
 
@@ -33,14 +35,25 @@ public class SceneGraph {
 
     private GameObject selected;
 
-    public SceneGraph(Scene scene, ModelBatch modelBatch) {
+    public SceneGraph(Scene scene) {
         root = new GameObject(this);
-        this.batch = modelBatch;
         this.scene = scene;
+    }
+
+    public ModelBatch getBatch() {
+        return batch;
+    }
+
+    public void setBatch(ModelBatch batch) {
+        this.batch = batch;
     }
 
     public GameObject getRoot() {
         return this.root;
+    }
+
+    public void setRoot(GameObject root) {
+        this.root = root;
     }
 
     public void render() {
@@ -69,6 +82,40 @@ public class SceneGraph {
 
     public void setSelected(GameObject selected) {
         this.selected = selected;
+    }
+
+    @Override
+    @Deprecated
+    public Iterator<GameObject> iterator() {
+        return new SceneGraphIterator(this);
+    }
+
+    /**
+     * Iterates over the game objects of the scene graph.
+     */
+    private class SceneGraphIterator implements Iterator<GameObject> {
+
+        private SceneGraph sceneGraph;
+
+        public SceneGraphIterator(SceneGraph sceneGraph) {
+            this.sceneGraph = sceneGraph;
+        }
+
+        @Override
+        public boolean hasNext() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public GameObject next() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
     }
 
 }

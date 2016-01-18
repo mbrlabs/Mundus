@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.core.kryo;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,6 +32,10 @@ import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.model.MTexture;
+import com.mbrlabs.mundus.scene3d.Component;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.ModelComponent;
+import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -42,8 +47,11 @@ import com.mbrlabs.mundus.utils.Log;
  */
 public class DescriptorConverter {
 
+    private static final Vector3 tempV3 = new Vector3();
+    private static final Quaternion tempQuat = new Quaternion();
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     Model & ModelInstance
+    //                                     Model
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static ModelDescriptor convert(MModel model) {
@@ -64,8 +72,86 @@ public class DescriptorConverter {
         return model;
     }
 
-    public static MModelInstance convert(ModelInstanceDescriptor descriptor, Array<MModel> models) {
-        // find model
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                     Game Object
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models) {
+        final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
+
+        final float[] pos = descriptor.getPosition();
+        final float[] rot = descriptor.getRotation();
+        final float[] scl = descriptor.getScale();
+
+        go.transform.translate(pos[0], pos[1], pos[2]);
+        go.transform.rotate(rot[0], rot[1], rot[2], 0);
+        go.transform.scl(scl[0], scl[0], scl[0]);
+
+        // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        // convert components
+        if(descriptor.getModelComponent() != null) {
+            go.addComponent(convert(descriptor.getModelComponent(), go, models));
+        }
+
+        // recursively convert children
+        if(descriptor.getChilds() != null) {
+            for (GameObjectDescriptor c : descriptor.getChilds()) {
+                go.addChild(convert(c, sceneGraph, models));
+            }
+        }
+
+        return go;
+    }
+
+    public static GameObjectDescriptor convert(GameObject go) {
+        GameObjectDescriptor descriptor = new GameObjectDescriptor();
+        descriptor.setName(go.getName());
+        descriptor.setId(go.getId());
+
+        // translation
+        go.transform.getTranslation(tempV3);
+        descriptor.getPosition()[0] = tempV3.x;
+        descriptor.getPosition()[1] = tempV3.y;
+        descriptor.getPosition()[2] = tempV3.z;
+
+        // rotation
+        go.transform.getRotation(tempQuat);
+        descriptor.getRotation()[0] = tempQuat.x;
+        descriptor.getRotation()[1] = tempQuat.y;
+        descriptor.getRotation()[2] = tempQuat.z;
+
+        // scaling
+        go.transform.getScale(tempV3);
+        descriptor.getScale()[0] = tempV3.x;
+        descriptor.getScale()[1] = tempV3.y;
+        descriptor.getScale()[2] = tempV3.z;
+
+        // convert components
+        for(Component c : go.getComponents()) {
+            if(c.getType() == Component.Type.MODEL) {
+                descriptor.setModelComponent(convert((ModelComponent) c));
+            }
+        }
+
+        // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        // recursively convert children
+        if(go.getChilds() != null) {
+            for(GameObject c : go.getChilds()) {
+                descriptor.getChilds().add(convert(c));
+            }
+        }
+
+        return descriptor;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                     ModelComponent
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<MModel> models) {
         MModel model = null;
         for(MModel m : models) {
             if(descriptor.getModelID() == m.id) {
@@ -79,43 +165,21 @@ public class DescriptorConverter {
             return null;
         }
 
-        MModelInstance mModelInstance = new MModelInstance(model);
-        float[] pos = descriptor.getPosition();
-        float[] rot = descriptor.getRotation();
-        float[] scl = descriptor.getScale();
+        MModelInstance modelInstance = new MModelInstance(model);
 
-        mModelInstance.kryoTransform.translate(pos[0], pos[1], pos[2]);
-        mModelInstance.kryoTransform.rotate(rot[0], rot[1], rot[2], 0);
-        mModelInstance.kryoTransform.scl(scl[0], scl[0], scl[0]);
-        return mModelInstance;
+        ModelComponent component = new ModelComponent(go);
+        component.setModel(modelInstance);
+
+        return component;
     }
 
-    public static ModelInstanceDescriptor convert(MModelInstance modelInstance) {
-        Vector3 vec3 = new Vector3();
-        Quaternion quat = new Quaternion();
+    public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
+        ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
+        descriptor.setModelID(modelComponent.getModel().getModelId());
 
-        ModelInstanceDescriptor descriptor = new ModelInstanceDescriptor();
-        descriptor.setModelID(modelInstance.getModelId());
-
-        // translation
-        modelInstance.modelInstance.transform.getTranslation(vec3);
-        descriptor.getPosition()[0] = vec3.x;
-        descriptor.getPosition()[1] = vec3.y;
-        descriptor.getPosition()[2] = vec3.z;
-
-        // rotation
-        modelInstance.modelInstance.transform.getRotation(quat);
-        descriptor.getRotation()[0] = quat.x;
-        descriptor.getRotation()[1] = quat.y;
-        descriptor.getRotation()[2] = quat.z;
-
-        // scaling
-        modelInstance.modelInstance.transform.getScale(vec3);
-        descriptor.getScale()[0] = vec3.x;
-        descriptor.getScale()[1] = vec3.y;
-        descriptor.getScale()[2] = vec3.z;
         return descriptor;
     }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                               Terrain & TerrainInstance
@@ -235,13 +299,12 @@ public class DescriptorConverter {
         descriptor.setName(scene.getName());
         descriptor.setId(scene.getId());
 
+        // scene graph
+        descriptor.setSceneGraphRoot(convert(scene.sceneGraph.getRoot()));
+
         // fog
         descriptor.setFog(convert(scene.environment.getFog()));
 
-        // entities
-        for(MModelInstance entity : scene.entities) {
-            descriptor.getEntities().add(convert(entity));
-        }
 
         // terrains
         for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
@@ -274,10 +337,9 @@ public class DescriptorConverter {
             scene.terrainGroup.add(convert(terrainDescriptor, terrains));
         }
 
-        // entities
-        for(ModelInstanceDescriptor descriptor : sceneDescriptor.getEntities()) {
-            scene.entities.add(convert(descriptor, models));
-        }
+        // scene graph
+        scene.sceneGraph = new SceneGraph(scene);
+        scene.sceneGraph.setRoot(convert(sceneDescriptor.getSceneGraphRoot(), scene.sceneGraph, models));
 
         // camera
         scene.cam.position.x = sceneDescriptor.getCamPosX();

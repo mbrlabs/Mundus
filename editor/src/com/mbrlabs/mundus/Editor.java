@@ -27,8 +27,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
-import com.kotcrab.vis.ui.widget.MenuItem;
-import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.nav.FpsNavigation;
 import com.mbrlabs.mundus.core.HomeManager;
@@ -39,7 +37,6 @@ import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
@@ -130,16 +127,12 @@ public class Editor implements ApplicationListener {
         }
 
 
-        // render model instances
-        batch.begin(projectContext.currScene.cam);
-        batch.render(axesInstance);
-        for(MModelInstance mModelInstance : projectContext.currScene.entities) {
-           batch.render(mModelInstance.modelInstance,
-                   projectContext.currScene.environment, shaders.entityShader);
-        }
-        batch.render(Mundus.testInstances,
-                projectContext.currScene.environment, shaders.entityShader);
-        batch.end();
+//        // render model instances
+//        batch.begin(projectContext.currScene.cam);
+//        batch.render(axesInstance);
+//        batch.render(Mundus.testInstances,
+//                projectContext.currScene.environment, shaders.entityShader);
+//        batch.end();
 
         // TODO ======================================================================================
 

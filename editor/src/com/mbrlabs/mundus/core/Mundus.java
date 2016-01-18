@@ -102,7 +102,7 @@ public class Mundus {
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
-        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager);
+        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager, modelBatch, shaders);
         importManager = new ImportManager(homeManager);
 
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
