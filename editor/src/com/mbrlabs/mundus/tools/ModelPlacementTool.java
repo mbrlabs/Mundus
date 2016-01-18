@@ -22,13 +22,16 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.SceneGraphModified;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.InvalidComponentException;
 import com.mbrlabs.mundus.scene3d.ModelComponent;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -94,22 +97,26 @@ public class ModelPlacementTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if(curEntity != null && button == Input.Buttons.LEFT) {
+            long id = projectContext.obtainUUID();
             GameObject selected = projectContext.currScene.sceneGraph.getSelected();
 
-            long id = projectContext.obtainUUID();
-
             GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, id);
-            modelGo.transform = curEntity.modelInstance.transform;
-            ModelComponent modelComponent = new ModelComponent(modelGo);
-            modelComponent.setShader(shader);
-            modelComponent.setModel(curEntity);
-            modelGo.addComponent(modelComponent);
-
-
             if(selected == null) {
                 projectContext.currScene.sceneGraph.getRoot().addChild(modelGo);
             } else {
                 selected.addChild(modelGo);
+            }
+
+            modelGo.transform = curEntity.modelInstance.transform;
+            ModelComponent modelComponent = new ModelComponent(modelGo);
+            modelComponent.setShader(shader);
+            modelComponent.setModel(curEntity);
+
+            try {
+                modelGo.addComponent(modelComponent);
+            } catch (InvalidComponentException e) {
+                DialogUtils.showErrorDialog(Ui.getInstance(), e.getMessage());
+                return false;
             }
 
             Mundus.postEvent(new SceneGraphModified());

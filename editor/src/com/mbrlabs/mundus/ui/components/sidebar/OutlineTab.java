@@ -24,16 +24,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.events.SceneGraphModified;
 import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.InvalidComponentException;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.scene3d.TerrainComponent;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -193,7 +196,8 @@ public class OutlineTab extends Tab {
      */
     private class RightClickMenu extends PopupMenu {
 
-        private MenuItem add;
+        private MenuItem addEmpty;
+        private MenuItem addTerrain;
         private MenuItem rename;
         private MenuItem duplicate;
         private MenuItem delete;
@@ -204,15 +208,17 @@ public class OutlineTab extends Tab {
         public RightClickMenu() {
             super();
 
-            add = new MenuItem("Add Empty");
+            addEmpty = new MenuItem("Add Empty");
+            addTerrain = new MenuItem("Add terrain");
             rename = new MenuItem("Rename");
             duplicate = new MenuItem("Duplicate");
             delete = new MenuItem("Delete");
 
-            add.addListener(new ClickListener() {
+            // add empty
+            addEmpty.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(selectedGO != null) {
+                    if (selectedGO != null) {
                         long id = projectContext.obtainUUID();
                         selectedGO.addChild(new GameObject(selectedGO.sceneGraph, GameObject.DEFAULT_NAME, id));
                         Mundus.postEvent(new SceneGraphModified());
@@ -220,6 +226,17 @@ public class OutlineTab extends Tab {
                 }
             });
 
+            // add terrain
+            addTerrain.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if(selectedGO.getParent() != null) {
+                        DialogUtils.showErrorDialog(Ui.getInstance(), "Terrains must be direct children of the root game object.");
+                    }
+                }
+            });
+
+            // delete game object
             delete.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -232,7 +249,8 @@ public class OutlineTab extends Tab {
                 }
             });
 
-            addItem(add);
+            addItem(addEmpty);
+            addItem(addTerrain);
             addItem(rename);
             addItem(duplicate);
             addItem(delete);

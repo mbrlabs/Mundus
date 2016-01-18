@@ -43,7 +43,6 @@ public class AddTerrainDialog extends BaseDialog {
 
     // UI elements
     private VisTextField name = new VisTextField("Name");
-   // private MinimapWidget minimap;
 
     private VisTextField vertexResolution = new VisTextField("180");
 
@@ -73,8 +72,6 @@ public class AddTerrainDialog extends BaseDialog {
         //root.debugAll();
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
-
-       // minimap = new MinimapWidget(projectContext.terrains);
 
         // left table
         VisTable leftTable = new VisTable();
@@ -140,20 +137,6 @@ public class AddTerrainDialog extends BaseDialog {
 
             }
         });
-
-//        minimapZoomIn.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                minimap.zoom(-0.03f);
-//            }
-//        });
-//
-//        minimapZoomOut.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                minimap.zoom(0.03f);
-//            }
-//        });
 
     }
 

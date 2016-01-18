@@ -92,7 +92,7 @@ public class DescriptorConverter {
 
         // convert components
         if(descriptor.getModelComponent() != null) {
-            go.addComponent(convert(descriptor.getModelComponent(), go, models));
+            go.getComponents().add(convert(descriptor.getModelComponent(), go, models));
         }
 
         // recursively convert children
