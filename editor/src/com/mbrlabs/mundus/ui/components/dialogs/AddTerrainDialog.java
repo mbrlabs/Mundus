@@ -158,7 +158,7 @@ public class AddTerrainDialog extends BaseDialog {
     }
 
     private Terrain generateTerrain(int terrainWidth, int terrainDepth, int res) {
-        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
+        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/chess.png"));
         Terrain terrain = new Terrain(res);
         terrain.terrainWidth = terrainWidth;
         terrain.terrainDepth = terrainDepth;

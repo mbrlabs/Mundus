@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.components.sidebar;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -99,7 +100,7 @@ public class OutlineTab extends Tab {
                 if (node == null) return;
 
                 GameObject go = ((TreeNode) node.getActor()).go;
-                rightClickMenu.show(go, x, y);
+                rightClickMenu.show(go, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
             }
 
             @Override

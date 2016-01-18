@@ -127,12 +127,12 @@ public class Editor implements ApplicationListener {
         }
 
 
-//        // render model instances
-//        batch.begin(projectContext.currScene.cam);
-//        batch.render(axesInstance);
+        // render model instances
+        batch.begin(projectContext.currScene.cam);
+        batch.render(axesInstance);
 //        batch.render(Mundus.testInstances,
 //                projectContext.currScene.environment, shaders.entityShader);
-//        batch.end();
+        batch.end();
 
         // TODO ======================================================================================
 
