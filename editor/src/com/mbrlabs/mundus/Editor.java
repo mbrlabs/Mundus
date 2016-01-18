@@ -56,7 +56,6 @@ public class Editor implements ApplicationListener {
     private Ui ui;
     private Compass compass;
     private FreeCamController camController;
-    private FpsNavigation fpsNavigation;
 
     private ModelBatch batch;
 
@@ -99,7 +98,6 @@ public class Editor implements ApplicationListener {
         //createTestModels();
 
         camController = new FreeCamController(projectContext.currScene.cam);
-        fpsNavigation = new FpsNavigation(projectContext.currScene.cam, projectContext.currScene.terrainGroup);
         inputManager.addProcessor(camController);
     }
 
@@ -142,13 +140,13 @@ public class Editor implements ApplicationListener {
         // TODO ======================================================================================
 
         // render terrains
-        shaders.terrainShader.begin(projectContext.currScene.cam, renderContext);
-        for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
-            terrain.terrain.renderable.environment = projectContext.currScene.environment;
-            terrain.terrain.renderable.worldTransform.set(terrain.transform);
-            shaders.terrainShader.render(terrain.terrain.renderable);
-        }
-        shaders.terrainShader.end();
+//        shaders.terrainShader.begin(projectContext.currScene.cam, renderContext);
+//        for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
+//            terrain.terrain.renderable.environment = projectContext.currScene.environment;
+//            terrain.terrain.renderable.worldTransform.set(terrain.transform);
+//            shaders.terrainShader.render(terrain.terrain.renderable);
+//        }
+//        shaders.terrainShader.end();
 
         toolManager.render();
         compass.render(batch);
@@ -168,15 +166,15 @@ public class Editor implements ApplicationListener {
     @Deprecated
     private void createTestModels() {
         // boxes to test terrain height
-        if(projectContext.currScene.terrainGroup.size() > 0) {
-            float boxSize = 0.5f;
-            Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
-                    new Material(ColorAttribute.createDiffuse(Color.RED)),
-                    VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-            Mundus.testModels.add(boxModel);
-            Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-                    boxModel, projectContext.currScene.terrainGroup.first()));
-        }
+//        if(projectContext.currScene.terrainGroup.size() > 0) {
+//            float boxSize = 0.5f;
+//            Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
+//                    new Material(ColorAttribute.createDiffuse(Color.RED)),
+//                    VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+//            Mundus.testModels.add(boxModel);
+//            Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
+//                    boxModel, projectContext.currScene.terrainGroup.first()));
+//        }
     }
 
     private void createDefaultProject() {

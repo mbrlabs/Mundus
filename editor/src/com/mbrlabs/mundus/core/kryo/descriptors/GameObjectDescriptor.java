@@ -48,6 +48,8 @@ public class GameObjectDescriptor {
 
     @Tag(7)
     private ModelComponentDescriptor modelComponent;
+    @Tag(8)
+    private TerrainComponentDescriptor terrainComponent;
 
     public GameObjectDescriptor() {
         childs = new ArrayList<>();
@@ -116,6 +118,14 @@ public class GameObjectDescriptor {
 
     public void setModelComponent(ModelComponentDescriptor modelComponent) {
         this.modelComponent = modelComponent;
+    }
+
+    public TerrainComponentDescriptor getTerrainComponent() {
+        return terrainComponent;
+    }
+
+    public void setTerrainComponent(TerrainComponentDescriptor terrainComponent) {
+        this.terrainComponent = terrainComponent;
     }
 
 }

@@ -71,18 +71,18 @@ public class TerrainMenu extends Menu {
         });
 
         // load heightmap
-        loadHeightmap.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("asdfadf");
-                // TODO dialog for selecting terrain + heightmap
-                if(projectContext.currScene.terrainGroup.size() > 0) {
-                    Terrain terrain = projectContext.currScene.terrainGroup.first().terrain;
-                    terrain.loadHeightMap(new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png")), 200);
-                    terrain.update();
-                }
-            }
-        });
+//        loadHeightmap.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                System.out.println("asdfadf");
+//                // TODO dialog for selecting terrain + heightmap
+//                if(projectContext.currScene.terrainGroup.size() > 0) {
+//                    Terrain terrain = projectContext.currScene.terrainGroup.first().terrain;
+//                    terrain.loadHeightMap(new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png")), 200);
+//                    terrain.update();
+//                }
+//            }
+//        });
 
 
     }

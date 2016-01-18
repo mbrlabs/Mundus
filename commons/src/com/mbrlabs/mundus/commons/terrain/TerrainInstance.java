@@ -16,25 +16,26 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
+import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 
 /**
  * @author Marcus Brummer
  * @version 23-12-2015
  */
-public class TerrainInstance {
+public class TerrainInstance implements RenderableProvider {
 
     public Matrix4 transform;
     public Terrain terrain;
 
     private Vector3 position;
-
-    public long id;
-    public String name;
 
     // used for collision detection
     private final Vector3 c00 = new Vector3();
@@ -116,4 +117,11 @@ public class TerrainInstance {
         return position;
     }
 
+    @Override
+    public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
+        Renderable renderable = pool.obtain();
+        terrain.renderable.worldTransform.set(transform);
+        renderable.set(terrain.renderable);
+        renderables.add(renderable);
+    }
 }

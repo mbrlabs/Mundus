@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.scene3d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Scene;
 
 import java.util.Iterator;
@@ -83,6 +84,23 @@ public class SceneGraph implements Iterable<GameObject> {
     public void setSelected(GameObject selected) {
         this.selected = selected;
     }
+
+    public Array<GameObject> getTerrainGOs(Array<GameObject> out) {
+        out.clear();
+        if(root.getChilds() != null) {
+            for(GameObject c : root.getChilds()) {
+                if(c.getComponentByType(Component.Type.TERRAIN) != null) {
+                    out.add(c);
+                }
+            }
+        }
+
+        return out;
+    }
+
+    // TODO ================================================================
+    // TODO IMPLEMENT NON RECURSIVE ITERATOR
+    // TODO ================================================================
 
     @Override
     @Deprecated

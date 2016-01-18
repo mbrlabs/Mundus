@@ -121,7 +121,6 @@ public class Exporter {
 
     public static TerrainInstanceDTO convert(TerrainInstance terrain) {
         TerrainInstanceDTO dto = new TerrainInstanceDTO();
-        dto.setId(terrain.id);
         dto.setTerrainID(terrain.terrain.id);
         dto.getPosition()[0] = terrain.getPosition().x;
         dto.getPosition()[1] = terrain.getPosition().y;
@@ -157,9 +156,9 @@ public class Exporter {
 //        }
 
         // terrains
-        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
-            dto.getTerrains().add(convert(terrain));
-        }
+//        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
+//            dto.getTerrains().add(convert(terrain));
+//        }
 
         return dto;
     }

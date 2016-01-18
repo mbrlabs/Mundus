@@ -87,6 +87,16 @@ public class GameObject {
         this.tags.add(tag);
     }
 
+    public Component getComponentByType(Component.Type type) {
+        for(Component c : components) {
+            if(c.getType() == type) {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
     public Array<Component> getComponents() {
         return this.components;
     }

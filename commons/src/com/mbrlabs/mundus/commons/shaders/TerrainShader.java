@@ -74,7 +74,7 @@ public class TerrainShader extends BaseShader {
 
     @Override
     public boolean canRender(Renderable instance) {
-        return instance.material == null;
+        return true;
     }
 
     @Override

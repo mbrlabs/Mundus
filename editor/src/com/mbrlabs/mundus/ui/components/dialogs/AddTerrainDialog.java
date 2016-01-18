@@ -30,6 +30,10 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.SceneGraph;
+import com.mbrlabs.mundus.scene3d.TerrainComponent;
+import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
@@ -58,6 +62,8 @@ public class AddTerrainDialog extends BaseDialog {
 
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private Shaders shaders;
 
     public AddTerrainDialog() {
         super("Add Terrain");
@@ -128,8 +134,22 @@ public class AddTerrainDialog extends BaseDialog {
                     // create Instance
                     TerrainInstance terrainInstance = new TerrainInstance(terrain);
                     terrainInstance.transform.setTranslation(posX, 0, posZ);
-                    terrainInstance.id = projectContext.obtainUUID();
                     projectContext.currScene.terrainGroup.add(terrainInstance);
+
+                    SceneGraph sceneGraph = projectContext.currScene.sceneGraph;
+
+                    GameObject terrainGO = new GameObject(sceneGraph);
+                    terrainGO.setId(projectContext.obtainUUID());
+                    terrainGO.setName("Terrain");
+                    terrainGO.transform.translate(posX, 0, posZ);
+                    terrainGO.setParent(sceneGraph.getRoot());
+                    sceneGraph.getRoot().addChild(terrainGO);
+
+                    TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
+                    terrainComponent.setTerrainInstance(terrainInstance);
+                    terrainGO.getComponents().add(terrainComponent);
+                    terrainComponent.setShader(shaders.terrainShader);
+
 
                 } catch (NumberFormatException nfe) {
                     Log.error(TAG, nfe.getMessage());

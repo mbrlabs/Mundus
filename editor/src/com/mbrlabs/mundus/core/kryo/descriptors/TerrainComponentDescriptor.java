@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,36 +21,12 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
  * @author Marcus Brummer
- * @version 23-12-2015
+ * @version 18-01-2016
  */
-public class TerrainInstanceDescriptor {
+public class TerrainComponentDescriptor {
 
     @Tag(0)
-    private long id;
-    @Tag(1)
-    private String name;
-    @Tag(2)
     private long terrainID;
-    @Tag(3)
-    private float posX;
-    @Tag(4)
-    private float posZ;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public long getTerrainID() {
         return terrainID;
@@ -58,22 +34,6 @@ public class TerrainInstanceDescriptor {
 
     public void setTerrainID(long terrainID) {
         this.terrainID = terrainID;
-    }
-
-    public float getPosX() {
-        return posX;
-    }
-
-    public void setPosX(float posX) {
-        this.posX = posX;
-    }
-
-    public float getPosZ() {
-        return posZ;
-    }
-
-    public void setPosZ(float posZ) {
-        this.posZ = posZ;
     }
 
 }

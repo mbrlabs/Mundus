@@ -35,24 +35,21 @@ public class SceneDescriptor {
     @Tag(2)
     private GameObjectDescriptor sceneGraphRoot;
     @Tag(3)
-    private List<TerrainInstanceDescriptor> terrains;
-    @Tag(4)
     private FogDescriptor fog;
-    @Tag(5)
+    @Tag(4)
     private float camPosX;
-    @Tag(6)
+    @Tag(5)
     private float camPosY;
-    @Tag(7)
+    @Tag(6)
     private float camPosZ;
-    @Tag(8)
+    @Tag(7)
     private float camDirX = 0;
-    @Tag(9)
+    @Tag(8)
     private float camDirY = 0;
-    @Tag(10)
+    @Tag(9)
     private float camDirZ = 0;
 
     public SceneDescriptor() {
-        terrains = new ArrayList<>();
     }
 
     public long getId() {
@@ -69,14 +66,6 @@ public class SceneDescriptor {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<TerrainInstanceDescriptor> getTerrains() {
-        return terrains;
-    }
-
-    public void setTerrains(List<TerrainInstanceDescriptor> terrains) {
-        this.terrains = terrains;
     }
 
     public float getCamPosX() {

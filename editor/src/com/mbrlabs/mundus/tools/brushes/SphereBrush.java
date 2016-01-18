@@ -25,8 +25,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.scene3d.Component;
 import com.mbrlabs.mundus.tools.Tool;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -56,6 +58,7 @@ public class SphereBrush extends Tool {
     protected Vector3 tVec0 = new Vector3();
     protected Vector3 tVec1 = new Vector3();
     protected Vector3 tVec2 = new Vector3();
+
 
     public SphereBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);

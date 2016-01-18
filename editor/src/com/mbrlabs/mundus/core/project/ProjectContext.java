@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.core.project;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.model.MModel;

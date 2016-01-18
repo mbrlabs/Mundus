@@ -32,10 +32,7 @@ import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.model.MTexture;
-import com.mbrlabs.mundus.scene3d.Component;
-import com.mbrlabs.mundus.scene3d.GameObject;
-import com.mbrlabs.mundus.scene3d.ModelComponent;
-import com.mbrlabs.mundus.scene3d.SceneGraph;
+import com.mbrlabs.mundus.scene3d.*;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -77,7 +74,7 @@ public class DescriptorConverter {
     //                                     Game Object
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models) {
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models, Array<Terrain> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
 
         final float[] pos = descriptor.getPosition();
@@ -93,12 +90,14 @@ public class DescriptorConverter {
         // convert components
         if(descriptor.getModelComponent() != null) {
             go.getComponents().add(convert(descriptor.getModelComponent(), go, models));
+        } else if(descriptor.getTerrainComponent() != null) {
+            go.getComponents().add(convert(descriptor.getTerrainComponent(), go, terrains));
         }
 
         // recursively convert children
         if(descriptor.getChilds() != null) {
             for (GameObjectDescriptor c : descriptor.getChilds()) {
-                go.addChild(convert(c, sceneGraph, models));
+                go.addChild(convert(c, sceneGraph, models, terrains));
             }
         }
 
@@ -132,6 +131,8 @@ public class DescriptorConverter {
         for(Component c : go.getComponents()) {
             if(c.getType() == Component.Type.MODEL) {
                 descriptor.setModelComponent(convert((ModelComponent) c));
+            } else if(c.getType() == Component.Type.TERRAIN) {
+                descriptor.setTerrainComponent(convert((TerrainComponent) c));
             }
         }
 
@@ -180,6 +181,41 @@ public class DescriptorConverter {
         return descriptor;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                     TerrainComponent
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go, Array<Terrain> terrains) {
+        // find terrain
+        Terrain terrain = null;
+        for(Terrain t : terrains) {
+            if(descriptor.getTerrainID() == t.id) {
+                terrain = t;
+                break;
+            }
+        }
+
+        if(terrain == null) {
+            Log.fatal("Terrain for TerrainInstance not found");
+            return null;
+        }
+
+        final TerrainInstance terrainInstance = new TerrainInstance(terrain);
+        terrainInstance.transform = go.transform;
+
+        TerrainComponent terrainComponent = new TerrainComponent(go);
+        terrainComponent.setTerrainInstance(terrainInstance);
+
+        return terrainComponent;
+    }
+
+    public static TerrainComponentDescriptor convert(TerrainComponent terrainComponent) {
+        TerrainComponentDescriptor descriptor = new TerrainComponentDescriptor();
+        descriptor.setTerrainID(terrainComponent.getTerrainInstance().terrain.id);
+
+        return descriptor;
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                               Terrain & TerrainInstance
@@ -205,41 +241,6 @@ public class DescriptorConverter {
         terrain.name = terrainDescriptor.getName();
 
         return terrain;
-    }
-
-    public static TerrainInstanceDescriptor convert(TerrainInstance terrain) {
-        TerrainInstanceDescriptor descriptor = new TerrainInstanceDescriptor();
-        descriptor.setId(terrain.id);
-        descriptor.setName(terrain.name);
-        descriptor.setTerrainID(terrain.terrain.id);
-        Vector3 pos = terrain.getPosition();
-        descriptor.setPosX(pos.x);
-        descriptor.setPosZ(pos.z);
-
-        return descriptor;
-    }
-
-    public static TerrainInstance convert(TerrainInstanceDescriptor terrainDescriptor, Array<Terrain> terrains) {
-        // find terrain
-        Terrain terrain = null;
-        for(Terrain t : terrains) {
-            if(terrainDescriptor.getTerrainID() == t.id) {
-                terrain = t;
-                break;
-            }
-        }
-
-        if(terrain == null) {
-            Log.fatal("Terrain for TerrainInstance not found");
-            return null;
-        }
-
-        final TerrainInstance terrainInstance = new TerrainInstance(terrain);
-        terrainInstance.transform.setTranslation(terrainDescriptor.getPosX(), 0, terrainDescriptor.getPosZ());
-        terrainInstance.name = terrainDescriptor.getName();
-        terrainInstance.id = terrainDescriptor.getId();
-
-        return terrainInstance;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,9 +308,9 @@ public class DescriptorConverter {
 
 
         // terrains
-        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
-            descriptor.getTerrains().add(convert(terrain));
-        }
+//        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
+//            descriptor.getTerrains().add(convert(terrain));
+//        }
 
         // camera
         descriptor.setCamPosX(scene.cam.position.x);
@@ -333,13 +334,13 @@ public class DescriptorConverter {
         scene.environment.setFog(convert(sceneDescriptor.getFog()));
 
         // terrains
-        for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
-            scene.terrainGroup.add(convert(terrainDescriptor, terrains));
-        }
+//        for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
+//            scene.terrainGroup.add(convert(terrainDescriptor, terrains));
+//        }
 
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
-        scene.sceneGraph.setRoot(convert(sceneDescriptor.getSceneGraphRoot(), scene.sceneGraph, models));
+        scene.sceneGraph.setRoot(convert(sceneDescriptor.getSceneGraphRoot(), scene.sceneGraph, models, terrains));
 
         // camera
         scene.cam.position.x = sceneDescriptor.getCamPosX();
