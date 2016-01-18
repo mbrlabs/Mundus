@@ -18,16 +18,11 @@ package com.mbrlabs.mundus.ui.components.sidebar;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Selection;
+import com.badlogic.gdx.scenes.scene2d.utils.*;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
@@ -69,9 +64,8 @@ public class OutlineTab extends Tab {
         content.align(Align.left | Align.top);
 
         tree = new VisTree();
-        tree.setTouchable(Touchable.enabled);
         scrollPane = new ScrollPane(tree);
-        scrollPane.setSmoothScrolling(true);
+        scrollPane.setFlickScroll(false);
 
         content.add(scrollPane).fill().expand();
 
@@ -89,6 +83,19 @@ public class OutlineTab extends Tab {
     }
 
     private void setupListeners() {
+
+        scrollPane.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Ui.getInstance().setScrollFocus(scrollPane);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                Ui.getInstance().setScrollFocus(null);
+            }
+
+        });
 
         // right click menu listener
         tree.addListener(new InputListener() {
@@ -188,15 +195,18 @@ public class OutlineTab extends Tab {
 
         private MenuItem add;
         private MenuItem rename;
+        private MenuItem duplicate;
         private MenuItem delete;
+
 
         private GameObject selectedGO;
 
         public RightClickMenu() {
             super();
 
-            add = new MenuItem("Add empty Game Object");
+            add = new MenuItem("Add Empty");
             rename = new MenuItem("Rename");
+            duplicate = new MenuItem("Duplicate");
             delete = new MenuItem("Delete");
 
             add.addListener(new ClickListener() {
@@ -224,6 +234,7 @@ public class OutlineTab extends Tab {
 
             addItem(add);
             addItem(rename);
+            addItem(duplicate);
             addItem(delete);
         }
 
