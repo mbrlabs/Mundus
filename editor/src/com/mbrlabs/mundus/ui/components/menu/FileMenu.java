@@ -92,6 +92,13 @@ public class FileMenu extends Menu {
                 Ui.getInstance().showDialog(Ui.getInstance().getNewProjectDialog());
             }
         });
+
+        openProject.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui.getInstance().showDialog(Ui.getInstance().getOpenProjectDialog());
+            }
+        });
     }
 
     public MenuItem getNewProject() {

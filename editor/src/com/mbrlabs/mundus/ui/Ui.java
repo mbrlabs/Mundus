@@ -27,7 +27,6 @@ import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.dialogs.importer.ImportDialog;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
-import com.mbrlabs.mundus.ui.handler.menu.*;
 
 /**
  * @author Marcus Brummer
@@ -108,15 +107,6 @@ public class Ui extends MyStage {
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
-
-        setHandlers();
-    }
-
-    private void setHandlers() {
-        // Menu
-        menuBar.getFileMenu().getNewProject().addListener(new MenuNewProjectHandler());
-        menuBar.getWindowMenu().getSettings().addListener(new MenuSettingsHandler());
-        menuBar.getFileMenu().getOpenProject().addListener(new OpenProjectHandler());
     }
 
     public void showDialog(VisDialog dialog) {

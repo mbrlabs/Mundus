@@ -17,8 +17,12 @@
 package com.mbrlabs.mundus.ui.components.menu;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
+import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.components.dialogs.SettingsDialog;
 
 /**
  * @author Marcus Brummer
@@ -35,10 +39,21 @@ public class WindowMenu extends Menu {
         settings.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.ALT_LEFT, Input.Keys.S);
 
         addItem(settings);
+
+        settings.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                final Ui ui = Ui.getInstance();
+                SettingsDialog dialog = ui.getSettingsDialog();
+                dialog.reloadSettings();
+                ui.showDialog(dialog);
+            }
+        });
     }
 
     public MenuItem getSettings() {
         return settings;
     }
+
 
 }
