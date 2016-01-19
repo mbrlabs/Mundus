@@ -62,8 +62,8 @@ public class Compass implements Disposable {
         compassModel =  modelBuilder.end();
         compassInstance = new ModelInstance(compassModel);
 
-        // translate to top right corner
-        compassInstance.transform.translate(0.95f,0.8f,0);
+        // translate to top left corner
+        compassInstance.transform.translate(-0.64f,0.78f,0);
     }
 
     public void setWorldCam(PerspectiveCamera cam) {
