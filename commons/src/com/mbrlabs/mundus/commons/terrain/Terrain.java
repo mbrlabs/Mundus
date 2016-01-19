@@ -209,8 +209,9 @@ public class Terrain implements RenderableProvider {
 
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
+        renderable.worldTransform.set(transform);
+
         Renderable pooledRenderable = pool.obtain();
-        pooledRenderable.worldTransform.set(transform);
         pooledRenderable.set(renderable);
         renderables.add(pooledRenderable);
     }

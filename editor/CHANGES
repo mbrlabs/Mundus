@@ -1,25 +1,34 @@
+[0.0.5]
+- Added a basic component based 3D scene graph
+- Changed overall architecture based on the scene graph
+- Added scene graph nodes (game objects) to the outline tab as tree structure
+- Added a ModelComponent
+- Added a TerrainComponent
+- Added creation/deletion of game objects
+- Fixed rendering of terrain texture tiles
+
 [0.0.4] ~ 10/01/2016
-- Font Awesome as icon font
-- Implemented adding & switching between scenes
+- Added Font Awesome as icon font
+- Added adding & switching between scenes
 - Improved Translate tool
-- New Terrain brush: Flatten
-- Customizable Fog
-- A basic Skybox (editable, but not savable/exportable)
+- Added new terrain brush: Flatten
+- Added Customizable Fog
+- Added a basic skybox (editable, but not savable/exportable)
 
 [0.0.3] ~ 02/01/2016
-- Model/asset selection moved to sidebar
-- Overall improved UI/UX
-- Selection tool
-- Translate tool
-- Project export to JSON + assets (loadable by runtime)
+- Moved Model/asset selection to sidebar
+- Improved overall UI/UX
+- Added Selection tool
+- Added Translate tool
+- Added project export to JSON + assets (loadable by runtime)
 - Improved error handling
 
 [0.0.2] ~ 25/12/2015
-- Generic Tool system
-- Support for scenes in one project
-- Placement of models inside the world
-- LibGDX updated to version 1.7.2
-- Terrain brushes can be applied to all terrains in one scene
+- Added Generic Tool system
+- Added support for scenes in one project
+- Added support for placement of models inside the world
+- Added terrain brush support for multiple terrains
+- Updated LibGDX to version 1.7.2
 
 [0.0.1] 22/11/2015
 - First version ever pushed to Github

@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.mbrlabs.mundus.commons.env.Fog;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
