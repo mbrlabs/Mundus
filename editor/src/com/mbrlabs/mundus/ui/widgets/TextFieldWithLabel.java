@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextField;
 
@@ -26,14 +27,21 @@ import com.kotcrab.vis.ui.widget.VisTextField;
 public class TextFieldWithLabel extends VisTable {
 
     private int width;
-    private VisTextField textField;
 
-    public TextFieldWithLabel(int width) {
+    private VisTextField textField;
+    private VisLabel label;
+
+    public TextFieldWithLabel(String labelText, int width) {
         super();
         this.width = width;
         textField = new VisTextField();
-
+        label = new VisLabel(labelText);
         setupUI();
+    }
+
+    private void setupUI() {
+        add(label).width(width * 0.2f);
+        add(textField).width(width * 0.8f).row();
     }
 
     public void setEditable(boolean editable) {
@@ -48,9 +56,8 @@ public class TextFieldWithLabel extends VisTable {
         textField.setText(text);
     }
 
-    private void setupUI() {
-        pad(5);
-        add(textField).width(width*0.75f).padRight(5);
+    public void setLabelText(String text) {
+        label.setText(toString());
     }
 
 }

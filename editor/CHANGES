@@ -2,6 +2,7 @@
 - Added a basic component based 3D scene graph
 - Changed overall architecture based on the scene graph
 - Added scene graph nodes (game objects) to the outline tab as tree structure
+- Added a flexible component inspector widget for game objects
 - Added a ModelComponent
 - Added a TerrainComponent
 - Added creation/deletion of game objects

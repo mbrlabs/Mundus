@@ -16,7 +16,8 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
-import com.kotcrab.vis.ui.widget.*;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 
 /**
  * @author Marcus Brummer
@@ -24,9 +25,17 @@ import com.kotcrab.vis.ui.widget.*;
  */
 public class TransformWidget extends BaseInspectorWidget {
 
-    private VisCheckBox active;
-    private VisTextField name;
-    private VisTextField tag;
+    private TextFieldWithLabel posX;
+    private TextFieldWithLabel posY;
+    private TextFieldWithLabel posZ;
+
+    private TextFieldWithLabel rotX;
+    private TextFieldWithLabel rotY;
+    private TextFieldWithLabel rotZ;
+
+    private TextFieldWithLabel scaleX;
+    private TextFieldWithLabel scaleY;
+    private TextFieldWithLabel scaleZ;
 
     public TransformWidget() {
         super("Transform");
@@ -36,16 +45,34 @@ public class TransformWidget extends BaseInspectorWidget {
     }
 
     private void init() {
-        active = new VisCheckBox("", true);
-        name = new VisTextField("Name");
-        tag = new VisTextField("Untagged");
+        int size = 65;
+        posX = new TextFieldWithLabel("x", size);
+        posY = new TextFieldWithLabel("y", size);
+        posZ = new TextFieldWithLabel("z", size);
+        rotX = new TextFieldWithLabel("x", size);
+        rotY = new TextFieldWithLabel("y", size);
+        rotZ = new TextFieldWithLabel("z", size);
+        scaleX = new TextFieldWithLabel("x", size);
+        scaleY = new TextFieldWithLabel("y", size);
+        scaleZ = new TextFieldWithLabel("z", size);
     }
 
     private void setupUI() {
-        collapsibleContent.add(active).padBottom(4).left().top();
-        collapsibleContent.add(name).padBottom(4).left().top().expand().fill().row();
-        collapsibleContent.add(new VisLabel("Tag: ")).left().top();
-        collapsibleContent.add(tag).top().left().expand().fill().row();
+        int pad = 4;
+        collapsibleContent.add(new VisLabel("Position: ")).padRight(5).padBottom(pad).left();
+        collapsibleContent.add(posX).padBottom(pad).padRight(pad);
+        collapsibleContent.add(posY).padBottom(pad).padRight(pad);
+        collapsibleContent.add(posZ).padBottom(pad).row();
+
+        collapsibleContent.add(new VisLabel("Rotation: ")).padRight(5).padBottom(pad).left();
+        collapsibleContent.add(rotX).padBottom(pad).padRight(pad);
+        collapsibleContent.add(rotY).padBottom(pad).padRight(pad);
+        collapsibleContent.add(rotZ).padBottom(pad).row();
+
+        collapsibleContent.add(new VisLabel("Scale: ")).padRight(10).padBottom(pad).left();
+        collapsibleContent.add(scaleX).padBottom(pad).padRight(pad);
+        collapsibleContent.add(scaleY).padBottom(pad).padRight(pad);
+        collapsibleContent.add(scaleZ).padBottom(pad).row();
     }
 
     private void setupListeners() {
