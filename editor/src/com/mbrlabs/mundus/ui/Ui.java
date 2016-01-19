@@ -84,7 +84,6 @@ public class Ui extends MyStage {
 
         // row 3: sidebar & inspector
         VisTable sidebarAndInspector = new VisTable();
-        sidebarAndInspector.debugAll();
         sidebar = new Sidebar();
         inspector = new Inspector();
         sidebarAndInspector.add(sidebar).width(300).top().left().expand().fill();

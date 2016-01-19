@@ -17,11 +17,44 @@
 package com.mbrlabs.mundus.ui.components.inspector;
 
 
+import com.kotcrab.vis.ui.widget.VisCheckBox;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextField;
 
 /**
  * @author Marcus Brummer
  * @version 19-01-2016
  */
 public class IdentifierWidget extends VisTable {
+
+    private VisCheckBox active;
+    private VisTextField name;
+    private VisTextField tag;
+
+    public IdentifierWidget() {
+        super();
+        init();
+        setupUI();
+        setupListeners();
+    }
+
+    private void init() {
+        active = new VisCheckBox("", true);
+        name = new VisTextField("Name");
+        tag = new VisTextField("Untagged");
+        pad(10);
+    }
+
+    private void setupUI() {
+        add(active).padBottom(4).left().top();
+        add(name).padBottom(4).left().top().expandX().fillX().row();
+        add(new VisLabel("Tag: ")).left().top();
+        add(tag).top().left().expandX().fillX().row();
+    }
+
+    private void setupListeners() {
+
+    }
+
 }

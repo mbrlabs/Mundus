@@ -50,9 +50,7 @@ public class Inspector extends VisTable {
     }
 
     public void init() {
-        setWidth(300);
-        setHeight(500);
-        setBackground("menu-bg");
+        setBackground("default-pane");
         root = new VisTable();
         scrollPane = new ScrollPane(root);
         add(scrollPane).expand().fill();
@@ -61,7 +59,7 @@ public class Inspector extends VisTable {
     public void setupUi() {
         root.add(new VisLabel("Inspector")).expandX().fillX().row();
         root.addSeparator().row();
-        root.add(identifierWidget).row();
+        root.add(identifierWidget).expand().fillX().row();
         root.addSeparator().row();
         root.add(transformWidget).row();
         root.addSeparator().row();
@@ -69,7 +67,7 @@ public class Inspector extends VisTable {
             root.add(cw).row();
             root.addSeparator().row();
         }
-        root.add(addComponentBtn).row();
+        root.add(addComponentBtn).expandX().fillX().pad(10).row();
     }
 
     public void setupListeners() {
