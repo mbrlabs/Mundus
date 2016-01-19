@@ -38,6 +38,7 @@ public class FaTextButton extends VisTextButton {
         style.pressedOffsetY = -1;
         style.down = getStyle().down;
         style.up = getStyle().up;
+
         setStyle(style);
     }
 

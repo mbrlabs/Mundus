@@ -116,6 +116,8 @@ public class Mundus {
                 .addIcon(Fa.ARROWS)
                 .addIcon(Fa.CIRCLE_O)
                 .addIcon(Fa.MINUS)
+                .addIcon(Fa.CARET_DOWN)
+                .addIcon(Fa.CARET_UP)
                 .build();
 
         // input

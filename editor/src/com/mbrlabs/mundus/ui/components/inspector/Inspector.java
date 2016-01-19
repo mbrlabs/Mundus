@@ -60,12 +60,9 @@ public class Inspector extends VisTable {
         root.add(new VisLabel("Inspector")).expandX().fillX().row();
         root.addSeparator().row();
         root.add(identifierWidget).expand().fillX().row();
-        root.addSeparator().row();
-        root.add(transformWidget).row();
-        root.addSeparator().row();
+        root.add(transformWidget).expand().fillX().row();
         for(ComponentWidget cw : componentWidgets) {
             root.add(cw).row();
-            root.addSeparator().row();
         }
         root.add(addComponentBtn).expandX().fillX().pad(10).row();
     }
