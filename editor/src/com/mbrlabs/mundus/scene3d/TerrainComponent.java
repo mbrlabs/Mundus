@@ -17,7 +17,7 @@
 package com.mbrlabs.mundus.scene3d;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
@@ -25,7 +25,7 @@ import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
  */
 public class TerrainComponent extends AbstractComponent {
 
-    private TerrainInstance terrainInstance;
+    private Terrain terrain;
     private Shader shader;
 
     public TerrainComponent(GameObject go) {
@@ -33,12 +33,12 @@ public class TerrainComponent extends AbstractComponent {
         type = Type.TERRAIN;
     }
 
-    public void setTerrainInstance(TerrainInstance terrain) {
-        this.terrainInstance = terrain;
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 
-    public TerrainInstance getTerrainInstance() {
-        return terrainInstance;
+    public Terrain getTerrain() {
+        return terrain;
     }
 
     public Shader getShader() {
@@ -51,7 +51,7 @@ public class TerrainComponent extends AbstractComponent {
 
     @Override
     public void render(float delta) {
-        gameObject.sceneGraph.batch.render(terrainInstance, gameObject.sceneGraph.scene.environment, shader);
+        gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override

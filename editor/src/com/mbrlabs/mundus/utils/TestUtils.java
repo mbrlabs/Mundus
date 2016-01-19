@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ import java.util.Random;
  */
 public class TestUtils {
 
-    public static Array<ModelInstance> createABunchOfModelsOnTheTerrain(int count, Model model, TerrainInstance terrain) {
+    public static Array<ModelInstance> createABunchOfModelsOnTheTerrain(int count, Model model, Terrain terrain) {
         Array<ModelInstance> boxInstances = new Array<>();
         Random rand = new Random();
 
@@ -40,8 +40,8 @@ public class TestUtils {
             ModelInstance mi = new ModelInstance(model);
             terrain.transform.getTranslation(tv3);
             mi.transform.setTranslation(tv3);
-            float x = terrain.terrain.terrainWidth*rand.nextFloat();
-            float z = terrain.terrain.terrainDepth*rand.nextFloat();
+            float x = terrain.terrainWidth * rand.nextFloat();
+            float z = terrain.terrainDepth * rand.nextFloat();
             float y = terrain.getHeightAtWorldCoord(x, z);
             mi.transform.translate(x,  y, z);
             boxInstances.add(mi);

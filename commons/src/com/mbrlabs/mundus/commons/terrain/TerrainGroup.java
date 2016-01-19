@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class TerrainGroup {
 
-    private Array<TerrainInstance> terrains;
+    private Array<Terrain> terrains;
 
     private Vector3 tv3 = new Vector3();
 
@@ -34,11 +34,11 @@ public class TerrainGroup {
         this.terrains = new Array<>();
     }
 
-    public void add(TerrainInstance terrain) {
+    public void add(Terrain terrain) {
         this.terrains.add(terrain);
     }
 
-    public Array<TerrainInstance> getTerrains() {
+    public Array<Terrain> getTerrains() {
         return this.terrains;
     }
 
@@ -46,16 +46,16 @@ public class TerrainGroup {
         return terrains.size;
     }
 
-    public TerrainInstance get(int index) {
+    public Terrain get(int index) {
         return terrains.get(index);
     }
 
-    public TerrainInstance first() {
+    public Terrain first() {
         return get(0);
     }
 
     public Vector3 getRayIntersection(Vector3 out, Ray ray) {
-        for(TerrainInstance terrain : terrains) {
+        for(Terrain terrain : terrains) {
             terrain.getRayIntersection(out, ray);
             if(isPointOnTerrain(terrain, out.x, out.z)) {
                 return out;
@@ -64,8 +64,8 @@ public class TerrainGroup {
         return null;
     }
 
-    public TerrainInstance getTerrain(float x, float z) {
-        for(TerrainInstance terrain : terrains) {
+    public Terrain getTerrain(float x, float z) {
+        for(Terrain terrain : terrains) {
             if(isPointOnTerrain(terrain, x, z)) {
                 return terrain;
             }
@@ -74,10 +74,10 @@ public class TerrainGroup {
         return null;
     }
 
-    public boolean isPointOnTerrain(TerrainInstance terrain, float x, float z) {
+    public boolean isPointOnTerrain(Terrain terrain, float x, float z) {
         tv3 = terrain.getPosition();
-        return x >= tv3.x && x <= tv3.x + terrain.terrain.terrainWidth
-                && z >= tv3.z && z <= tv3.z + terrain.terrain.terrainDepth;
+        return x >= tv3.x && x <= tv3.x + terrain.terrainWidth
+                && z >= tv3.z && z <= tv3.z + terrain.terrainDepth;
     }
 
 

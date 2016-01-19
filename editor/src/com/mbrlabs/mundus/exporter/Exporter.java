@@ -25,12 +25,10 @@ import com.badlogic.gdx.utils.Json;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.exporter.dto.*;
 import com.mbrlabs.mundus.core.Scene;
-import com.mbrlabs.mundus.core.kryo.descriptors.ColorDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -116,16 +114,6 @@ public class Exporter {
         dto.setWidth(terrain.terrainWidth);
         dto.setDepth(terrain.terrainDepth);
         dto.setVertexResolution(terrain.vertexResolution);
-        return dto;
-    }
-
-    public static TerrainInstanceDTO convert(TerrainInstance terrain) {
-        TerrainInstanceDTO dto = new TerrainInstanceDTO();
-        dto.setTerrainID(terrain.terrain.id);
-        dto.getPosition()[0] = terrain.getPosition().x;
-        dto.getPosition()[1] = terrain.getPosition().y;
-        dto.getPosition()[2] = terrain.getPosition().z;
-
         return dto;
     }
 

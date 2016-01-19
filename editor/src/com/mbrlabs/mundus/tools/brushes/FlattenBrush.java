@@ -20,9 +20,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -59,27 +58,27 @@ public class FlattenBrush extends SphereBrush {
         // tVec1 holds sphere transformation
         sphereModelInstance.transform.getTranslation(tVec1);
 
-        TerrainInstance terrainInstance = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
-        if(terrainInstance == null) {
+        Terrain terrain = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
+        if(terrain == null) {
             return;
         }
 
-        final Vector3 terPos = terrainInstance.getPosition();
+        final Vector3 terPos = terrain.getPosition();
 
-        for (int x = 0; x < terrainInstance.terrain.vertexResolution; x++) {
-            for (int z = 0; z <  terrainInstance.terrain.vertexResolution; z++) {
-                terrainInstance.terrain.getVertexPosition(tVec0, x, z);
+        for (int x = 0; x < terrain.vertexResolution; x++) {
+            for (int z = 0; z <  terrain.vertexResolution; z++) {
+                terrain.getVertexPosition(tVec0, x, z);
                 tVec0.x += terPos.x;
                 tVec0.z += terPos.z;
                 float distance = tVec0.dst(tVec1);
 
                 if(distance <= radius) {
-                    int heightIndex = z * terrainInstance.terrain.vertexResolution + x;
-                    terrainInstance.terrain.heightData[heightIndex] *= distance / radius;
+                    int heightIndex = z * terrain.vertexResolution + x;
+                    terrain.heightData[heightIndex] *= distance / radius;
                 }
             }
         }
-        terrainInstance.terrain.update();
+        terrain.update();
     }
 
 

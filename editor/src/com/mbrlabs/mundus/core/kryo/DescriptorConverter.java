@@ -16,10 +16,7 @@
 
 package com.mbrlabs.mundus.core.kryo;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -30,7 +27,6 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.scene3d.*;
 import com.mbrlabs.mundus.utils.Log;
@@ -200,18 +196,16 @@ public class DescriptorConverter {
             return null;
         }
 
-        final TerrainInstance terrainInstance = new TerrainInstance(terrain);
-        terrainInstance.transform = go.transform;
-
+        terrain.transform = go.transform;
         TerrainComponent terrainComponent = new TerrainComponent(go);
-        terrainComponent.setTerrainInstance(terrainInstance);
+        terrainComponent.setTerrain(terrain);
 
         return terrainComponent;
     }
 
     public static TerrainComponentDescriptor convert(TerrainComponent terrainComponent) {
         TerrainComponentDescriptor descriptor = new TerrainComponentDescriptor();
-        descriptor.setTerrainID(terrainComponent.getTerrainInstance().terrain.id);
+        descriptor.setTerrainID(terrainComponent.getTerrain().id);
 
         return descriptor;
     }

@@ -29,7 +29,6 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.events.SceneGraphModified;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
@@ -56,9 +55,6 @@ public class AddTerrainDialog extends BaseDialog {
     private VisTextField positionX = new VisTextField("0");
     private VisTextField positionZ = new VisTextField("0");
 
-    private VisTextButton minimapZoomIn = new VisTextButton("+ zoom");
-    private VisTextButton minimapZoomOut = new VisTextButton("- zoom");
-
     private VisTextButton generateBtn = new VisTextButton("GENERATE TERRAIN");
 
     @Inject
@@ -81,33 +77,22 @@ public class AddTerrainDialog extends BaseDialog {
         add(root);
 
         // left table
-        VisTable leftTable = new VisTable();
-        leftTable.left().top();
-        leftTable.add(new VisLabel("Name: ")).left().padBottom(10);
-        leftTable.add(name).fillX().expandX().row();
-        leftTable.add(new VisLabel("Vertex resolution: ")).left().padBottom(10);
-        leftTable.add(vertexResolution).fillX().expandX().row();
-        leftTable.add(new VisLabel("Position on x-axis:")).left().padBottom(10);
-        leftTable.add(positionX).fillX().expandX().row();
-        leftTable.add(new VisLabel("Position on z-axis: ")).left().padBottom(10);
-        leftTable.add(positionZ).fillX().expandX().row();
-        leftTable.add(new VisLabel("Terrain width: ")).left().padBottom(10);
-        leftTable.add(terrainWidth).fillX().expandX().row();
-        leftTable.add(new VisLabel("Terrain depth")).left().padBottom(10);
-        leftTable.add(terrainDepth).fillX().expandX().row();
-        leftTable.add(generateBtn).fillX().expand().colspan(2).bottom();
-
-        // right table
-        VisTable rightTable = new VisTable();
-        rightTable.top();
-        // TODO add minimap again
-        rightTable.add(new VisLabel("minmap")).expand().fill().padBottom(5).colspan(2).row();
-        rightTable.add(minimapZoomIn).fillX().expandX().padRight(5);
-        rightTable.add(minimapZoomOut).fillX().expandX().padLeft(5);
-
-
-        root.add(leftTable).width(500).height(400).padRight(10);
-        root.add(rightTable).width(500).height(400).expand().fill();
+        VisTable content = new VisTable();
+        content.left().top();
+        content.add(new VisLabel("Name: ")).left().padBottom(10);
+        content.add(name).fillX().expandX().row();
+        content.add(new VisLabel("Vertex resolution: ")).left().padBottom(10);
+        content.add(vertexResolution).fillX().expandX().row();
+        content.add(new VisLabel("Position on x-axis:")).left().padBottom(10);
+        content.add(positionX).fillX().expandX().row();
+        content.add(new VisLabel("Position on z-axis: ")).left().padBottom(10);
+        content.add(positionZ).fillX().expandX().row();
+        content.add(new VisLabel("Terrain width: ")).left().padBottom(10);
+        content.add(terrainWidth).fillX().expandX().row();
+        content.add(new VisLabel("Terrain depth")).left().padBottom(10);
+        content.add(terrainDepth).fillX().expandX().row();
+        content.add(generateBtn).fillX().expand().colspan(2).bottom();
+        root.add(content).width(500).height(400);
     }
 
     private void setupListeners() {
@@ -130,12 +115,10 @@ public class AddTerrainDialog extends BaseDialog {
                     Terrain terrain = generateTerrain(width, depth, res);
                     terrain.name = nom;
                     terrain.id = projectContext.obtainUUID();
-                    projectContext.terrains.add(terrain);
+                    terrain.transform.setTranslation(posX, 0, posZ);
 
-                    // create Instance
-                    TerrainInstance terrainInstance = new TerrainInstance(terrain);
-                    terrainInstance.transform.setTranslation(posX, 0, posZ);
-                    projectContext.currScene.terrainGroup.add(terrainInstance);
+                    projectContext.terrains.add(terrain);
+                    projectContext.currScene.terrainGroup.add(terrain);
 
                     SceneGraph sceneGraph = projectContext.currScene.sceneGraph;
 
@@ -147,7 +130,7 @@ public class AddTerrainDialog extends BaseDialog {
                     sceneGraph.getRoot().addChild(terrainGO);
 
                     TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
-                    terrainComponent.setTerrainInstance(terrainInstance);
+                    terrainComponent.setTerrain(terrain);
                     terrainGO.getComponents().add(terrainComponent);
                     terrainComponent.setShader(shaders.terrainShader);
 

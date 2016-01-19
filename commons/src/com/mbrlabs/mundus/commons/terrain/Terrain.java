@@ -19,12 +19,18 @@ package com.mbrlabs.mundus.commons.terrain;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Pool;
+import com.mbrlabs.mundus.commons.utils.MathUtils;
 
 import java.nio.ByteBuffer;
 
@@ -32,36 +38,43 @@ import java.nio.ByteBuffer;
  * @author Marcus Brummer
  * @version 30-11-2015
  */
-public class Terrain {
+public class Terrain implements RenderableProvider {
 
     public long id;
     public String name;
-
     public String terraPath;
 
     public int terrainWidth = 1200;
     public int terrainDepth = 1200;
+    public int vertexResolution;
+
+    public Matrix4 transform;
+    private Vector3 position;
+    private final Vector2 uvScale = new Vector2(30, 30);
+    private Texture texture;
 
     public float[] heightData;
-    public int vertexResolution;
-    public Mesh mesh;
+    private Mesh mesh;
     public Renderable renderable;
 
     private VertexAttributes attribs;
     private float vertices[];
     private int stride;
-
     private int posPos;
     private int norPos;
     private int uvPos;
 
-    private final Vector2 uvScale = new Vector2(30, 30);
-
     private final VertexInfo tempVInfo = new VertexInfo();
 
-    private Texture texture;
+    // used for collision detection
+    private final Vector3 c00 = new Vector3();
+    private final Vector3 c01 = new Vector3();
+    private final Vector3 c10 = new Vector3();
+    private final Vector3 c11 = new Vector3();
 
     public Terrain(int vertexResolution) {
+        transform = new Matrix4();
+        position = new Vector3();
         attribs = MeshBuilder.createAttributes(VertexAttributes.Usage.Position |
                 VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
@@ -124,6 +137,82 @@ public class Terrain {
         final float height = heightData[z * vertexResolution + x];
         out.set(dx * this.terrainWidth, height, dz * this.terrainDepth);
         return out;
+    }
+
+    public float getHeightAtWorldCoord(float worldX, float worldZ) {
+        transform.getTranslation(c00);
+        float terrainX = worldX - c00.x;
+        float terrainZ = worldZ - c00.z;
+
+        float gridSquareSize = terrainWidth / ((float) vertexResolution - 1);
+        int gridX = (int) Math.floor(terrainX / gridSquareSize);
+        int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
+
+        if(gridX >= vertexResolution -1 || gridZ >= vertexResolution - 1 || gridX < 0 || gridZ < 0) {
+            return 0;
+        }
+
+        float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
+        float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
+
+        c01.set(1, heightData[(gridZ+1) * vertexResolution + gridX], 0);
+        c10.set(0, heightData[gridZ * vertexResolution + gridX+1], 1);
+
+        // we are in upper left triangle of the square
+        if(xCoord <= (1 - zCoord)) {
+            c00.set(0, heightData[gridZ * vertexResolution + gridX], 0);
+            return MathUtils.barryCentric(c00, c10, c01, new Vector2(zCoord, xCoord));
+        }
+        // bottom right triangle
+        c11.set(1, heightData[(gridZ+1) * vertexResolution + gridX+1], 1);
+        return MathUtils.barryCentric(c10, c11, c01, new Vector2(zCoord, xCoord));
+    }
+
+    public Vector3 getRayIntersection(Vector3 out, Ray ray) {
+        // TODO improve performance. use binary search
+        float curDistance = 2;
+        int rounds = 0;
+
+        long start = System.currentTimeMillis();
+
+        ray.getEndPoint(out, curDistance);
+        boolean isUnder = isUnderTerrain(out);
+
+        while(true) {
+            rounds++;
+            ray.getEndPoint(out, curDistance);
+
+            boolean u = isUnderTerrain(out);
+            if(u != isUnder || rounds == 10000) {
+                //     Log.debug("getRayIntersection rounds: " + rounds+ " time: " + (System.currentTimeMillis() - start));
+                return out;
+            }
+
+            if(u) {
+                curDistance -= 0.1f;
+            } else {
+                curDistance += 0.1f;
+            }
+        }
+
+    }
+
+    private boolean isUnderTerrain(Vector3 pointInWorldCoordinates) {
+        float terrainHeight = getHeightAtWorldCoord(pointInWorldCoordinates.x, pointInWorldCoordinates.z);
+        return terrainHeight > pointInWorldCoordinates.y;
+    }
+
+    public Vector3 getPosition() {
+        transform.getTranslation(position);
+        return position;
+    }
+
+    @Override
+    public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
+        Renderable pooledRenderable = pool.obtain();
+        pooledRenderable.worldTransform.set(transform);
+        pooledRenderable.set(renderable);
+        renderables.add(pooledRenderable);
     }
 
     private void setVertex (int index, VertexInfo info) {

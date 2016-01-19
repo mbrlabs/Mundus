@@ -25,10 +25,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
-import com.mbrlabs.mundus.scene3d.Component;
 import com.mbrlabs.mundus.tools.Tool;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -115,16 +113,16 @@ public class SphereBrush extends Tool {
         // tVec1 holds sphere transformation
         sphereModelInstance.transform.getTranslation(tVec1);
 
-        TerrainInstance terrainInstance = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
-        if(terrainInstance == null) {
+        Terrain terrain = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
+        if(terrain == null) {
             return;
         }
 
-        final Vector3 terPos = terrainInstance.getPosition();
+        final Vector3 terPos = terrain.getPosition();
 
-        for (int x = 0; x < terrainInstance.terrain.vertexResolution; x++) {
-            for (int z = 0; z <  terrainInstance.terrain.vertexResolution; z++) {
-                terrainInstance.terrain.getVertexPosition(tVec0, x, z);
+        for (int x = 0; x < terrain.vertexResolution; x++) {
+            for (int z = 0; z <  terrain.vertexResolution; z++) {
+                terrain.getVertexPosition(tVec0, x, z);
                 tVec0.x += terPos.x;
                 tVec0.z += terPos.z;
                 float distance = tVec0.dst(tVec1);
@@ -137,11 +135,11 @@ public class SphereBrush extends Tool {
                     } else {
                         elevation = dir;
                     }
-                    terrainInstance.terrain.heightData[z * terrainInstance.terrain.vertexResolution + x] += elevation;
+                    terrain.heightData[z * terrain.vertexResolution + x] += elevation;
                 }
             }
         }
-        terrainInstance.terrain.update();
+        terrain.update();
     }
 
     @Override

@@ -26,7 +26,6 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Mundus;
@@ -34,7 +33,6 @@ import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.scene3d.*;
@@ -43,7 +41,6 @@ import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
-import sun.security.krb5.SCDynamicStoreConfig;
 
 import java.io.File;
 
@@ -142,7 +139,7 @@ public class ProjectManager {
             for(GameObject go : gos) {
                 Component terrainComp = go.getComponentByType(Component.Type.TERRAIN);
                 if(terrainComp != null) {
-                    scene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrainInstance());
+                    scene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
                 }
             }
         }

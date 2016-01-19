@@ -22,8 +22,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntIntMap;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
-import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 
 /**
  * @author Marcus Brummer
@@ -133,7 +133,7 @@ public class FpsNavigation extends InputAdapter {
             camera.position.add(tmp);
         }
 
-        TerrainInstance terrain = terrainGroup.getTerrain(camera.position.x, camera.position.z);
+        Terrain terrain = terrainGroup.getTerrain(camera.position.x, camera.position.z);
         if(terrain != null) {
             camera.position.y = terrain.getHeightAtWorldCoord(camera.position.x, camera.position.z) + height;
         }
