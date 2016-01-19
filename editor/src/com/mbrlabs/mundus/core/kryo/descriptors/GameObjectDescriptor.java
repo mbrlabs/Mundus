@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.mbrlabs.mundus.scene3d.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +34,24 @@ public class GameObjectDescriptor {
     private long id;
     @Tag(1)
     private String name;
-
     @Tag(2)
-    private float[] position = new float[3];
+    private boolean active;
+
     @Tag(3)
-    private float[] rotation = new float[3];
+    private float[] position = new float[3];
     @Tag(4)
+    private float[] rotation = new float[3];
+    @Tag(5)
     private float[] scale = new float[3];
 
-    @Tag(5)
-    private List<String> tags;
     @Tag(6)
+    private List<String> tags;
+    @Tag(7)
     private List<GameObjectDescriptor> childs;
 
-    @Tag(7)
-    private ModelComponentDescriptor modelComponent;
     @Tag(8)
+    private ModelComponentDescriptor modelComponent;
+    @Tag(9)
     private TerrainComponentDescriptor terrainComponent;
 
     public GameObjectDescriptor() {
@@ -70,6 +73,14 @@ public class GameObjectDescriptor {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public float[] getPosition() {

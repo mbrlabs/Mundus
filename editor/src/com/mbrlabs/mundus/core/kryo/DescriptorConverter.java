@@ -72,6 +72,7 @@ public class DescriptorConverter {
 
     public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models, Array<Terrain> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
+        go.setActive(descriptor.isActive());
 
         final float[] pos = descriptor.getPosition();
         final float[] rot = descriptor.getRotation();
@@ -104,6 +105,7 @@ public class DescriptorConverter {
         GameObjectDescriptor descriptor = new GameObjectDescriptor();
         descriptor.setName(go.getName());
         descriptor.setId(go.getId());
+        descriptor.setActive(go.isActive());
 
         // translation
         go.transform.getTranslation(tempV3);

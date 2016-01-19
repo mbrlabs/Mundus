@@ -30,6 +30,7 @@ public class GameObject {
     private long id;
     private String name;
 
+    private boolean active;
     private Array<String> tags;
     private Array<Component> components;
     private Array<GameObject> childs;
@@ -41,6 +42,7 @@ public class GameObject {
 
     public GameObject(SceneGraph sceneGraph) {
         this.name = DEFAULT_NAME;
+        this.active = true;
         this.id = -1;
         this.tags = null;
         this.childs = null;
@@ -69,6 +71,14 @@ public class GameObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Array<String> getTags() {
@@ -165,25 +175,29 @@ public class GameObject {
     }
 
     public void render(float delta) {
-        for(Component component : this.components) {
-            component.render(delta);
-        }
+        if(active) {
+            for (Component component : this.components) {
+                component.render(delta);
+            }
 
-        if(childs != null) {
-            for (GameObject node : this.childs) {
-                node.render(delta);
+            if (childs != null) {
+                for (GameObject node : this.childs) {
+                    node.render(delta);
+                }
             }
         }
     }
 
     public void update(float delta) {
-        for(Component component : this.components) {
-            component.update(delta);
-        }
+        if(active) {
+            for (Component component : this.components) {
+                component.update(delta);
+            }
 
-        if(childs != null) {
-            for(GameObject node : this.childs) {
-                node.update(delta);
+            if (childs != null) {
+                for (GameObject node : this.childs) {
+                    node.update(delta);
+                }
             }
         }
     }
