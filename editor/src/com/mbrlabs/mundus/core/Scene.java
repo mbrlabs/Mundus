@@ -36,9 +36,14 @@ public class Scene implements Disposable {
     private long id;
 
     public SceneGraph sceneGraph;
-    public TerrainGroup terrainGroup;
     public Env environment;
     public Skybox skybox;
+
+    /**
+     * The terrain group is just used internally to interact with the terrains efficently.
+     * It holds references of the terrain instances in the scene graph.
+     */
+    public TerrainGroup terrainGroup;
 
     public PerspectiveCamera cam;
 

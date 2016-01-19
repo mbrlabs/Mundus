@@ -30,6 +30,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
+import com.mbrlabs.mundus.events.SceneGraphModified;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.scene3d.TerrainComponent;
@@ -150,6 +151,7 @@ public class AddTerrainDialog extends BaseDialog {
                     terrainGO.getComponents().add(terrainComponent);
                     terrainComponent.setShader(shaders.terrainShader);
 
+                    Mundus.postEvent(new SceneGraphModified());
 
                 } catch (NumberFormatException nfe) {
                     Log.error(TAG, nfe.getMessage());

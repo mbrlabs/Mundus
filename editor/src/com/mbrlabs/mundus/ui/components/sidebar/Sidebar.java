@@ -45,8 +45,8 @@ public class Sidebar extends TabbedPane implements TabbedPaneListener {
         contentContainer.align(Align.topLeft);
 
         add(outlineTab);
-        add(modelTab);
         add(toolTab);
+        add(modelTab);
 
         switchTab(outlineTab);
         switchedTab(outlineTab);

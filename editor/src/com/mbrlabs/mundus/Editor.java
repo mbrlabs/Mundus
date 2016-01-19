@@ -49,8 +49,6 @@ import org.apache.commons.io.FilenameUtils;
 
 public class Editor implements ApplicationListener {
 
-    // axes
-    private RenderContext renderContext;
     private ModelInstance axesInstance;
 
     private Ui ui;
@@ -85,8 +83,6 @@ public class Editor implements ApplicationListener {
         axesInstance = new ModelInstance(axesModel);
         Mundus.testModels.add(axesModel);
 
-        renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
-
         // open last edited project or create default project
         boolean projectOpened = projectManager.openLastOpenedProject();
         if(!projectOpened) {
@@ -94,9 +90,6 @@ public class Editor implements ApplicationListener {
         }
 
         compass = new Compass(projectContext.currScene.cam);
-
-        //createTestModels();
-
         camController = new FreeCamController(projectContext.currScene.cam);
         inputManager.addProcessor(camController);
     }
@@ -107,7 +100,6 @@ public class Editor implements ApplicationListener {
         GlUtils.clearScreen(Color.WHITE);
         ui.act();
         camController.update();
-        //fpsNavigation.update();
         toolManager.act();
         projectContext.currScene.cam.update();
 
@@ -124,29 +116,14 @@ public class Editor implements ApplicationListener {
             batch.end();
         }
 
-
-        // render model instances
+        // TODO maybe remove or put somewhere else
+        // render initial gird axis
         batch.begin(projectContext.currScene.cam);
         batch.render(axesInstance);
-//        batch.render(Mundus.testInstances,
-//                projectContext.currScene.environment, shaders.entityShader);
         batch.end();
-
-        // TODO ======================================================================================
 
         projectContext.currScene.sceneGraph.update();
         projectContext.currScene.sceneGraph.render();
-
-        // TODO ======================================================================================
-
-        // render terrains
-//        shaders.terrainShader.begin(projectContext.currScene.cam, renderContext);
-//        for(TerrainInstance terrain : projectContext.currScene.terrainGroup.getTerrains()) {
-//            terrain.terrain.renderable.environment = projectContext.currScene.environment;
-//            terrain.terrain.renderable.worldTransform.set(terrain.transform);
-//            shaders.terrainShader.render(terrain.terrain.renderable);
-//        }
-//        shaders.terrainShader.end();
 
         toolManager.render();
         compass.render(batch);
@@ -166,15 +143,15 @@ public class Editor implements ApplicationListener {
     @Deprecated
     private void createTestModels() {
         // boxes to test terrain height
-//        if(projectContext.currScene.terrainGroup.size() > 0) {
-//            float boxSize = 0.5f;
-//            Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
-//                    new Material(ColorAttribute.createDiffuse(Color.RED)),
-//                    VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-//            Mundus.testModels.add(boxModel);
-//            Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-//                    boxModel, projectContext.currScene.terrainGroup.first()));
-//        }
+        if(projectContext.currScene.terrainGroup.size() > 0) {
+            float boxSize = 0.5f;
+            Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
+                    new Material(ColorAttribute.createDiffuse(Color.RED)),
+                    VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+            Mundus.testModels.add(boxModel);
+            Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
+                    boxModel, projectContext.currScene.terrainGroup.first()));
+        }
     }
 
     private void createDefaultProject() {
