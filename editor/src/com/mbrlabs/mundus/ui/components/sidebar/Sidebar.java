@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,45 +25,42 @@ import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
 
 /**
  * @author Marcus Brummer
- * @version 30-11-2015
+ * @version 19-01-2016
  */
-public class Sidebar extends TabbedPane implements TabbedPaneListener {
+public class Sidebar extends VisTable implements TabbedPaneListener {
+
+    private TabbedPane tabbedPane;
+    private VisTable contentContainer;
 
     private ToolTab toolTab;
     private ModelTab modelTab;
     private OutlineTab outlineTab;
 
-    private VisTable contentContainer;
-
     public Sidebar() {
         super();
+        tabbedPane = new TabbedPane();
         toolTab = new ToolTab();
         outlineTab = new OutlineTab();
         modelTab = new ModelTab();
+
+        setupUi();
+
+        tabbedPane.switchTab(outlineTab);
+        switchedTab(outlineTab);
+        tabbedPane.addListener(this);
+    }
+
+    public void setupUi() {
         contentContainer = new VisTable();
         contentContainer.setBackground(VisUI.getSkin().getDrawable("default-pane"));
         contentContainer.align(Align.topLeft);
 
-        add(outlineTab);
-        add(toolTab);
-        add(modelTab);
+        tabbedPane.add(outlineTab);
+        tabbedPane.add(toolTab);
+        tabbedPane.add(modelTab);
 
-        switchTab(outlineTab);
-        switchedTab(outlineTab);
-
-        addListener(this);
-    }
-
-    public ToolTab getToolTab() {
-        return toolTab;
-    }
-
-    public OutlineTab getOutlineTab() {
-        return outlineTab;
-    }
-
-    public VisTable getContentContainer() {
-        return contentContainer;
+        add(tabbedPane.getTable()).width(300).top().left().row();
+        add(contentContainer).width(300).top().left().expandY().fillY().row();
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.ui.components.dialogs.*;
 import com.mbrlabs.mundus.ui.components.MundusToolbar;
 import com.mbrlabs.mundus.ui.components.StatusBar;
 import com.mbrlabs.mundus.ui.components.dialogs.importer.ImportDialog;
+import com.mbrlabs.mundus.ui.components.inspector.Inspector;
 import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
 
@@ -40,6 +41,7 @@ public class Ui extends MyStage {
     private FileChooser fileChooser;
     private StatusBar statusBar;
     private Sidebar sidebar;
+    private Inspector inspector;
 
     //private DockBar docker;
 
@@ -80,11 +82,14 @@ public class Ui extends MyStage {
         toolbar = new MundusToolbar();
         root.add(toolbar.getRoot()).fillX().expandX().row();
 
-        // row 3: sidebar
+        // row 3: sidebar & inspector
+        VisTable sidebarAndInspector = new VisTable();
+        sidebarAndInspector.debugAll();
         sidebar = new Sidebar();
-        root.add(sidebar.getTable()).width(300).top().left().row();
-
-        root.add(sidebar.getContentContainer()).width(300).top().left().expandY().fillY().row();
+        inspector = new Inspector();
+        sidebarAndInspector.add(sidebar).width(300).top().left().expand().fill();
+        sidebarAndInspector.add(inspector).width(300).top().right().expand().row();
+        root.add(sidebarAndInspector).top().left().expand().fill().row();
 
         // row 4: DOCKER
         //docker = new DockBar();
