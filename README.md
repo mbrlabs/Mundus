@@ -4,7 +4,7 @@ The plan is, that the world you create with Mundus can be exported
 into a unified format (such as JSON + assets). The exported data can then be imported into any Game Engine,
 if someone writes a runtime/parser for that engine.
 
-![Screenshot](https://raw.githubusercontent.com/mbrlabs/Mundus/scene3d/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/mbrlabs/Mundus/master/screenshot.png)
 
 This project is at a very early stage in development, so expect large
 changes in the future.
@@ -21,7 +21,8 @@ Below are some of the more interesting features, that already work
 - Loading of g3db files
 - Loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv) binary must be set in the settings)
 - Placement of models in the world
-- Basic export of the project into a json format + assets
+- A component based scene graph (not fully implemented yet)
+- Basic export of the project into a json format + assets (currently broken due to new scene graph architecture)
 
 ## Runtime
 Currently there is no runtime.
