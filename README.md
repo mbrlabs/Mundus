@@ -4,7 +4,7 @@ The plan is, that the world you create with Mundus can be exported
 into a unified format (such as JSON + assets). The exported data can then be imported into any Game Engine,
 if someone writes a runtime/parser for that engine.
 
-![Screenshot](https://raw.githubusercontent.com/mbrlabs/Mundus/scene3d/editor/assets/textures/grid.png)
+![Screenshot](https://raw.githubusercontent.com/mbrlabs/Mundus/scene3d/screenshot.png)
 
 This project is at a very early stage in development, so expect large
 changes in the future.
