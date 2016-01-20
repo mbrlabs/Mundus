@@ -63,27 +63,32 @@ public class SelectionTool extends Tool {
     }
 
     private MModelInstance getEntity(int screenX, int screenY) {
-//        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-//        MModelInstance modelInstance = null;
-//        float distance = -1;
-//        // TODO make it work with scene graph
-//        for (MModelInstance entity : projectContext.currScene.entities) {
-//            entity.modelInstance.transform.getTranslation(tempV3);
-//            tempV3.add(entity.center);
-//            float dist2 = ray.origin.dst2(tempV3);
-//            if (distance >= 0f && dist2 > distance) continue;
-//
-//            entity.modelInstance.transform.getTranslation(tempV3);
-//            tempV3.add(entity.center);
-//
-//            if(Intersector.intersectRayBoundsFast(ray, tempV3, entity.dimensions)) {
-//                modelInstance = entity;
-//                distance = dist2;
-//            }
-//
-//        }
-//        return modelInstance;
-        return null;
+        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+        MModelInstance modelInstance = null;
+        float distance = -1;
+
+        for (GameObject go : projectContext.currScene.sceneGraph) {
+            Component component = go.getComponentByType(Component.Type.MODEL);
+            if(component == null) {
+                continue;
+            }
+
+            MModelInstance entity = ((ModelComponent) component).getModel();
+            entity.modelInstance.transform.getTranslation(tempV3);
+            tempV3.add(entity.center);
+            float dist2 = ray.origin.dst2(tempV3);
+            if (distance >= 0f && dist2 > distance) continue;
+
+            entity.modelInstance.transform.getTranslation(tempV3);
+            tempV3.add(entity.center);
+
+            if(Intersector.intersectRayBoundsFast(ray, tempV3, entity.dimensions)) {
+                modelInstance = entity;
+                distance = dist2;
+            }
+
+        }
+        return modelInstance;
     }
 
     public void modelSelected(MModelInstance selection) {
