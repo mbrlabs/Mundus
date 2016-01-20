@@ -31,6 +31,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.scene3d.Component;
+import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.ModelComponent;
 import com.mbrlabs.mundus.utils.Fa;
 
 import java.util.List;
@@ -60,10 +63,10 @@ public class SelectionTool extends Tool {
     }
 
     private MModelInstance getEntity(int screenX, int screenY) {
-        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-        MModelInstance modelInstance = null;
-        float distance = -1;
-        // TODO make it work with scene graph
+//        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+//        MModelInstance modelInstance = null;
+//        float distance = -1;
+//        // TODO make it work with scene graph
 //        for (MModelInstance entity : projectContext.currScene.entities) {
 //            entity.modelInstance.transform.getTranslation(tempV3);
 //            tempV3.add(entity.center);
@@ -79,7 +82,8 @@ public class SelectionTool extends Tool {
 //            }
 //
 //        }
-        return modelInstance;
+//        return modelInstance;
+        return null;
     }
 
     public void modelSelected(MModelInstance selection) {

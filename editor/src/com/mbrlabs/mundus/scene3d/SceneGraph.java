@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.scene3d.traversal.DepthFirstIterator;
 
 import java.util.Iterator;
 
@@ -98,42 +99,9 @@ public class SceneGraph implements Iterable<GameObject> {
         return out;
     }
 
-    // TODO ================================================================
-    // TODO IMPLEMENT NON RECURSIVE ITERATOR
-    // TODO ================================================================
-
     @Override
-    @Deprecated
     public Iterator<GameObject> iterator() {
-        return new SceneGraphIterator(this);
-    }
-
-    /**
-     * Iterates over the game objects of the scene graph.
-     */
-    private class SceneGraphIterator implements Iterator<GameObject> {
-
-        private SceneGraph sceneGraph;
-
-        public SceneGraphIterator(SceneGraph sceneGraph) {
-            this.sceneGraph = sceneGraph;
-        }
-
-        @Override
-        public boolean hasNext() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public GameObject next() {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
+        return new DepthFirstIterator(this);
     }
 
 }
