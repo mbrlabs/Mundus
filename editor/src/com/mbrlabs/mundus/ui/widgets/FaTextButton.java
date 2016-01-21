@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.utils.Colors;
 
 /**
  * @author Marcus Brummer
@@ -36,8 +37,9 @@ public class FaTextButton extends VisTextButton {
         style.pressedOffsetX = 1;
         style.unpressedOffsetX = 0;
         style.pressedOffsetY = -1;
-        style.down = getStyle().down;
-        style.up = getStyle().up;
+        style.down = null;
+        style.up = null;
+        //style.fontColor = Colors.TURQUOISE;
 
         setStyle(style);
     }

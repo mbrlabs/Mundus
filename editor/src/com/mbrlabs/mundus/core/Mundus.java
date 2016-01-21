@@ -86,7 +86,7 @@ public class Mundus {
         // init logging
         Log.init();
         // init visUI
-        VisUI.load();
+        VisUI.load(Gdx.files.internal("ui/skin/uiskin.json"));
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
         // model batch
         modelBatch = new ModelBatch();
