@@ -32,8 +32,8 @@ import com.mbrlabs.mundus.utils.Fa;
  */
 public abstract class BaseInspectorWidget extends VisTable {
 
-    private static final String COLLAPSE_BTN_DOWN = Fa.CARET_DOWN;
-    private static final String COLLAPSE_BTN_UP = Fa.CARET_UP;
+    private static final String COLLAPSE_BTN_DOWN = Fa.CARET_UP;
+    private static final String COLLAPSE_BTN_UP = Fa.CARET_DOWN;
 
     private String title;
     private FaTextButton collapseBtn;
@@ -52,7 +52,7 @@ public abstract class BaseInspectorWidget extends VisTable {
         titleLabel = new VisLabel();
         collapsibleWidget = new CollapsibleWidget(collapsibleContent);
 
-        collapseBtn = new FaTextButton(Fa.CARET_UP);
+        collapseBtn = new FaTextButton(COLLAPSE_BTN_UP);
         collapseBtn.getLabel().setFontScale(0.7f);
         collapseBtn.getStyle().up = null;
 

@@ -254,13 +254,6 @@ default-select-selection
   orig: 3, 3
   offset: 0, 0
   index: -1
-font-small
-  rotate: false
-  xy: 1, 10
-  size: 254, 105
-  orig: 256, 128
-  offset: 0, 22
-  index: -1
 grey
   rotate: false
   xy: 312, 232

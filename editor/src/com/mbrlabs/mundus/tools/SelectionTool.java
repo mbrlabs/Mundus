@@ -63,6 +63,8 @@ public class SelectionTool extends Tool {
         float distance = -1;
 
         for (GameObject go : projectContext.currScene.sceneGraph) {
+
+            // TODO support all kinds of components..not jsut MODEL
             Component component = go.findComponentByType(Component.Type.MODEL);
             if(component == null) {
                 continue;

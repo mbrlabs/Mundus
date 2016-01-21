@@ -17,10 +17,15 @@
 package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
@@ -84,11 +89,11 @@ public class Mundus {
         if(!homeDir.exists()) {
             homeDir.mkdir();
         }
+
+        initStyle();
+
         // init logging
         Log.init();
-        // init visUI
-        VisUI.load(Gdx.files.internal("ui/skin/uiskin.json"));
-        FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
         // model batch
         modelBatch = new ModelBatch();
         // shaders
@@ -121,8 +126,23 @@ public class Mundus {
                 .addIcon(Fa.CARET_UP)
                 .addIcon(Fa.TIMES)
                 .build();
+    }
 
-        // input
+    private static void initStyle() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/open-sans/OpenSans-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        params.size = (int)(Gdx.graphics.getHeight() * 0.013f);
+        params.kerning = true;
+        params.borderStraight = false;
+        BitmapFont font = generator.generateFont(params);
+        generator.dispose();
+
+        Skin skin = new Skin();
+        skin.add("opensans-regular", font, BitmapFont.class);
+        skin.addRegions(new TextureAtlas(Gdx.files.internal("ui/skin/uiskin.atlas")));
+        skin.load(Gdx.files.internal("ui/skin/uiskin.json"));
+        VisUI.load(skin);
+        FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
     }
 
     public static void postEvent(Object event) {

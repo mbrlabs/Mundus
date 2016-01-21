@@ -66,7 +66,7 @@ public class MundusToolbar extends Toolbar {
         addItem(saveBtn, true);
         addItem(importBtn, true);
         addItem(exportBtn, true);
-        addItem(runBtn, false);
+        //addItem(runBtn, false);
 
         // save btn
         saveBtn.addListener(new ClickListener() {
