@@ -26,8 +26,10 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
@@ -142,6 +144,7 @@ public class Mundus {
         skin.addRegions(new TextureAtlas(Gdx.files.internal("ui/skin/uiskin.atlas")));
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"));
         VisUI.load(skin);
+
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
     }
 

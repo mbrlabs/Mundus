@@ -37,9 +37,8 @@ public class FaTextButton extends VisTextButton {
         style.pressedOffsetX = 1;
         style.unpressedOffsetX = 0;
         style.pressedOffsetY = -1;
-        style.down = null;
-        style.up = null;
-        //style.fontColor = Colors.TURQUOISE;
+        setFocusBorderEnabled(false);
+        style.fontColor = Colors.TURQUOISE;
 
         setStyle(style);
     }

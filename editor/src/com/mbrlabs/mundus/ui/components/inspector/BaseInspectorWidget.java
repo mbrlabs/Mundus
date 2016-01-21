@@ -54,7 +54,6 @@ public abstract class BaseInspectorWidget extends VisTable {
 
         collapseBtn = new FaTextButton(COLLAPSE_BTN_UP);
         collapseBtn.getLabel().setFontScale(0.7f);
-        collapseBtn.getStyle().up = null;
 
         deleteBtn = new FaTextButton(Fa.TIMES);
         deleteBtn.getLabel().setFontScale(0.7f);
