@@ -20,6 +20,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.scene3d.components.Component;
+import com.mbrlabs.mundus.scene3d.traversal.BreadthFirstIterator;
 import com.mbrlabs.mundus.scene3d.traversal.DepthFirstIterator;
 
 import java.util.Iterator;
@@ -90,7 +92,7 @@ public class SceneGraph implements Iterable<GameObject> {
         out.clear();
         if(root.getChilds() != null) {
             for(GameObject c : root.getChilds()) {
-                if(c.getComponentByType(Component.Type.TERRAIN) != null) {
+                if(c.findComponentByType(Component.Type.TERRAIN) != null) {
                     out.add(c);
                 }
             }
@@ -101,7 +103,7 @@ public class SceneGraph implements Iterable<GameObject> {
 
     @Override
     public Iterator<GameObject> iterator() {
-        return new DepthFirstIterator(this);
+        return new BreadthFirstIterator(this);
     }
 
 }

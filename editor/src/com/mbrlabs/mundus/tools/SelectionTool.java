@@ -28,15 +28,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.scene3d.Component;
+import com.mbrlabs.mundus.scene3d.components.Component;
 import com.mbrlabs.mundus.scene3d.GameObject;
-import com.mbrlabs.mundus.scene3d.ModelComponent;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.utils.Fa;
-
-import java.util.List;
 
 /**
  * @author Marcus Brummer
@@ -68,7 +65,7 @@ public class SelectionTool extends Tool {
         float distance = -1;
 
         for (GameObject go : projectContext.currScene.sceneGraph) {
-            Component component = go.getComponentByType(Component.Type.MODEL);
+            Component component = go.findComponentByType(Component.Type.MODEL);
             if(component == null) {
                 continue;
             }

@@ -29,6 +29,9 @@ import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.scene3d.*;
+import com.mbrlabs.mundus.scene3d.components.Component;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.utils.Log;
 
 /**

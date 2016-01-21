@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.scene3d;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.scene3d.components.Component;
 
 /**
  * @author Marcus Brummer
@@ -97,7 +98,7 @@ public class GameObject {
         this.tags.add(tag);
     }
 
-    public Component getComponentByType(Component.Type type) {
+    public Component findComponentByType(Component.Type type) {
         for(Component c : components) {
             if(c.getType() == type) {
                 return c;

@@ -36,6 +36,9 @@ import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
 import com.mbrlabs.mundus.scene3d.*;
+import com.mbrlabs.mundus.scene3d.components.Component;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.tools.ToolManager;
@@ -137,7 +140,7 @@ public class ProjectManager {
             SceneGraph sceneGraph = scene.sceneGraph;
             gos = sceneGraph.getTerrainGOs(gos);
             for(GameObject go : gos) {
-                Component terrainComp = go.getComponentByType(Component.Type.TERRAIN);
+                Component terrainComp = go.findComponentByType(Component.Type.TERRAIN);
                 if(terrainComp != null) {
                     scene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
                 }

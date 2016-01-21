@@ -30,7 +30,7 @@ import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.InvalidComponentException;
-import com.mbrlabs.mundus.scene3d.ModelComponent;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**

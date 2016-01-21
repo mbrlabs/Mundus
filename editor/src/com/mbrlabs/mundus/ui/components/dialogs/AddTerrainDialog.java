@@ -32,7 +32,7 @@ import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.events.SceneGraphModified;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
-import com.mbrlabs.mundus.scene3d.TerrainComponent;
+import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;

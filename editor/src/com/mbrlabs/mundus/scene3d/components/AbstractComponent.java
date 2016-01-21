@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d;
+package com.mbrlabs.mundus.scene3d.components;
+
+import com.mbrlabs.mundus.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer
