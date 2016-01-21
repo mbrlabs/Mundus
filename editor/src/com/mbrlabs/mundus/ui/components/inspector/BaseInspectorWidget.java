@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.ui.components.inspector;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.CollapsibleWidget;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -34,18 +35,31 @@ public abstract class BaseInspectorWidget extends VisTable {
     private static final String COLLAPSE_BTN_UP = Fa.CARET_UP;
 
     private String title;
+    private FaTextButton collapseBtn;
+    private FaTextButton deleteBtn;
+    private Cell deletableBtnCell;
 
     protected VisTable collapsibleContent;
     private CollapsibleWidget collapsibleWidget;
     private VisLabel titleLabel;
-    private FaTextButton collapseBtn;
+
+    private boolean deletable;
 
     public BaseInspectorWidget(String title) {
         super();
         collapsibleContent = new VisTable();
         titleLabel = new VisLabel();
         collapsibleWidget = new CollapsibleWidget(collapsibleContent);
-        collapseBtn = new FaTextButton(Fa.CARET_DOWN);
+
+        collapseBtn = new FaTextButton(Fa.CARET_UP);
+        collapseBtn.getLabel().setFontScale(0.7f);
+        collapseBtn.getStyle().up = null;
+
+        deleteBtn = new FaTextButton(Fa.TIMES);
+        deleteBtn.getLabel().setFontScale(0.7f);
+        deleteBtn.getStyle().up = null;
+
+        deletable = false;
         pad(7);
 
         setupUI();
@@ -55,10 +69,19 @@ public abstract class BaseInspectorWidget extends VisTable {
     }
 
     private void setupListeners() {
+        // collapse
         collapseBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 collapse(!isCollapsed());
+            }
+        });
+
+        // delete
+        deleteBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                onDelete();
             }
         });
     }
@@ -66,13 +89,31 @@ public abstract class BaseInspectorWidget extends VisTable {
     private void setupUI() {
         // header
         final VisTable header = new VisTable();
-        header.add(titleLabel).left().top();
+        deletableBtnCell = header.add(deleteBtn).top().left();
+        header.add(titleLabel);
         header.add(collapseBtn).right().top().width(20).height(20).expand().row();
-        header.addSeparator().colspan(2).padBottom(4).row();
+        header.addSeparator().colspan(3).padBottom(4).row();
 
         // add everything to root
         add(header).expand().fill().row();
         add(collapsibleWidget).expand().fill().row();
+
+        setDeletable(deletable);
+    }
+
+    public boolean isDeletable() {
+        return deletable;
+    }
+
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+        if(deletable) {
+            deleteBtn.setVisible(true);
+            deletableBtnCell.width(20).height(20).padRight(5);
+        } else {
+            deleteBtn.setVisible(false);
+            deletableBtnCell.width(0).height(0).padRight(0);
+        }
     }
 
     public boolean isCollapsed() {
@@ -87,6 +128,8 @@ public abstract class BaseInspectorWidget extends VisTable {
             collapseBtn.setText(COLLAPSE_BTN_UP);
         }
     }
+
+    public abstract void onDelete();
 
     public String getTitle() {
         return title;

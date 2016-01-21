@@ -39,6 +39,7 @@ public class TransformWidget extends BaseInspectorWidget {
 
     public TransformWidget() {
         super("Transform");
+        setDeletable(false);
         init();
         setupUI();
         setupListeners();
@@ -73,6 +74,12 @@ public class TransformWidget extends BaseInspectorWidget {
         collapsibleContent.add(scaleX).padBottom(pad).padRight(pad);
         collapsibleContent.add(scaleY).padBottom(pad).padRight(pad);
         collapsibleContent.add(scaleZ).padBottom(pad).row();
+    }
+
+    @Override
+    public void onDelete() {
+        // The transform component can't be deleted.
+        // Every game object has a transformation
     }
 
     private void setupListeners() {

@@ -33,7 +33,7 @@ public class Inspector extends VisTable {
 
     private IdentifierWidget identifierWidget;
     private TransformWidget transformWidget;
-    private Array<ComponentWidget> componentWidgets;
+    private Array<BaseInspectorWidget> componentWidgets;
 
     private VisTextButton addComponentBtn;
 
@@ -57,11 +57,11 @@ public class Inspector extends VisTable {
     }
 
     public void setupUi() {
-        root.add(new VisLabel("Inspector")).expandX().fillX().row();
+        root.add(new VisLabel("Inspector")).expandX().fillX().padLeft(5).row();
         root.addSeparator().row();
         root.add(identifierWidget).expand().fillX().row();
         root.add(transformWidget).expand().fillX().row();
-        for(ComponentWidget cw : componentWidgets) {
+        for(BaseInspectorWidget cw : componentWidgets) {
             root.add(cw).row();
         }
         root.add(addComponentBtn).expandX().fillX().pad(10).row();

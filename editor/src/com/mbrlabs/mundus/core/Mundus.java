@@ -118,6 +118,7 @@ public class Mundus {
                 .addIcon(Fa.MINUS)
                 .addIcon(Fa.CARET_DOWN)
                 .addIcon(Fa.CARET_UP)
+                .addIcon(Fa.TIMES)
                 .build();
 
         // input

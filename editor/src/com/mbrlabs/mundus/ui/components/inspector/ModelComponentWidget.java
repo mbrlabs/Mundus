@@ -16,14 +16,21 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
-import com.kotcrab.vis.ui.widget.VisTable;
-
 /**
  * @author Marcus Brummer
- * @version 16-01-2016
+ * @version 21-01-2016
  */
-public abstract class ComponentWidget extends VisTable {
+public class ModelComponentWidget extends BaseInspectorWidget {
 
-    public abstract String getName();
+    public ModelComponentWidget() {
+        super("Model Component");
+        setDeletable(true);
+    }
+
+
+    @Override
+    public void onDelete() {
+
+    }
 
 }
