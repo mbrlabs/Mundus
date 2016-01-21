@@ -29,13 +29,16 @@ import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.SceneAddedEvent;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
  * @version 23-12-2015
  */
-public class SceneMenu extends Menu implements ProjectChangedEvent.ProjectChangedListener {
+public class SceneMenu extends Menu implements
+        ProjectChangedEvent.ProjectChangedListener,
+        SceneAddedEvent.SceneAddedListener {
 
     @Inject
     private ProjectContext projectContext;
@@ -59,6 +62,7 @@ public class SceneMenu extends Menu implements ProjectChangedEvent.ProjectChange
                     public void finished(String input) {
                         Scene scene = projectManager.createScene(projectContext, input);
                         projectManager.changeScene(scene);
+                        Mundus.postEvent(new SceneAddedEvent(scene));
                     }
                 });
             }
@@ -76,23 +80,34 @@ public class SceneMenu extends Menu implements ProjectChangedEvent.ProjectChange
         }
         // add new items
         for(final Scene scene : projectContext.scenes) {
-            MenuItem menuItem = new MenuItem(scene.getName());
-            menuItem.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    projectManager.changeScene(scene);
-                }
-            });
-            addItem(menuItem);
-            sceneItems.add(menuItem);
+            buildMenuItem(scene);
         }
 
+    }
+
+    private MenuItem buildMenuItem(final Scene scene) {
+        MenuItem menuItem = new MenuItem(scene.getName());
+        menuItem.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                projectManager.changeScene(scene);
+            }
+        });
+        addItem(menuItem);
+        sceneItems.add(menuItem);
+
+        return menuItem;
     }
 
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
         buildSceneUi();
+    }
+
+    @Override
+    public void onSceneAdded(SceneAddedEvent sceneAddedEvent) {
+        buildMenuItem(sceneAddedEvent.getScene());
     }
 
 }
