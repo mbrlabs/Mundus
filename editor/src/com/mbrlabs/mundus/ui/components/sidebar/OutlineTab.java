@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
@@ -45,7 +46,8 @@ import com.mbrlabs.mundus.ui.Ui;
 public class OutlineTab extends Tab implements
         ProjectChangedEvent.ProjectChangedListener,
         SceneChangedEvent.SceneChangedListener,
-        SceneGraphChangedEvent.SceneGraphChangedListener {
+        SceneGraphChangedEvent.SceneGraphChangedListener,
+        GameObjectSelectedEvent.GameObjectSelectedListener {
 
     private static final String TITLE = "Outline";
 
@@ -71,6 +73,7 @@ public class OutlineTab extends Tab implements
         content.align(Align.left | Align.top);
 
         tree = new VisTree();
+        tree.getSelection().setProgrammaticChangeEvents(false);
         scrollPane = new ScrollPane(tree);
         scrollPane.setFlickScroll(false);
 
@@ -118,7 +121,7 @@ public class OutlineTab extends Tab implements
                 Tree.Node node = tree.getNodeAt(y);
                 if (node == null) return;
 
-                GameObject go = ((TreeNode) node.getActor()).go;
+                GameObject go = (GameObject) node.getObject();
                 rightClickMenu.show(go, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
             }
 
@@ -134,9 +137,10 @@ public class OutlineTab extends Tab implements
             public void changed(ChangeEvent event, Actor actor) {
                 Selection<Tree.Node> selection =  tree.getSelection();
                 if(selection != null && selection.size() > 0) {
-                    GameObject go = ((TreeNode)selection.first().getActor()).go;
+                    GameObject go = (GameObject) selection.first().getObject();
                     projectContext.currScene.sceneGraph.setSelected(go);
                     toolManager.translateTool.gameObjectSelected(go);
+                    Mundus.postEvent(new GameObjectSelectedEvent(go));
                 }
             }
         });
@@ -148,6 +152,7 @@ public class OutlineTab extends Tab implements
 
         GameObject rootGo = sceneGraph.getRoot();
         VisTree.Node treeRoot = new VisTree.Node(new TreeNode(rootGo));
+        treeRoot.setObject(rootGo);
         tree.add(treeRoot);
 
         if(rootGo.getChilds() != null) {
@@ -161,6 +166,7 @@ public class OutlineTab extends Tab implements
 
     private void addGameObject(Tree.Node treeParentNode, GameObject gameObject) {
         Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
+        leaf.setObject(gameObject);
         treeParentNode.add(leaf);
 
         if(gameObject.getChilds() != null) {
@@ -180,6 +186,14 @@ public class OutlineTab extends Tab implements
         return content;
     }
 
+    @Override
+    public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
+        Tree.Node node = tree.findNode(gameObjectSelectedEvent.getGameObject());
+
+        tree.getSelection().clear();
+        tree.getSelection().add(node);
+    }
+
     /**
      * A node of the ui tree hierarchy.
      */
@@ -187,12 +201,8 @@ public class OutlineTab extends Tab implements
 
         private VisLabel name;
 
-        private GameObject go;
-
         public TreeNode(final GameObject go) {
             super();
-            this.go = go;
-
             name = new VisLabel();
             add(name).expand().fill();
             name.setText(go.getName() + " [" + go.getId() + "]");

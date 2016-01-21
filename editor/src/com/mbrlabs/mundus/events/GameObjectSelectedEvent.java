@@ -22,25 +22,25 @@ import com.mbrlabs.mundus.scene3d.GameObject;
  * @author Marcus Brummer
  * @version 21-01-2016
  */
-//public class GameObjectSelectedEvent {
-//
-//    private GameObject gameObject;
-//
-//    public GameObjectSelectedEvent(GameObject gameObject) {
-//        this.gameObject = gameObject;
-//    }
-//
-//    public GameObject getGameObject() {
-//        return gameObject;
-//    }
-//
-//    public void setGameObject(GameObject gameObject) {
-//        this.gameObject = gameObject;
-//    }
-//
-//    public static interface GameObjectSelectedListener {
-//        @Subscribe
-//        public void onModelImported(GameObjectSelectedEvent gameObjectSelectedEvent);
-//    }
-//
-//}
+public class GameObjectSelectedEvent {
+
+    private GameObject gameObject;
+
+    public GameObjectSelectedEvent(GameObject gameObject) {
+        this.gameObject = gameObject;
+    }
+
+    public GameObject getGameObject() {
+        return gameObject;
+    }
+
+    public void setGameObject(GameObject gameObject) {
+        this.gameObject = gameObject;
+    }
+
+    public static interface GameObjectSelectedListener {
+        @Subscribe
+        public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent);
+    }
+
+}

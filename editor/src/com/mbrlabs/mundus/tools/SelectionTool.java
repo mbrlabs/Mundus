@@ -28,7 +28,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.scene3d.components.Component;
 import com.mbrlabs.mundus.scene3d.GameObject;
@@ -131,6 +133,7 @@ public class SelectionTool extends Tool {
             GameObject selection = getEntity(screenX, screenY);
             if(selection != null && !selection.equals(selectedGameObject)) {
                 gameObjectSelected(selection);
+                Mundus.postEvent(new GameObjectSelectedEvent(selection));
             }
         }
         return false;
