@@ -27,21 +27,24 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.events.SceneGraphModified;
+import com.mbrlabs.mundus.events.SceneChangedEvent;
+import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
  * @version 30-11-2015
  */
-public class OutlineTab extends Tab {
+public class OutlineTab extends Tab implements
+        ProjectChangedEvent.ProjectChangedListener,
+        SceneChangedEvent.SceneChangedListener,
+        SceneGraphChangedEvent.SceneGraphChangedListener {
 
     private static final String TITLE = "Outline";
 
@@ -73,13 +76,18 @@ public class OutlineTab extends Tab {
         setupListeners();
     }
 
-    @Subscribe
-    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
         buildTree(projectContext.currScene.sceneGraph);
     }
 
-    @Subscribe
-    public void newModelAdded(SceneGraphModified sceneGraphModified) {
+    @Override
+    public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
+        buildTree(projectContext.currScene.sceneGraph);
+    }
+
+    @Override
+    public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
         buildTree(projectContext.currScene.sceneGraph);
     }
 
@@ -219,7 +227,7 @@ public class OutlineTab extends Tab {
                     if (selectedGO != null) {
                         long id = projectContext.obtainUUID();
                         selectedGO.addChild(new GameObject(selectedGO.sceneGraph, GameObject.DEFAULT_NAME, id));
-                        Mundus.postEvent(new SceneGraphModified());
+                        Mundus.postEvent(new SceneGraphChangedEvent());
                     }
                 }
             });
@@ -241,7 +249,7 @@ public class OutlineTab extends Tab {
                     if(selectedGO != null) {
                         if(selectedGO.remove()) {
                             selectedGO = null;
-                            Mundus.postEvent(new SceneGraphModified());
+                            Mundus.postEvent(new SceneGraphChangedEvent());
                         }
                     }
                 }

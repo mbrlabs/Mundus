@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,13 @@ package com.mbrlabs.mundus.events;
 
 /**
  * @author Marcus Brummer
- * @version 24-12-2015
+ * @version 21-01-2016
  */
-public class ProjectChangedEvent {
+public class SceneChangedEvent {
 
-    public static interface ProjectChangedListener {
+    public static interface SceneChangedListener {
         @Subscribe
-        public void onProjectChanged(ProjectChangedEvent projectChangedEvent);
+        public void onSceneChanged(SceneChangedEvent sceneChangedEvent);
     }
 
 }

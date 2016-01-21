@@ -32,6 +32,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
@@ -302,7 +303,7 @@ public class ProjectManager {
         toolManager.deactivateTool();
         projectContext.currScene = scene;
         Gdx.graphics.setTitle(constructWindowTitle());
-        Mundus.postEvent(new ProjectChangedEvent());
+        Mundus.postEvent(new SceneChangedEvent());
         toolManager.setDefaultTool();
     }
 

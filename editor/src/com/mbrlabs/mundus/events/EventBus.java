@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.events;
 
 import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -82,12 +83,25 @@ public class EventBus {
     }
 
     private boolean isSubscriber(Method method) {
-        final Annotation[] annotations = method.getDeclaredAnnotations();
-        for(Annotation annotation : annotations) {
-            if(annotation.annotationType().equals(Subscribe.class)) {
-                return true;
+
+        // check if @Subscribe is directly used in class
+        boolean isSub = ReflectionUtils.hasMethodAnnotation(method, Subscribe.class);
+        if(isSub) return true;
+
+        // check if implemented interfaces of this class have a @Subscribe annotation
+        Class[] interfaces = method.getDeclaringClass().getInterfaces();
+        for(Class i : interfaces) {
+            try {
+                Method interfaceMethod = i.getMethod(method.getName(), method.getParameterTypes());
+                if(interfaceMethod != null) {
+                    isSub = ReflectionUtils.hasMethodAnnotation(interfaceMethod, Subscribe.class);
+                    if(isSub) return true;
+                }
+            } catch (NoSuchMethodException e) {
+                // silently ignore -> this interface simply does not declare such a method
             }
         }
+
         return false;
     }
 

@@ -25,7 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.events.SceneGraphModified;
+import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.scene3d.GameObject;
@@ -119,7 +119,7 @@ public class ModelPlacementTool extends Tool {
                 return false;
             }
 
-            Mundus.postEvent(new SceneGraphModified());
+            Mundus.postEvent(new SceneGraphChangedEvent());
 
             curEntity = new MModelInstance(model);
             curEntity.calculateBounds();

@@ -38,4 +38,9 @@ public class ModelImportEvent {
         this.model = model;
     }
 
+    public static interface ModelImportListener {
+        @Subscribe
+        public void onModelImported(ModelImportEvent importEvent);
+    }
+
 }

@@ -26,11 +26,9 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.mbrlabs.mundus.commons.env.Fog;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.shader.Shaders;
@@ -43,7 +41,7 @@ import com.mbrlabs.mundus.utils.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-public class Editor implements ApplicationListener {
+public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener {
 
     private ModelInstance axesInstance;
 
@@ -126,8 +124,8 @@ public class Editor implements ApplicationListener {
         ui.draw();
 	}
 
-    @Subscribe
-    public void projectChanged(ProjectChangedEvent changedEvent) {
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
         if(compass != null) {
             compass.setWorldCam(projectContext.currScene.cam);
         }
@@ -184,3 +182,4 @@ public class Editor implements ApplicationListener {
     }
 
 }
+

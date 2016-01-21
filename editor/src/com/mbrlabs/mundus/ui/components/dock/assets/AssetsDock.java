@@ -83,20 +83,20 @@ public class AssetsDock {
 
     }
 
-    @Subscribe
-    public void modelImported(ModelImportEvent modelImportEvent) {
-        AssetItem assetItem = new AssetItem(modelImportEvent.getModel());
-        filesView.addActor(assetItem);
-    }
-
-    @Subscribe
-    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
-        filesView.clearChildren();
-        for(MModel model : projectContext.models) {
-            AssetItem assetItem = new AssetItem(model);
-            filesView.addActor(assetItem);
-        }
-    }
+//    @Subscribe
+//    public void modelImported(ModelImportEvent modelImportEvent) {
+//        AssetItem assetItem = new AssetItem(modelImportEvent.getModel());
+//        filesView.addActor(assetItem);
+//    }
+//
+//    @Subscribe
+//    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
+//        filesView.clearChildren();
+//        for(MModel model : projectContext.models) {
+//            AssetItem assetItem = new AssetItem(model);
+//            filesView.addActor(assetItem);
+//        }
+//    }
 
     private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
         VisScrollPane scrollPane = new VisScrollPane(actor);

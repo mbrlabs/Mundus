@@ -28,14 +28,14 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
 
 /**
  * @author Marcus Brummer
  * @version 06-01-2016
  */
-public class FogDialog extends BaseDialog {
+public class FogDialog extends BaseDialog implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private VisCheckBox useFog = new VisCheckBox("Use fog");
     private VisTextField density = new VisTextField("0");
@@ -68,7 +68,7 @@ public class FogDialog extends BaseDialog {
         root.add(gradient).fillX().expandX().padBottom(10).row();
         root.add(new VisLabel("Color: ")).left().padBottom(10).colspan(2).row();
         root.add(colorPickerField).fillX().expandX().padBottom(10).colspan(2).row();
-        setValues(null);
+        resetValues();
     }
 
     private void setupListeners() {
@@ -124,11 +124,9 @@ public class FogDialog extends BaseDialog {
             }
         });
 
-
     }
 
-    @Subscribe
-    public void setValues(ProjectChangedEvent projectChangedEvent) {
+    private void resetValues() {
         Fog fog = projectContext.currScene.environment.getFog();
         if(fog == null) {
             density.setDisabled(true);
@@ -148,6 +146,16 @@ public class FogDialog extends BaseDialog {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        resetValues();
+    }
+
+    @Override
+    public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
+        resetValues();
     }
 
 }

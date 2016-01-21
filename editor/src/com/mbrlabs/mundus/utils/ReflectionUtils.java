@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.events;
+package com.mbrlabs.mundus.utils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * @author Marcus Brummer
- * @version 17-01-2016
+ * @version 21-01-2016
  */
-public class SceneGraphModified {
+public class ReflectionUtils {
+
+    public static boolean hasMethodAnnotation(Method method, Class annotationClass) {
+        final Annotation[] annotations = method.getAnnotations();
+        for(Annotation a : annotations) {
+            if(a.annotationType().equals(annotationClass)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 }

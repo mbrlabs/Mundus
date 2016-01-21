@@ -26,7 +26,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.Subscribe;
+import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
@@ -34,7 +34,7 @@ import com.mbrlabs.mundus.utils.SkyboxBuilder;
  * @author Marcus Brummer
  * @version 10-01-2016
  */
-public class SkyboxDialog extends BaseDialog {
+public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private ImageChooserField positiveX;
     private ImageChooserField negativeX;
@@ -110,7 +110,7 @@ public class SkyboxDialog extends BaseDialog {
 
                 projectContext.currScene.skybox = new Skybox(positiveX.getFile(), negativeX.getFile(),
                         positiveY.getFile(), negativeY.getFile(), positiveZ.getFile(), negativeZ.getFile());
-                setImages(null);
+                resetImages();
             }
         });
 
@@ -122,7 +122,7 @@ public class SkyboxDialog extends BaseDialog {
                     projectContext.currScene.skybox.dispose();
                 }
                 projectContext.currScene.skybox = SkyboxBuilder.createDefaultSkybox();
-                setImages(null);
+                resetImages();
             }
         });
 
@@ -132,14 +132,13 @@ public class SkyboxDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 projectContext.currScene.skybox.dispose();
                 projectContext.currScene.skybox = null;
-                setImages(null);
+                resetImages();
             }
         });
 
     }
 
-    @Subscribe
-    public void setImages(ProjectChangedEvent projectChangedEvent) {
+    private void resetImages() {
         Skybox skybox = projectContext.currScene.skybox;
         if(skybox != null) {
             positiveX.setImage(skybox.getPositiveX());
@@ -156,6 +155,16 @@ public class SkyboxDialog extends BaseDialog {
             positiveZ.setImage(null);
             negativeZ.setImage(null);
         }
+    }
+
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        resetImages();
+    }
+
+    @Override
+    public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
+        resetImages();
     }
 
 }

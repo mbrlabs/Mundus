@@ -30,7 +30,6 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.tools.ToolManager;
 
@@ -38,7 +37,7 @@ import com.mbrlabs.mundus.tools.ToolManager;
  * @author Marcus Brummer
  * @version 26-12-2015
  */
-public class ModelTab extends Tab {
+public class ModelTab extends Tab implements ProjectChangedEvent.ProjectChangedListener, ModelImportEvent.ModelImportListener {
 
     private static final String TITLE = "Models";
 
@@ -64,17 +63,10 @@ public class ModelTab extends Tab {
         content.addSeparator();
         content.add(modelGrid).expandX().fillX().row();
 
-        reloadAllModels(null);
+        reloadModels();
     }
 
-    @Subscribe
-    public void modelImported(ModelImportEvent modelImportEvent) {
-        AssetItem assetItem = new AssetItem(modelImportEvent.getModel());
-        modelGrid.addActor(assetItem);
-    }
-
-    @Subscribe
-    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
+    private void reloadModels() {
         modelGrid.clearChildren();
         for(MModel model : projectContext.models) {
             AssetItem assetItem = new AssetItem(model);
@@ -90,6 +82,17 @@ public class ModelTab extends Tab {
     @Override
     public Table getContentTable() {
         return content;
+    }
+
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        reloadModels();
+    }
+
+    @Override
+    public void onModelImported(ModelImportEvent importEvent) {
+        AssetItem assetItem = new AssetItem(importEvent.getModel());
+        modelGrid.addActor(assetItem);
     }
 
     /**

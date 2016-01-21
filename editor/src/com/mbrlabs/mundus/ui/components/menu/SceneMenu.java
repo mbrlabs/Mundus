@@ -29,14 +29,13 @@ import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.Subscribe;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
  * @version 23-12-2015
  */
-public class SceneMenu extends Menu {
+public class SceneMenu extends Menu implements ProjectChangedEvent.ProjectChangedListener {
 
     @Inject
     private ProjectContext projectContext;
@@ -70,11 +69,6 @@ public class SceneMenu extends Menu {
         buildSceneUi();
     }
 
-    @Subscribe
-    public void projectChanged(ProjectChangedEvent projectChangedEvent) {
-        buildSceneUi();
-    }
-
     private void buildSceneUi() {
         // remove old items
         for(MenuItem item : sceneItems) {
@@ -96,6 +90,9 @@ public class SceneMenu extends Menu {
     }
 
 
-
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        buildSceneUi();
+    }
 
 }
