@@ -46,7 +46,7 @@ public class AddTerrainDialog extends BaseDialog {
     private static final String TAG = AddTerrainDialog.class.getSimpleName();
 
     // UI elements
-    private VisTextField name = new VisTextField("Name");
+    private VisTextField name = new VisTextField("Terrain");
 
     private VisTextField vertexResolution = new VisTextField("180");
 
@@ -124,8 +124,8 @@ public class AddTerrainDialog extends BaseDialog {
 
                     GameObject terrainGO = new GameObject(sceneGraph);
                     terrainGO.setId(projectContext.obtainUUID());
-                    terrainGO.setName("Terrain");
-                    terrainGO.transform.translate(posX, 0, posZ);
+                    terrainGO.setName(name.getText());
+                    terrainGO.transform = terrain.transform;
                     terrainGO.setParent(sceneGraph.getRoot());
                     sceneGraph.getRoot().addChild(terrainGO);
 

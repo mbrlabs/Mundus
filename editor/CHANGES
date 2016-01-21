@@ -7,7 +7,7 @@
 - Added a TerrainComponent
 - Added a flexible component inspector widget for game objects
 - Fixed rendering of terrain texture tiles
-- Changed ui skin to use a turquoise accent color rather than blue
+- Improved UI
 
 [0.0.4] ~ 10/01/2016
 - Added Font Awesome as icon font

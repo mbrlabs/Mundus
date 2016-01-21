@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
@@ -41,7 +42,7 @@ import com.mbrlabs.mundus.utils.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener {
+public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private ModelInstance axesInstance;
 
@@ -124,14 +125,23 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         ui.draw();
 	}
 
-    @Override
-    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+    private void resetCam() {
         if(compass != null) {
             compass.setWorldCam(projectContext.currScene.cam);
         }
         if(camController != null) {
             camController.setCamera(projectContext.currScene.cam);
         }
+    }
+
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        resetCam();
+    }
+
+    @Override
+    public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
+        resetCam();
     }
 
     @Deprecated
