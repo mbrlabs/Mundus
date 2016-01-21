@@ -44,9 +44,7 @@ public class SelectionTool extends Tool {
     public static final String NAME = "Selection Tool";
     private Drawable icon;
 
-    protected MModelInstance selectedEntity;
-    private Model boxOutlineModel;
-    private ModelInstance outlineInstance;
+    protected GameObject selectedGameObject;
 
     private Vector3 tempV3 = new Vector3();
 
@@ -55,13 +53,11 @@ public class SelectionTool extends Tool {
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/selectionTool.png"))));
 
         ModelBuilder modelBuilder = new ModelBuilder();
-        boxOutlineModel = modelBuilder.createBox(1, 1, 1, new Material(), VertexAttributes.Usage.Position);
-        outlineInstance = new ModelInstance(boxOutlineModel);
     }
 
-    private MModelInstance getEntity(int screenX, int screenY) {
+    private GameObject getEntity(int screenX, int screenY) {
         Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-        MModelInstance modelInstance = null;
+        GameObject gameObject = null;
         float distance = -1;
 
         for (GameObject go : projectContext.currScene.sceneGraph) {
@@ -80,19 +76,16 @@ public class SelectionTool extends Tool {
             tempV3.add(entity.center);
 
             if(Intersector.intersectRayBoundsFast(ray, tempV3, entity.dimensions)) {
-                modelInstance = entity;
+                gameObject = go;
                 distance = dist2;
             }
 
         }
-        return modelInstance;
+        return gameObject;
     }
 
-    public void modelSelected(MModelInstance selection) {
-        selectedEntity = selection;
-        outlineInstance.transform.set(selectedEntity.modelInstance.transform);
-        outlineInstance.transform.translate(selectedEntity.center);
-        outlineInstance.transform.scl(selectedEntity.dimensions);
+    public void gameObjectSelected(GameObject selection) {
+        selectedGameObject = selection;
     }
 
     @Override
@@ -112,16 +105,18 @@ public class SelectionTool extends Tool {
 
     @Override
     public void reset() {
-        selectedEntity = null;
+        selectedGameObject = null;
     }
 
     @Override
     public void render() {
-        if(selectedEntity != null) {
-            batch.begin(projectContext.currScene.cam);
-           // batch.render(outlineInstance, shader);
-            batch.render(selectedEntity.modelInstance, shader);
-            batch.end();
+        if(selectedGameObject != null) {
+            ModelComponent comp = (ModelComponent) selectedGameObject.findComponentByType(Component.Type.MODEL);
+            if(comp != null) {
+                batch.begin(projectContext.currScene.cam);
+                batch.render(comp.getModel().modelInstance, shader);
+                batch.end();
+            }
         }
     }
 
@@ -133,9 +128,9 @@ public class SelectionTool extends Tool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT) {
-            MModelInstance selection = getEntity(screenX, screenY);
-            if(selection != null && !selection.equals(selectedEntity)) {
-                modelSelected(selection);
+            GameObject selection = getEntity(screenX, screenY);
+            if(selection != null && !selection.equals(selectedGameObject)) {
+                gameObjectSelected(selection);
             }
         }
         return false;
@@ -148,7 +143,7 @@ public class SelectionTool extends Tool {
 
     @Override
     public void dispose() {
-        boxOutlineModel.dispose();
+
     }
 
 }

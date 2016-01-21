@@ -2,11 +2,12 @@
 - Added a basic component based 3D scene graph
 - Changed overall architecture based on the scene graph
 - Added scene graph nodes (game objects) to the outline tab as tree structure
-- Added a flexible component inspector widget for game objects
+- Added creation/deletion of game objects
 - Added a ModelComponent
 - Added a TerrainComponent
-- Added creation/deletion of game objects
+- Added a flexible component inspector widget for game objects
 - Fixed rendering of terrain texture tiles
+- Changed ui skin to use a turquoise accent color rather than blue
 
 [0.0.4] ~ 10/01/2016
 - Added Font Awesome as icon font

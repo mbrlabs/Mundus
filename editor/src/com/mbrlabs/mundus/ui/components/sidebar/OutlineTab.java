@@ -35,6 +35,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -56,6 +57,8 @@ public class OutlineTab extends Tab implements
 
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private ToolManager toolManager;
 
     public OutlineTab() {
         super(false, false);
@@ -133,7 +136,7 @@ public class OutlineTab extends Tab implements
                 if(selection != null && selection.size() > 0) {
                     GameObject go = ((TreeNode)selection.first().getActor()).go;
                     projectContext.currScene.sceneGraph.setSelected(go);
-                    System.out.println("Outline selected: " + projectContext.currScene.sceneGraph.getSelected().getName());
+                    toolManager.translateTool.gameObjectSelected(go);
                 }
             }
         });

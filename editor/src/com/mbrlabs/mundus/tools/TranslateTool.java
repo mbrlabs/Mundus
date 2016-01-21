@@ -35,10 +35,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
-
-import javax.print.DocFlavor;
 
 /**
  * @author Marcus Brummer
@@ -124,15 +123,15 @@ public class TranslateTool extends SelectionTool {
     }
 
     @Override
-    public void modelSelected(MModelInstance modelInstance) {
-        super.modelSelected(modelInstance);
+    public void gameObjectSelected(GameObject go) {
+        super.gameObjectSelected(go);
         scaleHandles();
     }
 
     @Override
     public void render() {
         super.render();
-        if(selectedEntity != null) {
+        if(selectedGameObject != null) {
             batch.begin(projectContext.currScene.cam);
             GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
             batch.render(xHandle);
@@ -154,10 +153,10 @@ public class TranslateTool extends SelectionTool {
     public void act() {
         super.act();
 
-        if(selectedEntity != null) {
-            Vector3 selectionPos = selectedEntity.modelInstance.transform.getTranslation(temp0);
+        if(selectedGameObject != null) {
+            Vector3 selectionPos = selectedGameObject.transform.getTranslation(temp0);
 
-            selectionPos.add(selectedEntity.center);
+            //selectionPos.add(selectedGameObject.center);
             xHandle.setTranslation(selectionPos);
             yHandle.setTranslation(selectionPos);
             zHandle.setTranslation(selectionPos);
@@ -166,7 +165,7 @@ public class TranslateTool extends SelectionTool {
             if(state == State.IDLE) return;
 
             Ray ray = projectContext.currScene.cam.getPickRay(Gdx.input.getX(), Gdx.input.getY());
-            Vector3 rayEnd = selectedEntity.modelInstance.transform.getTranslation(temp1);
+            Vector3 rayEnd = selectedGameObject.transform.getTranslation(temp1);
             float dst = projectContext.currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
 
@@ -176,16 +175,16 @@ public class TranslateTool extends SelectionTool {
             }
 
             if(state == State.TRANSLATE_XZ) {
-                selectedEntity.modelInstance.transform.translate(rayEnd.x - lastPos.x,
+                selectedGameObject.transform.translate(rayEnd.x - lastPos.x,
                         0, rayEnd.z - lastPos.z);
             } else if(state == State.TRANSLATE_X) {
-                selectedEntity.modelInstance.transform.translate(rayEnd.x - lastPos.x,
+                selectedGameObject.transform.translate(rayEnd.x - lastPos.x,
                         0, 0);
             } else if(state == State.TRANSLATE_Y) {
-                selectedEntity.modelInstance.transform.translate(0,
+                selectedGameObject.transform.translate(0,
                         rayEnd.y - lastPos.y, 0);
             } else if(state == State.TRANSLATE_Z) {
-                selectedEntity.modelInstance.transform.translate(0, 0,
+                selectedGameObject.transform.translate(0, 0,
                         rayEnd.z - lastPos.z);
             }
 
@@ -194,7 +193,7 @@ public class TranslateTool extends SelectionTool {
     }
 
     private void scaleHandles() {
-        selectedEntity.modelInstance.transform.getTranslation(temp0);
+        selectedGameObject.transform.getTranslation(temp0);
         float scaleFactor = projectContext.currScene.cam.position.dst(temp0) * 0.25f;
         xHandle.setToScaling(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
         yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
@@ -206,7 +205,7 @@ public class TranslateTool extends SelectionTool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
 
-        if(button == Input.Buttons.LEFT && selectedEntity != null) {
+        if(button == Input.Buttons.LEFT && selectedGameObject != null) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
             if(xzPlaneHandle.isSelected(ray)) {
                 state = State.TRANSLATE_XZ;

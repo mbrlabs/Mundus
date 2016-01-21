@@ -35,6 +35,7 @@ import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.ReflectionUtils;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -142,12 +143,9 @@ public class Mundus {
         Class clazz = o.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for(Field f : fields) {
-            Annotation[] annotations = f.getDeclaredAnnotations();
-            for(Annotation a : annotations) {
-                if(a instanceof Inject) {
-                    injectableFields.add(f);
-                    Log.debug("DI: found injectable field: " + f.getName());
-                }
+            if(ReflectionUtils.hasFieldAnnotation(f, Inject.class)) {
+                injectableFields.add(f);
+                Log.debug("DI: found injectable field: " + f.getName());
             }
         }
 
