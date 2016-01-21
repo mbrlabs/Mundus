@@ -17,6 +17,8 @@
 package com.mbrlabs.mundus.ui.components.inspector;
 
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -33,8 +35,11 @@ public class IdentifierWidget extends VisTable {
     private VisTextField name;
     private VisTextField tag;
 
-    public IdentifierWidget() {
+    private Inspector inspector;
+
+    public IdentifierWidget(Inspector inspector) {
         super();
+        this.inspector = inspector;
         init();
         setupUI();
         setupListeners();
@@ -55,6 +60,21 @@ public class IdentifierWidget extends VisTable {
     }
 
     private void setupListeners() {
+        active.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(inspector.currentGO == null) return;
+                inspector.currentGO.setActive(active.isChecked());
+            }
+        });
+
+        name.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(inspector.currentGO == null) return;
+                inspector.currentGO.setName(name.getText());
+            }
+        });
 
     }
 

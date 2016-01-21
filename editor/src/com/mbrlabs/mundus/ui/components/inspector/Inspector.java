@@ -40,11 +40,13 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     private VisTextButton addComponentBtn;
 
+    protected GameObject currentGO;
+
     public Inspector() {
         super();
         Mundus.registerEventListener(this);
-        identifierWidget = new IdentifierWidget();
-        transformWidget = new TransformWidget();
+        identifierWidget = new IdentifierWidget(this);
+        transformWidget = new TransformWidget(this);
         componentWidgets = new Array<>();
         addComponentBtn = new VisTextButton("Add Component");
 
@@ -77,7 +79,8 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
-        setValues(gameObjectSelectedEvent.getGameObject());
+        currentGO = gameObjectSelectedEvent.getGameObject();
+        setValues(currentGO);
     }
 
     private void setValues(GameObject go) {

@@ -18,6 +18,8 @@ package com.mbrlabs.mundus.ui.components.inspector;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Queue;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.mbrlabs.mundus.scene3d.GameObject;
@@ -44,8 +46,9 @@ public class TransformWidget extends BaseInspectorWidget {
     private TextFieldWithLabel scaleY;
     private TextFieldWithLabel scaleZ;
 
-    public TransformWidget() {
-        super("Transform");
+
+    public TransformWidget(Inspector inspector) {
+        super(inspector, "Transform");
         setDeletable(false);
         init();
         setupUI();
@@ -83,10 +86,46 @@ public class TransformWidget extends BaseInspectorWidget {
         collapsibleContent.add(scaleZ).padBottom(pad).row();
     }
 
-    @Override
-    public void onDelete() {
-        // The transform component can't be deleted.
-        // Every game object has a transformation
+    private void setupListeners() {
+        posX.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(inspector.currentGO == null) return;
+                try {
+                    inspector.currentGO.transform.getTranslation(tempV3);
+                    inspector.currentGO.transform.setTranslation(Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
+                } catch (NumberFormatException nfe) {
+                    // blah...
+                }
+            }
+        });
+
+        posY.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(inspector.currentGO == null) return;
+                try {
+                    inspector.currentGO.transform.getTranslation(tempV3);
+                    inspector.currentGO.transform.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                } catch (NumberFormatException nfe) {
+                    // blah...
+                }
+            }
+        });
+
+        posZ.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(inspector.currentGO == null) return;
+                try {
+                    inspector.currentGO.transform.getTranslation(tempV3);
+                    inspector.currentGO.transform.setTranslation(tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
+                } catch (NumberFormatException nfe) {
+                    // blah...
+                }
+            }
+        });
+
     }
 
     @Override
@@ -107,8 +146,10 @@ public class TransformWidget extends BaseInspectorWidget {
         scaleZ.setText(String.valueOf(tempV3.z));
     }
 
-    private void setupListeners() {
-
+    @Override
+    public void onDelete() {
+        // The transform component can't be deleted.
+        // Every game object has a transformation
     }
 
 }

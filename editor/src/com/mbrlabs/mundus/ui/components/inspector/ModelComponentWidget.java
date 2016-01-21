@@ -24,8 +24,8 @@ import com.mbrlabs.mundus.scene3d.GameObject;
  */
 public class ModelComponentWidget extends BaseInspectorWidget {
 
-    public ModelComponentWidget() {
-        super("Model Component");
+    public ModelComponentWidget(Inspector inspector) {
+        super(inspector, "Model Component");
         setDeletable(true);
     }
 

@@ -44,6 +44,10 @@ public class TextFieldWithLabel extends VisTable {
         add(textField).width(width * 0.8f).row();
     }
 
+    public String getText() {
+        return textField.getText();
+    }
+
     public void setEditable(boolean editable) {
         textField.setDisabled(!editable);
     }

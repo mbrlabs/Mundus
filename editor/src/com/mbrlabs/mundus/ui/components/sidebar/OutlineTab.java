@@ -217,7 +217,6 @@ public class OutlineTab extends Tab implements
 
         private MenuItem addEmpty;
         private MenuItem addTerrain;
-        private MenuItem rename;
         private MenuItem duplicate;
         private MenuItem delete;
 
@@ -229,7 +228,6 @@ public class OutlineTab extends Tab implements
 
             addEmpty = new MenuItem("Add Empty");
             addTerrain = new MenuItem("Add terrain");
-            rename = new MenuItem("Rename");
             duplicate = new MenuItem("Duplicate");
             delete = new MenuItem("Delete");
 
@@ -270,7 +268,6 @@ public class OutlineTab extends Tab implements
 
             addItem(addEmpty);
             addItem(addTerrain);
-            addItem(rename);
             addItem(duplicate);
             addItem(delete);
         }
