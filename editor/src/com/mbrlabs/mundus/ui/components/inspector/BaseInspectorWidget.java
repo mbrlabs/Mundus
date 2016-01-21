@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.CollapsibleWidget;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -129,8 +130,6 @@ public abstract class BaseInspectorWidget extends VisTable {
         }
     }
 
-    public abstract void onDelete();
-
     public String getTitle() {
         return title;
     }
@@ -143,5 +142,8 @@ public abstract class BaseInspectorWidget extends VisTable {
     public VisTable getCollapsibleContent() {
         return collapsibleContent;
     }
+
+    public abstract void onDelete();
+    public abstract void setValues(GameObject go);
 
 }

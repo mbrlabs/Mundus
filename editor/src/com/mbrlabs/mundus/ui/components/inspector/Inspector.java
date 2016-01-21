@@ -21,12 +21,15 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
+import com.mbrlabs.mundus.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer
  * @version 19-01-2016
  */
-public class Inspector extends VisTable {
+public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener {
 
     private VisTable root;
     private ScrollPane scrollPane;
@@ -39,6 +42,7 @@ public class Inspector extends VisTable {
 
     public Inspector() {
         super();
+        Mundus.registerEventListener(this);
         identifierWidget = new IdentifierWidget();
         transformWidget = new TransformWidget();
         componentWidgets = new Array<>();
@@ -69,6 +73,16 @@ public class Inspector extends VisTable {
 
     public void setupListeners() {
 
+    }
+
+    @Override
+    public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
+        setValues(gameObjectSelectedEvent.getGameObject());
+    }
+
+    private void setValues(GameObject go) {
+        identifierWidget.setValues(go);
+        transformWidget.setValues(go);
     }
 
 }

@@ -16,7 +16,11 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Queue;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 
 /**
@@ -24,6 +28,9 @@ import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
  * @version 16-01-2016
  */
 public class TransformWidget extends BaseInspectorWidget {
+
+    private static final Vector3 tempV3 = new Vector3();
+    private static final Quaternion tempQuat = new Quaternion();
 
     private TextFieldWithLabel posX;
     private TextFieldWithLabel posY;
@@ -80,6 +87,24 @@ public class TransformWidget extends BaseInspectorWidget {
     public void onDelete() {
         // The transform component can't be deleted.
         // Every game object has a transformation
+    }
+
+    @Override
+    public void setValues(GameObject go) {
+        go.transform.getTranslation(tempV3);
+        posX.setText(String.valueOf(tempV3.x));
+        posY.setText(String.valueOf(tempV3.y));
+        posZ.setText(String.valueOf(tempV3.z));
+
+        go.transform.getRotation(tempQuat);
+        rotX.setText(String.valueOf(tempQuat.x));
+        rotY.setText(String.valueOf(tempQuat.y));
+        rotZ.setText(String.valueOf(tempQuat.z));
+
+        go.transform.getScale(tempV3);
+        scaleX.setText(String.valueOf(tempV3.x));
+        scaleY.setText(String.valueOf(tempV3.y));
+        scaleZ.setText(String.valueOf(tempV3.z));
     }
 
     private void setupListeners() {

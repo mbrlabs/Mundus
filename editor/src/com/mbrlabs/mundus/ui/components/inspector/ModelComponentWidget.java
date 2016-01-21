@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
+import com.mbrlabs.mundus.scene3d.GameObject;
+
 /**
  * @author Marcus Brummer
  * @version 21-01-2016
@@ -30,6 +32,11 @@ public class ModelComponentWidget extends BaseInspectorWidget {
 
     @Override
     public void onDelete() {
+
+    }
+
+    @Override
+    public void setValues(GameObject go) {
 
     }
 

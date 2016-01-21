@@ -21,6 +21,7 @@ import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer
@@ -55,6 +56,11 @@ public class IdentifierWidget extends VisTable {
 
     private void setupListeners() {
 
+    }
+
+    public void setValues(GameObject go) {
+        active.setChecked(go.isActive());
+        name.setText(go.getName());
     }
 
 }
