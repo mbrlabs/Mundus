@@ -24,6 +24,8 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.components.Component;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 
 /**
  * @author Marcus Brummer
@@ -36,9 +38,11 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     private IdentifierWidget identifierWidget;
     private TransformWidget transformWidget;
-    private Array<BaseInspectorWidget> componentWidgets;
+    private Array<ComponentWidget> componentWidgets;
 
     private VisTextButton addComponentBtn;
+
+    private VisTable componentTable;
 
     protected GameObject currentGO;
 
@@ -49,6 +53,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         transformWidget = new TransformWidget(this);
         componentWidgets = new Array<>();
         addComponentBtn = new VisTextButton("Add Component");
+        componentTable = new VisTable();
 
         init();
         setupUi();
@@ -68,9 +73,21 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         root.add(identifierWidget).expand().fillX().row();
         root.add(transformWidget).expand().fillX().row();
         for(BaseInspectorWidget cw : componentWidgets) {
-            root.add(cw).row();
+            componentTable.add(cw).row();
         }
+        root.add(componentTable).fill().expand().row();
         root.add(addComponentBtn).expandX().fillX().pad(10).row();
+    }
+
+    private void buildComponentWidgets() {
+        componentWidgets.clear();
+        if(currentGO != null) {
+            for(Component component : currentGO.getComponents()) {
+                if(component.getType() == Component.Type.MODEL) {
+                    componentWidgets.add(new ModelComponentWidget(this, (ModelComponent)component));
+                }
+            }
+        }
     }
 
     public void setupListeners() {
@@ -86,6 +103,14 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     private void setValues(GameObject go) {
         identifierWidget.setValues(go);
         transformWidget.setValues(go);
+
+        buildComponentWidgets();
+        componentTable.clearChildren();
+
+        for(ComponentWidget cw : componentWidgets) {
+            componentTable.add(cw).expand().fill().row();
+            cw.setValues(currentGO);
+        }
     }
 
 }

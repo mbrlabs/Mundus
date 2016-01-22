@@ -112,6 +112,10 @@ public class GameObject {
         return this.components;
     }
 
+    public void removeComponent(Component component) {
+        components.removeValue(component, true);
+    }
+
     public void addComponent(Component component) throws InvalidComponentException {
         isComponentAddable(component);
         components.add(component);

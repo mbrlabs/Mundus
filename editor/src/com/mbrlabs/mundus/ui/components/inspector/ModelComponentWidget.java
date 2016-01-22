@@ -16,28 +16,47 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.scene3d.components.Component;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 
 /**
  * @author Marcus Brummer
  * @version 21-01-2016
  */
-public class ModelComponentWidget extends BaseInspectorWidget {
+public class ModelComponentWidget extends ComponentWidget {
 
-    public ModelComponentWidget(Inspector inspector) {
+    private ModelComponent modelComponent;
+
+    private VisTextField name = new VisTextField();;
+
+    public ModelComponentWidget(Inspector inspector, ModelComponent modelComponent) {
         super(inspector, "Model Component");
-        setDeletable(true);
+        this.modelComponent = modelComponent;
+
+        setupUI();
     }
 
+    private void setupUI() {
+        collapsibleContent.add(new VisLabel("Model: "));
+        collapsibleContent.add(name).expand().fill().row();
+    }
 
     @Override
     public void onDelete() {
-
+        inspector.currentGO.removeComponent(modelComponent);
+        remove();
     }
 
     @Override
     public void setValues(GameObject go) {
-
+        Component component = go.findComponentByType(Component.Type.MODEL);
+        if(component != null) {
+            modelComponent = (ModelComponent) component;
+            name.setText("TBD");
+        }
     }
 
 }
