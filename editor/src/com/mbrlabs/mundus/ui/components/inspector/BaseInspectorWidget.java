@@ -36,7 +36,6 @@ public abstract class BaseInspectorWidget extends VisTable {
     private static final String COLLAPSE_BTN_UP = Fa.CARET_DOWN;
 
     private String title;
-    protected Inspector inspector;
     private FaTextButton collapseBtn;
     private FaTextButton deleteBtn;
     private Cell deletableBtnCell;
@@ -49,7 +48,6 @@ public abstract class BaseInspectorWidget extends VisTable {
 
     public BaseInspectorWidget(String title) {
         super();
-        this.inspector = inspector;
         collapsibleContent = new VisTable();
         titleLabel = new VisLabel();
         collapsibleWidget = new CollapsibleWidget(collapsibleContent);

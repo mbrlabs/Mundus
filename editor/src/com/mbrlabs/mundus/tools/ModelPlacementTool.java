@@ -110,7 +110,7 @@ public class ModelPlacementTool extends Tool {
             modelGo.transform = curEntity.modelInstance.transform;
             ModelComponent modelComponent = new ModelComponent(modelGo);
             modelComponent.setShader(shader);
-            modelComponent.setModel(curEntity);
+            modelComponent.setModelInstance(curEntity);
 
             try {
                 modelGo.addComponent(modelComponent);

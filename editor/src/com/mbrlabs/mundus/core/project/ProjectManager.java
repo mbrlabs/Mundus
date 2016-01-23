@@ -165,14 +165,14 @@ public class ProjectManager {
             // Model component
             if(c.getType() == Component.Type.MODEL) {
                 ModelComponent modelComponent = (ModelComponent) c;
-                MModel model = findModelById(context.models, modelComponent.getModel().getModelId());
+                MModel model = findModelById(context.models, modelComponent.getModelInstance().getModel().id);
                 if(model != null) {
-                    modelComponent.getModel().modelInstance = new ModelInstance(model.getModel());
-                    modelComponent.getModel().modelInstance.transform = go.transform;
-                    modelComponent.getModel().calculateBounds();
+                    modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
+                    modelComponent.getModelInstance().modelInstance.transform = go.transform;
+                    modelComponent.getModelInstance().calculateBounds();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
-                    Log.fatal("model for modelInstance not found: " + modelComponent.getModel().getModelId());
+                    Log.fatal("model for modelInstance not found: " + modelComponent.getModelInstance().getModel().id);
                 }
             } else if(c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent)c).setShader(shaders.terrainShader);

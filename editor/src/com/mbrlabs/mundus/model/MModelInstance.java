@@ -27,10 +27,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
  */
 public class MModelInstance {
 
-    private long id;
-    private long modelId;
-    private boolean isSelected;
-
+    private MModel model;
     public ModelInstance modelInstance = null;
 
     private final static BoundingBox bounds = new BoundingBox();
@@ -39,7 +36,7 @@ public class MModelInstance {
     public float radius;
 
     public MModelInstance(MModel model) {
-        modelId = model.id;
+        this.model = model;
         if(model.getModel() != null) {
             modelInstance = new ModelInstance(model.getModel());
         }
@@ -52,28 +49,20 @@ public class MModelInstance {
         radius = dimensions.len() / 2f;
     }
 
-    public long getId() {
-        return id;
+    public void replaceModel(MModel model) {
+        this.model = model;
+        ModelInstance mi = new ModelInstance(model.getModel());
+        mi.transform  = modelInstance.transform;
+        modelInstance = mi;
+        calculateBounds();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public MModel getModel() {
+        return model;
     }
 
-    public long getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(long modelId) {
-        this.modelId = modelId;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean isSelected) {
-        this.isSelected = isSelected;
+    public void setModel(MModel model) {
+        this.model = model;
     }
 
 }

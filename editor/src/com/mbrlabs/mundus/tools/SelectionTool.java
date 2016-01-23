@@ -19,10 +19,8 @@ package com.mbrlabs.mundus.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
@@ -66,7 +64,7 @@ public class SelectionTool extends Tool {
                 continue;
             }
 
-            MModelInstance entity = ((ModelComponent) component).getModel();
+            MModelInstance entity = ((ModelComponent) component).getModelInstance();
             entity.modelInstance.transform.getTranslation(tempV3);
             tempV3.add(entity.center);
             float dist2 = ray.origin.dst2(tempV3);
@@ -115,7 +113,7 @@ public class SelectionTool extends Tool {
                     projectContext.currScene.currentSelection.findComponentByType(Component.Type.MODEL);
             if(comp != null) {
                 batch.begin(projectContext.currScene.cam);
-                batch.render(comp.getModel().modelInstance, shader);
+                batch.render(comp.getModelInstance().modelInstance, shader);
                 batch.end();
             }
         }

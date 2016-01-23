@@ -16,11 +16,15 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisTextField;
+import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.components.Component;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
@@ -33,22 +37,33 @@ public class ModelComponentWidget extends ComponentWidget {
 
     private ModelComponent modelComponent;
 
-    private VisTextField name = new VisTextField();
+    private VisSelectBox<MModel> selectBox = new VisSelectBox<>();
 
     @Inject
     private ProjectContext projectContext;
 
-    public ModelComponentWidget(ModelComponent modelComponent) {
+    public ModelComponentWidget(final ModelComponent modelComponent) {
         super("Model Component");
         Mundus.inject(this);
         this.modelComponent = modelComponent;
+
+        selectBox.setItems(projectContext.models);
+        selectBox.setSelected(modelComponent.getModelInstance().getModel());
+        selectBox.addListener(new ChangeListener() {
+            public void changed (ChangeListener.ChangeEvent event, Actor actor) {
+                MModel model = selectBox.getSelected();
+                if(model != null) {
+                    modelComponent.getModelInstance().replaceModel(model);
+                }
+            }
+        });
 
         setupUI();
     }
 
     private void setupUI() {
         collapsibleContent.add(new VisLabel("Model: "));
-        collapsibleContent.add(name).expand().fill().row();
+        collapsibleContent.add(selectBox).row();
     }
 
     @Override
@@ -62,7 +77,6 @@ public class ModelComponentWidget extends ComponentWidget {
         Component component = go.findComponentByType(Component.Type.MODEL);
         if(component != null) {
             modelComponent = (ModelComponent) component;
-            name.setText("TBD");
         }
     }
 

@@ -26,7 +26,7 @@ import com.mbrlabs.mundus.scene3d.GameObject;
  */
 public class ModelComponent extends AbstractComponent {
 
-    private MModelInstance model;
+    private MModelInstance modelInstance;
     private Shader shader;
 
     public ModelComponent(GameObject go) {
@@ -42,17 +42,18 @@ public class ModelComponent extends AbstractComponent {
         this.shader = shader;
     }
 
-    public void setModel(MModelInstance model) {
-        this.model = model;
+    public void setModelInstance(MModelInstance modelInstance) {
+        this.modelInstance = modelInstance;
     }
 
-    public MModelInstance getModel() {
-        return model;
+    public MModelInstance getModelInstance() {
+        return modelInstance;
     }
 
     @Override
     public void render(float delta) {
-        gameObject.sceneGraph.batch.render(model.modelInstance, gameObject.sceneGraph.scene.environment, shader);
+        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
+                gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override

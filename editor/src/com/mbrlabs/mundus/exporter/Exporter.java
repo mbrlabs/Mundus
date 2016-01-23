@@ -86,7 +86,7 @@ public class Exporter {
         Quaternion quat = new Quaternion();
 
         ModelInstanceDTO dto = new ModelInstanceDTO();
-        dto.setModelID(modelInstance.getModelId());
+    //    dto.setModelID(modelInstance.getModelId());
 
         // translation
         modelInstance.modelInstance.transform.getTranslation(vec3);

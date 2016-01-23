@@ -85,7 +85,7 @@ public class AssetsDock {
 
 //    @Subscribe
 //    public void modelImported(ModelImportEvent modelImportEvent) {
-//        AssetItem assetItem = new AssetItem(modelImportEvent.getModel());
+//        AssetItem assetItem = new AssetItem(modelImportEvent.getModelInstance());
 //        filesView.addActor(assetItem);
 //    }
 //

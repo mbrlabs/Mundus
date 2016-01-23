@@ -170,14 +170,14 @@ public class DescriptorConverter {
         MModelInstance modelInstance = new MModelInstance(model);
 
         ModelComponent component = new ModelComponent(go);
-        component.setModel(modelInstance);
+        component.setModelInstance(modelInstance);
 
         return component;
     }
 
     public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
         ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
-        descriptor.setModelID(modelComponent.getModel().getModelId());
+        descriptor.setModelID(modelComponent.getModelInstance().getModel().id);
 
         return descriptor;
     }
