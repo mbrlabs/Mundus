@@ -189,13 +189,12 @@ public class GameObject {
         }
     }
 
-
     public void translate(float x, float y, float z) {
         transform.translate(x, y, z);
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.transform.translate(x, y, z);
+                node.translate(x, y, z);
             }
         }
     }
