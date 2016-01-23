@@ -18,8 +18,12 @@ package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -27,6 +31,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -40,6 +46,7 @@ import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.tools.ToolManager;
+import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.ReflectionUtils;
@@ -144,6 +151,12 @@ public class Mundus {
         skin.addRegions(new TextureAtlas(Gdx.files.internal("ui/skin/uiskin.atlas")));
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"));
         VisUI.load(skin);
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Colors.TURQUOISE);
+        pixmap.drawPixel(0,0);
+        Drawable d = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+        VisUI.getSkin().add("accent-color", d, Drawable.class);
 
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
     }

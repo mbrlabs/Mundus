@@ -89,7 +89,7 @@ public abstract class BaseInspectorWidget extends VisTable {
     private void setupUI() {
         // header
         final VisTable header = new VisTable();
-        deletableBtnCell = header.add(deleteBtn).top().left();
+        deletableBtnCell = header.add(deleteBtn).top().left().padBottom(4);
         header.add(titleLabel);
         header.add(collapseBtn).right().top().width(20).height(20).expand().row();
         header.addSeparator().colspan(3).padBottom(4).row();

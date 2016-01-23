@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.scene3d;
 
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.scene3d.components.Component;
 
@@ -26,15 +27,18 @@ import com.mbrlabs.mundus.scene3d.components.Component;
  */
 public class GameObject {
 
-    public static final String DEFAULT_NAME = "Game Object";
+    public static final String DEFAULT_NAME = "GameObject";
+    private static Vector3 tempVec0 = new Vector3();
+    private static Vector3 tempVec1 = new Vector3();
 
     private long id;
-    private String name;
 
+    private String name;
     private boolean active;
     private Array<String> tags;
     private Array<Component> components;
     private Array<GameObject> childs;
+
     private GameObject parent;
 
     public Matrix4 transform;
@@ -171,11 +175,28 @@ public class GameObject {
         return this.transform;
     }
 
-    public void setTransform(Matrix4 transform, boolean copy) {
-        if(copy) {
-            this.transform.set(transform);
-        } else {
-            this.transform = transform;
+    public void setTranslation(float x, float y, float z) {
+        transform.getTranslation(tempVec0);
+        float offsetX = x - tempVec0.x;
+        float offsetY = y - tempVec0.y;
+        float offsetZ = z - tempVec0.z;
+        transform.translate(offsetX, offsetY, offsetZ);
+
+        if (childs != null) {
+            for (GameObject node : this.childs) {
+                node.translate(offsetX, offsetY, offsetZ);
+            }
+        }
+    }
+
+
+    public void translate(float x, float y, float z) {
+        transform.translate(x, y, z);
+
+        if (childs != null) {
+            for (GameObject node : this.childs) {
+                node.transform.translate(x, y, z);
+            }
         }
     }
 

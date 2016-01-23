@@ -63,7 +63,7 @@ public class ModelComponentWidget extends ComponentWidget {
 
     private void setupUI() {
         collapsibleContent.add(new VisLabel("Model: "));
-        collapsibleContent.add(selectBox).row();
+        collapsibleContent.add(selectBox).expand().fill().minWidth(200).row();
     }
 
     @Override

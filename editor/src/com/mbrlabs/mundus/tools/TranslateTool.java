@@ -182,19 +182,19 @@ public class TranslateTool extends SelectionTool {
 
             boolean modified = false;
             if(state == State.TRANSLATE_XZ) {
-                projectContext.currScene.currentSelection.transform.translate(rayEnd.x - lastPos.x,
+                projectContext.currScene.currentSelection.translate(rayEnd.x - lastPos.x,
                         0, rayEnd.z - lastPos.z);
                 modified = true;
             } else if(state == State.TRANSLATE_X) {
-                projectContext.currScene.currentSelection.transform.translate(rayEnd.x - lastPos.x,
+                projectContext.currScene.currentSelection.translate(rayEnd.x - lastPos.x,
                         0, 0);
                 modified = true;
             } else if(state == State.TRANSLATE_Y) {
-                projectContext.currScene.currentSelection.transform.translate(0,
+                projectContext.currScene.currentSelection.translate(0,
                         rayEnd.y - lastPos.y, 0);
                 modified = true;
             } else if(state == State.TRANSLATE_Z) {
-                projectContext.currScene.currentSelection.transform.translate(0, 0,
+                projectContext.currScene.currentSelection.translate(0, 0,
                         rayEnd.z - lastPos.z);
                 modified = true;
             }

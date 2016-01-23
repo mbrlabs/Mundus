@@ -16,8 +16,10 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.utils.Array;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -73,7 +75,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     }
 
     public void setupUi() {
-        root.add(new VisLabel("Inspector")).expandX().fillX().padLeft(5).row();
+        root.add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
         root.addSeparator().row();
         root.add(identifierWidget).expand().fillX().row();
         root.add(transformWidget).expand().fillX().row();

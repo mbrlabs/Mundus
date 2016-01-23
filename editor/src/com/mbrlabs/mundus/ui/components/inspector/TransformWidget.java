@@ -99,7 +99,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(projectContext.currScene.currentSelection == null) return;
                 try {
                     projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
-                    projectContext.currScene.currentSelection.transform.setTranslation(
+                    projectContext.currScene.currentSelection.setTranslation(
                             Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
                 } catch (NumberFormatException nfe) {
                     // blah...
@@ -113,7 +113,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(projectContext.currScene.currentSelection == null) return;
                 try {
                     projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
-                    projectContext.currScene.currentSelection.transform.setTranslation(
+                    projectContext.currScene.currentSelection.setTranslation(
                             tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
                 } catch (NumberFormatException nfe) {
                     // blah...
@@ -127,7 +127,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(projectContext.currScene.currentSelection == null) return;
                 try {
                     projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
-                    projectContext.currScene.currentSelection.transform.setTranslation(
+                    projectContext.currScene.currentSelection.setTranslation(
                             tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
                 } catch (NumberFormatException nfe) {
                     // blah...
