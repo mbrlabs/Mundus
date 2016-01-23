@@ -30,7 +30,7 @@ public class ModelComponentWidget extends ComponentWidget {
 
     private ModelComponent modelComponent;
 
-    private VisTextField name = new VisTextField();;
+    private VisTextField name = new VisTextField();
 
     public ModelComponentWidget(Inspector inspector, ModelComponent modelComponent) {
         super(inspector, "Model Component");

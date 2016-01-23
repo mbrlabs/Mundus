@@ -33,7 +33,9 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.model.MModelInstance;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.utils.Fa;
@@ -78,6 +80,8 @@ public class TranslateTool extends SelectionTool {
     private Vector3 temp2 = new Vector3();
     private Vector3 temp3 = new Vector3();
 
+    private GameObjectModifiedEvent gameObjectModifiedEvent;
+
 
     public TranslateTool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);
@@ -105,6 +109,8 @@ public class TranslateTool extends SelectionTool {
         yHandle = new Handle(yHandleModel);
         zHandle = new Handle(zHandleModel);
         xzPlaneHandle = new Handle(xzPlaneHandleModel);
+
+        gameObjectModifiedEvent = new GameObjectModifiedEvent();
     }
 
     @Override
@@ -174,18 +180,28 @@ public class TranslateTool extends SelectionTool {
                 lastPos.set(rayEnd);
             }
 
+            boolean modified = false;
             if(state == State.TRANSLATE_XZ) {
                 selectedGameObject.transform.translate(rayEnd.x - lastPos.x,
                         0, rayEnd.z - lastPos.z);
+                modified = true;
             } else if(state == State.TRANSLATE_X) {
                 selectedGameObject.transform.translate(rayEnd.x - lastPos.x,
                         0, 0);
+                modified = true;
             } else if(state == State.TRANSLATE_Y) {
                 selectedGameObject.transform.translate(0,
                         rayEnd.y - lastPos.y, 0);
+                modified = true;
             } else if(state == State.TRANSLATE_Z) {
                 selectedGameObject.transform.translate(0, 0,
                         rayEnd.z - lastPos.z);
+                modified = true;
+            }
+
+            if(modified) {
+                gameObjectModifiedEvent.setGameObject(selectedGameObject);
+                Mundus.postEvent(gameObjectModifiedEvent);
             }
 
             lastPos.set(rayEnd);

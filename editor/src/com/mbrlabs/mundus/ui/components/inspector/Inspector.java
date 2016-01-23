@@ -22,6 +22,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.components.Component;
@@ -31,7 +32,7 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
  * @author Marcus Brummer
  * @version 19-01-2016
  */
-public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener {
+public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener, GameObjectModifiedEvent.GameObjectModifiedListener {
 
     private VisTable root;
     private ScrollPane scrollPane;
@@ -94,12 +95,6 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     }
 
-    @Override
-    public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
-        currentGO = gameObjectSelectedEvent.getGameObject();
-        setValues(currentGO);
-    }
-
     private void setValues(GameObject go) {
         identifierWidget.setValues(go);
         transformWidget.setValues(go);
@@ -111,6 +106,18 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
             componentTable.add(cw).expand().fill().row();
             cw.setValues(currentGO);
         }
+    }
+
+    @Override
+    public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
+        currentGO = gameObjectSelectedEvent.getGameObject();
+        setValues(currentGO);
+    }
+
+    @Override
+    public void onGameObjectModified(GameObjectModifiedEvent gameObjectModifiedEvent) {
+        identifierWidget.setValues(currentGO);
+        transformWidget.setValues(currentGO);
     }
 
 }

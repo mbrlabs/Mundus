@@ -22,8 +22,10 @@ import com.mbrlabs.mundus.utils.ReflectionUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Simple Event bus via reflection.
@@ -79,11 +81,11 @@ public class EventBus {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-
     }
 
-    private boolean isSubscriber(Method method) {
 
+
+    private boolean isSubscriber(Method method) {
         // check if @Subscribe is directly used in class
         boolean isSub = ReflectionUtils.hasMethodAnnotation(method, Subscribe.class);
         if(isSub) return true;
