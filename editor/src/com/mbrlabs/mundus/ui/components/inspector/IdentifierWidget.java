@@ -23,6 +23,9 @@ import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.scene3d.GameObject;
 
 /**
@@ -35,11 +38,12 @@ public class IdentifierWidget extends VisTable {
     private VisTextField name;
     private VisTextField tag;
 
-    private Inspector inspector;
+    @Inject
+    private ProjectContext projectContext;
 
-    public IdentifierWidget(Inspector inspector) {
+    public IdentifierWidget() {
         super();
-        this.inspector = inspector;
+        Mundus.inject(this);
         init();
         setupUI();
         setupListeners();
@@ -63,16 +67,16 @@ public class IdentifierWidget extends VisTable {
         active.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(inspector.currentGO == null) return;
-                inspector.currentGO.setActive(active.isChecked());
+                if(projectContext.currScene.currentSelection == null) return;
+                projectContext.currScene.currentSelection.setActive(active.isChecked());
             }
         });
 
         name.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(inspector.currentGO == null) return;
-                inspector.currentGO.setName(name.getText());
+                if(projectContext.currScene.currentSelection == null) return;
+                projectContext.currScene.currentSelection.setName(name.getText());
             }
         });
 

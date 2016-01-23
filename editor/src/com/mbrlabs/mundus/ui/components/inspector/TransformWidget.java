@@ -22,6 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Queue;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 
@@ -46,9 +49,12 @@ public class TransformWidget extends BaseInspectorWidget {
     private TextFieldWithLabel scaleY;
     private TextFieldWithLabel scaleZ;
 
+    @Inject
+    private ProjectContext projectContext;
 
-    public TransformWidget(Inspector inspector) {
-        super(inspector, "Transform");
+    public TransformWidget() {
+        super("Transform");
+        Mundus.inject(this);
         setDeletable(false);
         init();
         setupUI();
@@ -90,10 +96,11 @@ public class TransformWidget extends BaseInspectorWidget {
         posX.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(inspector.currentGO == null) return;
+                if(projectContext.currScene.currentSelection == null) return;
                 try {
-                    inspector.currentGO.transform.getTranslation(tempV3);
-                    inspector.currentGO.transform.setTranslation(Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
+                    projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
+                    projectContext.currScene.currentSelection.transform.setTranslation(
+                            Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
                 } catch (NumberFormatException nfe) {
                     // blah...
                 }
@@ -103,10 +110,11 @@ public class TransformWidget extends BaseInspectorWidget {
         posY.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(inspector.currentGO == null) return;
+                if(projectContext.currScene.currentSelection == null) return;
                 try {
-                    inspector.currentGO.transform.getTranslation(tempV3);
-                    inspector.currentGO.transform.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
+                    projectContext.currScene.currentSelection.transform.setTranslation(
+                            tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
                 } catch (NumberFormatException nfe) {
                     // blah...
                 }
@@ -116,10 +124,11 @@ public class TransformWidget extends BaseInspectorWidget {
         posZ.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(inspector.currentGO == null) return;
+                if(projectContext.currScene.currentSelection == null) return;
                 try {
-                    inspector.currentGO.transform.getTranslation(tempV3);
-                    inspector.currentGO.transform.setTranslation(tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
+                    projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
+                    projectContext.currScene.currentSelection.transform.setTranslation(
+                            tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
                 } catch (NumberFormatException nfe) {
                     // blah...
                 }

@@ -46,15 +46,11 @@ public class SelectionTool extends Tool {
     public static final String NAME = "Selection Tool";
     private Drawable icon;
 
-    protected GameObject selectedGameObject;
-
     private Vector3 tempV3 = new Vector3();
 
     public SelectionTool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/selectionTool.png"))));
-
-        ModelBuilder modelBuilder = new ModelBuilder();
     }
 
     private GameObject getEntity(int screenX, int screenY) {
@@ -89,7 +85,7 @@ public class SelectionTool extends Tool {
     }
 
     public void gameObjectSelected(GameObject selection) {
-        selectedGameObject = selection;
+        projectContext.currScene.currentSelection = selection;
     }
 
     @Override
@@ -109,13 +105,14 @@ public class SelectionTool extends Tool {
 
     @Override
     public void reset() {
-        selectedGameObject = null;
+        projectContext.currScene.currentSelection = null;
     }
 
     @Override
     public void render() {
-        if(selectedGameObject != null) {
-            ModelComponent comp = (ModelComponent) selectedGameObject.findComponentByType(Component.Type.MODEL);
+        if(projectContext.currScene.currentSelection != null) {
+            ModelComponent comp = (ModelComponent)
+                    projectContext.currScene.currentSelection.findComponentByType(Component.Type.MODEL);
             if(comp != null) {
                 batch.begin(projectContext.currScene.cam);
                 batch.render(comp.getModel().modelInstance, shader);
@@ -133,7 +130,7 @@ public class SelectionTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT) {
             GameObject selection = getEntity(screenX, screenY);
-            if(selection != null && !selection.equals(selectedGameObject)) {
+            if(selection != null && !selection.equals(projectContext.currScene.currentSelection)) {
                 gameObjectSelected(selection);
                 Mundus.postEvent(new GameObjectSelectedEvent(selection));
             }

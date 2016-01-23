@@ -47,7 +47,7 @@ public abstract class BaseInspectorWidget extends VisTable {
 
     private boolean deletable;
 
-    public BaseInspectorWidget(Inspector inspector, String title) {
+    public BaseInspectorWidget(String title) {
         super();
         this.inspector = inspector;
         collapsibleContent = new VisTable();

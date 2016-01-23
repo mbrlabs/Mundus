@@ -137,7 +137,7 @@ public class TranslateTool extends SelectionTool {
     @Override
     public void render() {
         super.render();
-        if(selectedGameObject != null) {
+        if(projectContext.currScene.currentSelection != null) {
             batch.begin(projectContext.currScene.cam);
             GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
             batch.render(xHandle);
@@ -159,8 +159,8 @@ public class TranslateTool extends SelectionTool {
     public void act() {
         super.act();
 
-        if(selectedGameObject != null) {
-            Vector3 selectionPos = selectedGameObject.transform.getTranslation(temp0);
+        if(projectContext.currScene.currentSelection != null) {
+            Vector3 selectionPos = projectContext.currScene.currentSelection.transform.getTranslation(temp0);
 
             //selectionPos.add(selectedGameObject.center);
             xHandle.setTranslation(selectionPos);
@@ -171,7 +171,7 @@ public class TranslateTool extends SelectionTool {
             if(state == State.IDLE) return;
 
             Ray ray = projectContext.currScene.cam.getPickRay(Gdx.input.getX(), Gdx.input.getY());
-            Vector3 rayEnd = selectedGameObject.transform.getTranslation(temp1);
+            Vector3 rayEnd = projectContext.currScene.currentSelection.transform.getTranslation(temp1);
             float dst = projectContext.currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
 
@@ -182,25 +182,25 @@ public class TranslateTool extends SelectionTool {
 
             boolean modified = false;
             if(state == State.TRANSLATE_XZ) {
-                selectedGameObject.transform.translate(rayEnd.x - lastPos.x,
+                projectContext.currScene.currentSelection.transform.translate(rayEnd.x - lastPos.x,
                         0, rayEnd.z - lastPos.z);
                 modified = true;
             } else if(state == State.TRANSLATE_X) {
-                selectedGameObject.transform.translate(rayEnd.x - lastPos.x,
+                projectContext.currScene.currentSelection.transform.translate(rayEnd.x - lastPos.x,
                         0, 0);
                 modified = true;
             } else if(state == State.TRANSLATE_Y) {
-                selectedGameObject.transform.translate(0,
+                projectContext.currScene.currentSelection.transform.translate(0,
                         rayEnd.y - lastPos.y, 0);
                 modified = true;
             } else if(state == State.TRANSLATE_Z) {
-                selectedGameObject.transform.translate(0, 0,
+                projectContext.currScene.currentSelection.transform.translate(0, 0,
                         rayEnd.z - lastPos.z);
                 modified = true;
             }
 
             if(modified) {
-                gameObjectModifiedEvent.setGameObject(selectedGameObject);
+                gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
                 Mundus.postEvent(gameObjectModifiedEvent);
             }
 
@@ -209,7 +209,7 @@ public class TranslateTool extends SelectionTool {
     }
 
     private void scaleHandles() {
-        selectedGameObject.transform.getTranslation(temp0);
+        projectContext.currScene.currentSelection.transform.getTranslation(temp0);
         float scaleFactor = projectContext.currScene.cam.position.dst(temp0) * 0.25f;
         xHandle.setToScaling(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
         yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
@@ -221,7 +221,7 @@ public class TranslateTool extends SelectionTool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
 
-        if(button == Input.Buttons.LEFT && selectedGameObject != null) {
+        if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
             if(xzPlaneHandle.isSelected(ray)) {
                 state = State.TRANSLATE_XZ;

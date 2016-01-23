@@ -22,8 +22,8 @@ package com.mbrlabs.mundus.ui.components.inspector;
  */
 public abstract class ComponentWidget extends BaseInspectorWidget {
 
-    public ComponentWidget(Inspector inspector, String title) {
-        super(inspector, title);
+    public ComponentWidget(String title) {
+        super(title);
         setDeletable(true);
     }
 

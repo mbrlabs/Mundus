@@ -18,6 +18,9 @@ package com.mbrlabs.mundus.ui.components.inspector;
 
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.components.Component;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
@@ -32,8 +35,12 @@ public class ModelComponentWidget extends ComponentWidget {
 
     private VisTextField name = new VisTextField();
 
-    public ModelComponentWidget(Inspector inspector, ModelComponent modelComponent) {
-        super(inspector, "Model Component");
+    @Inject
+    private ProjectContext projectContext;
+
+    public ModelComponentWidget(ModelComponent modelComponent) {
+        super("Model Component");
+        Mundus.inject(this);
         this.modelComponent = modelComponent;
 
         setupUI();
@@ -46,7 +53,7 @@ public class ModelComponentWidget extends ComponentWidget {
 
     @Override
     public void onDelete() {
-        inspector.currentGO.removeComponent(modelComponent);
+        projectContext.currScene.currentSelection.removeComponent(modelComponent);
         remove();
     }
 

@@ -21,7 +21,9 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.GameObject;
@@ -45,13 +47,15 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     private VisTable componentTable;
 
-    protected GameObject currentGO;
+    @Inject
+    private ProjectContext projectContext;
 
     public Inspector() {
         super();
+        Mundus.inject(this);
         Mundus.registerEventListener(this);
-        identifierWidget = new IdentifierWidget(this);
-        transformWidget = new TransformWidget(this);
+        identifierWidget = new IdentifierWidget();
+        transformWidget = new TransformWidget();
         componentWidgets = new Array<>();
         addComponentBtn = new VisTextButton("Add Component");
         componentTable = new VisTable();
@@ -82,10 +86,10 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     private void buildComponentWidgets() {
         componentWidgets.clear();
-        if(currentGO != null) {
-            for(Component component : currentGO.getComponents()) {
+        if(projectContext.currScene.currentSelection != null) {
+            for(Component component : projectContext.currScene.currentSelection.getComponents()) {
                 if(component.getType() == Component.Type.MODEL) {
-                    componentWidgets.add(new ModelComponentWidget(this, (ModelComponent)component));
+                    componentWidgets.add(new ModelComponentWidget((ModelComponent)component));
                 }
             }
         }
@@ -104,20 +108,19 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
         for(ComponentWidget cw : componentWidgets) {
             componentTable.add(cw).expand().fill().row();
-            cw.setValues(currentGO);
+            cw.setValues(projectContext.currScene.currentSelection);
         }
     }
 
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
-        currentGO = gameObjectSelectedEvent.getGameObject();
-        setValues(currentGO);
+        setValues(projectContext.currScene.currentSelection);
     }
 
     @Override
     public void onGameObjectModified(GameObjectModifiedEvent gameObjectModifiedEvent) {
-        identifierWidget.setValues(currentGO);
-        transformWidget.setValues(currentGO);
+        identifierWidget.setValues(projectContext.currScene.currentSelection);
+        transformWidget.setValues(projectContext.currScene.currentSelection);
     }
 
 }

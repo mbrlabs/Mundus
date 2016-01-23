@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.SunLight;
+import com.mbrlabs.mundus.scene3d.GameObject;
 import com.mbrlabs.mundus.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
@@ -39,6 +40,8 @@ public class Scene implements Disposable {
     public Env environment;
     public Skybox skybox;
 
+    public GameObject currentSelection;
+
     /**
      * The terrain group is just used internally to interact with the terrains efficently.
      * It holds references of the terrain instances in the scene graph.
@@ -50,6 +53,7 @@ public class Scene implements Disposable {
     public Scene() {
         terrainGroup = new TerrainGroup();
         environment = new Env();
+        currentSelection = null;
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);
