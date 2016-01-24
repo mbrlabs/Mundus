@@ -161,9 +161,7 @@ public class ProjectManager {
             TerrainIO.importTerrain(terrain, terrain.terraPath);
         }
 
-        // TODO load last opened scene instead of first
-        // load scene
-        context.currScene = loadScene(context, context.scenes.first());
+        context.currScene = loadScene(context, context.kryoActiveScene);
 
         return context;
     }

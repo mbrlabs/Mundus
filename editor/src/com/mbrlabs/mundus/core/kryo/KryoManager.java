@@ -116,12 +116,12 @@ public class KryoManager {
             }
         }
 
-        System.out.println(projectFile);
-
         if(projectFile != null) {
             Input input = new Input(new FileInputStream(projectFile.path()));
             ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
-            return DescriptorConverter.convert(projectDescriptor);
+            ProjectContext context = DescriptorConverter.convert(projectDescriptor);
+            context.kryoActiveScene = projectDescriptor.getCurrentSceneName();
+            return context;
         }
 
         return null;

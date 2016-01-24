@@ -41,6 +41,9 @@ public class ProjectContext implements Disposable {
 
     private long uuidProvider;
 
+    /** set by kryo when project is loaded. do not use this */
+    public String kryoActiveScene;
+
     public ProjectContext(long uuidProvider) {
         models = new Array<>();
         textures = new Array<>();
