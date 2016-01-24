@@ -46,6 +46,7 @@ import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.SkyboxBuilder;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -221,6 +222,7 @@ public class ProjectManager {
         long id = projectContext.obtainUUID();
         scene.setId(id);
         scene.setName(name);
+        scene.skybox = SkyboxBuilder.createDefaultSkybox();
         projectContext.scenes.add(scene.getName());
         kryoManager.saveScene(projectContext, scene);
 
@@ -230,6 +232,7 @@ public class ProjectManager {
     public Scene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
         Scene scene = DescriptorConverter.convert(descriptor, context.terrains, context.models);
+        scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
         sceneGraph.batch = Mundus.modelBatch;

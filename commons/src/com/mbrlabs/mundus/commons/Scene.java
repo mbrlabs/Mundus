@@ -66,8 +66,6 @@ public class Scene implements Disposable {
         sunLight.position.set(600, 400, 600);
         environment.add(sunLight);
 
-        //skybox = SkyboxBuilder.createDefaultSkybox();
-
         sceneGraph = new SceneGraph(this);
     }
 

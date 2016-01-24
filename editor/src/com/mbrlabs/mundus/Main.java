@@ -40,11 +40,7 @@ public class Main {
         config.setWindowedMode(width, (int) (height - height * .05));
 
         new Lwjgl3Application(new Editor(), config);
-//
-//        final Rectangle maximumWindowBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-//        int width = (int) maximumWindowBounds.getWidth();
-//        int height = (int) maximumWindowBounds.getHeight();
-//
+
 //        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //
 //        config.width = width;
@@ -53,6 +49,7 @@ public class Main {
 //        config.title = TITLE;
 //
 //        new LwjglApplication(new Editor(), config);
+
     }
 
 }
