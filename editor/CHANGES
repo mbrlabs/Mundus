@@ -10,6 +10,7 @@
 - Improved UI
 - Added import of projects
 - Updated LibGDX to 1.9.0
+- Updated libGDX backend from lwjgl to lwjgl3
 - Changed internal persistence of scenes: every scene has now it's own save file (scenes/scene_name.mundus)
 
 [0.0.4] ~ 10/01/2016

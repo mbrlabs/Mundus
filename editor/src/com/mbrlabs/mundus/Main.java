@@ -16,8 +16,8 @@
 
 package com.mbrlabs.mundus;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 import java.awt.*;
 
@@ -30,20 +30,15 @@ public class Main {
     public static final String TITLE = "Mundus v0.0.5";
 
     public static void main (String[] arg) {
-
         final Rectangle maximumWindowBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         int width = (int) maximumWindowBounds.getWidth();
         int height = (int) maximumWindowBounds.getHeight();
 
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setTitle(TITLE);
+        config.setWindowedMode(width, (int) (height - height * .05));
 
-        config.width = width;
-        config.height = (int) (height - height * .05);
-        config.backgroundFPS = 0;
-        config.title = TITLE;
-
-        new LwjglApplication(new Editor(), config);
-
+        new Lwjgl3Application(new Editor(), config);
     }
 
 }
