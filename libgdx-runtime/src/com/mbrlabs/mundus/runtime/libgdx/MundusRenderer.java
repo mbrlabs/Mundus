@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.runtime.libgdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
+import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.shaders.EntityShader;
 import com.mbrlabs.mundus.commons.shaders.TerrainShader;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;

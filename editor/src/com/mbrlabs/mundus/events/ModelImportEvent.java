@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.events;
 
-import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.commons.model.MModel;
 
 /**
  * @author Marcus Brummer

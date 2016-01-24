@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.commons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.SunLight;
-import com.mbrlabs.mundus.scene3d.GameObject;
-import com.mbrlabs.mundus.scene3d.SceneGraph;
-import com.mbrlabs.mundus.commons.skybox.Skybox;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.commons.env.Skybox;
 import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
-import com.mbrlabs.mundus.utils.SkyboxBuilder;
 
 /**
  * @author Marcus Brummer
@@ -67,10 +66,9 @@ public class Scene implements Disposable {
         sunLight.position.set(600, 400, 600);
         environment.add(sunLight);
 
-        skybox = SkyboxBuilder.createDefaultSkybox();
+        //skybox = SkyboxBuilder.createDefaultSkybox();
 
         sceneGraph = new SceneGraph(this);
-        sceneGraph.setBatch(Mundus.modelBatch);
     }
 
     public String getName() {

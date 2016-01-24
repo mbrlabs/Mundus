@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.events;
 
-import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer

@@ -14,32 +14,24 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d.components;
+package com.mbrlabs.mundus.commons.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.model.MModelInstance;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer
- * @version 18-01-2016
+ * @version 17-01-2016
  */
-public class TerrainComponent extends AbstractComponent {
+public class ModelComponent extends AbstractComponent {
 
-    private Terrain terrain;
+    private MModelInstance modelInstance;
     private Shader shader;
 
-    public TerrainComponent(GameObject go) {
+    public ModelComponent(GameObject go) {
         super(go);
-        type = Type.TERRAIN;
-    }
-
-    public void setTerrain(Terrain terrain) {
-        this.terrain = terrain;
-    }
-
-    public Terrain getTerrain() {
-        return terrain;
+        type = Type.MODEL;
     }
 
     public Shader getShader() {
@@ -50,9 +42,18 @@ public class TerrainComponent extends AbstractComponent {
         this.shader = shader;
     }
 
+    public void setModelInstance(MModelInstance modelInstance) {
+        this.modelInstance = modelInstance;
+    }
+
+    public MModelInstance getModelInstance() {
+        return modelInstance;
+    }
+
     @Override
     public void render(float delta) {
-        gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
+        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
+                gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override

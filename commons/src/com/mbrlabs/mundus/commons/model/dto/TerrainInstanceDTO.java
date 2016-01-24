@@ -14,37 +14,33 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.exporter.dto;
+package com.mbrlabs.mundus.commons.model.dto;
 
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
  */
-public class ModelInstanceDTO {
+public class TerrainInstanceDTO {
 
     private long id;
-    private long modelID;
+    private long terrainID;
 
     private float[] position;
-    private float[] rotation;
-    private float[] scale;
 
-    public ModelInstanceDTO() {
+    public TerrainInstanceDTO() {
         position = new float[3];
-        rotation = new float[3];
-        scale = new float[3];
     }
 
     public float[] getPosition() {
         return position;
     }
 
-    public float[] getRotation() {
-        return rotation;
+    public long getTerrainID() {
+        return terrainID;
     }
 
-    public float[] getScale() {
-        return scale;
+    public void setTerrainID(long terrainID) {
+        this.terrainID = terrainID;
     }
 
     public long getId() {
@@ -53,14 +49,6 @@ public class ModelInstanceDTO {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getModelID() {
-        return modelID;
-    }
-
-    public void setModelID(long modelID) {
-        this.modelID = modelID;
     }
 
 }

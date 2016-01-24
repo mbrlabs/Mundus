@@ -18,10 +18,10 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.core.Scene;
-import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.model.MTexture;
+import com.mbrlabs.mundus.commons.model.MTexture;
 
 /**
  * @author Marcus Brummer

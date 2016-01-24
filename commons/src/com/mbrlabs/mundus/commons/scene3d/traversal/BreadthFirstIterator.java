@@ -14,42 +14,42 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d.traversal;
+package com.mbrlabs.mundus.commons.scene3d.traversal;
 
-import com.mbrlabs.mundus.scene3d.GameObject;
-import com.mbrlabs.mundus.scene3d.SceneGraph;
+import com.badlogic.gdx.utils.Queue;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 
 import java.util.Iterator;
-import java.util.Stack;
 
 /**
  * @author Marcus Brummer
- * @version 20-01-2016
+ * @version 21-01-2016
  */
-public class DepthFirstIterator implements Iterator<GameObject> {
+public class BreadthFirstIterator implements Iterator<GameObject> {
 
-    private Stack<GameObject> stack;
+    private Queue<GameObject> queue;
 
-    public DepthFirstIterator(SceneGraph sceneGraph) {
-        stack = new Stack<>();
-        stack.push(sceneGraph.getRoot());
+    public BreadthFirstIterator(SceneGraph sceneGraph) {
+        queue = new Queue<>();
+        queue.addLast(sceneGraph.getRoot());
     }
 
     @Override
     public boolean hasNext() {
-        return !stack.isEmpty();
+        return queue.size > 0;
     }
 
     @Override
     public GameObject next() {
-        GameObject top = stack.pop();
-        if(top.getChilds() != null) {
-            for (GameObject child : top.getChilds()) {
-                stack.push(child);
+        GameObject first = queue.removeFirst();
+        if(first.getChilds() != null) {
+            for(GameObject go : first.getChilds()) {
+                queue.addLast(go);
             }
         }
 
-        return top;
+        return first;
     }
 
     @Override

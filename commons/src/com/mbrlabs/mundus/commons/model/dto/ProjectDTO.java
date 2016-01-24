@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.exporter.dto;
+package com.mbrlabs.mundus.commons.model.dto;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -30,7 +30,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.tools.ToolManager;
 
 /**

@@ -20,12 +20,11 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Queue;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 
 /**

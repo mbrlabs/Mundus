@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.ui.components.dock.assets;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -28,11 +27,9 @@ import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.events.*;
-import com.mbrlabs.mundus.model.MModel;
+import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.tools.ToolManager;
-import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer

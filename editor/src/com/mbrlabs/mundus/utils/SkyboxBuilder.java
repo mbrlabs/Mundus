@@ -18,7 +18,7 @@ package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.mbrlabs.mundus.commons.skybox.Skybox;
+import com.mbrlabs.mundus.commons.env.Skybox;
 
 /**
  * @author Marcus Brummer

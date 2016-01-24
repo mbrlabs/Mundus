@@ -14,40 +14,39 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.exporter.dto;
+package com.mbrlabs.mundus.commons.model;
+
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  * @author Marcus Brummer
- * @version 07-01-2016
+ * @version 15-01-2016
  */
-public class FogDTO {
+public class MTexture {
 
-    private float density;
-    private float gradient;
-    private int color;
+    private long id;
+    private String filename;
 
-    public float getDensity() {
-        return density;
+    public Texture texture;
+
+    public MTexture() {
+
     }
 
-    public void setDensity(float density) {
-        this.density = density;
+    public long getId() {
+        return id;
     }
 
-    public float getGradient() {
-        return gradient;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setGradient(float gradient) {
-        this.gradient = gradient;
+    public String getFilename() {
+        return filename;
     }
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
 }

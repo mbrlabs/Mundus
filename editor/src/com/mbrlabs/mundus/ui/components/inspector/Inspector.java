@@ -16,10 +16,8 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -28,9 +26,9 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
-import com.mbrlabs.mundus.scene3d.GameObject;
-import com.mbrlabs.mundus.scene3d.components.Component;
-import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 
 /**
  * @author Marcus Brummer

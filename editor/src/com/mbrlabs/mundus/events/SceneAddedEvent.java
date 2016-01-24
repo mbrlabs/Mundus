@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.events;
 
-import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.commons.Scene;
 
 /**
  * @author Marcus Brummer

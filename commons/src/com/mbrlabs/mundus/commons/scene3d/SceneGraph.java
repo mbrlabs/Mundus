@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d;
+package com.mbrlabs.mundus.commons.scene3d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.core.Scene;
-import com.mbrlabs.mundus.scene3d.components.Component;
-import com.mbrlabs.mundus.scene3d.traversal.BreadthFirstIterator;
-import com.mbrlabs.mundus.scene3d.traversal.DepthFirstIterator;
+import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.traversal.BreadthFirstIterator;
 
 import java.util.Iterator;
 

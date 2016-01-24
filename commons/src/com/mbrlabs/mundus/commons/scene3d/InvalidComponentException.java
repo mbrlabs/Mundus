@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,38 +14,16 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.model;
-
-import com.badlogic.gdx.graphics.g3d.Model;
+package com.mbrlabs.mundus.commons.scene3d;
 
 /**
  * @author Marcus Brummer
- * @version 12-12-2015
+ * @version 18-01-2016
  */
-public class MModel {
+public class InvalidComponentException extends Exception {
 
-    public long id;
-    public String name;
-    public String g3dbFilename;
-    public String textureFilename;
-
-    private Model model;
-
-    public MModel() {
-
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
-    @Override
-    public String toString() {
-        return name;
+    public InvalidComponentException(String message) {
+        super(message);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. See AUTHORS file.
+ * Copyright (c) 2015. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,37 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.model;
-
-import com.badlogic.gdx.graphics.Texture;
+package com.mbrlabs.mundus.commons.model.dto;
 
 /**
  * @author Marcus Brummer
- * @version 15-01-2016
+ * @version 26-12-2015
  */
-public class MTexture {
+public class ModelInstanceDTO {
 
     private long id;
-    private String filename;
+    private long modelID;
 
-    public Texture texture;
+    private float[] position;
+    private float[] rotation;
+    private float[] scale;
 
-    public MTexture() {
+    public ModelInstanceDTO() {
+        position = new float[3];
+        rotation = new float[3];
+        scale = new float[3];
+    }
 
+    public float[] getPosition() {
+        return position;
+    }
+
+    public float[] getRotation() {
+        return rotation;
+    }
+
+    public float[] getScale() {
+        return scale;
     }
 
     public long getId() {
@@ -41,12 +55,12 @@ public class MTexture {
         this.id = id;
     }
 
-    public String getFilename() {
-        return filename;
+    public long getModelID() {
+        return modelID;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setModelID(long modelID) {
+        this.modelID = modelID;
     }
 
 }

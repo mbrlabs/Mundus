@@ -32,8 +32,7 @@ import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.model.MTexture;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 

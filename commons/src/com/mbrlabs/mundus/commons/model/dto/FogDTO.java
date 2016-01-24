@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,41 +14,40 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.exporter.dto;
+package com.mbrlabs.mundus.commons.model.dto;
 
 /**
  * @author Marcus Brummer
- * @version 26-12-2015
+ * @version 07-01-2016
  */
-public class TerrainInstanceDTO {
+public class FogDTO {
 
-    private long id;
-    private long terrainID;
+    private float density;
+    private float gradient;
+    private int color;
 
-    private float[] position;
-
-    public TerrainInstanceDTO() {
-        position = new float[3];
+    public float getDensity() {
+        return density;
     }
 
-    public float[] getPosition() {
-        return position;
+    public void setDensity(float density) {
+        this.density = density;
     }
 
-    public long getTerrainID() {
-        return terrainID;
+    public float getGradient() {
+        return gradient;
     }
 
-    public void setTerrainID(long terrainID) {
-        this.terrainID = terrainID;
+    public void setGradient(float gradient) {
+        this.gradient = gradient;
     }
 
-    public long getId() {
-        return id;
+    public int getColor() {
+        return color;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setColor(int color) {
+        this.color = color;
     }
 
 }

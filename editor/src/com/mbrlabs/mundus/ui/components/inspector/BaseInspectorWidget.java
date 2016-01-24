@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.CollapsibleWidget;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.mbrlabs.mundus.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.utils.Fa;
 

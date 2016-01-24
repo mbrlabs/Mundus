@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.model;
+package com.mbrlabs.mundus.commons.model;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 

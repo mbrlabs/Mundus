@@ -23,11 +23,10 @@ import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.model.MModelInstance;
-import com.mbrlabs.mundus.scene3d.GameObject;
-import com.mbrlabs.mundus.scene3d.components.Component;
-import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 
 /**
  * @author Marcus Brummer

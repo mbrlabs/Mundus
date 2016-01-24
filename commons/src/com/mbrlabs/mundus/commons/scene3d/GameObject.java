@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d;
+package com.mbrlabs.mundus.commons.scene3d;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 
 /**
  * @author Marcus Brummer

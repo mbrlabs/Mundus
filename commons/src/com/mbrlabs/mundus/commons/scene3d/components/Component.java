@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. See AUTHORS file.
+ * Copyright (c) 2016. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,25 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.exporter.dto;
+package com.mbrlabs.mundus.commons.scene3d.components;
+
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer
- * @version 26-12-2015
+ * @version 16-01-2016
  */
-public class ModelDTO {
+public interface Component {
 
-    private String name;
-    private long id;
-
-    public ModelDTO() {
-
+    public static enum Type {
+        MODEL, TERRAIN, LIGHT, PARTICLE_SYSTEM
     }
 
-    public String getName() {
-        return name;
-    }
+    public GameObject getGameObject();
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    public void render(float delta);
+    public void update(float delta);
+    public Type getType();
+    public void setType(Type type);
 
 }

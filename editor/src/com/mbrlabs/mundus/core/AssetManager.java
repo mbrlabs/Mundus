@@ -24,8 +24,8 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.model.MTexture;
+import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import org.apache.commons.io.FilenameUtils;
 
 /**

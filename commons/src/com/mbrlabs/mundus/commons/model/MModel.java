@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. See AUTHORS file.
+ * Copyright (c) 2015. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,38 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d.components;
+package com.mbrlabs.mundus.commons.model;
 
-import com.mbrlabs.mundus.scene3d.GameObject;
+import com.badlogic.gdx.graphics.g3d.Model;
 
 /**
  * @author Marcus Brummer
- * @version 16-01-2016
+ * @version 12-12-2015
  */
-public abstract class AbstractComponent implements Component {
+public class MModel {
 
-    public GameObject gameObject;
-    protected Type type;
+    public long id;
+    public String name;
+    public String g3dbFilename;
+    public String textureFilename;
 
-    public AbstractComponent(GameObject go) {
-        this.gameObject = go;
+    private Model model;
+
+    public MModel() {
+
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
     @Override
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    @Override
-    public Type getType() {
-        return this.type;
-    }
-
-    @Override
-    public GameObject getGameObject() {
-        return this.gameObject;
+    public String toString() {
+        return name;
     }
 
 }

@@ -27,8 +27,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.env.Fog;
-import com.mbrlabs.mundus.commons.exporter.dto.*;
+import com.mbrlabs.mundus.commons.model.dto.*;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainInstance;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
@@ -79,7 +80,7 @@ public class SimpleMundusLoader {
         // build scenes
         for(SceneDTO sceneDTO : projectDTO.getScenes()) {
             Scene scene = new Scene();
-            scene.name = sceneDTO.getName();
+            scene.setName(sceneDTO.getName());
             FogDTO fogDTO = sceneDTO.getFog();
             if(fogDTO != null) {
                 Fog fog = new Fog();

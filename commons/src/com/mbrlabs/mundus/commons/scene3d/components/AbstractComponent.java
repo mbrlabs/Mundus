@@ -14,16 +14,36 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.scene3d;
+package com.mbrlabs.mundus.commons.scene3d.components;
+
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
 
 /**
  * @author Marcus Brummer
- * @version 18-01-2016
+ * @version 16-01-2016
  */
-public class InvalidComponentException extends Exception {
+public abstract class AbstractComponent implements Component {
 
-    public InvalidComponentException(String message) {
-        super(message);
+    public GameObject gameObject;
+    protected Type type;
+
+    public AbstractComponent(GameObject go) {
+        this.gameObject = go;
+    }
+
+    @Override
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    @Override
+    public Type getType() {
+        return this.type;
+    }
+
+    @Override
+    public GameObject getGameObject() {
+        return this.gameObject;
     }
 
 }

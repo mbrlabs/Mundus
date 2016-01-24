@@ -21,17 +21,17 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Fog;
-import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.model.MModel;
-import com.mbrlabs.mundus.model.MModelInstance;
+import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.model.MTexture;
-import com.mbrlabs.mundus.scene3d.*;
-import com.mbrlabs.mundus.scene3d.components.Component;
-import com.mbrlabs.mundus.scene3d.components.ModelComponent;
-import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.scene3d.*;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
