@@ -109,7 +109,6 @@ public class Mundus {
         shaders = new Shaders();
         // project context
         projectContext = new ProjectContext(-1);
-        projectContext.loaded = false;
 
         input = new InputManager();
         toolManager = new ToolManager(input, projectContext, modelBatch, shaders);

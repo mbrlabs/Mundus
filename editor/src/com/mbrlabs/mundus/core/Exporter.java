@@ -64,10 +64,10 @@ public class Exporter {
         if(!assets.exists()) {
             assets.mkdirs();
         }
-        for(MModel model : projectContext.models) {
-            Gdx.files.absolute(model.g3dbPath).copyTo(assets);
-            Gdx.files.absolute(model.texturePath).copyTo(assets);
-        }
+//        for(MModel model : projectContext.models) {
+//            Gdx.files.absolute(model.g3dbPath).copyTo(assets);
+//            Gdx.files.absolute(model.texturePath).copyTo(assets);
+//        }
         for(Terrain terrain : projectContext.terrains) {
             Gdx.files.absolute(terrain.terraPath).copyTo(assets);
             // TODO terrain texture

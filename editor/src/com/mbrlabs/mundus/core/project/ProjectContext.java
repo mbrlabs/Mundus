@@ -40,7 +40,6 @@ public class ProjectContext implements Disposable {
     public Array<MTexture> textures;
 
     private long uuidProvider;
-    public boolean loaded = false;
 
     public ProjectContext(long uuidProvider) {
         models = new Array<>();

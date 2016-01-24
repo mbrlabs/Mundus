@@ -25,9 +25,8 @@ import com.badlogic.gdx.graphics.Texture;
 public class MTexture {
 
     private long id;
-    private String name;
+    private String filename;
 
-    public String path;
     public Texture texture;
 
     public MTexture() {
@@ -42,12 +41,12 @@ public class MTexture {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
 }

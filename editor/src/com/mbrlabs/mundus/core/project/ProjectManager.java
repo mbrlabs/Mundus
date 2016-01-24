@@ -118,17 +118,20 @@ public class ProjectManager {
         context.absolutePath = ref.getAbsolutePath();
         context.name = ref.getName();
 
+        String modelPath = FilenameUtils.concat(context.absolutePath, PROJECT_MODEL_DIR);
+        String texturePath = FilenameUtils.concat(context.absolutePath, PROJECT_TEXTURE_DIR);
+
         // load textures
         for(MTexture tex : context.textures) {
-            tex.texture = new Texture(Gdx.files.absolute(FilenameUtils.concat(context.absolutePath, tex.path)));
-            Log.debug("Loaded texture: " + tex.path);
+            tex.texture = new Texture(Gdx.files.absolute(FilenameUtils.concat(texturePath, tex.getFilename())));
+            Log.debug("Loaded texture: " + tex.getFilename());
         }
 
         // load g3db models
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
         for(MModel model : context.models) {
-            String g3dbPath = model.g3dbPath;
-            model.setModel(loader.loadModel(Gdx.files.absolute(g3dbPath)));
+            model.setModel(loader.loadModel(Gdx.files.absolute(
+                    FilenameUtils.concat(modelPath, model.id + "/" + model.g3dbFilename))));
         }
 
         // load scene graph for every scene
@@ -210,7 +213,6 @@ public class ProjectManager {
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
-        projectContext.loaded = true;
         Gdx.graphics.setTitle(constructWindowTitle());
         Mundus.postEvent(new ProjectChangedEvent());
         toolManager.setDefaultTool();
@@ -234,24 +236,27 @@ public class ProjectManager {
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
         long id = projectContext.obtainUUID();
 
-        // copy to project's model folder
         String folder = projectContext.absolutePath + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
-        FileHandle finalG3db = Gdx.files.absolute(folder + id + ".g3db");
-        importedModel.g3dbFile.copyTo(finalG3db);
-        importedModel.textureFile.copyTo(Gdx.files.absolute(folder));
+        String g3dbFilename = importedModel.name + ".g3db";
+        String textureFilename = importedModel.textureFile.name();
+
+        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(folder + g3dbFilename);
+        FileHandle absoluteTextureImportPath = Gdx.files.absolute(folder + textureFilename);
+
+        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
+        importedModel.textureFile.copyTo(absoluteTextureImportPath);
 
         // load model
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
-        Model model = loader.loadModel(finalG3db);
+        Model model = loader.loadModel(absoluteG3dbImportPath);
 
-        // create persistable model
+        // create model
         MModel mModel = new MModel();
         mModel.setModel(model);
         mModel.name = importedModel.name;
         mModel.id = id;
-        mModel.g3dbPath = finalG3db.path();
-        mModel.texturePath = FilenameUtils.concat(Gdx.files.absolute(folder).path(), importedModel.textureFile.name());
-        System.out.println(finalG3db);
+        mModel.g3dbFilename = absoluteG3dbImportPath.name();
+        mModel.textureFilename = absoluteTextureImportPath.name();
         projectContext.models.add(mModel);
 
         // save whole project
@@ -263,16 +268,16 @@ public class ProjectManager {
     public MTexture importTexture(String name, FileHandle textureFile) {
         long id = projectContext.obtainUUID();
 
-        // copy file
-        String internalName = id + "." + textureFile.extension();
-        String importPath = FilenameUtils.concat(projectContext.absolutePath, PROJECT_TEXTURE_DIR + internalName);
-        textureFile.copyTo(Gdx.files.absolute(importPath));
+        String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, PROJECT_TEXTURE_DIR + textureFile.name());
+        FileHandle absoluteImportFile = Gdx.files.absolute(absoluteImportPath);
+
+        textureFile.copyTo(absoluteImportFile);
 
         MTexture tex = new MTexture();
         tex.setId(id);
-        tex.setName(name);
-        tex.texture = new Texture(textureFile);
-        tex.path = PROJECT_TEXTURE_DIR + internalName;
+        tex.setFilename(absoluteImportFile.name());
+        tex.texture = new Texture(absoluteImportFile);
+
         projectContext.textures.add(tex);
 
         // save whole project

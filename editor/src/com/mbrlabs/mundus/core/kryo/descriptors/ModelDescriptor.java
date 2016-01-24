@@ -29,9 +29,9 @@ public class ModelDescriptor {
     @Tag(1)
     private String name;
     @Tag(2)
-    private String g3dbPath;
+    private String g3dbFilename;
     @Tag(3)
-    private String texturePath;
+    private String textureFilename;
 
     public long getId() {
         return id;
@@ -49,20 +49,20 @@ public class ModelDescriptor {
         this.name = name;
     }
 
-    public String getG3dbPath() {
-        return g3dbPath;
+    public String getG3dbFilename() {
+        return g3dbFilename;
     }
 
-    public void setG3dbPath(String g3dbPath) {
-        this.g3dbPath = g3dbPath;
+    public void setG3dbFilename(String g3dbFilename) {
+        this.g3dbFilename = g3dbFilename;
     }
 
-    public String getTexturePath() {
-        return texturePath;
+    public String getTextureFilename() {
+        return textureFilename;
     }
 
-    public void setTexturePath(String texturePath) {
-        this.texturePath = texturePath;
+    public void setTextureFilename(String textureFilename) {
+        this.textureFilename = textureFilename;
     }
 
 }

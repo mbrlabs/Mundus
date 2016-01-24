@@ -54,8 +54,8 @@ public class DescriptorConverter {
         ModelDescriptor descriptor = new ModelDescriptor();
         descriptor.setName(model.name);
         descriptor.setId(model.id);
-        descriptor.setG3dbPath(model.g3dbPath);
-        descriptor.setTexturePath(model.texturePath);
+        descriptor.setG3dbFilename(model.g3dbFilename);
+        descriptor.setTextureFilename(model.textureFilename);
         return descriptor;
     }
 
@@ -63,8 +63,8 @@ public class DescriptorConverter {
         MModel model = new MModel();
         model.id = modelDescriptor.getId();
         model.name = modelDescriptor.getName();
-        model.g3dbPath = modelDescriptor.getG3dbPath();
-        model.texturePath = modelDescriptor.getTexturePath();
+        model.g3dbFilename = modelDescriptor.getG3dbFilename();
+        model.textureFilename = modelDescriptor.getTextureFilename();
         return model;
     }
 
@@ -248,7 +248,7 @@ public class DescriptorConverter {
 
     public static MTexture convert(TextureDescriptor textureDescriptor) {
         MTexture tex = new MTexture();
-        tex.path = textureDescriptor.getPath();
+        tex.setFilename(textureDescriptor.getFilename());
         tex.setId(textureDescriptor.getId());
 
         return tex;
@@ -257,8 +257,8 @@ public class DescriptorConverter {
     public static TextureDescriptor convert(MTexture tex) {
         TextureDescriptor textureDescriptor = new TextureDescriptor();
         textureDescriptor.setId(tex.getId());
-        textureDescriptor.setName(tex.getName());
-        textureDescriptor.setPath(tex.path);
+        textureDescriptor.setName(tex.getFilename());
+        textureDescriptor.setFilename(tex.getFilename());
 
         return textureDescriptor;
     }
@@ -409,7 +409,6 @@ public class DescriptorConverter {
             }
         }
 
-        context.loaded = false;
         return context;
     }
 

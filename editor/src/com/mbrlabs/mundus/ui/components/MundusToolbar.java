@@ -76,9 +76,7 @@ public class MundusToolbar extends Toolbar {
         saveBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(projectContext.loaded) {
-                    projectManager.saveProject(projectContext);
-                }
+                projectManager.saveProject(projectContext);
             }
         });
 
