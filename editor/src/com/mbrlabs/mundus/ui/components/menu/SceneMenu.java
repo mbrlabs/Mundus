@@ -61,7 +61,7 @@ public class SceneMenu extends Menu implements
                     @Override
                     public void finished(String input) {
                         Scene scene = projectManager.createScene(projectContext, input);
-                        projectManager.changeScene(scene);
+                        projectManager.changeScene(projectContext, scene.getName());
                         Mundus.postEvent(new SceneAddedEvent(scene));
                     }
                 });
@@ -79,18 +79,18 @@ public class SceneMenu extends Menu implements
             removeActor(item);
         }
         // add new items
-        for(final Scene scene : projectContext.scenes) {
+        for(final String scene : projectContext.scenes) {
             buildMenuItem(scene);
         }
 
     }
 
-    private MenuItem buildMenuItem(final Scene scene) {
-        MenuItem menuItem = new MenuItem(scene.getName());
+    private MenuItem buildMenuItem(final String sceneName) {
+        MenuItem menuItem = new MenuItem(sceneName);
         menuItem.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                projectManager.changeScene(scene);
+                projectManager.changeScene(projectContext, sceneName);
             }
         });
         addItem(menuItem);
@@ -107,7 +107,7 @@ public class SceneMenu extends Menu implements
 
     @Override
     public void onSceneAdded(SceneAddedEvent sceneAddedEvent) {
-        buildMenuItem(sceneAddedEvent.getScene());
+        buildMenuItem(sceneAddedEvent.getScene().getName());
     }
 
 }

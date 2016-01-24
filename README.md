@@ -21,7 +21,7 @@ Below are some of the more interesting features, that already work
 - Loading of g3db files
 - Loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv) binary must be set in the settings)
 - Placement of models in the world
-- Multiple scenes in one project
+- Multiple sceneNames in one project
 - A component based scene graph (not fully implemented yet)
 - Basic export of the project into a json format + assets (currently broken due to new scene graph architecture)
 

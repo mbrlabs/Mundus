@@ -27,8 +27,10 @@ import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
+import com.mbrlabs.mundus.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
@@ -98,17 +100,16 @@ public class ProjectManager {
         newProjectContext.absolutePath = path;
         newProjectContext.name = ref.getName();
 
-        // create default scene
+        // create default scene & save .mundus
         Scene scene = new Scene();
         scene.setName(DEFAULT_SCENE_NAME);
         scene.setId(newProjectContext.obtainUUID());
-
-        newProjectContext.scenes.add(scene);
-        newProjectContext.currScene = scene;
+        kryoManager.saveScene(newProjectContext, scene);
 
         // save .pro file
+        newProjectContext.scenes.add(scene.getName());
+        newProjectContext.currScene = scene;
         saveProject(newProjectContext);
-
 
         return newProjectContext;
     }
@@ -155,31 +156,113 @@ public class ProjectManager {
                     FilenameUtils.concat(modelPath, model.id + "/" + model.g3dbFilename))));
         }
 
-        // load scene graph for every scene
-        for(Scene scene : context.scenes) {
-            scene.sceneGraph.batch = modelBatch;
-            initSceneGraph(context, scene.sceneGraph.getRoot());
-        }
-
         // load terrain .terra files
         for(Terrain terrain : context.terrains) {
             TerrainIO.importTerrain(terrain, terrain.terraPath);
         }
 
-        // create TerrainGroup for each scene
-        Array<GameObject> gos = new Array<>();
-        for(Scene scene : context.scenes) {
-            SceneGraph sceneGraph = scene.sceneGraph;
-            gos = sceneGraph.getTerrainGOs(gos);
-            for(GameObject go : gos) {
-                Component terrainComp = go.findComponentByType(Component.Type.TERRAIN);
-                if(terrainComp != null) {
-                    scene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
+        // TODO load last opened scene instead of first
+        // load scene
+        context.currScene = loadScene(context, context.scenes.first());
+
+        return context;
+    }
+
+    public void saveProject(ProjectContext projectContext) {
+        // save terrain data in .terra files
+        for(Terrain terrain : projectContext.terrains) {
+            String path = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TERRAIN_DIR);
+            path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
+            terrain.terraPath = path;
+            TerrainIO.exportTerrain(terrain, path);
+        }
+
+        // save context in .pro file
+        kryoManager.saveProjectContext(projectContext);
+        // save scene in .mundus file
+        kryoManager.saveScene(projectContext, projectContext.currScene);
+
+        Log.debug("Saving project " + projectContext.name+ " [" + projectContext.absolutePath + "]");
+    }
+
+    public boolean openLastOpenedProject() {
+        HomeDescriptor.ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
+        if (lastOpenedProject != null) {
+            try {
+                ProjectContext context = loadProject(lastOpenedProject);
+                if (new File(context.absolutePath).exists()) {
+                    changeProject(context);
+                    return true;
+                } else {
+                    Log.error("Failed to load last opened project");
                 }
+            } catch (FileNotFoundException fnf) {
+                fnf.printStackTrace();
+                return false;
             }
         }
 
-        return context;
+        return false;
+    }
+
+    public void changeProject(ProjectContext context) {
+        toolManager.deactivateTool();
+        homeManager.homeDescriptor.lastProject = new HomeDescriptor.ProjectRef();
+        homeManager.homeDescriptor.lastProject.setName(context.name);
+        homeManager.homeDescriptor.lastProject.setAbsolutePath(context.absolutePath);
+        homeManager.save();
+        projectContext.dispose();
+        projectContext.copyFrom(context);
+        Gdx.graphics.setTitle(constructWindowTitle());
+        Mundus.postEvent(new ProjectChangedEvent());
+        toolManager.setDefaultTool();
+    }
+
+    public Scene createScene(ProjectContext projectContext, String name) {
+        Scene scene = new Scene();
+        long id = projectContext.obtainUUID();
+        scene.setId(id);
+        scene.setName(name);
+        projectContext.scenes.add(scene.getName());
+        kryoManager.saveScene(projectContext, scene);
+
+        return scene;
+    }
+
+    public Scene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
+        SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
+        Scene scene = DescriptorConverter.convert(descriptor, context.terrains, context.models);
+
+        SceneGraph sceneGraph = scene.sceneGraph;
+        sceneGraph.batch = Mundus.modelBatch;
+        initSceneGraph(context, sceneGraph.getRoot());
+
+        // create TerrainGroup for active scene
+        Array<GameObject> gos = new Array<>();
+        sceneGraph.getTerrainGOs(gos);
+        for(GameObject go : gos) {
+            Component terrainComp = go.findComponentByType(Component.Type.TERRAIN);
+            if(terrainComp != null) {
+                context.currScene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
+            }
+        }
+        return scene;
+    }
+
+    public void changeScene(ProjectContext projectContext, String scenename) {
+        toolManager.deactivateTool();
+
+        try {
+            Scene newScene = loadScene(projectContext, scenename);
+            projectContext.currScene.dispose();
+            projectContext.currScene = newScene;
+
+            Gdx.graphics.setTitle(constructWindowTitle());
+            Mundus.postEvent(new SceneChangedEvent());
+            toolManager.setDefaultTool();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initSceneGraph(ProjectContext context, GameObject root) {
@@ -224,73 +307,6 @@ public class ProjectManager {
     public String constructWindowTitle() {
         return projectContext.name + " - " + projectContext.currScene.getName() +
                 " [" + projectContext.absolutePath +"]" + " - " + Main.TITLE;
-    }
-
-    public void changeProject(ProjectContext context) {
-        toolManager.deactivateTool();
-        homeManager.homeDescriptor.lastProject = new HomeDescriptor.ProjectRef();
-        homeManager.homeDescriptor.lastProject.setName(context.name);
-        homeManager.homeDescriptor.lastProject.setAbsolutePath(context.absolutePath);
-        homeManager.save();
-        projectContext.dispose();
-        projectContext.copyFrom(context);
-        Gdx.graphics.setTitle(constructWindowTitle());
-        Mundus.postEvent(new ProjectChangedEvent());
-        toolManager.setDefaultTool();
-    }
-
-    public boolean openLastOpenedProject() {
-        HomeDescriptor.ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
-        if (lastOpenedProject != null) {
-            try {
-                ProjectContext context = loadProject(lastOpenedProject);
-                if (new File(context.absolutePath).exists()) {
-                    changeProject(context);
-                    return true;
-                } else {
-                    Log.error("Failed to load last opened project");
-                }
-            } catch (FileNotFoundException fnf) {
-                fnf.printStackTrace();
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-
-    public void saveProject(ProjectContext projectContext) {
-        // save terrain data in .terra files
-        for(Terrain terrain : projectContext.terrains) {
-            String path = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TERRAIN_DIR);
-            path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
-            terrain.terraPath = path;
-            TerrainIO.exportTerrain(terrain, path);
-        }
-
-        // save context in .pro file
-        kryoManager.saveProjectContext(projectContext);
-
-        Log.debug("Saving project " + projectContext.name+ " [" + projectContext.absolutePath + "]");
-    }
-
-    public Scene createScene(ProjectContext projectContext, String name) {
-        Scene scene = new Scene();
-        long id = projectContext.obtainUUID();
-        scene.setId(id);
-        scene.setName(name);
-        projectContext.scenes.add(scene);
-
-        return scene;
-    }
-
-    public void changeScene(Scene scene) {
-        toolManager.deactivateTool();
-        projectContext.currScene = scene;
-        Gdx.graphics.setTitle(constructWindowTitle());
-        Mundus.postEvent(new SceneChangedEvent());
-        toolManager.setDefaultTool();
     }
 
 }

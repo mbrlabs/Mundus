@@ -163,9 +163,9 @@ public class Exporter {
             dto.getModels().add(convert(model));
         }
         // scenes
-        for(Scene scene : project.scenes) {
-            dto.getScenes().add(convert(scene));
-        }
+//        for(Scene scene : project.scenes) {
+//            dto.getScenes().add(convert(scene));
+//        }
 
         return dto;
     }

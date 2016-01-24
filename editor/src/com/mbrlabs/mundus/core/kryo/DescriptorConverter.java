@@ -359,7 +359,7 @@ public class DescriptorConverter {
     public static ProjectDescriptor convert(ProjectContext project) {
         ProjectDescriptor descriptor = new ProjectDescriptor();
         descriptor.setName(project.name);
-        descriptor.setCurrentSceneID(project.currScene.getId());
+        descriptor.setCurrentSceneName(project.currScene.getName());
         descriptor.setNextAvailableID(project.getCurrentUUID());
 
         // textures
@@ -375,8 +375,8 @@ public class DescriptorConverter {
             descriptor.getModels().add(convert(model));
         }
         // scenes
-        for(Scene scene : project.scenes) {
-            descriptor.getScenes().add(convert(scene));
+        for(String sceneName : project.scenes) {
+            descriptor.getSceneNames().add(sceneName);
         }
 
         return descriptor;
@@ -398,15 +398,19 @@ public class DescriptorConverter {
         for(TerrainDescriptor terrain : projectDescriptor.getTerrains()) {
             context.terrains.add(convert(terrain));
         }
-        // scenes
-        for(SceneDescriptor scene : projectDescriptor.getScenes()) {
-            Scene s = convert(scene, context.terrains, context.models);
-            context.scenes.add(s);
 
-            // set current scene
-            if(scene.getId() == projectDescriptor.getCurrentSceneID()) {
-                context.currScene = s;
-            }
+        // scenes
+//        for(SceneDescriptor scene : projectDescriptor.getSceneNames()) {
+//            Scene s = convert(scene, context.terrains, context.models);
+//            context.scenes.add(s);
+//
+//            // set current scene
+//            if(scene.getId() == projectDescriptor.getCurrentSceneID()) {
+//                context.currScene = s;
+//            }
+//        }
+        for(String sceneName : projectDescriptor.getSceneNames()) {
+            context.scenes.add(sceneName);
         }
 
         return context;

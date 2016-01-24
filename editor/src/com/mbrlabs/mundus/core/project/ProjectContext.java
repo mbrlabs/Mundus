@@ -32,7 +32,7 @@ public class ProjectContext implements Disposable {
     public String absolutePath;
     public String name;
 
-    public Array<Scene> scenes;
+    public Array<String> scenes;
     public Scene currScene;
 
     public Array<MModel> models;
@@ -73,9 +73,6 @@ public class ProjectContext implements Disposable {
     public void dispose() {
         for(MModel model : models) {
             model.getModel().dispose();
-        }
-        for(Scene scene : scenes) {
-            scene.dispose();
         }
         models = null;
     }

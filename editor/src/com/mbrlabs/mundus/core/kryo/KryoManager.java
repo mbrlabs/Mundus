@@ -23,8 +23,11 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -122,6 +125,32 @@ public class KryoManager {
         }
 
         return null;
+    }
+
+    public void saveScene(ProjectContext context, Scene scene) {
+        try {
+            String sceneDir = FilenameUtils.concat(context.absolutePath + "/" + ProjectManager.PROJECT_SCENES_DIR,
+                    scene.getName() + ProjectManager.PROJECT_SCENE_EXTENSION);
+
+            Output output = new Output(new FileOutputStream(sceneDir));
+
+            SceneDescriptor descriptor = DescriptorConverter.convert(scene);
+            kryo.writeObject(output, descriptor);
+
+            output.flush();
+            output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SceneDescriptor loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
+        String sceneDir = FilenameUtils.concat(context.absolutePath + "/" + ProjectManager.PROJECT_SCENES_DIR,
+                sceneName + ProjectManager.PROJECT_SCENE_EXTENSION);
+
+        Input input = new Input(new FileInputStream(sceneDir));
+        SceneDescriptor sceneDescriptor = kryo.readObjectOrNull(input, SceneDescriptor.class);
+        return sceneDescriptor;
     }
 
 }
