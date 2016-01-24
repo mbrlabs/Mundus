@@ -241,7 +241,7 @@ public class ProjectManager {
         for(GameObject go : gos) {
             Component terrainComp = go.findComponentByType(Component.Type.TERRAIN);
             if(terrainComp != null) {
-                context.currScene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
+                scene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
             }
         }
         return scene;

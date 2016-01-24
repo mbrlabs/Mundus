@@ -17,31 +17,27 @@
 package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.utils.Colors;
 
 /**
  * @author Marcus Brummer
- * @version 03-01-2016
+ * @version 19-01-2016
  */
-public class FaTextButton extends VisTextButton {
+public class FaLabel extends VisLabel {
 
-    private final static TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+    private final static LabelStyle style = new LabelStyle();
     static {
         style.font = Mundus.fa;
         style.fontColor = Color.WHITE;
-        style.pressedOffsetX = 1;
-        style.unpressedOffsetX = 0;
-        style.pressedOffsetY = -1;
         style.fontColor = Colors.TURQUOISE;
     }
 
-    public FaTextButton(String text) {
+    public FaLabel(String text) {
         super(text);
         setStyle(style);
-        setFocusBorderEnabled(false);
     }
+
 
 }

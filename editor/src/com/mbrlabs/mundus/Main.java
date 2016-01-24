@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus;
 
+
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
@@ -39,6 +40,19 @@ public class Main {
         config.setWindowedMode(width, (int) (height - height * .05));
 
         new Lwjgl3Application(new Editor(), config);
+//
+//        final Rectangle maximumWindowBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+//        int width = (int) maximumWindowBounds.getWidth();
+//        int height = (int) maximumWindowBounds.getHeight();
+//
+//        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+//
+//        config.width = width;
+//        config.height = (int) (height - height * .05);
+//        config.backgroundFPS = 0;
+//        config.title = TITLE;
+//
+//        new LwjglApplication(new Editor(), config);
     }
 
 }

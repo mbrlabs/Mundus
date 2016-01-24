@@ -123,6 +123,10 @@ public class Mundus {
 
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
         faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.025f);
+        faBuilder.getGeneratorParameter().kerning = true;
+        faBuilder.getGeneratorParameter().borderStraight = false;
+
+
         fa = faBuilder
                 .addIcon(Fa.SAVE)
                 .addIcon(Fa.DOWNLOAD)
@@ -135,6 +139,7 @@ public class Mundus {
                 .addIcon(Fa.CARET_DOWN)
                 .addIcon(Fa.CARET_UP)
                 .addIcon(Fa.TIMES)
+                .addIcon(Fa.CIRCLE)
                 .build();
     }
 
