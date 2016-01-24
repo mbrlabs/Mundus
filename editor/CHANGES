@@ -8,6 +8,8 @@
 - Added a flexible component inspector widget for game objects
 - Fixed rendering of terrain texture tiles
 - Improved UI
+- Added import of projects
+- Updated LibGDX to 1.9.0
 
 [0.0.4] ~ 10/01/2016
 - Added Font Awesome as icon font
