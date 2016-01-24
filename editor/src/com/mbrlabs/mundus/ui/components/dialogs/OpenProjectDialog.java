@@ -23,9 +23,9 @@ import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.RadioButtonGroup;
 
@@ -37,7 +37,7 @@ public class OpenProjectDialog extends BaseDialog {
 
     private VisTextField path;
     private VisTextButton openBtn;
-    private RadioButtonGroup<ProjectRef> projectList;
+    private RadioButtonGroup<HomeDescriptor.ProjectRef> projectList;
 
     @Inject
     private HomeManager homeManager;
@@ -61,8 +61,8 @@ public class OpenProjectDialog extends BaseDialog {
 
         root.add(scrollPane).minWidth(350).maxHeight(400).left().row();
 
-        for(ProjectRef project : homeManager.homeDescriptor.projects) {
-            String text = project.getName() + " [" + project.getPath() + "]";
+        for(HomeDescriptor.ProjectRef project : homeManager.homeDescriptor.projects) {
+            String text = project.getName() + " [" + project.getAbsolutePath() + "]";
             RadioButtonGroup.RadioButton btn = new RadioButtonGroup.RadioButton(text, project);
             projectList.add(btn);
         }
@@ -79,7 +79,7 @@ public class OpenProjectDialog extends BaseDialog {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 RadioButtonGroup.RadioButton selected = projectList.getButtonGroup().getChecked();
-                ProjectRef projectRef = (ProjectRef)selected.getRefObject();
+                HomeDescriptor.ProjectRef projectRef = (HomeDescriptor.ProjectRef)selected.getRefObject();
                 ProjectContext projectContext = projectManager.loadProject(projectRef);
                 close();
                 Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectContext);

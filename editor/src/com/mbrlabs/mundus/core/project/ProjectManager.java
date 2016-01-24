@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
+import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.model.MModel;
@@ -54,9 +55,14 @@ import java.io.File;
  */
 public class ProjectManager {
 
-    public static final String PROJECT_MODEL_DIR = "models/";
-    public static final String PROJECT_TERRAIN_DIR = "terrains/";
-    public static final String PROJECT_TEXTURE_DIR = "textures/";
+    public static final String PROJECT_ASSETS_DIR           =    "assets/";
+    public static final String PROJECT_MODEL_DIR            =    PROJECT_ASSETS_DIR + "/models/";
+    public static final String PROJECT_TERRAIN_DIR          =    PROJECT_ASSETS_DIR + "/terrains/";
+    public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "/textures/";
+
+    public static final String PROJECT_SCENES_DIR           =    "scenes/";
+    public static final String PROJECT_SCENE_EXTENSION      =    ".mundus";
+
 
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
@@ -79,16 +85,17 @@ public class ProjectManager {
     }
 
     public ProjectContext createProject(String name, String folder) {
-        ProjectRef ref = homeManager.createProjectRef(name, folder);
-        String path = ref.getPath();
+        HomeDescriptor.ProjectRef ref = homeManager.createProjectRef(name, folder);
+        String path = ref.getAbsolutePath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
         new File(path, PROJECT_TEXTURE_DIR).mkdirs();
+        new File(path, PROJECT_SCENES_DIR).mkdirs();
 
         // create project context
         ProjectContext newProjectContext = new ProjectContext(-1);
-        newProjectContext.path = ref.getPath();
+        newProjectContext.absolutePath = ref.getAbsolutePath();
         newProjectContext.name = ref.getName();
 
         // create default scene
@@ -106,14 +113,14 @@ public class ProjectManager {
         return newProjectContext;
     }
 
-    public ProjectContext loadProject(ProjectRef ref) {
+    public ProjectContext loadProject(HomeDescriptor.ProjectRef ref) {
         ProjectContext context = kryoManager.loadProjectContext(ref);
-        context.path = ref.getPath();
+        context.absolutePath = ref.getAbsolutePath();
         context.name = ref.getName();
 
         // load textures
         for(MTexture tex : context.textures) {
-            tex.texture = new Texture(Gdx.files.absolute(FilenameUtils.concat(context.path, tex.path)));
+            tex.texture = new Texture(Gdx.files.absolute(FilenameUtils.concat(context.absolutePath, tex.path)));
             Log.debug("Loaded texture: " + tex.path);
         }
 
@@ -192,14 +199,14 @@ public class ProjectManager {
 
     public String constructWindowTitle() {
         return projectContext.name + " - " + projectContext.currScene.getName() +
-                " [" + projectContext.path +"]" + " - " + Main.TITLE;
+                " [" + projectContext.absolutePath +"]" + " - " + Main.TITLE;
     }
 
     public void changeProject(ProjectContext context) {
         toolManager.deactivateTool();
-        homeManager.homeDescriptor.lastProject = new ProjectRef();
+        homeManager.homeDescriptor.lastProject = new HomeDescriptor.ProjectRef();
         homeManager.homeDescriptor.lastProject.setName(context.name);
-        homeManager.homeDescriptor.lastProject.setPath(context.path);
+        homeManager.homeDescriptor.lastProject.setAbsolutePath(context.absolutePath);
         homeManager.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
@@ -210,10 +217,10 @@ public class ProjectManager {
     }
 
     public boolean openLastOpenedProject() {
-        ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
+        HomeDescriptor.ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
         if(lastOpenedProject != null) {
             ProjectContext context = loadProject(lastOpenedProject);
-            if(new File(context.path).exists()) {
+            if(new File(context.absolutePath).exists()) {
                 changeProject(context);
                 return true;
             } else {
@@ -228,7 +235,7 @@ public class ProjectManager {
         long id = projectContext.obtainUUID();
 
         // copy to project's model folder
-        String folder = projectContext.path + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
+        String folder = projectContext.absolutePath + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
         FileHandle finalG3db = Gdx.files.absolute(folder + id + ".g3db");
         importedModel.g3dbFile.copyTo(finalG3db);
         importedModel.textureFile.copyTo(Gdx.files.absolute(folder));
@@ -258,7 +265,7 @@ public class ProjectManager {
 
         // copy file
         String internalName = id + "." + textureFile.extension();
-        String importPath = FilenameUtils.concat(projectContext.path, PROJECT_TEXTURE_DIR + internalName);
+        String importPath = FilenameUtils.concat(projectContext.absolutePath, PROJECT_TEXTURE_DIR + internalName);
         textureFile.copyTo(Gdx.files.absolute(importPath));
 
         MTexture tex = new MTexture();
@@ -277,7 +284,7 @@ public class ProjectManager {
     public void saveProject(ProjectContext projectContext) {
         // save terrain data in .terra files
         for(Terrain terrain : projectContext.terrains) {
-            String path = FilenameUtils.concat(projectContext.path, ProjectManager.PROJECT_TERRAIN_DIR);
+            String path = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
             terrain.terraPath = path;
             TerrainIO.exportTerrain(terrain, path);
@@ -286,7 +293,7 @@ public class ProjectManager {
         // save context in .pro file
         kryoManager.saveProjectContext(projectContext);
 
-        Log.debug("Saving project " + projectContext.name+ " [" + projectContext.path + "]");
+        Log.debug("Saving project " + projectContext.name+ " [" + projectContext.absolutePath + "]");
     }
 
     public Scene createScene(ProjectContext projectContext, String name) {

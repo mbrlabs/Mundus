@@ -16,11 +16,8 @@
 
 package com.mbrlabs.mundus.core.project;
 
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
-import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -32,9 +29,8 @@ import com.mbrlabs.mundus.model.MTexture;
  */
 public class ProjectContext implements Disposable {
 
-    public String path;
+    public String absolutePath;
     public String name;
-    public String id;
 
     public Array<Scene> scenes;
     public Scene currScene;
@@ -56,12 +52,11 @@ public class ProjectContext implements Disposable {
     }
 
     public void copyFrom(ProjectContext other) {
-        path = other.path;
+        absolutePath = other.absolutePath;
         name = other.name;
         terrains = other.terrains;
         currScene = other.currScene;
         scenes = other.scenes;
-        id = other.id;
         models = other.models;
         uuidProvider = other.uuidProvider;
     }

@@ -28,21 +28,19 @@ import com.mbrlabs.mundus.model.MTexture;
 public class ProjectDescriptor {
 
     @Tag(0)
-    private List<ModelDescriptor> models;
-    @Tag(1)
-    private List<TextureDescriptor> textures;
-    @Tag(2)
-    private List<TerrainDescriptor> terrains;
-    @Tag(3)
-    private List<SceneDescriptor> scenes;
-    @Tag(4)
-    private long currentSceneID;
-    @Tag(5)
     private String name;
-    @Tag(6)
-    private String id;
-    @Tag(7)
+    @Tag(1)
     private long nextAvailableID;
+    @Tag(2)
+    private List<ModelDescriptor> models;
+    @Tag(3)
+    private List<TextureDescriptor> textures;
+    @Tag(4)
+    private List<TerrainDescriptor> terrains;
+    @Tag(5)
+    private List<SceneDescriptor> scenes;
+    @Tag(6)
+    private long currentSceneID;
 
     public ProjectDescriptor() {
         models = new ArrayList<>();
@@ -57,14 +55,6 @@ public class ProjectDescriptor {
 
     public List<TerrainDescriptor> getTerrains() {
         return terrains;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

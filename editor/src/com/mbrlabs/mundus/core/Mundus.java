@@ -94,7 +94,7 @@ public class Mundus {
      *
      */
     public static void init() {
-        File homeDir = new File(Files.HOME_DIR);
+        File homeDir = new File(HomeManager.HOME_DIR);
         if(!homeDir.exists()) {
             homeDir.mkdir();
         }
@@ -152,11 +152,11 @@ public class Mundus {
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"));
         VisUI.load(skin);
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Colors.TURQUOISE);
-        pixmap.drawPixel(0,0);
-        Drawable d = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
-        VisUI.getSkin().add("accent-color", d, Drawable.class);
+//        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+//        pixmap.setColor(Colors.TURQUOISE);
+//        pixmap.drawPixel(0,0);
+//        Drawable d = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+//        VisUI.getSkin().add("accent-color", d, Drawable.class);
 
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
     }

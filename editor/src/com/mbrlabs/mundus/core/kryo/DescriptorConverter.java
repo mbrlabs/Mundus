@@ -359,7 +359,6 @@ public class DescriptorConverter {
     public static ProjectDescriptor convert(ProjectContext project) {
         ProjectDescriptor descriptor = new ProjectDescriptor();
         descriptor.setName(project.name);
-        descriptor.setId(project.id);
         descriptor.setCurrentSceneID(project.currScene.getId());
         descriptor.setNextAvailableID(project.getCurrentUUID());
 

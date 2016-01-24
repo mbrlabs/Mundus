@@ -20,10 +20,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
-import com.mbrlabs.mundus.core.project.ProjectRef;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -31,6 +30,11 @@ import java.util.UUID;
  * @version 12-12-2015
  */
 public class HomeManager {
+
+    public static final String HOME_DIR = FilenameUtils.concat(FileUtils.getUserDirectoryPath(), ".mundus/");
+    public static final String LOGS_DIR = FilenameUtils.concat(HOME_DIR, "logs/");
+    public static final String TEMP_DIR = FilenameUtils.concat(HOME_DIR, "temp/");
+    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "mundus");
 
     public HomeDescriptor homeDescriptor;
 
@@ -50,7 +54,7 @@ public class HomeManager {
 
     public FileHandle createTempFolder() {
         String tempFolderPath = FilenameUtils.concat(
-                Files.TEMP_DIR, UUID.randomUUID().toString()) + "/";
+                TEMP_DIR, UUID.randomUUID().toString()) + "/";
         FileHandle tempFolder = Gdx.files.absolute(tempFolderPath);
         tempFolder.mkdirs();
 
@@ -58,23 +62,23 @@ public class HomeManager {
     }
 
     public void purgeModelCache() {
-        for(FileHandle f : Gdx.files.absolute(Files.TEMP_DIR).list()) {
+        for(FileHandle f : Gdx.files.absolute(TEMP_DIR).list()) {
             f.deleteDirectory();
         }
     }
 
-    public ProjectRef createProjectRef(String name, String folder) {
+    public HomeDescriptor.ProjectRef createProjectRef(String name, String folder) {
         String path = FilenameUtils.concat(folder, name);
-        ProjectRef projectRef = new ProjectRef();
+        HomeDescriptor.ProjectRef projectRef = new HomeDescriptor.ProjectRef();
         projectRef.setName(name);
-        projectRef.setPath(path);
+        projectRef.setAbsolutePath(path);
         homeDescriptor.projects.add(projectRef);
         save();
 
         return projectRef;
     }
 
-    public ProjectRef getLastOpenedProject() {
+    public HomeDescriptor.ProjectRef getLastOpenedProject() {
         return homeDescriptor.lastProject;
     }
 

@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.mbrlabs.mundus.core.project.ProjectRef;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,33 @@ public class HomeDescriptor {
     public static class Settings {
         @Tag(0)
         public String fbxConvBinary = "";
+    }
+
+    /**
+     *
+     */
+    public static class ProjectRef {
+        @Tag(0)
+        private String name;
+        @Tag(1)
+        private String absolutePath;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAbsolutePath() {
+            return absolutePath;
+        }
+
+        public void setAbsolutePath(String absolutePath) {
+            this.absolutePath = absolutePath;
+        }
+
     }
 
 }

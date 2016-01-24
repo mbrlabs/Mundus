@@ -24,9 +24,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.utils.Callback;
 
 import java.io.File;
 
@@ -61,12 +59,12 @@ public class LoadingProjectDialog extends VisDialog {
         Ui.getInstance().showDialog(this);
 
 
-        if(new File(projectContext.path).exists()) {
+        if(new File(projectContext.absolutePath).exists()) {
             projectManager.changeProject(projectContext);
             close();
         } else {
             close();
-            DialogUtils.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.path);
+            DialogUtils.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.absolutePath);
         }
 
     }

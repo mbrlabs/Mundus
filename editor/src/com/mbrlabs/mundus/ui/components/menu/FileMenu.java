@@ -25,9 +25,9 @@ import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.core.project.ProjectRef;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -62,8 +62,8 @@ public class FileMenu extends Menu {
 
         // setup recent projects
         PopupMenu recentPrjectsPopup = new PopupMenu();
-        for(final ProjectRef ref : homeManager.homeDescriptor.projects) {
-            MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getPath() + "]");
+        for(final HomeDescriptor.ProjectRef ref : homeManager.homeDescriptor.projects) {
+            MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getAbsolutePath() + "]");
             pro.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
