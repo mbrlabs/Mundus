@@ -34,10 +34,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.core.HomeManager;
-import com.mbrlabs.mundus.core.ImportManager;
-import com.mbrlabs.mundus.core.Inject;
-import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ModelImportEvent;
@@ -61,9 +58,9 @@ public class ImportModelTab extends Tab {
     @Inject
     private ProjectContext projectContext;
     @Inject
-    private ProjectManager projectManager;
-    @Inject
     private ImportManager importManager;
+    @Inject
+    private AssetManager assetManager;
 
     public ImportModelTab(ImportDialog dialog) {
         super(false, false);
@@ -171,7 +168,7 @@ public class ImportModelTab extends Tab {
                     if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
                         // create model
                         importedModel.name = name.getText();
-                        MModel mModel = projectManager.importG3dbModel(importedModel);
+                        MModel mModel = assetManager.importG3dbModel(importedModel);
                         Mundus.postEvent(new ModelImportEvent(mModel));
                         dispose();
                         dialog.close();

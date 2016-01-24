@@ -47,7 +47,7 @@ public class Ui extends MyStage {
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
-    private OpenProjectDialog openProjectDialog;
+   // private OpenProjectDialog openProjectDialog;
     private ImportDialog importDialog;
     private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
@@ -101,7 +101,7 @@ public class Ui extends MyStage {
         // settings dialog
         settingsDialog = new SettingsDialog();
         newProjectDialog = new NewProjectDialog();
-        openProjectDialog = new OpenProjectDialog();
+       // openProjectDialog = new OpenProjectDialog();
         importDialog = new ImportDialog();
         addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
@@ -141,9 +141,9 @@ public class Ui extends MyStage {
         return newProjectDialog;
     }
 
-    public OpenProjectDialog getOpenProjectDialog() {
-        return openProjectDialog;
-    }
+//    public OpenProjectDialog getOpenProjectDialog() {
+//        return openProjectDialog;
+//    }
 
     public ImportDialog getImportDialog() {
         return importDialog;

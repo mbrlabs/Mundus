@@ -27,6 +27,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.core.AssetManager;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -50,7 +51,7 @@ public class ImportTextureTab extends Tab {
     @Inject
     private ProjectContext projectContext;
     @Inject
-    private ProjectManager projectManager;
+    private AssetManager assetManager;
 
     public ImportTextureTab(ImportDialog dialog) {
         super(false, false);
@@ -117,7 +118,7 @@ public class ImportTextureTab extends Tab {
                     FileHandle texture = imageChooserField.getFile();
                     String texName = name.getText();
                     if(texName != null && texName.length() > 0 && texture.exists() && FileFormatUtils.isImage(texture)) {
-                        MTexture tex = projectManager.importTexture(texName, texture);
+                        MTexture tex = assetManager.importTexture(texName, texture);
                         dialog.close();
                     } else {
                         // TODO show error msg

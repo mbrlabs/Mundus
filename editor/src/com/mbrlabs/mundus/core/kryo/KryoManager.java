@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.core.kryo;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -100,16 +102,26 @@ public class KryoManager {
         }
     }
 
-    public ProjectContext loadProjectContext(HomeDescriptor.ProjectRef ref) {
-        try {
-            Input input = new Input(new FileInputStream(ref.getAbsolutePath() + "/" + ref.getName() + ".pro"));
-            ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
-            return DescriptorConverter.convert(projectDescriptor);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    public ProjectContext loadProjectContext(HomeDescriptor.ProjectRef ref) throws FileNotFoundException {
+        // find .pro file
+        System.out.println(ref.getAbsolutePath());
+        FileHandle projectFile = null;
+        for(FileHandle f : Gdx.files.absolute(ref.getAbsolutePath()).list()) {
+            if(f.extension().equals("pro")) {
+                projectFile = f;
+                break;
+            }
         }
 
-        return new ProjectContext(-1);
+        System.out.println(projectFile);
+
+        if(projectFile != null) {
+            Input input = new Input(new FileInputStream(projectFile.path()));
+            ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
+            return DescriptorConverter.convert(projectDescriptor);
+        }
+
+        return null;
     }
 
 }

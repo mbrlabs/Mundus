@@ -17,17 +17,23 @@
 package com.mbrlabs.mundus.ui.components.menu;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
+import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
+import com.mbrlabs.mundus.exceptions.ProjectOpenException;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -37,10 +43,12 @@ import com.mbrlabs.mundus.ui.Ui;
 public class FileMenu extends Menu {
 
     private MenuItem newProject;
-    private MenuItem openProject;
+    private MenuItem importProject;
     private MenuItem recentProjects;
     private MenuItem saveProject;
     private MenuItem exit;
+
+    private FileChooser fileChooser;
 
     @Inject
     private HomeManager homeManager;
@@ -51,10 +59,13 @@ public class FileMenu extends Menu {
         super("File");
         Mundus.inject(this);
 
+        fileChooser = new FileChooser(FileChooser.Mode.OPEN);
+        fileChooser.setSelectionMode(FileChooser.SelectionMode.DIRECTORIES);
+
         newProject = new MenuItem("New Project");
         newProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.N);
-        openProject = new MenuItem("Open Project");
-        openProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.O);
+        importProject = new MenuItem("Import Project");
+        importProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.O);
         recentProjects = new MenuItem("Recent Projects");
         saveProject = new MenuItem("Save Project");
         saveProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.S);
@@ -67,8 +78,13 @@ public class FileMenu extends Menu {
             pro.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    ProjectContext projectContext = projectManager.loadProject(ref);
-                    projectManager.changeProject(projectContext);
+                    try {
+                        ProjectContext projectContext = projectManager.loadProject(ref);
+                        projectManager.changeProject(projectContext);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        DialogUtils.showErrorDialog(Ui.getInstance(), "Could not open project");
+                    }
                 }
             });
             recentPrjectsPopup.addItem(pro);
@@ -76,7 +92,7 @@ public class FileMenu extends Menu {
         recentProjects.setSubMenu(recentPrjectsPopup);
 
         addItem(newProject);
-        addItem(openProject);
+        addItem(importProject);
         addItem(saveProject);
         addItem(recentProjects);
         addSeparator();
@@ -93,24 +109,33 @@ public class FileMenu extends Menu {
             }
         });
 
-        openProject.addListener(new ClickListener() {
+        importProject.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Ui.getInstance().showDialog(Ui.getInstance().getOpenProjectDialog());
+                Ui.getInstance().addActor(fileChooser.fadeIn());
+            }
+        });
+
+        // file chooser
+        fileChooser.setListener(new FileChooserAdapter() {
+            @Override
+            public void selected(FileHandle file) {
+                importNewProject(file);
             }
         });
     }
 
-    public MenuItem getNewProject() {
-        return newProject;
-    }
-
-    public MenuItem getOpenProject() {
-        return openProject;
-    }
-
-    public MenuItem getSaveProject() {
-        return saveProject;
+    public void importNewProject(FileHandle projectDir) {
+        try {
+            ProjectContext context = projectManager.importProject(projectDir.path());
+            projectManager.changeProject(context);
+        } catch (ProjectAlreadyImportedException e) {
+            e.printStackTrace();
+            DialogUtils.showErrorDialog(Ui.getInstance(), "This Project is already imported.");
+        } catch (ProjectOpenException e) {
+            e.printStackTrace();
+            DialogUtils.showErrorDialog(Ui.getInstance(), "This Project can't be opened.");
+        }
     }
 
 }

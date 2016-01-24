@@ -76,6 +76,7 @@ public class Mundus {
 
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
+    private static AssetManager assetManager;
     private static HomeManager homeManager;
     private static ImportManager importManager;
 
@@ -118,6 +119,7 @@ public class Mundus {
         homeManager = new HomeManager(kryoManager);
         projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager, modelBatch, shaders);
         importManager = new ImportManager(homeManager);
+        assetManager = new AssetManager(projectContext, projectManager);
 
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
         faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.025f);

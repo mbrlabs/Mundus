@@ -34,7 +34,7 @@ public class NewProjectDialog extends BaseDialog {
 
     private VisTextField projectName;
     private VisTextButton createBtn;
-    private FileChooserField projectPath;
+    private FileChooserField locationPath;
 
     @Inject
     private ProjectManager projectManager;
@@ -52,10 +52,10 @@ public class NewProjectDialog extends BaseDialog {
         this.projectName = new VisTextField();
         root.add(this.projectName).height(21).width(300).fillX();
         root.row().padTop(10);
-        root.add(new VisLabel("Project Folder:")).right().padRight(5);
-        projectPath = new FileChooserField(300);
-        projectPath.setFileMode(false);
-        root.add(projectPath).row();
+        root.add(new VisLabel("Location:")).right().padRight(5);
+        locationPath = new FileChooserField(300);
+        locationPath.setFileMode(false);
+        root.add(locationPath).row();
 
         createBtn = new VisTextButton("Create");
         root.add(createBtn).width(93).height(25).colspan(2);
@@ -70,7 +70,7 @@ public class NewProjectDialog extends BaseDialog {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 String name = projectName.getText();
-                String path = projectPath.getPath();
+                String path = locationPath.getPath();
                 if(validateInput(name, path)) {
                     if(!path.endsWith("/")) {
                         path += "/";

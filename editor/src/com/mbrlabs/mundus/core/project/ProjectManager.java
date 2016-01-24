@@ -17,16 +17,13 @@
 package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.core.ImportManager;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.Scene;
@@ -34,6 +31,8 @@ import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
+import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
+import com.mbrlabs.mundus.exceptions.ProjectOpenException;
 import com.mbrlabs.mundus.model.MModel;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.model.MTexture;
@@ -48,6 +47,7 @@ import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * @author Marcus Brummer
@@ -95,7 +95,7 @@ public class ProjectManager {
 
         // create project context
         ProjectContext newProjectContext = new ProjectContext(-1);
-        newProjectContext.absolutePath = ref.getAbsolutePath();
+        newProjectContext.absolutePath = path;
         newProjectContext.name = ref.getName();
 
         // create default scene
@@ -113,10 +113,31 @@ public class ProjectManager {
         return newProjectContext;
     }
 
-    public ProjectContext loadProject(HomeDescriptor.ProjectRef ref) {
+    public ProjectContext importProject(String absolutePath) throws ProjectAlreadyImportedException, ProjectOpenException {
+        // check if already imported
+        for (HomeDescriptor.ProjectRef ref : homeManager.homeDescriptor.projects) {
+            if (ref.getAbsolutePath().equals(absolutePath)) {
+                throw new ProjectAlreadyImportedException("Project " + absolutePath + " is already imported");
+            }
+        }
+
+        HomeDescriptor.ProjectRef ref = new HomeDescriptor.ProjectRef();
+        ref.setAbsolutePath(absolutePath);
+
+        try {
+            ProjectContext context = loadProject(ref);
+            ref.setName(context.name);
+            homeManager.homeDescriptor.projects.add(ref);
+            homeManager.save();
+            return context;
+        } catch (Exception e) {
+            throw new ProjectOpenException(e.getMessage());
+        }
+    }
+
+    public ProjectContext loadProject(HomeDescriptor.ProjectRef ref) throws FileNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.absolutePath = ref.getAbsolutePath();
-        context.name = ref.getName();
 
         String modelPath = FilenameUtils.concat(context.absolutePath, PROJECT_MODEL_DIR);
         String texturePath = FilenameUtils.concat(context.absolutePath, PROJECT_TEXTURE_DIR);
@@ -220,71 +241,24 @@ public class ProjectManager {
 
     public boolean openLastOpenedProject() {
         HomeDescriptor.ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
-        if(lastOpenedProject != null) {
-            ProjectContext context = loadProject(lastOpenedProject);
-            if(new File(context.absolutePath).exists()) {
-                changeProject(context);
-                return true;
-            } else {
-                Log.error("Failed to load last opened project");
+        if (lastOpenedProject != null) {
+            try {
+                ProjectContext context = loadProject(lastOpenedProject);
+                if (new File(context.absolutePath).exists()) {
+                    changeProject(context);
+                    return true;
+                } else {
+                    Log.error("Failed to load last opened project");
+                }
+            } catch (FileNotFoundException fnf) {
+                fnf.printStackTrace();
+                return false;
             }
         }
 
         return false;
     }
 
-    public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
-        long id = projectContext.obtainUUID();
-
-        String folder = projectContext.absolutePath + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
-        String g3dbFilename = importedModel.name + ".g3db";
-        String textureFilename = importedModel.textureFile.name();
-
-        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(folder + g3dbFilename);
-        FileHandle absoluteTextureImportPath = Gdx.files.absolute(folder + textureFilename);
-
-        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
-        importedModel.textureFile.copyTo(absoluteTextureImportPath);
-
-        // load model
-        G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
-        Model model = loader.loadModel(absoluteG3dbImportPath);
-
-        // create model
-        MModel mModel = new MModel();
-        mModel.setModel(model);
-        mModel.name = importedModel.name;
-        mModel.id = id;
-        mModel.g3dbFilename = absoluteG3dbImportPath.name();
-        mModel.textureFilename = absoluteTextureImportPath.name();
-        projectContext.models.add(mModel);
-
-        // save whole project
-        saveProject(projectContext);
-
-        return mModel;
-    }
-
-    public MTexture importTexture(String name, FileHandle textureFile) {
-        long id = projectContext.obtainUUID();
-
-        String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, PROJECT_TEXTURE_DIR + textureFile.name());
-        FileHandle absoluteImportFile = Gdx.files.absolute(absoluteImportPath);
-
-        textureFile.copyTo(absoluteImportFile);
-
-        MTexture tex = new MTexture();
-        tex.setId(id);
-        tex.setFilename(absoluteImportFile.name());
-        tex.texture = new Texture(absoluteImportFile);
-
-        projectContext.textures.add(tex);
-
-        // save whole project
-        saveProject(projectContext);
-
-        return tex;
-    }
 
     public void saveProject(ProjectContext projectContext) {
         // save terrain data in .terra files

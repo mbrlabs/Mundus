@@ -68,10 +68,9 @@ public class HomeManager {
     }
 
     public HomeDescriptor.ProjectRef createProjectRef(String name, String folder) {
-        String path = FilenameUtils.concat(folder, name);
         HomeDescriptor.ProjectRef projectRef = new HomeDescriptor.ProjectRef();
         projectRef.setName(name);
-        projectRef.setAbsolutePath(path);
+        projectRef.setAbsolutePath(FilenameUtils.concat(folder, name));
         homeDescriptor.projects.add(projectRef);
         save();
 

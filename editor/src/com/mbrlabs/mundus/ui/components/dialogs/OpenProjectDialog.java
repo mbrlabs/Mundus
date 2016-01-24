@@ -33,61 +33,61 @@ import com.mbrlabs.mundus.ui.widgets.RadioButtonGroup;
  * @author Marcus Brummer
  * @version 28-11-2015
  */
-public class OpenProjectDialog extends BaseDialog {
-
-    private VisTextField path;
-    private VisTextButton openBtn;
-    private RadioButtonGroup<HomeDescriptor.ProjectRef> projectList;
-
-    @Inject
-    private HomeManager homeManager;
-    @Inject
-    private ProjectManager projectManager;
-
-    public OpenProjectDialog() {
-        super("Open Project");
-        Mundus.inject(this);
-        setModal(true);
-
-        VisTable root = new VisTable();
-        root.padTop(6).padRight(6).padBottom(22);
-        add(root);
-
-        projectList = new RadioButtonGroup<>();
-        projectList.left();
-        ScrollPane scrollPane = new VisScrollPane(projectList);
-        scrollPane.setScrollingDisabled(true, false);
-        scrollPane.setFadeScrollBars(false);
-
-        root.add(scrollPane).minWidth(350).maxHeight(400).left().row();
-
-        for(HomeDescriptor.ProjectRef project : homeManager.homeDescriptor.projects) {
-            String text = project.getName() + " [" + project.getAbsolutePath() + "]";
-            RadioButtonGroup.RadioButton btn = new RadioButtonGroup.RadioButton(text, project);
-            projectList.add(btn);
-        }
-
-        openBtn = new VisTextButton("Open");
-        root.add(openBtn).width(93).height(25).padTop(15);
-
-        setupListeners();
-    }
-
-    private void setupListeners() {
-
-        openBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                RadioButtonGroup.RadioButton selected = projectList.getButtonGroup().getChecked();
-                HomeDescriptor.ProjectRef projectRef = (HomeDescriptor.ProjectRef)selected.getRefObject();
-                ProjectContext projectContext = projectManager.loadProject(projectRef);
-                close();
-                Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectContext);
-            }
-        });
-
-    }
-
-
-
-}
+//public class OpenProjectDialog extends BaseDialog {
+//
+//    private VisTextField path;
+//    private VisTextButton openBtn;
+//    private RadioButtonGroup<HomeDescriptor.ProjectRef> projectList;
+//
+//    @Inject
+//    private HomeManager homeManager;
+//    @Inject
+//    private ProjectManager projectManager;
+//
+//    public OpenProjectDialog() {
+//        super("Open Project");
+//        Mundus.inject(this);
+//        setModal(true);
+//
+//        VisTable root = new VisTable();
+//        root.padTop(6).padRight(6).padBottom(22);
+//        add(root);
+//
+//        projectList = new RadioButtonGroup<>();
+//        projectList.left();
+//        ScrollPane scrollPane = new VisScrollPane(projectList);
+//        scrollPane.setScrollingDisabled(true, false);
+//        scrollPane.setFadeScrollBars(false);
+//
+//        root.add(scrollPane).minWidth(350).maxHeight(400).left().row();
+//
+//        for(HomeDescriptor.ProjectRef project : homeManager.homeDescriptor.projects) {
+//            String text = project.getName() + " [" + project.getAbsolutePath() + "]";
+//            RadioButtonGroup.RadioButton btn = new RadioButtonGroup.RadioButton(text, project);
+//            projectList.add(btn);
+//        }
+//
+//        openBtn = new VisTextButton("Open");
+//        root.add(openBtn).width(93).height(25).padTop(15);
+//
+//        setupListeners();
+//    }
+//
+//    private void setupListeners() {
+//
+//        openBtn.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                RadioButtonGroup.RadioButton selected = projectList.getButtonGroup().getChecked();
+//                HomeDescriptor.ProjectRef projectRef = (HomeDescriptor.ProjectRef)selected.getRefObject();
+//                ProjectContext projectContext = projectManager.loadProject(projectRef);
+//                close();
+//                Ui.getInstance().getLoadingProjectDialog().loadProjectAsync(projectContext);
+//            }
+//        });
+//
+//    }
+//
+//
+//
+//}
