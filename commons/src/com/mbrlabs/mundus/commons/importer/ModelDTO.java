@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.model.dto;
+package com.mbrlabs.mundus.commons.importer;
 
 /**
  * @author Marcus Brummer
@@ -22,11 +22,21 @@ package com.mbrlabs.mundus.commons.model.dto;
  */
 public class ModelDTO {
 
-    private String name;
-    private long id;
+    public long id;
+    public String name;
+    public String g3db;
+    public String tex;
 
     public ModelDTO() {
 
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,12 +47,20 @@ public class ModelDTO {
         this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public String getG3db() {
+        return g3db;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setG3db(String g3db) {
+        this.g3db = g3db;
+    }
+
+    public String getTex() {
+        return tex;
+    }
+
+    public void setTex(String tex) {
+        this.tex = tex;
     }
 
 }

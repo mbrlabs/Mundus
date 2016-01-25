@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.model.dto;
+package com.mbrlabs.mundus.commons.importer;
 
 /**
  * @author Marcus Brummer

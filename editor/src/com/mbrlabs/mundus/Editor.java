@@ -165,7 +165,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
             path = FilenameUtils.concat(path, "MundusProjects");
 
             ProjectContext project = projectManager.createProject(name, path);
-            project.currScene.environment.setFog(new Fog());
             projectManager.saveProject(project);
             projectManager.changeProject(project);
         }

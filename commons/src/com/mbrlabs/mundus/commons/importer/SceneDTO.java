@@ -14,37 +14,22 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.model.dto;
+package com.mbrlabs.mundus.commons.importer;
+
 
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
  */
-public class ModelInstanceDTO {
+public class SceneDTO {
 
     private long id;
-    private long modelID;
+    private String name;
 
-    private float[] position;
-    private float[] rotation;
-    private float[] scale;
+    private GameObjectDTO sceneGraph;
 
-    public ModelInstanceDTO() {
-        position = new float[3];
-        rotation = new float[3];
-        scale = new float[3];
-    }
+    public SceneDTO() {
 
-    public float[] getPosition() {
-        return position;
-    }
-
-    public float[] getRotation() {
-        return rotation;
-    }
-
-    public float[] getScale() {
-        return scale;
     }
 
     public long getId() {
@@ -55,12 +40,20 @@ public class ModelInstanceDTO {
         this.id = id;
     }
 
-    public long getModelID() {
-        return modelID;
+    public String getName() {
+        return name;
     }
 
-    public void setModelID(long modelID) {
-        this.modelID = modelID;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public GameObjectDTO getSceneGraph() {
+        return sceneGraph;
+    }
+
+    public void setSceneGraph(GameObjectDTO sceneGraph) {
+        this.sceneGraph = sceneGraph;
     }
 
 }

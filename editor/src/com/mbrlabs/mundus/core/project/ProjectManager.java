@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
+import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.commons.Scene;
@@ -104,6 +105,8 @@ public class ProjectManager {
         // create default scene & save .mundus
         Scene scene = new Scene();
         scene.setName(DEFAULT_SCENE_NAME);
+        scene.skybox = SkyboxBuilder.createDefaultSkybox();
+        scene.environment.setFog(new Fog());
         scene.setId(newProjectContext.obtainUUID());
         kryoManager.saveScene(newProjectContext, scene);
         scene.sceneGraph.batch = Mundus.modelBatch;

@@ -71,7 +71,7 @@ public class ImportManager {
             return null;
         }
 
-        // convert copied dto
+        // convert copied importer
         boolean convert = FileFormatUtils.isFBX(rawModelFile)
                 || FileFormatUtils.isCollada(rawModelFile)
                 || FileFormatUtils.isWavefont(rawModelFile);

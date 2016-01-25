@@ -14,41 +14,16 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.model.dto;
+package com.mbrlabs.mundus.core;
 
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
  */
-public class TerrainInstanceDTO {
+public class RuntimeExporter {
 
-    private long id;
-    private long terrainID;
 
-    private float[] position;
 
-    public TerrainInstanceDTO() {
-        position = new float[3];
-    }
 
-    public float[] getPosition() {
-        return position;
-    }
-
-    public long getTerrainID() {
-        return terrainID;
-    }
-
-    public void setTerrainID(long terrainID) {
-        this.terrainID = terrainID;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
 }

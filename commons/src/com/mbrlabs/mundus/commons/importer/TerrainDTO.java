@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.model.dto;
-
-
-import java.util.ArrayList;
-import java.util.List;
+package com.mbrlabs.mundus.commons.importer;
 
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
  */
-public class SceneDTO {
+public class TerrainDTO {
 
-    private String name;
     private long id;
+    private String name;
 
-    private List<ModelInstanceDTO> entities;
-    private List<TerrainInstanceDTO> terrains;
-    private FogDTO fog;
+    private int width;
+    private int depth;
+    private int vertexRes;
 
-    public SceneDTO() {
-        entities = new ArrayList<>();
-        terrains = new ArrayList<>();
+    public TerrainDTO() {
+
     }
 
     public String getName() {
@@ -54,27 +49,27 @@ public class SceneDTO {
         this.id = id;
     }
 
-    public List<ModelInstanceDTO> getEntities() {
-        return entities;
+    public int getWidth() {
+        return width;
     }
 
-    public void setEntities(List<ModelInstanceDTO> entities) {
-        this.entities = entities;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public List<TerrainInstanceDTO> getTerrains() {
-        return terrains;
+    public int getDepth() {
+        return depth;
     }
 
-    public void setTerrains(List<TerrainInstanceDTO> terrains) {
-        this.terrains = terrains;
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 
-    public FogDTO getFog() {
-        return fog;
+    public int getVertexRes() {
+        return vertexRes;
     }
 
-    public void setFog(FogDTO fog) {
-        this.fog = fog;
+    public void setVertexRes(int vertexRes) {
+        this.vertexRes = vertexRes;
     }
 }
