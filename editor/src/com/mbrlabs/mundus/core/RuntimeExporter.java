@@ -21,6 +21,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.importer.*;
 import com.mbrlabs.mundus.commons.model.MModel;
@@ -87,6 +88,7 @@ public class RuntimeExporter {
         FileHandle jsonOutput = Gdx.files.absolute(FilenameUtils.concat(destFolder.path(), "mundus"));
         OutputStream outputStream = new FileOutputStream(jsonOutput.path());
         Json json = new Json();
+        json.setOutputType(JsonWriter.OutputType.json);
         String output = prettyPrint ? json.prettyPrint(dto) : json.toJson(dto);
         IOUtils.write(output, outputStream);
 
