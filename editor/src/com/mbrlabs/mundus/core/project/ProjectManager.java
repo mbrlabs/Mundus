@@ -106,6 +106,7 @@ public class ProjectManager {
         scene.setName(DEFAULT_SCENE_NAME);
         scene.setId(newProjectContext.obtainUUID());
         kryoManager.saveScene(newProjectContext, scene);
+        scene.sceneGraph.batch = Mundus.modelBatch;
 
         // save .pro file
         newProjectContext.scenes.add(scene.getName());
