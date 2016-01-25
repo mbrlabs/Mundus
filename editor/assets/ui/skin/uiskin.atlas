@@ -534,6 +534,13 @@ separator
   orig: 1, 1
   offset: 0, 0
   index: -1
+separator-green
+    rotate: false
+    xy: 329, 200
+    size: 1, 1
+    orig: 1, 1
+    offset: 0, 0
+    index: -1
 tree-over
   rotate: false
   xy: 327, 200

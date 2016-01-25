@@ -44,7 +44,7 @@ public class Toolbar {
         right = new VisTable();
         right.right().top();
         root.add(right).expandX().fillX().row();
-        root.addSeparator().colspan(2);
+        root.addSeparator().height(2).colspan(2);
     }
 
     public void addItem(Actor actor, boolean addLeft) {

@@ -16,7 +16,15 @@
 
 package com.mbrlabs.mundus.ui.components.menu;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.MenuBar;
+import com.kotcrab.vis.ui.widget.VisImage;
+import com.kotcrab.vis.ui.widget.VisTable;
 
 /**
  * @author Marcus Brummer
@@ -48,6 +56,22 @@ public class MundusMenuBar extends MenuBar {
         addMenu(environmentMenu);
         addMenu(sceneMenu);
         addMenu(windowMenu);
+    }
+
+    @Override
+    public Table getTable() {
+        VisTable root = new VisTable();
+        root.setBackground("menu-bg");
+        Table menuTable = super.getTable();
+
+        VisImage icon = new VisImage(new Texture(Gdx.files.internal("ui/menu_icon.png")));
+        root.add(icon).center().left().pad(5);
+        root.add(menuTable).expand().fill().left().center().row();
+        Container sep = new Container();
+        sep.setBackground(VisUI.getSkin().getDrawable("separator-green"));
+        root.add(sep).expandX().fillX().height(1).colspan(2).row();
+
+        return root;
     }
 
     public FileMenu getFileMenu() {

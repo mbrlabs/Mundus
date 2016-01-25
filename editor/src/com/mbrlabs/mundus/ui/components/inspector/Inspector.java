@@ -76,13 +76,8 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     }
 
     public void setupUi() {
-        VisTable headline = new VisTable();
-        FaLabel icon = new FaLabel(Fa.CIRCLE);
-        icon.setFontScale(0.5f);
-        headline.add(icon).center().left().padRight(2);
-        headline.add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
 
-        root.add(headline).expand().fill().padLeft(5).row();
+        root.add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
         root.addSeparator().row();
         root.add(identifierWidget).expand().fillX().row();
         root.add(transformWidget).expand().fillX().row();
