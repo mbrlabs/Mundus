@@ -16,22 +16,26 @@
 
 package com.mbrlabs.mundus.ui.components.dialogs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.esotericsoftware.kryo.Kryo;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.mbrlabs.mundus.core.RuntimeExporter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.ui.Ui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -53,6 +57,8 @@ public class ExportDialog extends BaseDialog {
 
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private KryoManager kryoManager;
 
     public ExportDialog() {
         super("Export");
@@ -100,7 +106,11 @@ public class ExportDialog extends BaseDialog {
                     boolean compress = gzipCheckbox.isChecked();
                     boolean pretty = prettyPrintCheckbox.isChecked();
 
-                    // TODO export
+                    try {
+                        RuntimeExporter.export(kryoManager, projectContext, Gdx.files.absolute(folder), pretty);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }
