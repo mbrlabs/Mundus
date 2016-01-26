@@ -16,12 +16,12 @@ Below are some of the more interesting features, that already work
 
 - Creation of multiple terrains
 - Basic support for loading heightmaps
-- Editing terrain height with brushes
+- Editing the terrain height with brushes
 - A skybox (not exportable yet)
 - Loading of g3db files
 - Loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv) binary must be set in the settings)
 - Placement of models in the world
-- Multiple sceneNames in one project
+- Multiple scenes in one project
 - A component based scene graph (not fully implemented yet)
 - Basic export of the project into a json format + assets
 
@@ -39,4 +39,4 @@ Android & iOS are obviously not supported as development platforms (but of cours
 ## Building
 Gradle is used as build tool. You can simply import this project into Eclipse/Netbeans/IntelliJ as Gradle project
 and execute the editor:run task. Dependencies will be fetched automagically.
-If you're more of a terminal guy, type "gradle editor:run" and hit enter.
+If you're more of a terminal guy, type "./gradlew editor:run" and hit enter.

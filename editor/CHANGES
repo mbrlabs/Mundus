@@ -1,4 +1,4 @@
-[0.0.5]
+[0.0.5] ~ 26/01/2016
 - Added a basic component based 3D scene graph
 - Changed overall architecture based on the scene graph
 - Added scene graph nodes (game objects) to the outline tab as tree structure
@@ -6,6 +6,7 @@
 - Added a ModelComponent
 - Added a TerrainComponent
 - Added a flexible component inspector widget for game objects
+- Added some basic component-widgets to the inspector
 - Fixed rendering of terrain texture tiles
 - Improved UI
 - Added import of projects

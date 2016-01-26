@@ -31,4 +31,9 @@ public class SkyboxBuilder {
         return new Skybox(texture, texture, texture, texture, texture, texture);
     }
 
+    public static Skybox createNightSkybox() {
+        FileHandle texture = Gdx.files.internal("textures/skybox/star_night.png");
+        return new Skybox(texture, texture, texture, texture, texture, texture);
+    }
+
 }
