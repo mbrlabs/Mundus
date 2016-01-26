@@ -23,7 +23,7 @@ Below are some of the more interesting features, that already work
 - Placement of models in the world
 - Multiple sceneNames in one project
 - A component based scene graph (not fully implemented yet)
-- Basic export of the project into a json format + assets (currently broken due to new scene graph architecture)
+- Basic export of the project into a json format + assets
 
 ## Runtime
 Currently there is no runtime.
