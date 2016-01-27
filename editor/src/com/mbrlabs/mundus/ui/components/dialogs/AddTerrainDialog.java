@@ -152,7 +152,7 @@ public class AddTerrainDialog extends BaseDialog {
         terrain.terrainDepth = terrainDepth;
         terrain.init();
         terrain.update();
-        terrain.setTexture(tex);
+        terrain.setBaseTexture(tex);
 
         return terrain;
     }

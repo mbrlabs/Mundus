@@ -18,7 +18,12 @@ varying vec3 v_vectorToLight;
 varying vec3 v_surfaceNormal;
 varying float v_fog;
 
+varying vec3 pos;
+
 void main(void) {
+    // pos for texture blending
+    pos = a_position / 1200.0;
+
     // position
     vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);
     gl_Position = u_projViewMatrix * worldPos;
@@ -27,7 +32,7 @@ void main(void) {
     v_surfaceNormal = (u_transMatrix * vec4(a_normal, 0.0)).xyz;
     v_vectorToLight = u_lightPos - worldPos.xyz;
 
-    // texture coord
+    // baseTexture coord
     v_texCoord0 = a_texCoord0;
 
     // fog intensity

@@ -50,8 +50,16 @@ public class Terrain implements RenderableProvider {
 
     public Matrix4 transform;
     private Vector3 position;
-    private final Vector2 uvScale = new Vector2(30, 30);
-    private Texture texture;
+    private final Vector2 uvScale = new Vector2(60, 60);
+
+    // Textures
+    private Texture baseTexture;
+    private Texture channelRTexture;
+    private Texture channelGTexture;
+    private Texture channelBTexture;
+    private Texture channelATexture;
+    private Texture blendTexture;
+
 
     public float[] heightData;
     private Mesh mesh;
@@ -65,7 +73,6 @@ public class Terrain implements RenderableProvider {
     private int uvPos;
 
     private final VertexInfo tempVInfo = new VertexInfo();
-
     // used for collision detection
     private final Vector3 c00 = new Vector3();
     private final Vector3 c01 = new Vector3();
@@ -94,30 +101,58 @@ public class Terrain implements RenderableProvider {
         buildIndices();
     }
 
+    public void setBaseTexture(Texture baseTexture) {
+        this.baseTexture = baseTexture;
+        renderable.material.set(TextureAttribute.createDiffuse(this.baseTexture));
+    }
+
+    public void setChannelRTexture(Texture tex) {
+        this.channelRTexture = tex;
+        renderable.material.set(TerrainTextureAttribute.createRChannel(this.channelRTexture));
+    }
+
+    public void setChannelGTexture(Texture tex) {
+        this.channelGTexture = tex;
+        renderable.material.set(TerrainTextureAttribute.createGChannel(this.channelGTexture));
+    }
+
+    public void setChannelBTexture(Texture tex) {
+        this.channelBTexture = tex;
+        renderable.material.set(TerrainTextureAttribute.createBChannel(this.channelBTexture));
+    }
+
+    public void setChannelATexture(Texture tex) {
+        this.channelATexture = tex;
+        renderable.material.set(TerrainTextureAttribute.createAChannel(this.channelATexture));
+    }
+
+    public void setBlendMapTexture(Texture tex) {
+        this.blendTexture = tex;
+        renderable.material.set(TerrainTextureAttribute.createBlendMap(this.blendTexture));
+    }
+
     public void loadHeightMap(Pixmap map, float maxHeight) {
         if (map.getWidth() != vertexResolution || map.getHeight() != vertexResolution) throw new GdxRuntimeException("Incorrect map size");
         heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
     }
 
     public void update () {
+        if(renderable == null) renderable = new Renderable();
         buildVertices();
         mesh.setVertices(vertices);
-        renderable = new Renderable();
         renderable.meshPart.mesh = mesh;
         renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
         renderable.meshPart.offset = 0;
         renderable.meshPart.size = mesh.getNumIndices();
-        renderable.material = new Material();
-        if(this.texture != null) {
-            renderable.material.set(TextureAttribute.createDiffuse(this.texture));
+        if(renderable.material == null) {
+            renderable.material = new Material();
+            if(this.baseTexture != null) {
+                renderable.material.set(TextureAttribute.createDiffuse(this.baseTexture));
+            }
         }
 
-        renderable.meshPart.update();
-    }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-        renderable.material.set(TextureAttribute.createDiffuse(this.texture));
+        renderable.meshPart.update();
     }
 
     public VertexInfo calculateVertexAt(VertexInfo out, int x, int z) {

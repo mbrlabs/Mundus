@@ -92,9 +92,21 @@ public class TerrainIO {
         terrain.init();
         terrain.heightData = floatArray.toArray();
         terrain.update();
-        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/chess.png"));
-       // Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone_hr.jpg"));
-        terrain.setTexture(tex);
+        // Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone.jpg"));
+
+        Texture baseTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        Texture chanRTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
+        Texture chanGTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
+        Texture chanBTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
+        Texture chanATexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
+        Texture blendTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/blend.png"));
+
+        terrain.setBaseTexture(baseTexture);
+        terrain.setChannelRTexture(chanRTexture);
+        terrain.setChannelGTexture(chanGTexture);
+        terrain.setChannelBTexture(chanBTexture);
+        terrain.setChannelATexture(chanATexture);
+        terrain.setBlendMapTexture(blendTexture);
 
         return terrain;
     }
