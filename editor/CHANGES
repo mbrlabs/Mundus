@@ -1,3 +1,6 @@
+[0.0.6]
+- Updated libGDX to 1.9.1
+
 [0.0.5] ~ 26/01/2016
 - Added a basic component based 3D scene graph
 - Changed overall architecture based on the scene graph
