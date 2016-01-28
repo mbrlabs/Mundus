@@ -15,4 +15,6 @@ public class TerrainTextureSplat {
    public Texture chanA;
    public Texture splat;
 
+   public Terrain terrain;
+
 }

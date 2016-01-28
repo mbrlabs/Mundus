@@ -24,13 +24,13 @@ varying vec3 v_surfaceNormal;
 varying vec2 v_texCoord0;
 varying float v_fog;
 
-varying vec3 pos;
+varying vec2 splatPosition;
 
 vec4 blend_textures() {
     // base texture
     vec4 col = texture2D(u_texture_base, v_texCoord0);
 
-    vec4 splat = texture2D(u_texture_splat, pos.xz);
+    vec4 splat = texture2D(u_texture_splat, splatPosition);
     vec4 r = texture2D(u_texture_r, v_texCoord0);
     vec4 g = texture2D(u_texture_g, v_texCoord0);
     vec4 b = texture2D(u_texture_b, v_texCoord0);

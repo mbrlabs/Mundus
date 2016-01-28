@@ -88,6 +88,7 @@ public class Terrain implements RenderableProvider {
 
 
         this.textureSplat = new TerrainTextureSplat();
+        this.textureSplat.terrain = this;
         this.renderable.material = new Material();
         this.renderable.material.set(new TerrainTextureSplatAttribute(
                 TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0, textureSplat));

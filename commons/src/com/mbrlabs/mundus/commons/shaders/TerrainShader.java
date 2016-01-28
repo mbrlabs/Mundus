@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
@@ -50,6 +51,7 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
 
     // ============================ TEXTURES ============================
+    protected final int UNIFORM_TERRAIN_SIZE = register(new Uniform("u_terrainSize"));
     protected final int UNIFORM_TEXTURE_BASE = register(new Uniform("u_texture_base"));
     protected final int UNIFORM_TEXTURE_R = register(new Uniform("u_texture_r"));
     protected final int UNIFORM_TEXTURE_G = register(new Uniform("u_texture_g"));
@@ -62,6 +64,8 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
     protected final int UNIFORM_FOG_GRADIENT = register(new Uniform("u_fogGradient"));
     protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
+
+    private Vector2 terrainSize = new Vector2();
 
     private ShaderProgram program;
 
@@ -96,23 +100,13 @@ public class TerrainShader extends BaseShader {
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
         set(UNIFORM_CAM_POS, camera.position);
-
     }
 
     @Override
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
-        // texture splatting stuff
-        TerrainTextureSplatAttribute splatAttrib = (TerrainTextureSplatAttribute)
-                renderable.material.get(TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0);
-        TerrainTextureSplat splat = splatAttrib.splat;
-        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, splat.base);
-        setTilableTextureUniform(UNIFORM_TEXTURE_R, splat.chanR);
-        setTilableTextureUniform(UNIFORM_TEXTURE_G, splat.chanG);
-        setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
-        setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
-        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, splat.splat);
+        setTerrainSplatTextures(renderable);
 
         // light
         final SunLightsAttribute sla =
@@ -137,6 +131,25 @@ public class TerrainShader extends BaseShader {
 
         // bind attributes, bind mesh & render; then unbinds everything
         renderable.meshPart.render(program);
+    }
+
+    private void setTerrainSplatTextures(Renderable renderable) {
+        TerrainTextureSplatAttribute splatAttrib = (TerrainTextureSplatAttribute)
+                renderable.material.get(TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0);
+        TerrainTextureSplat splat = splatAttrib.splat;
+
+        // set sampler2D uniforms
+        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, splat.base);
+        setTilableTextureUniform(UNIFORM_TEXTURE_R, splat.chanR);
+        setTilableTextureUniform(UNIFORM_TEXTURE_G, splat.chanG);
+        setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
+        setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
+        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, splat.splat);
+
+        // set terrain world size
+        terrainSize.x = splat.terrain.terrainWidth;
+        terrainSize.y = splat.terrain.terrainDepth;
+        set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 
     public void setTilableTextureUniform(int loc, Texture tex) {
