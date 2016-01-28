@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -31,7 +30,8 @@ import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
-import com.mbrlabs.mundus.commons.terrain.TerrainTextureAttribute;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplatAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
@@ -50,12 +50,12 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
 
     // ============================ TEXTURES ============================
-    protected final int UNIFORM_BASE_TEXTURE = register(new Uniform("u_base_texture"));
+    protected final int UNIFORM_TEXTURE_BASE = register(new Uniform("u_texture_base"));
     protected final int UNIFORM_TEXTURE_R = register(new Uniform("u_texture_r"));
     protected final int UNIFORM_TEXTURE_G = register(new Uniform("u_texture_g"));
     protected final int UNIFORM_TEXTURE_B = register(new Uniform("u_texture_b"));
     protected final int UNIFORM_TEXTURE_A = register(new Uniform("u_texture_a"));
-    protected final int UNIFORM_TEXTURE_BLEND = register(new Uniform("u_texture_blend"));
+    protected final int UNIFORM_TEXTURE_SPLAT = register(new Uniform("u_texture_splat"));
 
     // ============================ TEXTURES ============================
 
@@ -103,23 +103,16 @@ public class TerrainShader extends BaseShader {
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
-        // base texture
-        TextureAttribute baseTex = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
-
         // texture splatting stuff
-        TerrainTextureAttribute chanRTex = ((TerrainTextureAttribute)(renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_CHANNEL_R)));
-        TerrainTextureAttribute chanGTex = ((TerrainTextureAttribute)(renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_CHANNEL_G)));
-        TerrainTextureAttribute chanBTex = ((TerrainTextureAttribute)(renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_CHANNEL_B)));
-        TerrainTextureAttribute chanATex = ((TerrainTextureAttribute)(renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_CHANNEL_A)));
-        TerrainTextureAttribute chanBlendTex = ((TerrainTextureAttribute)(renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_BLEND_MAP)));
-
-        setTilableTextureUniform(UNIFORM_BASE_TEXTURE, chanBTex.textureDescription.texture);
-        if(chanRTex != null)        setTilableTextureUniform(UNIFORM_TEXTURE_R, chanRTex.textureDescription.texture);
-        if(chanGTex != null)        setTilableTextureUniform(UNIFORM_TEXTURE_G, chanGTex.textureDescription.texture);
-        if(chanBTex != null)        setTilableTextureUniform(UNIFORM_TEXTURE_B, chanBTex.textureDescription.texture);
-        if(chanATex != null)        setTilableTextureUniform(UNIFORM_TEXTURE_A, chanATex.textureDescription.texture);
-        if(chanBlendTex != null)    setTilableTextureUniform(UNIFORM_TEXTURE_BLEND, chanBlendTex.textureDescription.texture);
-
+        TerrainTextureSplatAttribute splatAttrib = (TerrainTextureSplatAttribute)
+                renderable.material.get(TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0);
+        TerrainTextureSplat splat = splatAttrib.splat;
+        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, splat.base);
+        setTilableTextureUniform(UNIFORM_TEXTURE_R, splat.chanR);
+        setTilableTextureUniform(UNIFORM_TEXTURE_G, splat.chanG);
+        setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
+        setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
+        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, splat.splat);
 
         // light
         final SunLightsAttribute sla =
@@ -147,13 +140,11 @@ public class TerrainShader extends BaseShader {
     }
 
     public void setTilableTextureUniform(int loc, Texture tex) {
+        if(tex == null) return;
         set(loc, tex);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
     }
-
-
-
 
     @Override
     public void end() {

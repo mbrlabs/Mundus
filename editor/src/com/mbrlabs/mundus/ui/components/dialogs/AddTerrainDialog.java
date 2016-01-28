@@ -25,6 +25,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -146,13 +147,19 @@ public class AddTerrainDialog extends BaseDialog {
     }
 
     private Terrain generateTerrain(int terrainWidth, int terrainDepth, int res) {
-        Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/chess.png"));
         Terrain terrain = new Terrain(res);
         terrain.terrainWidth = terrainWidth;
         terrain.terrainDepth = terrainDepth;
         terrain.init();
         terrain.update();
-        terrain.setBaseTexture(tex);
+
+        TerrainTextureSplat splat = terrain.getTextureSplat();
+        splat.base  = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
+        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
+        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
+        splat.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
+        splat.splat = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
 
         return terrain;
     }

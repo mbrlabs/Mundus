@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import org.apache.commons.io.FileUtils;
@@ -92,22 +93,14 @@ public class TerrainIO {
         terrain.init();
         terrain.heightData = floatArray.toArray();
         terrain.update();
-        // Texture tex = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/stone.jpg"));
 
-        Texture baseTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-        Texture chanRTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
-        Texture chanGTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
-        Texture chanBTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
-        Texture chanATexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
-        Texture blendTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/blend.png"));
-
-        terrain.setBaseTexture(baseTexture);
-        terrain.setChannelRTexture(chanRTexture);
-        terrain.setChannelGTexture(chanGTexture);
-        terrain.setChannelBTexture(chanBTexture);
-        terrain.setChannelATexture(chanATexture);
-        terrain.setBlendMapTexture(blendTexture);
-
+        TerrainTextureSplat splat = terrain.getTextureSplat();
+        splat.base  = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
+        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
+        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
+        splat.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
+        splat.splat = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
         return terrain;
     }
 

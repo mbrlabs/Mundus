@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -53,13 +54,7 @@ public class Terrain implements RenderableProvider {
     private final Vector2 uvScale = new Vector2(60, 60);
 
     // Textures
-    private Texture baseTexture;
-    private Texture channelRTexture;
-    private Texture channelGTexture;
-    private Texture channelBTexture;
-    private Texture channelATexture;
-    private Texture blendTexture;
-
+    private TerrainTextureSplat textureSplat;
 
     public float[] heightData;
     private Mesh mesh;
@@ -89,6 +84,13 @@ public class Terrain implements RenderableProvider {
         this.uvPos = attribs.getOffset(VertexAttributes.Usage.TextureCoordinates, -1);
         this.stride = attribs.vertexSize / 4;
         this.vertexResolution = vertexResolution;
+        this.renderable = new Renderable();
+
+
+        this.textureSplat = new TerrainTextureSplat();
+        this.renderable.material = new Material();
+        this.renderable.material.set(new TerrainTextureSplatAttribute(
+                TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0, textureSplat));
     }
 
     public void init() {
@@ -101,57 +103,22 @@ public class Terrain implements RenderableProvider {
         buildIndices();
     }
 
-    public void setBaseTexture(Texture baseTexture) {
-        this.baseTexture = baseTexture;
-        renderable.material.set(TextureAttribute.createDiffuse(this.baseTexture));
-    }
-
-    public void setChannelRTexture(Texture tex) {
-        this.channelRTexture = tex;
-        renderable.material.set(TerrainTextureAttribute.createRChannel(this.channelRTexture));
-    }
-
-    public void setChannelGTexture(Texture tex) {
-        this.channelGTexture = tex;
-        renderable.material.set(TerrainTextureAttribute.createGChannel(this.channelGTexture));
-    }
-
-    public void setChannelBTexture(Texture tex) {
-        this.channelBTexture = tex;
-        renderable.material.set(TerrainTextureAttribute.createBChannel(this.channelBTexture));
-    }
-
-    public void setChannelATexture(Texture tex) {
-        this.channelATexture = tex;
-        renderable.material.set(TerrainTextureAttribute.createAChannel(this.channelATexture));
-    }
-
-    public void setBlendMapTexture(Texture tex) {
-        this.blendTexture = tex;
-        renderable.material.set(TerrainTextureAttribute.createBlendMap(this.blendTexture));
-    }
-
     public void loadHeightMap(Pixmap map, float maxHeight) {
         if (map.getWidth() != vertexResolution || map.getHeight() != vertexResolution) throw new GdxRuntimeException("Incorrect map size");
         heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
     }
 
+    public TerrainTextureSplat getTextureSplat() {
+        return textureSplat;
+    }
+
     public void update () {
-        if(renderable == null) renderable = new Renderable();
         buildVertices();
         mesh.setVertices(vertices);
         renderable.meshPart.mesh = mesh;
         renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
         renderable.meshPart.offset = 0;
         renderable.meshPart.size = mesh.getNumIndices();
-        if(renderable.material == null) {
-            renderable.material = new Material();
-            if(this.baseTexture != null) {
-                renderable.material.set(TextureAttribute.createDiffuse(this.baseTexture));
-            }
-        }
-
-
         renderable.meshPart.update();
     }
 

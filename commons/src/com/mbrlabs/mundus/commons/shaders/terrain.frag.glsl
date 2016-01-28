@@ -8,13 +8,12 @@ const vec4 COLOR_DARK = vec4(0.05,0.05,0.05, 1.0);
 const vec4 COLOR_BRIGHT = vec4(0.8,0.8,0.8, 1.0);
 
 // textures
-uniform sampler2D u_base_texture;
-
+uniform sampler2D u_texture_base;
 uniform sampler2D u_texture_r;
 uniform sampler2D u_texture_g;
 uniform sampler2D u_texture_b;
 uniform sampler2D u_texture_a;
-uniform sampler2D u_texture_blend;
+uniform sampler2D u_texture_splat;
 
 // light
 uniform float u_lightIntensity;
@@ -29,18 +28,18 @@ varying vec3 pos;
 
 vec4 blend_textures() {
     // base texture
-    vec4 col = texture2D(u_base_texture, v_texCoord0);
+    vec4 col = texture2D(u_texture_base, v_texCoord0);
 
-    vec4 blend = texture2D(u_texture_blend, pos.xz);
+    vec4 splat = texture2D(u_texture_splat, pos.xz);
     vec4 r = texture2D(u_texture_r, v_texCoord0);
     vec4 g = texture2D(u_texture_g, v_texCoord0);
-   // vec4 b = texture2D(u_texture_b, v_texCoord0);
+    vec4 b = texture2D(u_texture_b, v_texCoord0);
    // vec4 a = texture2D(u_texture_a, v_texCoord0);
 
-    col = mix(col, r, blend.r);
-    col = mix(col, g, blend.g);
-  //  col = mix(col, b, blend.b);
-   // col = mix(col, a, blend.a);
+    col = mix(col, r, splat.r);
+    col = mix(col, g, splat.g);
+    col = mix(col, b, splat.b);
+   // col = mix(col, a, splat.a);
 
     return col;
 }
