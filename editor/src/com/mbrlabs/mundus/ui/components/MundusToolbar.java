@@ -23,6 +23,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.ui.widgets.Toolbar;
@@ -36,9 +37,13 @@ public class MundusToolbar extends Toolbar {
 
     private FaTextButton saveBtn;
     private FaTextButton importBtn;
-    private FaTextButton runBtn;
     private FaTextButton exportBtn;
 
+    private FaTextButton selectBtn;
+    private FaTextButton translateBtn;
+
+    @Inject
+    private ToolManager toolManager;
     @Inject
     private ProjectManager projectManager;
     @Inject
@@ -48,29 +53,31 @@ public class MundusToolbar extends Toolbar {
         super();
         Mundus.inject(this);
         saveBtn = new FaTextButton(Fa.SAVE);
-        saveBtn.pad(2).padRight(7).padLeft(7);
-        saveBtn.getLabel().setFontScale(0.85f);
+        saveBtn.padRight(7).padLeft(7);
         new Tooltip(saveBtn, "Save project");
 
         importBtn = new FaTextButton(Fa.DOWNLOAD);
-        importBtn.pad(2).padRight(7).padLeft(7);
-        importBtn.getLabel().setFontScale(0.85f);
+        importBtn.padRight(7).padLeft(7);
         new Tooltip(importBtn, "Import model");
 
-        runBtn = new FaTextButton(Fa.PLAY);
-        runBtn.pad(2).padRight(7).padLeft(7);
-        runBtn.getLabel().setFontScale(0.85f);
-        new Tooltip(runBtn, "FPS mode");
-
         exportBtn = new FaTextButton(Fa.GIFT);
-        exportBtn.pad(2).padRight(7).padLeft(7);
-        exportBtn.getLabel().setFontScale(0.85f);
+        exportBtn.padRight(12).padLeft(7);
         new Tooltip(exportBtn, "Export project");
+
+        selectBtn = new FaTextButton(toolManager.selectionTool.getIconFont());
+        selectBtn.padRight(7).padLeft(12);
+        new Tooltip(selectBtn, toolManager.selectionTool.getName());
+
+        translateBtn = new FaTextButton(toolManager.translateTool.getIconFont());
+        translateBtn.padRight(7).padLeft(7);
+        new Tooltip(translateBtn, toolManager.translateTool.getName());
 
         addItem(saveBtn, true);
         addItem(importBtn, true);
         addItem(exportBtn, true);
-        //addItem(runBtn, false);
+        addSeperator(true);
+        addItem(selectBtn, true);
+        addItem(translateBtn, true);
 
         // save btn
         saveBtn.addListener(new ClickListener() {
@@ -98,6 +105,22 @@ public class MundusToolbar extends Toolbar {
             }
         });
 
+        // select tool
+        selectBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                toolManager.activateTool(toolManager.selectionTool);
+            }
+        });
+
+        // translate tool
+        translateBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                toolManager.activateTool(toolManager.translateTool);
+            }
+        });
+
     }
 
     public FaTextButton getSaveBtn() {
@@ -106,10 +129,6 @@ public class MundusToolbar extends Toolbar {
 
     public FaTextButton getImportBtn() {
         return importBtn;
-    }
-
-    public FaTextButton getRunBtn() {
-        return runBtn;
     }
 
 }

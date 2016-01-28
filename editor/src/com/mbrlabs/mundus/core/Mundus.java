@@ -122,7 +122,7 @@ public class Mundus {
         assetManager = new AssetManager(projectContext, projectManager);
 
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
-        faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.025f);
+        faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.02f);
         faBuilder.getGeneratorParameter().kerning = true;
         faBuilder.getGeneratorParameter().borderStraight = false;
 

@@ -39,12 +39,12 @@ public class Toolbar {
 
         left = new VisTable();
         left.left().top();
-        root.add(left).expandX().fillX();
+        root.add(left).pad(2).expandX().fillX();
 
         right = new VisTable();
         right.right().top();
-        root.add(right).expandX().fillX().row();
-        root.addSeparator().height(2).colspan(2);
+        root.add(right).pad(2).expandX().fillX().row();
+        root.addSeparator().pad(0).height(2).colspan(2);
     }
 
     public void addItem(Actor actor, boolean addLeft) {
@@ -52,6 +52,14 @@ public class Toolbar {
             left.add(actor);
         } else {
             right.add(actor);
+        }
+    }
+
+    public void addSeperator(boolean addLeft) {
+        if(addLeft) {
+            left.addSeparator(true);
+        } else {
+            right.addSeparator(true);
         }
     }
 

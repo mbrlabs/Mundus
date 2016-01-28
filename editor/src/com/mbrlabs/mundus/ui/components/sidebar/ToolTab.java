@@ -48,7 +48,6 @@ public class ToolTab extends Tab {
 
     private GridGroup meshBrushGrid;
     private GridGroup textureBrushGrid;
-    private GridGroup transformationToolsGrid;
 
     public ToolTab() {
         super(false, false);
@@ -56,9 +55,7 @@ public class ToolTab extends Tab {
         content = new VisTable();
         content.align(Align.left | Align.top);
 
-        createTransfornamtionTools();
         createTerrainMeshTools();
-        createTerrainTextureTools();
     }
 
     private void createTerrainMeshTools() {
@@ -71,24 +68,6 @@ public class ToolTab extends Tab {
         content.add(new VisLabel("Terrain mesh brushes")).left().pad(5).row();
         content.addSeparator();
         content.add(meshBrushGrid).expandX().fillX().row();
-    }
-
-    private void createTerrainTextureTools() {
-        textureBrushGrid = new GridGroup(40, 5);
-
-        content.add(new VisLabel("Terrain texture brushes")).left().pad(5).row();
-        content.addSeparator();
-        content.add(textureBrushGrid).expandX().fillX().row();
-    }
-
-    private void createTransfornamtionTools() {
-        transformationToolsGrid = new GridGroup(40, 5);
-        transformationToolsGrid.addActor(new ToolGridItem(toolManager.selectionTool));
-        transformationToolsGrid.addActor(new ToolGridItem(toolManager.translateTool));
-
-        content.add(new VisLabel("Transformation tools")).left().pad(5).row();
-        content.addSeparator();
-        content.add(transformationToolsGrid).expandX().fillX().row();
     }
 
     @Override
