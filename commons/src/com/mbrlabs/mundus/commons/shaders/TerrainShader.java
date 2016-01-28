@@ -149,12 +149,12 @@ public class TerrainShader extends BaseShader {
         texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
         texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
         setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, splat.splat);
+        set(UNIFORM_TEXTURE_COUNT, texCount);
 
         // set terrain world size
         terrainSize.x = splat.terrain.terrainWidth;
         terrainSize.y = splat.terrain.terrainDepth;
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
-        set(UNIFORM_TEXTURE_COUNT, texCount);
     }
 
     public int setTilableTextureUniform(int loc, Texture tex) {

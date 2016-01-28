@@ -37,37 +37,35 @@ vec4 blend_textures() {
         // r channel
         if(u_texture_count >= 1) {
             col = mix(col, texture2D(u_texture_r, v_texCoord0), splat.r);
-        }
 
-        // g channel
-        if(u_texture_count >= 2) {
-            col = mix(col, texture2D(u_texture_g, v_texCoord0), splat.g);
-        }
+            // g channel
+            if(u_texture_count >= 2) {
+                col = mix(col, texture2D(u_texture_g, v_texCoord0), splat.g);
 
-        // b channel
-        if(u_texture_count >= 3) {
-            col = mix(col, texture2D(u_texture_b, v_texCoord0), splat.b);
-        }
+                // b channel
+                if(u_texture_count >= 3) {
+                    col = mix(col, texture2D(u_texture_b, v_texCoord0), splat.b);
 
-       // a channel
-       // if(u_texture_count == 4) {
-       //     col = mix(col, texture2D(u_texture_a, v_texCoord0), splat.a);
-       // }
+                   // a channel
+                   // if(u_texture_count == 4) {
+                   //     col = mix(col, texture2D(u_texture_a, v_texCoord0), splat.a);
+                   // }
+                }
+            }
+        }
 
     }
 
     return col;
 }
 
+
 void main(void) {
-    vec3 unitNormal = normalize(v_surfaceNormal);
-    vec3 unitLightVector = normalize(v_vectorToLight);
-    float nDot1 = u_lightIntensity * dot(unitNormal, unitLightVector);
-    // diffuse
+    float nDot1 = u_lightIntensity * dot(v_surfaceNormal, v_vectorToLight);
     float brightness = max(nDot1, 0.2);
 
-   // gl_FragColor = COLOR_DARK * vec4(brightness,brightness,brightness, 1.0);
     gl_FragColor = brightness * blend_textures();
+    // add fog
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
 
 }

@@ -32,8 +32,8 @@ void main(void) {
     gl_Position = u_projViewMatrix * worldPos;
 
     // for diffuse lighting
-    v_surfaceNormal = (u_transMatrix * vec4(a_normal, 0.0)).xyz;
-    v_vectorToLight = u_lightPos - worldPos.xyz;
+    v_surfaceNormal = normalize((u_transMatrix * vec4(a_normal, 0.0)).xyz);
+    v_vectorToLight = normalize(u_lightPos - worldPos.xyz);
 
     // baseTexture coord
     v_texCoord0 = a_texCoord0;
