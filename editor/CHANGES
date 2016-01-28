@@ -1,11 +1,12 @@
 [0.0.6]
 - Updated libGDX to 1.9.1
+- Implemented texture splatting for terrain textures
 
 [0.0.5] ~ 26/01/2016
-- Added a basic component based 3D scene graph
+- Implemented a basic component based 3D scene graph
 - Changed overall architecture based on the scene graph
 - Added scene graph nodes (game objects) to the outline tab as tree structure
-- Added creation/deletion of game objects
+- Implemented creation/deletion of game objects
 - Added a ModelComponent
 - Added a TerrainComponent
 - Added a flexible component inspector widget for game objects
@@ -19,7 +20,7 @@
 
 [0.0.4] ~ 10/01/2016
 - Added Font Awesome as icon font
-- Added adding & switching between scenes
+- Implemented adding & switching between scenes
 - Improved Translate tool
 - Added new terrain brush: Flatten
 - Added Customizable Fog

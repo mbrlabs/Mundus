@@ -96,11 +96,11 @@ public class TerrainIO {
 
         TerrainTextureSplat splat = terrain.getTextureSplat();
         splat.base  = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
-        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
-        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
-        splat.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
-        splat.splat = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
+//        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
+//        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
+//        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
+//        splat.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
+//        splat.splat = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
         return terrain;
     }
 

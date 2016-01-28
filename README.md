@@ -17,6 +17,7 @@ Below are some of the more interesting features, that already work
 - Creation of multiple terrains
 - Basic support for loading heightmaps
 - Editing the terrain height with brushes
+- Texture splatting of terrain textures with up to 5 textures
 - A skybox (not exportable yet)
 - Loading of g3db files
 - Loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv) binary must be set in the settings)
