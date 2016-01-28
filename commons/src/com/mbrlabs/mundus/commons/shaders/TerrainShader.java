@@ -44,13 +44,16 @@ public class TerrainShader extends BaseShader {
     private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.vert.glsl";
     private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.frag.glsl";
 
+    // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
-    protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
+
+    // ============================ LIGHTS ============================
+    protected final int UNIFORM_LIGHT_POS = register(new Uniform("u_lightPos"));
     protected final int UNIFORM_LIGHT_INTENSITY = register(new Uniform("u_lightIntensity"));
 
-    // ============================ TEXTURES ============================
+    // ============================ TEXTURE SPLATTING ============================
     protected final int UNIFORM_TERRAIN_SIZE = register(new Uniform("u_terrainSize"));
     protected final int UNIFORM_TEXTURE_BASE = register(new Uniform("u_texture_base"));
     protected final int UNIFORM_TEXTURE_R = register(new Uniform("u_texture_r"));
@@ -58,9 +61,9 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_TEXTURE_B = register(new Uniform("u_texture_b"));
     protected final int UNIFORM_TEXTURE_A = register(new Uniform("u_texture_a"));
     protected final int UNIFORM_TEXTURE_SPLAT = register(new Uniform("u_texture_splat"));
+    protected final int UNIFORM_TEXTURE_COUNT = register(new Uniform("u_texture_count"));
 
-    // ============================ TEXTURES ============================
-
+    // ============================ FOG ============================
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
     protected final int UNIFORM_FOG_GRADIENT = register(new Uniform("u_fogGradient"));
     protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
@@ -139,24 +142,28 @@ public class TerrainShader extends BaseShader {
         TerrainTextureSplat splat = splatAttrib.splat;
 
         // set sampler2D uniforms
+        int texCount = 0;
         setTilableTextureUniform(UNIFORM_TEXTURE_BASE, splat.base);
-        setTilableTextureUniform(UNIFORM_TEXTURE_R, splat.chanR);
-        setTilableTextureUniform(UNIFORM_TEXTURE_G, splat.chanG);
-        setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
-        setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_R, splat.chanR);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, splat.chanG);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
         setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, splat.splat);
 
         // set terrain world size
         terrainSize.x = splat.terrain.terrainWidth;
         terrainSize.y = splat.terrain.terrainDepth;
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
+        set(UNIFORM_TEXTURE_COUNT, texCount);
     }
 
-    public void setTilableTextureUniform(int loc, Texture tex) {
-        if(tex == null) return;
+    public int setTilableTextureUniform(int loc, Texture tex) {
+        if(tex == null) return 0;
         set(loc, tex);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+
+        return 1;
     }
 
     @Override
