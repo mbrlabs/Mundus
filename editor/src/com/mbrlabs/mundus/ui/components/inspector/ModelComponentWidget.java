@@ -27,14 +27,13 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.ui.components.inspector.ComponentWidget;
 
 /**
  * @author Marcus Brummer
  * @version 21-01-2016
  */
-public class ModelComponentWidget extends ComponentWidget {
-
-    private ModelComponent modelComponent;
+public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
     private VisSelectBox<MModel> selectBox = new VisSelectBox<>();
 
@@ -42,9 +41,9 @@ public class ModelComponentWidget extends ComponentWidget {
     private ProjectContext projectContext;
 
     public ModelComponentWidget(final ModelComponent modelComponent) {
-        super("Model Component");
+        super("Model Component", modelComponent);
         Mundus.inject(this);
-        this.modelComponent = modelComponent;
+        this.component = modelComponent;
 
         selectBox.setItems(projectContext.models);
         selectBox.setSelected(modelComponent.getModelInstance().getModel());
@@ -67,15 +66,15 @@ public class ModelComponentWidget extends ComponentWidget {
 
     @Override
     public void onDelete() {
-        projectContext.currScene.currentSelection.removeComponent(modelComponent);
+        projectContext.currScene.currentSelection.removeComponent(component);
         remove();
     }
 
     @Override
     public void setValues(GameObject go) {
-        Component component = go.findComponentByType(Component.Type.MODEL);
-        if(component != null) {
-            modelComponent = (ModelComponent) component;
+        Component c = go.findComponentByType(Component.Type.MODEL);
+        if(c != null) {
+            component = (ModelComponent) c;
         }
     }
 

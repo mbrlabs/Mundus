@@ -20,11 +20,14 @@ package com.mbrlabs.mundus.ui.components.inspector;
  * @author Marcus Brummer
  * @version 22-01-2016
  */
-public abstract class ComponentWidget extends BaseInspectorWidget {
+public abstract class ComponentWidget<T> extends BaseInspectorWidget {
 
-    public ComponentWidget(String title) {
+    protected T component;
+
+    public ComponentWidget(String title, T component) {
         super(title);
         setDeletable(true);
+        this.component = component;
     }
 
 }

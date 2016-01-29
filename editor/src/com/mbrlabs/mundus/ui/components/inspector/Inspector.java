@@ -16,12 +16,12 @@
 
 package com.mbrlabs.mundus.ui.components.inspector;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -30,8 +30,6 @@ import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
-import com.mbrlabs.mundus.ui.widgets.FaLabel;
-import com.mbrlabs.mundus.utils.Fa;
 
 /**
  * @author Marcus Brummer
@@ -92,9 +90,15 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         componentWidgets.clear();
         if(projectContext.currScene.currentSelection != null) {
             for(Component component : projectContext.currScene.currentSelection.getComponents()) {
+
+                // model component widget
                 if(component.getType() == Component.Type.MODEL) {
                     componentWidgets.add(new ModelComponentWidget((ModelComponent)component));
+                // terrain component widget
+                } else if(component.getType() == Component.Type.TERRAIN) {
+                    componentWidgets.add(new TerrainComponentWidget((TerrainComponent)component));
                 }
+
             }
         }
     }
