@@ -42,7 +42,7 @@ import com.mbrlabs.mundus.utils.Fa;
 //    @Override
 //    public boolean supportsMode(BrushMode mode) {
 //        switch (mode) {
-//            case PAINT_HEIGHT: return true;
+//            case FLATTEN: return true;
 //        }
 //
 //        return false;

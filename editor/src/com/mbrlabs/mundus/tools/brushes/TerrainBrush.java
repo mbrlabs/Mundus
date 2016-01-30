@@ -18,7 +18,7 @@ public abstract class TerrainBrush extends Tool {
      *
      */
     public enum BrushMode {
-        RAISE_LOWER, PAINT_HEIGHT, SMOOTH, PAINT
+        RAISE_LOWER, FLATTEN, SMOOTH, PAINT
     }
 
     /**

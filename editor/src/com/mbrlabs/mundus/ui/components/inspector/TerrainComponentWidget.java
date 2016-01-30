@@ -32,6 +32,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     private RaiseLowerTab raiseLowerTab;
     private FlattenTab flattenTab;
     private PaintTab paintTab;
+    private SettingsTab settingsTab;
 
     @Inject
     private ToolManager toolManager;
@@ -46,10 +47,12 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
         raiseLowerTab = new RaiseLowerTab();
         flattenTab = new FlattenTab();
         paintTab = new PaintTab();
+        settingsTab = new SettingsTab();
 
         tabbedPane.add(raiseLowerTab);
         tabbedPane.add(flattenTab);
         tabbedPane.add(paintTab);
+        tabbedPane.add(settingsTab);
 
         setupUI();
 
@@ -101,7 +104,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             super(false, false);
             table = new VisTable();
             table.align(Align.left);
-            table.add(new VisLabel("Up/Down")).row();
+            table.add(new BrushTable(TerrainBrush.BrushMode.RAISE_LOWER)).expand().fill().row();
         }
 
         @Override
@@ -126,7 +129,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             super(false, false);
             table = new VisTable();
             table.align(Align.left);
-            table.add(new VisLabel("Flatten"));
+            table.add(new BrushTable(TerrainBrush.BrushMode.FLATTEN)).expand().fill().row();
         }
 
         @Override
@@ -151,12 +154,37 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             super(false, false);
             table = new VisTable();
             table.align(Align.left);
-            table.add(new VisLabel("Paint"));
+            table.add(new BrushTable(TerrainBrush.BrushMode.PAINT)).expand().fill().row();
         }
 
         @Override
         public String getTabTitle() {
             return "Paint";
+        }
+
+        @Override
+        public Table getContentTable() {
+            return table;
+        }
+    }
+
+    /**
+     *
+     */
+    private class SettingsTab extends Tab {
+
+        private VisTable table;
+
+        public SettingsTab() {
+            super(false, false);
+            table = new VisTable();
+            table.align(Align.left);
+            table.add(new VisLabel("Settings"));
+        }
+
+        @Override
+        public String getTabTitle() {
+            return "Settings";
         }
 
         @Override
@@ -174,6 +202,8 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
         private TerrainBrush.BrushMode brushMode;
 
         public BrushTable() {
+            super();
+            align(Align.left);
             sphereBrushBtn = new FaTextButton(toolManager.sphereBrushTool.getIconFont(), FaTextButton.styleBg);
             add(new VisLabel("Brushes:")).padBottom(10).row();
             add(sphereBrushBtn).width(30);
@@ -184,6 +214,11 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
                     activateBrush(toolManager.sphereBrushTool);
                 }
             });
+        }
+
+        public BrushTable(TerrainBrush.BrushMode mode) {
+            this();
+            this.brushMode = mode;
         }
 
         public TerrainBrush.BrushMode getBrushMode() {
