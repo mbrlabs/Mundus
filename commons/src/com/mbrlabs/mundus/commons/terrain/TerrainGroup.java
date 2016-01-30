@@ -57,7 +57,7 @@ public class TerrainGroup {
     public Vector3 getRayIntersection(Vector3 out, Ray ray) {
         for(Terrain terrain : terrains) {
             terrain.getRayIntersection(out, ray);
-            if(isPointOnTerrain(terrain, out.x, out.z)) {
+            if(terrain.isOnTerrain(out.x, out.z)) {
                 return out;
             }
         }
@@ -66,18 +66,12 @@ public class TerrainGroup {
 
     public Terrain getTerrain(float x, float z) {
         for(Terrain terrain : terrains) {
-            if(isPointOnTerrain(terrain, x, z)) {
+            if(terrain.isOnTerrain(x, z)) {
                 return terrain;
             }
         }
 
         return null;
-    }
-
-    public boolean isPointOnTerrain(Terrain terrain, float x, float z) {
-        tv3 = terrain.getPosition();
-        return x >= tv3.x && x <= tv3.x + terrain.terrainWidth
-                && z >= tv3.z && z <= tv3.z + terrain.terrainDepth;
     }
 
 
