@@ -12,6 +12,4 @@ public class TextureBrowser extends VisDialog {
         super("Texture Browser");
     }
 
-
-
 }

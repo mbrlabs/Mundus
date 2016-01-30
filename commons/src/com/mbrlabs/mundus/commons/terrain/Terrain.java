@@ -206,6 +206,7 @@ public class Terrain implements RenderableProvider {
     }
 
     public boolean isOnTerrain(float worldX, float worldZ) {
+        transform.getTranslation(position);
         return worldX >= position.x && worldX <= position.x + terrainWidth
                 && worldZ >= position.z && worldZ <= position.z + terrainDepth;
     }
