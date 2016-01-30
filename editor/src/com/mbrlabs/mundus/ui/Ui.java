@@ -54,6 +54,7 @@ public class Ui extends MyStage {
     private ExportDialog exportDialog;
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
+    private TextureBrowser textureBrowser;
 
     private static Ui INSTANCE;
 
@@ -108,6 +109,7 @@ public class Ui extends MyStage {
         exportDialog = new ExportDialog();
         fogDialog = new FogDialog();
         skyboxDialog = new SkyboxDialog();
+        textureBrowser = new TextureBrowser();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);

@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.terrain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.FloatArray;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
 import com.mbrlabs.mundus.utils.Log;
@@ -95,7 +96,10 @@ public class TerrainIO {
         terrain.update();
 
         TerrainTextureSplat splat = terrain.getTextureSplat();
-        splat.base  = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        MTexture base = new MTexture();
+        base.setId(-1);
+        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        splat.base = base;
 //        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
 //        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
 //        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));

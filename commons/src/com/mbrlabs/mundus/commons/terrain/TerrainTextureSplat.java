@@ -1,6 +1,6 @@
 package com.mbrlabs.mundus.commons.terrain;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.mbrlabs.mundus.commons.model.MTexture;
 
 /**
  * @author Marcus Brummer
@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class TerrainTextureSplat {
 
-   public Texture base;
-   public Texture chanR;
-   public Texture chanG;
-   public Texture chanB;
-   public Texture chanA;
-   public Texture splat;
+   public MTexture base;
+   public MTexture chanR;
+   public MTexture chanG;
+   public MTexture chanB;
+   public MTexture chanA;
+   public MTexture splat;
 
    public Terrain terrain;
 

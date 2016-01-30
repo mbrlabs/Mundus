@@ -86,7 +86,6 @@ public class Terrain implements RenderableProvider {
         this.vertexResolution = vertexResolution;
         this.renderable = new Renderable();
 
-
         this.textureSplat = new TerrainTextureSplat();
         this.textureSplat.terrain = this;
         this.renderable.material = new Material();

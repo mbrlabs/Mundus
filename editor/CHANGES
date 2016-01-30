@@ -1,6 +1,9 @@
 [0.0.6]
 - Updated libGDX to 1.9.1
 - Implemented texture splatting for terrain textures
+- Moved SelectionTool & TranslateTool to the toolbar
+- Moved the terrain tools to the component widget in the inspector
+- Removed the tools tab in the left sidebar
 
 [0.0.5] ~ 26/01/2016
 - Implemented a basic component based 3D scene graph

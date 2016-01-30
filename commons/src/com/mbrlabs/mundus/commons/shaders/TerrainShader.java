@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
 import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplatAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
@@ -157,9 +158,9 @@ public class TerrainShader extends BaseShader {
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 
-    public int setTilableTextureUniform(int loc, Texture tex) {
+    public int setTilableTextureUniform(int loc, MTexture tex) {
         if(tex == null) return 0;
-        set(loc, tex);
+        set(loc, tex.texture);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
 

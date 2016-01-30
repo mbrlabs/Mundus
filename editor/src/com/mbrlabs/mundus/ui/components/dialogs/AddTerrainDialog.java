@@ -25,6 +25,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -154,7 +155,10 @@ public class AddTerrainDialog extends BaseDialog {
         terrain.update();
 
         TerrainTextureSplat splat = terrain.getTextureSplat();
-        splat.base  = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        MTexture base = new MTexture();
+        base.setId(-1);
+        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        splat.base = base;
 //        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
 //        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
 //        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
