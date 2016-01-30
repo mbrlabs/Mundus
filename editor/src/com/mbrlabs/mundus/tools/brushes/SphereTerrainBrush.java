@@ -68,9 +68,11 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public void render() {
-        batch.begin(projectContext.currScene.cam);
-        batch.render(sphereModelInstance, shader);
-        batch.end();
+        if(terrain.isOnTerrain(brushPos.x, brushPos.z)) {
+            batch.begin(projectContext.currScene.cam);
+            batch.render(sphereModelInstance, shader);
+            batch.end();
+        }
     }
 
     @Override

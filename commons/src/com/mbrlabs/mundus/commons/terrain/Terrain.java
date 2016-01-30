@@ -200,9 +200,14 @@ public class Terrain implements RenderableProvider {
 
     }
 
-    private boolean isUnderTerrain(Vector3 pointInWorldCoordinates) {
-        float terrainHeight = getHeightAtWorldCoord(pointInWorldCoordinates.x, pointInWorldCoordinates.z);
-        return terrainHeight > pointInWorldCoordinates.y;
+    public boolean isUnderTerrain(Vector3 worldCoords) {
+        float terrainHeight = getHeightAtWorldCoord(worldCoords.x, worldCoords.z);
+        return terrainHeight > worldCoords.y;
+    }
+
+    public boolean isOnTerrain(float worldX, float worldZ) {
+        return worldX >= position.x && worldX <= position.x + terrainWidth
+                && worldZ >= position.z && worldZ <= position.z + terrainDepth;
     }
 
     public Vector3 getPosition() {
