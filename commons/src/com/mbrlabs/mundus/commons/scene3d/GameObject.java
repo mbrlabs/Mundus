@@ -125,6 +125,14 @@ public class GameObject {
         components.add(component);
     }
 
+    public Component findComponent(Component.Type type) {
+        for(Component c : components) {
+            if(c.getType() == type) return c;
+        }
+
+        return null;
+    }
+
     public void isComponentAddable(Component component) throws InvalidComponentException {
         // no component for root
         if(id == -1) throw new InvalidComponentException("Can't add component to the root.");

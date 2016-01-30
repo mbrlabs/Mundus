@@ -2,6 +2,8 @@ package com.mbrlabs.mundus.tools.brushes;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.tools.Tool;
@@ -31,6 +33,7 @@ public abstract class TerrainBrush extends Tool {
     protected BrushMode mode;
     protected Terrain terrain;
     protected float radius;
+    protected Vector3 brushPos = new Vector3();
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);
@@ -63,8 +66,20 @@ public abstract class TerrainBrush extends Tool {
         this.radius = radius;
     }
 
-    public void scale(float amount) {
-        radius *= amount;
+    public abstract void scale(float amount);
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        if(terrain != null) {
+            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+            projectContext.currScene.terrainGroup.getRayIntersection(brushPos, ray);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return mouseMoved(screenX, screenY);
     }
 
     public abstract boolean supportsMode(BrushMode mode);

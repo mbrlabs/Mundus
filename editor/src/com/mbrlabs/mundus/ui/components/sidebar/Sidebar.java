@@ -32,14 +32,12 @@ public class Sidebar extends VisTable implements TabbedPaneListener {
     private TabbedPane tabbedPane;
     private VisTable contentContainer;
 
-    private ToolTab toolTab;
     private ModelTab modelTab;
     private OutlineTab outlineTab;
 
     public Sidebar() {
         super();
         tabbedPane = new TabbedPane();
-        toolTab = new ToolTab();
         outlineTab = new OutlineTab();
         modelTab = new ModelTab();
 
@@ -56,7 +54,6 @@ public class Sidebar extends VisTable implements TabbedPaneListener {
         contentContainer.align(Align.topLeft);
 
         tabbedPane.add(outlineTab);
-        tabbedPane.add(toolTab);
         tabbedPane.add(modelTab);
 
         add(tabbedPane.getTable()).width(300).top().left().row();

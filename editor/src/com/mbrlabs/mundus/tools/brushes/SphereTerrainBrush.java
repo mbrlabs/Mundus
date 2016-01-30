@@ -47,7 +47,6 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     protected Vector3 tVec0 = new Vector3();
     protected Vector3 tVec1 = new Vector3();
-    protected Vector3 tVec2 = new Vector3();
 
     public SphereTerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);
@@ -61,16 +60,10 @@ public class SphereTerrainBrush extends TerrainBrush {
     @Override
     public boolean supportsMode(BrushMode mode) {
         switch (mode) {
-            case PAINT_HEIGHT: return true;
+            case RAISE_LOWER: return true;
         }
 
         return false;
-    }
-
-    @Override
-    public void scale(float amount) {
-        radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
-        sphereModelInstance.transform.scl(amount);
     }
 
     @Override
@@ -78,6 +71,12 @@ public class SphereTerrainBrush extends TerrainBrush {
         batch.begin(projectContext.currScene.cam);
         batch.render(sphereModelInstance, shader);
         batch.end();
+    }
+
+    @Override
+    public void scale(float amount) {
+        sphereModelInstance.transform.scl(amount);
+        radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
     }
 
     @Override
@@ -94,7 +93,6 @@ public class SphereTerrainBrush extends TerrainBrush {
         // tVec1 holds sphere transformation
         sphereModelInstance.transform.getTranslation(tVec1);
 
-        Terrain terrain = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
         if(terrain == null) {
             return;
         }
@@ -135,12 +133,9 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if(projectContext.currScene.terrainGroup.size() > 0) {
-            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
-            projectContext.currScene.terrainGroup.getRayIntersection(tVec2, ray);
-            sphereModelInstance.transform.setTranslation(tVec2);
-        }
-        return false;
+        boolean moved = super.mouseMoved(screenX, screenY);
+        sphereModelInstance.transform.setTranslation(brushPos);
+        return moved;
     }
 
     @Override

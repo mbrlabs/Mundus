@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -11,6 +12,8 @@ import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.tools.ToolManager;
+import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -20,11 +23,11 @@ import com.mbrlabs.mundus.utils.Fa;
  */
 public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> {
 
-    private enum Mode {
+    private enum Tab {
         RAISE_LOWER, PAINT_HEIGHT, SMOOTH, PAINT
     }
 
-    private Mode mode = Mode.RAISE_LOWER;
+    private Tab tab = Tab.RAISE_LOWER;
 
     private ToolTable toolTable;
     private BrushTable brushTable;
@@ -40,19 +43,21 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> {
 
     private void setupUI() {
         toolTable = new ToolTable();
+        brushTable = new BrushTable();
         toolTable.align(Align.center);
 
         toolTable.pad(4);
         collapsibleContent.add(toolTable).center().expandX().row();
+        collapsibleContent.add(brushTable).left().expandX().row();
     }
 
     public void setBrushMode() {
-        this.mode = Mode.RAISE_LOWER;
+        this.tab = Tab.RAISE_LOWER;
 
     }
 
     public void setPaintMode() {
-        this.mode = Mode.PAINT;
+        this.tab = Tab.PAINT;
     }
 
     @Override
@@ -106,30 +111,47 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> {
      *
      */
     private class BrushTable extends VisTable {
-        private FaTextButton raiseLowerBtn;
-        private FaTextButton paintBtn;
+        private FaTextButton sphereBrushBtn;
 
         public BrushTable() {
             setBackground(VisUI.getSkin().getDrawable("menu-bg"));
-            raiseLowerBtn = new FaTextButton(Fa.SORT);
-            paintBtn = new FaTextButton(Fa.PAINT_BRUSH);
+            sphereBrushBtn = new FaTextButton(toolManager.sphereBrushTool.getIconFont());
+            add(sphereBrushBtn).width(30);
 
-            add(raiseLowerBtn).width(30);
-
-            raiseLowerBtn.addListener(new ClickListener() {
+            sphereBrushBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    setBrushMode();
-                }
-            });
-
-            paintBtn.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    setPaintMode();
+                    activateBrush(toolManager.sphereBrushTool);
                 }
             });
         }
+
+        public void activateBrush(TerrainBrush brush) {
+
+            TerrainBrush.BrushMode brushMode = null;
+            if(tab == Tab.RAISE_LOWER) {
+                brushMode = TerrainBrush.BrushMode.RAISE_LOWER;
+            } else if(tab == Tab.PAINT_HEIGHT) {
+                brushMode = TerrainBrush.BrushMode.PAINT_HEIGHT;
+            } else if(tab == Tab.SMOOTH) {
+                brushMode = TerrainBrush.BrushMode.SMOOTH;
+            } else if(tab == Tab.PAINT) {
+                brushMode = TerrainBrush.BrushMode.PAINT;
+            }
+
+            try {
+                if(brushMode != null) {
+                    brush.setMode(brushMode);
+                    toolManager.activateTool(brush);
+                    brush.setTerrain(component.getTerrain());
+                }
+            } catch (TerrainBrush.ModeNotSupportedException e) {
+                e.printStackTrace();
+                DialogUtils.showErrorDialog(Ui.getInstance(), e.getMessage());
+            }
+
+        }
+
     }
 
 
