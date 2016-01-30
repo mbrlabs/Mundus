@@ -61,6 +61,7 @@ public class ProjectContext implements Disposable {
         scenes = other.scenes;
         models = other.models;
         uuidProvider = other.uuidProvider;
+        textures = other.textures;
     }
 
     public synchronized long obtainUUID() {

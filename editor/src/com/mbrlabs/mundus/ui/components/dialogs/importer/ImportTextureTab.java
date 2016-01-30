@@ -33,6 +33,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.events.TextureImportEvent;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
@@ -118,6 +119,7 @@ public class ImportTextureTab extends Tab {
                     String texName = name.getText();
                     if(texName != null && texName.length() > 0 && texture.exists() && FileFormatUtils.isImage(texture)) {
                         MTexture tex = assetManager.importTexture(texName, texture);
+                        Mundus.postEvent(new TextureImportEvent(tex));
                         dialog.close();
                     } else {
                         // TODO show error msg

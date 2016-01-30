@@ -7,9 +7,11 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
@@ -18,7 +20,9 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.components.dialogs.TextureBrowser;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
+import com.mbrlabs.mundus.ui.widgets.TextureGrid;
 
 /**
  * @author Marcus Brummer
@@ -149,12 +153,39 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     private class PaintTab extends Tab {
 
         private VisTable table;
+        private VisTextButton addTextureBtn;
+        private TextureGrid textureGrid;
+
+        private TextureBrowser textureBrowser;
 
         public PaintTab() {
             super(false, false);
             table = new VisTable();
             table.align(Align.left);
-            table.add(new BrushTable(TerrainBrush.BrushMode.PAINT)).expand().fill().row();
+            table.add(new BrushTable(TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
+
+            textureGrid = new TextureGrid(40, 5);
+            table.add(textureGrid).expand().fill().row();
+            table.addSeparator().height(1);
+
+            addTextureBtn = new VisTextButton("Add Texture");
+            table.add(addTextureBtn).right().row();
+
+            textureBrowser = new TextureBrowser();
+            textureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
+                @Override
+                public void onTextureSelected(MTexture texture) {
+                    // TODO do stuff
+                }
+            });
+
+            addTextureBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Ui.getInstance().showDialog(textureBrowser);
+                }
+            });
+
         }
 
         @Override

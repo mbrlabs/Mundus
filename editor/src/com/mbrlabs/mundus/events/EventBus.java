@@ -64,7 +64,7 @@ public class EventBus {
     public void post(Object event) {
         try {
             final Class eventType = event.getClass();
-            for(Object subscriber : subscribers) {
+            for(Object subscriber : subscribers.toArray()) {
                 for(Method method : subscriber.getClass().getDeclaredMethods()) {
                     if(isSubscriber(method)) {
                         if(method.getParameterTypes().length != 1) {

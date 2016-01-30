@@ -20,7 +20,7 @@ public class TextureGrid extends VisTable {
     public TextureGrid(int imgSize, int spacing) {
         super();
         this.grid = new GridGroup(imgSize, spacing);
-        add(grid);
+        add(grid).expand().fill().row();
     }
 
     public TextureGrid(int imgSize, int spacing, Array<MTexture> textures) {
