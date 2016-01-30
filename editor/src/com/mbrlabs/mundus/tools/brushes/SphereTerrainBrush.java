@@ -27,21 +27,16 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.tools.Tool;
 import com.mbrlabs.mundus.utils.Fa;
 
 /**
  * @author Marcus Brummer
  * @version 25-12-2015
  */
-public class SphereBrush extends Tool {
+public class SphereTerrainBrush extends TerrainBrush {
 
     private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
     private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
-
-    public enum Mode {
-        SHARP, SMOOTH
-    }
 
     private static final String NAME = "Sphere Brush";
     private static final float SIZE = 1;
@@ -49,16 +44,12 @@ public class SphereBrush extends Tool {
     private Model sphereModel;
     protected ModelInstance sphereModelInstance;
     protected BoundingBox boundingBox = new BoundingBox();
-    protected float radius;
-
-    private Mode mode = Mode.SMOOTH;
 
     protected Vector3 tVec0 = new Vector3();
     protected Vector3 tVec1 = new Vector3();
     protected Vector3 tVec2 = new Vector3();
 
-
-    public SphereBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
+    public SphereTerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
@@ -67,29 +58,19 @@ public class SphereBrush extends Tool {
         scale(15);
     }
 
+    @Override
+    public boolean supportsMode(BrushMode mode) {
+        switch (mode) {
+            case PAINT_HEIGHT: return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public void scale(float amount) {
-        sphereModelInstance.transform.scl(amount);
         radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public Drawable getIcon() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String getIconFont() {
-        return Fa.CIRCLE_O;
-    }
-
-    @Override
-    public void reset() {
-
+        sphereModelInstance.transform.scl(amount);
     }
 
     @Override
@@ -129,12 +110,7 @@ public class SphereBrush extends Tool {
 
                 if(distance <= radius) {
                     float dir = up ? 1 : -1;
-                    float elevation = 0;
-                    if(mode == Mode.SMOOTH) {
-                        elevation = (radius - distance) * 0.1f * dir;
-                    } else {
-                        elevation = dir;
-                    }
+                    float elevation = (radius - distance) * 0.1f * dir;
                     terrain.heightData[z * terrain.vertexResolution + x] += elevation;
                 }
             }
@@ -172,5 +148,24 @@ public class SphereBrush extends Tool {
         return mouseMoved(screenX, screenY);
     }
 
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public Drawable getIcon() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getIconFont() {
+        return Fa.CIRCLE_O;
+    }
+
+    @Override
+    public void reset() {
+
+    }
 
 }

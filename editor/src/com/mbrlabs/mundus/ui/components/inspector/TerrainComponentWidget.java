@@ -20,6 +20,12 @@ import com.mbrlabs.mundus.utils.Fa;
  */
 public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> {
 
+    private enum Mode {
+        RAISE_LOWER, PAINT_HEIGHT, SMOOTH, PAINT
+    }
+
+    private Mode mode = Mode.RAISE_LOWER;
+
     private ToolTable toolTable;
     private BrushTable brushTable;
 
@@ -41,11 +47,12 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> {
     }
 
     public void setBrushMode() {
+        this.mode = Mode.RAISE_LOWER;
 
     }
 
     public void setPaintMode() {
-
+        this.mode = Mode.PAINT;
     }
 
     @Override
@@ -99,7 +106,30 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> {
      *
      */
     private class BrushTable extends VisTable {
+        private FaTextButton raiseLowerBtn;
+        private FaTextButton paintBtn;
 
+        public BrushTable() {
+            setBackground(VisUI.getSkin().getDrawable("menu-bg"));
+            raiseLowerBtn = new FaTextButton(Fa.SORT);
+            paintBtn = new FaTextButton(Fa.PAINT_BRUSH);
+
+            add(raiseLowerBtn).width(30);
+
+            raiseLowerBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    setBrushMode();
+                }
+            });
+
+            paintBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    setPaintMode();
+                }
+            });
+        }
     }
 
 

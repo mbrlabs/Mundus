@@ -29,57 +29,66 @@ import com.mbrlabs.mundus.utils.Fa;
  * @author Marcus Brummer
  * @version 09-01-2016
  */
-public class FlattenBrush extends SphereBrush {
-
-    private static final String NAME = "Flatten Brush";
-    private static final int KEY_LOWER_TERRAIN = Input.Buttons.LEFT;
-
-
-    public FlattenBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
-        super(projectContext, shader, modelBatch);
-    }
-
-    @Override
-    public String getIconFont() {
-        return Fa.MINUS;
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public void act() {
-        if(!Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
-            return;
-        }
-
-        // tVec1 holds sphere transformation
-        sphereModelInstance.transform.getTranslation(tVec1);
-
-        Terrain terrain = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
-        if(terrain == null) {
-            return;
-        }
-
-        final Vector3 terPos = terrain.getPosition();
-
-        for (int x = 0; x < terrain.vertexResolution; x++) {
-            for (int z = 0; z <  terrain.vertexResolution; z++) {
-                terrain.getVertexPosition(tVec0, x, z);
-                tVec0.x += terPos.x;
-                tVec0.z += terPos.z;
-                float distance = tVec0.dst(tVec1);
-
-                if(distance <= radius) {
-                    int heightIndex = z * terrain.vertexResolution + x;
-                    terrain.heightData[heightIndex] *= distance / radius;
-                }
-            }
-        }
-        terrain.update();
-    }
-
-
-}
+//public class FlattenBrush extends SphereBrush {
+//
+//    private static final String NAME = "Flatten Brush";
+//    private static final int KEY_LOWER_TERRAIN = Input.Buttons.LEFT;
+//
+//
+//    public FlattenBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
+//        super(projectContext, shader, modelBatch);
+//    }
+//
+//    @Override
+//    public boolean supportsMode(BrushMode mode) {
+//        switch (mode) {
+//            case PAINT_HEIGHT: return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public String getIconFont() {
+//        return Fa.MINUS;
+//    }
+//
+//    @Override
+//    public String getName() {
+//        return NAME;
+//    }
+//
+//    @Override
+//    public void act() {
+//        if(!Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
+//            return;
+//        }
+//
+//        // tVec1 holds sphere transformation
+//        sphereModelInstance.transform.getTranslation(tVec1);
+//
+//        Terrain terrain = projectContext.currScene.terrainGroup.getTerrain(tVec1.x, tVec1.z);
+//        if(terrain == null) {
+//            return;
+//        }
+//
+//        final Vector3 terPos = terrain.getPosition();
+//
+//        for (int x = 0; x < terrain.vertexResolution; x++) {
+//            for (int z = 0; z <  terrain.vertexResolution; z++) {
+//                terrain.getVertexPosition(tVec0, x, z);
+//                tVec0.x += terPos.x;
+//                tVec0.z += terPos.z;
+//                float distance = tVec0.dst(tVec1);
+//
+//                if(distance <= radius) {
+//                    int heightIndex = z * terrain.vertexResolution + x;
+//                    terrain.heightData[heightIndex] *= distance / radius;
+//                }
+//            }
+//        }
+//        terrain.update();
+//    }
+//
+//
+//}
