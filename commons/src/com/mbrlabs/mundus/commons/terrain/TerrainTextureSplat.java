@@ -8,13 +8,29 @@ import com.mbrlabs.mundus.commons.model.MTexture;
  */
 public class TerrainTextureSplat {
 
-   public MTexture base;
-   public MTexture chanR;
-   public MTexture chanG;
-   public MTexture chanB;
-   public MTexture chanA;
-   public MTexture splat;
+    public MTexture base;
+    public MTexture chanR;
+    public MTexture chanG;
+    public MTexture chanB;
+    public MTexture chanA;
+    public MTexture splat;
 
-   public Terrain terrain;
+    public Terrain terrain;
+
+    public int countSplatDetailTextures() {
+        int count = 0;
+        if(chanR != null) count++;
+        if(chanG != null) count++;
+        if(chanB != null) count++;
+        if(chanA != null) count++;
+
+        return count;
+    }
+
+    public boolean hasDefaultTexture() {
+        return base.getId() == -1;
+    }
+
+
 
 }

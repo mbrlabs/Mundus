@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -15,6 +16,7 @@ import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.tools.ToolManager;
@@ -163,9 +165,11 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             table = new VisTable();
             table.align(Align.left);
             table.add(new BrushTable(TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
+            table.addSeparator().height(1);
 
             textureGrid = new TextureGrid(40, 5);
-            table.add(textureGrid).expand().fill().row();
+            textureGrid.setBackground(VisUI.getSkin().getDrawable("menu-bg"));
+            table.add(textureGrid).expand().fill().pad(5).row();
             table.addSeparator().height(1);
 
             addTextureBtn = new VisTextButton("Add Texture");
@@ -175,7 +179,33 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             textureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
                 @Override
                 public void onTextureSelected(MTexture texture) {
-                    // TODO do stuff
+                    TerrainTextureSplat splat = component.getTerrain().getTextureSplat();
+                    int texCount = splat.countSplatDetailTextures();
+
+                    // set base
+                    if(splat.hasDefaultTexture()) {
+                        splat.base = texture;
+                        textureGrid.addTexture(texture);
+                        textureBrowser.fadeOut();
+                        return;
+                    }
+
+                    // set textures in splat
+                    if(texCount == 0) {
+                        splat.chanR = texture;
+                    } else if(texCount == 1) {
+                        splat.chanG = texture;
+                    } else if(texCount == 2) {
+                        splat.chanB = texture;
+                    } else if(texCount == 3) {
+                        splat.chanA = texture;
+                    } else {
+                        DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
+                        return;
+                    }
+
+                    textureBrowser.fadeOut();
+                    textureGrid.addTexture(texture);
                 }
             });
 
@@ -186,6 +216,13 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
                 }
             });
 
+            textureGrid.setListener(new TextureGrid.OnTextureClickedListener() {
+                @Override
+                public void onTextureSelected(MTexture texture) {
+                    // TODO
+
+                }
+            });
         }
 
         @Override
@@ -237,7 +274,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             align(Align.left);
             sphereBrushBtn = new FaTextButton(toolManager.sphereBrushTool.getIconFont(), FaTextButton.styleBg);
             add(new VisLabel("Brushes:")).padBottom(10).row();
-            add(sphereBrushBtn).width(30);
+            add(sphereBrushBtn).size(30, 30);
 
             sphereBrushBtn.addListener(new ClickListener() {
                 @Override

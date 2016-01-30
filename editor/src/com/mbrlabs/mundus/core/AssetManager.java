@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.commons.model.MModel;
@@ -81,11 +82,11 @@ public class AssetManager {
 
     /**
      *
-     * @param name
      * @param textureFile
+     * @param mipMap
      * @return
      */
-    public MTexture importTexture(String name, FileHandle textureFile) {
+    public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
         long id = projectContext.obtainUUID();
 
         String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TEXTURE_DIR + textureFile.name());
@@ -96,7 +97,11 @@ public class AssetManager {
         MTexture tex = new MTexture();
         tex.setId(id);
         tex.setFilename(absoluteImportFile.name());
-        tex.texture = new Texture(absoluteImportFile);
+        if(mipMap) {
+            tex.texture = TextureUtils.loadMipmapTexture(absoluteImportFile);
+        } else {
+            tex.texture = new Texture(absoluteImportFile);
+        }
 
         projectContext.textures.add(tex);
 

@@ -116,9 +116,8 @@ public class ImportTextureTab extends Tab {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     FileHandle texture = imageChooserField.getFile();
-                    String texName = name.getText();
-                    if(texName != null && texName.length() > 0 && texture.exists() && FileFormatUtils.isImage(texture)) {
-                        MTexture tex = assetManager.importTexture(texName, texture);
+                    if(texture.exists() && FileFormatUtils.isImage(texture)) {
+                        MTexture tex = assetManager.importTexture(texture, true);
                         Mundus.postEvent(new TextureImportEvent(tex));
                         dialog.close();
                     } else {

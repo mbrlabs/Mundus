@@ -39,6 +39,10 @@ public class TextureGrid extends VisTable {
         }
     }
 
+    public void addTexture(MTexture texture) {
+        grid.addActor(new TextureItem(texture));
+    }
+
     /**
      *
      */

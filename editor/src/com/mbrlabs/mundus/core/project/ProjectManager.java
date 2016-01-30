@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.commons.env.Fog;
+import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.commons.Scene;
@@ -150,7 +151,7 @@ public class ProjectManager {
 
         // load textures
         for(MTexture tex : context.textures) {
-            tex.texture = new Texture(Gdx.files.absolute(FilenameUtils.concat(texturePath, tex.getFilename())));
+            tex.texture = TextureUtils.loadMipmapTexture(Gdx.files.absolute(FilenameUtils.concat(texturePath, tex.getFilename())));
             Log.debug("Loaded texture: " + tex.getFilename());
         }
 
