@@ -46,7 +46,6 @@ public class SphereTerrainBrush extends TerrainBrush {
     protected BoundingBox boundingBox = new BoundingBox();
 
     protected Vector3 tVec0 = new Vector3();
-    protected Vector3 tVec1 = new Vector3();
 
     public SphereTerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);
@@ -61,6 +60,7 @@ public class SphereTerrainBrush extends TerrainBrush {
     public boolean supportsMode(BrushMode mode) {
         switch (mode) {
             case RAISE_LOWER: return true;
+            case FLATTEN: return true;
         }
 
         return false;
@@ -92,9 +92,6 @@ public class SphereTerrainBrush extends TerrainBrush {
             return;
         }
 
-        // tVec1 holds sphere transformation
-        sphereModelInstance.transform.getTranslation(tVec1);
-
         if(terrain == null) {
             return;
         }
@@ -103,15 +100,20 @@ public class SphereTerrainBrush extends TerrainBrush {
 
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
-                terrain.getVertexPosition(tVec0, x, z);
-                tVec0.x += terPos.x;
-                tVec0.z += terPos.z;
-                float distance = tVec0.dst(tVec1);
+                Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
+                vertexPos.x += terPos.x;
+                vertexPos.z += terPos.z;
+                float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
-                    float dir = up ? 1 : -1;
-                    float elevation = (radius - distance) * 0.1f * dir;
-                    terrain.heightData[z * terrain.vertexResolution + x] += elevation;
+                    if(mode == BrushMode.RAISE_LOWER) {
+                        float dir = up ? 1 : -1;
+                        float elevation = (radius - distance) * 0.1f * dir;
+                        terrain.heightData[z * terrain.vertexResolution + x] += elevation;
+                    } else if(mode == BrushMode.FLATTEN) {
+                        int heightIndex = z * terrain.vertexResolution + x;
+                        terrain.heightData[heightIndex] *= distance / radius;
+                    }
                 }
             }
         }
