@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.utils.Colors;
@@ -28,17 +29,34 @@ import com.mbrlabs.mundus.utils.Colors;
  */
 public class FaTextButton extends VisTextButton {
 
-    private final static TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+    public final static TextButton.TextButtonStyle styleNoBg = new TextButton.TextButtonStyle();
     static {
-        style.font = Mundus.fa;
-        style.fontColor = Color.WHITE;
-        style.pressedOffsetX = 1;
-        style.unpressedOffsetX = 0;
-        style.pressedOffsetY = -1;
-        style.fontColor = Colors.TURQUOISE;
+        styleNoBg.font = Mundus.fa;
+        styleNoBg.fontColor = Color.WHITE;
+        styleNoBg.pressedOffsetX = 1;
+        styleNoBg.unpressedOffsetX = 0;
+        styleNoBg.pressedOffsetY = -1;
+        styleNoBg.fontColor = Colors.TURQUOISE;
+    }
+
+    public final static TextButton.TextButtonStyle styleBg = new TextButton.TextButtonStyle();
+    static {
+        styleBg.font = Mundus.fa;
+        styleBg.fontColor = Color.WHITE;
+        styleBg.pressedOffsetX = 1;
+        styleBg.unpressedOffsetX = 0;
+        styleBg.pressedOffsetY = -1;
+        styleBg.fontColor = Colors.TURQUOISE;
+        styleBg.up = VisUI.getSkin().getDrawable("menu-bg");
+        styleBg.down = VisUI.getSkin().getDrawable("menu-bg");
     }
 
     public FaTextButton(String text) {
+        this(text, styleNoBg);
+    }
+
+
+    public FaTextButton(String text, TextButtonStyle style) {
         super(text);
         setStyle(style);
         setFocusBorderEnabled(false);

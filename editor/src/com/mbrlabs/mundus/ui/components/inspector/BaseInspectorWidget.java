@@ -23,6 +23,7 @@ import com.kotcrab.vis.ui.widget.CollapsibleWidget;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.ui.widgets.CollapseWidget;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -41,7 +42,7 @@ public abstract class BaseInspectorWidget extends VisTable {
     private Cell deletableBtnCell;
 
     protected VisTable collapsibleContent;
-    private CollapsibleWidget collapsibleWidget;
+    private CollapseWidget collapsibleWidget;
     private VisLabel titleLabel;
 
     private boolean deletable;
@@ -50,7 +51,7 @@ public abstract class BaseInspectorWidget extends VisTable {
         super();
         collapsibleContent = new VisTable();
         titleLabel = new VisLabel();
-        collapsibleWidget = new CollapsibleWidget(collapsibleContent);
+        collapsibleWidget = new CollapseWidget(collapsibleContent);
 
         collapseBtn = new FaTextButton(COLLAPSE_BTN_UP);
         collapseBtn.getLabel().setFontScale(0.7f);
@@ -97,7 +98,6 @@ public abstract class BaseInspectorWidget extends VisTable {
         // add everything to root
         add(header).expand().fill().row();
         add(collapsibleWidget).expand().fill().row();
-
         setDeletable(deletable);
     }
 

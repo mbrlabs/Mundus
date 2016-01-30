@@ -139,6 +139,8 @@ public class Mundus {
                 .addIcon(Fa.CARET_DOWN)
                 .addIcon(Fa.CARET_UP)
                 .addIcon(Fa.TIMES)
+                .addIcon(Fa.SORT)
+                .addIcon(Fa.PAINT_BRUSH)
                 .build();
     }
 
