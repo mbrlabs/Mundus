@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.commons.model.MModel;
@@ -32,6 +33,7 @@ import com.mbrlabs.mundus.commons.scene3d.*;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.terrain.Splatmap;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -217,29 +219,114 @@ public class DescriptorConverter {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                               Terrain & TerrainInstance
+    //                                      Terrain
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static TerrainDescriptor convert(Terrain terrain) {
         TerrainDescriptor descriptor = new TerrainDescriptor();
         descriptor.setId(terrain.id);
         descriptor.setName(terrain.name);
-        descriptor.setPath(terrain.terraPath);
+        descriptor.setTerraPath(terrain.terraPath);
         descriptor.setWidth(terrain.terrainWidth);
         descriptor.setDepth(terrain.terrainDepth);
         descriptor.setVertexResolution(terrain.vertexResolution);
+        descriptor.setTerrainTexture(convert(terrain.getTerrainTexture()));
         return descriptor;
     }
 
-    public static Terrain convert(TerrainDescriptor terrainDescriptor) {
+    public static Terrain convert(TerrainDescriptor terrainDescriptor, Array<MTexture> textures) {
         Terrain terrain = new Terrain(terrainDescriptor.getVertexResolution());
         terrain.terrainWidth = terrainDescriptor.getWidth();
         terrain.terrainDepth = terrainDescriptor.getDepth();
-        terrain.terraPath = terrainDescriptor.getPath();
+        terrain.terraPath = terrainDescriptor.getTerraPath();
         terrain.id = terrainDescriptor.getId();
         terrain.name = terrainDescriptor.getName();
+        terrain.setTerrainTexture(convert(terrainDescriptor.getTerrainTexture(), textures));
 
         return terrain;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                      TerrainTexture
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
+        TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
+        if(terrainTexture.splat != null) {
+            descriptor.setSplatmapPath(terrainTexture.splat.getPath());
+        }
+        if(terrainTexture.chanR != null) {
+            descriptor.setTextureChanR(terrainTexture.chanR.getId());
+        }
+        if(terrainTexture.chanG != null) {
+            descriptor.setTextureChanG(terrainTexture.chanG.getId());
+        }
+        if(terrainTexture.chanB != null) {
+            descriptor.setTextureChanB(terrainTexture.chanB.getId());
+        }
+        if(terrainTexture.chanA != null) {
+            descriptor.setTextureChanA(terrainTexture.chanA.getId());
+        }
+
+        System.out.println(descriptor);
+
+        return descriptor;
+    }
+
+    public static TerrainTexture convert(TerrainTextureDescriptor terrainTextureDescriptor, Array<MTexture> textures) {
+        TerrainTexture tex = new TerrainTexture();
+
+        if(terrainTextureDescriptor.getSplatmapPath() != null) {
+            Splatmap splatmap = new Splatmap(512, 512);
+            splatmap.setPath(terrainTextureDescriptor.getSplatmapPath());
+            tex.splat = splatmap;
+        }
+        if(terrainTextureDescriptor.getTextureChanR() != null) {
+            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
+            if(mt != null) {
+                tex.chanR = mt;
+            } else {
+                return null;
+            }
+        }
+        if(terrainTextureDescriptor.getTextureChanG() != null) {
+            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanG());
+            if(mt != null) {
+                tex.chanG = mt;
+            } else {
+                return null;
+            }
+        }
+        if(terrainTextureDescriptor.getTextureChanB() != null) {
+            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanB());
+            if(mt != null) {
+                tex.chanB = mt;
+            } else {
+                return null;
+            }
+        }
+        if(terrainTextureDescriptor.getTextureChanA() != null) {
+            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanA());
+            if(mt != null) {
+                tex.chanA = mt;
+            } else {
+                return null;
+            }
+        }
+
+        System.out.println(tex);
+
+        return tex;
+    }
+
+    private static MTexture findTextureById(Array<MTexture> textures, long id) {
+        for(MTexture t : textures) {
+            if(t.getId() == id) {
+                return t;
+            }
+        }
+        Log.fatal("MTexture (detail texture) for Terrain texture not found");
+        return null;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,12 +392,6 @@ public class DescriptorConverter {
         // fog
         descriptor.setFog(convert(scene.environment.getFog()));
 
-
-        // terrains
-//        for(TerrainInstance terrain : scene.terrainGroup.getTerrains()) {
-//            descriptor.getTerrains().add(convert(terrain));
-//        }
-
         // camera
         descriptor.setCamPosX(scene.cam.position.x);
         descriptor.setCamPosY(scene.cam.position.y);
@@ -331,11 +412,6 @@ public class DescriptorConverter {
 
         // fog
         scene.environment.setFog(convert(sceneDescriptor.getFog()));
-
-        // terrains
-//        for(TerrainInstanceDescriptor terrainDescriptor : sceneDescriptor.getTerrains()) {
-//            scene.terrainGroup.add(convert(terrainDescriptor, terrains));
-//        }
 
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
@@ -396,19 +472,10 @@ public class DescriptorConverter {
         }
         // terrains
         for(TerrainDescriptor terrain : projectDescriptor.getTerrains()) {
-            context.terrains.add(convert(terrain));
+            context.terrains.add(convert(terrain, context.textures));
         }
 
         // scenes
-//        for(SceneDescriptor scene : projectDescriptor.getSceneNames()) {
-//            Scene s = convert(scene, context.terrains, context.models);
-//            context.scenes.add(s);
-//
-//            // set current scene
-//            if(scene.getId() == projectDescriptor.getCurrentSceneID()) {
-//                context.currScene = s;
-//            }
-//        }
         for(String sceneName : projectDescriptor.getSceneNames()) {
             context.scenes.add(sceneName);
         }

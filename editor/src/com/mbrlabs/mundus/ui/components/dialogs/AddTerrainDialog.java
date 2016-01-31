@@ -158,11 +158,11 @@ public class AddTerrainDialog extends BaseDialog {
         base.setId(-1);
         base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
         splat.base = base;
-//        splatTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
-//        splatTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
-//        splatTexture.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
-//        splatTexture.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
-//        splatTexture.splatTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
+//        terrainTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
+//        terrainTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
+//        terrainTexture.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
+//        terrainTexture.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
+//        terrainTexture.terrainTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
 
         return terrain;
     }

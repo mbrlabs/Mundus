@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
-
 /**
  * @author Marcus Brummer
  * @version 17-12-2015
@@ -37,7 +36,9 @@ public class TerrainDescriptor {
     @Tag(4)
     private int vertexResolution;
     @Tag(5)
-    private String path;
+    private TerrainTextureDescriptor terrainTexture;
+    @Tag(6)
+    private String terraPath;
 
     public long getId() {
         return id;
@@ -71,12 +72,20 @@ public class TerrainDescriptor {
         this.depth = depth;
     }
 
-    public String getPath() {
-        return path;
+    public TerrainTextureDescriptor getTerrainTexture() {
+        return terrainTexture;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setTerrainTexture(TerrainTextureDescriptor terrainTexture) {
+        this.terrainTexture = terrainTexture;
+    }
+
+    public String getTerraPath() {
+        return terraPath;
+    }
+
+    public void setTerraPath(String terraPath) {
+        this.terraPath = terraPath;
     }
 
     public int getVertexResolution() {

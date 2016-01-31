@@ -47,6 +47,16 @@ public class TerrainTexture {
         return base.getId() == -1;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "TerrainTexture{" +
+                "base=" + base +
+                ", chanR=" + chanR +
+                ", chanG=" + chanG +
+                ", chanB=" + chanB +
+                ", chanA=" + chanA +
+                ", splat=" + splat +
+                ", terrain=" + terrain +
+                '}';
+    }
 }

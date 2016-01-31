@@ -110,6 +110,14 @@ public class Terrain implements RenderableProvider {
         return terrainTexture;
     }
 
+    public void setTerrainTexture(TerrainTexture terrainTexture) {
+        terrainTexture.terrain = this;
+        this.terrainTexture = terrainTexture;
+
+        this.renderable.material.set(new TerrainTextureAttribute(
+                TerrainTextureAttribute.ATTRIBUTE_SPLAT0, this.terrainTexture));
+    }
+
     public void update () {
         buildVertices();
         mesh.setVertices(vertices);

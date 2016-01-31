@@ -139,21 +139,21 @@ public class TerrainShader extends BaseShader {
     private void setTerrainSplatTextures(Renderable renderable) {
         TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
                 renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
-        TerrainTexture splat = splatAttrib.splatTexture;
+        TerrainTexture terrainTexture = splatAttrib.terrainTexture;
 
         // set sampler2D uniforms
         int texCount = 0;
-        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, splat.base);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_R, splat.chanR);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, splat.chanG);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, splat.chanB);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, splat.chanA);
-        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, splat.splat);
+        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.base);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.chanR);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.chanG);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.chanB);
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.chanA);
+        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, terrainTexture.splat);
         set(UNIFORM_TEXTURE_COUNT, texCount);
 
         // set terrain world size
-        terrainSize.x = splat.terrain.terrainWidth;
-        terrainSize.y = splat.terrain.terrainDepth;
+        terrainSize.x = terrainTexture.terrain.terrainWidth;
+        terrainSize.y = terrainTexture.terrain.terrainDepth;
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 

@@ -25,17 +25,17 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 public class TerrainTextureDescriptor {
 
     @Tag(0)
-    private long textureChanR;
+    private Long textureChanR;
     @Tag(1)
-    private long textureChanG;
+    private Long textureChanG;
     @Tag(2)
-    private long textureChanB;
+    private Long textureChanB;
     @Tag(3)
-    private long textureChanA;
+    private Long textureChanA;
     @Tag(4)
-    private long splatmap;
+    private String splatmapPath;
 
-    public long getTextureChanR() {
+    public Long getTextureChanR() {
         return textureChanR;
     }
 
@@ -43,7 +43,7 @@ public class TerrainTextureDescriptor {
         this.textureChanR = textureChanR;
     }
 
-    public long getTextureChanG() {
+    public Long getTextureChanG() {
         return textureChanG;
     }
 
@@ -51,7 +51,7 @@ public class TerrainTextureDescriptor {
         this.textureChanG = textureChanG;
     }
 
-    public long getTextureChanB() {
+    public Long getTextureChanB() {
         return textureChanB;
     }
 
@@ -59,7 +59,7 @@ public class TerrainTextureDescriptor {
         this.textureChanB = textureChanB;
     }
 
-    public long getTextureChanA() {
+    public Long getTextureChanA() {
         return textureChanA;
     }
 
@@ -67,12 +67,22 @@ public class TerrainTextureDescriptor {
         this.textureChanA = textureChanA;
     }
 
-    public long getSplatmap() {
-        return splatmap;
+    public String getSplatmapPath() {
+        return splatmapPath;
     }
 
-    public void setSplatmap(long splatmap) {
-        this.splatmap = splatmap;
+    public void setSplatmapPath(String splatmapPath) {
+        this.splatmapPath = splatmapPath;
     }
 
+    @Override
+    public String toString() {
+        return "TerrainTextureDescriptor{" +
+                "textureChanR=" + textureChanR +
+                ", textureChanG=" + textureChanG +
+                ", textureChanB=" + textureChanB +
+                ", textureChanA=" + textureChanA +
+                ", splatmapPath='" + splatmapPath + '\'' +
+                '}';
+    }
 }

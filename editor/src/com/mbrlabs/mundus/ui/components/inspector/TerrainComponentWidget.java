@@ -197,17 +197,17 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             textureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
                 @Override
                 public void onTextureSelected(MTexture texture) {
-                    TerrainTexture splatTex = component.getTerrain().getTerrainTexture();
-                    int texCount = splatTex.countSplatDetailTextures();
+                    TerrainTexture terrainTexture = component.getTerrain().getTerrainTexture();
+                    int texCount = terrainTexture.countSplatDetailTextures();
 
                     // set base
-                    if(splatTex.hasDefaultTexture()) {
-                        splatTex.base = texture;
+                    if(terrainTexture.hasDefaultTexture()) {
+                        terrainTexture.base = texture;
                         textureGrid.addTexture(texture);
 
                         // create empty splat map
                         Splatmap splatmap = new Splatmap(512, 512);
-                        splatTex.splat = splatmap;
+                        terrainTexture.splat = splatmap;
 
                         textureBrowser.fadeOut();
 
@@ -222,15 +222,15 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
 //                    splatmap.saveAsPNG(Gdx.files.absolute("/home/marcus/Desktop/splat.png"));
 //                    splat.splat = splatmap;
 
-                    // set textures in splatTexture
+                    // set textures in terrainTexture
                     if(texCount == 0) {
-                        splatTex.chanR = texture;
+                        terrainTexture.chanR = texture;
                     } else if(texCount == 1) {
-                        splatTex.chanG = texture;
+                        terrainTexture.chanG = texture;
                     } else if(texCount == 2) {
-                        splatTex.chanB = texture;
+                        terrainTexture.chanB = texture;
                     } else if(texCount == 3) {
-                        splatTex.chanA = texture;
+                        terrainTexture.chanA = texture;
                     } else {
                         DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                         return;
