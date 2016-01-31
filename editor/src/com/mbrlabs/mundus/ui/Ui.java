@@ -21,13 +21,13 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.mbrlabs.mundus.ui.components.dialogs.*;
-import com.mbrlabs.mundus.ui.components.MundusToolbar;
-import com.mbrlabs.mundus.ui.components.StatusBar;
-import com.mbrlabs.mundus.ui.components.dialogs.importer.ImportDialog;
-import com.mbrlabs.mundus.ui.components.inspector.Inspector;
-import com.mbrlabs.mundus.ui.components.menu.MundusMenuBar;
-import com.mbrlabs.mundus.ui.components.sidebar.Sidebar;
+import com.mbrlabs.mundus.ui.modules.MundusToolbar;
+import com.mbrlabs.mundus.ui.modules.StatusBar;
+import com.mbrlabs.mundus.ui.modules.dialogs.*;
+import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportDialog;
+import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
+import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
+import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
 
 /**
  * @author Marcus Brummer
@@ -47,7 +47,6 @@ public class Ui extends MyStage {
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
-   // private OpenProjectDialog openProjectDialog;
     private ImportDialog importDialog;
     private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
@@ -67,7 +66,6 @@ public class Ui extends MyStage {
 
     private Ui() {
         super(new ScreenViewport());
-        // create root table
         root = new VisTable();
         root.setFillParent(true);
         root.align(Align.left | Align.top);
@@ -101,7 +99,6 @@ public class Ui extends MyStage {
         // settings dialog
         settingsDialog = new SettingsDialog();
         newProjectDialog = new NewProjectDialog();
-       // openProjectDialog = new OpenProjectDialog();
         importDialog = new ImportDialog();
         addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
@@ -140,10 +137,6 @@ public class Ui extends MyStage {
     public NewProjectDialog getNewProjectDialog() {
         return newProjectDialog;
     }
-
-//    public OpenProjectDialog getOpenProjectDialog() {
-//        return openProjectDialog;
-//    }
 
     public ImportDialog getImportDialog() {
         return importDialog;

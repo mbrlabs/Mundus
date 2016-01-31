@@ -16,7 +16,8 @@
 
 package com.mbrlabs.mundus;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -25,20 +26,22 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.core.HomeManager;
-import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.events.SceneChangedEvent;
-import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.input.InputManager;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.input.FreeCamController;
+import com.mbrlabs.mundus.input.InputManager;
+import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.utils.*;
+import com.mbrlabs.mundus.utils.Compass;
+import com.mbrlabs.mundus.utils.GlUtils;
+import com.mbrlabs.mundus.utils.TestUtils;
+import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 

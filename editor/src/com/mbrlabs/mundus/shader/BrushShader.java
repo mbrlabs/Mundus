@@ -23,8 +23,8 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
+import com.mbrlabs.mundus.utils.GlUtils;
 
 /**
  * @author Marcus Brummer

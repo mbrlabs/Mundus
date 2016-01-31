@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
-import com.kotcrab.vis.ui.widget.VisCheckBox;
 import com.kotcrab.vis.ui.widget.VisRadioButton;
 import com.kotcrab.vis.ui.widget.VisTable;
 

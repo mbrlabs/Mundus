@@ -17,9 +17,9 @@
 package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
