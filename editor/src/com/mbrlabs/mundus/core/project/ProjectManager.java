@@ -61,9 +61,9 @@ import java.io.FileNotFoundException;
 public class ProjectManager {
 
     public static final String PROJECT_ASSETS_DIR           =    "assets/";
-    public static final String PROJECT_MODEL_DIR            =    PROJECT_ASSETS_DIR + "/models/";
-    public static final String PROJECT_TERRAIN_DIR          =    PROJECT_ASSETS_DIR + "/terrains/";
-    public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "/textures/";
+    public static final String PROJECT_MODEL_DIR            =    PROJECT_ASSETS_DIR + "models/";
+    public static final String PROJECT_TERRAIN_DIR          =    PROJECT_ASSETS_DIR + "terrains/";
+    public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "textures/";
 
     public static final String PROJECT_SCENES_DIR           =    "scenes/";
     public static final String PROJECT_SCENE_EXTENSION      =    ".mundus";
