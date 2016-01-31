@@ -51,12 +51,14 @@ public class AssetManager {
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
         long id = projectContext.obtainUUID();
 
-        String folder = projectContext.absolutePath + "/" + ProjectManager.PROJECT_MODEL_DIR + id + "/";
+        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
+        String absoluteImportFolder = projectContext.absolutePath + "/" + relativeImportFolder;
+
         String g3dbFilename = importedModel.name + ".g3db";
         String textureFilename = importedModel.textureFile.name();
 
-        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(folder + g3dbFilename);
-        FileHandle absoluteTextureImportPath = Gdx.files.absolute(folder + textureFilename);
+        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
+        FileHandle absoluteTextureImportPath = Gdx.files.absolute(absoluteImportFolder + textureFilename);
 
         importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
         importedModel.textureFile.copyTo(absoluteTextureImportPath);
@@ -70,8 +72,8 @@ public class AssetManager {
         mModel.setModel(model);
         mModel.name = importedModel.name;
         mModel.id = id;
-        mModel.g3dbFilename = absoluteG3dbImportPath.name();
-        mModel.textureFilename = absoluteTextureImportPath.name();
+        mModel.g3dbPath = relativeImportFolder + g3dbFilename;
+        mModel.texturePath = relativeImportFolder + textureFilename;
         projectContext.models.add(mModel);
 
         // save whole project
@@ -89,14 +91,15 @@ public class AssetManager {
     public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
         long id = projectContext.obtainUUID();
 
-        String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TEXTURE_DIR + textureFile.name());
+        String relativeImportPath = ProjectManager.PROJECT_TEXTURE_DIR + textureFile.name();
+        String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, relativeImportPath);
         FileHandle absoluteImportFile = Gdx.files.absolute(absoluteImportPath);
 
         textureFile.copyTo(absoluteImportFile);
 
         MTexture tex = new MTexture();
         tex.setId(id);
-        tex.setFilename(absoluteImportFile.name());
+        tex.setPath(relativeImportPath);
         if(mipMap) {
             tex.texture = TextureUtils.loadMipmapTexture(absoluteImportFile);
         } else {

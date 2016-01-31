@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
@@ -146,20 +145,18 @@ public class ProjectManager {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.absolutePath = ref.getAbsolutePath();
 
-        String modelPath = FilenameUtils.concat(context.absolutePath, PROJECT_MODEL_DIR);
-        String texturePath = FilenameUtils.concat(context.absolutePath, PROJECT_TEXTURE_DIR);
-
         // load textures
         for(MTexture tex : context.textures) {
-            tex.texture = TextureUtils.loadMipmapTexture(Gdx.files.absolute(FilenameUtils.concat(texturePath, tex.getFilename())));
-            Log.debug("Loaded texture: " + tex.getFilename());
+            tex.texture = TextureUtils.loadMipmapTexture(
+                    Gdx.files.absolute(FilenameUtils.concat(context.absolutePath, tex.getPath())));
+            Log.debug("Loaded texture: " + tex.getPath());
         }
 
         // load g3db models
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
         for(MModel model : context.models) {
             model.setModel(loader.loadModel(Gdx.files.absolute(
-                    FilenameUtils.concat(modelPath, model.id + "/" + model.g3dbFilename))));
+                    FilenameUtils.concat(context.absolutePath, model.g3dbPath))));
         }
 
         // load terrain .terra files

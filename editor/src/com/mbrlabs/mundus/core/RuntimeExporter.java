@@ -36,7 +36,6 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -135,8 +134,8 @@ public class RuntimeExporter {
         ModelDTO dto = new ModelDTO();
         dto.setId(model.id);
         dto.setName(model.name);
-        dto.setG3db(model.g3dbFilename);
-        dto.setTex(model.textureFilename);
+        dto.setG3db(model.g3dbPath);
+        dto.setTex(model.texturePath);
 
         return dto;
     }

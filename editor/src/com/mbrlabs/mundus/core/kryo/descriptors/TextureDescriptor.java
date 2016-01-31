@@ -29,7 +29,7 @@ public class TextureDescriptor {
     @Tag(1)
     private String name;
     @Tag(2)
-    private String filename;
+    private String path;
 
     public long getId() {
         return id;
@@ -47,12 +47,12 @@ public class TextureDescriptor {
         this.name = name;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getPath() {
+        return path;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setPath(String path) {
+        this.path = path;
     }
 
 }
