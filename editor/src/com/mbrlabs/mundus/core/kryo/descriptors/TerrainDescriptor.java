@@ -86,4 +86,5 @@ public class TerrainDescriptor {
     public void setVertexResolution(int vertexResolution) {
         this.vertexResolution = vertexResolution;
     }
+
 }

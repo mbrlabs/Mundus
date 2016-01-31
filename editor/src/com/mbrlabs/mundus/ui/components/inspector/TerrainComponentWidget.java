@@ -1,5 +1,22 @@
+/*
+ * Copyright (c) 2016. See AUTHORS file.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mbrlabs.mundus.ui.components.inspector;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,11 +29,12 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
+import com.mbrlabs.mundus.terrain.Splatmap;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
-import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.tools.ToolManager;
@@ -179,26 +197,40 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
             textureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
                 @Override
                 public void onTextureSelected(MTexture texture) {
-                    TerrainTextureSplat splat = component.getTerrain().getTextureSplat();
-                    int texCount = splat.countSplatDetailTextures();
+                    TerrainTexture splatTex = component.getTerrain().getTerrainTexture();
+                    int texCount = splatTex.countSplatDetailTextures();
 
                     // set base
-                    if(splat.hasDefaultTexture()) {
-                        splat.base = texture;
+                    if(splatTex.hasDefaultTexture()) {
+                        splatTex.base = texture;
                         textureGrid.addTexture(texture);
+
+                        // create empty splat map
+                        Splatmap splatmap = new Splatmap(512, 512);
+                        splatTex.splat = splatmap;
+
                         textureBrowser.fadeOut();
+
                         return;
                     }
 
-                    // set textures in splat
+
+//                    Splatmap splatmap = new Splatmap(256, 256);
+//                    splatmap.drawCircle(40, 40, 20, 0.5f, Splatmap.Channel.R);
+//                    splatmap.drawCircle(150, 100, 39, 1f, Splatmap.Channel.R);
+//                    splatmap.updateTexture();
+//                    splatmap.saveAsPNG(Gdx.files.absolute("/home/marcus/Desktop/splat.png"));
+//                    splat.splat = splatmap;
+
+                    // set textures in splatTexture
                     if(texCount == 0) {
-                        splat.chanR = texture;
+                        splatTex.chanR = texture;
                     } else if(texCount == 1) {
-                        splat.chanG = texture;
+                        splatTex.chanG = texture;
                     } else if(texCount == 2) {
-                        splat.chanB = texture;
+                        splatTex.chanB = texture;
                     } else if(texCount == 3) {
-                        splat.chanA = texture;
+                        splatTex.chanA = texture;
                     } else {
                         DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                         return;

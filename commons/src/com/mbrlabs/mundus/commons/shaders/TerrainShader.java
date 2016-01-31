@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.commons.shaders;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
@@ -32,8 +31,8 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
-import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplatAttribute;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
@@ -138,9 +137,9 @@ public class TerrainShader extends BaseShader {
     }
 
     private void setTerrainSplatTextures(Renderable renderable) {
-        TerrainTextureSplatAttribute splatAttrib = (TerrainTextureSplatAttribute)
-                renderable.material.get(TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0);
-        TerrainTextureSplat splat = splatAttrib.splat;
+        TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
+                renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
+        TerrainTexture splat = splatAttrib.splatTexture;
 
         // set sampler2D uniforms
         int texCount = 0;

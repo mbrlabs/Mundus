@@ -63,6 +63,7 @@ public class KryoManager {
         kryo.register(GameObjectDescriptor.class, 11);
         kryo.register(ModelComponentDescriptor.class, 12);
         kryo.register(TerrainComponentDescriptor.class, 13);
+        kryo.register(TerrainTextureDescriptor.class, 14);
     }
 
     public HomeDescriptor loadHomeDescriptor() {

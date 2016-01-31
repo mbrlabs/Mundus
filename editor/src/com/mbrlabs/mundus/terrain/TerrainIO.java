@@ -17,11 +17,10 @@
 package com.mbrlabs.mundus.terrain;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.commons.terrain.TerrainTextureSplat;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import org.apache.commons.io.FileUtils;
@@ -95,16 +94,16 @@ public class TerrainIO {
         terrain.heightData = floatArray.toArray();
         terrain.update();
 
-        TerrainTextureSplat splat = terrain.getTextureSplat();
+        TerrainTexture splat = terrain.getTerrainTexture();
         MTexture base = new MTexture();
         base.setId(-1);
         base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
         splat.base = base;
-//        splat.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
-//        splat.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
-//        splat.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
-//        splat.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
-//        splat.splat = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
+//        splatTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
+//        splatTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
+//        splatTexture.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
+//        splatTexture.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
+//        splatTexture.splatTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
         return terrain;
     }
 

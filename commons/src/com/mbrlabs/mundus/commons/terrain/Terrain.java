@@ -16,12 +16,10 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Matrix4;
@@ -54,7 +52,7 @@ public class Terrain implements RenderableProvider {
     private final Vector2 uvScale = new Vector2(60, 60);
 
     // Textures
-    private TerrainTextureSplat textureSplat;
+    private TerrainTexture terrainTexture;
 
     public float[] heightData;
     private Mesh mesh;
@@ -86,11 +84,11 @@ public class Terrain implements RenderableProvider {
         this.vertexResolution = vertexResolution;
         this.renderable = new Renderable();
 
-        this.textureSplat = new TerrainTextureSplat();
-        this.textureSplat.terrain = this;
+        this.terrainTexture = new TerrainTexture();
+        this.terrainTexture.terrain = this;
         this.renderable.material = new Material();
-        this.renderable.material.set(new TerrainTextureSplatAttribute(
-                TerrainTextureSplatAttribute.ATTRIBUTE_SPLAT0, textureSplat));
+        this.renderable.material.set(new TerrainTextureAttribute(
+                TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
     }
 
     public void init() {
@@ -108,8 +106,8 @@ public class Terrain implements RenderableProvider {
         heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
     }
 
-    public TerrainTextureSplat getTextureSplat() {
-        return textureSplat;
+    public TerrainTexture getTerrainTexture() {
+        return terrainTexture;
     }
 
     public void update () {
