@@ -157,7 +157,7 @@ public class AddTerrainDialog extends BaseDialog {
         MTexture base = new MTexture();
         base.setId(-1);
         base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-        splat.base = base;
+        splat.setBase(base);
 //        terrainTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
 //        terrainTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
 //        terrainTexture.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));

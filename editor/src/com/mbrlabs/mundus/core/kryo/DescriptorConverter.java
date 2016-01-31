@@ -252,23 +252,23 @@ public class DescriptorConverter {
 
     public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
         TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
-        if(terrainTexture.base != null) {
-            descriptor.setBase(terrainTexture.base.getId());
+        if(terrainTexture.getBase() != null) {
+            descriptor.setBase(terrainTexture.getBase().getId());
         }
-        if(terrainTexture.chanR != null) {
-            descriptor.setTextureChanR(terrainTexture.chanR.getId());
+        if(terrainTexture.getChanR() != null) {
+            descriptor.setTextureChanR(terrainTexture.getChanR().getId());
         }
-        if(terrainTexture.chanG != null) {
-            descriptor.setTextureChanG(terrainTexture.chanG.getId());
+        if(terrainTexture.getChanG() != null) {
+            descriptor.setTextureChanG(terrainTexture.getChanG().getId());
         }
-        if(terrainTexture.chanB != null) {
-            descriptor.setTextureChanB(terrainTexture.chanB.getId());
+        if(terrainTexture.getChanB() != null) {
+            descriptor.setTextureChanB(terrainTexture.getChanB().getId());
         }
-        if(terrainTexture.chanA != null) {
-            descriptor.setTextureChanA(terrainTexture.chanA.getId());
+        if(terrainTexture.getChanA() != null) {
+            descriptor.setTextureChanA(terrainTexture.getChanA().getId());
         }
-        if(terrainTexture.splat != null) {
-            descriptor.setSplatmapPath(terrainTexture.splat.getPath());
+        if(terrainTexture.getSplat() != null) {
+            descriptor.setSplatmapPath(terrainTexture.getSplat().getPath());
         }
 
         return descriptor;
@@ -282,7 +282,7 @@ public class DescriptorConverter {
             if(base > -1) {
                 MTexture mt = findTextureById(textures, base);
                 if (mt != null) {
-                    tex.base = mt;
+                    tex.setBase(mt);
                 } else {
                     return null;
                 }
@@ -291,7 +291,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanR() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
             if(mt != null) {
-                tex.chanR = mt;
+                tex.setChanR(mt);
             } else {
                 return null;
             }
@@ -299,7 +299,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanG() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanG());
             if(mt != null) {
-                tex.chanG = mt;
+                tex.setChanG(mt);
             } else {
                 return null;
             }
@@ -307,7 +307,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanB() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanB());
             if(mt != null) {
-                tex.chanB = mt;
+                tex.setChanB(mt);
             } else {
                 return null;
             }
@@ -315,7 +315,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanA() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanA());
             if(mt != null) {
-                tex.chanA = mt;
+                tex.setChanA(mt);
             } else {
                 return null;
             }
@@ -323,7 +323,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getSplatmapPath() != null) {
             Splatmap splatmap = new Splatmap(512, 512);
             splatmap.setPath(terrainTextureDescriptor.getSplatmapPath());
-            tex.splat = splatmap;
+            tex.setSplat(splatmap);
         }
 
         System.out.println(tex);

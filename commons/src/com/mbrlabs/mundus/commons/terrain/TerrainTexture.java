@@ -24,16 +24,16 @@ import com.mbrlabs.mundus.commons.model.MTexture;
  */
 public class TerrainTexture {
 
-    public MTexture base;
-    public MTexture chanR;
-    public MTexture chanG;
-    public MTexture chanB;
-    public MTexture chanA;
-    public MTexture splat;
+    private MTexture base;
+    private MTexture chanR;
+    private MTexture chanG;
+    private MTexture chanB;
+    private MTexture chanA;
+    private MTexture splat;
 
-    public Terrain terrain;
+    private Terrain terrain;
 
-    public int countSplatDetailTextures() {
+    public int countSplatChannelTextures() {
         int count = 0;
         if(chanR != null) count++;
         if(chanG != null) count++;
@@ -43,20 +43,64 @@ public class TerrainTexture {
         return count;
     }
 
-    public boolean hasDefaultTexture() {
+    public boolean hasDefaultBaseTexture() {
         return base.getId() == -1;
     }
 
-    @Override
-    public String toString() {
-        return "TerrainTexture{" +
-                "base=" + base +
-                ", chanR=" + chanR +
-                ", chanG=" + chanG +
-                ", chanB=" + chanB +
-                ", chanA=" + chanA +
-                ", splat=" + splat +
-                ", terrain=" + terrain +
-                '}';
+    public MTexture getBase() {
+        return base;
     }
+
+    public void setBase(MTexture base) {
+        this.base = base;
+    }
+
+    public MTexture getChanR() {
+        return chanR;
+    }
+
+    public void setChanR(MTexture chanR) {
+        this.chanR = chanR;
+    }
+
+    public MTexture getChanG() {
+        return chanG;
+    }
+
+    public void setChanG(MTexture chanG) {
+        this.chanG = chanG;
+    }
+
+    public MTexture getChanB() {
+        return chanB;
+    }
+
+    public void setChanB(MTexture chanB) {
+        this.chanB = chanB;
+    }
+
+    public MTexture getChanA() {
+        return chanA;
+    }
+
+    public void setChanA(MTexture chanA) {
+        this.chanA = chanA;
+    }
+
+    public MTexture getSplat() {
+        return splat;
+    }
+
+    public void setSplat(MTexture splat) {
+        this.splat = splat;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+    }
+
 }

@@ -85,7 +85,7 @@ public class Terrain implements RenderableProvider {
         this.renderable = new Renderable();
 
         this.terrainTexture = new TerrainTexture();
-        this.terrainTexture.terrain = this;
+        this.terrainTexture.setTerrain(this);
         this.renderable.material = new Material();
         this.renderable.material.set(new TerrainTextureAttribute(
                 TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
@@ -111,7 +111,7 @@ public class Terrain implements RenderableProvider {
     }
 
     public void setTerrainTexture(TerrainTexture terrainTexture) {
-        terrainTexture.terrain = this;
+        terrainTexture.setTerrain(this);
         this.terrainTexture = terrainTexture;
 
         this.renderable.material.set(new TerrainTextureAttribute(

@@ -143,17 +143,17 @@ public class TerrainShader extends BaseShader {
 
         // set sampler2D uniforms
         int texCount = 0;
-        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.base);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.chanR);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.chanG);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.chanB);
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.chanA);
-        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, terrainTexture.splat);
+        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.getBase());
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.getChanR());
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getChanG());
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getChanB());
+        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getChanA());
+        setTilableTextureUniform(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplat());
         set(UNIFORM_TEXTURE_COUNT, texCount);
 
         // set terrain world size
-        terrainSize.x = terrainTexture.terrain.terrainWidth;
-        terrainSize.y = terrainTexture.terrain.terrainDepth;
+        terrainSize.x = terrainTexture.getTerrain().terrainWidth;
+        terrainSize.y = terrainTexture.getTerrain().terrainDepth;
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 

@@ -21,9 +21,11 @@ import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
@@ -58,7 +60,7 @@ public class TerrainIO {
             e.printStackTrace();
         }
 
-        // write data
+        // write .terra
         try(DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(
                 new GZIPOutputStream(new FileOutputStream(file))))) {
 
@@ -66,11 +68,18 @@ public class TerrainIO {
                 outputStream.writeFloat(f);
             }
             outputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
+
+        // write splatmap
+//        TerrainTexture terrainTexture = terrain.getTerrainTexture();
+//        if(terrainTexture.splat != null) {
+//            Splatmap splatmap = (Splatmap) terrainTexture.splat;
+//            splatmap.saveAsPNG(Gdx.files.absolute(FilenameUtils.concat()));
+//        }
+
 
         Log.debug("Terrain export execution time (" + data.length + " floats): "
                 + (System.currentTimeMillis() - start) + " ms");
@@ -95,11 +104,11 @@ public class TerrainIO {
         terrain.update();
 
         TerrainTexture splat = terrain.getTerrainTexture();
-        if(splat.base == null) {
+        if(splat.getBase() == null) {
             MTexture base = new MTexture();
             base.setId(-1);
             base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-            splat.base = base;
+            splat.setBase(base);
         }
 
 //        terrainTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));

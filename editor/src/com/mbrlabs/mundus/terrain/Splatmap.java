@@ -38,6 +38,7 @@ public class Splatmap extends MTexture {
         Pixmap.setBlending(Pixmap.Blending.None);
         this.pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
         texture = new Texture(pixmap);
+        updateTexture();
     }
 
     public void drawPixel(int x, int y, float strength, Channel channel) {

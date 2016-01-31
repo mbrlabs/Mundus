@@ -170,7 +170,7 @@ public class ProjectManager {
     }
 
     public void saveProject(ProjectContext projectContext) {
-        // save terrain data in .terra files
+        // save .terra files & the splat map
         for(Terrain terrain : projectContext.terrains) {
             String path = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TERRAIN_DIR);
             path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
