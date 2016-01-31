@@ -252,8 +252,8 @@ public class DescriptorConverter {
 
     public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
         TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
-        if(terrainTexture.splat != null) {
-            descriptor.setSplatmapPath(terrainTexture.splat.getPath());
+        if(terrainTexture.base != null) {
+            descriptor.setBase(terrainTexture.base.getId());
         }
         if(terrainTexture.chanR != null) {
             descriptor.setTextureChanR(terrainTexture.chanR.getId());
@@ -267,8 +267,9 @@ public class DescriptorConverter {
         if(terrainTexture.chanA != null) {
             descriptor.setTextureChanA(terrainTexture.chanA.getId());
         }
-
-        System.out.println(descriptor);
+        if(terrainTexture.splat != null) {
+            descriptor.setSplatmapPath(terrainTexture.splat.getPath());
+        }
 
         return descriptor;
     }
@@ -276,10 +277,16 @@ public class DescriptorConverter {
     public static TerrainTexture convert(TerrainTextureDescriptor terrainTextureDescriptor, Array<MTexture> textures) {
         TerrainTexture tex = new TerrainTexture();
 
-        if(terrainTextureDescriptor.getSplatmapPath() != null) {
-            Splatmap splatmap = new Splatmap(512, 512);
-            splatmap.setPath(terrainTextureDescriptor.getSplatmapPath());
-            tex.splat = splatmap;
+        Long base = terrainTextureDescriptor.getBase();
+        if(base != null) {
+            if(base > -1) {
+                MTexture mt = findTextureById(textures, base);
+                if (mt != null) {
+                    tex.base = mt;
+                } else {
+                    return null;
+                }
+            }
         }
         if(terrainTextureDescriptor.getTextureChanR() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
@@ -312,6 +319,11 @@ public class DescriptorConverter {
             } else {
                 return null;
             }
+        }
+        if(terrainTextureDescriptor.getSplatmapPath() != null) {
+            Splatmap splatmap = new Splatmap(512, 512);
+            splatmap.setPath(terrainTextureDescriptor.getSplatmapPath());
+            tex.splat = splatmap;
         }
 
         System.out.println(tex);

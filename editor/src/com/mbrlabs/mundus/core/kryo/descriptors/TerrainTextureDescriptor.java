@@ -25,21 +25,31 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 public class TerrainTextureDescriptor {
 
     @Tag(0)
-    private Long textureChanR;
+    private Long base;
     @Tag(1)
-    private Long textureChanG;
+    private Long textureChanR;
     @Tag(2)
-    private Long textureChanB;
+    private Long textureChanG;
     @Tag(3)
-    private Long textureChanA;
+    private Long textureChanB;
     @Tag(4)
+    private Long textureChanA;
+    @Tag(5)
     private String splatmapPath;
+
+    public Long getBase() {
+        return base;
+    }
+
+    public void setBase(Long base) {
+        this.base = base;
+    }
 
     public Long getTextureChanR() {
         return textureChanR;
     }
 
-    public void setTextureChanR(long textureChanR) {
+    public void setTextureChanR(Long textureChanR) {
         this.textureChanR = textureChanR;
     }
 
@@ -47,7 +57,7 @@ public class TerrainTextureDescriptor {
         return textureChanG;
     }
 
-    public void setTextureChanG(long textureChanG) {
+    public void setTextureChanG(Long textureChanG) {
         this.textureChanG = textureChanG;
     }
 
@@ -55,7 +65,7 @@ public class TerrainTextureDescriptor {
         return textureChanB;
     }
 
-    public void setTextureChanB(long textureChanB) {
+    public void setTextureChanB(Long textureChanB) {
         this.textureChanB = textureChanB;
     }
 
@@ -63,7 +73,7 @@ public class TerrainTextureDescriptor {
         return textureChanA;
     }
 
-    public void setTextureChanA(long textureChanA) {
+    public void setTextureChanA(Long textureChanA) {
         this.textureChanA = textureChanA;
     }
 
@@ -73,16 +83,5 @@ public class TerrainTextureDescriptor {
 
     public void setSplatmapPath(String splatmapPath) {
         this.splatmapPath = splatmapPath;
-    }
-
-    @Override
-    public String toString() {
-        return "TerrainTextureDescriptor{" +
-                "textureChanR=" + textureChanR +
-                ", textureChanG=" + textureChanG +
-                ", textureChanB=" + textureChanB +
-                ", textureChanA=" + textureChanA +
-                ", splatmapPath='" + splatmapPath + '\'' +
-                '}';
     }
 }

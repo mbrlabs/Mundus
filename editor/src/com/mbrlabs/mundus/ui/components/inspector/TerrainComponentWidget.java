@@ -118,7 +118,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     }
 
     /**
-     *
+     * The raise/lower tab contains all brushes used to modify the height of the terrain.
      */
     private class RaiseLowerTab extends Tab {
 
@@ -143,7 +143,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     }
 
     /**
-     *
+     * The flatten tab contains all brushes used to flatten the terrain height.
      */
     private class FlattenTab extends Tab {
 
@@ -168,7 +168,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     }
 
     /**
-     *
+     * The paint tab contains everything to paint on the terrain texture.
      */
     private class PaintTab extends Tab {
 
@@ -204,13 +204,9 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
                     if(terrainTexture.hasDefaultTexture()) {
                         terrainTexture.base = texture;
                         textureGrid.addTexture(texture);
-
                         // create empty splat map
-                        Splatmap splatmap = new Splatmap(512, 512);
-                        terrainTexture.splat = splatmap;
-
+                        terrainTexture.splat = new Splatmap(512, 512);
                         textureBrowser.fadeOut();
-
                         return;
                     }
 
@@ -255,6 +251,27 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
 
                 }
             });
+
+            setTextures();
+        }
+
+        private void setTextures() {
+            TerrainTexture terrainTexture = component.getTerrain().getTerrainTexture();
+            if(terrainTexture.base.getId() > -1) {
+                textureGrid.addTexture(terrainTexture.base);
+            }
+            if(terrainTexture.chanR != null) {
+                textureGrid.addTexture(terrainTexture.chanR);
+            }
+            if(terrainTexture.chanG != null) {
+                textureGrid.addTexture(terrainTexture.chanG);
+            }
+            if(terrainTexture.chanB != null) {
+                textureGrid.addTexture(terrainTexture.chanB);
+            }
+            if(terrainTexture.chanA != null) {
+                textureGrid.addTexture(terrainTexture.chanA);
+            }
         }
 
         @Override
@@ -269,7 +286,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     }
 
     /**
-     *
+     * The settings tabs contains all settings of the terrain.
      */
     private class SettingsTab extends Tab {
 
@@ -295,7 +312,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
 
 
     /**
-     *
+     * The Brush table contains all available brushes.
      */
     private class BrushTable extends VisTable {
         private FaTextButton sphereBrushBtn;
