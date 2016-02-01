@@ -27,6 +27,8 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class SplatMap {
 
+    public static final int DEFAULT_SIZE = 512;
+
     private Pixmap pixmap;
     private Texture texture;
     private String path;

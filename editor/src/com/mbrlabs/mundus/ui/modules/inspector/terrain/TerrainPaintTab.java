@@ -80,21 +80,15 @@ public class TerrainPaintTab extends Tab {
                     return;
                 }
 
-//                    Splatmap splatmap = new Splatmap(256, 256);
-//                    splatmap.drawCircle(40, 40, 20, 0.5f, Splatmap.Channel.R);
-//                    splatmap.drawCircle(150, 100, 39, 1f, Splatmap.Channel.R);
-//                    splatmap.updateTexture();
-//                    splatmap.savePNG(Gdx.files.absolute("/home/marcus/Desktop/splat.png"));
-//                    splat.splat = splatmap;
-
                 // set textures in terrainTexture
                 SplatTexture st = new SplatTexture();
+                st.texture = texture;
                 if(texCount == 0) {
 
                     // create empty splat map
-                    SplatMap sm = new SplatMap(512, 512);
-                    terrainTexture.setSplatmap(sm);
+                    SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
                     sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
+                    terrainTexture.setSplatmap(sm);
 
                     st.channel = SplatTexture.Channel.R;
                     terrainTexture.setChanR(st);

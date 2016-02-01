@@ -269,7 +269,10 @@ public class DescriptorConverter {
         if(terrainTexture.getChanA() != null) {
             descriptor.setTextureChanA(terrainTexture.getChanA().texture.getId());
         }
-        descriptor.setHasSplatmap(terrainTexture.getSplatmap() != null);
+
+        if(terrainTexture.getSplatmap() != null) {
+            descriptor.setSplatmapPath(terrainTexture.getSplatmap().getPath());
+        }
 
         return descriptor;
     }
@@ -320,12 +323,11 @@ public class DescriptorConverter {
                 return null;
             }
         }
-        if(terrainTextureDescriptor.hasSplatmap()) {
-            SplatMap splatMap = new SplatMap(512, 512);
+        if(terrainTextureDescriptor.getSplatmapPath() != null) {
+            SplatMap splatMap = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
+            splatMap.setPath(terrainTextureDescriptor.getSplatmapPath());
             tex.setSplatmap(splatMap);
         }
-
-        System.out.println(tex);
 
         return tex;
     }

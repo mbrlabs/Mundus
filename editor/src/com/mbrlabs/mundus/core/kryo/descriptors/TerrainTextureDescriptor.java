@@ -35,7 +35,7 @@ public class TerrainTextureDescriptor {
     @Tag(4)
     private Long textureChanA;
     @Tag(5)
-    private boolean hasSplatmap;
+    private String splatmapPath;
 
     public Long getBase() {
         return base;
@@ -77,11 +77,12 @@ public class TerrainTextureDescriptor {
         this.textureChanA = textureChanA;
     }
 
-    public boolean hasSplatmap() {
-        return hasSplatmap;
+    public String getSplatmapPath() {
+        return splatmapPath;
     }
 
-    public void setHasSplatmap(boolean hasSplatmap) {
-        this.hasSplatmap = hasSplatmap;
+    public void setSplatmapPath(String splatmapPath) {
+        this.splatmapPath = splatmapPath;
     }
+
 }
