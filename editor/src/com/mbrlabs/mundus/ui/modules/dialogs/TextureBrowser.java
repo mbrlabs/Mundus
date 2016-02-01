@@ -1,6 +1,7 @@
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
 import com.kotcrab.vis.ui.widget.VisScrollPane;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -14,7 +15,7 @@ import com.mbrlabs.mundus.ui.widgets.TextureGrid;
  */
 public class TextureBrowser extends BaseDialog implements TextureImportEvent.TextureImportListener, ProjectChangedEvent.ProjectChangedListener {
 
-    private TextureGrid textureGrid;
+    private TextureGrid<MTexture> textureGrid;
     private VisScrollPane scrollPane;
 
     @Inject
@@ -25,7 +26,7 @@ public class TextureBrowser extends BaseDialog implements TextureImportEvent.Tex
         Mundus.inject(this);
         Mundus.registerEventListener(this);
 
-        textureGrid = new TextureGrid(60, 7, projectContext.textures);
+        textureGrid = new TextureGrid<>(60, 7, projectContext.textures);
         scrollPane = new VisScrollPane(textureGrid);
         scrollPane.setScrollingDisabled(true, false);
         add(scrollPane).maxSize(600, 400).size(600, 400);

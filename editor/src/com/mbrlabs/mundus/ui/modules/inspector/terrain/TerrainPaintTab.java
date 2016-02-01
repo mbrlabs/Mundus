@@ -34,6 +34,7 @@ import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
 import com.mbrlabs.mundus.ui.widgets.TextureGrid;
+import com.mbrlabs.mundus.commons.utils.TextureProvider;
 
 /**
  * @author Marcus Brummer
@@ -45,7 +46,7 @@ public class TerrainPaintTab extends Tab {
 
     private VisTable table;
     private VisTextButton addTextureBtn;
-    private TextureGrid textureGrid;
+    private TextureGrid<TextureProvider> textureGrid;
 
     private TextureBrowser textureBrowser;
 
@@ -57,7 +58,7 @@ public class TerrainPaintTab extends Tab {
         table.add(new TerrainBrushTable(parent, TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
         table.addSeparator().height(1);
 
-        textureGrid = new TextureGrid(40, 5);
+        textureGrid = new TextureGrid<>(40, 5);
         textureGrid.setBackground(VisUI.getSkin().getDrawable("menu-bg"));
         table.add(textureGrid).expand().fill().pad(5).row();
         table.addSeparator().height(1);
@@ -65,24 +66,53 @@ public class TerrainPaintTab extends Tab {
         addTextureBtn = new VisTextButton("Add Texture");
         table.add(addTextureBtn).right().row();
 
+        addTextureBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui.getInstance().showDialog(textureBrowser);
+            }
+        });
+
+        textureGrid.setListener(new TextureGrid.OnTextureClickedListener() {
+            @Override
+            public void onTextureSelected(TextureProvider texture) {
+                // base texture
+                if(texture instanceof MTexture) {
+                    MTexture tex = (MTexture) texture;
+
+                } else {
+                    SplatTexture tex = (SplatTexture) texture;
+
+                }
+
+            }
+        });
+
+        setupTextureBrowser();
+        setSplatTexturesForTerrain();
+    }
+
+    public void setupTextureBrowser() {
         textureBrowser = new TextureBrowser();
         textureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
             @Override
-            public void onTextureSelected(MTexture texture) {
+            public void onTextureSelected(TextureProvider texture) {
+                MTexture mTexture = (MTexture) texture;
+
                 TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
                 int texCount = terrainTexture.countSplatChannelTextures();
 
                 // set base
                 if(terrainTexture.hasDefaultBaseTexture()) {
-                    terrainTexture.setBase(texture);
-                    textureGrid.addTexture(texture);
+                    terrainTexture.setBase(mTexture);
+                    textureGrid.addTexture(mTexture);
                     textureBrowser.fadeOut();
                     return;
                 }
 
                 // set textures in terrainTexture
                 SplatTexture st = new SplatTexture();
-                st.texture = texture;
+                st.texture = mTexture;
                 if(texCount == 0) {
 
                     // create empty splat map
@@ -107,29 +137,12 @@ public class TerrainPaintTab extends Tab {
                 }
 
                 textureBrowser.fadeOut();
-                textureGrid.addTexture(texture);
+                textureGrid.addTexture(st);
             }
         });
-
-        addTextureBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Ui.getInstance().showDialog(textureBrowser);
-            }
-        });
-
-        textureGrid.setListener(new TextureGrid.OnTextureClickedListener() {
-            @Override
-            public void onTextureSelected(MTexture texture) {
-                // TODO
-
-            }
-        });
-
-        setTextures();
     }
 
-    private void setTextures() {
+    private void setSplatTexturesForTerrain() {
         TerrainTexture terrainTexture = parent.component.getTerrain().getTerrainTexture();
         if(terrainTexture.getBase().getId() > -1) {
             textureGrid.addTexture(terrainTexture.getBase());

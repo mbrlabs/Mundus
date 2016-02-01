@@ -22,13 +22,13 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.VisImage;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.utils.TextureProvider;
 
 /**
  * @author Marcus Brummer
  * @version 30-01-2016
  */
-public class TextureGrid extends VisTable {
+public class TextureGrid<T extends TextureProvider> extends VisTable {
 
     private GridGroup grid;
     private OnTextureClickedListener listener;
@@ -39,7 +39,7 @@ public class TextureGrid extends VisTable {
         add(grid).expand().fill().row();
     }
 
-    public TextureGrid(int imgSize, int spacing, Array<MTexture> textures) {
+    public TextureGrid(int imgSize, int spacing, Array<T> textures) {
         this(imgSize, spacing);
         setTextures(textures);
     }
@@ -48,31 +48,31 @@ public class TextureGrid extends VisTable {
         this.listener = listener;
     }
 
-    public void setTextures(Array<MTexture> textures) {
+    public void setTextures(Array<T> textures) {
         grid.clearChildren();
-        for(MTexture tex : textures) {
-            grid.addActor(new TextureItem(tex));
+        for(T tex : textures) {
+            grid.addActor(new TextureItem<>(tex));
         }
     }
 
-    public void addTexture(MTexture texture) {
-        grid.addActor(new TextureItem(texture));
+    public void addTexture(T texture) {
+        grid.addActor(new TextureItem<>(texture));
     }
 
     /**
      *
      */
     public interface OnTextureClickedListener {
-        public void onTextureSelected(MTexture texture);
+        public void onTextureSelected(TextureProvider textureProvider);
     }
 
     /**
      *
      */
-    private class TextureItem extends VisTable {
-        public TextureItem(final MTexture tex) {
+    private class TextureItem<T extends TextureProvider> extends VisTable {
+        public TextureItem(final T tex) {
             super();
-            add(new VisImage(tex.texture));
+            add(new VisImage(tex.getTexture()));
             addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

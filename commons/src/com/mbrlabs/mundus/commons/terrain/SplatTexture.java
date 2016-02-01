@@ -16,13 +16,15 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.utils.TextureProvider;
 
 /**
  * @author Marcus Brummer
  * @version 01-02-2016
  */
-public class SplatTexture {
+public class SplatTexture implements TextureProvider {
 
     public enum Channel {
         R, G, B, A
@@ -42,6 +44,14 @@ public class SplatTexture {
     public SplatTexture(Channel channel, MTexture texture) {
         this.channel = channel;
         this.texture = texture;
+    }
+
+    @Override
+    public Texture getTexture() {
+        if(texture != null) {
+            return texture.texture;
+        }
+        return null;
     }
 
 }

@@ -14,44 +14,15 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.model;
+package com.mbrlabs.mundus.commons.utils;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mbrlabs.mundus.commons.utils.TextureProvider;
 
 /**
- * @author Marcus Brummer
- * @version 15-01-2016
+ * Created by marcus on 2/1/16.
  */
-public class MTexture implements TextureProvider {
+public interface TextureProvider {
 
-    private long id;
-    private String path;
+    public Texture getTexture();
 
-    public Texture texture;
-
-    public MTexture() {
-
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
 }
