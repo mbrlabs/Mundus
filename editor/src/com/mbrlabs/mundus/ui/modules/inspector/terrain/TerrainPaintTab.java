@@ -29,7 +29,10 @@ import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
@@ -50,8 +53,12 @@ public class TerrainPaintTab extends Tab {
 
     private TextureBrowser textureBrowser;
 
+    @Inject
+    private ToolManager toolManager;
+
     public TerrainPaintTab(final TerrainComponentWidget parent) {
         super(false, false);
+        Mundus.inject(this);
         this.parent = parent;
         table = new VisTable();
         table.align(Align.left);
@@ -77,8 +84,7 @@ public class TerrainPaintTab extends Tab {
             @Override
             public void onTextureSelected(TextureProvider texture) {
                 SplatTexture tex = (SplatTexture) texture;
-
-
+                toolManager.sphereBrushTool.setSplatChannel(tex.channel);
             }
         });
 

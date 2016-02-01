@@ -1,6 +1,7 @@
 [0.0.6]
 - Updated libGDX to 1.9.1
 - Implemented texture splatting for terrain textures
+- Implemented painting on terrain splatmap
 - Moved SelectionTool & TranslateTool to the toolbar
 - Moved the terrain tools to the component widget in the inspector
 - Removed the tools tab in the left sidebar

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.tools.Tool;
@@ -34,6 +35,8 @@ public abstract class TerrainBrush extends Tool {
     protected Terrain terrain;
     protected float radius;
     protected Vector3 brushPos = new Vector3();
+
+    protected SplatTexture.Channel splatChannel;
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);
@@ -84,5 +87,8 @@ public abstract class TerrainBrush extends Tool {
 
     public abstract boolean supportsMode(BrushMode mode);
 
+    public void setSplatChannel(SplatTexture.Channel splatChannel) {
+        this.splatChannel = splatChannel;
+    }
 
 }

@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -57,8 +58,9 @@ public class SphereTerrainBrush extends TerrainBrush {
     @Override
     public boolean supportsMode(BrushMode mode) {
         switch (mode) {
-            case RAISE_LOWER: return true;
-            case FLATTEN: return true;
+            case RAISE_LOWER:
+            case FLATTEN:
+            case PAINT: return true;
         }
 
         return false;
@@ -94,8 +96,19 @@ public class SphereTerrainBrush extends TerrainBrush {
             return;
         }
 
-        final Vector3 terPos = terrain.getPosition();
+        if(mode == BrushMode.PAINT) {
+            SplatMap sm = terrain.getTerrainTexture().getSplatmap();
+            if(sm != null) {
+                float splatX = (brushPos.x / (float) terrain.terrainWidth) * sm.getWidth();
+                float splatY = (brushPos.z / (float) terrain.terrainDepth) * sm.getHeight();
+                float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
+                sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, 1, splatChannel);
+                sm.updateTexture();
+            }
+            return;
+        }
 
+        final Vector3 terPos = terrain.getPosition();
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
                 Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
@@ -115,7 +128,10 @@ public class SphereTerrainBrush extends TerrainBrush {
                 }
             }
         }
-        terrain.update();
+
+        if(mode == BrushMode.RAISE_LOWER || mode == BrushMode.FLATTEN || mode == BrushMode.SMOOTH) {
+            terrain.update();
+        }
     }
 
     @Override

@@ -29,6 +29,9 @@ public class SplatMap {
 
     public static final int DEFAULT_SIZE = 512;
 
+    private int width;
+    private int height;
+
     private Pixmap pixmap;
     private Texture texture;
     private String path;
@@ -39,6 +42,9 @@ public class SplatMap {
 
         texture = new Texture(pixmap);
         updateTexture();
+
+        this.width = width;
+        this.height = height;
     }
 
     public Texture getTexture() {
@@ -66,6 +72,9 @@ public class SplatMap {
     public void loadPNG(FileHandle fileHandle) {
         pixmap = new Pixmap(fileHandle);
         updateTexture();
+
+        this.width = pixmap.getWidth();
+        this.height = pixmap.getHeight();
     }
 
     public String getPath() {
@@ -74,6 +83,14 @@ public class SplatMap {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 
     private void setColor(SplatTexture.Channel channel, float strength) {
