@@ -151,8 +151,8 @@ public class TerrainShader extends BaseShader {
         texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getChanG());
         texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getChanB());
         texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getChanA());
-
         // splat map
+
         if(terrainTexture.getSplatmap() != null) {
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
             Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);

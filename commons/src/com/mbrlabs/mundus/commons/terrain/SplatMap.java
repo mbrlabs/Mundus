@@ -65,6 +65,7 @@ public class SplatMap {
 
     public void loadPNG(FileHandle fileHandle) {
         pixmap = new Pixmap(fileHandle);
+        updateTexture();
     }
 
     public String getPath() {
