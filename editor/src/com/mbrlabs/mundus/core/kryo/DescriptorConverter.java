@@ -30,11 +30,12 @@ import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.terrain.Splatmap;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -257,20 +258,18 @@ public class DescriptorConverter {
             descriptor.setBase(terrainTexture.getBase().getId());
         }
         if(terrainTexture.getChanR() != null) {
-            descriptor.setTextureChanR(terrainTexture.getChanR().getId());
+            descriptor.setTextureChanR(terrainTexture.getChanR().texture.getId());
         }
         if(terrainTexture.getChanG() != null) {
-            descriptor.setTextureChanG(terrainTexture.getChanG().getId());
+            descriptor.setTextureChanG(terrainTexture.getChanG().texture.getId());
         }
         if(terrainTexture.getChanB() != null) {
-            descriptor.setTextureChanB(terrainTexture.getChanB().getId());
+            descriptor.setTextureChanB(terrainTexture.getChanB().texture.getId());
         }
         if(terrainTexture.getChanA() != null) {
-            descriptor.setTextureChanA(terrainTexture.getChanA().getId());
+            descriptor.setTextureChanA(terrainTexture.getChanA().texture.getId());
         }
-        if(terrainTexture.getSplat() != null) {
-            descriptor.setSplatmapPath(terrainTexture.getSplat().getPath());
-        }
+        descriptor.setHasSplatmap(terrainTexture.getSplatmap() != null);
 
         return descriptor;
     }
@@ -292,7 +291,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanR() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
             if(mt != null) {
-                tex.setChanR(mt);
+                tex.setChanR(new SplatTexture(SplatTexture.Channel.R, mt));
             } else {
                 return null;
             }
@@ -300,7 +299,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanG() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanG());
             if(mt != null) {
-                tex.setChanG(mt);
+                tex.setChanG(new SplatTexture(SplatTexture.Channel.G, mt));
             } else {
                 return null;
             }
@@ -308,7 +307,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanB() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanB());
             if(mt != null) {
-                tex.setChanB(mt);
+                tex.setChanB(new SplatTexture(SplatTexture.Channel.B, mt));
             } else {
                 return null;
             }
@@ -316,15 +315,14 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanA() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanA());
             if(mt != null) {
-                tex.setChanA(mt);
+                tex.setChanA(new SplatTexture(SplatTexture.Channel.A, mt));
             } else {
                 return null;
             }
         }
-        if(terrainTextureDescriptor.getSplatmapPath() != null) {
-            Splatmap splatmap = new Splatmap(512, 512);
-            splatmap.setPath(terrainTextureDescriptor.getSplatmapPath());
-            tex.setSplat(splatmap);
+        if(terrainTextureDescriptor.hasSplatmap()) {
+            SplatMap splatMap = new SplatMap(512, 512);
+            tex.setSplatmap(splatMap);
         }
 
         System.out.println(tex);

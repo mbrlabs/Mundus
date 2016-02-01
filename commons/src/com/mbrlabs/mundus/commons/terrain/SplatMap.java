@@ -14,39 +14,41 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
-import com.mbrlabs.mundus.commons.model.MTexture;
 
 /**
  * @author Marcus Brummer
  * @version 31-01-2016
  */
-public class Splatmap extends MTexture {
-
-    public enum Channel {
-        R, G, B, A
-    }
+public class SplatMap {
 
     private Pixmap pixmap;
+    private Texture texture;
+    private String path;
 
-    public Splatmap(int width, int height) {
+    public SplatMap(int width, int height) {
         Pixmap.setBlending(Pixmap.Blending.None);
         this.pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
+
         texture = new Texture(pixmap);
         updateTexture();
     }
 
-    public void drawPixel(int x, int y, float strength, Channel channel) {
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void drawPixel(int x, int y, float strength, SplatTexture.Channel channel) {
         setColor(channel, strength);
         pixmap.drawPixel(x, y);
     }
 
-    public void drawCircle(int x, int y, int radius, float strength, Channel channel) {
+    public void drawCircle(int x, int y, int radius, float strength, SplatTexture.Channel channel) {
         setColor(channel, strength);
         pixmap.fillCircle(x, y, radius);
     }
@@ -55,18 +57,30 @@ public class Splatmap extends MTexture {
         texture.draw(pixmap, 0, 0);
     }
 
-    public void saveAsPNG(FileHandle fileHandle) {
+    public void savePNG(FileHandle fileHandle) {
         PixmapIO.writePNG(fileHandle, pixmap);
     }
 
-    private void setColor(Channel channel, float strength) {
-        if(channel == Channel.R) {
+    public void loadPNG(FileHandle fileHandle) {
+        pixmap = new Pixmap(fileHandle);
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    private void setColor(SplatTexture.Channel channel, float strength) {
+        if(channel == SplatTexture.Channel.R) {
             pixmap.setColor(strength, 0, 0, 0);
-        } else if(channel == Channel.G) {
+        } else if(channel == SplatTexture.Channel.G) {
             pixmap.setColor(0, strength, 0, 0);
-        } else if(channel == Channel.B) {
+        } else if(channel == SplatTexture.Channel.B) {
             pixmap.setColor(0, 0, strength, 0);
-        } else if(channel == Channel.A) {
+        } else if(channel == SplatTexture.Channel.A) {
             pixmap.setColor(0, 0, 0, strength);
         }
     }

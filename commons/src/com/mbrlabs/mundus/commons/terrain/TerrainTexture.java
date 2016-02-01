@@ -25,11 +25,11 @@ import com.mbrlabs.mundus.commons.model.MTexture;
 public class TerrainTexture {
 
     private MTexture base;
-    private MTexture chanR;
-    private MTexture chanG;
-    private MTexture chanB;
-    private MTexture chanA;
-    private MTexture splat;
+    private SplatTexture chanR;
+    private SplatTexture chanG;
+    private SplatTexture chanB;
+    private SplatTexture chanA;
+    private SplatMap splatmap;
 
     private Terrain terrain;
 
@@ -55,44 +55,44 @@ public class TerrainTexture {
         this.base = base;
     }
 
-    public MTexture getChanR() {
+    public SplatTexture getChanR() {
         return chanR;
     }
 
-    public void setChanR(MTexture chanR) {
+    public void setChanR(SplatTexture chanR) {
         this.chanR = chanR;
     }
 
-    public MTexture getChanG() {
+    public SplatTexture getChanG() {
         return chanG;
     }
 
-    public void setChanG(MTexture chanG) {
+    public void setChanG(SplatTexture chanG) {
         this.chanG = chanG;
     }
 
-    public MTexture getChanB() {
+    public SplatTexture getChanB() {
         return chanB;
     }
 
-    public void setChanB(MTexture chanB) {
+    public void setChanB(SplatTexture chanB) {
         this.chanB = chanB;
     }
 
-    public MTexture getChanA() {
+    public SplatTexture getChanA() {
         return chanA;
     }
 
-    public void setChanA(MTexture chanA) {
+    public void setChanA(SplatTexture chanA) {
         this.chanA = chanA;
     }
 
-    public MTexture getSplat() {
-        return splat;
+    public SplatMap getSplatmap() {
+        return splatmap;
     }
 
-    public void setSplat(MTexture splat) {
-        this.splat = splat;
+    public void setSplatmap(SplatMap splatmap) {
+        this.splatmap = splatmap;
     }
 
     public Terrain getTerrain() {

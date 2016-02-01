@@ -19,11 +19,14 @@ package com.mbrlabs.mundus.terrain;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.utils.Log;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
@@ -44,14 +47,13 @@ public class TerrainIO {
      * Binary gziped format.
      *
      * @param terrain
-     * @param path
      */
-    public static void exportTerrain(Terrain terrain, String path) {
+    public static void exportTerrain(ProjectContext projectContext, Terrain terrain) {
         float[] data = terrain.heightData;
         long start = System.currentTimeMillis();
 
         // create file
-        File file = new File(path);
+        File file = new File(FilenameUtils.concat(projectContext.absolutePath, terrain.terraPath));
         try {
             FileUtils.touch(file);
         } catch (IOException e) {
@@ -72,21 +74,21 @@ public class TerrainIO {
         }
 
         // write splatmap
-//        TerrainTexture terrainTexture = terrain.getTerrainTexture();
-//        if(terrainTexture.splat != null) {
-//            Splatmap splatmap = (Splatmap) terrainTexture.splat;
-//            splatmap.saveAsPNG(Gdx.files.absolute(FilenameUtils.concat()));
-//        }
-
+        SplatMap splatmap = terrain.getTerrainTexture().getSplatmap();
+        if(splatmap != null) {
+            splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.absolutePath, splatmap.getPath())));
+        }
 
         Log.debug("Terrain export execution time (" + data.length + " floats): "
                 + (System.currentTimeMillis() - start) + " ms");
     }
 
-    public static Terrain importTerrain(Terrain terrain, String path) {
+    public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
         FloatArray floatArray = new FloatArray();
 
-        try(DataInputStream is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(path))))) {
+        String terraPath = FilenameUtils.concat(projectContext.absolutePath, terrain.terraPath);
+        try(DataInputStream is = new DataInputStream(new BufferedInputStream(
+                new GZIPInputStream(new FileInputStream(terraPath))))) {
             while (is.available() > 0) {
                 floatArray.add(is.readFloat());
             }
@@ -101,13 +103,22 @@ public class TerrainIO {
         terrain.heightData = floatArray.toArray();
         terrain.update();
 
-        TerrainTexture splat = terrain.getTerrainTexture();
-        if(splat.getBase() == null) {
+        // set default terrain base texture if none is present
+        TerrainTexture terrainTexture = terrain.getTerrainTexture();
+        if(terrainTexture.getBase() == null) {
             MTexture base = new MTexture();
             base.setId(-1);
             base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-            splat.setBase(base);
+            terrainTexture.setBase(base);
         }
+
+        // load splat map if available
+        SplatMap splatmap = terrainTexture.getSplatmap();
+        if(splatmap != null) {
+            String splatPath = FilenameUtils.concat(projectContext.absolutePath, splatmap.getPath());
+            splatmap.loadPNG(Gdx.files.absolute(splatPath));
+        }
+
 
 //        terrainTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
 //        terrainTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));

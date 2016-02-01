@@ -26,8 +26,10 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
-import com.mbrlabs.mundus.terrain.Splatmap;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
@@ -47,7 +49,7 @@ public class TerrainPaintTab extends Tab {
 
     private TextureBrowser textureBrowser;
 
-    public TerrainPaintTab(TerrainComponentWidget parent) {
+    public TerrainPaintTab(final TerrainComponentWidget parent) {
         super(false, false);
         this.parent = parent;
         table = new VisTable();
@@ -74,9 +76,6 @@ public class TerrainPaintTab extends Tab {
                 if(terrainTexture.hasDefaultBaseTexture()) {
                     terrainTexture.setBase(texture);
                     textureGrid.addTexture(texture);
-                    // create empty splat map
-                    Splatmap sm = new Splatmap(512, 512);
-                    terrainTexture.setSplat(sm);
                     textureBrowser.fadeOut();
                     return;
                 }
@@ -85,18 +84,29 @@ public class TerrainPaintTab extends Tab {
 //                    splatmap.drawCircle(40, 40, 20, 0.5f, Splatmap.Channel.R);
 //                    splatmap.drawCircle(150, 100, 39, 1f, Splatmap.Channel.R);
 //                    splatmap.updateTexture();
-//                    splatmap.saveAsPNG(Gdx.files.absolute("/home/marcus/Desktop/splat.png"));
+//                    splatmap.savePNG(Gdx.files.absolute("/home/marcus/Desktop/splat.png"));
 //                    splat.splat = splatmap;
 
                 // set textures in terrainTexture
+                SplatTexture st = new SplatTexture();
                 if(texCount == 0) {
-                    terrainTexture.setChanR(texture);
+
+                    // create empty splat map
+                    SplatMap sm = new SplatMap(512, 512);
+                    terrainTexture.setSplatmap(sm);
+                    sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
+
+                    st.channel = SplatTexture.Channel.R;
+                    terrainTexture.setChanR(st);
                 } else if(texCount == 1) {
-                    terrainTexture.setChanG(texture);
+                    st.channel = SplatTexture.Channel.G;
+                    terrainTexture.setChanG(st);
                 } else if(texCount == 2) {
-                    terrainTexture.setChanB(texture);
+                    st.channel = SplatTexture.Channel.B;
+                    terrainTexture.setChanB(st);
                 } else if(texCount == 3) {
-                    terrainTexture.setChanA(texture);
+                    st.channel = SplatTexture.Channel.A;
+                    terrainTexture.setChanA(st);
                 } else {
                     DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                     return;
@@ -131,16 +141,16 @@ public class TerrainPaintTab extends Tab {
             textureGrid.addTexture(terrainTexture.getBase());
         }
         if(terrainTexture.getChanR() != null) {
-            textureGrid.addTexture(terrainTexture.getChanR());
+            textureGrid.addTexture(terrainTexture.getChanR().texture);
         }
         if(terrainTexture.getChanG() != null) {
-            textureGrid.addTexture(terrainTexture.getChanG());
+            textureGrid.addTexture(terrainTexture.getChanG().texture);
         }
-        if(terrainTexture.getBase() != null) {
-            textureGrid.addTexture(terrainTexture.getBase());
+        if(terrainTexture.getChanB() != null) {
+            textureGrid.addTexture(terrainTexture.getChanB().texture);
         }
         if(terrainTexture.getChanA() != null) {
-            textureGrid.addTexture(terrainTexture.getChanA());
+            textureGrid.addTexture(terrainTexture.getChanA().texture);
         }
     }
 

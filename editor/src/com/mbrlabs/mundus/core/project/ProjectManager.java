@@ -162,7 +162,7 @@ public class ProjectManager {
 
         // load terrain .terra files
         for(Terrain terrain : context.terrains) {
-            TerrainIO.importTerrain(terrain, terrain.terraPath);
+            TerrainIO.importTerrain(context, terrain);
         }
 
         context.currScene = loadScene(context, context.kryoActiveScene);
@@ -173,10 +173,7 @@ public class ProjectManager {
     public void saveProject(ProjectContext projectContext) {
         // save .terra files & the splat map
         for(Terrain terrain : projectContext.terrains) {
-            String path = FilenameUtils.concat(projectContext.absolutePath, ProjectManager.PROJECT_TERRAIN_DIR);
-            path += terrain.id + "." + TerrainIO.FILE_EXTENSION;
-            terrain.terraPath = path;
-            TerrainIO.exportTerrain(terrain, path);
+            TerrainIO.exportTerrain(projectContext, terrain);
         }
 
         // save context in .pro file

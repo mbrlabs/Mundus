@@ -34,8 +34,10 @@ import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.shader.Shaders;
+import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
@@ -116,6 +118,7 @@ public class AddTerrainDialog extends BaseDialog {
                     Terrain terrain = generateTerrain(width, depth, res);
                     terrain.name = nom;
                     terrain.id = projectContext.obtainUUID();
+                    terrain.terraPath = ProjectManager.PROJECT_TERRAIN_DIR + terrain.id + "." + TerrainIO.FILE_EXTENSION;
                     terrain.transform.setTranslation(posX, 0, posZ);
 
                     projectContext.terrains.add(terrain);
