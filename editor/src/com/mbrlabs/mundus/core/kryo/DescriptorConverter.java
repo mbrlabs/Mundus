@@ -255,7 +255,7 @@ public class DescriptorConverter {
     public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
         TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
         if(terrainTexture.getBase() != null) {
-            descriptor.setBase(terrainTexture.getBase().getId());
+            descriptor.setBase(terrainTexture.getBase().texture.getId());
         }
         if(terrainTexture.getChanR() != null) {
             descriptor.setTextureChanR(terrainTexture.getChanR().texture.getId());
@@ -285,7 +285,7 @@ public class DescriptorConverter {
             if(base > -1) {
                 MTexture mt = findTextureById(textures, base);
                 if (mt != null) {
-                    tex.setBase(mt);
+                    tex.setBase(new SplatTexture(SplatTexture.Channel.BASE, mt));
                 } else {
                     return null;
                 }

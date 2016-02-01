@@ -76,14 +76,8 @@ public class TerrainPaintTab extends Tab {
         textureGrid.setListener(new TextureGrid.OnTextureClickedListener() {
             @Override
             public void onTextureSelected(TextureProvider texture) {
-                // base texture
-                if(texture instanceof MTexture) {
-                    MTexture tex = (MTexture) texture;
+                SplatTexture tex = (SplatTexture) texture;
 
-                } else {
-                    SplatTexture tex = (SplatTexture) texture;
-
-                }
 
             }
         });
@@ -104,8 +98,9 @@ public class TerrainPaintTab extends Tab {
 
                 // set base
                 if(terrainTexture.hasDefaultBaseTexture()) {
-                    terrainTexture.setBase(mTexture);
-                    textureGrid.addTexture(mTexture);
+                    SplatTexture st = new SplatTexture(SplatTexture.Channel.BASE, mTexture);
+                    terrainTexture.setBase(st);
+                    textureGrid.addTexture(st);
                     textureBrowser.fadeOut();
                     return;
                 }
@@ -144,20 +139,20 @@ public class TerrainPaintTab extends Tab {
 
     private void setSplatTexturesForTerrain() {
         TerrainTexture terrainTexture = parent.component.getTerrain().getTerrainTexture();
-        if(terrainTexture.getBase().getId() > -1) {
+        if(terrainTexture.getBase().texture.getId() > -1) {
             textureGrid.addTexture(terrainTexture.getBase());
         }
         if(terrainTexture.getChanR() != null) {
-            textureGrid.addTexture(terrainTexture.getChanR().texture);
+            textureGrid.addTexture(terrainTexture.getChanR());
         }
         if(terrainTexture.getChanG() != null) {
-            textureGrid.addTexture(terrainTexture.getChanG().texture);
+            textureGrid.addTexture(terrainTexture.getChanG());
         }
         if(terrainTexture.getChanB() != null) {
-            textureGrid.addTexture(terrainTexture.getChanB().texture);
+            textureGrid.addTexture(terrainTexture.getChanB());
         }
         if(terrainTexture.getChanA() != null) {
-            textureGrid.addTexture(terrainTexture.getChanA().texture);
+            textureGrid.addTexture(terrainTexture.getChanA());
         }
     }
 

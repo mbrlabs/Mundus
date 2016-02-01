@@ -28,6 +28,7 @@ import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
@@ -160,12 +161,7 @@ public class AddTerrainDialog extends BaseDialog {
         MTexture base = new MTexture();
         base.setId(-1);
         base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-        splat.setBase(base);
-//        terrainTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
-//        terrainTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
-//        terrainTexture.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
-//        terrainTexture.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
-//        terrainTexture.terrainTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
+        splat.setBase(new SplatTexture(SplatTexture.Channel.BASE, base));
 
         return terrain;
     }

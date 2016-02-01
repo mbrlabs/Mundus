@@ -24,7 +24,7 @@ import com.mbrlabs.mundus.commons.model.MTexture;
  */
 public class TerrainTexture {
 
-    private MTexture base;
+    private SplatTexture base;
     private SplatTexture chanR;
     private SplatTexture chanG;
     private SplatTexture chanB;
@@ -44,14 +44,14 @@ public class TerrainTexture {
     }
 
     public boolean hasDefaultBaseTexture() {
-        return base.getId() == -1;
+        return base.texture.getId() == -1;
     }
 
-    public MTexture getBase() {
+    public SplatTexture getBase() {
         return base;
     }
 
-    public void setBase(MTexture base) {
+    public void setBase(SplatTexture base) {
         this.base = base;
     }
 

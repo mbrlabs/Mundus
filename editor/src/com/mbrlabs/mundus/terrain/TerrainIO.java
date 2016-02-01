@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.FloatArray;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
@@ -109,7 +110,7 @@ public class TerrainIO {
             MTexture base = new MTexture();
             base.setId(-1);
             base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-            terrainTexture.setBase(base);
+            terrainTexture.setBase(new SplatTexture(SplatTexture.Channel.BASE, base));
         }
 
         // load splat map if available
@@ -119,12 +120,6 @@ public class TerrainIO {
             splatmap.loadPNG(Gdx.files.absolute(splatPath));
         }
 
-
-//        terrainTexture.chanR = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/red_soil.jpg"));
-//        terrainTexture.chanG = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/pebble.jpg"));
-//        terrainTexture.chanB = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/grass.jpg"));
-//        terrainTexture.chanA = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/stone_path.jpg"));
-//        terrainTexture.terrainTexture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/splat_map.png"));
         return terrain;
     }
 

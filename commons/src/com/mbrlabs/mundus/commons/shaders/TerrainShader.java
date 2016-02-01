@@ -143,9 +143,7 @@ public class TerrainShader extends BaseShader {
         TerrainTexture terrainTexture = splatAttrib.terrainTexture;
 
         // base
-        set(UNIFORM_TEXTURE_BASE, terrainTexture.getBase().texture);
-        Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-        Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.getBase());
 
         // set splat detail textures uniforms
         int texCount = 0;
