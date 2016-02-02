@@ -68,6 +68,26 @@ public class SplatMap {
         }
     }
 
+    public void clearChannel(SplatTexture.Channel channel) {
+        for(int smX = 0; smX < pixmap.getWidth(); smX++) {
+            for(int smY = 0; smY < pixmap.getHeight(); smY++) {
+                c0.set(pixmap.getPixel(smX, smY));
+                if(channel == SplatTexture.Channel.R) {
+                    c0.set(0, c0.g, c0.b, c0.a);
+                } else if(channel == SplatTexture.Channel.G) {
+                    c0.set(c0.r, 0, c0.b, c0.a);
+                } else if(channel == SplatTexture.Channel.B) {
+                    c0.set(c0.r, c0.g, 0, c0.a);
+                } else if(channel == SplatTexture.Channel.A) {
+                    c0.set(c0.r, c0.g, c0.b, 0);
+                }
+                pixmap.drawPixel(smX, smY, Color.rgba8888(c0));
+            }
+        }
+
+        updateTexture();
+    }
+
     public void clear() {
         pixmap.setColor(0, 0, 0, 0);
         pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());

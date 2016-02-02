@@ -16,7 +16,13 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.layout.GridGroup;
@@ -59,11 +65,15 @@ public class TextureGrid<T extends TextureProvider> extends VisTable {
         grid.addActor(new TextureItem<>(texture));
     }
 
+    public void removeTextures() {
+        grid.clearChildren();
+    }
+
     /**
      *
      */
     public interface OnTextureClickedListener {
-        public void onTextureSelected(TextureProvider textureProvider);
+        public void onTextureSelected(TextureProvider textureProvider, boolean leftClick);
     }
 
     /**
@@ -73,12 +83,15 @@ public class TextureGrid<T extends TextureProvider> extends VisTable {
         public TextureItem(final T tex) {
             super();
             add(new VisImage(tex.getTexture()));
-            addListener(new ClickListener() {
+
+            addListener(new InputListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    listener.onTextureSelected(tex);
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    listener.onTextureSelected(tex, button == Input.Buttons.LEFT);
+                    return true;
                 }
             });
+
         }
     }
 
