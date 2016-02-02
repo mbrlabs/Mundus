@@ -102,7 +102,7 @@ public class SphereTerrainBrush extends TerrainBrush {
                 float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
                 float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
                 float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
-                sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, 1, splatChannel);
+                sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, splatStrenght, splatChannel);
                 sm.updateTexture();
             }
             return;

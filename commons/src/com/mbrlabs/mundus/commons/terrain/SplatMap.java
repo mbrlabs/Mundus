@@ -17,9 +17,11 @@
 package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.mbrlabs.mundus.commons.utils.MathUtils;
 
 /**
  * @author Marcus Brummer
@@ -35,6 +37,9 @@ public class SplatMap {
     private Pixmap pixmap;
     private Texture texture;
     private String path;
+
+    private Color c0 = new Color();
+    private Color c1 = new Color();
 
     public SplatMap(int width, int height) {
         Pixmap.setBlending(Pixmap.Blending.None);
@@ -57,8 +62,17 @@ public class SplatMap {
     }
 
     public void drawCircle(int x, int y, int radius, float strength, SplatTexture.Channel channel) {
-        setColor(channel, strength);
-        pixmap.fillCircle(x, y, radius);
+        for(int smX = 0; smX < pixmap.getWidth(); smX++) {
+            for(int smY = 0; smY < pixmap.getHeight(); smY++) {
+                float dst = MathUtils.dst(x, y, smX, smY);
+                if(dst <= radius) {
+                    float edgeOpcity = (radius - dst) * 0.1f;
+                    edgeOpcity *= strength;
+                    int newPixelColor = addChannel(pixmap.getPixel(smX, smY), channel, edgeOpcity);
+                    pixmap.drawPixel(smX, smY, newPixelColor);
+                }
+            }
+        }
     }
 
     public void updateTexture() {
@@ -103,6 +117,21 @@ public class SplatMap {
         } else if(channel == SplatTexture.Channel.A) {
             pixmap.setColor(0, 0, 0, strength);
         }
+    }
+
+    private int addChannel(int pixelColor, SplatTexture.Channel channel, float strength) {
+        c0.set(pixelColor);
+        if(channel == SplatTexture.Channel.R) {
+            c0.add(strength, 0, 0, 0);
+        } else if(channel == SplatTexture.Channel.G) {
+            c0.add(0, strength, 0, 0);
+        } else if(channel == SplatTexture.Channel.B) {
+            c0.add(0, 0, strength, 0);
+        } else if(channel == SplatTexture.Channel.A) {
+            c0.add(0, 0, 0, strength);
+        }
+
+        return Color.rgba8888(c0);
     }
 
 }
