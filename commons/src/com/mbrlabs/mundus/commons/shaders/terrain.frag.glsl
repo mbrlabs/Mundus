@@ -47,9 +47,9 @@ vec4 blend_textures() {
                     col = mix(col, texture2D(u_texture_b, v_texCoord0), splat.b);
 
                    // a channel
-                   // if(u_texture_count == 4) {
-                   //     col = mix(col, texture2D(u_texture_a, v_texCoord0), splat.a);
-                   // }
+                   if(u_texture_count == 4) {
+                       col = mix(col, texture2D(u_texture_a, v_texCoord0), splat.a);
+                   }
                 }
             }
         }

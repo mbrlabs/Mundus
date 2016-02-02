@@ -39,14 +39,13 @@ public class SplatMap {
     private String path;
 
     private Color c0 = new Color();
-    private Color c1 = new Color();
 
     public SplatMap(int width, int height) {
         Pixmap.setBlending(Pixmap.Blending.None);
-        this.pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
+        this.pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
         texture = new Texture(pixmap);
-        updateTexture();
+        clear();
 
         this.width = width;
         this.height = height;
@@ -56,11 +55,6 @@ public class SplatMap {
         return texture;
     }
 
-    public void drawPixel(int x, int y, float strength, SplatTexture.Channel channel) {
-        setColor(channel, strength);
-        pixmap.drawPixel(x, y);
-    }
-
     public void drawCircle(int x, int y, int radius, float strength, SplatTexture.Channel channel) {
         for(int smX = 0; smX < pixmap.getWidth(); smX++) {
             for(int smY = 0; smY < pixmap.getHeight(); smY++) {
@@ -68,11 +62,17 @@ public class SplatMap {
                 if(dst <= radius) {
                     float edgeOpcity = (radius - dst) * 0.1f;
                     edgeOpcity *= strength;
-                    int newPixelColor = addChannel(pixmap.getPixel(smX, smY), channel, edgeOpcity);
+                    int newPixelColor = additiveBlend(pixmap.getPixel(smX, smY), channel, edgeOpcity);
                     pixmap.drawPixel(smX, smY, newPixelColor);
                 }
             }
         }
+    }
+
+    public void clear() {
+        pixmap.setColor(0, 0, 0, 0);
+        pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
+        updateTexture();
     }
 
     public void updateTexture() {
@@ -107,21 +107,11 @@ public class SplatMap {
         return width;
     }
 
-    private void setColor(SplatTexture.Channel channel, float strength) {
-        if(channel == SplatTexture.Channel.R) {
-            pixmap.setColor(strength, 0, 0, 0);
-        } else if(channel == SplatTexture.Channel.G) {
-            pixmap.setColor(0, strength, 0, 0);
-        } else if(channel == SplatTexture.Channel.B) {
-            pixmap.setColor(0, 0, strength, 0);
-        } else if(channel == SplatTexture.Channel.A) {
-            pixmap.setColor(0, 0, 0, strength);
-        }
-    }
-
-    private int addChannel(int pixelColor, SplatTexture.Channel channel, float strength) {
+    private int additiveBlend(int pixelColor, SplatTexture.Channel channel, float strength) {
         c0.set(pixelColor);
-        if(channel == SplatTexture.Channel.R) {
+        if(channel == SplatTexture.Channel.BASE) {
+            c0.sub(strength, strength, strength, strength);
+        } else if(channel == SplatTexture.Channel.R) {
             c0.add(strength, 0, 0, 0);
         } else if(channel == SplatTexture.Channel.G) {
             c0.add(0, strength, 0, 0);
