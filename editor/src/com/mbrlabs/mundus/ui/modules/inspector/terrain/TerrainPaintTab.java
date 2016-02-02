@@ -100,21 +100,22 @@ public class TerrainPaintTab extends Tab {
                 MTexture mTexture = (MTexture) texture;
 
                 TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
-                int texCount = terrainTexture.countSplatChannelTextures();
 
                 // set base
-                if(terrainTexture.hasDefaultBaseTexture()) {
+                if(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() == -1) {
                     SplatTexture st = new SplatTexture(SplatTexture.Channel.BASE, mTexture);
-                    terrainTexture.setBase(st);
+                    terrainTexture.setSplatTexture(st);
                     textureGrid.addTexture(st);
                     textureBrowser.fadeOut();
                     return;
                 }
 
                 // set textures in terrainTexture
-                SplatTexture st = new SplatTexture();
+                final int texCount = terrainTexture.countTextures();
+                final SplatTexture st = new SplatTexture();
                 st.texture = mTexture;
-                if(texCount == 0) {
+
+                if(texCount == 1) {
 
                     // create empty splat map
                     SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
@@ -122,16 +123,16 @@ public class TerrainPaintTab extends Tab {
                     terrainTexture.setSplatmap(sm);
 
                     st.channel = SplatTexture.Channel.R;
-                    terrainTexture.setChanR(st);
-                } else if(texCount == 1) {
-                    st.channel = SplatTexture.Channel.G;
-                    terrainTexture.setChanG(st);
+                    terrainTexture.setSplatTexture(st);
                 } else if(texCount == 2) {
-                    st.channel = SplatTexture.Channel.B;
-                    terrainTexture.setChanB(st);
+                    st.channel = SplatTexture.Channel.G;
+                    terrainTexture.setSplatTexture(st);
                 } else if(texCount == 3) {
+                    st.channel = SplatTexture.Channel.B;
+                    terrainTexture.setSplatTexture(st);
+                } else if(texCount == 4) {
                     st.channel = SplatTexture.Channel.A;
-                    terrainTexture.setChanA(st);
+                    terrainTexture.setSplatTexture(st);
                 } else {
                     DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                     return;
@@ -145,20 +146,20 @@ public class TerrainPaintTab extends Tab {
 
     private void setSplatTexturesForTerrain() {
         TerrainTexture terrainTexture = parent.component.getTerrain().getTerrainTexture();
-        if(terrainTexture.getBase().texture.getId() > -1) {
-            textureGrid.addTexture(terrainTexture.getBase());
+        if(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() > -1) {
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.BASE));
         }
-        if(terrainTexture.getChanR() != null) {
-            textureGrid.addTexture(terrainTexture.getChanR());
+        if(terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.R));
         }
-        if(terrainTexture.getChanG() != null) {
-            textureGrid.addTexture(terrainTexture.getChanG());
+        if(terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.G));
         }
-        if(terrainTexture.getChanB() != null) {
-            textureGrid.addTexture(terrainTexture.getChanB());
+        if(terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.B));
         }
-        if(terrainTexture.getChanA() != null) {
-            textureGrid.addTexture(terrainTexture.getChanA());
+        if(terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.A));
         }
     }
 

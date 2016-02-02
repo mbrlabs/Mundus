@@ -106,11 +106,11 @@ public class TerrainIO {
 
         // set default terrain base texture if none is present
         TerrainTexture terrainTexture = terrain.getTerrainTexture();
-        if(terrainTexture.getBase() == null) {
+        if(terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
             MTexture base = new MTexture();
             base.setId(-1);
             base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
-            terrainTexture.setBase(new SplatTexture(SplatTexture.Channel.BASE, base));
+            terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
         }
 
         // load splat map if available

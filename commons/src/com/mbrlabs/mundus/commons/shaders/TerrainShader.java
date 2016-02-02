@@ -138,27 +138,18 @@ public class TerrainShader extends BaseShader {
     }
 
     private void setTerrainSplatTextures(Renderable renderable) {
-        TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
+
+        // set textures
+        final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
                 renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
-        TerrainTexture terrainTexture = splatAttrib.terrainTexture;
-
-        // base
-        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.getBase());
-
-        // set splat detail textures uniforms
-        int texCount = 0;
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.getChanR());
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getChanG());
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getChanB());
-        texCount += setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getChanA());
-        // splat map
-
-        if(terrainTexture.getSplatmap() != null) {
-            set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
-            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
-        }
-        set(UNIFORM_TEXTURE_COUNT, texCount);
+        final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
+        set(UNIFORM_TEXTURE_COUNT, terrainTexture.countTextures());
+        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE));
+        setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.getTexture(SplatTexture.Channel.R));
+        setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getTexture(SplatTexture.Channel.G));
+        setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getTexture(SplatTexture.Channel.B));
+        setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getTexture(SplatTexture.Channel.A));
+        setSplatmap(terrainTexture);
 
         // set terrain world size
         terrainSize.x = terrainTexture.getTerrain().terrainWidth;
@@ -166,15 +157,19 @@ public class TerrainShader extends BaseShader {
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 
-
-
-    public int setTilableTextureUniform(int loc, SplatTexture splatTexture) {
-        if(splatTexture == null) return 0;
+    public void setTilableTextureUniform(int loc, SplatTexture splatTexture) {
+        if(splatTexture == null) return;
         set(loc, splatTexture.texture.texture);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+    }
 
-        return 1;
+    public void setSplatmap(TerrainTexture terrainTexture) {
+        if(terrainTexture.getSplatmap() != null) {
+            set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
+            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
+            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+        }
     }
 
     @Override

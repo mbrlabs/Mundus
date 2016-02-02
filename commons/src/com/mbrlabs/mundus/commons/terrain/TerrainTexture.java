@@ -16,7 +16,9 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
-import com.mbrlabs.mundus.commons.model.MTexture;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Marcus Brummer
@@ -24,67 +26,28 @@ import com.mbrlabs.mundus.commons.model.MTexture;
  */
 public class TerrainTexture {
 
-    private SplatTexture base;
-    private SplatTexture chanR;
-    private SplatTexture chanG;
-    private SplatTexture chanB;
-    private SplatTexture chanA;
+    private Map<SplatTexture.Channel, SplatTexture> textures;
     private SplatMap splatmap;
-
     private Terrain terrain;
-
-    public int countSplatChannelTextures() {
-        int count = 0;
-        if(chanR != null) count++;
-        if(chanG != null) count++;
-        if(chanB != null) count++;
-        if(chanA != null) count++;
-
-        return count;
+    
+    public TerrainTexture() {
+        textures = new HashMap<>(5, 1);
     }
 
-    public boolean hasDefaultBaseTexture() {
-        return base.texture.getId() == -1;
+    public SplatTexture getTexture(SplatTexture.Channel channel) {
+        return textures.get(channel);
     }
 
-    public SplatTexture getBase() {
-        return base;
+    public void setSplatTexture(SplatTexture tex) {
+        textures.put(tex.channel, tex);
     }
 
-    public void setBase(SplatTexture base) {
-        this.base = base;
+    public boolean hasTextureChannel(SplatTexture.Channel channel) {
+        return textures.containsKey(channel);
     }
 
-    public SplatTexture getChanR() {
-        return chanR;
-    }
-
-    public void setChanR(SplatTexture chanR) {
-        this.chanR = chanR;
-    }
-
-    public SplatTexture getChanG() {
-        return chanG;
-    }
-
-    public void setChanG(SplatTexture chanG) {
-        this.chanG = chanG;
-    }
-
-    public SplatTexture getChanB() {
-        return chanB;
-    }
-
-    public void setChanB(SplatTexture chanB) {
-        this.chanB = chanB;
-    }
-
-    public SplatTexture getChanA() {
-        return chanA;
-    }
-
-    public void setChanA(SplatTexture chanA) {
-        this.chanA = chanA;
+    public int countTextures() {
+        return textures.size();
     }
 
     public SplatMap getSplatmap() {

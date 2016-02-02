@@ -31,23 +31,23 @@ vec4 blend_textures() {
     // base texture
     vec4 col = texture2D(u_texture_base, v_texCoord0);
 
-    if(u_texture_count > 0) {
+    if(u_texture_count > 1) {
         vec4 splat = texture2D(u_texture_splat, splatPosition);
 
         // r channel
-        if(u_texture_count >= 1) {
+        if(u_texture_count >= 2) {
             col = mix(col, texture2D(u_texture_r, v_texCoord0), splat.r);
 
             // g channel
-            if(u_texture_count >= 2) {
+            if(u_texture_count >= 3) {
                 col = mix(col, texture2D(u_texture_g, v_texCoord0), splat.g);
 
                 // b channel
-                if(u_texture_count >= 3) {
+                if(u_texture_count >= 4) {
                     col = mix(col, texture2D(u_texture_b, v_texCoord0), splat.b);
 
                    // a channel
-                   if(u_texture_count == 4) {
+                   if(u_texture_count == 5) {
                        col = mix(col, texture2D(u_texture_a, v_texCoord0), splat.a);
                    }
                 }

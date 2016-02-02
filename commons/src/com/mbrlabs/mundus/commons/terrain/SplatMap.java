@@ -38,7 +38,7 @@ public class SplatMap {
     private Texture texture;
     private String path;
 
-    private Color c0 = new Color();
+    private final Color c0 = new Color();
 
     public SplatMap(int width, int height) {
         Pixmap.setBlending(Pixmap.Blending.None);
@@ -58,11 +58,10 @@ public class SplatMap {
     public void drawCircle(int x, int y, int radius, float strength, SplatTexture.Channel channel) {
         for(int smX = 0; smX < pixmap.getWidth(); smX++) {
             for(int smY = 0; smY < pixmap.getHeight(); smY++) {
-                float dst = MathUtils.dst(x, y, smX, smY);
+                final float dst = MathUtils.dst(x, y, smX, smY);
                 if(dst <= radius) {
-                    float edgeOpcity = (radius - dst) * 0.1f;
-                    edgeOpcity *= strength;
-                    int newPixelColor = additiveBlend(pixmap.getPixel(smX, smY), channel, edgeOpcity);
+                    final float opacity = ((radius - dst) * 0.1f) * strength;
+                    int newPixelColor = additiveBlend(pixmap.getPixel(smX, smY), channel, opacity);
                     pixmap.drawPixel(smX, smY, newPixelColor);
                 }
             }
@@ -121,14 +120,14 @@ public class SplatMap {
             c0.add(0, 0, 0, strength);
         }
 
-        // prevent the sum to be greater then 1
-        float sum = c0.r + c0.g + c0.b + c0.a;
+        // prevent the sum to be greater than 1
+        final float sum = c0.r + c0.g + c0.b + c0.a;
         if(sum > 1f) {
-            float correction = 1f / sum;
-            c0.r = c0.r * correction;
-            c0.g = c0.g * correction;
-            c0.b = c0.b * correction;
-            c0.a = c0.a * correction;
+            final float correction = 1f / sum;
+            c0.r *= correction;
+            c0.g *= correction;
+            c0.b *= correction;
+            c0.a *= correction;
         }
 
         return Color.rgba8888(c0);

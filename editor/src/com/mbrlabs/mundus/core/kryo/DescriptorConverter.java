@@ -254,20 +254,20 @@ public class DescriptorConverter {
 
     public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
         TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
-        if(terrainTexture.getBase() != null) {
-            descriptor.setBase(terrainTexture.getBase().texture.getId());
+        if(terrainTexture.getTexture(SplatTexture.Channel.BASE) != null) {
+            descriptor.setBase(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId());
         }
-        if(terrainTexture.getChanR() != null) {
-            descriptor.setTextureChanR(terrainTexture.getChanR().texture.getId());
+        if(terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
+            descriptor.setTextureChanR(terrainTexture.getTexture(SplatTexture.Channel.R).texture.getId());
         }
-        if(terrainTexture.getChanG() != null) {
-            descriptor.setTextureChanG(terrainTexture.getChanG().texture.getId());
+        if(terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
+            descriptor.setTextureChanG(terrainTexture.getTexture(SplatTexture.Channel.G).texture.getId());
         }
-        if(terrainTexture.getChanB() != null) {
-            descriptor.setTextureChanB(terrainTexture.getChanB().texture.getId());
+        if(terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
+            descriptor.setTextureChanB(terrainTexture.getTexture(SplatTexture.Channel.B).texture.getId());
         }
-        if(terrainTexture.getChanA() != null) {
-            descriptor.setTextureChanA(terrainTexture.getChanA().texture.getId());
+        if(terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
+            descriptor.setTextureChanA(terrainTexture.getTexture(SplatTexture.Channel.A).texture.getId());
         }
 
         if(terrainTexture.getSplatmap() != null) {
@@ -285,7 +285,7 @@ public class DescriptorConverter {
             if(base > -1) {
                 MTexture mt = findTextureById(textures, base);
                 if (mt != null) {
-                    tex.setBase(new SplatTexture(SplatTexture.Channel.BASE, mt));
+                    tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, mt));
                 } else {
                     return null;
                 }
@@ -294,7 +294,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanR() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
             if(mt != null) {
-                tex.setChanR(new SplatTexture(SplatTexture.Channel.R, mt));
+                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, mt));
             } else {
                 return null;
             }
@@ -302,7 +302,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanG() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanG());
             if(mt != null) {
-                tex.setChanG(new SplatTexture(SplatTexture.Channel.G, mt));
+                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, mt));
             } else {
                 return null;
             }
@@ -310,7 +310,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanB() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanB());
             if(mt != null) {
-                tex.setChanB(new SplatTexture(SplatTexture.Channel.B, mt));
+                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, mt));
             } else {
                 return null;
             }
@@ -318,7 +318,7 @@ public class DescriptorConverter {
         if(terrainTextureDescriptor.getTextureChanA() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanA());
             if(mt != null) {
-                tex.setChanA(new SplatTexture(SplatTexture.Channel.A, mt));
+                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, mt));
             } else {
                 return null;
             }
