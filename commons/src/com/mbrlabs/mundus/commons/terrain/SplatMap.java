@@ -121,6 +121,16 @@ public class SplatMap {
             c0.add(0, 0, 0, strength);
         }
 
+        // prevent the sum to be greater then 1
+        float sum = c0.r + c0.g + c0.b + c0.a;
+        if(sum > 1f) {
+            float correction = 1f / sum;
+            c0.r = c0.r * correction;
+            c0.g = c0.g * correction;
+            c0.b = c0.b * correction;
+            c0.a = c0.a * correction;
+        }
+
         return Color.rgba8888(c0);
     }
 

@@ -83,7 +83,7 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public void act() {
-        boolean up = true;
+        boolean up;
         if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
             up = true;
         } else if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
