@@ -110,36 +110,28 @@ public class TerrainPaintTab extends Tab {
                     return;
                 }
 
-                // set textures in terrainTexture
-                final int texCount = terrainTexture.countTextures();
-                final SplatTexture st = new SplatTexture();
-                st.texture = mTexture;
-
-                if(texCount == 1) {
-
-                    // create empty splat map
+                // create empty splatmap if more than the base texture is available
+                if(terrainTexture.countTextures() >= 1) {
                     SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
                     sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
                     terrainTexture.setSplatmap(sm);
+                }
 
-                    st.channel = SplatTexture.Channel.R;
+                // add texture
+                SplatTexture.Channel freeChannel = terrainTexture.getNextFreeChannel();
+                if(freeChannel != null) {
+                    final SplatTexture st = new SplatTexture();
+                    st.texture = mTexture;
+                    st.channel = freeChannel;
                     terrainTexture.setSplatTexture(st);
-                } else if(texCount == 2) {
-                    st.channel = SplatTexture.Channel.G;
-                    terrainTexture.setSplatTexture(st);
-                } else if(texCount == 3) {
-                    st.channel = SplatTexture.Channel.B;
-                    terrainTexture.setSplatTexture(st);
-                } else if(texCount == 4) {
-                    st.channel = SplatTexture.Channel.A;
-                    terrainTexture.setSplatTexture(st);
+                    textureGrid.addTexture(st);
+
+                    textureBrowser.fadeOut();
                 } else {
                     DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                     return;
                 }
 
-                textureBrowser.fadeOut();
-                textureGrid.addTexture(st);
             }
         });
     }

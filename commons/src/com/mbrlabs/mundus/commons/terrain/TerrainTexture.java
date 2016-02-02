@@ -38,8 +38,32 @@ public class TerrainTexture {
         return textures.get(channel);
     }
 
+    public void removeTexture(SplatTexture.Channel channel) {
+        textures.remove(channel);
+    }
+
     public void setSplatTexture(SplatTexture tex) {
         textures.put(tex.channel, tex);
+    }
+
+    public SplatTexture.Channel getNextFreeChannel() {
+        // base
+        SplatTexture st = textures.get(SplatTexture.Channel.BASE);
+        if(st == null || st.texture.getId() == -1) return SplatTexture.Channel.BASE;
+        // r
+        st = textures.get(SplatTexture.Channel.R);
+        if(st == null) return SplatTexture.Channel.R;
+        // g
+        st = textures.get(SplatTexture.Channel.G);
+        if(st == null) return SplatTexture.Channel.G;
+        // b
+        st = textures.get(SplatTexture.Channel.B);
+        if(st == null) return SplatTexture.Channel.B;
+        // a
+        st = textures.get(SplatTexture.Channel.A);
+        if(st == null) return SplatTexture.Channel.A;
+
+        return null;
     }
 
     public boolean hasTextureChannel(SplatTexture.Channel channel) {
