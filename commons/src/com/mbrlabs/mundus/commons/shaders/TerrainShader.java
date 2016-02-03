@@ -152,6 +152,8 @@ public class TerrainShader extends BaseShader {
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
             Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
             Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+        } else {
+            set(UNIFORM_TEXTURE_HAS_SPLATMAP, 0);
         }
         // set terrain world size
         terrainSize.x = terrainTexture.getTerrain().terrainWidth;
