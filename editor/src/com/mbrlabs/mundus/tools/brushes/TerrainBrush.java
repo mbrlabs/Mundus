@@ -36,8 +36,8 @@ public abstract class TerrainBrush extends Tool {
     protected float radius;
     protected Vector3 brushPos = new Vector3();
 
-    protected SplatTexture.Channel splatChannel;
-    protected float splatStrenght = 1f;
+    protected SplatTexture.Channel paintChannel;
+    protected float paintStrength = 0.5f;
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);
@@ -86,13 +86,14 @@ public abstract class TerrainBrush extends Tool {
         return mouseMoved(screenX, screenY);
     }
 
+    public void setPaintChannel(SplatTexture.Channel paintChannel) {
+        this.paintChannel = paintChannel;
+    }
+
+    public void setPaintStrength(float paintStrength) {
+        this.paintStrength = paintStrength;
+    }
+
     public abstract boolean supportsMode(BrushMode mode);
 
-    public void setSplatChannel(SplatTexture.Channel splatChannel) {
-        this.splatChannel = splatChannel;
-    }
-
-    public void setSplatStrenght(float splatStrenght) {
-        this.splatStrenght = splatStrenght;
-    }
 }

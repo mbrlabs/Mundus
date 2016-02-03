@@ -21,7 +21,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -107,7 +106,7 @@ public class SphereTerrainBrush extends TerrainBrush {
                 float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
                 float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
                 float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
-                sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, splatStrenght, splatChannel);
+                sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, paintStrength, paintChannel);
                 sm.updateTexture();
             }
             return;

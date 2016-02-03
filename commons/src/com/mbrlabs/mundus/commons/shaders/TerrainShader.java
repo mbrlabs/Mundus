@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.commons.shaders;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -140,28 +139,27 @@ public class TerrainShader extends BaseShader {
         final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
                 renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
-        setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE));
+
+        set(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.texture);
         if(terrainTexture.getSplatmap() != null) {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 1);
-            setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.getTexture(SplatTexture.Channel.R));
-            setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getTexture(SplatTexture.Channel.G));
-            setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getTexture(SplatTexture.Channel.B));
-            setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getTexture(SplatTexture.Channel.A));
+            SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.R);
+            if(st != null) set(UNIFORM_TEXTURE_R, st.texture.texture);
+            st = terrainTexture.getTexture(SplatTexture.Channel.G);
+            if(st != null) set(UNIFORM_TEXTURE_G, st.texture.texture);
+            st = terrainTexture.getTexture(SplatTexture.Channel.B);
+            if(st != null) set(UNIFORM_TEXTURE_B, st.texture.texture);
+            st = terrainTexture.getTexture(SplatTexture.Channel.A);
+            if(st != null) set(UNIFORM_TEXTURE_A, st.texture.texture);
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
-            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
         } else {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 0);
         }
+
         // set terrain world size
         terrainSize.x = terrainTexture.getTerrain().terrainWidth;
         terrainSize.y = terrainTexture.getTerrain().terrainDepth;
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
-    }
-
-    public void setTilableTextureUniform(final int loc, final SplatTexture splatTexture) {
-        if(splatTexture == null) return;
-        set(loc, splatTexture.texture.texture);
     }
 
     @Override

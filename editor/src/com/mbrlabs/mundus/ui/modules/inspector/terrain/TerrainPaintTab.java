@@ -29,10 +29,10 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -41,7 +41,6 @@ import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
 import com.mbrlabs.mundus.ui.widgets.TextureGrid;
-import com.mbrlabs.mundus.commons.utils.TextureProvider;
 
 /**
  * @author Marcus Brummer
@@ -142,7 +141,7 @@ public class TerrainPaintTab extends Tab {
             public void onTextureSelected(TextureProvider texture, boolean leftClick) {
                 SplatTexture tex = (SplatTexture) texture;
                 if(leftClick) {
-                    toolManager.sphereBrushTool.setSplatChannel(tex.channel);
+                    toolManager.sphereBrushTool.setPaintChannel(tex.channel);
                 } else {
                     rightClickMenu.setChannel(tex.channel);
                     rightClickMenu.show();
