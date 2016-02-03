@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
+import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
@@ -72,7 +73,6 @@ public class TerrainShader extends BaseShader {
     private final ShaderProgram program;
 
     public TerrainShader() {
-        super();
         program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, true);
     }
 

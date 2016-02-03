@@ -54,7 +54,8 @@ public class TerrainPaintTab extends Tab {
     private VisTextButton addTextureBtn;
     private TextureGrid<TextureProvider> textureGrid;
 
-    private TextureBrowser textureBrowser;
+    private TextureBrowser addTextureBrowser;
+    private TextureBrowser changeTextureBrowser;
 
     private TextureRightClickMenu rightClickMenu;
 
@@ -77,40 +78,41 @@ public class TerrainPaintTab extends Tab {
 
         addTextureBtn = new VisTextButton("Add Texture");
         table.add(addTextureBtn).right().row();
-
         addTextureBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Ui.getInstance().showDialog(textureBrowser);
+                Ui.getInstance().showDialog(addTextureBrowser);
             }
         });
 
         rightClickMenu = new TextureRightClickMenu();
-        setupTextureBrowser();
+
+        setupAddTextureBrowser();
+        setupChangeTextureBrowser();
         setupTextureGrid();
     }
 
-    public void setupTextureBrowser() {
-        textureBrowser = new TextureBrowser();
-        textureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
+    public void setupAddTextureBrowser() {
+        addTextureBrowser = new TextureBrowser();
+        addTextureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
             @Override
             public void onTextureSelected(TextureProvider texture, boolean leftClick) {
-                if(!leftClick) return;
+                if (!leftClick) return;
 
                 MTexture mTexture = (MTexture) texture;
                 TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
 
                 // set base
-                if(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() == -1) {
+                if (terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() == -1) {
                     SplatTexture st = new SplatTexture(SplatTexture.Channel.BASE, mTexture);
                     terrainTexture.setSplatTexture(st);
                     textureGrid.addTexture(st);
-                    textureBrowser.fadeOut();
+                    addTextureBrowser.fadeOut();
                     return;
                 }
 
                 // create empty splatmap
-                if(terrainTexture.countTextures() == 1) {
+                if (terrainTexture.countTextures() == 1) {
                     SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
                     sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
                     terrainTexture.setSplatmap(sm);
@@ -118,17 +120,34 @@ public class TerrainPaintTab extends Tab {
 
                 // add texture
                 SplatTexture.Channel freeChannel = terrainTexture.getNextFreeChannel();
-                if(freeChannel != null) {
+                if (freeChannel != null) {
                     final SplatTexture st = new SplatTexture();
                     st.texture = mTexture;
                     st.channel = freeChannel;
                     terrainTexture.setSplatTexture(st);
                     textureGrid.addTexture(st);
 
-                    textureBrowser.fadeOut();
+                    addTextureBrowser.fadeOut();
                 } else {
                     DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                     return;
+                }
+
+            }
+        });
+    }
+
+    private void setupChangeTextureBrowser() {
+        this.changeTextureBrowser = new TextureBrowser();
+        changeTextureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
+            @Override
+            public void onTextureSelected(TextureProvider texture, boolean leftClick) {
+                if (!leftClick) return;
+                MTexture mTexture = (MTexture) texture;
+                TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
+
+                if(rightClickMenu.channel != null) {
+                    terrainTexture.setSplatTexture(new SplatTexture(rightClickMenu.channel, mTexture));
                 }
 
             }
@@ -219,7 +238,9 @@ public class TerrainPaintTab extends Tab {
             changeTexture.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-
+                    if(channel != null) {
+                       changeTextureBrowser.show(Ui.getInstance());
+                    }
                 }
             });
         }
