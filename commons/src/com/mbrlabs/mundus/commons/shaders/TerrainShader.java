@@ -30,7 +30,6 @@ import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
-import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTextureAttribute;
@@ -62,7 +61,7 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_TEXTURE_B = register(new Uniform("u_texture_b"));
     protected final int UNIFORM_TEXTURE_A = register(new Uniform("u_texture_a"));
     protected final int UNIFORM_TEXTURE_SPLAT = register(new Uniform("u_texture_splat"));
-    protected final int UNIFORM_TEXTURE_COUNT = register(new Uniform("u_texture_count"));
+    protected final int UNIFORM_TEXTURE_HAS_SPLATMAP = register(new Uniform("u_texture_has_splatmap"));
 
     // ============================ FOG ============================
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
@@ -143,13 +142,13 @@ public class TerrainShader extends BaseShader {
         final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
                 renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
-        set(UNIFORM_TEXTURE_COUNT, terrainTexture.countTextures());
         setTilableTextureUniform(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE));
-        setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.getTexture(SplatTexture.Channel.R));
-        setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getTexture(SplatTexture.Channel.G));
-        setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getTexture(SplatTexture.Channel.B));
-        setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getTexture(SplatTexture.Channel.A));
         if(terrainTexture.getSplatmap() != null) {
+            set(UNIFORM_TEXTURE_HAS_SPLATMAP, 1);
+            setTilableTextureUniform(UNIFORM_TEXTURE_R, terrainTexture.getTexture(SplatTexture.Channel.R));
+            setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getTexture(SplatTexture.Channel.G));
+            setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getTexture(SplatTexture.Channel.B));
+            setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getTexture(SplatTexture.Channel.A));
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
             Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
             Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);

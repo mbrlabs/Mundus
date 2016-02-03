@@ -206,6 +206,10 @@ public class TerrainPaintTab extends Tab {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if(channel != null) {
+                        if(channel == SplatTexture.Channel.BASE) {
+                            DialogUtils.showErrorDialog(Ui.getInstance(), "Currently you can't remove the base texture");
+                            return;
+                        }
                         TerrainTexture tt = parent.component.getTerrain().getTerrainTexture();
                         tt.removeTexture(channel);
                         setTexturesInUiGrid();

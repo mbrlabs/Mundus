@@ -14,6 +14,7 @@ uniform float  u_fogDensity;
 uniform float  u_fogGradient;
 
 uniform vec2 u_terrainSize;
+uniform int u_texture_has_splatmap;
 
 varying vec2 v_texCoord0;
 varying vec3 v_vectorToLight;
@@ -25,7 +26,9 @@ varying vec2 splatPosition;
 
 void main(void) {
     // pos for texture blending
-    splatPosition = vec2(a_position.x / u_terrainSize.x, a_position.z / u_terrainSize);
+    if(u_texture_has_splatmap == 1) {
+        splatPosition = vec2(a_position.x / u_terrainSize.x, a_position.z / u_terrainSize);
+    }
 
     // position
     vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);

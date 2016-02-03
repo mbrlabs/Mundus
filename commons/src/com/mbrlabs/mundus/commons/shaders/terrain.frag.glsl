@@ -14,7 +14,7 @@ uniform sampler2D u_texture_g;
 uniform sampler2D u_texture_b;
 uniform sampler2D u_texture_a;
 uniform sampler2D u_texture_splat;
-uniform int u_texture_count;
+uniform int u_texture_has_splatmap;
 
 // light
 uniform float u_lightIntensity;
@@ -30,7 +30,7 @@ varying vec2 splatPosition;
 vec4 blend_textures() {
     vec4 col = texture2D(u_texture_base, v_texCoord0);
 
-    if(u_texture_count > 1) {
+    if(u_texture_has_splatmap == 1) {
         vec4 splat = texture2D(u_texture_splat, splatPosition);
         col = mix(col, texture2D(u_texture_r, v_texCoord0), splat.r);
         col = mix(col, texture2D(u_texture_g, v_texCoord0), splat.g);
