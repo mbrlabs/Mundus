@@ -70,7 +70,7 @@ public class TerrainShader extends BaseShader {
 
     private Vector2 terrainSize = new Vector2();
 
-    private ShaderProgram program;
+    private final ShaderProgram program;
 
     public TerrainShader() {
         super();
@@ -116,13 +116,13 @@ public class TerrainShader extends BaseShader {
                 renderable.environment.get(SunLightsAttribute.class, SunLightsAttribute.Type);
         final Array<SunLight> points = sla == null ? null : sla.lights;
         if(points != null && points.size > 0) {
-            SunLight light = points.first();
+            final SunLight light = points.first();
             set(UNIFORM_LIGHT_POS, light.position);
             set(UNIFORM_LIGHT_INTENSITY, light.intensity);
         }
 
         // Fog
-        Fog fog = ((Env)renderable.environment).getFog();
+        final Fog fog = ((Env)renderable.environment).getFog();
         if(fog == null) {
             set(UNIFORM_FOG_DENSITY, 0f);
             set(UNIFORM_FOG_GRADIENT, 0f);
@@ -137,8 +137,6 @@ public class TerrainShader extends BaseShader {
     }
 
     private void setTerrainSplatTextures(Renderable renderable) {
-
-        // set textures
         final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
                 renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
@@ -161,11 +159,9 @@ public class TerrainShader extends BaseShader {
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 
-    public void setTilableTextureUniform(int loc, SplatTexture splatTexture) {
+    public void setTilableTextureUniform(final int loc, final SplatTexture splatTexture) {
         if(splatTexture == null) return;
         set(loc, splatTexture.texture.texture);
-        Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-        Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
     }
 
     @Override

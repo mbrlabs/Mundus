@@ -160,7 +160,7 @@ public class AddTerrainDialog extends BaseDialog {
         TerrainTexture splat = terrain.getTerrainTexture();
         MTexture base = new MTexture();
         base.setId(-1);
-        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"));
+        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
         splat.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
 
         return terrain;

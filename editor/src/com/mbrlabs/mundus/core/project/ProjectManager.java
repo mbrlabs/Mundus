@@ -149,7 +149,7 @@ public class ProjectManager {
         // load textures
         for(MTexture tex : context.textures) {
             tex.texture = TextureUtils.loadMipmapTexture(
-                    Gdx.files.absolute(FilenameUtils.concat(context.absolutePath, tex.getPath())));
+                    Gdx.files.absolute(FilenameUtils.concat(context.absolutePath, tex.getPath())), true);
             Log.debug("Loaded texture: " + tex.getPath());
         }
 
