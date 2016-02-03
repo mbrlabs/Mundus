@@ -82,10 +82,16 @@ public class TextureGrid<T extends TextureProvider> extends VisTable {
             addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    listener.onTextureSelected(tex, button == Input.Buttons.LEFT);
                     return true;
                 }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    listener.onTextureSelected(tex, button == Input.Buttons.LEFT);
+                }
             });
+
+
 
         }
     }

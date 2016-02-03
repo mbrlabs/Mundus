@@ -148,6 +148,7 @@ public class TerrainPaintTab extends Tab {
 
                 if(rightClickMenu.channel != null) {
                     terrainTexture.setSplatTexture(new SplatTexture(rightClickMenu.channel, mTexture));
+                    setTexturesInUiGrid();
                 }
 
             }
@@ -162,6 +163,7 @@ public class TerrainPaintTab extends Tab {
                 if(leftClick) {
                     toolManager.sphereBrushTool.setPaintChannel(tex.channel);
                 } else {
+                    System.out.println("Texture grid listener right clicked");
                     rightClickMenu.setChannel(tex.channel);
                     rightClickMenu.show();
                 }
