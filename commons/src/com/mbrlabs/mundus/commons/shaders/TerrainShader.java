@@ -149,8 +149,11 @@ public class TerrainShader extends BaseShader {
         setTilableTextureUniform(UNIFORM_TEXTURE_G, terrainTexture.getTexture(SplatTexture.Channel.G));
         setTilableTextureUniform(UNIFORM_TEXTURE_B, terrainTexture.getTexture(SplatTexture.Channel.B));
         setTilableTextureUniform(UNIFORM_TEXTURE_A, terrainTexture.getTexture(SplatTexture.Channel.A));
-        setSplatmap(terrainTexture);
-
+        if(terrainTexture.getSplatmap() != null) {
+            set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
+            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
+            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+        }
         // set terrain world size
         terrainSize.x = terrainTexture.getTerrain().terrainWidth;
         terrainSize.y = terrainTexture.getTerrain().terrainDepth;
@@ -162,14 +165,6 @@ public class TerrainShader extends BaseShader {
         set(loc, splatTexture.texture.texture);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
         Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
-    }
-
-    public void setSplatmap(TerrainTexture terrainTexture) {
-        if(terrainTexture.getSplatmap() != null) {
-            set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
-            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-            Gdx.gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
-        }
     }
 
     @Override

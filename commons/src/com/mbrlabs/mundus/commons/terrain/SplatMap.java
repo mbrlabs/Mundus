@@ -84,8 +84,6 @@ public class SplatMap {
                 pixmap.drawPixel(smX, smY, Color.rgba8888(c0));
             }
         }
-
-        updateTexture();
     }
 
     public void clear() {

@@ -40,6 +40,8 @@ public class TerrainTexture {
 
     public void removeTexture(SplatTexture.Channel channel) {
         textures.remove(channel);
+        splatmap.clearChannel(channel);
+        splatmap.updateTexture();
     }
 
     public void setSplatTexture(SplatTexture tex) {

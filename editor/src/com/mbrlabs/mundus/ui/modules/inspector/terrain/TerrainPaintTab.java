@@ -110,8 +110,8 @@ public class TerrainPaintTab extends Tab {
                     return;
                 }
 
-                // create empty splatmap if more than the base texture is available
-                if(terrainTexture.countTextures() >= 1) {
+                // create empty splatmap
+                if(terrainTexture.countTextures() == 1) {
                     SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
                     sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
                     terrainTexture.setSplatmap(sm);
@@ -209,7 +209,6 @@ public class TerrainPaintTab extends Tab {
                         TerrainTexture tt = parent.component.getTerrain().getTerrainTexture();
                         tt.removeTexture(channel);
                         setTexturesInUiGrid();
-                        tt.getSplatmap().clearChannel(channel);
                     }
                 }
             });
