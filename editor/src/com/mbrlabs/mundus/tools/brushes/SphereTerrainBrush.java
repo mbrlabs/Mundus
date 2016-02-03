@@ -21,6 +21,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -41,8 +42,9 @@ public class SphereTerrainBrush extends TerrainBrush {
     private static final float SIZE = 1;
 
     private Model sphereModel;
-    protected ModelInstance sphereModelInstance;
-    protected BoundingBox boundingBox = new BoundingBox();
+    private ModelInstance sphereModelInstance;
+    private BoundingBox boundingBox = new BoundingBox();
+    private int lastMousePosIndicator = 0;
 
     protected Vector3 tVec0 = new Vector3();
 
@@ -83,6 +85,9 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public void act() {
+
+        if(lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
+
         boolean up;
         if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
             up = true;
@@ -151,9 +156,11 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        boolean moved = super.mouseMoved(screenX, screenY);
+        super.mouseMoved(screenX, screenY);
+        lastMousePosIndicator = screenX + screenY;
+
         sphereModelInstance.transform.setTranslation(brushPos);
-        return moved;
+        return false;
     }
 
     @Override

@@ -37,7 +37,7 @@ public abstract class TerrainBrush extends Tool {
     protected Vector3 brushPos = new Vector3();
 
     protected SplatTexture.Channel splatChannel;
-    protected float splatStrenght = 0.2f;
+    protected float splatStrenght = 1f;
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);
