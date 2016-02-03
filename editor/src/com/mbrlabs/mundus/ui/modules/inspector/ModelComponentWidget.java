@@ -64,12 +64,6 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     }
 
     @Override
-    public void onDelete() {
-        projectContext.currScene.currentSelection.removeComponent(component);
-        remove();
-    }
-
-    @Override
     public void setValues(GameObject go) {
         Component c = go.findComponentByType(Component.Type.MODEL);
         if(c != null) {

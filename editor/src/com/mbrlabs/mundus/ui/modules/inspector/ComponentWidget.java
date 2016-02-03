@@ -16,11 +16,13 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
+
 /**
  * @author Marcus Brummer
  * @version 22-01-2016
  */
-public abstract class ComponentWidget<T> extends BaseInspectorWidget {
+public abstract class ComponentWidget<T extends Component> extends BaseInspectorWidget {
 
     public T component;
 
@@ -28,6 +30,12 @@ public abstract class ComponentWidget<T> extends BaseInspectorWidget {
         super(title);
         setDeletable(true);
         this.component = component;
+    }
+
+    @Override
+    public void onDelete() {
+        component.remove();
+        remove();
     }
 
 }

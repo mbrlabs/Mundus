@@ -21,13 +21,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 
 /**
  * @author Marcus Brummer
  * @version 31-01-2016
  */
-public class SplatMap {
+public class SplatMap implements Disposable {
 
     public static final int DEFAULT_SIZE = 512;
 
@@ -151,4 +152,8 @@ public class SplatMap {
         return Color.rgba8888(c0);
     }
 
+    @Override
+    public void dispose() {
+        pixmap.dispose();
+    }
 }

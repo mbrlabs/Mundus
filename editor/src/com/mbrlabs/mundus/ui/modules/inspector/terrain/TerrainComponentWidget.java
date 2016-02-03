@@ -79,11 +79,6 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     }
 
     @Override
-    public void onDelete() {
-
-    }
-
-    @Override
     public void setValues(GameObject go) {
         Component c = go.findComponentByType(Component.Type.TERRAIN);
         if(c != null) {
