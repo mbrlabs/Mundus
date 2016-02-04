@@ -34,11 +34,7 @@ import com.mbrlabs.mundus.utils.Fa;
  */
 public class SphereTerrainBrush extends TerrainBrush {
 
-    private static final int KEY_LOWER_TERRAIN = Input.Buttons.RIGHT;
-    private static final int KEY_RAISE_TERRAIN = Input.Buttons.LEFT;
-
     private static final String NAME = "Sphere Brush";
-    private static final float SIZE = 1;
 
     private Model sphereModel;
     private ModelInstance sphereModelInstance;
@@ -50,7 +46,7 @@ public class SphereTerrainBrush extends TerrainBrush {
     public SphereTerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);
         ModelBuilder modelBuilder = new ModelBuilder();
-        sphereModel = modelBuilder.createSphere(SIZE,SIZE,SIZE,30,30, new Material(), VertexAttributes.Usage.Position);
+        sphereModel = modelBuilder.createSphere(1, 1, 1, 30, 30, new Material(), VertexAttributes.Usage.Position);
         sphereModelInstance = new ModelInstance(sphereModel);
         sphereModelInstance.calculateBoundingBox(boundingBox);
         scale(15);
@@ -84,28 +80,19 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public void act() {
-
+        BrushAction action = getAction();
+        if(action == null) return;
+        if(terrain == null) return;
+        // only act if mouse has been moved
         if(lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
 
-        boolean up;
-        if(Gdx.input.isButtonPressed(KEY_RAISE_TERRAIN)) {
-            up = true;
-        } else if(Gdx.input.isButtonPressed(KEY_LOWER_TERRAIN)) {
-            up = false;
-        } else {
-            return;
-        }
-
-        if(terrain == null) {
-            return;
-        }
-
+        // Paint
         if(mode == BrushMode.PAINT) {
             SplatMap sm = terrain.getTerrainTexture().getSplatmap();
             if(sm != null) {
-                float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
-                float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
-                float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
+                final float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
+                final float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
+                final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
                 sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, paintStrength, paintChannel);
                 sm.updateTexture();
             }
@@ -113,20 +100,23 @@ public class SphereTerrainBrush extends TerrainBrush {
         }
 
         final Vector3 terPos = terrain.getPosition();
+        float dir = (action == BrushAction.PRIMARY) ? 1 : -1;
+
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
-                Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
+                final Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
                 vertexPos.x += terPos.x;
                 vertexPos.z += terPos.z;
                 float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
+                    // Raise/Lower
                     if(mode == BrushMode.RAISE_LOWER) {
-                        float dir = up ? 1 : -1;
-                        float elevation = (radius - distance) * 0.1f * dir;
+                        final float elevation = (radius - distance) * 0.1f * dir;
                         terrain.heightData[z * terrain.vertexResolution + x] += elevation;
+                    // Flatten
                     } else if(mode == BrushMode.FLATTEN) {
-                        int heightIndex = z * terrain.vertexResolution + x;
+                        final int heightIndex = z * terrain.vertexResolution + x;
                         terrain.heightData[heightIndex] *= distance / radius;
                     }
                 }
