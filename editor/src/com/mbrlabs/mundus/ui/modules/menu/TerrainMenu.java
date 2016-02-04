@@ -78,7 +78,7 @@ public class TerrainMenu extends Menu {
                 // TODO dialog for selecting terrain + heightmap
                 if(projectContext.currScene.terrainGroup.size() > 0) {
                     Terrain terrain = projectContext.currScene.terrainGroup.first();
-                    terrain.loadHeightMap(new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png")), 200);
+                    terrain.loadHeightMap(new Pixmap(Gdx.files.internal("heightmaps/heightmap180.png")), terrain.terrainWidth * 0.17f);
                     terrain.update();
                 }
             }

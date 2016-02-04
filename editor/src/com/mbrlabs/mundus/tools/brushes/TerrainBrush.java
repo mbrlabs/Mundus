@@ -70,6 +70,7 @@ public abstract class TerrainBrush extends Tool {
 
     protected SplatTexture.Channel paintChannel;
     protected float paintStrength = 0.5f;
+    protected float heightSample = 0f;
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch) {
         super(projectContext, shader, batch);

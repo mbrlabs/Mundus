@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
@@ -36,6 +37,7 @@ public class TerrainUpDownTab extends Tab {
         this.parent = parent;
         table = new VisTable();
         table.align(Align.left);
+        table.add(new VisLabel("Hold shift to lower")).center().row();
         table.add(new TerrainBrushTable(this.parent, TerrainBrush.BrushMode.RAISE_LOWER)).expand().fill().row();
     }
 

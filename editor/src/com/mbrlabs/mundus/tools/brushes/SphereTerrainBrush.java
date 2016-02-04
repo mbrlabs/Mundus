@@ -83,6 +83,13 @@ public class SphereTerrainBrush extends TerrainBrush {
         BrushAction action = getAction();
         if(action == null) return;
         if(terrain == null) return;
+
+        // sample height
+        if(action == BrushAction.SECONDARY && mode == BrushMode.FLATTEN) {
+            heightSample = brushPos.y;
+            return;
+        }
+
         // only act if mouse has been moved
         if(lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
 
@@ -110,14 +117,14 @@ public class SphereTerrainBrush extends TerrainBrush {
                 float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
+                    final int heightIndex = z * terrain.vertexResolution + x;
                     // Raise/Lower
                     if(mode == BrushMode.RAISE_LOWER) {
                         final float elevation = (radius - distance) * 0.1f * dir;
-                        terrain.heightData[z * terrain.vertexResolution + x] += elevation;
-                    // Flatten
+                        terrain.heightData[heightIndex] += elevation;
+                        // Flatten
                     } else if(mode == BrushMode.FLATTEN) {
-                        final int heightIndex = z * terrain.vertexResolution + x;
-                        terrain.heightData[heightIndex] *= distance / radius;
+                        terrain.heightData[heightIndex] = heightSample;
                     }
                 }
             }
