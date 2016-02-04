@@ -97,6 +97,10 @@ public class ToolManager extends InputAdapter implements Disposable {
         }
     }
 
+    public Tool getActiveTool() {
+        return activeTool;
+    }
+
     @Override
     public boolean keyUp(int keycode) {
         if(keycode == KEY_DEACTIVATE) {

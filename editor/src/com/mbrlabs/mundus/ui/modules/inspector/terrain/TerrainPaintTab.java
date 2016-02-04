@@ -17,16 +17,15 @@
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
-import com.kotcrab.vis.ui.widget.MenuItem;
-import com.kotcrab.vis.ui.widget.PopupMenu;
-import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
@@ -40,7 +39,9 @@ import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
+import com.mbrlabs.mundus.ui.widgets.ImprovedSlider;
 import com.mbrlabs.mundus.ui.widgets.TextureGrid;
+import com.mbrlabs.mundus.ui.widgets.ScrollPaneSlider;
 
 /**
  * @author Marcus Brummer
@@ -50,9 +51,10 @@ public class TerrainPaintTab extends Tab {
 
     private TerrainComponentWidget parent;
 
-    private VisTable table;
+    private VisTable root;
     private VisTextButton addTextureBtn;
     private TextureGrid<TextureProvider> textureGrid;
+    private ImprovedSlider strengthSlider;
 
     private TextureBrowser addTextureBrowser;
     private TextureBrowser changeTextureBrowser;
@@ -66,18 +68,36 @@ public class TerrainPaintTab extends Tab {
         super(false, false);
         Mundus.inject(this);
         this.parent = parent;
-        table = new VisTable();
-        table.align(Align.left);
-        table.add(new TerrainBrushTable(parent, TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
-        table.addSeparator().height(1);
+        root = new VisTable();
+        root.align(Align.left);
 
+        // brushes
+        root.add(new TerrainBrushTable(parent, TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
+
+        // brush settings
+        final VisTable settingsTable = new VisTable();
+        settingsTable.add(new VisLabel("Strength")).left().row();
+        strengthSlider = new ImprovedSlider(0, 1, 0.1f);
+        settingsTable.add(strengthSlider).expandX().fillX().row();
+        root.add(settingsTable).expand().fill().row();
+        strengthSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if(toolManager.getActiveTool() instanceof TerrainBrush) {
+                    ((TerrainBrush)toolManager.getActiveTool()).setPaintStrength(strengthSlider.getValue());
+                }
+            }
+        });
+
+        // textures
+        root.add(new VisLabel("Textures:")).left().row();
         textureGrid = new TextureGrid<>(40, 5);
         textureGrid.setBackground(VisUI.getSkin().getDrawable("menu-bg"));
-        table.add(textureGrid).expand().fill().pad(5).row();
-        table.addSeparator().height(1);
+        root.add(textureGrid).expand().fill().pad(5).row();
 
+        // add texture
         addTextureBtn = new VisTextButton("Add Texture");
-        table.add(addTextureBtn).right().row();
+        root.add(addTextureBtn).right().row();
         addTextureBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -200,7 +220,7 @@ public class TerrainPaintTab extends Tab {
 
     @Override
     public Table getContentTable() {
-        return table;
+        return root;
     }
 
     /**

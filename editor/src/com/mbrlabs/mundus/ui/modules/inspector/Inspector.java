@@ -71,6 +71,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         setBackground("default-pane");
         root = new VisTable();
         scrollPane = new ScrollPane(root);
+        scrollPane.setScrollingDisabled(true, false);
         add(scrollPane).expand().fill();
     }
 
