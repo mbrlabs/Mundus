@@ -132,7 +132,7 @@ public class TerrainPaintTab extends Tab {
                 }
 
                 // create empty splatmap
-                if (terrainTexture.countTextures() == 1) {
+                if (terrainTexture.getSplatmap() == null) {
                     SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
                     sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
                     terrainTexture.setSplatmap(sm);
@@ -146,7 +146,6 @@ public class TerrainPaintTab extends Tab {
                     st.channel = freeChannel;
                     terrainTexture.setSplatTexture(st);
                     textureGrid.addTexture(st);
-
                     addTextureBrowser.fadeOut();
                 } else {
                     DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");

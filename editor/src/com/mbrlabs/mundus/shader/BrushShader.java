@@ -32,8 +32,8 @@ import com.mbrlabs.mundus.utils.GlUtils;
  */
 public class BrushShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "shader/brushes/brushes.vert.glsl";
-    private static final String FRAGMENT_SHADER = "shader/brushes/brushes.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/shader/brush.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/shader/brush.frag.glsl";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
