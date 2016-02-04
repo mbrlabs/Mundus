@@ -18,7 +18,9 @@ package com.mbrlabs.mundus.ui.modules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -27,6 +29,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
@@ -49,6 +52,8 @@ public class StatusBar extends VisTable {
 
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private FreeCamController freeCamController;
 
     public StatusBar() {
         super();
@@ -82,6 +87,31 @@ public class StatusBar extends VisTable {
         right.add(camPos).right();
         right.addSeparator(true).padLeft(5).padRight(5);
         right.add(fpsLabel).right();
+
+        setupListeners();
+    }
+
+    public void setupListeners() {
+        speed01.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                freeCamController.setVelocity(FreeCamController.SPEED_01);
+            }
+        });
+
+        speed1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                freeCamController.setVelocity(FreeCamController.SPEED_1);
+            }
+        });
+
+        speed10.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                freeCamController.setVelocity(FreeCamController.SPEED_10);
+            }
+        });
     }
 
     @Override

@@ -57,6 +57,7 @@ public class Mundus {
     private static ProjectContext projectContext;
     private static ToolManager toolManager;
     private static InputManager input;
+    private static FreeCamController freeCamController;
     private static Shaders shaders;
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
@@ -98,6 +99,7 @@ public class Mundus {
         projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager, modelBatch, shaders);
         importManager = new ImportManager(homeManager);
         assetManager = new AssetManager(projectContext, projectManager);
+        freeCamController = new FreeCamController();
     }
 
     private static void initStyle() {

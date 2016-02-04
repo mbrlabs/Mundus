@@ -51,10 +51,10 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
     private Ui ui;
     private Compass compass;
-    private FreeCamController camController;
-
     private ModelBatch batch;
 
+    @Inject
+    private FreeCamController camController;
     @Inject
     private InputManager inputManager;
     @Inject
@@ -88,7 +88,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         }
 
         compass = new Compass(projectContext.currScene.cam);
-        camController = new FreeCamController(projectContext.currScene.cam);
+        camController.setCamera(projectContext.currScene.cam);
         inputManager.addProcessor(camController);
     }
 
@@ -109,7 +109,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         }
 
         // TODO maybe remove or put somewhere else
-        // render initial gird axis
         batch.begin(projectContext.currScene.cam);
         batch.render(axesInstance);
         batch.end();

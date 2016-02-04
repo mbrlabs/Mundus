@@ -28,6 +28,11 @@ import com.badlogic.gdx.utils.IntIntMap;
  * @version 24-11-2015
  */
 public class FreeCamController extends InputAdapter {
+
+    public static final float SPEED_01 = 10;
+    public static final float SPEED_1 = 150;
+    public static final float SPEED_10 = 500;
+
     private Camera camera;
     private final IntIntMap keys = new IntIntMap();
     private int STRAFE_LEFT = Input.Keys.A;
@@ -36,9 +41,12 @@ public class FreeCamController extends InputAdapter {
     private int BACKWARD = Input.Keys.S;
     private int UP = Input.Keys.Q;
     private int DOWN = Input.Keys.E;
-    private float velocity = 200;
+    private float velocity = SPEED_1;
     private float degreesPerPixel = 0.5f;
     private final Vector3 tmp = new Vector3();
+
+    public FreeCamController () {
+    }
 
     public FreeCamController (Camera camera) {
         this.camera = camera;

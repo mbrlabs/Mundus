@@ -6,6 +6,7 @@
 - Moved the terrain tools to the component widget in the inspector
 - Removed the tools tab in the left sidebar
 - Changed input handling for terrain brushes: the mouse has to be moved constantly in order to draw
+- Added camera speed control buttons to the status bar
 
 [0.0.5] ~ 26/01/2016
 - Implemented a basic component based 3D scene graph
