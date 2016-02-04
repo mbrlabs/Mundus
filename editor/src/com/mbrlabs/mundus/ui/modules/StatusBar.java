@@ -16,59 +16,89 @@
 
 package com.mbrlabs.mundus.ui.modules;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
  */
-public class StatusBar extends Container {
+public class StatusBar extends VisTable {
 
-    private HorizontalGroup group;
+    private VisTable root;
+    private VisTable left;
+    private VisTable right;
 
-    private VisLabel verticesLabel;
+
     private VisLabel fpsLabel;
     private VisLabel camPos;
 
+    private VisTextButton speed01;
+    private VisTextButton speed1;
+    private VisTextButton speed10;
+
+    @Inject
+    private ProjectContext projectContext;
+
     public StatusBar() {
         super();
+        Mundus.inject(this);
         setBackground(VisUI.getSkin().getDrawable("menu-bg"));
-        align(Align.right | Align.center);
-        group = new HorizontalGroup();
-        group.space(10);
-        group.padRight(10);
-        setActor(group);
+        root = new VisTable();
+        root.align(Align.left | Align.center);
+        add(root).expand().fill();
 
-        verticesLabel = new VisLabel();
+        left = new VisTable();
+        left.align(Align.left);
+        left.padLeft(10);
+        right = new VisTable();
+        right.align(Align.right);
+        right.padRight(10);
+        root.add(left).left().expand().fill();
+        root.add(right).right().expand().fill();
+
+        // left
+        left.add(new VisLabel("camSpeed: ")).left();
+        speed01 = new VisTextButton(".1");
+        speed1 = new VisTextButton("1");
+        speed10 = new VisTextButton("10");
+        left.add(speed01);
+        left.add(speed1);
+        left.add(speed10);
+
+        // right
         fpsLabel = new VisLabel();
         camPos = new VisLabel();
-        setFps(60);
-        setVertexCount(0);
-
-        group.addActor(camPos);
-        group.addActor(verticesLabel);
-        group.addActor(fpsLabel);
+        right.add(camPos).right();
+        right.addSeparator(true).padLeft(5).padRight(5);
+        right.add(fpsLabel).right();
     }
 
-    public void setFps(int fps) {
+    @Override
+    public void act(float delta) {
+        setFps(Gdx.graphics.getFramesPerSecond());
+        setCamPos(projectContext.currScene.cam.position);
+        super.act(delta);
+    }
+
+    private void setFps(int fps) {
         this.fpsLabel.setText("fps: " + fps);
     }
 
-    public void setVertexCount(long vertexCount) {
-        this.verticesLabel.setText("vertices: " + vertexCount);
+    private void setCamPos(Vector3 pos) {
+        camPos.setText("camPos: " + StringUtils.formatFloat(pos.x, 2) + ", " +
+                StringUtils.formatFloat(pos.y, 2) + ", " +
+                StringUtils.formatFloat(pos.z, 2));
     }
-
-    public void setCamPos(Vector3 pos) {
-        camPos.setText("cam x,y,z: " + StringUtils.formatFloat(pos.x, 3) + "," +
-                StringUtils.formatFloat(pos.y, 3) + "," +
-                StringUtils.formatFloat(pos.z, 3));
-    }
-
 
 }

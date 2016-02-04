@@ -80,8 +80,8 @@ public class TerrainIO {
             splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.absolutePath, splatmap.getPath())));
         }
 
-        Log.debug("Terrain export execution time (" + data.length + " floats): "
-                + (System.currentTimeMillis() - start) + " ms");
+        //Log.debug("Terrain export execution time (" + data.length + " floats): "
+        //        + (System.currentTimeMillis() - start) + " ms");
     }
 
     public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
@@ -98,7 +98,7 @@ public class TerrainIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.debug("Terrain import. floats: " + floatArray.size);
+        //Log.debug("Terrain import. floats: " + floatArray.size);
 
         terrain.init();
         terrain.heightData = floatArray.toArray();

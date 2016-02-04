@@ -94,17 +94,11 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
 	@Override
 	public void render () {
-
         GlUtils.clearScreen(Color.WHITE);
         ui.act();
         camController.update();
         toolManager.act();
         projectContext.currScene.cam.update();
-
-        // update status bar
-        ui.getStatusBar().setFps(Gdx.graphics.getFramesPerSecond());
-        ui.getStatusBar().setCamPos(projectContext.currScene.cam.position);
-        ui.getStatusBar().setVertexCount(0);
 
         // render the skybox
         if(projectContext.currScene.skybox != null) {

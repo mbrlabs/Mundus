@@ -55,25 +55,20 @@ import java.util.List;
 public class Mundus {
 
     private static ProjectContext projectContext;
-
     private static ToolManager toolManager;
-
     private static InputManager input;
-    private static FreeCamController camController;
     private static Shaders shaders;
-
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
     private static AssetManager assetManager;
     private static HomeManager homeManager;
     private static ImportManager importManager;
+    public static EventBus eventBus;
 
     public static Array<Model> testModels = new Array<>();
-
     public static Array<ModelInstance> testInstances = new Array<>();
     public static BitmapFont fa;
     public static ModelBatch modelBatch;
-    public static EventBus eventBus;
 
     /**
      * Loads & initializes everything.
@@ -89,47 +84,20 @@ public class Mundus {
         }
 
         initStyle();
-
-        // init logging
         Log.init();
-        // model batch
-        modelBatch = new ModelBatch();
-        // shaders
-        shaders = new Shaders();
-        // project context
-        projectContext = new ProjectContext(-1);
+        initFontAwesome();
 
+        modelBatch = new ModelBatch();
+        shaders = new Shaders();
+        projectContext = new ProjectContext(-1);
         input = new InputManager();
         toolManager = new ToolManager(input, projectContext, modelBatch, shaders);
-
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
         projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager, modelBatch, shaders);
         importManager = new ImportManager(homeManager);
         assetManager = new AssetManager(projectContext, projectManager);
-
-        Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
-        faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.02f);
-        faBuilder.getGeneratorParameter().kerning = true;
-        faBuilder.getGeneratorParameter().borderStraight = false;
-
-
-        fa = faBuilder
-                .addIcon(Fa.SAVE)
-                .addIcon(Fa.DOWNLOAD)
-                .addIcon(Fa.GIFT)
-                .addIcon(Fa.PLAY)
-                .addIcon(Fa.MOUSE_POINTER)
-                .addIcon(Fa.ARROWS)
-                .addIcon(Fa.CIRCLE_O)
-                .addIcon(Fa.MINUS)
-                .addIcon(Fa.CARET_DOWN)
-                .addIcon(Fa.CARET_UP)
-                .addIcon(Fa.TIMES)
-                .addIcon(Fa.SORT)
-                .addIcon(Fa.PAINT_BRUSH)
-                .build();
     }
 
     private static void initStyle() {
@@ -147,13 +115,29 @@ public class Mundus {
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"));
         VisUI.load(skin);
 
-//        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-//        pixmap.setColor(Colors.TURQUOISE);
-//        pixmap.drawPixel(0,0);
-//        Drawable d = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
-//        VisUI.getSkin().add("accent-color", d, Drawable.class);
-
         FileChooser.setFavoritesPrefsName(Main.class.getPackage().getName());
+    }
+
+    private static void initFontAwesome() {
+        Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
+        faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.02f);
+        faBuilder.getGeneratorParameter().kerning = true;
+        faBuilder.getGeneratorParameter().borderStraight = false;
+        fa = faBuilder
+                .addIcon(Fa.SAVE)
+                .addIcon(Fa.DOWNLOAD)
+                .addIcon(Fa.GIFT)
+                .addIcon(Fa.PLAY)
+                .addIcon(Fa.MOUSE_POINTER)
+                .addIcon(Fa.ARROWS)
+                .addIcon(Fa.CIRCLE_O)
+                .addIcon(Fa.MINUS)
+                .addIcon(Fa.CARET_DOWN)
+                .addIcon(Fa.CARET_UP)
+                .addIcon(Fa.TIMES)
+                .addIcon(Fa.SORT)
+                .addIcon(Fa.PAINT_BRUSH)
+                .build();
     }
 
     public static void postEvent(Object event) {
@@ -176,7 +160,7 @@ public class Mundus {
         for(Field f : fields) {
             if(ReflectionUtils.hasFieldAnnotation(f, Inject.class)) {
                 injectableFields.add(f);
-                Log.debug("DI: found injectable field: " + f.getName());
+                //Log.debug("DI: found injectable field: " + f.getName());
             }
         }
 
@@ -219,12 +203,10 @@ public class Mundus {
         shaders.dispose();
         toolManager.dispose();
         fa.dispose();
-        //brushManager.dispose();
         for(Model model : testModels) {
             model.dispose();
         }
         projectContext.dispose();
-
     }
 
 }

@@ -94,7 +94,7 @@ public class Ui extends MyStage {
 
         // row 5: status bar
         statusBar = new StatusBar();
-        root.add(statusBar).expandX().fillX().height(20).row();
+        root.add(statusBar).expandX().fillX().height(25).row();
 
         // settings dialog
         settingsDialog = new SettingsDialog();

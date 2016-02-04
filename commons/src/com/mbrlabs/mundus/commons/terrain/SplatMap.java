@@ -61,7 +61,7 @@ public class SplatMap implements Disposable {
             for(int smY = 0; smY < pixmap.getHeight(); smY++) {
                 final float dst = MathUtils.dst(x, y, smX, smY);
                 if(dst <= radius) {
-                    final float opacity = ((radius - dst) * 0.1f) * strength;
+                    final float opacity = ((radius - dst) * 0.1f) * 0.33f * strength;
                     int newPixelColor = additiveBlend(pixmap.getPixel(smX, smY), channel, opacity);
                     pixmap.drawPixel(smX, smY, newPixelColor);
                 }
