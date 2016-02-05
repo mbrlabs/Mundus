@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.tools.Tool;
 
@@ -156,13 +157,25 @@ public abstract class TerrainBrush extends Tool {
 
     private void paint() {
         SplatMap sm = terrain.getTerrainTexture().getSplatmap();
-        if(sm != null) {
-            final float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
-            final float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
-            final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
-            sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, strength, paintChannel);
-            sm.updateTexture();
+        if(sm == null) return;
+
+        final float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
+        final float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
+        final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
+        final Pixmap pixmap = sm.getPixmap();
+
+        for(int smX = 0; smX < pixmap.getWidth(); smX++) {
+            for(int smY = 0; smY < pixmap.getHeight(); smY++) {
+                final float dst = MathUtils.dst(splatX, splatY, smX, smY);
+                if(dst <= splatRad) {
+                    final float opacity = getValueOfBrushPixmap(splatX, splatY, smX, smY, splatRad) * 0.33f * strength;
+                    int newPixelColor = sm.additiveBlend(pixmap.getPixel(smX, smY), paintChannel, opacity);
+                    pixmap.drawPixel(smX, smY, newPixelColor);
+                }
+            }
         }
+
+        sm.updateTexture();
     }
 
     private void flatten() {
@@ -192,16 +205,32 @@ public abstract class TerrainBrush extends Tool {
                 float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
-                    float elevation = getValueOfBrushPixmap(brushPos, vertexPos.x, vertexPos.z) * 0.5f;
+                    float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z, radius) * 0.5f;
                     terrain.heightData[z * terrain.vertexResolution + x] += dir * elevation;
                 }
             }
         }
     }
 
-    private float getValueOfBrushPixmap(Vector3 brushPosition, float vertexX, float vertexZ) {
-        c.set(brushPosition.x, brushPosition.z);
-        p.set(vertexX, vertexZ);
+    /**
+     * Interpolates the brush texture in the range of centerX - radius to centerX + radius
+     * and centerZ - radius to centerZ + radius. PointZ & pointX lies between these ranges.
+     *
+     * Interpolation is necessary, since the brush pixmap is fixed sized, whereas the input values can scale.
+     * (Input points can be vertices or splatmap texture coordinates)
+     *
+     * @param centerX
+     * @param centerZ
+     * @param pointX
+     * @param pointZ
+     * @param radius
+     *
+     * @return      the interpolated r-channel value of brush pixmap at pointX, pointZ,
+     *              which can be interpreted as terrain height (raise/lower) or opacity (paint)
+     */
+    private float getValueOfBrushPixmap(float centerX, float centerZ, float pointX, float pointZ, float radius) {
+        c.set(centerX, centerZ);
+        p.set(pointX, pointZ);
         v = p.sub(c);
 
         final float progress = v.len() / radius;

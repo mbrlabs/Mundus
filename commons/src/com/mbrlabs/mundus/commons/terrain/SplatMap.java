@@ -69,6 +69,12 @@ public class SplatMap implements Disposable {
         }
     }
 
+    public Pixmap getPixmap() {
+        return pixmap;
+    }
+
+
+
     public void clearChannel(SplatTexture.Channel channel) {
         for(int smX = 0; smX < pixmap.getWidth(); smX++) {
             for(int smY = 0; smY < pixmap.getHeight(); smY++) {
@@ -125,7 +131,7 @@ public class SplatMap implements Disposable {
         return width;
     }
 
-    private int additiveBlend(int pixelColor, SplatTexture.Channel channel, float strength) {
+    public int additiveBlend(int pixelColor, SplatTexture.Channel channel, float strength) {
         c0.set(pixelColor);
         if(channel == SplatTexture.Channel.BASE) {
             c0.sub(strength, strength, strength, strength);
