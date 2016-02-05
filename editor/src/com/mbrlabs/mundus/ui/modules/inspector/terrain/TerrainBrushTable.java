@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -51,14 +52,16 @@ public class TerrainBrushTable extends VisTable {
         Mundus.inject(this);
         this.parent = parent;
         align(Align.left);
-        add(new VisLabel("Brushes:")).padBottom(10).row();
+        add(new VisLabel("Brushes:")).padBottom(10).padLeft(5).left().row();
 
+        VisTable tab = new VisTable();
+        tab.setBackground("menu-bg");
         grid = new GridGroup(40, 5);
         for(TerrainBrush brush : toolManager.terrainBrushes) {
             grid.addActor(new BrushItem(brush));
         }
-
-        add(grid).expand().fill().row();
+        tab.add(grid).expand().fill();
+        add(tab).expand().fill().padLeft(5).padRight(5).row();
     }
 
     public TerrainBrushTable(TerrainComponentWidget parent, TerrainBrush.BrushMode mode) {

@@ -7,6 +7,9 @@
 - Removed the tools tab in the left sidebar
 - Changed input handling for terrain brushes: the mouse has to be moved constantly in order to draw
 - Added camera speed control buttons to the status bar
+- Arbitrary images can now internally be used as terrain brushes (like Gimp & Blender does). The r channel determines the strength of the brush.
+- Added 4 brushes (circle, smooth circle, star, confetti)
+- Implemented height sampling for the flatten mode of the terrain brush
 
 [0.0.5] ~ 26/01/2016
 - Implemented a basic component based 3D scene graph
@@ -41,7 +44,7 @@
 - Improved error handling
 
 [0.0.2] ~ 25/12/2015
-- Added Generic Tool system
+- Added a generic Tool system
 - Added support for scenes in one project
 - Added support for placement of models inside the world
 - Added terrain brush support for multiple terrains
