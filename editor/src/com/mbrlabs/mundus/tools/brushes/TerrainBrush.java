@@ -141,20 +141,32 @@ public abstract class TerrainBrush extends Tool {
 
         // Paint
         if(mode == BrushMode.PAINT) {
-            SplatMap sm = terrain.getTerrainTexture().getSplatmap();
-            if(sm != null) {
-                final float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
-                final float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
-                final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
-                sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, strength, paintChannel);
-                sm.updateTexture();
-            }
-            return;
+            paint();
+        // Raise/Lower
+        } else if(mode == BrushMode.RAISE_LOWER) {
+            raiseLower(action);
+            terrain.update();
+        // Flatten
+        } else if(mode == BrushMode.FLATTEN) {
+            flatten();
+            terrain.update();
         }
 
-        final Vector3 terPos = terrain.getPosition();
-        //float dir = (action == BrushAction.PRIMARY) ? 1 : -1;
+    }
 
+    private void paint() {
+        SplatMap sm = terrain.getTerrainTexture().getSplatmap();
+        if(sm != null) {
+            final float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
+            final float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
+            final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
+            sm.drawCircle((int) splatX, (int) splatY, (int) splatRad, strength, paintChannel);
+            sm.updateTexture();
+        }
+    }
+
+    private void flatten() {
+        final Vector3 terPos = terrain.getPosition();
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
                 final Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
@@ -163,22 +175,27 @@ public abstract class TerrainBrush extends Tool {
                 float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
-                    final int heightIndex = z * terrain.vertexResolution + x;
-                    // Raise/Lower
-                    if(mode == BrushMode.RAISE_LOWER) {
-
-                        float elevation = getValueOfBrushPixmap(brushPos, vertexPos.x, vertexPos.z);
-                        terrain.heightData[heightIndex] += elevation;
-                        // Flatten
-                    } else if(mode == BrushMode.FLATTEN) {
-                        terrain.heightData[heightIndex] = heightSample;
-                    }
+                    terrain.heightData[z * terrain.vertexResolution + x] = heightSample;
                 }
             }
         }
+    }
 
-        if(mode == BrushMode.RAISE_LOWER || mode == BrushMode.FLATTEN || mode == BrushMode.SMOOTH) {
-            terrain.update();
+    private void raiseLower(BrushAction action) {
+        final Vector3 terPos = terrain.getPosition();
+        float dir = (action == BrushAction.PRIMARY) ? 1 : -1;
+        for (int x = 0; x < terrain.vertexResolution; x++) {
+            for (int z = 0; z <  terrain.vertexResolution; z++) {
+                final Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
+                vertexPos.x += terPos.x;
+                vertexPos.z += terPos.z;
+                float distance = vertexPos.dst(brushPos);
+
+                if(distance <= radius) {
+                    float elevation = getValueOfBrushPixmap(brushPos, vertexPos.x, vertexPos.z) * 0.5f;
+                    terrain.heightData[z * terrain.vertexResolution + x] += dir * elevation;
+                }
+            }
         }
     }
 
