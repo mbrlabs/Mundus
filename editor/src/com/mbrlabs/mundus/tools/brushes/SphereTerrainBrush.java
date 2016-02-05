@@ -17,14 +17,19 @@
 package com.mbrlabs.mundus.tools.brushes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -41,7 +46,18 @@ public class SphereTerrainBrush extends TerrainBrush {
     private BoundingBox boundingBox = new BoundingBox();
     private int lastMousePosIndicator = 0;
 
+    private Pixmap brushPixmap;
+    private Color c0 = new Color();
+
+    private Vector2 c = new Vector2();
+    private Vector2 p = new Vector2();
+    private Vector2 v = new Vector2();
+
+
     protected Vector3 tVec0 = new Vector3();
+
+    private ModelInstance mi;
+    private Model mod;
 
     public SphereTerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch modelBatch) {
         super(projectContext, shader, modelBatch);
@@ -50,6 +66,15 @@ public class SphereTerrainBrush extends TerrainBrush {
         sphereModelInstance = new ModelInstance(sphereModel);
         sphereModelInstance.calculateBoundingBox(boundingBox);
         scale(15);
+
+        //brushPixmap = new Pixmap(Gdx.files.internal("brushes/brush_circle_smooth.png"));
+        brushPixmap = new Pixmap(Gdx.files.internal("brushes/star.png"));
+
+        mod = modelBuilder.createBox(1f, 1f, 1f,
+                new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
+        mi = new ModelInstance(mod);
+
     }
 
     @Override
@@ -65,9 +90,13 @@ public class SphereTerrainBrush extends TerrainBrush {
 
     @Override
     public void render() {
+        sphereModelInstance.transform.getTranslation(tVec0);
+        mi.transform.setToTranslation(tVec0);
+
         if(terrain.isOnTerrain(brushPos.x, brushPos.z)) {
             batch.begin(projectContext.currScene.cam);
             batch.render(sphereModelInstance, shader);
+            batch.render(mi);
             batch.end();
         }
     }
@@ -120,7 +149,8 @@ public class SphereTerrainBrush extends TerrainBrush {
                     final int heightIndex = z * terrain.vertexResolution + x;
                     // Raise/Lower
                     if(mode == BrushMode.RAISE_LOWER) {
-                        final float elevation = (radius - distance) * 0.1f * dir;
+
+                        float elevation = getValueOfBrushPixmap(brushPos, vertexPos.x, vertexPos.z);
                         terrain.heightData[heightIndex] += elevation;
                         // Flatten
                     } else if(mode == BrushMode.FLATTEN) {
@@ -133,6 +163,25 @@ public class SphereTerrainBrush extends TerrainBrush {
         if(mode == BrushMode.RAISE_LOWER || mode == BrushMode.FLATTEN || mode == BrushMode.SMOOTH) {
             terrain.update();
         }
+    }
+
+    private float getValueOfBrushPixmap(Vector3 brushPosition, float vertexX, float vertexZ) {
+        int pixmapCenter = brushPixmap.getWidth() / 2;
+
+        c.set(brushPosition.x, brushPosition.z);
+        p.set(vertexX, vertexZ);
+        v = p.sub(c);
+
+        float len = v.len();
+        float progress = len / radius;
+        v.nor().scl(pixmapCenter * progress);
+
+        float mapX = pixmapCenter + (int) v.x;
+        float mapY = pixmapCenter + (int) v.y;
+
+        c0.set(brushPixmap.getPixel((int)mapX, (int)mapY));
+
+        return c0.r;
     }
 
     @Override
