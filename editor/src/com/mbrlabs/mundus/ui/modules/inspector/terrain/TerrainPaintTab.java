@@ -41,7 +41,6 @@ import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
 import com.mbrlabs.mundus.ui.widgets.ImprovedSlider;
 import com.mbrlabs.mundus.ui.widgets.TextureGrid;
-import com.mbrlabs.mundus.ui.widgets.ScrollPaneSlider;
 
 /**
  * @author Marcus Brummer
@@ -84,7 +83,7 @@ public class TerrainPaintTab extends Tab {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(toolManager.getActiveTool() instanceof TerrainBrush) {
-                    ((TerrainBrush)toolManager.getActiveTool()).setPaintStrength(strengthSlider.getValue());
+                    ((TerrainBrush)toolManager.getActiveTool()).setStrength(strengthSlider.getValue());
                 }
             }
         });
@@ -180,7 +179,10 @@ public class TerrainPaintTab extends Tab {
             public void onTextureSelected(TextureProvider texture, boolean leftClick) {
                 SplatTexture tex = (SplatTexture) texture;
                 if(leftClick) {
-                    toolManager.sphereBrushTool.setPaintChannel(tex.channel);
+                    // TODO only active brush
+                    for(TerrainBrush brush : toolManager.terrainBrushes) {
+                        brush.setPaintChannel(tex.channel);
+                    }
                 } else {
                     System.out.println("Texture grid listener right clicked");
                     rightClickMenu.setChannel(tex.channel);

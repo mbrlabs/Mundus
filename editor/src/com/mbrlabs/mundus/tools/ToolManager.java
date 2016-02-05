@@ -19,11 +19,12 @@ package com.mbrlabs.mundus.tools;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.tools.brushes.SphereTerrainBrush;
+import com.mbrlabs.mundus.tools.brushes.*;
 
 /**
  * @author Marcus Brummer
@@ -35,8 +36,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     private Tool activeTool;
 
-    public SphereTerrainBrush sphereBrushTool;
-    //public FlattenBrush flattenBrush;
+    public Array<TerrainBrush> terrainBrushes;
 
     public ModelPlacementTool modelPlacementTool;
     public TranslateTool translateTool;
@@ -55,8 +55,11 @@ public class ToolManager extends InputAdapter implements Disposable {
         this.activeTool = null;
         this.shaders = shaders;
 
-        sphereBrushTool = new SphereTerrainBrush(projectContext, shaders.brushShader, modelBatch);
-        //flattenBrush = new FlattenBrush(projectContext, shaders.brushShader, modelBatch);
+        terrainBrushes = new Array<>();
+        terrainBrushes.add(new SmoothCircleBrush(projectContext, shaders.brushShader, modelBatch));
+        terrainBrushes.add(new CircleBrush(projectContext, shaders.brushShader, modelBatch));
+        terrainBrushes.add(new StarBrush(projectContext, shaders.brushShader, modelBatch));
+        terrainBrushes.add(new ConfettiBrush(projectContext, shaders.brushShader, modelBatch));
 
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch);
         translateTool = new TranslateTool(projectContext, shaders.brushShader, modelBatch);
@@ -116,7 +119,9 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     @Override
     public void dispose() {
-        sphereBrushTool.dispose();
+        for(TerrainBrush brush : terrainBrushes) {
+            brush.dispose();
+        }
         translateTool.dispose();
     }
 

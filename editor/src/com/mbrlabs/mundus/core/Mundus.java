@@ -133,12 +133,15 @@ public class Mundus {
                 .addIcon(Fa.MOUSE_POINTER)
                 .addIcon(Fa.ARROWS)
                 .addIcon(Fa.CIRCLE_O)
+                .addIcon(Fa.CIRCLE)
                 .addIcon(Fa.MINUS)
                 .addIcon(Fa.CARET_DOWN)
                 .addIcon(Fa.CARET_UP)
                 .addIcon(Fa.TIMES)
                 .addIcon(Fa.SORT)
+                .addIcon(Fa.HASHTAG)
                 .addIcon(Fa.PAINT_BRUSH)
+                .addIcon(Fa.STAR)
                 .build();
     }
 

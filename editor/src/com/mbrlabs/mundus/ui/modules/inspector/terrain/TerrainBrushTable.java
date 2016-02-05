@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -40,6 +41,8 @@ public class TerrainBrushTable extends VisTable {
     private FaTextButton sphereBrushBtn;
     private TerrainBrush.BrushMode brushMode;
 
+    private GridGroup grid;
+
     @Inject
     private ToolManager toolManager;
 
@@ -48,16 +51,14 @@ public class TerrainBrushTable extends VisTable {
         Mundus.inject(this);
         this.parent = parent;
         align(Align.left);
-        sphereBrushBtn = new FaTextButton(toolManager.sphereBrushTool.getIconFont(), FaTextButton.styleBg);
         add(new VisLabel("Brushes:")).padBottom(10).row();
-        add(sphereBrushBtn).size(30, 30);
 
-        sphereBrushBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                activateBrush(toolManager.sphereBrushTool);
-            }
-        });
+        grid = new GridGroup(40, 5);
+        for(TerrainBrush brush : toolManager.terrainBrushes) {
+            grid.addActor(new BrushItem(brush));
+        }
+
+        add(grid).expand().fill().row();
     }
 
     public TerrainBrushTable(TerrainComponentWidget parent, TerrainBrush.BrushMode mode) {
@@ -83,6 +84,25 @@ public class TerrainBrushTable extends VisTable {
             DialogUtils.showErrorDialog(Ui.getInstance(), e.getMessage());
         }
 
+    }
+
+    /**
+     *
+     */
+    private class BrushItem extends VisTable {
+
+        public BrushItem(final TerrainBrush brush) {
+            super();
+            add(new FaTextButton(brush.getIconFont()));
+
+            addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    activateBrush(brush);
+                }
+            });
+
+        }
     }
 
 }
