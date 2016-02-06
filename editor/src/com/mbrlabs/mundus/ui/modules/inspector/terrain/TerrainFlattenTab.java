@@ -32,13 +32,19 @@ public class TerrainFlattenTab extends Tab {
     private TerrainComponentWidget parent;
     private VisTable table;
 
+    private TerrainBrushGrid brushGrid;
+
     public TerrainFlattenTab(TerrainComponentWidget parent) {
         super(false, false);
         this.parent = parent;
         table = new VisTable();
         table.align(Align.left);
         table.add(new VisLabel("Hold shift to sample a height")).center().row();
-        table.add(new TerrainBrushGrid(parent, TerrainBrush.BrushMode.FLATTEN)).expand().fill().row();
+
+        brushGrid = new TerrainBrushGrid(parent, TerrainBrush.BrushMode.FLATTEN);
+        brushGrid.enableStrengthSlider(false);
+
+        table.add(brushGrid).expand().fill().row();
     }
 
     @Override

@@ -79,8 +79,8 @@ public abstract class TerrainBrush extends Tool {
     protected static final Vector3 tVec0 = new Vector3();
     protected static final Color c0 = new Color();
 
-    // all brushes share the same settings
-    public static float strength;
+    // all brushes share the some common settings
+    public static float strength = 0.5f;
     public static float heightSample;
     public static SplatTexture.Channel paintChannel;
 
@@ -150,7 +150,7 @@ public abstract class TerrainBrush extends Tool {
             for(int smY = 0; smY < pixmap.getHeight(); smY++) {
                 final float dst = MathUtils.dst(splatX, splatY, smX, smY);
                 if(dst <= splatRad) {
-                    final float opacity = getValueOfBrushPixmap(splatX, splatY, smX, smY, splatRad) * 0.33f * strength;
+                    final float opacity = getValueOfBrushPixmap(splatX, splatY, smX, smY, splatRad) * 0.5f * strength;
                     int newPixelColor = sm.additiveBlend(pixmap.getPixel(smX, smY), paintChannel, opacity);
                     pixmap.drawPixel(smX, smY, newPixelColor);
                 }
@@ -189,8 +189,8 @@ public abstract class TerrainBrush extends Tool {
                 float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
-                    float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z, radius) * 0.5f;
-                    terrain.heightData[z * terrain.vertexResolution + x] += dir * elevation;
+                    float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z, radius);
+                    terrain.heightData[z * terrain.vertexResolution + x] += dir * elevation * strength;
                 }
             }
         }

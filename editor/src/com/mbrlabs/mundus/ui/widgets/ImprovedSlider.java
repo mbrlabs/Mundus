@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
  * Can be used inside a scroll pane & has
@@ -44,7 +45,7 @@ public class ImprovedSlider extends VisTable {
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                currentValue.setText(String.format("%.1f", slider.getValue()));
+                currentValue.setText(String.format(StringUtils.formatFloat(slider.getValue(), 2)));
             }
         });
     }
@@ -55,7 +56,7 @@ public class ImprovedSlider extends VisTable {
 
     public void setValue(float value)  {
         slider.setValue(value);
-        currentValue.setText(String.format("%.1f", slider.getValue()));
+        currentValue.setText(StringUtils.formatFloat(value, 2));
     }
 
 }

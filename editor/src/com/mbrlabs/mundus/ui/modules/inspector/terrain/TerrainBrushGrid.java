@@ -43,6 +43,7 @@ public class TerrainBrushGrid extends VisTable {
     private TerrainBrush.BrushMode brushMode;
 
     private GridGroup grid;
+    private VisLabel strengthSliderHeader;
     private ImprovedSlider strengthSlider;
 
     @Inject
@@ -67,8 +68,10 @@ public class TerrainBrushGrid extends VisTable {
 
         // brush settings
         final VisTable settingsTable = new VisTable();
-        settingsTable.add(new VisLabel("Strength")).left().row();
-        strengthSlider = new ImprovedSlider(0, 1, 0.1f);
+        strengthSliderHeader = new VisLabel("Strength");
+        settingsTable.add(strengthSliderHeader).left().row();
+        strengthSlider = new ImprovedSlider(0, 1, 0.01f);
+        strengthSlider.setValue(TerrainBrush.strength);
         settingsTable.add(strengthSlider).expandX().fillX().row();
         strengthSlider.addListener(new ChangeListener() {
             @Override
@@ -79,7 +82,6 @@ public class TerrainBrushGrid extends VisTable {
 
         add(brushGridContainerTable).expand().fill().padLeft(5).padRight(5).row();
         add(settingsTable).expand().fill().padLeft(5).padRight(5).padTop(5).row();
-
     }
 
     public TerrainBrushGrid(TerrainComponentWidget parent, TerrainBrush.BrushMode mode) {
@@ -105,6 +107,11 @@ public class TerrainBrushGrid extends VisTable {
             DialogUtils.showErrorDialog(Ui.getInstance(), e.getMessage());
         }
 
+    }
+
+    public void enableStrengthSlider(boolean enable) {
+        strengthSlider.setVisible(enable);
+        strengthSliderHeader.setVisible(enable);
     }
 
     /**
