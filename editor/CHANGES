@@ -1,5 +1,5 @@
 [0.0.6]
-- Updated libGDX to 1.9.1
+- Updated libGDX to 1.9.2
 - Implemented texture splatting for terrain textures
 - Implemented terrain painting with up to 5 textures per terrain
 - Moved SelectionTool & TranslateTool to the toolbar
@@ -7,7 +7,7 @@
 - Removed the tools tab in the left sidebar
 - Changed input handling for terrain brushes: the mouse has to be moved constantly in order to draw
 - Added camera speed control buttons to the status bar
-- Arbitrary images can now internally be used as terrain brushes (like Gimp & Blender does). The r channel determines the strength of the brush.
+- Arbitrary images can now internally be used as terrain brushes (like Gimp & Blender do). The r channel determines the strength of the brush.
 - Added 4 brushes (circle, smooth circle, star, confetti)
 - Implemented height sampling for the flatten mode of the terrain brush
 
