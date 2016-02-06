@@ -72,32 +72,33 @@ public abstract class TerrainBrush extends Tool {
         }
     }
 
-    protected Vector3 brushPos = new Vector3();
+    // used for calculations
+    protected static final Vector2 c = new Vector2();
+    protected static final Vector2 p = new Vector2();
+    protected static final Vector2 v = new Vector2();
+    protected static final Vector3 tVec0 = new Vector3();
+    protected static final Color c0 = new Color();
 
-    // brush settings
-    protected SplatTexture.Channel paintChannel;
+    // all brushes share the same settings
+    public static float strength;
+    public static float heightSample;
+    public static SplatTexture.Channel paintChannel;
+
+    // individual brush settings
+    protected final Vector3 brushPos = new Vector3();
+    protected float radius;
     protected BrushMode mode;
     protected Terrain terrain;
-    protected float radius;
-    protected float strength = 0.5f;
-    protected float heightSample = 0f;
 
-    // used for brush visualization
+    // used for brush rendering
     private Model sphereModel;
     private ModelInstance sphereModelInstance;
-    private BoundingBox boundingBox = new BoundingBox();
+    private final BoundingBox boundingBox = new BoundingBox();
     private int lastMousePosIndicator = 0;
 
     // the pixmap brush
     private Pixmap brushPixmap;
     private int pixmapCenter;
-    private Color c0 = new Color();
-
-    // used fora calculations
-    private Vector2 c = new Vector2();
-    private Vector2 p = new Vector2();
-    private Vector2 v = new Vector2();
-    protected Vector3 tVec0 = new Vector3();
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, FileHandle pixmapBrush) {
         super(projectContext, shader, batch);
@@ -110,19 +111,6 @@ public abstract class TerrainBrush extends Tool {
 
         brushPixmap = new Pixmap(pixmapBrush);
         pixmapCenter = brushPixmap.getWidth() / 2;
-    }
-
-    public BrushAction getAction() {
-        final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
-        final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
-
-        if(primary && secondary) {
-            return BrushAction.SECONDARY;
-        } else if(primary) {
-            return BrushAction.PRIMARY;
-        }
-
-        return null;
     }
 
     @Override
@@ -140,19 +128,13 @@ public abstract class TerrainBrush extends Tool {
         // only act if mouse has been moved
         if(lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
 
-        // Paint
         if(mode == BrushMode.PAINT) {
             paint();
-        // Raise/Lower
         } else if(mode == BrushMode.RAISE_LOWER) {
             raiseLower(action);
-            terrain.update();
-        // Flatten
         } else if(mode == BrushMode.FLATTEN) {
             flatten();
-            terrain.update();
         }
-
     }
 
     private void paint() {
@@ -192,6 +174,8 @@ public abstract class TerrainBrush extends Tool {
                 }
             }
         }
+
+        terrain.update();
     }
 
     private void raiseLower(BrushAction action) {
@@ -210,6 +194,8 @@ public abstract class TerrainBrush extends Tool {
                 }
             }
         }
+
+        terrain.update();
     }
 
     /**
@@ -231,7 +217,7 @@ public abstract class TerrainBrush extends Tool {
     private float getValueOfBrushPixmap(float centerX, float centerZ, float pointX, float pointZ, float radius) {
         c.set(centerX, centerZ);
         p.set(pointX, pointZ);
-        v = p.sub(c);
+        v.set(p.sub(c));
 
         final float progress = v.len() / radius;
         v.nor().scl(pixmapCenter * progress);
@@ -246,6 +232,19 @@ public abstract class TerrainBrush extends Tool {
     public void scale(float amount) {
         sphereModelInstance.transform.scl(amount);
         radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
+    }
+
+    public BrushAction getAction() {
+        final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
+        final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
+
+        if(primary && secondary) {
+            return BrushAction.SECONDARY;
+        } else if(primary) {
+            return BrushAction.PRIMARY;
+        }
+
+        return null;
     }
 
     public BrushMode getMode() {
@@ -265,22 +264,6 @@ public abstract class TerrainBrush extends Tool {
 
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
-    }
-
-    public void setPaintChannel(SplatTexture.Channel paintChannel) {
-        this.paintChannel = paintChannel;
-    }
-
-    public void setStrength(float strength) {
-        this.strength = strength;
     }
 
     public boolean supportsMode(BrushMode mode) {

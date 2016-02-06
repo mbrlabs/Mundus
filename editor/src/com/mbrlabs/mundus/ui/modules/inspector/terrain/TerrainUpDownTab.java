@@ -38,7 +38,7 @@ public class TerrainUpDownTab extends Tab {
         table = new VisTable();
         table.align(Align.left);
         table.add(new VisLabel("Hold shift to lower")).center().row();
-        table.add(new TerrainBrushTable(this.parent, TerrainBrush.BrushMode.RAISE_LOWER)).expand().fill().row();
+        table.add(new TerrainBrushGrid(this.parent, TerrainBrush.BrushMode.RAISE_LOWER)).expand().fill().row();
     }
 
     @Override

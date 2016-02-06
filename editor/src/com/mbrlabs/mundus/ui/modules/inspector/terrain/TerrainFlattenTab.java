@@ -38,7 +38,7 @@ public class TerrainFlattenTab extends Tab {
         table = new VisTable();
         table.align(Align.left);
         table.add(new VisLabel("Hold shift to sample a height")).center().row();
-        table.add(new TerrainBrushTable(parent, TerrainBrush.BrushMode.FLATTEN)).expand().fill().row();
+        table.add(new TerrainBrushGrid(parent, TerrainBrush.BrushMode.FLATTEN)).expand().fill().row();
     }
 
     @Override

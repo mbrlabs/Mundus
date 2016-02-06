@@ -53,7 +53,6 @@ public class TerrainPaintTab extends Tab {
     private VisTable root;
     private VisTextButton addTextureBtn;
     private TextureGrid<TextureProvider> textureGrid;
-    private ImprovedSlider strengthSlider;
 
     private TextureBrowser addTextureBrowser;
     private TextureBrowser changeTextureBrowser;
@@ -71,22 +70,7 @@ public class TerrainPaintTab extends Tab {
         root.align(Align.left);
 
         // brushes
-        root.add(new TerrainBrushTable(parent, TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
-
-        // brush settings
-        final VisTable settingsTable = new VisTable();
-        settingsTable.add(new VisLabel("Strength")).left().row();
-        strengthSlider = new ImprovedSlider(0, 1, 0.1f);
-        settingsTable.add(strengthSlider).expandX().fillX().row();
-        root.add(settingsTable).expand().fill().row();
-        strengthSlider.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if(toolManager.getActiveTool() instanceof TerrainBrush) {
-                    ((TerrainBrush)toolManager.getActiveTool()).setStrength(strengthSlider.getValue());
-                }
-            }
-        });
+        root.add(new TerrainBrushGrid(parent, TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
 
         // textures
         root.add(new VisLabel("Textures:")).left().row();
@@ -179,10 +163,7 @@ public class TerrainPaintTab extends Tab {
             public void onTextureSelected(TextureProvider texture, boolean leftClick) {
                 SplatTexture tex = (SplatTexture) texture;
                 if(leftClick) {
-                    // TODO only active brush
-                    for(TerrainBrush brush : toolManager.terrainBrushes) {
-                        brush.setPaintChannel(tex.channel);
-                    }
+                    TerrainBrush.paintChannel = tex.channel;
                 } else {
                     System.out.println("Texture grid listener right clicked");
                     rightClickMenu.setChannel(tex.channel);

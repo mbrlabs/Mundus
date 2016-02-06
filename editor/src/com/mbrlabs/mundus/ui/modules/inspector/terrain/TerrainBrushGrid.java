@@ -16,10 +16,11 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -30,41 +31,58 @@ import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
+import com.mbrlabs.mundus.ui.widgets.ImprovedSlider;
 
 /**
  * @author Marcus Brummer
  * @version 30-01-2016
  */
-public class TerrainBrushTable extends VisTable {
+public class TerrainBrushGrid extends VisTable {
 
     private TerrainComponentWidget parent;
-
-    private FaTextButton sphereBrushBtn;
     private TerrainBrush.BrushMode brushMode;
 
     private GridGroup grid;
+    private ImprovedSlider strengthSlider;
 
     @Inject
     private ToolManager toolManager;
 
-    public TerrainBrushTable(TerrainComponentWidget parent) {
+    public TerrainBrushGrid(TerrainComponentWidget parent) {
         super();
         Mundus.inject(this);
         this.parent = parent;
         align(Align.left);
         add(new VisLabel("Brushes:")).padBottom(10).padLeft(5).left().row();
 
-        VisTable tab = new VisTable();
-        tab.setBackground("menu-bg");
+        VisTable brushGridContainerTable = new VisTable();
+        brushGridContainerTable.setBackground("menu-bg");
+
+        // grid
         grid = new GridGroup(40, 5);
         for(TerrainBrush brush : toolManager.terrainBrushes) {
             grid.addActor(new BrushItem(brush));
         }
-        tab.add(grid).expand().fill();
-        add(tab).expand().fill().padLeft(5).padRight(5).row();
+        brushGridContainerTable.add(grid).expand().fill().row();
+
+        // brush settings
+        final VisTable settingsTable = new VisTable();
+        settingsTable.add(new VisLabel("Strength")).left().row();
+        strengthSlider = new ImprovedSlider(0, 1, 0.1f);
+        settingsTable.add(strengthSlider).expandX().fillX().row();
+        strengthSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                TerrainBrush.strength = strengthSlider.getValue();
+            }
+        });
+
+        add(brushGridContainerTable).expand().fill().padLeft(5).padRight(5).row();
+        add(settingsTable).expand().fill().padLeft(5).padRight(5).padTop(5).row();
+
     }
 
-    public TerrainBrushTable(TerrainComponentWidget parent, TerrainBrush.BrushMode mode) {
+    public TerrainBrushGrid(TerrainComponentWidget parent, TerrainBrush.BrushMode mode) {
         this(parent);
         this.brushMode = mode;
     }
