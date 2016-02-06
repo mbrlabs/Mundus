@@ -81,7 +81,7 @@ public abstract class TerrainBrush extends Tool {
 
     // all brushes share the some common settings
     public static float strength = 0.5f;
-    public static float heightSample;
+    public static float heightSample = 0f;
     public static SplatTexture.Channel paintChannel;
 
     // individual brush settings
@@ -170,7 +170,17 @@ public abstract class TerrainBrush extends Tool {
                 float distance = vertexPos.dst(brushPos);
 
                 if(distance <= radius) {
-                    terrain.heightData[z * terrain.vertexResolution + x] = heightSample;
+                    final int index = z * terrain.vertexResolution + x;
+                    final float diff = Math.abs(terrain.heightData[index] - heightSample);
+                    if(diff <= 1f) {
+                        terrain.heightData[index] = heightSample;
+                    } else if(diff > 1f){
+                        final float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z, radius);
+                        final float newHeight = heightSample * elevation;
+                        if(Math.abs(heightSample - newHeight) < Math.abs(heightSample - terrain.heightData[index])) {
+                            terrain.heightData[index] = newHeight;
+                        }
+                    }
                 }
             }
         }
