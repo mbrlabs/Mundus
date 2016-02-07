@@ -30,9 +30,9 @@ public class BreadthFirstIterator implements Iterator<GameObject> {
 
     private Queue<GameObject> queue;
 
-    public BreadthFirstIterator(SceneGraph sceneGraph) {
+    public BreadthFirstIterator(GameObject root) {
         queue = new Queue<>();
-        queue.addLast(sceneGraph.getRoot());
+        queue.addLast(root);
     }
 
     @Override

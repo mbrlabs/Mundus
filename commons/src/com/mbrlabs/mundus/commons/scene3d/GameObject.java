@@ -20,12 +20,15 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.traversal.DepthFirstIterator;
+
+import java.util.Iterator;
 
 /**
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class GameObject {
+public class GameObject implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
     private static Vector3 tempVec0 = new Vector3();
@@ -233,6 +236,11 @@ public class GameObject {
                 }
             }
         }
+    }
+
+    @Override
+    public Iterator<GameObject> iterator() {
+        return new DepthFirstIterator(this);
     }
 
     @Override

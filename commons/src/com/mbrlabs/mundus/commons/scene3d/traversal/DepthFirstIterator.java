@@ -30,9 +30,9 @@ public class DepthFirstIterator implements Iterator<GameObject> {
 
     private Stack<GameObject> stack;
 
-    public DepthFirstIterator(SceneGraph sceneGraph) {
+    public DepthFirstIterator(GameObject root) {
         stack = new Stack<>();
-        stack.push(sceneGraph.getRoot());
+        stack.push(root);
     }
 
     @Override

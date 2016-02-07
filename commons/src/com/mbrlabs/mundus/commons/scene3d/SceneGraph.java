@@ -29,7 +29,7 @@ import java.util.Iterator;
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class SceneGraph implements Iterable<GameObject> {
+public class SceneGraph {
 
     protected GameObject root;
 
@@ -98,11 +98,6 @@ public class SceneGraph implements Iterable<GameObject> {
         }
 
         return out;
-    }
-
-    @Override
-    public Iterator<GameObject> iterator() {
-        return new BreadthFirstIterator(this);
     }
 
 }
