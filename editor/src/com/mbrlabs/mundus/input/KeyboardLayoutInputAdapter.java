@@ -14,24 +14,38 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.utils;
+package com.mbrlabs.mundus.input;
 
-import java.util.List;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 
 /**
+ * Workaround for LWJGL3's (or GLFW's) ignorance of keyboard layouts for raw keyboard events.
+ *
  * @author Marcus Brummer
  * @version 07-02-2016
  */
-public class ListUtils {
+public class KeyboardLayoutInputAdapter extends InputAdapter {
 
-    public static List removeEverythingAfterIndex(List list, int index) {
-        if(index < list.size() - 1) {
-            for(int i = index + 1; i < list.size(); i++) {
-                list.remove(i);
+    /**
+     *
+     */
+    public static enum KeyboardLayout {
+        QWERTY, QWERTZ
+    }
+
+    public KeyboardLayout layout = KeyboardLayout.QWERTZ;
+
+    protected int convertKeycode(int code) {
+        if(layout == KeyboardLayout.QWERTZ) {
+            if(code == Input.Keys.Z) {
+                return Input.Keys.Y;
+            } else if(code ==  Input.Keys.Y) {
+                return Input.Keys.Z;
             }
         }
 
-        return list;
+        return code;
     }
 
 }

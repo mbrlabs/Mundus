@@ -16,9 +16,8 @@
 
 package com.mbrlabs.mundus.history;
 
-import com.mbrlabs.mundus.utils.ListUtils;
-
-import java.util.LinkedList;
+import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -30,26 +29,29 @@ public class CommandHistory {
 
     private int limit;
     private int pointer;
-    private LinkedList<Command> commands;
+    private Array<Command> commands;
 
     public CommandHistory(int limit) {
         this.limit = limit;
-        commands = new LinkedList<>();
-        pointer = 0;
+        commands = new Array<>(limit);
+        pointer = -1;
     }
 
     public int add(Command command) {
-        if(pointer < size() - 1) {
-            ListUtils.removeEverythingAfterIndex(commands, pointer);
+        if(pointer + 1 < size()) {
+            commands.removeRange(pointer + 1, commands.size - 1);
             commands.add(command);
             pointer++;
+            Log.debug("HISTORY ADD", "pointer < size() ==> pointer: " + pointer);
         } else {
             if(size() == limit) {
-                commands.removeFirst();
+                commands.removeIndex(0);
                 commands.add(command);
+                Log.debug("HISTORY ADD", "pointer == limit ==> pointer: " + pointer);
             } else {
                 commands.add(command);
                 pointer++;
+                Log.debug("HISTORY ADD", "pointer < limit pointer == size ==> pointer: " + pointer);
             }
         }
 
@@ -57,19 +59,21 @@ public class CommandHistory {
     }
 
     public int goBack() {
-        if(pointer > 0) {
-            pointer--;
+        if(pointer >= 0) {
             commands.get(pointer).undo();
+            pointer--;
         }
+        Log.debug("HISTORY BACK", "pointer: " + pointer);
 
         return pointer;
     }
 
     public int goForward() {
-        if(pointer < size() - 1) {
+        if(pointer < commands.size - 1 ) {
             pointer++;
             commands.get(pointer).execute();
         }
+        Log.debug("HISTORY FORWARD", "pointer: " + pointer);
 
         return pointer;
     }
@@ -84,7 +88,7 @@ public class CommandHistory {
     }
 
     public int size() {
-        return commands.size();
+        return commands.size;
     }
 
 }

@@ -35,6 +35,7 @@ import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.input.InputManager;
+import com.mbrlabs.mundus.input.ShortcutController;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Fa;
@@ -103,6 +104,9 @@ public class Mundus {
         importManager = new ImportManager(homeManager);
         assetManager = new AssetManager(projectContext, projectManager);
         freeCamController = new FreeCamController();
+
+        ShortcutController shortcutController = new ShortcutController(commandHistory);
+        input.addProcessor(shortcutController);
     }
 
     private static void initStyle() {
