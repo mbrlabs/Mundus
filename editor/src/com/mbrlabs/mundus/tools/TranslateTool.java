@@ -38,6 +38,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
 
@@ -81,6 +82,8 @@ public class TranslateTool extends SelectionTool {
     private Vector3 temp3 = new Vector3();
 
     private GameObjectModifiedEvent gameObjectModifiedEvent;
+
+    private TranslateCommand command;
 
 
     public TranslateTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
@@ -240,13 +243,25 @@ public class TranslateTool extends SelectionTool {
             }
         }
 
+        if(state != State.IDLE) {
+            command = new TranslateCommand(projectContext.currScene.currentSelection);
+            projectContext.currScene.currentSelection.transform.getTranslation(temp0);
+            command.setBefore(temp0);
+        }
+
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         super.touchUp(screenX, screenY, pointer, button);
-        state = State.IDLE;
+        if(state != State.IDLE) {
+            projectContext.currScene.currentSelection.transform.getTranslation(temp0);
+            command.setAfter(temp0);
+            history.add(command);
+            command = null;
+            state = State.IDLE;
+        }
         return false;
     }
 
