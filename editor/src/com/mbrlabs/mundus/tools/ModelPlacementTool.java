@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -47,8 +48,8 @@ public class ModelPlacementTool extends Tool {
     private MModel model;
     private MModelInstance curEntity;
 
-    public ModelPlacementTool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
-        super(projectContext, shader, batch);
+    public ModelPlacementTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectContext, shader, batch, history);
         model = null;
         curEntity = null;
     }

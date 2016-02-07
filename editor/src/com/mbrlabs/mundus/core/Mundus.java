@@ -32,6 +32,7 @@ import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.EventBus;
+import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
@@ -64,6 +65,7 @@ public class Mundus {
     private static AssetManager assetManager;
     private static HomeManager homeManager;
     private static ImportManager importManager;
+    private static CommandHistory commandHistory;
     public static EventBus eventBus;
 
     public static Array<Model> testModels = new Array<>();
@@ -92,7 +94,8 @@ public class Mundus {
         shaders = new Shaders();
         projectContext = new ProjectContext(-1);
         input = new InputManager();
-        toolManager = new ToolManager(input, projectContext, modelBatch, shaders);
+        commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
+        toolManager = new ToolManager(input, projectContext, modelBatch, shaders, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);

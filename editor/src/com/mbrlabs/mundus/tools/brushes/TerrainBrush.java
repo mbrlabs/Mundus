@@ -20,6 +20,7 @@ import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
+import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.tools.Tool;
 
 /**
@@ -103,8 +104,8 @@ public abstract class TerrainBrush extends Tool {
     private Pixmap brushPixmap;
     private int pixmapCenter;
 
-    public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, FileHandle pixmapBrush) {
-        super(projectContext, shader, batch);
+    public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history, FileHandle pixmapBrush) {
+        super(projectContext, shader, batch, history);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(1, 1, 1, 30, 30, new Material(), VertexAttributes.Usage.Position);

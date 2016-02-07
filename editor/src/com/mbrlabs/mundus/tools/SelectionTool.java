@@ -34,6 +34,7 @@ import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
+import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.utils.Fa;
 
 /**
@@ -47,8 +48,8 @@ public class SelectionTool extends Tool {
 
     private Vector3 tempV3 = new Vector3();
 
-    public SelectionTool(ProjectContext projectContext, Shader shader, ModelBatch batch) {
-        super(projectContext, shader, batch);
+    public SelectionTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectContext, shader, batch, history);
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/selectionTool.png"))));
     }
 

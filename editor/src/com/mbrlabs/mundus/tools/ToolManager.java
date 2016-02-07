@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.brushes.*;
@@ -47,23 +48,25 @@ public class ToolManager extends InputAdapter implements Disposable {
     private InputManager inputManager;
     private ModelBatch modelBatch;
     private Shaders shaders;
+    private CommandHistory history;
 
-    public ToolManager(InputManager inputManager, ProjectContext projectContext, ModelBatch modelBatch, Shaders shaders) {
+    public ToolManager(InputManager inputManager, ProjectContext projectContext, ModelBatch modelBatch, Shaders shaders, CommandHistory history) {
         this.projectContext = projectContext;
         this.inputManager = inputManager;
         this.modelBatch = modelBatch;
         this.activeTool = null;
         this.shaders = shaders;
+        this.history = history;
 
         terrainBrushes = new Array<>();
-        terrainBrushes.add(new SmoothCircleBrush(projectContext, shaders.brushShader, modelBatch));
-        terrainBrushes.add(new CircleBrush(projectContext, shaders.brushShader, modelBatch));
-        terrainBrushes.add(new StarBrush(projectContext, shaders.brushShader, modelBatch));
-        terrainBrushes.add(new ConfettiBrush(projectContext, shaders.brushShader, modelBatch));
+        terrainBrushes.add(new SmoothCircleBrush(projectContext, shaders.brushShader, modelBatch, history));
+        terrainBrushes.add(new CircleBrush(projectContext, shaders.brushShader, modelBatch, history));
+        terrainBrushes.add(new StarBrush(projectContext, shaders.brushShader, modelBatch, history));
+        terrainBrushes.add(new ConfettiBrush(projectContext, shaders.brushShader, modelBatch, history));
 
-        modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch);
-        translateTool = new TranslateTool(projectContext, shaders.brushShader, modelBatch);
-        selectionTool = new SelectionTool(projectContext, shaders.brushShader, modelBatch);
+        modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
+        translateTool = new TranslateTool(projectContext, shaders.brushShader, modelBatch, history);
+        selectionTool = new SelectionTool(projectContext, shaders.brushShader, modelBatch, history);
 
         this.inputManager.addProcessor(this);
         setDefaultTool();
