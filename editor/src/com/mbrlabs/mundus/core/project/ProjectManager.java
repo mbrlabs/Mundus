@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
@@ -104,7 +105,7 @@ public class ProjectManager {
         newProjectContext.name = ref.getName();
 
         // create default scene & save .mundus
-        Scene scene = new Scene();
+        EditorScene scene = new EditorScene();
         scene.setName(DEFAULT_SCENE_NAME);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
         scene.environment.setFog(new Fog());
@@ -229,9 +230,9 @@ public class ProjectManager {
         return scene;
     }
 
-    public Scene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
+    public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
-        Scene scene = DescriptorConverter.convert(descriptor, context.terrains, context.models);
+        EditorScene scene = DescriptorConverter.convert(descriptor, context.terrains, context.models);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
@@ -239,14 +240,12 @@ public class ProjectManager {
         initSceneGraph(context, sceneGraph.getRoot());
 
         // create TerrainGroup for active scene
-        Array<GameObject> gos = new Array<>();
-        sceneGraph.getTerrainGOs(gos);
-        for(GameObject go : gos) {
-            Component terrainComp = go.findComponentByType(Component.Type.TERRAIN);
-            if(terrainComp != null) {
-                scene.terrainGroup.add(((TerrainComponent)terrainComp).getTerrain());
-            }
+        Array<Component> terrainComponents = new Array<>();
+        sceneGraph.getRoot().findComponentsByType(terrainComponents, Component.Type.TERRAIN, true);
+        for(Component terrain : terrainComponents) {
+            scene.terrainGroup.add(((TerrainComponent)terrain).getTerrain());
         }
+
         return scene;
     }
 
@@ -254,7 +253,7 @@ public class ProjectManager {
         toolManager.deactivateTool();
 
         try {
-            Scene newScene = loadScene(projectContext, scenename);
+            EditorScene newScene = loadScene(projectContext, scenename);
             projectContext.currScene.dispose();
             projectContext.currScene = newScene;
 

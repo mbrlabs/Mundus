@@ -7,6 +7,7 @@
 - Removed the tools tab in the left sidebar
 - Changed input handling for terrain brushes: the mouse has to be moved constantly in order to draw
 - Added camera speed control buttons to the status bar
+- Added a terrain component widget for the inspector
 - Arbitrary images can now internally be used as terrain brushes (like Gimp & Blender do). The r channel determines the strength of the brush.
 - Added 4 brushes (circle, smooth circle, star, confetti)
 - Implemented height sampling for the flatten mode of the terrain brush

@@ -21,9 +21,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
-import com.mbrlabs.mundus.commons.scene3d.traversal.BreadthFirstIterator;
-
-import java.util.Iterator;
 
 /**
  * @author Marcus Brummer
@@ -85,19 +82,6 @@ public class SceneGraph {
 
     public void setSelected(GameObject selected) {
         this.selected = selected;
-    }
-
-    public Array<GameObject> getTerrainGOs(Array<GameObject> out) {
-        out.clear();
-        if(root.getChilds() != null) {
-            for(GameObject c : root.getChilds()) {
-                if(c.findComponentByType(Component.Type.TERRAIN) != null) {
-                    out.add(c);
-                }
-            }
-        }
-
-        return out;
     }
 
 }

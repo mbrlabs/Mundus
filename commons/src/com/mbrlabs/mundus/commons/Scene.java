@@ -24,7 +24,6 @@ import com.mbrlabs.mundus.commons.env.Skybox;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
-import com.mbrlabs.mundus.commons.terrain.TerrainGroup;
 
 /**
  * @author Marcus Brummer
@@ -41,16 +40,9 @@ public class Scene implements Disposable {
 
     public GameObject currentSelection;
 
-    /**
-     * The terrain group is just used internally to interact with the terrains efficently.
-     * It holds references of the terrain instances in the scene graph.
-     */
-    public TerrainGroup terrainGroup;
-
     public PerspectiveCamera cam;
 
     public Scene() {
-        terrainGroup = new TerrainGroup();
         environment = new Env();
         currentSelection = null;
 

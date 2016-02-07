@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
@@ -415,9 +416,9 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static Scene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<MModel> models) {
+    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<MModel> models) {
         // TODO enviroenment
-        Scene scene = new Scene();
+        EditorScene scene = new EditorScene();
 
         // meta
         scene.setId(sceneDescriptor.getId());

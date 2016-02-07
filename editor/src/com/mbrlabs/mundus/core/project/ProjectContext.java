@@ -18,7 +18,7 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -33,7 +33,7 @@ public class ProjectContext implements Disposable {
     public String name;
 
     public Array<String> scenes;
-    public Scene currScene;
+    public EditorScene currScene;
 
     public Array<MModel> models;
     public Array<Terrain> terrains;
@@ -48,7 +48,7 @@ public class ProjectContext implements Disposable {
         models = new Array<>();
         textures = new Array<>();
         scenes = new Array<>();
-        currScene = new Scene();
+        currScene = new EditorScene();
         terrains = new Array<>();
         this.uuidProvider = uuidProvider;
     }

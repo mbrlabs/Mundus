@@ -105,11 +105,25 @@ public class GameObject implements Iterable<GameObject> {
         this.tags.add(tag);
     }
 
+    public Array<Component> findComponentsByType(Array<Component> out, Component.Type type, boolean includeChilds) {
+        if(includeChilds) {
+            for(GameObject go : this) {
+                for(Component c : go.components) {
+                    if(c.getType() == type) out.add(c);
+                }
+            }
+        } else {
+            for(Component c : components) {
+                if(c.getType() == type) out.add(c);
+            }
+        }
+
+        return out;
+    }
+
     public Component findComponentByType(Component.Type type) {
         for(Component c : components) {
-            if(c.getType() == type) {
-                return c;
-            }
+            if(c.getType() == type) return c;
         }
 
         return null;
@@ -126,14 +140,6 @@ public class GameObject implements Iterable<GameObject> {
     public void addComponent(Component component) throws InvalidComponentException {
         isComponentAddable(component);
         components.add(component);
-    }
-
-    public Component findComponent(Component.Type type) {
-        for(Component c : components) {
-            if(c.getType() == type) return c;
-        }
-
-        return null;
     }
 
     public void isComponentAddable(Component component) throws InvalidComponentException {
