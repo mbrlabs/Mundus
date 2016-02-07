@@ -28,7 +28,7 @@ import java.awt.*;
  */
 public class Main {
 
-    public static final String TITLE = "Mundus v0.0.6";
+    public static final String TITLE = "Mundus v0.0.7";
 
     public static void main (String[] arg) {
         final Rectangle maximumWindowBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
