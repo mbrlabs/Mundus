@@ -25,6 +25,8 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 
 /**
@@ -50,6 +52,8 @@ public class TransformWidget extends BaseInspectorWidget {
 
     @Inject
     private ProjectContext projectContext;
+    @Inject
+    private CommandHistory history;
 
     public TransformWidget() {
         super("Transform");
@@ -95,11 +99,16 @@ public class TransformWidget extends BaseInspectorWidget {
         posX.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(projectContext.currScene.currentSelection == null) return;
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go == null) return;
                 try {
-                    projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
-                    projectContext.currScene.currentSelection.setTranslation(
-                            Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
+                    TranslateCommand command = new TranslateCommand(go);
+                    go.transform.getTranslation(tempV3);
+                    command.setBefore(tempV3);
+                    go.setTranslation(Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
+                    go.transform.getTranslation(tempV3);
+                    command.setAfter(tempV3);
+                    history.add(command);
                 } catch (NumberFormatException nfe) {
                     // blah...
                 }
@@ -109,11 +118,18 @@ public class TransformWidget extends BaseInspectorWidget {
         posY.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(projectContext.currScene.currentSelection == null) return;
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go == null) return;
                 try {
-                    projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
-                    projectContext.currScene.currentSelection.setTranslation(
-                            tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    go.transform.getTranslation(tempV3);
+                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    TranslateCommand command = new TranslateCommand(go);
+                    go.transform.getTranslation(tempV3);
+                    command.setBefore(tempV3);
+                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    go.transform.getTranslation(tempV3);
+                    command.setAfter(tempV3);
+                    history.add(command);
                 } catch (NumberFormatException nfe) {
                     // blah...
                 }
@@ -123,11 +139,18 @@ public class TransformWidget extends BaseInspectorWidget {
         posZ.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(projectContext.currScene.currentSelection == null) return;
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go == null) return;
                 try {
-                    projectContext.currScene.currentSelection.transform.getTranslation(tempV3);
-                    projectContext.currScene.currentSelection.setTranslation(
-                            tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
+                    go.transform.getTranslation(tempV3);
+                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    TranslateCommand command = new TranslateCommand(go);
+                    go.transform.getTranslation(tempV3);
+                    command.setBefore(tempV3);
+                    go.setTranslation(tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
+                    go.transform.getTranslation(tempV3);
+                    command.setAfter(tempV3);
+                    history.add(command);
                 } catch (NumberFormatException nfe) {
                     // blah...
                 }

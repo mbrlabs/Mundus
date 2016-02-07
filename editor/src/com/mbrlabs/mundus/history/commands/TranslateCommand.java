@@ -50,12 +50,12 @@ public class TranslateCommand implements Command {
 
     @Override
     public void execute() {
-        go.transform.setTranslation(after);
+        go.setTranslation(after.x, after.y, after.z);
     }
 
     @Override
     public void undo() {
-        go.transform.setTranslation(before);
+        go.setTranslation(before.x, before.y, before.z);
     }
 
 }
