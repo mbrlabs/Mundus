@@ -42,8 +42,6 @@ public class TerrainFlattenTab extends Tab {
         table.add(new VisLabel("Hold shift to sample a height")).center().row();
 
         brushGrid = new TerrainBrushGrid(parent, TerrainBrush.BrushMode.FLATTEN);
-        brushGrid.enableStrengthSlider(false);
-
         table.add(brushGrid).expand().fill().row();
     }
 

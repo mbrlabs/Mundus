@@ -211,7 +211,6 @@ public class ImportModelTab extends Tab {
 
         @Override
         public void dispose() {
-            System.out.println("wgfsdfgfsfsdfsdfsdfsdfsdfs");
             Ui.getInstance().unwire(fake3dViewport);
             if(previewModel != null) {
                 previewModel.dispose();
