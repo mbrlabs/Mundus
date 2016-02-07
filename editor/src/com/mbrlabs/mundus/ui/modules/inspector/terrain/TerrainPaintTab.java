@@ -73,14 +73,14 @@ public class TerrainPaintTab extends Tab {
         root.add(new TerrainBrushGrid(parent, TerrainBrush.BrushMode.PAINT)).expand().fill().padBottom(5).row();
 
         // textures
-        root.add(new VisLabel("Textures:")).left().row();
+        root.add(new VisLabel("Textures:")).padLeft(5).left().row();
         textureGrid = new TextureGrid<>(40, 5);
         textureGrid.setBackground(VisUI.getSkin().getDrawable("menu-bg"));
         root.add(textureGrid).expand().fill().pad(5).row();
 
         // add texture
         addTextureBtn = new VisTextButton("Add Texture");
-        root.add(addTextureBtn).right().row();
+        root.add(addTextureBtn).padRight(5).right().row();
         addTextureBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
