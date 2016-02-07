@@ -27,6 +27,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
@@ -37,7 +38,7 @@ import com.mbrlabs.mundus.ui.widgets.ImprovedSlider;
  * @author Marcus Brummer
  * @version 30-01-2016
  */
-public class TerrainBrushGrid extends VisTable {
+public class TerrainBrushGrid extends VisTable implements GlobalBrushSettingsChangedEvent.GlobalBrushSettingsChangedListener {
 
     private TerrainComponentWidget parent;
     private TerrainBrush.BrushMode brushMode;
@@ -51,6 +52,7 @@ public class TerrainBrushGrid extends VisTable {
     public TerrainBrushGrid(TerrainComponentWidget parent) {
         super();
         Mundus.inject(this);
+        Mundus.registerEventListener(this);
         this.parent = parent;
         align(Align.left);
         add(new VisLabel("Brushes:")).padBottom(10).padLeft(5).left().row();
@@ -69,12 +71,12 @@ public class TerrainBrushGrid extends VisTable {
         final VisTable settingsTable = new VisTable();
         settingsTable.add(new VisLabel("Strength")).left().row();
         strengthSlider = new ImprovedSlider(0, 1, 0.01f);
-        strengthSlider.setValue(TerrainBrush.strength);
+        strengthSlider.setValue(TerrainBrush.getStrength());
         settingsTable.add(strengthSlider).expandX().fillX().row();
         strengthSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                TerrainBrush.strength = strengthSlider.getValue();
+                TerrainBrush.setStrength(strengthSlider.getValue());
             }
         });
 
@@ -105,6 +107,11 @@ public class TerrainBrushGrid extends VisTable {
             DialogUtils.showErrorDialog(Ui.getInstance(), e.getMessage());
         }
 
+    }
+
+    @Override
+    public void onSettingsChanged(GlobalBrushSettingsChangedEvent event) {
+        strengthSlider.setValue(TerrainBrush.getStrength());
     }
 
     /**

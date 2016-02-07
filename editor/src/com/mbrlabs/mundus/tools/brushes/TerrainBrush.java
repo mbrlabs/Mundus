@@ -17,7 +17,9 @@ import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.tools.Tool;
 
 /**
@@ -80,9 +82,10 @@ public abstract class TerrainBrush extends Tool {
     protected static final Color c0 = new Color();
 
     // all brushes share the some common settings
-    public static float strength = 0.5f;
-    public static float heightSample = 0f;
-    public static SplatTexture.Channel paintChannel;
+    private static GlobalBrushSettingsChangedEvent brushSettingsChangedEvent = new GlobalBrushSettingsChangedEvent();
+    private static float strength = 0.5f;
+    private static float heightSample = 0f;
+    private static SplatTexture.Channel paintChannel;
 
     // individual brush settings
     protected final Vector3 brushPos = new Vector3();
@@ -255,6 +258,33 @@ public abstract class TerrainBrush extends Tool {
         }
 
         return null;
+    }
+
+    public static float getStrength() {
+        return strength;
+    }
+
+    public static void setStrength(float strength) {
+        TerrainBrush.strength = strength;
+        Mundus.postEvent(brushSettingsChangedEvent);
+    }
+
+    public static float getHeightSample() {
+        return heightSample;
+    }
+
+    public static void setHeightSample(float heightSample) {
+        TerrainBrush.heightSample = heightSample;
+        Mundus.postEvent(brushSettingsChangedEvent);
+    }
+
+    public static SplatTexture.Channel getPaintChannel() {
+        return paintChannel;
+    }
+
+    public static void setPaintChannel(SplatTexture.Channel paintChannel) {
+        TerrainBrush.paintChannel = paintChannel;
+        Mundus.postEvent(brushSettingsChangedEvent);
     }
 
     public BrushMode getMode() {

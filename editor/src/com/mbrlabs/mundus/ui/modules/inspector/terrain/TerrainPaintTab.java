@@ -163,7 +163,7 @@ public class TerrainPaintTab extends Tab {
             public void onTextureSelected(TextureProvider texture, boolean leftClick) {
                 SplatTexture tex = (SplatTexture) texture;
                 if(leftClick) {
-                    TerrainBrush.paintChannel = tex.channel;
+                    TerrainBrush.setPaintChannel(tex.channel);
                 } else {
                     System.out.println("Texture grid listener right clicked");
                     rightClickMenu.setChannel(tex.channel);
