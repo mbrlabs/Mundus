@@ -70,7 +70,7 @@ public class TerrainBrushGrid extends VisTable implements GlobalBrushSettingsCha
         // brush settings
         final VisTable settingsTable = new VisTable();
         settingsTable.add(new VisLabel("Strength")).left().row();
-        strengthSlider = new ImprovedSlider(0, 1, 0.01f);
+        strengthSlider = new ImprovedSlider(0, 1, 0.1f);
         strengthSlider.setValue(TerrainBrush.getStrength());
         settingsTable.add(strengthSlider).expandX().fillX().row();
         strengthSlider.addListener(new ChangeListener() {

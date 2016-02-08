@@ -58,4 +58,11 @@ public class TranslateCommand implements Command {
         go.setTranslation(before.x, before.y, before.z);
     }
 
+    @Override
+    public void dispose() {
+        before = null;
+        after = null;
+        go = null;
+    }
+
 }

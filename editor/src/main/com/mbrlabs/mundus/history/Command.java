@@ -16,11 +16,13 @@
 
 package com.mbrlabs.mundus.history;
 
+import com.badlogic.gdx.utils.Disposable;
+
 /**
  * @author Marcus Brummer
  * @version 07-02-2016
  */
-public interface Command {
+public interface Command extends Disposable {
 
     public void execute();
 

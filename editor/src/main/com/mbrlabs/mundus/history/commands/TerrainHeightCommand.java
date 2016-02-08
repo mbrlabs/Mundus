@@ -56,4 +56,11 @@ public class TerrainHeightCommand implements Command {
         terrain.update();
     }
 
+    @Override
+    public void dispose() {
+        heightDataAfter = null;
+        heightDataBefore = null;
+        terrain = null;
+    }
+
 }

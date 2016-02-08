@@ -38,24 +38,40 @@ public class CommandHistory {
     }
 
     public int add(Command command) {
-        if(pointer + 1 < size()) {
-            commands.removeRange(pointer + 1, commands.size - 1);
+        if(size() == 0) {
             commands.add(command);
             pointer++;
-            Log.debug("HISTORY ADD", "pointer < size() ==> pointer: " + pointer);
+            return pointer;
+        }
+
+        if(pointer < size() - 1) {
+            removeCommands(pointer + 1, commands.size - 1);
+            commands.add(command);
+            pointer++;
         } else {
             if(size() == limit) {
-                commands.removeIndex(0);
+                removeCommand(0);
                 commands.add(command);
-                Log.debug("HISTORY ADD", "pointer == limit ==> pointer: " + pointer);
             } else {
                 commands.add(command);
                 pointer++;
-                Log.debug("HISTORY ADD", "pointer < limit pointer == size ==> pointer: " + pointer);
             }
         }
 
         return pointer;
+    }
+
+    private void removeCommand(int index) {
+        commands.get(index).dispose();
+        commands.removeIndex(index);
+    }
+
+    private void removeCommands(int from, int to) {
+        for(int i = from; i <= to; i++) {
+            commands.get(i).dispose();
+        }
+
+        commands.removeRange(from, to);
     }
 
     public int goBack() {
@@ -63,7 +79,6 @@ public class CommandHistory {
             commands.get(pointer).undo();
             pointer--;
         }
-        Log.debug("HISTORY BACK", "pointer: " + pointer);
 
         return pointer;
     }
@@ -73,7 +88,6 @@ public class CommandHistory {
             pointer++;
             commands.get(pointer).execute();
         }
-        Log.debug("HISTORY FORWARD", "pointer: " + pointer);
 
         return pointer;
     }
@@ -83,8 +97,11 @@ public class CommandHistory {
     }
 
     public void clear() {
+        for(Command c : commands) {
+            c.dispose();
+        }
         commands.clear();
-        pointer = 0;
+        pointer = -1;
     }
 
     public int size() {

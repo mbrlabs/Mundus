@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -22,6 +21,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
+import com.mbrlabs.mundus.history.commands.TerrainPaintCommand;
 import com.mbrlabs.mundus.tools.Tool;
 
 /**
@@ -106,8 +106,10 @@ public abstract class TerrainBrush extends Tool {
     private int pixmapCenter;
 
     // undo/redo system
-    private TerrainHeightCommand command = null;
-    private boolean terrainModified = false;
+    private TerrainHeightCommand heightCommand = null;
+    private TerrainPaintCommand paintCommand = null;
+    private boolean terrainHeightModified = false;
+    private boolean splatmapModified = false;
 
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history, FileHandle pixmapBrush) {
         super(projectContext, shader, batch, history);
@@ -144,8 +146,6 @@ public abstract class TerrainBrush extends Tool {
         } else if(mode == BrushMode.FLATTEN) {
             flatten();
         }
-
-        terrainModified = true;
     }
 
     private void paint() {
@@ -169,6 +169,7 @@ public abstract class TerrainBrush extends Tool {
         }
 
         sm.updateTexture();
+        splatmapModified = true;
     }
 
     private void flatten() {
@@ -197,6 +198,7 @@ public abstract class TerrainBrush extends Tool {
         }
 
         terrain.update();
+        terrainHeightModified = true;
     }
 
     private void raiseLower(BrushAction action) {
@@ -217,6 +219,7 @@ public abstract class TerrainBrush extends Tool {
         }
 
         terrain.update();
+        terrainHeightModified = true;
     }
 
     /**
@@ -340,20 +343,35 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(terrainModified) {
-            command.setHeightDataAfter(terrain.heightData);
-            history.add(command);
+        if(terrainHeightModified && heightCommand != null) {
+            heightCommand.setHeightDataAfter(terrain.heightData);
+            history.add(heightCommand);
         }
-        terrainModified = false;
-        command = null;
+        if(splatmapModified && paintCommand != null) {
+            final SplatMap sm = terrain.getTerrainTexture().getSplatmap();
+            paintCommand.setAfter(sm.getPixmap());
+            history.add(paintCommand);
+        }
+        splatmapModified = false;
+        terrainHeightModified = false;
+        heightCommand = null;
+        paintCommand = null;
 
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        command = new TerrainHeightCommand(terrain);
-        command.setHeightDataBefore(terrain.heightData);
+        if(mode == BrushMode.FLATTEN || mode == BrushMode.RAISE_LOWER || mode == BrushMode.SMOOTH) {
+            heightCommand = new TerrainHeightCommand(terrain);
+            heightCommand.setHeightDataBefore(terrain.heightData);
+        } else if(mode == BrushMode.PAINT) {
+            final SplatMap sm = terrain.getTerrainTexture().getSplatmap();
+            if(sm != null) {
+                paintCommand = new TerrainPaintCommand(terrain);
+                paintCommand.setBefore(sm.getPixmap());
+            }
+        }
 
         return false;
     }
