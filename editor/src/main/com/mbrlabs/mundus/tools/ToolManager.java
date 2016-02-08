@@ -67,9 +67,6 @@ public class ToolManager extends InputAdapter implements Disposable {
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
         translateTool = new TranslateTool(projectContext, shaders.brushShader, modelBatch, history);
         selectionTool = new SelectionTool(projectContext, shaders.brushShader, modelBatch, history);
-
-        this.inputManager.addProcessor(this);
-        setDefaultTool();
     }
 
     public void activateTool(Tool tool) {

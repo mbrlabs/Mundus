@@ -18,6 +18,7 @@ package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -75,7 +76,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         Mundus.inject(this);
         batch = Mundus.modelBatch;
         ui = Ui.getInstance();
-        inputManager.addProcessor(ui);
 
         Model axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
@@ -89,7 +89,25 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
+
+        setupInput();
+
+    }
+
+    private void setupInput() {
+        // NOTE: order in wich processors are added is important: first added, first executed!
+        inputManager.addProcessor(ui);
+        // when user does not click on a ui element -> unfocus UI
+        inputManager.addProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                ui.unfocusAll();
+                return false;
+            }
+        });
+        inputManager.addProcessor(toolManager);
         inputManager.addProcessor(camController);
+        toolManager.setDefaultTool();
     }
 
 	@Override

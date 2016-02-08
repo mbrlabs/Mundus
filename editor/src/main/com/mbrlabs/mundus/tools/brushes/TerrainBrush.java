@@ -94,6 +94,7 @@ public abstract class TerrainBrush extends Tool {
     protected float radius;
     protected BrushMode mode;
     protected Terrain terrain;
+    private BrushAction action;
 
     // used for brush rendering
     private Model sphereModel;
@@ -126,7 +127,6 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public void act() {
-        BrushAction action = getAction();
         if(action == null) return;
         if(terrain == null) return;
 
@@ -258,19 +258,6 @@ public abstract class TerrainBrush extends Tool {
         radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
     }
 
-    public BrushAction getAction() {
-        final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
-        final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
-
-        if(primary && secondary) {
-            return BrushAction.SECONDARY;
-        } else if(primary) {
-            return BrushAction.PRIMARY;
-        }
-
-        return null;
-    }
-
     public static float getStrength() {
         return strength;
     }
@@ -357,11 +344,27 @@ public abstract class TerrainBrush extends Tool {
         heightCommand = null;
         paintCommand = null;
 
+        action = null;
+
         return false;
+    }
+
+    private BrushAction getAction() {
+        final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
+        final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
+
+        if(primary && secondary) {
+            return BrushAction.SECONDARY;
+        } else if(primary) {
+            return BrushAction.PRIMARY;
+        }
+
+        return null;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        this.action = getAction();
         if(mode == BrushMode.FLATTEN || mode == BrushMode.RAISE_LOWER || mode == BrushMode.SMOOTH) {
             heightCommand = new TerrainHeightCommand(terrain);
             heightCommand.setHeightDataBefore(terrain.heightData);
