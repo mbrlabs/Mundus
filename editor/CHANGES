@@ -1,4 +1,8 @@
-[0.0.6]
+[0.0.7]
+- Implemented a undo/redo system
+- Implemented a shortcut system
+
+[0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2
 - Implemented texture splatting for terrain textures
 - Implemented terrain painting with up to 5 textures per terrain

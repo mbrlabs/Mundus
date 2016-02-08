@@ -26,7 +26,6 @@ import com.mbrlabs.mundus.history.CommandHistory;
 public class ShortcutController extends KeyboardLayoutInputAdapter {
 
     private boolean isCtrlPressed = false;
-
     private CommandHistory history;
 
     public ShortcutController(CommandHistory history) {

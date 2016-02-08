@@ -21,6 +21,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.tools.Tool;
 
 /**
@@ -104,6 +105,10 @@ public abstract class TerrainBrush extends Tool {
     private Pixmap brushPixmap;
     private int pixmapCenter;
 
+    // undo/redo system
+    private TerrainHeightCommand command = null;
+    private boolean terrainModified = false;
+
     public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history, FileHandle pixmapBrush) {
         super(projectContext, shader, batch, history);
 
@@ -139,6 +144,8 @@ public abstract class TerrainBrush extends Tool {
         } else if(mode == BrushMode.FLATTEN) {
             flatten();
         }
+
+        terrainModified = true;
     }
 
     private void paint() {
@@ -329,6 +336,26 @@ public abstract class TerrainBrush extends Tool {
     @Override
     public void dispose() {
         brushPixmap.dispose();
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(terrainModified) {
+            command.setHeightDataAfter(terrain.heightData);
+            history.add(command);
+        }
+        terrainModified = false;
+        command = null;
+
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        command = new TerrainHeightCommand(terrain);
+        command.setHeightDataBefore(terrain.heightData);
+
+        return false;
     }
 
     @Override

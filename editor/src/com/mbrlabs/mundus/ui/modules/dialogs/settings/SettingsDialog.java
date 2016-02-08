@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.modules.dialogs;
+package com.mbrlabs.mundus.ui.modules.dialogs.settings;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
@@ -26,6 +26,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
 /**
@@ -55,9 +56,8 @@ public class SettingsDialog extends BaseDialog {
 
         settingsSelection = new VerticalGroup();
         settingsSelection.addActor(new VisLabel("General"));
-        settingsSelection.addActor(new VisLabel("Terrain"));
-        settingsSelection.addActor(new VisLabel("Objects"));
-        settingsSelection.addActor(new VisLabel("Export Settings"));
+        settingsSelection.addActor(new VisLabel("Appearance"));
+        settingsSelection.addActor(new VisLabel("Export"));
 
         content = new VisTable();
         content.top().left();

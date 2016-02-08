@@ -50,6 +50,7 @@ public class SplatMap implements Disposable {
 
         this.width = width;
         this.height = height;
+
     }
 
     public Texture getTexture() {

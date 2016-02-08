@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.ui.modules.MundusToolbar;
 import com.mbrlabs.mundus.ui.modules.StatusBar;
 import com.mbrlabs.mundus.ui.modules.dialogs.*;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;

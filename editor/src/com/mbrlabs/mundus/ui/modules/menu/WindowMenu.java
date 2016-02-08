@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.modules.dialogs.SettingsDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 
 /**
  * @author Marcus Brummer
