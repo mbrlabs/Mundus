@@ -364,7 +364,18 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.action = getAction();
+
+        // get action
+        final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
+        final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
+        if(primary && secondary) {
+            action =  BrushAction.SECONDARY;
+        } else if(primary) {
+            action = BrushAction.PRIMARY;
+        } else {
+            action = null;
+        }
+
         if(mode == BrushMode.FLATTEN || mode == BrushMode.RAISE_LOWER || mode == BrushMode.SMOOTH) {
             heightCommand = new TerrainHeightCommand(terrain);
             heightCommand.setHeightDataBefore(terrain.heightData);

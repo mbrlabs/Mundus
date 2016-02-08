@@ -28,6 +28,13 @@ Below are some of the more interesting features, that already work
 - Multiple scenes in one project
 - A component based scene graph (not fully implemented yet)
 - Basic export of the project into a json format + assets
+- Undo/Redo system for most operations
+
+## Things to consider
+- Mundus is constantly changing...especially the internal representation of save files. At this stage of the project i don't care 
+very much for backward compatibility, so don't fall to much in love with your creations if you want to stay up to date ;)
+- Depending on your keyboard layout some key shortcuts might be twisted (especially CTRL+Z and CTRL+Y for QWERTZ and QWERTY layouts).
+I will add an option in the settings menu in the future, so that you set the layout yourself. 
 
 ## Runtime
 Currently there is no runtime.
