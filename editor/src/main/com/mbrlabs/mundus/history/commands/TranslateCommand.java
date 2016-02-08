@@ -18,6 +18,8 @@ package com.mbrlabs.mundus.history.commands;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.Command;
 
 /**
@@ -25,6 +27,8 @@ import com.mbrlabs.mundus.history.Command;
  * @version 07-02-2016
  */
 public class TranslateCommand implements Command {
+
+    private static GameObjectModifiedEvent modEvent = new GameObjectModifiedEvent();
 
     private Vector3 before;
     private Vector3 after;
@@ -51,11 +55,15 @@ public class TranslateCommand implements Command {
     @Override
     public void execute() {
         go.setTranslation(after.x, after.y, after.z);
+        modEvent.setGameObject(go);
+        Mundus.postEvent(modEvent);
     }
 
     @Override
     public void undo() {
         go.setTranslation(before.x, before.y, before.z);
+        modEvent.setGameObject(go);
+        Mundus.postEvent(modEvent);
     }
 
     @Override
