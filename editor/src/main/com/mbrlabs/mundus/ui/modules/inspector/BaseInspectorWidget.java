@@ -60,7 +60,6 @@ public abstract class BaseInspectorWidget extends VisTable {
         deleteBtn.getStyle().up = null;
 
         deletable = false;
-        pad(7);
 
         setupUI();
         setupListeners();

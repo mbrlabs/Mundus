@@ -53,7 +53,6 @@ public class IdentifierWidget extends VisTable {
         active = new VisCheckBox("", true);
         name = new VisTextField("Name");
         tag = new VisTextField("Untagged");
-        pad(10);
     }
 
     private void setupUI() {

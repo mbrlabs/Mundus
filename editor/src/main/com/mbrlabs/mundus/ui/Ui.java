@@ -86,7 +86,7 @@ public class Ui extends MyStage {
         sidebar = new Sidebar();
         inspector = new Inspector();
         sidebarAndInspector.add(sidebar).width(300).top().left().expand().fill();
-        sidebarAndInspector.add(inspector).width(300).top().right().expand().padRight(5).padTop(5).row();
+        sidebarAndInspector.add(inspector).width(300).top().right().expand().fill().padRight(5).padTop(10).padBottom(10).row();
         root.add(sidebarAndInspector).top().left().expand().fill().row();
 
         // row 4: DOCKER

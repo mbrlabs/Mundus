@@ -16,9 +16,14 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -30,6 +35,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
 
 /**
@@ -69,23 +75,40 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     public void init() {
         setBackground("default-pane");
+        add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
+        addSeparator().row();
         root = new VisTable();
-        scrollPane = new ScrollPane(root);
+        root.align(Align.top).padRight(15);
+        scrollPane = new VisScrollPane(root);
         scrollPane.setScrollingDisabled(true, false);
-        add(scrollPane).expand().fill();
+        scrollPane.setFlickScroll(false);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Ui.getInstance().setScrollFocus(scrollPane);
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                Ui.getInstance().setScrollFocus(null);
+            }
+        });
+
+        add(scrollPane).expand().fill().top();
     }
 
     public void setupUi() {
-
-        root.add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
-        root.addSeparator().row();
-        root.add(identifierWidget).expand().fillX().row();
-        root.add(transformWidget).expand().fillX().row();
+        root.add(identifierWidget).expandX().fillX().pad(7).row();
+        root.add(transformWidget).expandX().fillX().padLeft(15).row();
         for(BaseInspectorWidget cw : componentWidgets) {
             componentTable.add(cw).row();
         }
-        root.add(componentTable).fill().expand().row();
-        root.add(addComponentBtn).expandX().fillX().pad(10).row();
+        root.add(componentTable).fillX().expandX().padLeft(5).row();
+        root.add(addComponentBtn).expandX().fill().top().center().pad(10).row();
+//
+//        for(int i = 0; i < 100; i++) {
+//            root.add(new VisLabel("asdfasdsdasd " + i)).fillX().expandX().center().row();
+//        }
     }
 
     private void buildComponentWidgets() {

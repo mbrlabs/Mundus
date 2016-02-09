@@ -78,8 +78,9 @@ public class OutlineTab extends Tab implements
 
         tree = new VisTree();
         tree.getSelection().setProgrammaticChangeEvents(false);
-        scrollPane = new ScrollPane(tree);
+        scrollPane = new VisScrollPane(tree);
         scrollPane.setFlickScroll(false);
+        scrollPane.setFadeScrollBars(false);
 
         content.add(scrollPane).fill().expand();
 
