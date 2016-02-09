@@ -131,7 +131,7 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+        Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
         if(projectContext.currScene.terrainGroup.size() > 0 && curEntity != null) {
             projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
         } else {

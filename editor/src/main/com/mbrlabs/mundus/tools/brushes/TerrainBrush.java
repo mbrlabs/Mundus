@@ -393,7 +393,7 @@ public abstract class TerrainBrush extends Tool {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if(terrain != null) {
-            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+            Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
             terrain.getRayIntersection(brushPos, ray);
         }
 

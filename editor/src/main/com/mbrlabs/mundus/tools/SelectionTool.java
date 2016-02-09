@@ -54,7 +54,7 @@ public class SelectionTool extends Tool {
     }
 
     private GameObject getEntity(int screenX, int screenY) {
-        Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+        Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
         GameObject gameObject = null;
         float distance = -1;
 

@@ -19,6 +19,7 @@ package com.mbrlabs.mundus;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -39,6 +41,7 @@ import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.widgets.Actor3D;
 import com.mbrlabs.mundus.utils.Compass;
 import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.TestUtils;
@@ -53,6 +56,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     private Ui ui;
     private Compass compass;
     private ModelBatch batch;
+
+    private Actor3D actor3D;
 
     @Inject
     private FreeCamController camController;
@@ -81,6 +86,26 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         axesInstance = new ModelInstance(axesModel);
         Mundus.testModels.add(axesModel);
 
+        actor3D =  Ui.getInstance().getActor3D();
+        actor3D.setCam(projectContext.currScene.cam);
+        actor3D.setRenderer(new Actor3D.Renderer() {
+            @Override
+            public void render(Camera cam) {
+                if(projectContext.currScene.skybox != null) {
+                    batch.begin(projectContext.currScene.cam);
+                    batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
+                            projectContext.currScene.environment, shaders.skyboxShader);
+                    batch.end();
+                }
+
+                projectContext.currScene.sceneGraph.update();
+                projectContext.currScene.sceneGraph.render();
+
+                toolManager.render();
+                compass.render(batch);
+            }
+        });
+
         // open last edited project or create default project
         boolean projectOpened = projectManager.openLastOpenedProject();
         if(!projectOpened) {
@@ -89,9 +114,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
-
         setupInput();
-
     }
 
     private void setupInput() {
@@ -116,26 +139,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         ui.act();
         camController.update();
         toolManager.act();
-        projectContext.currScene.cam.update();
 
-        // render the skybox
-        if(projectContext.currScene.skybox != null) {
-            batch.begin(projectContext.currScene.cam);
-            batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
-                    projectContext.currScene.environment, shaders.skyboxShader);
-            batch.end();
-        }
-
-        // TODO maybe remove or put somewhere else
-        batch.begin(projectContext.currScene.cam);
-        batch.render(axesInstance);
-        batch.end();
-
-        projectContext.currScene.sceneGraph.update();
-        projectContext.currScene.sceneGraph.render();
-
-        toolManager.render();
-        compass.render(batch);
+        //projectContext.currScene.cam.update();
         ui.draw();
 	}
 
@@ -145,6 +150,10 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         }
         if(camController != null) {
             camController.setCamera(projectContext.currScene.cam);
+        }
+        if(actor3D != null) {
+            actor3D.setCam(projectContext.currScene.cam);
+            projectContext.currScene.viewport = actor3D.getViewport();
         }
     }
 
@@ -197,6 +206,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Override
     public void resize(int width, int height) {
         ui.getViewport().update(width, height, true);
+        System.out.println(width + " "  + height);
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
+import com.mbrlabs.mundus.ui.widgets.Actor3D;
 
 /**
  * @author Marcus Brummer
@@ -55,6 +56,8 @@ public class Ui extends MyStage {
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
 
+    private Actor3D actor3D;
+
     private static Ui INSTANCE;
 
     public static Ui getInstance() {
@@ -68,10 +71,10 @@ public class Ui extends MyStage {
     private Ui() {
         super(new ScreenViewport());
         root = new VisTable();
-        root.setFillParent(true);
-        root.align(Align.left | Align.top);
         //root.setDebug(true);
-        addActor(this.root);
+        root.setFillParent(true);
+        root.align(Align.center | Align.top);
+        addActor(root);
 
         // row 1: add menu
         menuBar = new MundusMenuBar();
@@ -81,13 +84,15 @@ public class Ui extends MyStage {
         toolbar = new MundusToolbar();
         root.add(toolbar.getRoot()).fillX().expandX().row();
 
-        // row 3: sidebar & inspector
-        VisTable sidebarAndInspector = new VisTable();
+        // row 3: sidebar & 3d viewport & inspector
+        VisTable center = new VisTable();
         sidebar = new Sidebar();
         inspector = new Inspector();
-        sidebarAndInspector.add(sidebar).width(300).top().left().expand().fill();
-        sidebarAndInspector.add(inspector).width(300).top().right().expand().fill().padRight(5).padTop(10).padBottom(10).row();
-        root.add(sidebarAndInspector).top().left().expand().fill().row();
+        actor3D = new Actor3D();
+        center.add(sidebar).width(300).top().left().expandY().fillY();
+        center.add(actor3D).pad(2).expand().fill();
+        center.add(inspector).width(300).top().right().expandY().fillY();
+        root.add(center).top().left().expand().fill().row();
 
         // row 4: DOCKER
         //docker = new DockBar();
@@ -167,4 +172,7 @@ public class Ui extends MyStage {
         return skyboxDialog;
     }
 
+    public Actor3D getActor3D() {
+        return actor3D;
+    }
 }

@@ -173,7 +173,7 @@ public class TranslateTool extends SelectionTool {
 
             if(state == State.IDLE) return;
 
-            Ray ray = projectContext.currScene.cam.getPickRay(Gdx.input.getX(), Gdx.input.getY());
+            Ray ray = projectContext.currScene.viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
             Vector3 rayEnd = projectContext.currScene.currentSelection.transform.getTranslation(temp1);
             float dst = projectContext.currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
@@ -225,7 +225,7 @@ public class TranslateTool extends SelectionTool {
         super.touchDown(screenX, screenY, pointer, button);
 
         if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
-            Ray ray = projectContext.currScene.cam.getPickRay(screenX, screenY);
+            Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
             if(xzPlaneHandle.isSelected(ray)) {
                 state = State.TRANSLATE_XZ;
                 initTranslate = true;

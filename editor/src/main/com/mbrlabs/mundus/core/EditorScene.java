@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.core;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.terrain.TerrainGroup;
 
@@ -30,6 +31,7 @@ public class EditorScene extends Scene {
      * It holds references of the terrain instances in the scene graph.
      */
     public TerrainGroup terrainGroup;
+    public Viewport viewport;
 
     public EditorScene() {
         super();

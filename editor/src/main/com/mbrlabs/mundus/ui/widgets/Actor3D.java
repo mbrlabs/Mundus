@@ -22,13 +22,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
  * @version 27-01-2016
  */
-public class Actor3D extends Actor {
+public class Actor3D extends VisTable {
 
     private ScreenViewport viewport;
     private PerspectiveCamera cam;
@@ -61,6 +62,8 @@ public class Actor3D extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        if(renderer == null || cam == null) return;
+
         // render part of the ui & pause rest
         batch.end();
 
