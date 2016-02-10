@@ -17,26 +17,22 @@
 package com.mbrlabs.mundus.runtime.libgdx.importer.terrain;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.model.MTexture;
 
 /**
  * @author Marcus Brummer
- * @version 09-02-2016
+ * @version 10-02-2016
  */
-public class TerrainTexture {
+public class Utils {
 
-    public Texture splatmap;
-    public Texture base;
-    public Texture r;
-    public Texture g;
-    public Texture b;
-    public Texture a;
+    public static Texture findTextureById(Array<MTexture> textures, Long id) {
+        if(id == null) return null;
+        for(MTexture t : textures) {
+            if(t.getId() == id) return t.texture;
+        }
 
-    public Terrain terrain;
-
-    public TerrainTexture() {
-
+        return null;
     }
-
-
 
 }

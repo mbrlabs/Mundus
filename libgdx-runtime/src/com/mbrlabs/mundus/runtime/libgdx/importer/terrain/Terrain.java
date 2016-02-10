@@ -53,9 +53,15 @@ public class Terrain extends BaseTerrain implements RenderableProvider {
 
         // TODO right textures
         texture = new TerrainTexture();
-        texture.r = textures.first().getTexture();
-        texture.g = textures.first().getTexture();
-        texture.splatmap = new Texture(Gdx.files.internal(dto.getSplatmapPath()));
+        texture.terrain = this;
+        texture.base = Utils.findTextureById(textures, dto.getTexBase());
+        texture.r = Utils.findTextureById(textures, dto.getTexR());
+        texture.g = Utils.findTextureById(textures, dto.getTexG());
+        texture.b = Utils.findTextureById(textures, dto.getTexB());
+        texture.a = Utils.findTextureById(textures, dto.getTexA());
+        if(dto.getSplatmapPath() != null) {
+            texture.splatmap = new Texture(Gdx.files.internal(dto.getSplatmapPath()));
+        }
 
         TerrainTextureAttribute tex = new TerrainTextureAttribute(TerrainTextureAttribute.ATTRIBUTE_SPLAT0, texture);
         Material material = new Material();

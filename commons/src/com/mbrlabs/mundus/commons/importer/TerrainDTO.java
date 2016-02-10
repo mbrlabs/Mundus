@@ -27,11 +27,11 @@ public class TerrainDTO {
     private String terraPath;
     private String splatmapPath;
 
-    private long texBase;
-    private long texR;
-    private long texG;
-    private long texB;
-    private long texA;
+    private Long texBase;
+    private Long texR;
+    private Long texG;
+    private Long texB;
+    private Long texA;
 
     private int width;
     private int depth;
@@ -73,43 +73,43 @@ public class TerrainDTO {
         this.splatmapPath = splatmapPath;
     }
 
-    public long getTexBase() {
+    public Long getTexBase() {
         return texBase;
     }
 
-    public void setTexBase(long texBase) {
+    public void setTexBase(Long texBase) {
         this.texBase = texBase;
     }
 
-    public long getTexR() {
+    public Long getTexR() {
         return texR;
     }
 
-    public void setTexR(long texR) {
+    public void setTexR(Long texR) {
         this.texR = texR;
     }
 
-    public long getTexG() {
+    public Long getTexG() {
         return texG;
     }
 
-    public void setTexG(long texG) {
+    public void setTexG(Long texG) {
         this.texG = texG;
     }
 
-    public long getTexB() {
+    public Long getTexB() {
         return texB;
     }
 
-    public void setTexB(long texB) {
+    public void setTexB(Long texB) {
         this.texB = texB;
     }
 
-    public long getTexA() {
+    public Long getTexA() {
         return texA;
     }
 
-    public void setTexA(long texA) {
+    public void setTexA(Long texA) {
         this.texA = texA;
     }
 
