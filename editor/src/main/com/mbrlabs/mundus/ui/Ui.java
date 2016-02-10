@@ -29,7 +29,7 @@ import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
-import com.mbrlabs.mundus.ui.widgets.Actor3D;
+import com.mbrlabs.mundus.ui.widgets.Widget3D;
 
 /**
  * @author Marcus Brummer
@@ -56,7 +56,7 @@ public class Ui extends MyStage {
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
 
-    private Actor3D actor3D;
+    private Widget3D widget3D;
 
     private static Ui INSTANCE;
 
@@ -88,9 +88,10 @@ public class Ui extends MyStage {
         VisTable center = new VisTable();
         sidebar = new Sidebar();
         inspector = new Inspector();
-        actor3D = new Actor3D();
+        widget3D = new Widget3D();
+
         center.add(sidebar).width(300).top().left().expandY().fillY();
-        center.add(actor3D).pad(2).expand().fill();
+        center.add(widget3D).pad(2).expand().fill();
         center.add(inspector).width(300).top().right().expandY().fillY();
         root.add(center).top().left().expand().fill().row();
 
@@ -172,7 +173,7 @@ public class Ui extends MyStage {
         return skyboxDialog;
     }
 
-    public Actor3D getActor3D() {
-        return actor3D;
+    public Widget3D getWidget3D() {
+        return widget3D;
     }
 }

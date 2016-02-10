@@ -24,6 +24,14 @@ public class TerrainDTO {
 
     private long id;
     private String name;
+    private String terraPath;
+    private String splatmapPath;
+
+    private long texBase;
+    private long texR;
+    private long texG;
+    private long texB;
+    private long texA;
 
     private int width;
     private int depth;
@@ -49,6 +57,62 @@ public class TerrainDTO {
         this.id = id;
     }
 
+    public String getTerraPath() {
+        return terraPath;
+    }
+
+    public void setTerraPath(String terraPath) {
+        this.terraPath = terraPath;
+    }
+
+    public String getSplatmapPath() {
+        return splatmapPath;
+    }
+
+    public void setSplatmapPath(String splatmapPath) {
+        this.splatmapPath = splatmapPath;
+    }
+
+    public long getTexBase() {
+        return texBase;
+    }
+
+    public void setTexBase(long texBase) {
+        this.texBase = texBase;
+    }
+
+    public long getTexR() {
+        return texR;
+    }
+
+    public void setTexR(long texR) {
+        this.texR = texR;
+    }
+
+    public long getTexG() {
+        return texG;
+    }
+
+    public void setTexG(long texG) {
+        this.texG = texG;
+    }
+
+    public long getTexB() {
+        return texB;
+    }
+
+    public void setTexB(long texB) {
+        this.texB = texB;
+    }
+
+    public long getTexA() {
+        return texA;
+    }
+
+    public void setTexA(long texA) {
+        this.texA = texA;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -72,4 +136,6 @@ public class TerrainDTO {
     public void setVertexRes(int vertexRes) {
         this.vertexRes = vertexRes;
     }
+
+
 }

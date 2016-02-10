@@ -1,6 +1,7 @@
 [0.0.7]
-- Implemented a undo/redo system
+- Implemented a undo/redo system for most operations
 - Implemented a shortcut system
+- The 3D viewport is now a UI widget and scales correctly with the window size
 
 [0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2

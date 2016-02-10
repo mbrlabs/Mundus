@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.history.commands;
 
-import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.history.Command;
 
 /**

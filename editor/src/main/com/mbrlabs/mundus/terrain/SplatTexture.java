@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.terrain;
+package com.mbrlabs.mundus.terrain;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mbrlabs.mundus.commons.model.MTexture;

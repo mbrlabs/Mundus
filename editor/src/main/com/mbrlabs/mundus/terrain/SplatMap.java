@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.terrain;
+package com.mbrlabs.mundus.terrain;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -57,24 +57,9 @@ public class SplatMap implements Disposable {
         return texture;
     }
 
-    public void drawCircle(int x, int y, int radius, float strength, SplatTexture.Channel channel) {
-        for(int smX = 0; smX < pixmap.getWidth(); smX++) {
-            for(int smY = 0; smY < pixmap.getHeight(); smY++) {
-                final float dst = MathUtils.dst(x, y, smX, smY);
-                if(dst <= radius) {
-                    final float opacity = ((radius - dst) * 0.1f) * 0.33f * strength;
-                    int newPixelColor = additiveBlend(pixmap.getPixel(smX, smY), channel, opacity);
-                    pixmap.drawPixel(smX, smY, newPixelColor);
-                }
-            }
-        }
-    }
-
     public Pixmap getPixmap() {
         return pixmap;
     }
-
-
 
     public void clearChannel(SplatTexture.Channel channel) {
         for(int smX = 0; smX < pixmap.getWidth(); smX++) {

@@ -22,7 +22,7 @@
 //import com.badlogic.gdx.graphics.Camera;
 //import com.badlogic.gdx.math.Vector3;
 //import com.badlogic.gdx.utils.IntIntMap;
-//import com.mbrlabs.mundus.commons.terrain.Terrain;
+//import com.mbrlabs.mundus.terrain.Terrain;
 //import com.mbrlabs.mundus.terrain.TerrainGroup;
 //
 ///**

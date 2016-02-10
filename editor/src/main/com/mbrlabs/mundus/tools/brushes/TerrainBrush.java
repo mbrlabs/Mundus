@@ -12,9 +12,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
-import com.mbrlabs.mundus.commons.terrain.SplatTexture;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.SplatMap;
+import com.mbrlabs.mundus.terrain.SplatTexture;
+import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -80,8 +80,9 @@ public abstract class TerrainBrush extends Tool {
     protected static final Vector2 c = new Vector2();
     protected static final Vector2 p = new Vector2();
     protected static final Vector2 v = new Vector2();
-    protected static final Vector3 tVec0 = new Vector3();
     protected static final Color c0 = new Color();
+    protected static final Vector3 tVec0 = new Vector3();
+    protected static final Vector3 tVec1 = new Vector3();
 
     // all brushes share the some common settings
     private static GlobalBrushSettingsChangedEvent brushSettingsChangedEvent = new GlobalBrushSettingsChangedEvent();
@@ -152,8 +153,9 @@ public abstract class TerrainBrush extends Tool {
         SplatMap sm = terrain.getTerrainTexture().getSplatmap();
         if(sm == null) return;
 
-        final float splatX = ((brushPos.x - terrain.getPosition().x) / (float) terrain.terrainWidth) * sm.getWidth();
-        final float splatY = ((brushPos.z - terrain.getPosition().z) / (float) terrain.terrainDepth) * sm.getHeight();
+        Vector3 terrainPos = terrain.getPosition(tVec1);
+        final float splatX = ((brushPos.x - terrainPos.x) / (float) terrain.terrainWidth) * sm.getWidth();
+        final float splatY = ((brushPos.z - terrainPos.z) / (float) terrain.terrainDepth) * sm.getHeight();
         final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
         final Pixmap pixmap = sm.getPixmap();
 
@@ -173,7 +175,7 @@ public abstract class TerrainBrush extends Tool {
     }
 
     private void flatten() {
-        final Vector3 terPos = terrain.getPosition();
+        final Vector3 terPos = terrain.getPosition(tVec1);
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {
                 final Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
@@ -202,7 +204,7 @@ public abstract class TerrainBrush extends Tool {
     }
 
     private void raiseLower(BrushAction action) {
-        final Vector3 terPos = terrain.getPosition();
+        final Vector3 terPos = terrain.getPosition(tVec1);
         float dir = (action == BrushAction.PRIMARY) ? 1 : -1;
         for (int x = 0; x < terrain.vertexResolution; x++) {
             for (int z = 0; z <  terrain.vertexResolution; z++) {

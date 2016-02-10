@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.shader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.mbrlabs.mundus.commons.shaders.EntityShader;
 import com.mbrlabs.mundus.commons.shaders.SkyboxShader;
-import com.mbrlabs.mundus.commons.shaders.TerrainShader;
 
 /**
  * @author Marcus Brummer

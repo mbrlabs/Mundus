@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -29,20 +30,20 @@ import com.mbrlabs.mundus.ui.Ui;
  * @author Marcus Brummer
  * @version 27-01-2016
  */
-public class Actor3D extends VisTable {
+public class Widget3D extends Widget {
 
     private ScreenViewport viewport;
     private PerspectiveCamera cam;
 
     private Renderer renderer;
 
-    public Actor3D(PerspectiveCamera cam) {
+    public Widget3D(PerspectiveCamera cam) {
         super();
         this.cam = cam;
         viewport = new ScreenViewport(this.cam);
     }
 
-    public Actor3D() {
+    public Widget3D() {
         super();
         viewport = new ScreenViewport();
     }

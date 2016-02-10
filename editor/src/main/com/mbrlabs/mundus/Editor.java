@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -28,7 +27,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -41,7 +39,7 @@ import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.widgets.Actor3D;
+import com.mbrlabs.mundus.ui.widgets.Widget3D;
 import com.mbrlabs.mundus.utils.Compass;
 import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.TestUtils;
@@ -57,7 +55,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     private Compass compass;
     private ModelBatch batch;
 
-    private Actor3D actor3D;
+    private Widget3D widget3D;
 
     @Inject
     private FreeCamController camController;
@@ -86,9 +84,9 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         axesInstance = new ModelInstance(axesModel);
         Mundus.testModels.add(axesModel);
 
-        actor3D =  Ui.getInstance().getActor3D();
-        actor3D.setCam(projectContext.currScene.cam);
-        actor3D.setRenderer(new Actor3D.Renderer() {
+        widget3D =  Ui.getInstance().getWidget3D();
+        widget3D.setCam(projectContext.currScene.cam);
+        widget3D.setRenderer(new Widget3D.Renderer() {
             @Override
             public void render(Camera cam) {
                 if(projectContext.currScene.skybox != null) {
@@ -139,8 +137,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         ui.act();
         camController.update();
         toolManager.act();
-
-        //projectContext.currScene.cam.update();
         ui.draw();
 	}
 
@@ -151,9 +147,9 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         if(camController != null) {
             camController.setCamera(projectContext.currScene.cam);
         }
-        if(actor3D != null) {
-            actor3D.setCam(projectContext.currScene.cam);
-            projectContext.currScene.viewport = actor3D.getViewport();
+        if(widget3D != null) {
+            widget3D.setCam(projectContext.currScene.cam);
+            projectContext.currScene.viewport = widget3D.getViewport();
         }
     }
 
@@ -206,7 +202,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Override
     public void resize(int width, int height) {
         ui.getViewport().update(width, height, true);
-        System.out.println(width + " "  + height);
     }
 
     @Override

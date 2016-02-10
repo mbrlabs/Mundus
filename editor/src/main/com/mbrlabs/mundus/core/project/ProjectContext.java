@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.terrain.Terrain;
 
 /**
  * @author Marcus Brummer

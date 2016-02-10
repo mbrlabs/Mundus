@@ -214,6 +214,7 @@ public class Mundus {
         modelBatch.dispose();
         shaders.dispose();
         toolManager.dispose();
+        commandHistory.clear();
         fa.dispose();
         for(Model model : testModels) {
             model.dispose();
