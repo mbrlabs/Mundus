@@ -30,10 +30,12 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.terrain.SplatTexture;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.terrain.TerrainTexture;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -111,6 +113,29 @@ public class RuntimeExporter {
         dto.setDepth(terrain.terrainDepth);
         dto.setWidth(terrain.terrainWidth);
         dto.setVertexRes(terrain.vertexResolution);
+
+        TerrainTexture tex = terrain.getTerrainTexture();
+        if(tex.getSplatmap() != null) dto.setSplatmapPath(tex.getSplatmap().getPath());
+        // Base
+        if(tex.getTexture(SplatTexture.Channel.BASE) != null) {
+            dto.setTexBase(tex.getTexture(SplatTexture.Channel.BASE).texture.getId());
+        }
+        // R
+        if(tex.getTexture(SplatTexture.Channel.R) != null) {
+            dto.setTexR(tex.getTexture(SplatTexture.Channel.R).texture.getId());
+        }
+        // G
+        if(tex.getTexture(SplatTexture.Channel.G) != null) {
+            dto.setTexG(tex.getTexture(SplatTexture.Channel.G).texture.getId());
+        }
+        // B
+        if(tex.getTexture(SplatTexture.Channel.B) != null) {
+            dto.setTexB(tex.getTexture(SplatTexture.Channel.B).texture.getId());
+        }
+        // A
+        if(tex.getTexture(SplatTexture.Channel.A) != null) {
+            dto.setTexA(tex.getTexture(SplatTexture.Channel.A).texture.getId());
+        }
 
         return dto;
     }
