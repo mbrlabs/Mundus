@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.importer.*;
 import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
@@ -69,6 +70,13 @@ public class RuntimeExporter {
             terrains[i] = convert(projectContext.terrains.get(i));
         }
         dto.setTerrains(terrains);
+
+        // textures
+        TextureDTO[] textures = new TextureDTO[projectContext.textures.size];
+        for(int i = 0; i < textures.length; i++) {
+            textures[i] = convert(projectContext.textures.get(i));
+        }
+        dto.setTextures(textures);
 
         // scenes
         SceneDTO[] scenes = new SceneDTO[projectContext.scenes.size];
@@ -136,6 +144,14 @@ public class RuntimeExporter {
         dto.setName(model.name);
         dto.setG3db(model.g3dbPath);
         dto.setTex(model.texturePath);
+
+        return dto;
+    }
+
+    public static TextureDTO convert(MTexture texture) {
+        TextureDTO dto = new TextureDTO();
+        dto.setId(texture.getId());
+        dto.setPath(texture.getPath());
 
         return dto;
     }

@@ -25,6 +25,7 @@ public class ProjectDTO {
     private String name;
 
     private ModelDTO[] models;
+    private TextureDTO[] textures;
     private TerrainDTO[] terrains;
     private SceneDTO[] scenes;
 
@@ -42,6 +43,14 @@ public class ProjectDTO {
 
     public void setModels(ModelDTO[] models) {
         this.models = models;
+    }
+
+    public TextureDTO[] getTextures() {
+        return textures;
+    }
+
+    public void setTextures(TextureDTO[] textures) {
+        this.textures = textures;
     }
 
     public TerrainDTO[] getTerrains() {
