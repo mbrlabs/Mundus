@@ -39,6 +39,7 @@ public abstract class BaseTerrain implements RenderableProvider, Disposable {
     protected static final Vector3 c10 = new Vector3();
     protected static final Vector3 c11 = new Vector3();
 
+    public long id;
     protected VertexAttributes attribs;
     protected final Vector2 uvScale = new Vector2(60, 60);
     protected float vertices[];

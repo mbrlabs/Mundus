@@ -40,7 +40,6 @@ import java.nio.ByteBuffer;
  */
 public class Terrain extends BaseTerrain {
 
-    public long id;
     public String name;
     public String terraPath;
 
