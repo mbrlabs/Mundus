@@ -28,7 +28,8 @@ import java.util.Iterator;
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class GameObject implements Iterable<GameObject> {
+public class
+        GameObject implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
     private static Vector3 tempVec0 = new Vector3();

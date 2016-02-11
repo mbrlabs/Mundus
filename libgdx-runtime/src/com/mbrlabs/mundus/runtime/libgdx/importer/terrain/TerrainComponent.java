@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.runtime.libgdx.importer.terrain;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
-import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.Terrain;
 
 /**
  * @author Marcus Brummer

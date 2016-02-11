@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.runtime.libgdx.importer.terrain;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -46,10 +47,11 @@ public class Terrain extends BaseTerrain implements RenderableProvider {
     private Model model;
     private ModelInstance mi;
 
-    public Terrain(TerrainDTO dto, Array<MTexture> textures) {
+    public Terrain(String assetsFolder, TerrainDTO dto, Array<MTexture> textures) {
         super(dto.getVertexRes());
         terrainWidth = dto.getWidth();
         terrainDepth = dto.getDepth();
+        id = dto.getId();
 
         // TODO right textures
         texture = new TerrainTexture();
@@ -60,14 +62,14 @@ public class Terrain extends BaseTerrain implements RenderableProvider {
         texture.b = Utils.findTextureById(textures, dto.getTexB());
         texture.a = Utils.findTextureById(textures, dto.getTexA());
         if(dto.getSplatmapPath() != null) {
-            texture.splatmap = new Texture(Gdx.files.internal(dto.getSplatmapPath()));
+            texture.splatmap = new Texture(assetsFolder + Gdx.files.internal(dto.getSplatmapPath()));
         }
 
         TerrainTextureAttribute tex = new TerrainTextureAttribute(TerrainTextureAttribute.ATTRIBUTE_SPLAT0, texture);
         Material material = new Material();
         material.set(tex);
 
-        heightData = readTerra(Gdx.files.internal(dto.getTerraPath()));
+        heightData = readTerra(Gdx.files.internal(assetsFolder + dto.getTerraPath()));
         build(material);
     }
 
@@ -81,9 +83,7 @@ public class Terrain extends BaseTerrain implements RenderableProvider {
         buildVertices();
         mesh.setVertices(vertices);
 
-        MeshPartBuilder mpb = new MeshBuilder();
-        mpb.addMesh(mesh);
-        MeshPart meshPart = mpb.getMeshPart();
+        MeshPart meshPart = new MeshPart(null, mesh, 0, vertices.length, GL20.GL_TRIANGLES);
 
         ModelBuilder mb = new ModelBuilder();
         mb.begin();

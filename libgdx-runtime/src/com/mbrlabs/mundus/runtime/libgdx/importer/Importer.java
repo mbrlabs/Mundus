@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.commons.importer.*;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.Terrain;
 import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.TerrainComponent;
 import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.TerrainShader;
@@ -60,7 +61,7 @@ public class Importer {
 
         // terrains
         for(TerrainDTO terrainDto : dto.getTerrains()) {
-            project.getTerrains().add(new Terrain(terrainDto, project.getTextures()));
+            project.getTerrains().add(new Terrain(assetsFolder, terrainDto, project.getTextures()));
         }
 
         // scenes
@@ -79,7 +80,8 @@ public class Importer {
     public MTexture convert(TextureDTO dto) {
         MTexture tex = new MTexture();
         tex.setId(dto.getId());
-        tex.texture = new Texture(Gdx.files.internal(assetsFolder + dto.getPath()));
+        tex.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal(assetsFolder + dto.getPath()), true);
+
 
         return tex;
     }

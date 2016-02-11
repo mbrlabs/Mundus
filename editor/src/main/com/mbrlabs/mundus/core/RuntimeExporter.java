@@ -113,6 +113,7 @@ public class RuntimeExporter {
         dto.setDepth(terrain.terrainDepth);
         dto.setWidth(terrain.terrainWidth);
         dto.setVertexRes(terrain.vertexResolution);
+        dto.setTerraPath(terrain.terraPath);
 
         TerrainTexture tex = terrain.getTerrainTexture();
         if(tex.getSplatmap() != null) dto.setSplatmapPath(tex.getSplatmap().getPath());
