@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.terrain;
+package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
@@ -39,6 +42,16 @@ public class Utils {
         if(id == null) return null;
         for(Terrain t : terrains) {
             if(t.id == id) return t;
+        }
+
+        return null;
+    }
+
+    // TODO save models in map to remove the search every time
+    public static Model findModelById(Array<MModel> models, Long id) {
+        if(id == null) return null;
+        for(MModel m : models) {
+            if(m.id == id) return m.getModel();
         }
 
         return null;

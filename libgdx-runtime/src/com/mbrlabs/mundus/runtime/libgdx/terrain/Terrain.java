@@ -30,6 +30,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.mbrlabs.mundus.commons.importer.TerrainDTO;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.BaseTerrain;
+import com.mbrlabs.mundus.runtime.libgdx.Utils;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;

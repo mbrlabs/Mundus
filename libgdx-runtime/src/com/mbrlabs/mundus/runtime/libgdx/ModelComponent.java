@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.runtime.libgdx;
 
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
 
@@ -25,13 +27,34 @@ import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
  */
 public class ModelComponent extends AbstractComponent {
 
+    private ModelInstance modelInstance;
+    private Shader shader;
+
     public ModelComponent(GameObject go) {
         super(go);
+        type = Type.MODEL;
+    }
+
+    public Shader getShader() {
+        return shader;
+    }
+
+    public void setShader(Shader shader) {
+        this.shader = shader;
+    }
+
+    public ModelInstance getModelInstance() {
+        return modelInstance;
+    }
+
+    public void setModelInstance(ModelInstance modelInstance) {
+        this.modelInstance = modelInstance;
     }
 
     @Override
     public void render(float delta) {
-
+        gameObject.sceneGraph.batch.render(modelInstance,
+                gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override

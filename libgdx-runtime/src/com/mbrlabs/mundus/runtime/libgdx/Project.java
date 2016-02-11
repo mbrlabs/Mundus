@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
 
@@ -29,6 +30,7 @@ public class Project {
 
     private Array<MTexture> textures;
     private Array<Terrain> terrains;
+    private Array<MModel> models;
 
     private Array<Scene> scenes;
 
@@ -36,6 +38,7 @@ public class Project {
         textures = new Array<>();
         terrains = new Array<>();
         scenes = new Array<>();
+        models = new Array<>();
     }
 
     public Array<MTexture> getTextures() {
@@ -50,4 +53,7 @@ public class Project {
         return scenes;
     }
 
+    public Array<MModel> getModels() {
+        return models;
+    }
 }
