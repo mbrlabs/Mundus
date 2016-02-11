@@ -29,10 +29,10 @@ import com.mbrlabs.mundus.commons.env.Env;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
+import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 import com.mbrlabs.mundus.terrain.SplatTexture;
 import com.mbrlabs.mundus.terrain.TerrainTexture;
 import com.mbrlabs.mundus.terrain.TerrainTextureAttribute;
-import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
  * @author Marcus Brummer

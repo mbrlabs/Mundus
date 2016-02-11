@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.importer.terrain;
+package com.mbrlabs.mundus.runtime.libgdx;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
 
 /**
  * @author Marcus Brummer
- * @version 09-02-2016
+ * @version 16-01-2016
  */
-public class TerrainTexture {
+public class ModelComponent extends AbstractComponent {
 
-    public Texture splatmap;
-    public Texture base;
-    public Texture r;
-    public Texture g;
-    public Texture b;
-    public Texture a;
+    public ModelComponent(GameObject go) {
+        super(go);
+    }
 
-    public Terrain terrain;
-
-    public TerrainTexture() {
+    @Override
+    public void render(float delta) {
 
     }
 
+    @Override
+    public void update(float delta) {
 
+    }
 
 }

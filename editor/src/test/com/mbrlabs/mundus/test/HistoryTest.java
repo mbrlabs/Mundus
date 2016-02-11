@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.test;
 import com.mbrlabs.mundus.history.Command;
 import com.mbrlabs.mundus.history.CommandHistory;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 /**

@@ -14,40 +14,34 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.importer;
+package com.mbrlabs.mundus.runtime.libgdx.terrain;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
  * @version 10-02-2016
  */
-public class Project {
+public class Utils {
 
-    private Array<MTexture> textures;
-    private Array<Terrain> terrains;
+    public static Texture findTextureById(Array<MTexture> textures, Long id) {
+        if(id == null) return null;
+        for(MTexture t : textures) {
+            if(t.getId() == id) return t.texture;
+        }
 
-    private Array<Scene> scenes;
-
-    public Project() {
-        textures = new Array<>();
-        terrains = new Array<>();
-        scenes = new Array<>();
+        return null;
     }
 
-    public Array<MTexture> getTextures() {
-        return textures;
-    }
+    public static Terrain findTerrainById(Array<Terrain> terrains, Long id) {
+        if(id == null) return null;
+        for(Terrain t : terrains) {
+            if(t.id == id) return t;
+        }
 
-    public Array<Terrain> getTerrains() {
-        return terrains;
-    }
-
-    public Array<Scene> getScenes() {
-        return scenes;
+        return null;
     }
 
 }

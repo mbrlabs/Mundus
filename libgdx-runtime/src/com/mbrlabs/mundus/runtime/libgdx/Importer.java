@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.importer;
+package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.mbrlabs.mundus.commons.Scene;
@@ -26,10 +25,10 @@ import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
-import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.Terrain;
-import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.TerrainComponent;
-import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.TerrainShader;
-import com.mbrlabs.mundus.runtime.libgdx.importer.terrain.Utils;
+import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
+import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainComponent;
+import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainShader;
+import com.mbrlabs.mundus.runtime.libgdx.terrain.Utils;
 
 /**
  * @author Marcus Brummer

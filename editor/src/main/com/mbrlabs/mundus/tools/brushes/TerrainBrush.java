@@ -12,9 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
-import com.mbrlabs.mundus.terrain.SplatMap;
-import com.mbrlabs.mundus.terrain.SplatTexture;
-import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -22,6 +19,9 @@ import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.history.commands.TerrainPaintCommand;
+import com.mbrlabs.mundus.terrain.SplatMap;
+import com.mbrlabs.mundus.terrain.SplatTexture;
+import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.tools.Tool;
 
 /**
