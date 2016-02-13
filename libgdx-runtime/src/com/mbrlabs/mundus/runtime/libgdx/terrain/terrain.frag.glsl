@@ -27,26 +27,22 @@ varying float v_fog;
 
 varying vec2 splatPosition;
 
-vec4 blend_textures() {
-    vec4 col = texture2D(u_texture_base, v_texCoord0);
-
-    if(u_texture_has_splatmap == 1) {
-        vec4 splat = texture2D(u_texture_splat, splatPosition);
-        col = mix(col, texture2D(u_texture_r, v_texCoord0), splat.r);
-        col = mix(col, texture2D(u_texture_g, v_texCoord0), splat.g);
-        col = mix(col, texture2D(u_texture_b, v_texCoord0), splat.b);
-        col = mix(col, texture2D(u_texture_a, v_texCoord0), splat.a);
-    }
-
-    return col;
-}
-
 
 void main(void) {
-    float nDot1 = u_lightIntensity * dot(v_surfaceNormal, v_vectorToLight);
-    float brightness = max(nDot1, 0.2);
 
-    gl_FragColor = brightness * blend_textures();
+    // textures
+    gl_FragColor = texture2D(u_texture_base, v_texCoord0);
+    if(u_texture_has_splatmap == 1) {
+        vec4 splat = texture2D(u_texture_splat, splatPosition);
+        gl_FragColor = mix(gl_FragColor, texture2D(u_texture_r, v_texCoord0), splat.r);
+        gl_FragColor = mix(gl_FragColor, texture2D(u_texture_g, v_texCoord0), splat.g);
+        gl_FragColor = mix(gl_FragColor, texture2D(u_texture_b, v_texCoord0), splat.b);
+        gl_FragColor = mix(gl_FragColor, texture2D(u_texture_a, v_texCoord0), splat.a);
+    }
+
+    // lighting
+    gl_FragColor *= max(u_lightIntensity * dot(v_surfaceNormal, v_vectorToLight), 0.2);
+
     // add fog
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
 
