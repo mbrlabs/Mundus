@@ -28,8 +28,7 @@ import java.util.Iterator;
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class
-        GameObject implements Iterable<GameObject> {
+public class GameObject implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
     private static Vector3 tempVec0 = new Vector3();
@@ -55,7 +54,7 @@ public class
         this.id = -1;
         this.tags = null;
         this.childs = null;
-        this.components = new Array<>(3);
+        this.components = new Array<Component>(3);
         this.transform = new Matrix4();
         this.sceneGraph = sceneGraph;
     }
@@ -100,7 +99,7 @@ public class
 
     public void addTag(String tag) {
         if(this.tags == null) {
-            this.tags = new Array<>(2);
+            this.tags = new Array<String>(2);
         }
 
         this.tags.add(tag);
@@ -166,7 +165,7 @@ public class
 
     public void addChild(GameObject child) {
         if(this.childs == null) {
-            childs = new Array<>();
+            childs = new Array<GameObject>();
         }
         child.setParent(this);
         childs.add(child);

@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.runtime.libgdx.terrain;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -91,6 +92,8 @@ public class TerrainShader extends BaseShader {
     public void begin(Camera camera, RenderContext context) {
         this.context = context;
         context.begin();
+
+        this.context.setCullFace(GL20.GL_BACK);
         this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
         this.context.setDepthMask(true);
 

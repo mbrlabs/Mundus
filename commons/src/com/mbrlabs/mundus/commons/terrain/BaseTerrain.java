@@ -131,28 +131,25 @@ public abstract class BaseTerrain implements RenderableProvider, Disposable {
     }
 
     protected short[] buildIndices() {
-        final int x = vertexResolution - 1;
-        final int z = vertexResolution - 1;
-        short indices[] = new short[x * z * 6];
-        int index = 0;
-        for (int curX = 0; curX < x; curX++) {
-            for (int curZ = 0; curZ < z; curZ++) {
-                int topLeft = curZ * vertexResolution + curX;
-                int topRight = topLeft + 1;
-                int bottomLeft = (curZ+1) * vertexResolution + curX;
-                int bottomRight = bottomLeft + 1;
-
-                indices[index++] = (short) topLeft;
-                indices[index++] = (short) bottomLeft;
-                indices[index++] = (short) bottomRight;
-                indices[index++] = (short) bottomRight;
-                indices[index++] = (short) topLeft;
-                indices[index++] = (short) topRight;
+        final int w = vertexResolution - 1;
+        final int h = vertexResolution - 1;
+        short indices[] = new short[w * h * 6];
+        int i = -1;
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                final int c00 = y * vertexResolution + x;
+                final int c10 = c00 + 1;
+                final int c01 = c00 + vertexResolution;
+                final int c11 = c10 + vertexResolution;
+                indices[++i] = (short)c11;
+                indices[++i] = (short)c10;
+                indices[++i] = (short)c00;
+                indices[++i] = (short)c00;
+                indices[++i] = (short)c01;
+                indices[++i] = (short)c11;
             }
         }
-
         return indices;
-        //mesh.setIndices(indices);
     }
 
     protected void buildVertices() {

@@ -31,7 +31,7 @@ public class DepthFirstIterator implements Iterator<GameObject> {
     private Stack<GameObject> stack;
 
     public DepthFirstIterator(GameObject root) {
-        stack = new Stack<>();
+        stack = new Stack<GameObject>();
         stack.push(root);
     }
 

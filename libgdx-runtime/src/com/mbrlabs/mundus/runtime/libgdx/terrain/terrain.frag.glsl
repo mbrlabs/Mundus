@@ -4,7 +4,7 @@ precision mediump float;
 
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
 const vec4 COLOR_WHITE = vec4(1,1,1, 1.0);
-const vec4 COLOR_DARK = vec4(0.05,0.05,0.05, 1.0);
+const vec4 COLOR_DARK = vec4(0.1,0.1,0.1, 1.0);
 const vec4 COLOR_BRIGHT = vec4(0.8,0.8,0.8, 1.0);
 
 // splat textures

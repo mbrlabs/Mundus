@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
@@ -40,13 +41,13 @@ import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainShader;
  */
 public class Importer {
 
-    private TerrainShader terrainShader;
-    private EntityShader entityShader;
+    private Shader terrainShader;
+    private Shader entityShader;
 
     private final String assetsFolder;
     private G3dModelLoader g3dModelLoader;
 
-    public Importer(String assetsFolder, TerrainShader terrainShader, EntityShader entityShader) {
+    public Importer(String assetsFolder, Shader terrainShader, Shader entityShader) {
         if(assetsFolder.endsWith("/")) {
             this.assetsFolder = assetsFolder;
         } else {

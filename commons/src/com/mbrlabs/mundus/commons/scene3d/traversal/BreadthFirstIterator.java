@@ -31,7 +31,7 @@ public class BreadthFirstIterator implements Iterator<GameObject> {
     private Queue<GameObject> queue;
 
     public BreadthFirstIterator(GameObject root) {
-        queue = new Queue<>();
+        queue = new Queue<GameObject>();
         queue.addLast(root);
     }
 

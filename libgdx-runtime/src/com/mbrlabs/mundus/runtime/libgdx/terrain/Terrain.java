@@ -23,6 +23,8 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
+import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
+import com.badlogic.gdx.graphics.g3d.model.data.ModelMesh;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.FloatArray;
@@ -76,18 +78,19 @@ public class Terrain extends BaseTerrain implements RenderableProvider {
         final int numVertices = this.vertexResolution * vertexResolution;
         final int numIndices = (this.vertexResolution - 1) * (vertexResolution - 1) * 6;
 
-        Mesh mesh = new Mesh(false, numVertices, numIndices, attribs);
+        Mesh mesh = new Mesh(true, numVertices, numIndices, attribs);
         this.vertices = new float[numVertices * stride];
         mesh.setIndices(buildIndices());
         buildVertices();
         mesh.setVertices(vertices);
 
-        MeshPart meshPart = new MeshPart(null, mesh, 0, vertices.length, GL20.GL_TRIANGLES);
-
+        MeshPart meshPart = new MeshPart(null, mesh, 0, numIndices, GL20.GL_TRIANGLES);
+        meshPart.update();
         ModelBuilder mb = new ModelBuilder();
         mb.begin();
         mb.part(meshPart, material);
         model = mb.end();
+
         mi = new ModelInstance(model);
     }
 
@@ -108,17 +111,19 @@ public class Terrain extends BaseTerrain implements RenderableProvider {
     public static float[] readTerra(FileHandle terra) {
         FloatArray floatArray = new FloatArray();
 
-        try(DataInputStream is = new DataInputStream(new BufferedInputStream(
-                new GZIPInputStream(new FileInputStream(terra.file()))))) {
+        DataInputStream is = null;
+        try {
+            is = new DataInputStream(new BufferedInputStream(
+                    new GZIPInputStream(terra.read())));
             while (is.available() > 0) {
                 floatArray.add(is.readFloat());
             }
+            is.close();
         } catch (EOFException e) {
             //e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Log.debug("Terrain import. floats: " + floatArray.size);
 
         return floatArray.toArray();
     }

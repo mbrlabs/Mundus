@@ -35,10 +35,10 @@ public class Project {
     private Array<Scene> scenes;
 
     public Project() {
-        textures = new Array<>();
-        terrains = new Array<>();
-        scenes = new Array<>();
-        models = new Array<>();
+        textures = new Array<MTexture>();
+        terrains = new Array<Terrain>();
+        scenes = new Array<Scene>();
+        models = new Array<MModel>();
     }
 
     public Array<MTexture> getTextures() {
