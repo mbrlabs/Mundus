@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
@@ -34,6 +35,9 @@ import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainComponent;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainShader;
+import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainTexture;
+
+import javax.xml.soap.Text;
 
 /**
  * @author Marcus Brummer
@@ -69,8 +73,21 @@ public class Importer {
         }
 
         // terrains
-        for(TerrainDTO terrainDto : dto.getTerrains()) {
-            project.getTerrains().add(new Terrain(assetsFolder, terrainDto, project.getTextures()));
+        for(TerrainDTO ter : dto.getTerrains()) {
+            // textures
+            final TerrainTexture texture = new TerrainTexture();
+            texture.base = Utils.findTextureById(project.getTextures(), ter.getTexBase());
+            texture.r = Utils.findTextureById(project.getTextures(), ter.getTexR());
+            texture.g = Utils.findTextureById(project.getTextures(), ter.getTexG());
+            texture.b = Utils.findTextureById(project.getTextures(), ter.getTexB());
+            texture.a = Utils.findTextureById(project.getTextures(), ter.getTexA());
+            if(ter.getSplatmapPath() != null) {
+                texture.splatmap = new Texture(assetsFolder + Gdx.files.internal(ter.getSplatmapPath()));
+            }
+
+            final float[] heightData = Terrain.readTerraFile(Gdx.files.internal(assetsFolder + ter.getTerraPath()));
+            final Terrain t = new Terrain(ter.getId(), ter.getVertexRes(), ter.getWidth(), ter.getDepth(), heightData, texture);
+            project.getTerrains().add(t);
         }
 
         // models

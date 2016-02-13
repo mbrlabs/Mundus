@@ -55,8 +55,8 @@ public abstract class BaseTerrain implements RenderableProvider, Disposable {
     public int vertexResolution;
 
     public BaseTerrain(int vertexResolution) {
-        transform = new Matrix4();
-        attribs = MeshBuilder.createAttributes(VertexAttributes.Usage.Position |
+        this.transform = new Matrix4();
+        this.attribs = MeshBuilder.createAttributes(VertexAttributes.Usage.Position |
                 VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
         this.posPos = attribs.getOffset(VertexAttributes.Usage.Position, -1);
         this.norPos = attribs.getOffset(VertexAttributes.Usage.Normal, -1);
@@ -120,12 +120,7 @@ public abstract class BaseTerrain implements RenderableProvider, Disposable {
             if(u != isUnder || rounds == 10000) {
                 return out;
             }
-
-            if(u) {
-                curDistance -= 0.1f;
-            } else {
-                curDistance += 0.1f;
-            }
+            curDistance += u ? -0.1f : 0.1f;
         }
 
     }
@@ -156,21 +151,10 @@ public abstract class BaseTerrain implements RenderableProvider, Disposable {
         for (int x = 0; x < vertexResolution; x++) {
             for (int z = 0; z < vertexResolution; z++) {
                 calculateVertexAt(tempVertexInfo, x, z);
-                calculateSimpleNormalAt(tempVertexInfo, x, z);
+                calculateNormalAt(tempVertexInfo, x, z);
                 setVertex(z * vertexResolution + x, tempVertexInfo);
             }
         }
-    }
-
-    protected MeshPartBuilder.VertexInfo calculateVertexAt(MeshPartBuilder.VertexInfo out, int x, int z) {
-        final float dx = (float)x / (float)(vertexResolution - 1);
-        final float dz = (float)z / (float)(vertexResolution - 1);
-        final float height = heightData[z * vertexResolution + x];
-
-        out.position.set(dx * this.terrainWidth, height, dz * this.terrainDepth);
-        out.uv.set(dx, dz).scl(uvScale);
-
-        return out;
     }
 
     protected void setVertex (int index, MeshPartBuilder.VertexInfo info) {
@@ -191,10 +175,21 @@ public abstract class BaseTerrain implements RenderableProvider, Disposable {
         }
     }
 
+    protected MeshPartBuilder.VertexInfo calculateVertexAt(MeshPartBuilder.VertexInfo out, int x, int z) {
+        final float dx = (float)x / (float)(vertexResolution - 1);
+        final float dz = (float)z / (float)(vertexResolution - 1);
+        final float height = heightData[z * vertexResolution + x];
+
+        out.position.set(dx * this.terrainWidth, height, dz * this.terrainDepth);
+        out.uv.set(dx, dz).scl(uvScale);
+
+        return out;
+    }
+
     /**
      * Calculates normal of a vertex at x,y based on the verticesOnZ of the surrounding vertices
      */
-    protected MeshPartBuilder.VertexInfo calculateSimpleNormalAt(MeshPartBuilder.VertexInfo out, int x, int y) {
+    protected MeshPartBuilder.VertexInfo calculateNormalAt(MeshPartBuilder.VertexInfo out, int x, int y) {
         // handle edges of terrain
         int xP1 = (x+1 >= vertexResolution) ? vertexResolution -1 : x+1;
         int yP1 = (y+1 >= vertexResolution) ? vertexResolution -1 : y+1;
