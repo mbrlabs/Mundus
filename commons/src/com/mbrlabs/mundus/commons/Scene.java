@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.commons;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.skybox.Skybox;
@@ -55,7 +56,7 @@ public class Scene implements Disposable {
 
         DirectionalLight dirLight = new DirectionalLight();
         dirLight.setColor(1,1,1,1);
-        dirLight.setDirection(75f, 200f, 75f);
+        dirLight.setDirection(90, -30, 0);
         dirLight.direction.nor();
         environment.add(dirLight);
 

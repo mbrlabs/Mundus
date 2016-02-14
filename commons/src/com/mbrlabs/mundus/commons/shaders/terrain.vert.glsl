@@ -8,7 +8,7 @@ uniform vec3 u_camPos;
 
 // lights
 struct DirectionalLight {
-	vec3 color;
+	vec4 color;
 	vec3 direction;
 };
 uniform DirectionalLight u_directionalLight;
@@ -23,7 +23,7 @@ uniform int u_texture_has_splatmap;
 varying vec2 v_texCoord0;
 varying vec2 splatPosition;
 varying float v_fog;
-varying float v_lighting;
+varying vec4 v_lighting;
 
 void main(void) {
 
@@ -31,15 +31,21 @@ void main(void) {
     vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);
     gl_Position = u_projViewMatrix * worldPos;
 
+    // =================================================================
+    //                          Lighting
+    // =================================================================
+    v_lighting = u_directionalLight.color * dot(a_normal, u_directionalLight.direction) * 0.2; // TODO pass intensity to shader
+
+    // ambient light
+    v_lighting += vec4(1.0, 1.0, 1.0, 1.0) * 0.3; // TODO pass color & intensity to shader
+
+    // =================================================================
+    //                          /Lighting
+    // =================================================================
+
     // texture stuff
     v_texCoord0 = a_texCoord0;
     splatPosition = vec2(a_position.x / u_terrainSize.x, a_position.z / u_terrainSize);
-
-    // diffuse lighting [directional light(s)]
-    v_lighting = dot(u_directionalLight.direction, a_normal);
-
-    // ambient light
-    v_lighting = max(v_lighting, 0.2);
 
     // fog
     if(u_fogDensity > 0.0 && u_fogGradient > 0.0) {

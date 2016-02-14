@@ -91,7 +91,7 @@ public class TerrainShader extends BaseShader {
     public void begin(Camera camera, RenderContext context) {
         this.context = context;
         context.begin();
-        context.setCullFace(GL20.GL_BACK);
+        //context.setCullFace(GL20.GL_BACK);
 
         this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
         this.context.setDepthMask(true);

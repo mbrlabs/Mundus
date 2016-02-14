@@ -19,7 +19,7 @@ uniform int u_texture_has_splatmap;
 uniform vec4 u_fogColor;
 
 // light
-varying float v_lighting;
+varying vec4 v_lighting;
 
 varying vec3 v_vectorToLight;
 varying vec3 v_surfaceNormal;

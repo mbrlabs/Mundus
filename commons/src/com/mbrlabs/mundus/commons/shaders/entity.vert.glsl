@@ -7,27 +7,36 @@ uniform mat4 u_projViewMatrix;
 uniform vec3 u_camPos;
 
 // lights
-uniform vec3  u_lightPos;
+struct DirectionalLight {
+	vec4 color;
+	vec3 direction;
+};
+uniform DirectionalLight u_directionalLight;
 
 // Fog
 uniform float  u_fogDensity;
 uniform float  u_fogGradient;
 
 varying vec2 v_texCoord0;
-varying vec3 v_vectorToLight;
-varying vec3 v_surfaceNormal;
 varying float v_fog;
+varying vec4 v_lighting;
 
 void main(void) {
-
     vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);
-
-    // for diffuse lighting
-    v_surfaceNormal = (u_transMatrix * vec4(a_normal, 0.0)).xyz;
-    v_vectorToLight = u_lightPos - worldPos.xyz;
-
     v_texCoord0 = a_texCoord0;
     gl_Position = u_projViewMatrix * worldPos;
+
+    // =================================================================
+    //                          Lighting
+    // =================================================================
+    v_lighting = u_directionalLight.color * dot(a_normal, u_directionalLight.direction) * 0.2; // TODO pass intensity to shader
+
+    // ambient light
+    v_lighting += vec4(1.0, 1.0, 1.0, 1.0) * 0.3; // TODO pass color & intensity to shader
+
+    // =================================================================
+    //                          /Lighting
+    // =================================================================
 
     // fog intensity
     if(u_fogDensity > 0.0 && u_fogGradient > 0.0) {

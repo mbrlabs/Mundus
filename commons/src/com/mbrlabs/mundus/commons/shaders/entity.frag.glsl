@@ -12,22 +12,14 @@ varying float v_fog;
 
 uniform sampler2D u_texture;
 uniform vec4 u_fogColor;
-uniform float u_lightIntensity;
+varying vec4 v_lighting;
 
 void main(void) {
-    vec3 unitNormal = normalize(v_surfaceNormal);
-    vec3 unitLightVector = normalize(v_vectorToLight);
-    float nDot1 = u_lightIntensity * dot(unitNormal, unitLightVector);
-    // diffuse
-    float brightness = max(nDot1, 0.2);
+    gl_FragColor = texture2D(u_texture, v_texCoord0);
+//    if(gl_FragColor.a < 0.5) {
+//        discard;
+//    }
 
-    vec3 light =  LIGHT_COLOR;
-
-    vec4 tex = texture2D(u_texture, v_texCoord0);
-    if(tex.a < 0.5) {
-        discard;
-    }
-
-    gl_FragColor = brightness * tex;
+    gl_FragColor *= v_lighting;
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
 }
