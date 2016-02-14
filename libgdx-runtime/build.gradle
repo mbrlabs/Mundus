@@ -6,13 +6,34 @@ targetCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = [ "src/" ]
 
+/**
+ * Collects all non gdx jars, that will be included in the final runtime jar.
+ *
+ * @return a FileTree object with all dependencies except gdx
+ */
+def buildJarTree() {
+    FileTree tree = null;
+    configurations.compile.collect {
+        if(!it.name.contains("gdx")) {
+            if(tree == null) {
+                tree = zipTree(it)
+            } else {
+                tree.plus(zipTree(it))
+            }
+        }
+    }
+
+    return tree
+}
+
 task distRuntime(type: Jar) {
     baseName = 'mundus-libgdx-runtime'
     version = '0.0.7'
 
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { buildJarTree() }
+
 }
 
 distRuntime.dependsOn classes
