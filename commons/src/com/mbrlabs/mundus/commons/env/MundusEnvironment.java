@@ -22,14 +22,15 @@ import com.badlogic.gdx.graphics.g3d.Environment;
  * @author Marcus Brummer
  * @version 04-01-2016
  */
-public class Env extends Environment {
+public class MundusEnvironment extends Environment {
 
     private Fog fog = null;
 
-    public Env add (SunLight light) {
+    public MundusEnvironment add (SunLight light) {
         SunLightsAttribute sunLights = ((SunLightsAttribute)get(SunLightsAttribute.Type));
         if (sunLights == null) set(sunLights = new SunLightsAttribute());
         sunLights.lights.add(light);
+
         return this;
     }
 

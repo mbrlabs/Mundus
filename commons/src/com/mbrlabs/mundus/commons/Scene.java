@@ -19,8 +19,8 @@ package com.mbrlabs.mundus.commons;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.commons.env.Env;
-import com.mbrlabs.mundus.commons.env.Skybox;
+import com.mbrlabs.mundus.commons.env.MundusEnvironment;
+import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
@@ -35,7 +35,7 @@ public class Scene implements Disposable {
     private long id;
 
     public SceneGraph sceneGraph;
-    public Env environment;
+    public MundusEnvironment environment;
     public Skybox skybox;
 
     public GameObject currentSelection;
@@ -43,7 +43,7 @@ public class Scene implements Disposable {
     public PerspectiveCamera cam;
 
     public Scene() {
-        environment = new Env();
+        environment = new MundusEnvironment();
         currentSelection = null;
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

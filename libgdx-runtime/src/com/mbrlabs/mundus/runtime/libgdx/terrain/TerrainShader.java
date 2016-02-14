@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.runtime.libgdx.terrain;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -26,7 +25,7 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.commons.env.Env;
+import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
@@ -120,7 +119,7 @@ public class TerrainShader extends BaseShader {
         }
 
         // Fog
-        final Fog fog = ((Env)renderable.environment).getFog();
+        final Fog fog = ((MundusEnvironment)renderable.environment).getFog();
         if(fog == null) {
             set(UNIFORM_FOG_DENSITY, 0f);
             set(UNIFORM_FOG_GRADIENT, 0f);

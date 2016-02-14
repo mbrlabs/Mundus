@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.shader;
+package com.mbrlabs.mundus.terrain;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,14 +25,11 @@ import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.commons.env.Env;
+import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.SunLight;
 import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
-import com.mbrlabs.mundus.terrain.SplatTexture;
-import com.mbrlabs.mundus.terrain.TerrainTexture;
-import com.mbrlabs.mundus.terrain.TerrainTextureAttribute;
 
 /**
  * @author Marcus Brummer
@@ -40,8 +37,8 @@ import com.mbrlabs.mundus.terrain.TerrainTextureAttribute;
  */
 public class TerrainShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/shader/terrain.vert.glsl";
-    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/shader/terrain.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/terrain/terrain.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/terrain/terrain.frag.glsl";
 
     // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
@@ -122,7 +119,7 @@ public class TerrainShader extends BaseShader {
         }
 
         // Fog
-        final Fog fog = ((Env)renderable.environment).getFog();
+        final Fog fog = ((MundusEnvironment)renderable.environment).getFog();
         if(fog == null) {
             set(UNIFORM_FOG_DENSITY, 0f);
             set(UNIFORM_FOG_GRADIENT, 0f);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. See AUTHORS file.
+ * Copyright (c) 2015. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,43 +14,35 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.shaders;
+package com.mbrlabs.mundus.shader;
 
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.attributes.CubemapAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Matrix4;
-import com.mbrlabs.mundus.commons.env.Env;
-import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
+import com.mbrlabs.mundus.utils.GlUtils;
 
 /**
  * @author Marcus Brummer
- * @version 08-01-2016
+ * @version 03-12-2015
  */
-public class SkyboxShader extends BaseShader {
+public class WireframeShader extends BaseShader {
 
-    private final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/skybox.vert.glsl";
-    private final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/skybox.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/shader/wire.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/shader/wire.frag.glsl";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
-    protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
-
-    protected final int UNIFORM_FOG = register(new Uniform("u_fog"));
-    protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
 
     private ShaderProgram program;
 
-    private Matrix4 transform = new Matrix4();
-
-    public SkyboxShader() {
+    public WireframeShader() {
         super();
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, true);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, false);
     }
 
     @Override
@@ -71,40 +63,25 @@ public class SkyboxShader extends BaseShader {
     @Override
     public void begin(Camera camera, RenderContext context) {
         this.context = context;
-        context.begin();
+        this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
+        this.context.setDepthMask(true);
+
         program.begin();
 
         set(UNIFORM_PROJ_VIEW_MATRIX, camera.combined);
-        transform.idt();
-        transform.translate(camera.position);
-        set(UNIFORM_TRANS_MATRIX, transform);
     }
 
     @Override
     public void render(Renderable renderable) {
-
-        // texture uniform
-        CubemapAttribute cubemapAttribute = ((CubemapAttribute)(renderable.material.get(CubemapAttribute.EnvironmentMap)));
-        if(cubemapAttribute != null) {
-            set(UNIFORM_TEXTURE, cubemapAttribute.textureDescription);
-        }
-
-        // Fog
-        Fog fog = ((Env)renderable.environment).getFog();
-        if(fog == null) {
-            set(UNIFORM_FOG, 0);
-        } else {
-            set(UNIFORM_FOG, 1);
-            set(UNIFORM_FOG_COLOR, fog.color);
-        }
+        set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
+        GlUtils.Unsafe.polygonModeWireframe();
 
         renderable.meshPart.render(program);
     }
 
-
     @Override
     public void end() {
-        context.end();
+        GlUtils.Unsafe.polygonModeFill();
         program.end();
     }
 

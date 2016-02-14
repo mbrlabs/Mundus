@@ -146,7 +146,6 @@ public class Importer {
         go.transform.rotate(trans[3], trans[4], trans[5], 0);
         go.transform.scl(trans[6], trans[7], trans[8]);
 
-        // TODO model component
         if(dto.getTerrC() != null) {
             go.getComponents().add(convert(go, dto.getTerrC(), terrains));
         }

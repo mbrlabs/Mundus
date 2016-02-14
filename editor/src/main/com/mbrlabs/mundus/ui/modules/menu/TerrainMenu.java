@@ -74,7 +74,6 @@ public class TerrainMenu extends Menu {
         loadHeightmap.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("asdfadf");
                 // TODO dialog for selecting terrain + heightmap
                 if(projectContext.currScene.terrainGroup.size() > 0) {
                     Terrain terrain = projectContext.currScene.terrainGroup.first();

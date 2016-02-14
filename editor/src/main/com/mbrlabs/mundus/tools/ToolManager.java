@@ -59,14 +59,14 @@ public class ToolManager extends InputAdapter implements Disposable {
         this.history = history;
 
         terrainBrushes = new Array<>();
-        terrainBrushes.add(new SmoothCircleBrush(projectContext, shaders.brushShader, modelBatch, history));
-        terrainBrushes.add(new CircleBrush(projectContext, shaders.brushShader, modelBatch, history));
-        terrainBrushes.add(new StarBrush(projectContext, shaders.brushShader, modelBatch, history));
-        terrainBrushes.add(new ConfettiBrush(projectContext, shaders.brushShader, modelBatch, history));
+        terrainBrushes.add(new SmoothCircleBrush(projectContext, shaders.wireframeShader, modelBatch, history));
+        terrainBrushes.add(new CircleBrush(projectContext, shaders.wireframeShader, modelBatch, history));
+        terrainBrushes.add(new StarBrush(projectContext, shaders.wireframeShader, modelBatch, history));
+        terrainBrushes.add(new ConfettiBrush(projectContext, shaders.wireframeShader, modelBatch, history));
 
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
-        translateTool = new TranslateTool(projectContext, shaders.brushShader, modelBatch, history);
-        selectionTool = new SelectionTool(projectContext, shaders.brushShader, modelBatch, history);
+        translateTool = new TranslateTool(projectContext, shaders.wireframeShader, modelBatch, history);
+        selectionTool = new SelectionTool(projectContext, shaders.wireframeShader, modelBatch, history);
     }
 
     public void activateTool(Tool tool) {
