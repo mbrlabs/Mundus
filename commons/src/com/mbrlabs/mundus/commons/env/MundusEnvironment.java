@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.commons.env;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.mbrlabs.mundus.commons.env.lights.*;
 
 /**
  * @author Marcus Brummer
@@ -24,7 +25,14 @@ import com.badlogic.gdx.graphics.g3d.Environment;
  */
 public class MundusEnvironment extends Environment {
 
-    private Fog fog = null;
+    private Fog fog;
+    private BaseLight ambientLight;
+
+    public MundusEnvironment() {
+        super();
+        ambientLight = new BaseLight();
+        fog = null;
+    }
 
     public MundusEnvironment add (SunLight light) {
         SunLightsAttribute sunLights = ((SunLightsAttribute)get(SunLightsAttribute.Type));
@@ -32,6 +40,18 @@ public class MundusEnvironment extends Environment {
         sunLights.lights.add(light);
 
         return this;
+    }
+
+    public MundusEnvironment add (DirectionalLight light) {
+        DirectionalLightsAttribute dirLights = ((DirectionalLightsAttribute)get(DirectionalLightsAttribute.Type));
+        if (dirLights == null) set(dirLights = new DirectionalLightsAttribute());
+        dirLights.lights.add(light);
+
+        return this;
+    }
+
+    public BaseLight getAmbientLight() {
+        return ambientLight;
     }
 
     public Fog getFog() {

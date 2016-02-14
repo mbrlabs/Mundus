@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.env;
+package com.mbrlabs.mundus.commons.env.lights;
 
 import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.utils.Array;

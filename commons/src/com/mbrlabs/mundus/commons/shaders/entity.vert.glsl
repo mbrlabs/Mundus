@@ -10,7 +10,13 @@ uniform vec3 u_camPos;
 struct DirectionalLight {
 	vec4 color;
 	vec3 direction;
+    float intensity;
 };
+struct AmbientLight {
+	vec4 color;
+	float intensity;
+};
+uniform AmbientLight u_ambientLight;
 uniform DirectionalLight u_directionalLight;
 
 // Fog
@@ -29,10 +35,10 @@ void main(void) {
     // =================================================================
     //                          Lighting
     // =================================================================
-    v_lighting = u_directionalLight.color * dot(a_normal, u_directionalLight.direction) * 0.2; // TODO pass intensity to shader
+    v_lighting = u_directionalLight.color * dot(a_normal, u_directionalLight.direction) * u_directionalLight.intensity;
 
     // ambient light
-    v_lighting += vec4(1.0, 1.0, 1.0, 1.0) * 0.3; // TODO pass color & intensity to shader
+    v_lighting += u_ambientLight.color * u_ambientLight.intensity;
 
     // =================================================================
     //                          /Lighting

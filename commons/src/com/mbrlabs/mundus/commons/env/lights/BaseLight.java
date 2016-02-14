@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.env;
+package com.mbrlabs.mundus.commons.env.lights;
 
-import com.badlogic.gdx.graphics.g3d.environment.BaseLight;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  * @author Marcus Brummer
- * @version 04-01-2016
+ * @version 14-02-2016
  */
-public class SunLight extends BaseLight {
+public class BaseLight {
 
-    public float intensity = 1;
-    public Vector3 position = new Vector3();
+    public final Color color = new Color(1, 1, 1, 1);
+    public float intensity = 1f;
 
 }

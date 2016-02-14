@@ -20,17 +20,15 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.attributes.DirectionalLightsAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.env.Fog;
-import com.mbrlabs.mundus.commons.env.SunLight;
-import com.mbrlabs.mundus.commons.env.SunLightsAttribute;
+import com.mbrlabs.mundus.commons.env.lights.DirectionalLight;
+import com.mbrlabs.mundus.commons.env.lights.DirectionalLightsAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
@@ -50,8 +48,11 @@ public class EntityShader extends BaseShader {
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
 
     // ============================ LIGHTS ============================
+    protected final int UNIFORM_AMBIENT_LIGHT_COLOR = register(new Uniform("u_ambientLight.color"));
+    protected final int UNIFORM_AMBIENT_LIGHT_INTENSITY = register(new Uniform("u_ambientLight.intensity"));
     protected final int UNIFORM_DIRECTIONAL_LIGHT_COLOR = register(new Uniform("u_directionalLight.color"));
     protected final int UNIFORM_DIRECTIONAL_LIGHT_DIR = register(new Uniform("u_directionalLight.direction"));
+    protected final int UNIFORM_DIRECTIONAL_LIGHT_INTENSITY = register(new Uniform("u_directionalLight.intensity"));
 
     // ============================ FOG ============================
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
@@ -97,10 +98,10 @@ public class EntityShader extends BaseShader {
 
     @Override
     public void render(Renderable renderable) {
+        final MundusEnvironment env = (MundusEnvironment)renderable.environment;
+
+        setLights(env);
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
-
-
-        setLights(renderable);
 
         // texture uniform
         TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
@@ -109,7 +110,7 @@ public class EntityShader extends BaseShader {
         }
 
         // Fog
-        Fog fog = ((MundusEnvironment)renderable.environment).getFog();
+        final Fog fog = env.getFog();
         if(fog == null) {
             set(UNIFORM_FOG_DENSITY, 0f);
             set(UNIFORM_FOG_GRADIENT, 0f);
@@ -123,17 +124,23 @@ public class EntityShader extends BaseShader {
         renderable.meshPart.render(program);
     }
 
-    private void setLights(Renderable renderable) {
+    private void setLights(MundusEnvironment env) {
+        // ambient
+        set(UNIFORM_AMBIENT_LIGHT_COLOR, env.getAmbientLight().color);
+        set(UNIFORM_AMBIENT_LIGHT_INTENSITY, env.getAmbientLight().intensity);
+
         // TODO light array for each light type
+
 
         // directional lights
         final DirectionalLightsAttribute dirLightAttribs =
-                renderable.environment.get(DirectionalLightsAttribute.class, DirectionalLightsAttribute.Type);
+                env.get(DirectionalLightsAttribute.class, DirectionalLightsAttribute.Type);
         final Array<DirectionalLight> dirLights = dirLightAttribs == null ? null : dirLightAttribs.lights;
         if(dirLights != null && dirLights.size > 0) {
             final DirectionalLight light = dirLights.first();
             set(UNIFORM_DIRECTIONAL_LIGHT_COLOR, light.color);
             set(UNIFORM_DIRECTIONAL_LIGHT_DIR, light.direction);
+            set(UNIFORM_DIRECTIONAL_LIGHT_INTENSITY, light.intensity);
         }
 
         // TODO point lights, spot lights
