@@ -54,11 +54,11 @@ public class Scene implements Disposable {
 
         DirectionalLight dirLight = new DirectionalLight();
         dirLight.color.set(1,1,1,1);
-        dirLight.intensity = 0.2f;
-        dirLight.direction.set(90, -30, 0);
+        dirLight.intensity = 0.8f;
+        dirLight.direction.set(0, -1f, 0);
         dirLight.direction.nor();
         environment.add(dirLight);
-        environment.getAmbientLight().intensity = 0.4f;
+        environment.getAmbientLight().intensity = 0.2f;
 
         sceneGraph = new SceneGraph(this);
     }

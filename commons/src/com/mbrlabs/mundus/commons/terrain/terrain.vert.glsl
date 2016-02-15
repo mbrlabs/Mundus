@@ -30,24 +30,15 @@ varying vec2 v_texCoord0;
 varying vec2 splatPosition;
 varying float v_fog;
 varying vec4 v_lighting;
+varying vec3 v_normal;
 
 void main(void) {
-
     // position
     vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);
     gl_Position = u_projViewMatrix * worldPos;
 
-    // =================================================================
-    //                          Lighting
-    // =================================================================
-    v_lighting = u_directionalLight.color * dot(a_normal, u_directionalLight.direction) * u_directionalLight.intensity;
-
-    // ambient light
-    v_lighting += u_ambientLight.color * u_ambientLight.intensity;
-
-    // =================================================================
-    //                          /Lighting
-    // =================================================================
+    // normal for lighting
+    v_normal = normalize((u_transMatrix * vec4(a_normal, 0.0)).xyz);
 
     // texture stuff
     v_texCoord0 = a_texCoord0;

@@ -3,7 +3,6 @@ precision mediump float;
 #endif
 
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
-const vec3 LIGHT_COLOR = vec3(1,1,1);
 
 varying vec2 v_texCoord0;
 varying vec3 v_vectorToLight;

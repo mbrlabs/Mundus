@@ -20,13 +20,26 @@ uniform vec4 u_fogColor;
 
 // light
 varying vec4 v_lighting;
+varying vec3 v_normal;
 
-varying vec3 v_vectorToLight;
-varying vec3 v_surfaceNormal;
 varying vec2 v_texCoord0;
 varying float v_fog;
 
 varying vec2 splatPosition;
+
+
+// lights
+struct DirectionalLight {
+	vec4 color;
+	vec3 direction;
+	float intensity;
+};
+struct AmbientLight {
+	vec4 color;
+	float intensity;
+};
+uniform AmbientLight u_ambientLight;
+uniform DirectionalLight u_directionalLight;
 
 
 void main(void) {
@@ -41,8 +54,21 @@ void main(void) {
         gl_FragColor = mix(gl_FragColor, texture2D(u_texture_a, v_texCoord0), splat.a);
     }
 
+    // =================================================================
+    //                          Lighting
+    // =================================================================
+    vec4 diffuse_light = u_directionalLight.color
+        * (dot(-u_directionalLight.direction, v_normal) * u_directionalLight.intensity);
+
+    // ambient light
+    diffuse_light += u_ambientLight.color * u_ambientLight.intensity;
+
+    // =================================================================
+    //                          /Lighting
+    // =================================================================
+
     // lighting
-    gl_FragColor *= v_lighting;
+    gl_FragColor *= diffuse_light;
     // fog
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
 }

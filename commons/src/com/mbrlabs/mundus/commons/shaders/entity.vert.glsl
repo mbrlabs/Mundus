@@ -35,7 +35,9 @@ void main(void) {
     // =================================================================
     //                          Lighting
     // =================================================================
-    v_lighting = u_directionalLight.color * dot(a_normal, u_directionalLight.direction) * u_directionalLight.intensity;
+    vec3 normal = normalize((u_transMatrix * vec4(a_normal, 0.0)).xyz);
+    v_lighting = u_directionalLight.color
+        * (dot(-u_directionalLight.direction, normal) * u_directionalLight.intensity);
 
     // ambient light
     v_lighting += u_ambientLight.color * u_ambientLight.intensity;
