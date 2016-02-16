@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.core.kryo;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -86,8 +87,8 @@ public class DescriptorConverter {
         final float[] rot = descriptor.getRotation();
         final float[] scl = descriptor.getScale();
 
-        go.transform.translate(pos[0], pos[1], pos[2]);
-        go.transform.rotate(rot[0], rot[1], rot[2], 0);
+        go.translate(pos[0], pos[1], pos[2], true);
+        go.rotate(rot[0], rot[1], rot[2]);
         go.transform.scl(scl[0], scl[0], scl[0]);
 
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -123,9 +124,9 @@ public class DescriptorConverter {
 
         // rotation
         go.transform.getRotation(tempQuat);
-        descriptor.getRotation()[0] = tempQuat.x;
-        descriptor.getRotation()[1] = tempQuat.y;
-        descriptor.getRotation()[2] = tempQuat.z;
+        descriptor.getRotation()[0] = tempQuat.getYaw();
+        descriptor.getRotation()[1] = tempQuat.getPitch();
+        descriptor.getRotation()[2] = tempQuat.getRoll();
 
         // scaling
         go.transform.getScale(tempV3);

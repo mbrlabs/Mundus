@@ -241,7 +241,7 @@ public class ImportModelTab extends Tab {
         private void showPreview() {
             previewInstance = new ModelInstance(previewModel);
 
-            // scale to 2 open gl unit
+            // scale to 2 open gl units
             BoundingBox boundingBox = previewInstance.calculateBoundingBox(new BoundingBox());
             Vector3 max = boundingBox.getMax(new Vector3());
             float maxDim = 0;

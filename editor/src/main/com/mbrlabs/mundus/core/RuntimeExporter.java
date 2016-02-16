@@ -196,9 +196,9 @@ public class RuntimeExporter {
 
         // rotation
         gameObject.transform.getRotation(quat);
-        dto.getTrans()[3] = quat.x;
-        dto.getTrans()[4] = quat.y;
-        dto.getTrans()[5] = quat.z;
+        dto.getTrans()[3] = quat.getYaw();
+        dto.getTrans()[4] = quat.getPitch();
+        dto.getTrans()[5] = quat.getRoll();
 
         // scale
         gameObject.transform.getScale(vec3);
