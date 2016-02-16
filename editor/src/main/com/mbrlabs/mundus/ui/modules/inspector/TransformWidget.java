@@ -107,7 +107,7 @@ public class TransformWidget extends BaseInspectorWidget {
                     TranslateCommand command = new TranslateCommand(go);
                     go.transform.getTranslation(tempV3);
                     command.setBefore(tempV3);
-                    go.setTranslation(Float.parseFloat(posX.getText()), tempV3.y, tempV3.z);
+                    go.setTranslation(Float.parseFloat(posX.getText()), tempV3.y, tempV3.z, true);
                     go.transform.getTranslation(tempV3);
                     command.setAfter(tempV3);
                     history.add(command);
@@ -124,11 +124,11 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 try {
                     go.transform.getTranslation(tempV3);
-                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
                     TranslateCommand command = new TranslateCommand(go);
                     go.transform.getTranslation(tempV3);
                     command.setBefore(tempV3);
-                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
                     go.transform.getTranslation(tempV3);
                     command.setAfter(tempV3);
                     history.add(command);
@@ -145,11 +145,11 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 try {
                     go.transform.getTranslation(tempV3);
-                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z);
+                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
                     TranslateCommand command = new TranslateCommand(go);
                     go.transform.getTranslation(tempV3);
                     command.setBefore(tempV3);
-                    go.setTranslation(tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()));
+                    go.setTranslation(tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()), true);
                     go.transform.getTranslation(tempV3);
                     command.setAfter(tempV3);
                     history.add(command);

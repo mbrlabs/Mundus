@@ -195,26 +195,34 @@ public class GameObject implements Iterable<GameObject> {
         return this.transform;
     }
 
-    public void setTranslation(float x, float y, float z) {
+    public void setTranslation(float x, float y, float z, boolean globalSpace) {
         transform.getTranslation(tempVec0);
         float offsetX = x - tempVec0.x;
         float offsetY = y - tempVec0.y;
         float offsetZ = z - tempVec0.z;
-        transform.translate(offsetX, offsetY, offsetZ);
+        if(globalSpace) {
+            transform.trn(offsetX, offsetY, offsetZ);
+        } else {
+            transform.translate(offsetX, offsetY, offsetZ);
+        }
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.translate(offsetX, offsetY, offsetZ);
+                node.translate(offsetX, offsetY, offsetZ, globalSpace);
             }
         }
     }
 
-    public void translate(float x, float y, float z) {
-        transform.translate(x, y, z);
+    public void translate(float x, float y, float z, boolean globalSpace) {
+        if(globalSpace) {
+            transform.trn(x, y, z);
+        } else {
+            transform.translate(x, y, z);
+        }
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.translate(x, y, z);
+                node.translate(x, y, z, globalSpace);
             }
         }
     }
