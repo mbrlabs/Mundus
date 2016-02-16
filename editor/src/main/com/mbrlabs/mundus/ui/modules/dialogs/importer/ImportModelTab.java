@@ -16,10 +16,20 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs.importer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -40,6 +50,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
+import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
@@ -49,7 +60,6 @@ import com.mbrlabs.mundus.utils.FileFormatUtils;
 public class ImportModelTab extends Tab {
 
     private ImportModelTable importModelTable;
-
     private ImportDialog dialog;
 
     @Inject
@@ -89,7 +99,7 @@ public class ImportModelTab extends Tab {
      */
     private class ImportModelTable extends VisTable implements Disposable {
         // UI elements
-        private Container fake3dViewport;
+        private RenderWidget renderWidget;
         private VisTextField name = new VisTextField();
         private VisTextButton importBtn = new VisTextButton("IMPORT");
         private FileChooserField modelInput = new FileChooserField(300);
@@ -101,8 +111,25 @@ public class ImportModelTab extends Tab {
 
         private ImportManager.ImportedModel importedModel;
 
+        private ModelBatch modelBatch;
+        private PerspectiveCamera cam;
+        private Environment env;
+
         public ImportModelTable() {
             super();
+            modelBatch = new ModelBatch();
+
+            cam = new PerspectiveCamera();
+            cam.position.set(0, 5f, 0);
+            cam.lookAt(0,0,0);
+            cam.near = 0.1f;
+            cam.far = 100f;
+            cam.update();
+
+            env = new Environment();
+            env.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+            env.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
             this.setupUI();
             this.setupListener();
         }
@@ -113,13 +140,24 @@ public class ImportModelTab extends Tab {
             root.padTop(6).padRight(6).padBottom(22);
             add(root);
 
+
             VisTable inputTable = new VisTable();
-            fake3dViewport = new Container();
-            fake3dViewport.setBackground(VisUI.getSkin().getDrawable("default-pane"));
-            fake3dViewport.setActor(new VisLabel("PREVIEW"));
+            renderWidget = new RenderWidget(cam);
+            renderWidget.setRenderer(new RenderWidget.Renderer() {
+                @Override
+                public void render(Camera cam) {
+                    if(previewInstance != null) {
+                        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+                        previewInstance.transform.rotate(0, 0, 1, 2f);
+                        modelBatch.begin(cam);
+                        modelBatch.render(previewInstance, env);
+                        modelBatch.end();
+                    }
+                }
+            });
 
             root.add(inputTable).width(300).height(300).padRight(10);
-            root.add(fake3dViewport).width(300).height(300);
+            root.add(renderWidget).width(300).height(300).expand().fill();
 
             inputTable.left().top();
             inputTable.add(new VisLabel("Model File")).left().padBottom(5).row();
@@ -201,20 +239,24 @@ public class ImportModelTab extends Tab {
         }
 
         private void showPreview() {
-            if(fake3dViewport.getActor() != null) {
-                fake3dViewport.removeActor(fake3dViewport.getActor());
-            }
-
             previewInstance = new ModelInstance(previewModel);
-            Ui.getInstance().wireModelToActor(fake3dViewport, previewInstance);
+
+            // scale to 2 open gl unit
+            BoundingBox boundingBox = previewInstance.calculateBoundingBox(new BoundingBox());
+            Vector3 max = boundingBox.getMax(new Vector3());
+            float maxDim = 0;
+            if(max.x > maxDim) maxDim = max.x;
+            if(max.y > maxDim) maxDim = max.y;
+            if(max.z > maxDim) maxDim = max.z;
+            previewInstance.transform.scl(2f / maxDim);
         }
 
         @Override
         public void dispose() {
-            Ui.getInstance().unwire(fake3dViewport);
             if(previewModel != null) {
                 previewModel.dispose();
                 previewModel = null;
+                previewInstance = null;
             }
             modelInput.clear();
             textureInput.clear();

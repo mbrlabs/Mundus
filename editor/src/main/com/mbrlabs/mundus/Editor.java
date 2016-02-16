@@ -39,7 +39,7 @@ import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.widgets.Widget3D;
+import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.Compass;
 import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.TestUtils;
@@ -55,7 +55,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     private Compass compass;
     private ModelBatch batch;
 
-    private Widget3D widget3D;
+    private RenderWidget widget3D;
 
     @Inject
     private FreeCamController camController;
@@ -86,7 +86,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         widget3D =  Ui.getInstance().getWidget3D();
         widget3D.setCam(projectContext.currScene.cam);
-        widget3D.setRenderer(new Widget3D.Renderer() {
+        widget3D.setRenderer(new RenderWidget.Renderer() {
             @Override
             public void render(Camera cam) {
                 if(projectContext.currScene.skybox != null) {

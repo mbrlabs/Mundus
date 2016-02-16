@@ -39,7 +39,7 @@ import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainTexture;
  * @author Marcus Brummer
  * @version 25-01-2016
  */
-public class Importer {
+public class MundusImporter {
 
     private Shader terrainShader;
     private Shader entityShader;
@@ -47,7 +47,7 @@ public class Importer {
     private final String assetsFolder;
     private G3dModelLoader g3dModelLoader;
 
-    public Importer(String assetsFolder, Shader terrainShader, Shader entityShader) {
+    public MundusImporter(String assetsFolder, Shader terrainShader, Shader entityShader) {
         if(assetsFolder.endsWith("/")) {
             this.assetsFolder = assetsFolder;
         } else {

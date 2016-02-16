@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.ui.widgets;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,20 +29,22 @@ import com.mbrlabs.mundus.ui.Ui;
  * @author Marcus Brummer
  * @version 27-01-2016
  */
-public class Widget3D extends Widget {
+public class RenderWidget extends Widget {
 
     private ScreenViewport viewport;
     private PerspectiveCamera cam;
 
     private Renderer renderer;
 
-    public Widget3D(PerspectiveCamera cam) {
+    private static Vector2 vec = new Vector2();
+
+    public RenderWidget(PerspectiveCamera cam) {
         super();
         this.cam = cam;
         viewport = new ScreenViewport(this.cam);
     }
 
-    public Widget3D() {
+    public RenderWidget() {
         super();
         viewport = new ScreenViewport();
     }
@@ -66,7 +69,9 @@ public class Widget3D extends Widget {
         // render part of the ui & pause rest
         batch.end();
 
-        viewport.setScreenPosition((int)getX(), (int) getY());
+        vec.set(getOriginX(), getOriginY());
+        vec = localToStageCoordinates(vec);
+        viewport.setScreenPosition((int)vec.x, (int) vec.y);
         viewport.apply();
         renderer.render(cam);
 
@@ -74,12 +79,6 @@ public class Widget3D extends Widget {
 
         // proceed ui rendering
         batch.begin();
-    }
-
-    @Override
-    protected void positionChanged () {
-        super.positionChanged();
-        viewport.setScreenPosition((int)getX(), (int) getY());
     }
 
     @Override

@@ -3,6 +3,7 @@
 - Implemented a shortcut system
 - The 3D viewport is now a UI widget and scales correctly with the window size
 - Implemented game object rotation via the transform section in the inspector
+- New lighting system for the terrain & entity shader
 
 [0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2

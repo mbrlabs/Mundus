@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisDialog;
@@ -29,13 +30,13 @@ import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
-import com.mbrlabs.mundus.ui.widgets.Widget3D;
+import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 
 /**
  * @author Marcus Brummer
  * @version 27-11-2015
  */
-public class Ui extends MyStage {
+public class Ui extends Stage {
 
     private VisTable root;
     private MundusMenuBar menuBar;
@@ -56,7 +57,7 @@ public class Ui extends MyStage {
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
 
-    private Widget3D widget3D;
+    private RenderWidget widget3D;
 
     private static Ui INSTANCE;
 
@@ -88,7 +89,7 @@ public class Ui extends MyStage {
         VisTable center = new VisTable();
         sidebar = new Sidebar();
         inspector = new Inspector();
-        widget3D = new Widget3D();
+        widget3D = new RenderWidget();
 
         center.add(sidebar).width(300).top().left().expandY().fillY();
         center.add(widget3D).pad(2).expand().fill();
@@ -173,7 +174,7 @@ public class Ui extends MyStage {
         return skyboxDialog;
     }
 
-    public Widget3D getWidget3D() {
+    public RenderWidget getWidget3D() {
         return widget3D;
     }
 }
