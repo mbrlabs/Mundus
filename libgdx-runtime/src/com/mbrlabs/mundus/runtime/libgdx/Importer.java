@@ -30,14 +30,10 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
-import com.mbrlabs.mundus.commons.shaders.EntityShader;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainComponent;
-import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainShader;
 import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainTexture;
-
-import javax.xml.soap.Text;
 
 /**
  * @author Marcus Brummer

@@ -27,7 +27,10 @@ import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.Pool;
 import com.mbrlabs.mundus.commons.terrain.BaseTerrain;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 
 /**

@@ -27,8 +27,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.mbrlabs.mundus.commons.model.MModelInstance;
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -38,7 +36,6 @@ import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.input.InputManager;
-import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
@@ -141,7 +138,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         camController.update();
         toolManager.act();
         ui.draw();
-	}
+    }
 
     private void resetCam() {
         if(compass != null) {

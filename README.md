@@ -37,9 +37,8 @@ very much for backward compatibility, so don't fall to much in love with your cr
 I will add an option in the settings menu in the future, so that you set the layout yourself. 
 
 ## Runtime
-Currently there is no runtime.
-Since Mundus is built on top of the awesome libGDX framework, the first runtime that i'm going to write
-will be for libGDX.
+Currently i'm in the progress of implementing the libGDX runtime, which is included in this repository.
+Runtimes for other engines/frameworks are not planed in the near future.
 
 ## Dev Platforms
 Since this is Java (+ libGDX with some native libs) it should run on Windows, Mac & Linux 

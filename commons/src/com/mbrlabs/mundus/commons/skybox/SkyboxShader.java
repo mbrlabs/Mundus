@@ -24,8 +24,8 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
-import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.env.Fog;
+import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**

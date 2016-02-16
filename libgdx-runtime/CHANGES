@@ -1,8 +1,3 @@
-[0.0.4] ~ 10/01/2016
-- Terrain loading
-- Custom entity & terrain shader
-- MundusRenderer for easy rendering of scenes
-- Fog
-
-[0.0.3]
-- Simple Model loading & rendering
+[0.0.7]
+- Added loading of exported projects
+- Added rendering of terrain & models

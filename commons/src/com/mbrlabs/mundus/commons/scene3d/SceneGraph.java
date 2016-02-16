@@ -18,9 +18,7 @@ package com.mbrlabs.mundus.commons.scene3d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
-import com.mbrlabs.mundus.commons.scene3d.components.Component;
 
 /**
  * @author Marcus Brummer

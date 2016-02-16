@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.commons.scene3d.traversal;
 
 import com.badlogic.gdx.utils.Queue;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 
 import java.util.Iterator;
 
