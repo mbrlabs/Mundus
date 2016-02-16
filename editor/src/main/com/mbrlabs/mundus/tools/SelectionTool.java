@@ -111,13 +111,14 @@ public class SelectionTool extends Tool {
     @Override
     public void render() {
         if(projectContext.currScene.currentSelection != null) {
-            ModelComponent comp = (ModelComponent)
-                    projectContext.currScene.currentSelection.findComponentByType(Component.Type.MODEL);
-            if(comp != null) {
-                batch.begin(projectContext.currScene.cam);
-                batch.render(comp.getModelInstance().modelInstance, shader);
-                batch.end();
+            batch.begin(projectContext.currScene.cam);
+            for(GameObject go : projectContext.currScene.currentSelection) {
+                ModelComponent mc = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
+                if(mc != null) {
+                    batch.render(mc.getModelInstance().modelInstance, shader);
+                }
             }
+            batch.end();
         }
     }
 
