@@ -257,6 +257,17 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
+    public Vector3 calculateMedium(Vector3 out) {
+        transform.getTranslation(out);
+        if(childs == null) return out;
+
+        for(GameObject go : childs) {
+            go.transform.getTranslation(tempVec0);
+            out.add(tempVec0);
+        }
+        return out.scl(1f / (childs.size+1));
+    }
+
     public void render(float delta) {
         if(active) {
             for (Component component : this.components) {

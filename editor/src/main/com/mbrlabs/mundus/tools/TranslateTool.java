@@ -135,6 +135,7 @@ public class TranslateTool extends SelectionTool {
     public void gameObjectSelected(GameObject go) {
         super.gameObjectSelected(go);
         scaleHandles();
+        positionHandles();
     }
 
     @Override
@@ -163,14 +164,7 @@ public class TranslateTool extends SelectionTool {
         super.act();
 
         if(projectContext.currScene.currentSelection != null) {
-            Vector3 selectionPos = projectContext.currScene.currentSelection.transform.getTranslation(temp0);
-
-            //selectionPos.add(selectedGameObject.center);
-            xHandle.setTranslation(selectionPos);
-            yHandle.setTranslation(selectionPos);
-            zHandle.setTranslation(selectionPos);
-            xzPlaneHandle.setTranslation(selectionPos);
-
+            positionHandles();
             if(state == State.IDLE) return;
 
             Ray ray = projectContext.currScene.viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
@@ -218,6 +212,14 @@ public class TranslateTool extends SelectionTool {
         yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
         zHandle.setToScaling(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
         xzPlaneHandle.setToScaling(scaleFactor*0.1f,scaleFactor*0.1f, scaleFactor*0.1f);
+    }
+
+    private void positionHandles() {
+        final Vector3 medium = projectContext.currScene.currentSelection.calculateMedium(temp0);
+        xHandle.setTranslation(medium);
+        yHandle.setTranslation(medium);
+        zHandle.setTranslation(medium);
+        xzPlaneHandle.setTranslation(medium);
     }
 
     @Override
