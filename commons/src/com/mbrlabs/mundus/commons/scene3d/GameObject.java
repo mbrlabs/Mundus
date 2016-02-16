@@ -16,7 +16,9 @@
 
 package com.mbrlabs.mundus.commons.scene3d;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -33,6 +35,7 @@ public class GameObject implements Iterable<GameObject> {
     public static final String DEFAULT_NAME = "GameObject";
     private static Vector3 tempVec0 = new Vector3();
     private static Vector3 tempVec1 = new Vector3();
+    private static Quaternion tempQuat = new Quaternion();
 
     private long id;
 
@@ -212,6 +215,36 @@ public class GameObject implements Iterable<GameObject> {
         if (childs != null) {
             for (GameObject node : this.childs) {
                 node.translate(x, y, z);
+            }
+        }
+    }
+
+    public void setRotation(float x, float y, float z) {
+        transform.getRotation(tempQuat).conjugate();
+        transform.rotate(tempQuat);
+        tempQuat.setEulerAnglesRad(
+                MathUtils.degreesToRadians * x,
+                MathUtils.degreesToRadians * y,
+                MathUtils.degreesToRadians * z);
+        transform.rotate(tempQuat);
+
+        if (childs != null) {
+            for (GameObject node : this.childs) {
+                node.setRotation(x, y, z);
+            }
+        }
+    }
+
+    public void rotate(float x, float y, float z) {
+        tempQuat.setEulerAnglesRad(
+                MathUtils.degreesToRadians * x,
+                MathUtils.degreesToRadians * y,
+                MathUtils.degreesToRadians * z);
+        transform.rotate(tempQuat);
+
+        if (childs != null) {
+            for (GameObject node : this.childs) {
+                node.rotate(x, y, z);
             }
         }
     }

@@ -26,8 +26,10 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.RotateCommand;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
+import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
  * @author Marcus Brummer
@@ -157,24 +159,49 @@ public class TransformWidget extends BaseInspectorWidget {
             }
         });
 
+        ChangeListener rotateListener = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go == null) return;
+                try {
+                    RotateCommand rotateCommand = new RotateCommand(go);
+                    go.transform.getRotation(tempQuat);
+                    rotateCommand.setBefore(tempQuat);
+                    float x = Float.parseFloat(rotX.getText());
+                    float y = Float.parseFloat(rotY.getText());
+                    float z = Float.parseFloat(rotZ.getText());
+                    go.setRotation(x, y, z);
+                    go.transform.getRotation(tempQuat);
+                    rotateCommand.setAfter(tempQuat);
+                    history.add(rotateCommand);
+                } catch (NumberFormatException nfe) {
+                    // blah...
+                }
+            }
+        };
+        rotX.addListener(rotateListener);
+        rotY.addListener(rotateListener);
+        rotZ.addListener(rotateListener);
+
     }
 
     @Override
     public void setValues(GameObject go) {
         go.transform.getTranslation(tempV3);
-        posX.setText(String.valueOf(tempV3.x));
-        posY.setText(String.valueOf(tempV3.y));
-        posZ.setText(String.valueOf(tempV3.z));
+        posX.setText(StringUtils.formatFloat(tempV3.x, 2));
+        posY.setText(StringUtils.formatFloat(tempV3.y, 2));
+        posZ.setText(StringUtils.formatFloat(tempV3.z, 2));
 
         go.transform.getRotation(tempQuat);
-        rotX.setText(String.valueOf(tempQuat.x));
-        rotY.setText(String.valueOf(tempQuat.y));
-        rotZ.setText(String.valueOf(tempQuat.z));
+        rotX.setText(StringUtils.formatFloat(tempQuat.x, 2));
+        rotY.setText(StringUtils.formatFloat(tempQuat.y, 2));
+        rotZ.setText(StringUtils.formatFloat(tempQuat.z, 2));
 
         go.transform.getScale(tempV3);
-        scaleX.setText(String.valueOf(tempV3.x));
-        scaleY.setText(String.valueOf(tempV3.y));
-        scaleZ.setText(String.valueOf(tempV3.z));
+        scaleX.setText(StringUtils.formatFloat(tempV3.x, 2));
+        scaleY.setText(StringUtils.formatFloat(tempV3.y, 2));
+        scaleZ.setText(StringUtils.formatFloat(tempV3.z, 2));
     }
 
     @Override

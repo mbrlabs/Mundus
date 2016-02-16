@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class CommandHistory {
 
-    public static final int DEFAULT_LIMIT = 20;
+    public static final int DEFAULT_LIMIT = 50;
 
     private int limit;
     private int pointer;
