@@ -35,6 +35,9 @@ public class FloatFieldWithLabel extends TextFieldWithLabel {
     }
 
     public float getFloat() {
+        if(textField.getText().isEmpty()) {
+            return 0;
+        }
         return Float.parseFloat(textField.getText());
     }
 

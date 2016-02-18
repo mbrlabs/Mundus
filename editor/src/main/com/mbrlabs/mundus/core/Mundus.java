@@ -112,14 +112,28 @@ public class Mundus {
     private static void initStyle() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/open-sans/OpenSans-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        params.size = 13;
         params.kerning = true;
         params.borderStraight = false;
-        BitmapFont font = generator.generateFont(params);
+
+        // font big
+//        params.size = 14;
+//        BitmapFont fontBig = generator.generateFont(params);
+
+        // font norm
+        params.size = 13;
+        BitmapFont fontNorm = generator.generateFont(params);
+
+        // font small
+        params.size = 12;
+        BitmapFont fontSmall = generator.generateFont(params);
         generator.dispose();
 
+        // skin3
         Skin skin = new Skin();
-        skin.add("opensans-regular", font, BitmapFont.class);
+        //skin.add("font-big", fontBig, BitmapFont.class);
+        skin.add("font-norm", fontNorm, BitmapFont.class);
+        skin.add("font-small", fontSmall, BitmapFont.class);
+
         skin.addRegions(new TextureAtlas(Gdx.files.internal("ui/skin/uiskin.atlas")));
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"));
         VisUI.load(skin);

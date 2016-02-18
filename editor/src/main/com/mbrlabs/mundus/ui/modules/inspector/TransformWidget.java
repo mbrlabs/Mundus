@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,7 +29,6 @@ import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.RotateCommand;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
-import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
