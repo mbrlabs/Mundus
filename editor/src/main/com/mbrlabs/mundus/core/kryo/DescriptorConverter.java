@@ -83,6 +83,8 @@ public class DescriptorConverter {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.setActive(descriptor.isActive());
 
+        //System.out.println("GO Descriptor rot: " + descriptor.getRotation()[0] + " " + descriptor.getRotation()[1] + " " + descriptor.getRotation()[2]);
+
         final float[] pos = descriptor.getPosition();
         final float[] rot = descriptor.getRotation();
         final float[] scl = descriptor.getScale();
@@ -111,6 +113,7 @@ public class DescriptorConverter {
     }
 
     public static GameObjectDescriptor convert(GameObject go) {
+
         GameObjectDescriptor descriptor = new GameObjectDescriptor();
         descriptor.setName(go.getName());
         descriptor.setId(go.getId());
@@ -124,9 +127,10 @@ public class DescriptorConverter {
 
         // rotation
         go.transform.getRotation(tempQuat);
-        descriptor.getRotation()[0] = tempQuat.getYaw();
-        descriptor.getRotation()[1] = tempQuat.getPitch();
+        descriptor.getRotation()[0] = tempQuat.getPitch();
+        descriptor.getRotation()[1] = tempQuat.getYaw();
         descriptor.getRotation()[2] = tempQuat.getRoll();
+        //System.out.println("GO rot: " + descriptor.getRotation()[0] + " " + descriptor.getRotation()[1] + " " + descriptor.getRotation()[2]);
 
         // scaling
         go.transform.getScale(tempV3);

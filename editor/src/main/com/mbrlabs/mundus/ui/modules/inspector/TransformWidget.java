@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -166,14 +167,14 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 try {
                     RotateCommand rotateCommand = new RotateCommand(go);
-                    go.transform.getRotation(tempQuat);
-                    rotateCommand.setBefore(tempQuat);
+                    rotateCommand.setBefore(go.transform.getRotation(tempQuat));
+
                     float x = Float.parseFloat(rotX.getText());
                     float y = Float.parseFloat(rotY.getText());
                     float z = Float.parseFloat(rotZ.getText());
                     go.setRotation(x, y, z);
-                    go.transform.getRotation(tempQuat);
-                    rotateCommand.setAfter(tempQuat);
+
+                    rotateCommand.setAfter(go.transform.getRotation(tempQuat));
                     history.add(rotateCommand);
                 } catch (NumberFormatException nfe) {
                     // blah...
@@ -194,9 +195,9 @@ public class TransformWidget extends BaseInspectorWidget {
         posZ.setText(StringUtils.formatFloat(tempV3.z, 2));
 
         go.transform.getRotation(tempQuat);
-        rotX.setText(StringUtils.formatFloat(tempQuat.x, 2));
-        rotY.setText(StringUtils.formatFloat(tempQuat.y, 2));
-        rotZ.setText(StringUtils.formatFloat(tempQuat.z, 2));
+        rotX.setText(StringUtils.formatFloat(tempQuat.getPitch(), 2));
+        rotY.setText(StringUtils.formatFloat(tempQuat.getYaw(), 2));
+        rotZ.setText(StringUtils.formatFloat(tempQuat.getRoll(), 2));
 
         go.transform.getScale(tempV3);
         scaleX.setText(StringUtils.formatFloat(tempV3.x, 2));
