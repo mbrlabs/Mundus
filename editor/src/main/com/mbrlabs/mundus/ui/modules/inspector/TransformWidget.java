@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.RotateCommand;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
+import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
 import com.mbrlabs.mundus.ui.widgets.TextFieldWithLabel;
 import com.mbrlabs.mundus.utils.StringUtils;
 
@@ -41,17 +42,17 @@ public class TransformWidget extends BaseInspectorWidget {
     private static final Vector3 tempV3 = new Vector3();
     private static final Quaternion tempQuat = new Quaternion();
 
-    private TextFieldWithLabel posX;
-    private TextFieldWithLabel posY;
-    private TextFieldWithLabel posZ;
+    private FloatFieldWithLabel posX;
+    private FloatFieldWithLabel posY;
+    private FloatFieldWithLabel posZ;
 
-    private TextFieldWithLabel rotX;
-    private TextFieldWithLabel rotY;
-    private TextFieldWithLabel rotZ;
+    private FloatFieldWithLabel rotX;
+    private FloatFieldWithLabel rotY;
+    private FloatFieldWithLabel rotZ;
 
-    private TextFieldWithLabel scaleX;
-    private TextFieldWithLabel scaleY;
-    private TextFieldWithLabel scaleZ;
+    private FloatFieldWithLabel scaleX;
+    private FloatFieldWithLabel scaleY;
+    private FloatFieldWithLabel scaleZ;
 
     @Inject
     private ProjectContext projectContext;
@@ -69,15 +70,15 @@ public class TransformWidget extends BaseInspectorWidget {
 
     private void init() {
         int size = 65;
-        posX = new TextFieldWithLabel("x", size);
-        posY = new TextFieldWithLabel("y", size);
-        posZ = new TextFieldWithLabel("z", size);
-        rotX = new TextFieldWithLabel("x", size);
-        rotY = new TextFieldWithLabel("y", size);
-        rotZ = new TextFieldWithLabel("z", size);
-        scaleX = new TextFieldWithLabel("x", size);
-        scaleY = new TextFieldWithLabel("y", size);
-        scaleZ = new TextFieldWithLabel("z", size);
+        posX = new FloatFieldWithLabel("x", size);
+        posY = new FloatFieldWithLabel("y", size);
+        posZ = new FloatFieldWithLabel("z", size);
+        rotX = new FloatFieldWithLabel("x", size);
+        rotY = new FloatFieldWithLabel("y", size);
+        rotZ = new FloatFieldWithLabel("z", size);
+        scaleX = new FloatFieldWithLabel("x", size);
+        scaleY = new FloatFieldWithLabel("y", size);
+        scaleZ = new FloatFieldWithLabel("z", size);
     }
 
     private void setupUI() {
@@ -104,17 +105,13 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
-                try {
-                    TranslateCommand command = new TranslateCommand(go);
-                    go.transform.getTranslation(tempV3);
-                    command.setBefore(tempV3);
-                    go.setTranslation(Float.parseFloat(posX.getText()), tempV3.y, tempV3.z, true);
-                    go.transform.getTranslation(tempV3);
-                    command.setAfter(tempV3);
-                    history.add(command);
-                } catch (NumberFormatException nfe) {
-                    // blah...
-                }
+                TranslateCommand command = new TranslateCommand(go);
+                go.transform.getTranslation(tempV3);
+                command.setBefore(tempV3);
+                go.setTranslation(posX.getFloat(), tempV3.y, tempV3.z, true);
+                go.transform.getTranslation(tempV3);
+                command.setAfter(tempV3);
+                history.add(command);
             }
         });
 
@@ -123,19 +120,15 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
-                try {
-                    go.transform.getTranslation(tempV3);
-                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
-                    TranslateCommand command = new TranslateCommand(go);
-                    go.transform.getTranslation(tempV3);
-                    command.setBefore(tempV3);
-                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
-                    go.transform.getTranslation(tempV3);
-                    command.setAfter(tempV3);
-                    history.add(command);
-                } catch (NumberFormatException nfe) {
-                    // blah...
-                }
+                go.transform.getTranslation(tempV3);
+                go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
+                TranslateCommand command = new TranslateCommand(go);
+                go.transform.getTranslation(tempV3);
+                command.setBefore(tempV3);
+                go.setTranslation(tempV3.x, posY.getFloat(), tempV3.z, true);
+                go.transform.getTranslation(tempV3);
+                command.setAfter(tempV3);
+                history.add(command);
             }
         });
 
@@ -144,41 +137,29 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
-                try {
-                    go.transform.getTranslation(tempV3);
-                    go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
-                    TranslateCommand command = new TranslateCommand(go);
-                    go.transform.getTranslation(tempV3);
-                    command.setBefore(tempV3);
-                    go.setTranslation(tempV3.x, tempV3.y, Float.parseFloat(posZ.getText()), true);
-                    go.transform.getTranslation(tempV3);
-                    command.setAfter(tempV3);
-                    history.add(command);
-                } catch (NumberFormatException nfe) {
-                    // blah...
-                }
+                go.transform.getTranslation(tempV3);
+                go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
+                TranslateCommand command = new TranslateCommand(go);
+                go.transform.getTranslation(tempV3);
+                command.setBefore(tempV3);
+                go.setTranslation(tempV3.x, tempV3.y, posZ.getFloat(), true);
+                go.transform.getTranslation(tempV3);
+                command.setAfter(tempV3);
+                history.add(command);
             }
         });
 
         ChangeListener rotateListener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                System.out.println(posX.getFloat());
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
-                try {
-                    RotateCommand rotateCommand = new RotateCommand(go);
-                    rotateCommand.setBefore(go.transform.getRotation(tempQuat));
-
-                    float x = Float.parseFloat(rotX.getText());
-                    float y = Float.parseFloat(rotY.getText());
-                    float z = Float.parseFloat(rotZ.getText());
-                    go.setRotation(x, y, z);
-
-                    rotateCommand.setAfter(go.transform.getRotation(tempQuat));
-                    history.add(rotateCommand);
-                } catch (NumberFormatException nfe) {
-                    // blah...
-                }
+                RotateCommand rotateCommand = new RotateCommand(go);
+                rotateCommand.setBefore(go.transform.getRotation(tempQuat));
+                go.setRotation(rotX.getFloat(), rotY.getFloat(), rotZ.getFloat());
+                rotateCommand.setAfter(go.transform.getRotation(tempQuat));
+                history.add(rotateCommand);
             }
         };
         rotX.addListener(rotateListener);

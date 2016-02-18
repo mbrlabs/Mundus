@@ -28,7 +28,7 @@ public class TextFieldWithLabel extends VisTable {
 
     private int width;
 
-    private VisTextField textField;
+    protected VisTextField textField;
     private VisLabel label;
 
     public TextFieldWithLabel(String labelText, int width) {
