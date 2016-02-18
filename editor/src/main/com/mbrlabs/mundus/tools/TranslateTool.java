@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
@@ -39,6 +40,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
+import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
 
@@ -52,11 +54,17 @@ public class TranslateTool extends SelectionTool {
         TRANSLATE_X, TRANSLATE_Y, TRANSLATE_Z, TRANSLATE_XZ, IDLE
     }
 
+    private static Color COLOR_X = Color.RED;
+    private static Color COLOR_Y = Color.GREEN;
+    private static Color COLOR_Z = Color.BLUE;
+    private static Color COLOR_XZ = Color.CYAN;
+    private static Color COLOR_SELECTED = Color.YELLOW;
+
     private static final boolean DEBUG = false;
 
-    private final float ARROW_THIKNESS = 0.2f;
-    private final float ARROW_CAP_SIZE = 0.1f;
-    private final int ARROW_DIVISIONS = 10;
+    private final float ARROW_THIKNESS = 0.4f;
+    private final float ARROW_CAP_SIZE = 0.15f;
+    private final int ARROW_DIVISIONS = 12;
 
     public static final String NAME = "Translate Tool";
     private Drawable icon;
@@ -81,6 +89,7 @@ public class TranslateTool extends SelectionTool {
     private Vector3 temp1 = new Vector3();
     private Vector3 temp2 = new Vector3();
     private Vector3 temp3 = new Vector3();
+    private Quaternion tempQuat = new Quaternion();
 
     private GameObjectModifiedEvent gameObjectModifiedEvent;
     private TranslateCommand command;
@@ -94,18 +103,18 @@ public class TranslateTool extends SelectionTool {
 
         xHandleModel =  modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
-                new Material(ColorAttribute.createDiffuse(Color.RED)),
+                new Material(ColorAttribute.createDiffuse(COLOR_X)),
                 VertexAttributes.Usage.Position);
         yHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
-                new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+                new Material(ColorAttribute.createDiffuse(COLOR_Y)),
                 VertexAttributes.Usage.Position);
         zHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS,
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
+                new Material(ColorAttribute.createDiffuse(COLOR_Z)),
                 VertexAttributes.Usage.Position);
         xzPlaneHandleModel = modelBuilder.createSphere(1, 1, 1, 20, 20,
-                new Material(ColorAttribute.createDiffuse(Color.CYAN)),
+                new Material(ColorAttribute.createDiffuse(COLOR_XZ)),
                 VertexAttributes.Usage.Position);
 
         xHandle = new Handle(xHandleModel);
@@ -140,6 +149,19 @@ public class TranslateTool extends SelectionTool {
 
     public void setGlobalSpace(boolean global) {
         this.globalSpace = global;
+        xHandle.resetRotation();
+        yHandle.resetRotation();
+        zHandle.resetRotation();
+        if(!global) {
+            projectContext.currScene.currentSelection.transform.getRotation(tempQuat);
+            xHandle.transform.rotate(tempQuat);
+            yHandle.transform.rotate(tempQuat);
+            zHandle.transform.rotate(tempQuat);
+        }
+
+//        xHandle.calculateBounds();
+//        yHandle.calculateBounds();
+//        zHandle.calculateBounds();
     }
 
     @Override
@@ -215,7 +237,7 @@ public class TranslateTool extends SelectionTool {
         xHandle.setToScaling(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
         yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
         zHandle.setToScaling(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
-        xzPlaneHandle.setToScaling(scaleFactor*0.1f,scaleFactor*0.1f, scaleFactor*0.1f);
+        xzPlaneHandle.setToScaling(scaleFactor*0.13f,scaleFactor*0.13f, scaleFactor*0.13f);
     }
 
     private void positionHandles() {
@@ -235,15 +257,19 @@ public class TranslateTool extends SelectionTool {
             if(xzPlaneHandle.isSelected(ray)) {
                 state = State.TRANSLATE_XZ;
                 initTranslate = true;
+                xzPlaneHandle.changeColor(COLOR_SELECTED);
             } else if(xHandle.isSelected(ray)) {
                 state = State.TRANSLATE_X;
                 initTranslate = true;
+                xHandle.changeColor(COLOR_SELECTED);
             } else if(yHandle.isSelected(ray)) {
                 state = State.TRANSLATE_Y;
                 initTranslate = true;
+                yHandle.changeColor(COLOR_SELECTED);
             } else if(zHandle.isSelected(ray)) {
                 state = State.TRANSLATE_Z;
                 initTranslate = true;
+                zHandle.changeColor(COLOR_SELECTED);
             } else {
                 state = State.IDLE;
             }
@@ -262,6 +288,11 @@ public class TranslateTool extends SelectionTool {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         super.touchUp(screenX, screenY, pointer, button);
         if(state != State.IDLE) {
+            xHandle.changeColor(COLOR_X);
+            yHandle.changeColor(COLOR_Y);
+            zHandle.changeColor(COLOR_Z);
+            xzPlaneHandle.changeColor(COLOR_XZ);
+
             projectContext.currScene.currentSelection.transform.getTranslation(temp0);
             command.setAfter(temp0);
             history.add(command);
@@ -297,14 +328,16 @@ public class TranslateTool extends SelectionTool {
         public Vector3 dimensions;
         public float radius;
 
-        private Vector3 tvec3;
+        private Vector3 tv0;
+        private Vector3 tv1;
 
         private Model boundingBoxModel;
         public ModelInstance boundingBoxModelInst;
 
         public Handle(Model model) {
             super(model);
-            tvec3 = new Vector3();
+            tv0 = new Vector3();
+            tv1 = new Vector3();
             center = new Vector3();
             dimensions = new Vector3();
             boundingBox = new BoundingBox();
@@ -317,8 +350,8 @@ public class TranslateTool extends SelectionTool {
                 boundingBoxModelInst = new ModelInstance(boundingBoxModel);
             }
 
-            transform.getTranslation(tvec3);
-            setTranslation(tvec3);
+            transform.getTranslation(tv0);
+            setTranslation(tv0);
         }
 
         public void calculateBounds() {
@@ -329,11 +362,11 @@ public class TranslateTool extends SelectionTool {
         }
 
         public void setTranslation(Vector3 t) {
-            tvec3.set(t);
-            transform.setTranslation(tvec3);
+            tv0.set(t);
+            transform.setTranslation(tv0);
 
             if(DEBUG) {
-                boundingBoxModelInst.transform.setTranslation(tvec3);
+                boundingBoxModelInst.transform.setTranslation(tv0);
                 boundingBoxModelInst.transform.translate(center);
             }
         }
@@ -343,6 +376,21 @@ public class TranslateTool extends SelectionTool {
             if(DEBUG) {
                 boundingBoxModelInst.transform.setToScaling(x, y, z);
             }
+        }
+
+        public void resetRotation() {
+            transform.getRotation(tempQuat);
+            transform.getTranslation(tv0);
+            transform.getScale(tv1);
+
+            transform.setToRotation(0,0,0,0);
+            transform.translate(tv0);
+            transform.scl(tv1);
+        }
+
+        public void changeColor(Color color) {
+            ColorAttribute diffuse = (ColorAttribute) materials.get(0).get(ColorAttribute.Diffuse);
+            diffuse.color.set(color);
         }
 
         public boolean isSelected(Ray ray) {

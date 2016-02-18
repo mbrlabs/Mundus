@@ -90,7 +90,8 @@ public class MundusToolbar extends Toolbar {
         addItem(translateBtn, true);
         addItem(rotateBtn, true);
         addSeperator(true);
-        addItem(globalLocalSwitch, true);
+        // TODO add back in, once i implemented proper ray picking for rotated objects
+        //addItem(globalLocalSwitch, true);
 
         // save btn
         saveBtn.addListener(new ClickListener() {
