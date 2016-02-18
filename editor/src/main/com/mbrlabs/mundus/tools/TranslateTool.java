@@ -75,6 +75,7 @@ public class TranslateTool extends SelectionTool {
     private Handle xzPlaneHandle;
 
     private Vector3 lastPos = new Vector3();
+    private boolean globalSpace = true;
 
     private Vector3 temp0 = new Vector3();
     private Vector3 temp1 = new Vector3();
@@ -82,7 +83,6 @@ public class TranslateTool extends SelectionTool {
     private Vector3 temp3 = new Vector3();
 
     private GameObjectModifiedEvent gameObjectModifiedEvent;
-
     private TranslateCommand command;
 
 
@@ -138,6 +138,10 @@ public class TranslateTool extends SelectionTool {
         positionHandles();
     }
 
+    public void setGlobalSpace(boolean global) {
+        this.globalSpace = global;
+    }
+
     @Override
     public void render() {
         super.render();
@@ -180,19 +184,19 @@ public class TranslateTool extends SelectionTool {
             boolean modified = false;
             if(state == State.TRANSLATE_XZ) {
                 projectContext.currScene.currentSelection.translate(rayEnd.x - lastPos.x,
-                        0, rayEnd.z - lastPos.z, true);
+                        0, rayEnd.z - lastPos.z, globalSpace);
                 modified = true;
             } else if(state == State.TRANSLATE_X) {
                 projectContext.currScene.currentSelection.translate(rayEnd.x - lastPos.x,
-                        0, 0, true);
+                        0, 0, globalSpace);
                 modified = true;
             } else if(state == State.TRANSLATE_Y) {
                 projectContext.currScene.currentSelection.translate(0,
-                        rayEnd.y - lastPos.y, 0, true);
+                        rayEnd.y - lastPos.y, 0, globalSpace);
                 modified = true;
             } else if(state == State.TRANSLATE_Z) {
                 projectContext.currScene.currentSelection.translate(0, 0,
-                        rayEnd.z - lastPos.z, true);
+                        rayEnd.z - lastPos.z, globalSpace);
                 modified = true;
             }
 

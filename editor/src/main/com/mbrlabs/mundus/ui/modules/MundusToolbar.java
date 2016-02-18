@@ -134,6 +134,14 @@ public class MundusToolbar extends Toolbar {
             }
         });
 
+        // global / local space switching
+        globalLocalSwitch.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                toolManager.translateTool.setGlobalSpace(globalLocalSwitch.isOn());
+            }
+        });
+
     }
 
     public FaTextButton getSaveBtn() {
