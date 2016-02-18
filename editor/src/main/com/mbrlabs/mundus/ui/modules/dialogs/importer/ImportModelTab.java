@@ -148,7 +148,7 @@ public class ImportModelTab extends Tab {
                 public void render(Camera cam) {
                     if(previewInstance != null) {
                         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
-                        previewInstance.transform.rotate(0, 0, 1, 2f);
+                        previewInstance.transform.rotate(0, 0, 1, -1f);
                         modelBatch.begin(cam);
                         modelBatch.render(previewInstance, env);
                         modelBatch.end();
