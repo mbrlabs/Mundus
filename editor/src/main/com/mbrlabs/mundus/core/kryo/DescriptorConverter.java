@@ -89,8 +89,8 @@ public class DescriptorConverter {
         final float[] rot = descriptor.getRotation();
         final float[] scl = descriptor.getScale();
 
-        go.translate(pos[0], pos[1], pos[2], true);
-        go.rotate(rot[0], rot[1], rot[2]);
+        go.setTranslation(pos[0], pos[1], pos[2], true);
+        go.setRotation(rot[0], rot[1], rot[2]);
         go.transform.scl(scl[0], scl[0], scl[0]);
 
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!

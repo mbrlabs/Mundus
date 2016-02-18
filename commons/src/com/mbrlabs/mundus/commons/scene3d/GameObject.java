@@ -228,10 +228,8 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setRotation(float x, float y, float z) {
-        transform.getRotation(tempQuat).conjugate();
-        transform.rotate(tempQuat);
-        tempQuat.setEulerAngles(y, x, z);
-        transform.rotate(tempQuat);
+        transform.rotate(transform.getRotation(tempQuat).conjugate());
+        transform.rotate(tempQuat.setEulerAngles(y, x, z));
 
         if (childs != null) {
             for (GameObject node : this.childs) {
@@ -241,7 +239,7 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void rotate(float x, float y, float z) {
-        tempQuat.setEulerAngles(x, y, z);
+        tempQuat.setEulerAngles(y, x, z);
         transform.rotate(tempQuat);
 
         if (childs != null) {
