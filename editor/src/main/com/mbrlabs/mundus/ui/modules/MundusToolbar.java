@@ -26,6 +26,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
+import com.mbrlabs.mundus.ui.widgets.ToggleButton;
 import com.mbrlabs.mundus.ui.widgets.Toolbar;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -41,6 +42,9 @@ public class MundusToolbar extends Toolbar {
 
     private FaTextButton selectBtn;
     private FaTextButton translateBtn;
+    private FaTextButton rotateBtn;
+
+    private ToggleButton globalLocalSwitch;
 
     @Inject
     private ToolManager toolManager;
@@ -72,12 +76,21 @@ public class MundusToolbar extends Toolbar {
         translateBtn.padRight(7).padLeft(7);
         new Tooltip(translateBtn, toolManager.translateTool.getName());
 
+        rotateBtn = new FaTextButton(Fa.REFRESH);
+        rotateBtn.padRight(7).padLeft(7);
+        new Tooltip(rotateBtn, "Rotate Tool");
+
+        globalLocalSwitch = new ToggleButton("Global space", "Local space");
+
         addItem(saveBtn, true);
         addItem(importBtn, true);
         addItem(exportBtn, true);
         addSeperator(true);
         addItem(selectBtn, true);
         addItem(translateBtn, true);
+        addItem(rotateBtn, true);
+        addSeperator(true);
+        addItem(globalLocalSwitch, true);
 
         // save btn
         saveBtn.addListener(new ClickListener() {
