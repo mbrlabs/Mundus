@@ -40,9 +40,10 @@ public class ToolManager extends InputAdapter implements Disposable {
     public Array<TerrainBrush> terrainBrushes;
 
     public ModelPlacementTool modelPlacementTool;
-    public TranslateTool translateTool;
     public SelectionTool selectionTool;
-
+    public TranslateTool translateTool;
+    public RotateTool rotateTool;
+    public ScaleTool scaleTool;
 
     private ProjectContext projectContext;
     private InputManager inputManager;
@@ -65,8 +66,10 @@ public class ToolManager extends InputAdapter implements Disposable {
         terrainBrushes.add(new ConfettiBrush(projectContext, shaders.wireframeShader, modelBatch, history));
 
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
-        translateTool = new TranslateTool(projectContext, shaders.wireframeShader, modelBatch, history);
         selectionTool = new SelectionTool(projectContext, shaders.wireframeShader, modelBatch, history);
+        translateTool = new TranslateTool(projectContext, shaders.wireframeShader, modelBatch, history);
+        rotateTool = new RotateTool(projectContext, shaders.wireframeShader, modelBatch, history);
+        scaleTool = new ScaleTool(projectContext, shaders.wireframeShader, modelBatch, history);
     }
 
     public void activateTool(Tool tool) {

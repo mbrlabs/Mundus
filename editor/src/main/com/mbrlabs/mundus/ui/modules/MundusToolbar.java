@@ -43,6 +43,7 @@ public class MundusToolbar extends Toolbar {
     private FaTextButton selectBtn;
     private FaTextButton translateBtn;
     private FaTextButton rotateBtn;
+    private FaTextButton scaleBtn;
 
     private ToggleButton globalLocalSwitch;
 
@@ -76,9 +77,13 @@ public class MundusToolbar extends Toolbar {
         translateBtn.padRight(7).padLeft(7);
         new Tooltip(translateBtn, toolManager.translateTool.getName());
 
-        rotateBtn = new FaTextButton(Fa.REFRESH);
+        rotateBtn = new FaTextButton(toolManager.rotateTool.getIconFont());
         rotateBtn.padRight(7).padLeft(7);
-        new Tooltip(rotateBtn, "Rotate Tool");
+        new Tooltip(rotateBtn, toolManager.rotateTool.getName());
+
+        scaleBtn = new FaTextButton(toolManager.scaleTool.getIconFont());
+        scaleBtn.padRight(7).padLeft(7);
+        new Tooltip(scaleBtn, toolManager.scaleTool.getName());
 
         globalLocalSwitch = new ToggleButton("Global space", "Local space");
 
@@ -89,6 +94,7 @@ public class MundusToolbar extends Toolbar {
         addItem(selectBtn, true);
         addItem(translateBtn, true);
         addItem(rotateBtn, true);
+        addItem(scaleBtn, true);
         addSeperator(true);
         // TODO add back in, once i implemented proper ray picking for rotated objects
         //addItem(globalLocalSwitch, true);
@@ -132,6 +138,22 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 toolManager.activateTool(toolManager.translateTool);
+            }
+        });
+
+        // rotate tool
+        rotateBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                toolManager.activateTool(toolManager.rotateTool);
+            }
+        });
+
+        // scale tool
+        scaleBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                toolManager.activateTool(toolManager.scaleTool);
             }
         });
 

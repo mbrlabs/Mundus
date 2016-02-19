@@ -164,6 +164,7 @@ public class Mundus {
                 .addIcon(Fa.PAINT_BRUSH)
                 .addIcon(Fa.STAR)
                 .addIcon(Fa.REFRESH)
+                .addIcon(Fa.EXPAND)
                 .build();
     }
 
