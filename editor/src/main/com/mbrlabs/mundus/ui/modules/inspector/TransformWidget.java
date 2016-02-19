@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -147,6 +148,7 @@ public class TransformWidget extends BaseInspectorWidget {
             }
         });
 
+        // rotation
         ChangeListener rotateListener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -163,6 +165,36 @@ public class TransformWidget extends BaseInspectorWidget {
         rotX.addListener(rotateListener);
         rotY.addListener(rotateListener);
         rotZ.addListener(rotateListener);
+
+        scaleX.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(scaleX.getFloat() > 0f) {
+                    go.transform.val[Matrix4.M00] = scaleX.getFloat();
+                }
+            }
+        });
+
+        scaleY.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(scaleY.getFloat() > 0f) {
+                    go.transform.val[Matrix4.M11] = scaleY.getFloat();
+                }
+            }
+        });
+
+        scaleZ.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(scaleZ.getFloat() > 0f) {
+                    go.transform.val[Matrix4.M22] = scaleZ.getFloat();
+                }
+            }
+        });
 
     }
 
