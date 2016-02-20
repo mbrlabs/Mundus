@@ -60,7 +60,7 @@ public class ModelComponent extends AbstractComponent {
 
     public void encodeRaypickColorId() {
         this.modelInstance.modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(
-                new Color((int)gameObject.getId())
+                new Color(new Color(new Random().nextInt()))
         ));
     }
 

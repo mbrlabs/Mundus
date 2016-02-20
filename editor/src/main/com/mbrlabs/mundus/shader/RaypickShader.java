@@ -96,7 +96,6 @@ public class RaypickShader extends BaseShader {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
         ColorAttribute color = (ColorAttribute) renderable.material.get(ColorAttribute.Diffuse);
-        System.out.println(color.color);
         set(UNIFORM_COLOR, color.color);
 
         renderable.meshPart.render(program);

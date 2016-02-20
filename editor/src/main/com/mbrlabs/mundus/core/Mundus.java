@@ -30,6 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
+import com.mbrlabs.mundus.FBOTest;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -78,8 +79,6 @@ public class Mundus {
     public static BitmapFont fa;
     public static ModelBatch modelBatch;
 
-    public static Model box;
-
     /**
      * Loads & initializes everything.
      *
@@ -113,8 +112,6 @@ public class Mundus {
 
         ShortcutController shortcutController = new ShortcutController(commandHistory);
         input.addProcessor(shortcutController);
-
-        box = new ModelBuilder().createBox(1, 1, 1, new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position);
     }
 
     private static void initStyle() {

@@ -37,6 +37,7 @@ public class Main {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(TITLE);
         config.setWindowedMode(width, (int) (height - height * .05));
+        config.useOpenGL3(true, 3, 2);
 
         new Lwjgl3Application(new Editor(), config);
 
