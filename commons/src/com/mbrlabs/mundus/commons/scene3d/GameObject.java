@@ -34,7 +34,6 @@ public class GameObject implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
     private static Vector3 tempVec0 = new Vector3();
-    private static Vector3 tempVec1 = new Vector3();
     private static Quaternion tempQuat = new Quaternion();
 
     private long id;
@@ -45,9 +44,12 @@ public class GameObject implements Iterable<GameObject> {
     private Array<Component> components;
     private Array<GameObject> childs;
 
-    private GameObject parent;
+    private Matrix4 transform;
+    public Vector3 position;
+    public Quaternion rotation;
+    public Vector3 scale;
 
-    public Matrix4 transform;
+    private GameObject parent;
 
     public SceneGraph sceneGraph;
 
@@ -58,8 +60,12 @@ public class GameObject implements Iterable<GameObject> {
         this.tags = null;
         this.childs = null;
         this.components = new Array<Component>(3);
-        this.transform = new Matrix4();
         this.sceneGraph = sceneGraph;
+
+        this.transform = new Matrix4();
+        this.position = new Vector3(0, 0, 0);
+        this.scale = new Vector3(1, 1, 1);
+        this.rotation = new Quaternion();
     }
 
     public GameObject(SceneGraph sceneGraph, String name, long id) {
@@ -195,30 +201,43 @@ public class GameObject implements Iterable<GameObject> {
         return this.transform;
     }
 
+    public void setTransform(Matrix4 transform) {
+        this.transform = transform;
+        transform.getTranslation(position);
+        transform.getRotation(rotation);
+        transform.getScale(scale);
+    }
+
     public void setTranslation(float x, float y, float z, boolean globalSpace) {
-        transform.getTranslation(tempVec0);
-        float offsetX = x - tempVec0.x;
-        float offsetY = y - tempVec0.y;
-        float offsetZ = z - tempVec0.z;
-        if(globalSpace) {
-            transform.trn(offsetX, offsetY, offsetZ);
-        } else {
-            transform.translate(offsetX, offsetY, offsetZ);
-        }
+        this.position.set(x, y, z);
+        calculateTransform();
+
+//        transform.setToScaling(scale);
+//        transform.rotate(rot);
+//        transform.trn(x, y, z);
+//
+//        if(globalSpace) {
+//            transform.trn(x, y, z);
+//        } else {
+//            transform.translate(x, y, z);
+//        }
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.translate(offsetX, offsetY, offsetZ, globalSpace);
+                node.setTranslation(x, y, z, globalSpace);
             }
         }
     }
 
     public void translate(float x, float y, float z, boolean globalSpace) {
-        if(globalSpace) {
-            transform.trn(x, y, z);
-        } else {
-            transform.translate(x, y, z);
-        }
+        position.add(x, y, z);
+        transform.trn(x, y, z);
+
+//        if(globalSpace) {
+//            transform.trn(x, y, z);
+//        } else {
+//            transform.translate(x, y, z);
+//        }
 
         if (childs != null) {
             for (GameObject node : this.childs) {
@@ -228,8 +247,12 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setRotation(float x, float y, float z) {
-        transform.rotate(transform.getRotation(tempQuat).conjugate());
-        transform.rotate(tempQuat.setEulerAngles(y, x, z));
+        rotation.setEulerAngles(y, x, z);
+        calculateTransform();
+
+//        transform.setToScaling(scale);
+//        transform.rotate(rot);
+//        transform.trn(pos);
 
         if (childs != null) {
             for (GameObject node : this.childs) {
@@ -240,6 +263,7 @@ public class GameObject implements Iterable<GameObject> {
 
     public void rotate(float x, float y, float z) {
         tempQuat.setEulerAngles(y, x, z);
+        rotation.add(tempQuat);
         transform.rotate(tempQuat);
 
         if (childs != null) {
@@ -247,6 +271,34 @@ public class GameObject implements Iterable<GameObject> {
                 node.rotate(x, y, z);
             }
         }
+    }
+
+    public void scale(float x, float y, float z) {
+
+    }
+
+    public void setScale(float x, float y, float z) {
+        scale.set(x, y, z);
+        transform.setToTranslation(position);
+        transform.rotate(rotation);
+        transform.scl(scale);
+
+//        transform.setToScaling(x, y, z);
+//        transform.rotate(rot);
+//        transform.trn(pos);
+
+        if (childs != null) {
+            for (GameObject node : this.childs) {
+                node.setScale(x, y, z);
+            }
+        }
+    }
+
+    public void calculateTransform() {
+//        transform.setToTranslation(position);
+//        transform.rotate(rotation);
+//        transform.scl(scale);
+        transform.set(position, rotation, scale);
     }
 
     public Vector3 calculateMedium(Vector3 out) {

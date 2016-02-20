@@ -105,11 +105,9 @@ public class TransformWidget extends BaseInspectorWidget {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
-                go.transform.getTranslation(tempV3);
-                command.setBefore(tempV3);
-                go.setTranslation(posX.getFloat(), tempV3.y, tempV3.z, true);
-                go.transform.getTranslation(tempV3);
-                command.setAfter(tempV3);
+                command.setBefore(go.position);
+                go.setTranslation(posX.getFloat(), go.position.y, go.position.z, true);
+                command.setAfter(go.position);
                 history.add(command);
             }
         });
@@ -119,14 +117,10 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
-                go.transform.getTranslation(tempV3);
-                go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
                 TranslateCommand command = new TranslateCommand(go);
-                go.transform.getTranslation(tempV3);
-                command.setBefore(tempV3);
-                go.setTranslation(tempV3.x, posY.getFloat(), tempV3.z, true);
-                go.transform.getTranslation(tempV3);
-                command.setAfter(tempV3);
+                command.setBefore(go.position);
+                go.setTranslation(go.position.x, posY.getFloat(), go.position.z, true);
+                command.setAfter(go.position);
                 history.add(command);
             }
         });
@@ -136,14 +130,10 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
-                go.transform.getTranslation(tempV3);
-                go.setTranslation(tempV3.x, Float.parseFloat(posY.getText()), tempV3.z, true);
                 TranslateCommand command = new TranslateCommand(go);
-                go.transform.getTranslation(tempV3);
-                command.setBefore(tempV3);
-                go.setTranslation(tempV3.x, tempV3.y, posZ.getFloat(), true);
-                go.transform.getTranslation(tempV3);
-                command.setAfter(tempV3);
+                command.setBefore(go.position);
+                go.setTranslation(go.position.x, go.position.y, posZ.getFloat(), true);
+                command.setAfter(go.position);
                 history.add(command);
             }
         });
@@ -152,13 +142,12 @@ public class TransformWidget extends BaseInspectorWidget {
         ChangeListener rotateListener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println(posX.getFloat());
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
-                rotateCommand.setBefore(go.transform.getRotation(tempQuat));
+                rotateCommand.setBefore(go.rotation);
                 go.setRotation(rotX.getFloat(), rotY.getFloat(), rotZ.getFloat());
-                rotateCommand.setAfter(go.transform.getRotation(tempQuat));
+                rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
         };
@@ -171,7 +160,7 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(scaleX.getFloat() > 0f) {
-                    go.transform.val[Matrix4.M00] = scaleX.getFloat();
+                    go.setScale(scaleX.getFloat(), go.scale.y, go.scale.z);
                 }
             }
         });
@@ -181,7 +170,7 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(scaleY.getFloat() > 0f) {
-                    go.transform.val[Matrix4.M11] = scaleY.getFloat();
+                    go.setScale(go.scale.x, scaleY.getFloat(), go.scale.z);
                 }
             }
         });
@@ -191,7 +180,7 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(scaleZ.getFloat() > 0f) {
-                    go.transform.val[Matrix4.M22] = scaleZ.getFloat();
+                    go.setScale(go.scale.x, go.scale.y, scaleZ.getFloat());
                 }
             }
         });
@@ -200,20 +189,17 @@ public class TransformWidget extends BaseInspectorWidget {
 
     @Override
     public void setValues(GameObject go) {
-        go.transform.getTranslation(tempV3);
-        posX.setText(StringUtils.formatFloat(tempV3.x, 2));
-        posY.setText(StringUtils.formatFloat(tempV3.y, 2));
-        posZ.setText(StringUtils.formatFloat(tempV3.z, 2));
+        posX.setText(StringUtils.formatFloat(go.position.x, 2));
+        posY.setText(StringUtils.formatFloat(go.position.y, 2));
+        posZ.setText(StringUtils.formatFloat(go.position.z, 2));
 
-        go.transform.getRotation(tempQuat);
-        rotX.setText(StringUtils.formatFloat(tempQuat.getPitch(), 2));
-        rotY.setText(StringUtils.formatFloat(tempQuat.getYaw(), 2));
-        rotZ.setText(StringUtils.formatFloat(tempQuat.getRoll(), 2));
+        rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
+        rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
+        rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
 
-        go.transform.getScale(tempV3);
-        scaleX.setText(StringUtils.formatFloat(tempV3.x, 2));
-        scaleY.setText(StringUtils.formatFloat(tempV3.y, 2));
-        scaleZ.setText(StringUtils.formatFloat(tempV3.z, 2));
+        scaleX.setText(StringUtils.formatFloat(go.scale.x, 2));
+        scaleY.setText(StringUtils.formatFloat(go.scale.y, 2));
+        scaleZ.setText(StringUtils.formatFloat(go.scale.z, 2));
     }
 
     @Override

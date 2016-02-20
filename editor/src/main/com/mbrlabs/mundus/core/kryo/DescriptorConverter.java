@@ -88,9 +88,10 @@ public class DescriptorConverter {
         final float[] rot = descriptor.getRotation();
         final float[] scl = descriptor.getScale();
 
-        go.setTranslation(pos[0], pos[1], pos[2], true);
-        go.transform.rotate(tempQuat.set(rot[0], rot[1], rot[2], rot[3]));
-        //go.transform.scale(scl[0], scl[1], scl[2]);
+        go.position.set(pos[0], pos[1], pos[2]);
+        go.rotation.set(rot[0], rot[1], rot[2], rot[3]);
+        go.scale.set(scl[0], scl[1], scl[2]);
+        go.calculateTransform();
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // convert components
@@ -118,25 +119,20 @@ public class DescriptorConverter {
         descriptor.setActive(go.isActive());
 
         // translation
-        go.transform.getTranslation(tempV3);
-        descriptor.getPosition()[0] = tempV3.x;
-        descriptor.getPosition()[1] = tempV3.y;
-        descriptor.getPosition()[2] = tempV3.z;
+        descriptor.getPosition()[0] = go.position.x;
+        descriptor.getPosition()[1] = go.position.y;
+        descriptor.getPosition()[2] = go.position.z;
 
         // rotation
-        go.transform.getRotation(tempQuat);
-        descriptor.getRotation()[0] = tempQuat.x;
-        descriptor.getRotation()[1] = tempQuat.y;
-        descriptor.getRotation()[2] = tempQuat.z;
-        descriptor.getRotation()[3] = tempQuat.w;
+        descriptor.getRotation()[0] = go.rotation.x;
+        descriptor.getRotation()[1] = go.rotation.y;
+        descriptor.getRotation()[2] = go.rotation.z;
+        descriptor.getRotation()[3] = go.rotation.w;
 
         // scaling
-//        descriptor.getScale()[0] = go.transform.getScaleX();
-//        descriptor.getScale()[1] = go.transform.getScaleY();
-//        descriptor.getScale()[2] = go.transform.getScaleZ();
-        descriptor.getScale()[0] = 1;
-        descriptor.getScale()[1] = 1;
-        descriptor.getScale()[2] = 1;
+        descriptor.getScale()[0] = go.scale.x;
+        descriptor.getScale()[1] = go.scale.y;
+        descriptor.getScale()[2] = go.scale.z;
 
         // convert components
         for(Component c : go.getComponents()) {
@@ -211,7 +207,7 @@ public class DescriptorConverter {
             return null;
         }
 
-        terrain.transform = go.transform;
+        terrain.transform = go.getTransform();
         TerrainComponent terrainComponent = new TerrainComponent(go);
         terrainComponent.setTerrain(terrain);
 

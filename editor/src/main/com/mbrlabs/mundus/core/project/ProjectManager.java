@@ -282,7 +282,7 @@ public class ProjectManager {
                 MModel model = findModelById(context.models, modelComponent.getModelInstance().getModel().id);
                 if(model != null) {
                     modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
-                    modelComponent.getModelInstance().modelInstance.transform = go.transform;
+                    modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.getModelInstance().calculateBounds();
                     modelComponent.setShader(shaders.entityShader);
                 } else {

@@ -153,10 +153,9 @@ public class TranslateTool extends SelectionTool {
         yHandle.resetRotation();
         zHandle.resetRotation();
         if(!global) {
-            projectContext.currScene.currentSelection.transform.getRotation(tempQuat);
-            xHandle.transform.rotate(tempQuat);
-            yHandle.transform.rotate(tempQuat);
-            zHandle.transform.rotate(tempQuat);
+            xHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
+            yHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
+            zHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
         }
 
 //        xHandle.calculateBounds();
@@ -194,7 +193,7 @@ public class TranslateTool extends SelectionTool {
             if(state == State.IDLE) return;
 
             Ray ray = projectContext.currScene.viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
-            Vector3 rayEnd = projectContext.currScene.currentSelection.transform.getTranslation(temp1);
+            Vector3 rayEnd = temp0.set(projectContext.currScene.currentSelection.position);
             float dst = projectContext.currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
 
@@ -232,8 +231,8 @@ public class TranslateTool extends SelectionTool {
     }
 
     private void scaleHandles() {
-        projectContext.currScene.currentSelection.transform.getTranslation(temp0);
-        float scaleFactor = projectContext.currScene.cam.position.dst(temp0) * 0.25f;
+        Vector3 pos = projectContext.currScene.currentSelection.position;
+        float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.25f;
         xHandle.setToScaling(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
         yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
         zHandle.setToScaling(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
@@ -277,8 +276,7 @@ public class TranslateTool extends SelectionTool {
 
         if(state != State.IDLE) {
             command = new TranslateCommand(projectContext.currScene.currentSelection);
-            projectContext.currScene.currentSelection.transform.getTranslation(temp0);
-            command.setBefore(temp0);
+            command.setBefore(projectContext.currScene.currentSelection.position);
         }
 
         return false;
@@ -293,8 +291,7 @@ public class TranslateTool extends SelectionTool {
             zHandle.changeColor(COLOR_Z);
             xzPlaneHandle.changeColor(COLOR_XZ);
 
-            projectContext.currScene.currentSelection.transform.getTranslation(temp0);
-            command.setAfter(temp0);
+            command.setAfter(projectContext.currScene.currentSelection.position);
             history.add(command);
             command = null;
             state = State.IDLE;
