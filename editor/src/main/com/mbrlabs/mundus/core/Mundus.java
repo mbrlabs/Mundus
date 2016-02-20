@@ -17,12 +17,15 @@
 package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
@@ -42,6 +45,7 @@ import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.ReflectionUtils;
 
+import javax.swing.text.AttributeSet;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -73,6 +77,8 @@ public class Mundus {
     public static Array<ModelInstance> testInstances = new Array<>();
     public static BitmapFont fa;
     public static ModelBatch modelBatch;
+
+    public static Model box;
 
     /**
      * Loads & initializes everything.
@@ -107,6 +113,8 @@ public class Mundus {
 
         ShortcutController shortcutController = new ShortcutController(commandHistory);
         input.addProcessor(shortcutController);
+
+        box = new ModelBuilder().createBox(1, 1, 1, new Material(ColorAttribute.createDiffuse(Color.RED)), VertexAttributes.Usage.Position);
     }
 
     private static void initStyle() {

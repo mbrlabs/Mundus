@@ -112,6 +112,7 @@ public class ModelPlacementTool extends Tool {
             ModelComponent modelComponent = new ModelComponent(modelGo);
             modelComponent.setShader(shader);
             modelComponent.setModelInstance(curEntity);
+            modelComponent.encodeRaypickColorId();
 
             try {
                 modelGo.addComponent(modelComponent);

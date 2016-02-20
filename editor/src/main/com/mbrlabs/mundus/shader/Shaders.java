@@ -31,6 +31,7 @@ public class Shaders {
     public TerrainShader terrainShader;
     public EntityShader entityShader;
     public SkyboxShader skyboxShader;
+    public static RaypickShader raypickShader;
 
     public Shaders() {
         ShaderProgram.pedantic = false;
@@ -42,6 +43,8 @@ public class Shaders {
         entityShader.init();
         skyboxShader = new SkyboxShader();
         skyboxShader.init();
+        raypickShader = new RaypickShader();
+        raypickShader.init();
     }
 
     public void dispose() {

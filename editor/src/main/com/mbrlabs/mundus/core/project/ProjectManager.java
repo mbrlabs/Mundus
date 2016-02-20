@@ -285,6 +285,7 @@ public class ProjectManager {
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.getModelInstance().calculateBounds();
                     modelComponent.setShader(shaders.entityShader);
+                    modelComponent.encodeRaypickColorId();
                 } else {
                     Log.fatal("model for modelInstance not found: " + modelComponent.getModelInstance().getModel().id);
                 }

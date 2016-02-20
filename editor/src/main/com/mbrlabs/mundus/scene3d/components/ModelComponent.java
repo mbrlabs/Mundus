@@ -16,16 +16,27 @@
 
 package com.mbrlabs.mundus.scene3d.components;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.shader.Shaders;
+import com.sun.org.apache.regexp.internal.RE;
+
+import java.util.Random;
 
 /**
  * @author Marcus Brummer
  * @version 17-01-2016
  */
 public class ModelComponent extends AbstractComponent {
+
+    private static final boolean RAY_PICK_RENDERING = true;
 
     private MModelInstance modelInstance;
     private Shader shader;
@@ -47,14 +58,24 @@ public class ModelComponent extends AbstractComponent {
         this.modelInstance = modelInstance;
     }
 
+    public void encodeRaypickColorId() {
+        this.modelInstance.modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(
+                new Color((int)gameObject.getId())
+        ));
+    }
+
     public MModelInstance getModelInstance() {
         return modelInstance;
     }
 
     @Override
     public void render(float delta) {
-        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
-                gameObject.sceneGraph.scene.environment, shader);
+        if(RAY_PICK_RENDERING) {
+            gameObject.sceneGraph.batch.render(modelInstance.modelInstance, Shaders.raypickShader);
+        } else {
+            gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
+                    gameObject.sceneGraph.scene.environment, shader);
+        }
     }
 
     @Override
