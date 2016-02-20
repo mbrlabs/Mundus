@@ -28,6 +28,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.RotateCommand;
+import com.mbrlabs.mundus.history.commands.ScaleCommand;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
 import com.mbrlabs.mundus.utils.StringUtils;
@@ -160,7 +161,11 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(scaleX.getFloat() > 0f) {
+                    ScaleCommand scaleCommand = new ScaleCommand(go);
+                    scaleCommand.setBefore(go.scale);
                     go.setScale(scaleX.getFloat(), go.scale.y, go.scale.z);
+                    scaleCommand.setAfter(go.scale);
+                    history.add(scaleCommand);
                 }
             }
         });
@@ -170,7 +175,11 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(scaleY.getFloat() > 0f) {
+                    ScaleCommand scaleCommand = new ScaleCommand(go);
+                    scaleCommand.setBefore(go.scale);
                     go.setScale(go.scale.x, scaleY.getFloat(), go.scale.z);
+                    scaleCommand.setAfter(go.scale);
+                    history.add(scaleCommand);
                 }
             }
         });
@@ -180,7 +189,11 @@ public class TransformWidget extends BaseInspectorWidget {
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(scaleZ.getFloat() > 0f) {
+                    ScaleCommand scaleCommand = new ScaleCommand(go);
+                    scaleCommand.setBefore(go.scale);
                     go.setScale(go.scale.x, go.scale.y, scaleZ.getFloat());
+                    scaleCommand.setAfter(go.scale);
+                    history.add(scaleCommand);
                 }
             }
         });
