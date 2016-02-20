@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.mbrlabs.mundus.commons.importer.ModelComponentDTO;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.traversal.DepthFirstIterator;
 
@@ -211,10 +212,6 @@ public class GameObject implements Iterable<GameObject> {
     public void setTranslation(float x, float y, float z, boolean globalSpace) {
         this.position.set(x, y, z);
         calculateTransform();
-
-//        transform.setToScaling(scale);
-//        transform.rotate(rot);
-//        transform.trn(x, y, z);
 //
 //        if(globalSpace) {
 //            transform.trn(x, y, z);
@@ -233,12 +230,6 @@ public class GameObject implements Iterable<GameObject> {
         position.add(x, y, z);
         transform.trn(x, y, z);
 
-//        if(globalSpace) {
-//            transform.trn(x, y, z);
-//        } else {
-//            transform.translate(x, y, z);
-//        }
-
         if (childs != null) {
             for (GameObject node : this.childs) {
                 node.translate(x, y, z, globalSpace);
@@ -249,10 +240,6 @@ public class GameObject implements Iterable<GameObject> {
     public void setRotation(float x, float y, float z) {
         rotation.setEulerAngles(y, x, z);
         calculateTransform();
-
-//        transform.setToScaling(scale);
-//        transform.rotate(rot);
-//        transform.trn(pos);
 
         if (childs != null) {
             for (GameObject node : this.childs) {
@@ -279,13 +266,7 @@ public class GameObject implements Iterable<GameObject> {
 
     public void setScale(float x, float y, float z) {
         scale.set(x, y, z);
-        transform.setToTranslation(position);
-        transform.rotate(rotation);
-        transform.scl(scale);
-
-//        transform.setToScaling(x, y, z);
-//        transform.rotate(rot);
-//        transform.trn(pos);
+        calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
@@ -295,19 +276,15 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void calculateTransform() {
-//        transform.setToTranslation(position);
-//        transform.rotate(rotation);
-//        transform.scl(scale);
         transform.set(position, rotation, scale);
     }
 
     public Vector3 calculateMedium(Vector3 out) {
-        transform.getTranslation(out);
+        out.set(position);
         if(childs == null) return out;
 
         for(GameObject go : childs) {
-            go.transform.getTranslation(tempVec0);
-            out.add(tempVec0);
+            out.add(go.position);
         }
         return out.scl(1f / (childs.size+1));
     }

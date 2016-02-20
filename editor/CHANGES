@@ -3,10 +3,11 @@
 - Implemented a shortcut system
 - The 3D viewport is now a UI widget and scales correctly with the window size
 - The inspector now spans the whole right side as sidebar
-- Implemented game object rotation via the transform section in the inspector
 - New lighting system for the terrain & entity shader
 - Child objects of a selected parent object will be highlighted now as well
-- Changed internal save file format to allow a better precision for game object translation
+- Changed internal save file format to allow a better precision for game object transformation
+- Improved the translate tool
+- Implemented game object rotation & scaling
 
 [0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2
