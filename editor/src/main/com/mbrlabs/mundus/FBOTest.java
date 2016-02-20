@@ -21,8 +21,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mbrlabs.mundus.core.Mundus;
 
 import java.nio.ByteBuffer;
 
@@ -40,22 +42,26 @@ public class FBOTest {
     }
 
     public void begin() {
+        Mundus.RAY_PICK_RENDERING = true;
         fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.gl30.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
     }
 
     public void end() {
         fbo.end();
+        Mundus.RAY_PICK_RENDERING = false;
     }
 
     public Pixmap getFrameBufferPixmap () {
-        int w = fbo.getWidth();
-        int h = fbo.getHeight();
+        int w = viewport.getScreenWidth();
+        int h = viewport.getScreenHeight();
+        int x = viewport.getScreenX();
+        int y = viewport.getScreenY();
         final ByteBuffer pixelBuffer = BufferUtils.newByteBuffer(w * h * 4);
 
         Gdx.gl30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, fbo.getFramebufferHandle());
-        Gdx.gl30.glReadPixels(0, 0, fbo.getWidth(), fbo.getHeight(), GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, pixelBuffer);
+        Gdx.gl30.glReadPixels(x, y, w, h, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, pixelBuffer);
         Gdx.gl30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, 0);
 
         final int numBytes = w * h * 4;

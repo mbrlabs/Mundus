@@ -61,6 +61,8 @@ import java.util.List;
  */
 public class Mundus {
 
+    public static boolean RAY_PICK_RENDERING = false;
+
     private static ProjectContext projectContext;
     private static ToolManager toolManager;
     private static InputManager input;

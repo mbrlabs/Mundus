@@ -36,8 +36,6 @@ import java.util.Random;
  */
 public class ModelComponent extends AbstractComponent {
 
-    private static final boolean RAY_PICK_RENDERING = true;
-
     private MModelInstance modelInstance;
     private Shader shader;
 
@@ -70,7 +68,7 @@ public class ModelComponent extends AbstractComponent {
 
     @Override
     public void render(float delta) {
-        if(RAY_PICK_RENDERING) {
+        if(Mundus.RAY_PICK_RENDERING) {
             gameObject.sceneGraph.batch.render(modelInstance.modelInstance, Shaders.raypickShader);
         } else {
             gameObject.sceneGraph.batch.render(modelInstance.modelInstance,

@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.scene3d.components;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.terrain.Terrain;
 
 /**
@@ -53,7 +54,9 @@ public class TerrainComponent extends AbstractComponent {
 
     @Override
     public void render(float delta) {
-        //gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
+        if(!Mundus.RAY_PICK_RENDERING) {
+            gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
+        }
     }
 
     @Override
