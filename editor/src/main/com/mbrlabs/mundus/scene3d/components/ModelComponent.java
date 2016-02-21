@@ -56,9 +56,6 @@ public class ModelComponent extends AbstractComponent {
         goIDa.g = (((int)gameObject.getId()) & 0x0000FF00) >>> 8;
         goIDa.b = (((int)gameObject.getId()) & 0x00FF0000) >>> 16;
 
-
-       // System.out.println(gameObject.getId() + " ---- r: " + goIDa.r + " g:" + goIDa.g + " b:" + goIDa.b);
-
         this.modelInstance.modelInstance.materials.get(0).set(goIDa);
     }
 

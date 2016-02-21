@@ -48,17 +48,7 @@ public class GameObjectPicker implements Disposable {
     private GameObjectPickerShader shader;
 
     public GameObjectPicker() {
-        // to support multiple monitors.
-        // Mundus can eventually span multiple monitors..thats why the framebuffer must be this big.
-        Graphics.DisplayMode[] dps = Gdx.graphics.getDisplayModes();
-        int fbHeight = 0;
-        int fbWidth = 0;
-        for(Graphics.DisplayMode dp : dps) {
-            fbHeight += dp.height;
-            fbWidth += dp.width;
-        }
-
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, fbWidth, fbHeight, true);
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
     }
 
     public GameObject pick(EditorScene scene, int screenX, int screenY) {
@@ -79,7 +69,7 @@ public class GameObjectPicker implements Disposable {
     }
 
     /**
-     * Decodes a rgba8888 clor code to a game object id.
+     * Decodes a rgba8888 cloor code to a game object id.
      *
      * @param rgba8888Code  rgba8888 color code
      * @return
