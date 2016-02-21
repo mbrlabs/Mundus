@@ -48,9 +48,9 @@ public class GameObjectColorEncoder {
      */
     public static GameObjectIdAttribute encodeRaypickColorId(GameObject go) {
         GameObjectIdAttribute goIDa = new GameObjectIdAttribute();
-        goIDa.r = ((int)go.getId()) & 0x000000FF;
-        goIDa.g = (((int)go.getId()) & 0x0000FF00) >>> 8;
-        goIDa.b = (((int)go.getId()) & 0x00FF0000) >>> 16;
+        goIDa.r = go.getId() & 0x000000FF;
+        goIDa.g = (go.getId() & 0x0000FF00) >>> 8;
+        goIDa.b = (go.getId() & 0x00FF0000) >>> 16;
 
         return goIDa;
     }

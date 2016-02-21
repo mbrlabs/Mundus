@@ -53,6 +53,7 @@ public class Shaders {
         terrainShader.dispose();
         entityShader.dispose();
         skyboxShader.dispose();
+        gameObjectPickerShader.dispose();
     }
 
 }

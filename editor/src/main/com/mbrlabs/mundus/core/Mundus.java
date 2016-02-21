@@ -231,6 +231,7 @@ public class Mundus {
      */
     public static void dispose() {
         VisUI.dispose();
+        goPicker.dispose();
         modelBatch.dispose();
         shaders.dispose();
         toolManager.dispose();
