@@ -140,13 +140,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         toolManager.act();
         ui.draw();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.F1)) {
-//            gameObjectPicker.begin();
-//            projectContext.currScene.sceneGraph.render();
-//            gameObjectPicker.end();
-//            Pixmap pm = gameObjectPicker.getFrameBufferPixmap();
-//            PixmapIO.writePNG(Gdx.files.absolute("/home/marcus/Desktop/fbo.png"), pm);
-        }
     }
 
     private void resetCam() {

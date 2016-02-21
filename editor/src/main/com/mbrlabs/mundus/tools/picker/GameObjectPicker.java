@@ -84,9 +84,9 @@ public class GameObjectPicker implements Disposable {
         int y = viewport.getScreenY();
         final ByteBuffer pixelBuffer = BufferUtils.newByteBuffer(w * h * 4);
 
-        Gdx.gl30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, fbo.getFramebufferHandle());
-        Gdx.gl30.glReadPixels(x, y, w, h, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, pixelBuffer);
-        Gdx.gl30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, 0);
+        Gdx.gl.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, fbo.getFramebufferHandle());
+        Gdx.gl.glReadPixels(x, y, w, h, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, pixelBuffer);
+        Gdx.gl.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, 0);
 
         final int numBytes = w * h * 4;
         byte[] imgLines = new byte[numBytes];
