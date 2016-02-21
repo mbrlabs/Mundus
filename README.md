@@ -23,12 +23,13 @@ Below are some of the more interesting features, that already work
 - A skybox (not exportable yet)
 - Loading of g3db files
 - Loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv) binary must be set in the settings)
-- Placement of models in the world
 - A visual model translate tool (rotation and scaling coming soon)
 - Multiple scenes in one project
 - A component based scene graph (not fully implemented yet)
 - Basic export of the project into a json format + assets
 - Undo/Redo system for most operations
+- Highly accurate game object picking system, based on id color coding & offscreen framebuffer rendering.
+  Basic concept: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
 
 ## Things to consider
 - Mundus is constantly changing. Especially the internal representation of save files. At this stage of the project i don't care 
