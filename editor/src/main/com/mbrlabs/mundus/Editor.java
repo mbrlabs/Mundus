@@ -27,8 +27,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.mbrlabs.mundus.commons.importer.TextureDTO;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -40,6 +38,7 @@ import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
+import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.Compass;
@@ -74,8 +73,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Inject
     private ToolManager toolManager;
 
-    public static FBOTest fboTest;
-
 	@Override
 	public void create () {
         Mundus.init();
@@ -93,12 +90,12 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         widget3D.setRenderer(new RenderWidget.Renderer() {
             @Override
             public void render(Camera cam) {
-//                if(projectContext.currScene.skybox != null) {
-//                    batch.begin(projectContext.currScene.cam);
-//                    batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
-//                            projectContext.currScene.environment, shaders.skyboxShader);
-//                    batch.end();
-//                }
+                if(projectContext.currScene.skybox != null) {
+                    batch.begin(projectContext.currScene.cam);
+                    batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
+                            projectContext.currScene.environment, shaders.skyboxShader);
+                    batch.end();
+                }
 
                 projectContext.currScene.sceneGraph.update();
                 projectContext.currScene.sceneGraph.render();
@@ -117,8 +114,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
         setupInput();
-
-        fboTest = new FBOTest(widget3D.getViewport());
     }
 
     private void setupInput() {
@@ -146,11 +141,11 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         ui.draw();
 
         if(Gdx.input.isKeyPressed(Input.Keys.F1)) {
-            fboTest.begin();
-            projectContext.currScene.sceneGraph.render();
-            fboTest.end();
-            Pixmap pm = fboTest.getFrameBufferPixmap();
-            PixmapIO.writePNG(Gdx.files.absolute("/home/marcus/Desktop/fbo.png"), pm);
+//            gameObjectPicker.begin();
+//            projectContext.currScene.sceneGraph.render();
+//            gameObjectPicker.end();
+//            Pixmap pm = gameObjectPicker.getFrameBufferPixmap();
+//            PixmapIO.writePNG(Gdx.files.absolute("/home/marcus/Desktop/fbo.png"), pm);
         }
     }
 

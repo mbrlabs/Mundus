@@ -26,6 +26,7 @@ import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.brushes.*;
+import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 
 /**
  * @author Marcus Brummer
@@ -45,19 +46,13 @@ public class ToolManager extends InputAdapter implements Disposable {
     public RotateTool rotateTool;
     public ScaleTool scaleTool;
 
-    private ProjectContext projectContext;
     private InputManager inputManager;
-    private ModelBatch modelBatch;
-    private Shaders shaders;
-    private CommandHistory history;
 
-    public ToolManager(InputManager inputManager, ProjectContext projectContext, ModelBatch modelBatch, Shaders shaders, CommandHistory history) {
-        this.projectContext = projectContext;
+
+    public ToolManager(InputManager inputManager, ProjectContext projectContext, GameObjectPicker goPicker,
+                       ModelBatch modelBatch, Shaders shaders, CommandHistory history) {
         this.inputManager = inputManager;
-        this.modelBatch = modelBatch;
         this.activeTool = null;
-        this.shaders = shaders;
-        this.history = history;
 
         terrainBrushes = new Array<>();
         terrainBrushes.add(new SmoothCircleBrush(projectContext, shaders.wireframeShader, modelBatch, history));
@@ -66,10 +61,10 @@ public class ToolManager extends InputAdapter implements Disposable {
         terrainBrushes.add(new ConfettiBrush(projectContext, shaders.wireframeShader, modelBatch, history));
 
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
-        selectionTool = new SelectionTool(projectContext, shaders.wireframeShader, modelBatch, history);
-        translateTool = new TranslateTool(projectContext, shaders.wireframeShader, modelBatch, history);
-        rotateTool = new RotateTool(projectContext, shaders.wireframeShader, modelBatch, history);
-        scaleTool = new ScaleTool(projectContext, shaders.wireframeShader, modelBatch, history);
+        selectionTool = new SelectionTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
+        translateTool = new TranslateTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
+        rotateTool = new RotateTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
+        scaleTool = new ScaleTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
     }
 
     public void activateTool(Tool tool) {

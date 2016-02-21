@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.utils.Fa;
 
 /**
@@ -31,8 +32,8 @@ public class ScaleTool extends SelectionTool {
 
     public static final String NAME = "Scale Tool";
 
-    public ScaleTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, shader, batch, history);
+    public ScaleTool(ProjectContext projectContext, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectContext, goPicker, shader, batch, history);
     }
 
     @Override

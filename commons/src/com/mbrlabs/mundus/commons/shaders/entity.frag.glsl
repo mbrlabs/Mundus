@@ -15,9 +15,9 @@ varying vec4 v_lighting;
 
 void main(void) {
     gl_FragColor = texture2D(u_texture, v_texCoord0);
-//    if(gl_FragColor.a < 0.5) {
-//        discard;
-//    }
+    if(gl_FragColor.a < 0.5) {
+        discard;
+    }
 
     gl_FragColor *= v_lighting;
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);

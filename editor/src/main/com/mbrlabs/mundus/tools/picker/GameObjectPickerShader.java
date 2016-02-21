@@ -14,25 +14,32 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.shader;
+package com.mbrlabs.mundus.tools.picker;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
-import com.mbrlabs.mundus.GameObjectIdAttribute;
+import com.mbrlabs.mundus.tools.picker.GameObjectIdAttribute;
 import com.mbrlabs.mundus.utils.GlUtils;
 
 /**
+ * Used to render game objects in only one color.
+ *
+ * This color represents the encoded id of the game object.
+ * By rendering with this shader on a framebuffer object one can implement raypicking.
+ * The class GameObjectPicker does exactly that.
+ *
+ * See also: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
+ *
  * @author Marcus Brummer
  * @version 20-02-2016
  */
-public class RaypickShader extends BaseShader {
+public class GameObjectPickerShader extends BaseShader {
 
     private static final String VERTEX_SHADER =
             "attribute vec3 a_position;" +
@@ -63,7 +70,7 @@ public class RaypickShader extends BaseShader {
 
     private ShaderProgram program;
 
-    public RaypickShader() {
+    public GameObjectPickerShader() {
         super();
         program = new ShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
     }
@@ -109,7 +116,6 @@ public class RaypickShader extends BaseShader {
 
     @Override
     public void end() {
-        GlUtils.Unsafe.polygonModeFill();
         program.end();
     }
 

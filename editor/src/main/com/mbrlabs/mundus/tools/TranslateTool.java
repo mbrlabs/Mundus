@@ -40,6 +40,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
+import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
@@ -95,8 +96,8 @@ public class TranslateTool extends SelectionTool {
     private TranslateCommand command;
 
 
-    public TranslateTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, shader, batch, history);
+    public TranslateTool(ProjectContext projectContext, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectContext, goPicker, shader, batch, history);
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/translateTool.png"))));
 
         ModelBuilder modelBuilder = new ModelBuilder();

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus;
+package com.mbrlabs.mundus.tools.picker;
 
 import com.badlogic.gdx.graphics.g3d.Attribute;
-import com.mbrlabs.mundus.commons.env.lights.DirectionalLightsAttribute;
 
 /**
- * Created by marcus on 2/21/16.
+ * @author Marcus Brummer
+ * @version 20-02-2016
  */
 public class GameObjectIdAttribute extends Attribute {
 

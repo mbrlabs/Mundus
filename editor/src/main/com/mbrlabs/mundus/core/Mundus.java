@@ -17,20 +17,14 @@
 package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g3d.*;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.mbrlabs.mundus.FBOTest;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -42,11 +36,11 @@ import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.input.ShortcutController;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
+import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.ReflectionUtils;
 
-import javax.swing.text.AttributeSet;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -74,6 +68,8 @@ public class Mundus {
     private static HomeManager homeManager;
     private static ImportManager importManager;
     private static CommandHistory commandHistory;
+    private static GameObjectPicker goPicker;
+
     public static EventBus eventBus;
 
     public static Array<Model> testModels = new Array<>();
@@ -103,7 +99,8 @@ public class Mundus {
         projectContext = new ProjectContext(-1);
         input = new InputManager();
         commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
-        toolManager = new ToolManager(input, projectContext, modelBatch, shaders, commandHistory);
+        goPicker = new GameObjectPicker();
+        toolManager = new ToolManager(input, projectContext, goPicker, modelBatch, shaders, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);

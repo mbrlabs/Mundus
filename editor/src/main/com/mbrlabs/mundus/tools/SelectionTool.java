@@ -18,20 +18,16 @@ package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.Editor;
-import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Mundus;
@@ -39,9 +35,8 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.utils.Fa;
-
-import javax.swing.text.View;
 
 /**
  * @author Marcus Brummer
@@ -52,33 +47,12 @@ public class SelectionTool extends Tool {
     public static final String NAME = "Selection Tool";
     private Drawable icon;
 
-    private Vector3 tempV3 = new Vector3();
+    private GameObjectPicker goPicker;
 
-    public SelectionTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
+    public SelectionTool(ProjectContext projectContext, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
         super(projectContext, shader, batch, history);
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/selectionTool.png"))));
-    }
-
-    private GameObject getEntity(int screenX, int screenY) {
-        Editor.fboTest.begin();
-        projectContext.currScene.sceneGraph.render();
-        Editor.fboTest.end();
-        Pixmap pm = Editor.fboTest.getFrameBufferPixmap();
-
-        Viewport vp = projectContext.currScene.viewport;
-        int x = screenX - projectContext.currScene.viewport.getScreenX();
-        int y = screenY - (Gdx.graphics.getHeight() - (vp.getScreenY() + vp.getScreenHeight()));
-        int res = pm.getPixel(x, y);
-
-        int id = (res & 0xFF000000) >>> 24;
-        id += ((res & 0x00FF0000) >>> 16) * 256;
-        id += ((res & 0x0000FF00) >>> 8) * 256 * 256;
-
-        for(GameObject go : projectContext.currScene.sceneGraph.getRoot()) {
-            if(id == go.getId()) return go;
-        }
-
-        return null;
+        this.goPicker = goPicker;
     }
 
     public void gameObjectSelected(GameObject selection) {
@@ -132,7 +106,7 @@ public class SelectionTool extends Tool {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT) {
-            GameObject selection = getEntity(screenX, screenY);
+            GameObject selection = goPicker.pick(projectContext.currScene, screenX, screenY);
             if(selection != null && !selection.equals(projectContext.currScene.currentSelection)) {
                 gameObjectSelected(selection);
                 Mundus.postEvent(new GameObjectSelectedEvent(selection));

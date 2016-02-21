@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus;
+package com.mbrlabs.mundus.tools.picker;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
@@ -24,20 +24,30 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mbrlabs.mundus.Editor;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.Mundus;
 
 import java.nio.ByteBuffer;
 
 /**
- * Created by marcus on 2/20/16.
+ * Renders a scene graph to an offscreen FBO, encodes the game object's id in the game object's
+ * render color (see GameObjectPickerShader) and does mouse picking by decoding the picked color.
+ *
+ * See also: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
+ *
+ * @author Marcus Brummer
+ * @version 20-02-2016
  */
-public class FBOTest {
+public class GameObjectPicker implements Disposable {
 
     private FrameBuffer fbo;
-    private Viewport viewport;
+    private GameObjectPickerShader shader;
 
-    public FBOTest(Viewport viewport) {
+    public GameObjectPicker() {
         // to support multiple monitors.
         // Mundus can eventually span multiple monitors..thats why the framebuffer must be this big.
         Graphics.DisplayMode[] dps = Gdx.graphics.getDisplayModes();
@@ -49,22 +59,52 @@ public class FBOTest {
         }
 
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, fbWidth, fbHeight, true);
-        this.viewport = viewport;
     }
 
-    public void begin() {
+    public GameObject pick(EditorScene scene, int screenX, int screenY) {
+        begin(scene.viewport);
+        scene.sceneGraph.render();
+        end();
+        Pixmap pm = getFrameBufferPixmap(scene.viewport);
+
+        int x = screenX - scene.viewport.getScreenX();
+        int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
+
+        int id = decodeID(pm.getPixel(x, y));
+        for(GameObject go : scene.sceneGraph.getRoot()) {
+            if(id == go.getId()) return go;
+        }
+
+        return null;
+    }
+
+    /**
+     * Decodes a rgba8888 clor code to a game object id.
+     *
+     * @param rgba8888Code  rgba8888 color code
+     * @return
+     */
+    public static int decodeID(int rgba8888Code) {
+        int id = (rgba8888Code & 0xFF000000) >>> 24;
+        id += ((rgba8888Code & 0x00FF0000) >>> 16) * 256;
+        id += ((rgba8888Code & 0x0000FF00) >>> 8) * 256 * 256;
+
+        return id;
+    }
+
+    private void begin(Viewport viewport) {
         Mundus.RAY_PICK_RENDERING = true;
         fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
     }
 
-    public void end() {
+    private void end() {
         fbo.end();
         Mundus.RAY_PICK_RENDERING = false;
     }
 
-    public Pixmap getFrameBufferPixmap () {
+    public Pixmap getFrameBufferPixmap (Viewport viewport) {
         int w = viewport.getScreenWidth();
         int h = viewport.getScreenHeight();
         int x = viewport.getScreenX();
@@ -86,9 +126,12 @@ public class FBOTest {
         Pixmap pixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
         BufferUtils.copy(imgLines, 0, pixmap.getPixels(), imgLines.length);
 
-
         return pixmap;
     }
 
 
+    @Override
+    public void dispose() {
+
+    }
 }
