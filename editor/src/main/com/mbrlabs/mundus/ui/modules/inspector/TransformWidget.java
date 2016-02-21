@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -107,7 +106,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                go.setTranslation(posX.getFloat(), go.position.y, go.position.z, true);
+                go.setTrans(posX.getFloat(), go.position.y, go.position.z);
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -120,7 +119,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                go.setTranslation(go.position.x, posY.getFloat(), go.position.z, true);
+                go.setTrans(go.position.x, posY.getFloat(), go.position.z);
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -133,7 +132,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                go.setTranslation(go.position.x, go.position.y, posZ.getFloat(), true);
+                go.setTrans(go.position.x, go.position.y, posZ.getFloat());
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -147,7 +146,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.setRotation(rotX.getFloat(), rotY.getFloat(), rotZ.getFloat());
+                go.setRot(rotX.getFloat(), rotY.getFloat(), rotZ.getFloat());
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
@@ -163,7 +162,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(scaleX.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.setScale(scaleX.getFloat(), go.scale.y, go.scale.z);
+                    go.setScl(scaleX.getFloat(), go.scale.y, go.scale.z);
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -177,7 +176,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(scaleY.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.setScale(go.scale.x, scaleY.getFloat(), go.scale.z);
+                    go.setScl(go.scale.x, scaleY.getFloat(), go.scale.z);
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -191,7 +190,7 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(scaleZ.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.setScale(go.scale.x, go.scale.y, scaleZ.getFloat());
+                    go.setScl(go.scale.x, go.scale.y, scaleZ.getFloat());
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }

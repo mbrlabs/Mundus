@@ -133,7 +133,7 @@ public class MundusToolbar extends Toolbar {
             }
         });
 
-        // translate tool
+        // trans tool
         translateBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -141,7 +141,7 @@ public class MundusToolbar extends Toolbar {
             }
         });
 
-        // rotate tool
+        // rot tool
         rotateBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -149,7 +149,7 @@ public class MundusToolbar extends Toolbar {
             }
         });
 
-        // scale tool
+        // scl tool
         scaleBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

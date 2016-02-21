@@ -54,14 +54,14 @@ public class TranslateCommand implements Command {
 
     @Override
     public void execute() {
-        go.setTranslation(after.x, after.y, after.z, true);
+        go.setTrans(after.x, after.y, after.z);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }
 
     @Override
     public void undo() {
-        go.setTranslation(before.x, before.y, before.z, true);
+        go.setTrans(before.x, before.y, before.z);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }

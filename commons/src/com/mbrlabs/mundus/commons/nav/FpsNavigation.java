@@ -86,7 +86,7 @@
 //        return this.height;
 //    }
 //
-//    /** Sets how many degrees to rotate per pixel the mouse moved.
+//    /** Sets how many degrees to rot per pixel the mouse moved.
 //     * @param degreesPerPixel */
 //    public void setDegreesPerPixel (float degreesPerPixel) {
 //        this.degreesPerPixel = degreesPerPixel;
@@ -96,9 +96,9 @@
 //    public boolean mouseMoved(int screenX, int screenY) {
 //        float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
 //        float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
-//        camera.direction.rotate(camera.up, deltaX);
+//        camera.direction.rot(camera.up, deltaX);
 //        tmp.set(camera.direction).crs(camera.up).nor();
-//        camera.direction.rotate(tmp, deltaY);
+//        camera.direction.rot(tmp, deltaY);
 //
 //        return false;
 //    }

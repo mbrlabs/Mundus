@@ -198,7 +198,7 @@ public class RuntimeExporter {
         dto.getTrans()[4] = gameObject.rotation.getPitch();
         dto.getTrans()[5] = gameObject.rotation.getRoll();
 
-        // scale
+        // scl
         dto.getTrans()[6] = gameObject.scale.x;
         dto.getTrans()[7] = gameObject.scale.y;
         dto.getTrans()[8] = gameObject.scale.z;

@@ -16,12 +16,10 @@
 
 package com.mbrlabs.mundus.commons.scene3d;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.commons.importer.ModelComponentDTO;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.traversal.DepthFirstIterator;
 
@@ -35,6 +33,7 @@ public class GameObject implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
     private static Quaternion tempQuat = new Quaternion();
+    private static Vector3 tempVec = new Vector3();
 
     private int id;
     private String name;
@@ -42,15 +41,13 @@ public class GameObject implements Iterable<GameObject> {
     private Array<String> tags;
     private Array<Component> components;
     private Array<GameObject> childs;
+    private GameObject parent;
+    public SceneGraph sceneGraph;
 
     private Matrix4 transform;
     public Vector3 position;
     public Quaternion rotation;
     public Vector3 scale;
-
-    private GameObject parent;
-
-    public SceneGraph sceneGraph;
 
     public GameObject(SceneGraph sceneGraph) {
         this.name = DEFAULT_NAME;
@@ -71,46 +68,6 @@ public class GameObject implements Iterable<GameObject> {
         this(sceneGraph);
         this.name = name;
         this.id = id;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Array<String> getTags() {
-        return this.tags;
-    }
-
-    public SceneGraph getSceneGraph() {
-        return sceneGraph;
-    }
-
-    public void addTag(String tag) {
-        if(this.tags == null) {
-            this.tags = new Array<String>(2);
-        }
-
-        this.tags.add(tag);
     }
 
     public Array<Component> findComponentsByType(Array<Component> out, Component.Type type, boolean includeChilds) {
@@ -188,87 +145,65 @@ public class GameObject implements Iterable<GameObject> {
         return false;
     }
 
-    public GameObject getParent() {
-        return this.parent;
-    }
-
-    public void setParent(GameObject parent) {
-        this.parent = parent;
-    }
-
-    public Matrix4 getTransform() {
-        return this.transform;
-    }
-
-    public void setTransform(Matrix4 transform) {
-        this.transform = transform;
-        transform.getTranslation(position);
-        transform.getRotation(rotation);
-        transform.getScale(scale);
-    }
-
-    public void setTranslation(float x, float y, float z, boolean globalSpace) {
+    public void setTrans(float x, float y, float z) {
+        tempVec.set(position);
         this.position.set(x, y, z);
+        tempVec.sub(position);
         calculateTransform();
-//
-//        if(globalSpace) {
-//            transform.trn(x, y, z);
-//        } else {
-//            transform.translate(x, y, z);
-//        }
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.setTranslation(x, y, z, globalSpace);
+                node.trans(tempVec.x, tempVec.y, tempVec.z);
             }
         }
     }
 
-    public void translate(float x, float y, float z, boolean globalSpace) {
+    public void trans(float x, float y, float z) {
         position.add(x, y, z);
         transform.trn(x, y, z);
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.translate(x, y, z, globalSpace);
+                node.trans(x, y, z);
             }
         }
     }
 
-    public void setRotation(float x, float y, float z) {
+
+    public void setRot(float x, float y, float z) {
         rotation.setEulerAngles(y, x, z);
         calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.setRotation(x, y, z);
+                node.setRot(x, y, z);
             }
         }
     }
 
-    public void rotate(float x, float y, float z) {
+    public void rot(float x, float y, float z) {
         tempQuat.setEulerAngles(y, x, z);
         rotation.add(tempQuat);
         transform.rotate(tempQuat);
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.rotate(x, y, z);
+                node.rot(x, y, z);
             }
         }
     }
 
-    public void scale(float x, float y, float z) {
+    public void scl(float x, float y, float z) {
 
     }
 
-    public void setScale(float x, float y, float z) {
+    public void setScl(float x, float y, float z) {
         scale.set(x, y, z);
         calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.setScale(x, y, z);
+                node.setScl(x, y, z);
             }
         }
     }
@@ -315,6 +250,65 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Array<String> getTags() {
+        return this.tags;
+    }
+
+    public SceneGraph getSceneGraph() {
+        return sceneGraph;
+    }
+
+    public void addTag(String tag) {
+        if(this.tags == null) {
+            this.tags = new Array<String>(2);
+        }
+
+        this.tags.add(tag);
+    }
+
+    public void setTransform(Matrix4 transform) {
+        this.transform = transform;
+        transform.getTranslation(position);
+        transform.getRotation(rotation);
+        transform.getScale(scale);
+    }
+
+    public GameObject getParent() {
+        return this.parent;
+    }
+
+    public void setParent(GameObject parent) {
+        this.parent = parent;
+    }
+
+    public Matrix4 getTransform() {
+        return this.transform;
+    }
+
     @Override
     public Iterator<GameObject> iterator() {
         return new DepthFirstIterator(this);
@@ -335,7 +329,7 @@ public class GameObject implements Iterable<GameObject> {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = (int) (id ^ (id >>> 16));
         result = 31 * result + name.hashCode();
         return result;
     }

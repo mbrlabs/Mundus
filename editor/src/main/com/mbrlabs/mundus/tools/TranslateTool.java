@@ -41,7 +41,6 @@ import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
-import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
 
@@ -158,10 +157,6 @@ public class TranslateTool extends SelectionTool {
             yHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
             zHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
         }
-
-//        xHandle.calculateBounds();
-//        yHandle.calculateBounds();
-//        zHandle.calculateBounds();
     }
 
     @Override
@@ -205,20 +200,20 @@ public class TranslateTool extends SelectionTool {
 
             boolean modified = false;
             if(state == State.TRANSLATE_XZ) {
-                projectContext.currScene.currentSelection.translate(rayEnd.x - lastPos.x,
-                        0, rayEnd.z - lastPos.z, globalSpace);
+                projectContext.currScene.currentSelection.trans(rayEnd.x - lastPos.x,
+                        0, rayEnd.z - lastPos.z);
                 modified = true;
             } else if(state == State.TRANSLATE_X) {
-                projectContext.currScene.currentSelection.translate(rayEnd.x - lastPos.x,
-                        0, 0, globalSpace);
+                projectContext.currScene.currentSelection.trans(rayEnd.x - lastPos.x,
+                        0, 0);
                 modified = true;
             } else if(state == State.TRANSLATE_Y) {
-                projectContext.currScene.currentSelection.translate(0,
-                        rayEnd.y - lastPos.y, 0, globalSpace);
+                projectContext.currScene.currentSelection.trans(0,
+                        rayEnd.y - lastPos.y, 0);
                 modified = true;
             } else if(state == State.TRANSLATE_Z) {
-                projectContext.currScene.currentSelection.translate(0, 0,
-                        rayEnd.z - lastPos.z, globalSpace);
+                projectContext.currScene.currentSelection.trans(0, 0,
+                        rayEnd.z - lastPos.z);
                 modified = true;
             }
 
@@ -392,7 +387,7 @@ public class TranslateTool extends SelectionTool {
         }
 
         public boolean isSelected(Ray ray) {
-            // scale
+            // scl
             transform.getScale(temp0);
 
             // dim
