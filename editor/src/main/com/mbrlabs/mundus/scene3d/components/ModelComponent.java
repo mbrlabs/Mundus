@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.mbrlabs.mundus.tools.picker.GameObjectColorEncoder;
 import com.mbrlabs.mundus.tools.picker.GameObjectIdAttribute;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -51,11 +52,7 @@ public class ModelComponent extends AbstractComponent {
     }
 
     public void encodeRaypickColorId() {
-        GameObjectIdAttribute goIDa = new GameObjectIdAttribute();
-        goIDa.r = ((int)gameObject.getId()) & 0x000000FF;
-        goIDa.g = (((int)gameObject.getId()) & 0x0000FF00) >>> 8;
-        goIDa.b = (((int)gameObject.getId()) & 0x00FF0000) >>> 16;
-
+        GameObjectIdAttribute goIDa = GameObjectColorEncoder.encodeRaypickColorId(gameObject);
         this.modelInstance.modelInstance.materials.get(0).set(goIDa);
     }
 

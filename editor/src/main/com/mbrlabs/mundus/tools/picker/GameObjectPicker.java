@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.tools.picker;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -26,7 +25,6 @@ import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mbrlabs.mundus.Editor;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.Mundus;
@@ -45,7 +43,6 @@ import java.nio.ByteBuffer;
 public class GameObjectPicker implements Disposable {
 
     private FrameBuffer fbo;
-    private GameObjectPickerShader shader;
 
     public GameObjectPicker() {
         fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -60,26 +57,12 @@ public class GameObjectPicker implements Disposable {
         int x = screenX - scene.viewport.getScreenX();
         int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
 
-        int id = decodeID(pm.getPixel(x, y));
+        int id = GameObjectColorEncoder.decode(pm.getPixel(x, y));
         for(GameObject go : scene.sceneGraph.getRoot()) {
             if(id == go.getId()) return go;
         }
 
         return null;
-    }
-
-    /**
-     * Decodes a rgba8888 cloor code to a game object id.
-     *
-     * @param rgba8888Code  rgba8888 color code
-     * @return
-     */
-    public static int decodeID(int rgba8888Code) {
-        int id = (rgba8888Code & 0xFF000000) >>> 24;
-        id += ((rgba8888Code & 0x00FF0000) >>> 16) * 256;
-        id += ((rgba8888Code & 0x0000FF00) >>> 8) * 256 * 256;
-
-        return id;
     }
 
     private void begin(Viewport viewport) {

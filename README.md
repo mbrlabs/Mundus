@@ -43,7 +43,7 @@ Runtimes for other engines/frameworks are not planed in the near future.
 
 ## Dev Platforms
 Since this is Java (+ libGDX with some native libs) it should run on Windows, Mac & Linux 
-(all platforms must support at least OpenGL ES 2). 
+(all platforms must support at least OpenGL 3.2). 
 I develop on a Linux machine, so the only tested OS is Linux so far.
 Android & iOS are obviously not supported as development platforms (but of course as target platform). 
 
