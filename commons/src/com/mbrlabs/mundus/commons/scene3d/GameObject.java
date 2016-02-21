@@ -146,16 +146,21 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setTrans(float x, float y, float z) {
-        tempVec.set(position);
+        final Vector3 diff = tempVec.set(position);
         this.position.set(x, y, z);
-        tempVec.sub(position);
+        diff.sub(position);
+
         calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.trans(tempVec.x, tempVec.y, tempVec.z);
+                node.trans(diff.x, diff.y, diff.z);
             }
         }
+    }
+
+    public void setTransRel(float x, float y, float z) {
+        // TODO implement
     }
 
     public void trans(float x, float y, float z) {
@@ -167,6 +172,10 @@ public class GameObject implements Iterable<GameObject> {
                 node.trans(x, y, z);
             }
         }
+    }
+
+    public void transRel(float x, float y, float z) {
+        // TODO implement
     }
 
 
@@ -181,6 +190,10 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
+    public void setRotRel(float x, float y, float z) {
+        // TODO implement
+    }
+
     public void rot(float x, float y, float z) {
         tempQuat.setEulerAngles(y, x, z);
         rotation.add(tempQuat);
@@ -193,8 +206,8 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
-    public void scl(float x, float y, float z) {
-
+    public void rotRel(float x, float y, float z) {
+        // TODO implement
     }
 
     public void setScl(float x, float y, float z) {
@@ -206,6 +219,38 @@ public class GameObject implements Iterable<GameObject> {
                 node.setScl(x, y, z);
             }
         }
+    }
+
+    public void setSclRel(float x, float y, float z) {
+        // TODO implement
+    }
+
+    public void scl(float x, float y, float z) {
+        // TODO implement
+    }
+
+    public void sclRel(float x, float y, float z) {
+        // TODO implement
+    }
+
+    public Vector3 getTransRel(Vector3 out) {
+        // TODO implement
+        return out;
+    }
+
+    public Quaternion getRotRel(Quaternion out) {
+        // TODO implement
+        return out;
+    }
+
+    public Vector3 getRotRel(Vector3 out) {
+        // TODO implement
+        return out;
+    }
+
+    public Vector3 getSclRel(Vector3 out) {
+        // TODO implement
+        return out;
     }
 
     public void calculateTransform() {
