@@ -34,11 +34,9 @@ import java.util.Iterator;
 public class GameObject implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
-    private static Vector3 tempVec0 = new Vector3();
     private static Quaternion tempQuat = new Quaternion();
 
-    private long id;
-
+    private int id;
     private String name;
     private boolean active;
     private Array<String> tags;
@@ -69,17 +67,17 @@ public class GameObject implements Iterable<GameObject> {
         this.rotation = new Quaternion();
     }
 
-    public GameObject(SceneGraph sceneGraph, String name, long id) {
+    public GameObject(SceneGraph sceneGraph, String name, int id) {
         this(sceneGraph);
         this.name = name;
         this.id = id;
     }
 
-    public long getId() {
+    public int getId() {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

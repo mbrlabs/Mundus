@@ -98,7 +98,7 @@ public class ModelPlacementTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if(curEntity != null && button == Input.Buttons.LEFT) {
-            long id = projectContext.obtainUUID();
+            int id = projectContext.obtainID();
             GameObject selected = projectContext.currScene.sceneGraph.getSelected();
 
             GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, id);

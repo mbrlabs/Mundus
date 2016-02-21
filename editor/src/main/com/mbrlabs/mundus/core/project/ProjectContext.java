@@ -39,18 +39,18 @@ public class ProjectContext implements Disposable {
     public Array<Terrain> terrains;
     public Array<MTexture> textures;
 
-    private long uuidProvider;
+    private int idProvider;
 
     /** set by kryo when project is loaded. do not use this */
     public String kryoActiveScene;
 
-    public ProjectContext(long uuidProvider) {
+    public ProjectContext(int idProvider) {
         models = new Array<>();
         textures = new Array<>();
         scenes = new Array<>();
         currScene = new EditorScene();
         terrains = new Array<>();
-        this.uuidProvider = uuidProvider;
+        this.idProvider = idProvider;
     }
 
     public void copyFrom(ProjectContext other) {
@@ -60,17 +60,17 @@ public class ProjectContext implements Disposable {
         currScene = other.currScene;
         scenes = other.scenes;
         models = other.models;
-        uuidProvider = other.uuidProvider;
+        idProvider = other.idProvider;
         textures = other.textures;
     }
 
-    public synchronized long obtainUUID() {
-        uuidProvider += 1;
-        return uuidProvider;
+    public synchronized int obtainID() {
+        idProvider += 1;
+        return idProvider;
     }
 
-    public synchronized long getCurrentUUID() {
-        return uuidProvider;
+    public synchronized int inspectCurrentID() {
+        return idProvider;
     }
 
     @Override

@@ -118,7 +118,7 @@ public class AddTerrainDialog extends BaseDialog {
                     // create model
                     Terrain terrain = generateTerrain(width, depth, res);
                     terrain.name = nom;
-                    terrain.id = projectContext.obtainUUID();
+                    terrain.id = projectContext.obtainID();
                     terrain.terraPath = ProjectManager.PROJECT_TERRAIN_DIR + terrain.id + "." + TerrainIO.FILE_EXTENSION;
                     terrain.transform.setTranslation(posX, 0, posZ);
 
@@ -128,7 +128,7 @@ public class AddTerrainDialog extends BaseDialog {
                     SceneGraph sceneGraph = projectContext.currScene.sceneGraph;
 
                     GameObject terrainGO = new GameObject(sceneGraph);
-                    terrainGO.setId(projectContext.obtainUUID());
+                    terrainGO.setId(projectContext.obtainID());
                     terrainGO.setName(name.getText());
                     terrainGO.setTransform(terrain.transform);
                     terrainGO.setParent(sceneGraph.getRoot());

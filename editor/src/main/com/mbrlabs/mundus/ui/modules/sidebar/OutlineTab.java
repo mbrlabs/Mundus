@@ -241,7 +241,7 @@ public class OutlineTab extends Tab implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (selectedGO != null) {
-                        long id = projectContext.obtainUUID();
+                        int id = projectContext.obtainID();
                         selectedGO.addChild(new GameObject(selectedGO.sceneGraph, GameObject.DEFAULT_NAME, id));
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     }

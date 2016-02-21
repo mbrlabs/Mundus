@@ -30,7 +30,7 @@ public class ProjectDescriptor {
     @Tag(0)
     private String name;
     @Tag(1)
-    private long nextAvailableID;
+    private int nextAvailableID;
     @Tag(2)
     private List<ModelDescriptor> models;
     @Tag(3)
@@ -65,11 +65,11 @@ public class ProjectDescriptor {
         this.name = name;
     }
 
-    public long getNextAvailableID() {
+    public int getNextAvailableID() {
         return nextAvailableID;
     }
 
-    public void setNextAvailableID(long nextAvailableID) {
+    public void setNextAvailableID(int nextAvailableID) {
         this.nextAvailableID = nextAvailableID;
     }
 

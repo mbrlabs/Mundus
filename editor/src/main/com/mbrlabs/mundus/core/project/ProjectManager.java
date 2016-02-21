@@ -109,7 +109,7 @@ public class ProjectManager {
         scene.setName(DEFAULT_SCENE_NAME);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
         scene.environment.setFog(new Fog());
-        scene.setId(newProjectContext.obtainUUID());
+        scene.setId(newProjectContext.obtainID());
         kryoManager.saveScene(newProjectContext, scene);
         scene.sceneGraph.batch = Mundus.modelBatch;
 
@@ -220,7 +220,7 @@ public class ProjectManager {
 
     public Scene createScene(ProjectContext projectContext, String name) {
         Scene scene = new Scene();
-        long id = projectContext.obtainUUID();
+        long id = projectContext.obtainID();
         scene.setId(id);
         scene.setName(name);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();

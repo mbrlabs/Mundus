@@ -17,8 +17,6 @@
 package com.mbrlabs.mundus.core.kryo;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -451,7 +449,7 @@ public class DescriptorConverter {
         ProjectDescriptor descriptor = new ProjectDescriptor();
         descriptor.setName(project.name);
         descriptor.setCurrentSceneName(project.currScene.getName());
-        descriptor.setNextAvailableID(project.getCurrentUUID());
+        descriptor.setNextAvailableID(project.inspectCurrentID());
 
         // textures
         for(MTexture texture : project.textures) {

@@ -49,7 +49,7 @@ public class AssetManager {
      * @return
      */
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
-        long id = projectContext.obtainUUID();
+        long id = projectContext.obtainID();
 
         String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
         String absoluteImportFolder = projectContext.absolutePath + "/" + relativeImportFolder;
@@ -89,7 +89,7 @@ public class AssetManager {
      * @return
      */
     public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
-        long id = projectContext.obtainUUID();
+        long id = projectContext.obtainID();
 
         String relativeImportPath = ProjectManager.PROJECT_TEXTURE_DIR + textureFile.name();
         String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, relativeImportPath);
