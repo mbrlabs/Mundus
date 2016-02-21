@@ -74,7 +74,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Inject
     private ToolManager toolManager;
 
-    private FBOTest fboTest;
+    public static FBOTest fboTest;
 
 	@Override
 	public void create () {

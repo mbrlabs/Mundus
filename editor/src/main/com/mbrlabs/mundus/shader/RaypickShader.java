@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector3;
+import com.mbrlabs.mundus.GameObjectIdAttribute;
 import com.mbrlabs.mundus.utils.GlUtils;
 
 /**
@@ -46,15 +48,17 @@ public class RaypickShader extends BaseShader {
             "#ifdef GL_ES\n" +
             "precision mediump float;\n" +
             "#endif \n" +
-            "uniform vec4 u_color;" +
+            "uniform vec3 u_color;" +
             "void main(void) {" +
-                "gl_FragColor = u_color;" +
+                "gl_FragColor = vec4(u_color.r/255.0, u_color.g/255.0, u_color.b/255.0, 1.0);" +
             "}";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
 
     protected final int UNIFORM_COLOR = register(new Uniform("u_color"));
+
+    private static Vector3 vec3 = new Vector3();
 
 
     private ShaderProgram program;
@@ -95,8 +99,10 @@ public class RaypickShader extends BaseShader {
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
-        ColorAttribute color = (ColorAttribute) renderable.material.get(ColorAttribute.Diffuse);
-        set(UNIFORM_COLOR, color.color);
+        GameObjectIdAttribute goID = (GameObjectIdAttribute) renderable.material.get(GameObjectIdAttribute.Type);
+        if(goID != null) {
+            set(UNIFORM_COLOR, vec3.set(goID.r, goID.g, goID.b));
+        }
 
         renderable.meshPart.render(program);
     }

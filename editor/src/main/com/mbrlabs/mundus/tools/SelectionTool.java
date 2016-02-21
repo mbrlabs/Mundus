@@ -18,6 +18,8 @@ package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -27,6 +29,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mbrlabs.mundus.Editor;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -36,6 +40,8 @@ import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.utils.Fa;
+
+import javax.swing.text.View;
 
 /**
  * @author Marcus Brummer
@@ -54,34 +60,25 @@ public class SelectionTool extends Tool {
     }
 
     private GameObject getEntity(int screenX, int screenY) {
-        Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
-        GameObject gameObject = null;
-        float distance = -1;
+        Editor.fboTest.begin();
+        projectContext.currScene.sceneGraph.render();
+        Editor.fboTest.end();
+        Pixmap pm = Editor.fboTest.getFrameBufferPixmap();
 
-        for (GameObject go : projectContext.currScene.sceneGraph.getRoot()) {
+        Viewport vp = projectContext.currScene.viewport;
+        int x = screenX - projectContext.currScene.viewport.getScreenX();
+        int y = screenY - (Gdx.graphics.getHeight() - (vp.getScreenY() + vp.getScreenHeight()));
+        int res = pm.getPixel(x, y);
 
-            // TODO support all kinds of components..not jsut MODEL
-            Component component = go.findComponentByType(Component.Type.MODEL);
-            if(component == null) {
-                continue;
-            }
+        int id = (res & 0xFF000000) >>> 24;
+        id += ((res & 0x00FF0000) >>> 16) * 256;
+        id += ((res & 0x0000FF00) >>> 8) * 256 * 256;
 
-            MModelInstance entity = ((ModelComponent) component).getModelInstance();
-            entity.modelInstance.transform.getTranslation(tempV3);
-            tempV3.add(entity.center);
-            float dist2 = ray.origin.dst2(tempV3);
-            if (distance >= 0f && dist2 > distance) continue;
-
-            entity.modelInstance.transform.getTranslation(tempV3);
-            tempV3.add(entity.center);
-
-            if(Intersector.intersectRayBoundsFast(ray, tempV3, entity.dimensions)) {
-                gameObject = go;
-                distance = dist2;
-            }
-
+        for(GameObject go : projectContext.currScene.sceneGraph.getRoot()) {
+            if(id == go.getId()) return go;
         }
-        return gameObject;
+
+        return null;
     }
 
     public void gameObjectSelected(GameObject selection) {
@@ -129,6 +126,11 @@ public class SelectionTool extends Tool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT) {
             GameObject selection = getEntity(screenX, screenY);
             if(selection != null && !selection.equals(projectContext.currScene.currentSelection)) {
@@ -136,6 +138,7 @@ public class SelectionTool extends Tool {
                 Mundus.postEvent(new GameObjectSelectedEvent(selection));
             }
         }
+
         return false;
     }
 

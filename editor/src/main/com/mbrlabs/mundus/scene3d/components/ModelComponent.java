@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.mbrlabs.mundus.GameObjectIdAttribute;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
@@ -57,9 +58,15 @@ public class ModelComponent extends AbstractComponent {
     }
 
     public void encodeRaypickColorId() {
-        this.modelInstance.modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(
-                new Color(new Color(new Random().nextInt()))
-        ));
+        GameObjectIdAttribute goIDa = new GameObjectIdAttribute();
+        goIDa.r = ((int)gameObject.getId()) & 0x000000FF;
+        goIDa.g = (((int)gameObject.getId()) & 0x0000FF00) >>> 8;
+        goIDa.b = (((int)gameObject.getId()) & 0x00FF0000) >>> 16;
+
+
+       // System.out.println(gameObject.getId() + " ---- r: " + goIDa.r + " g:" + goIDa.g + " b:" + goIDa.b);
+
+        this.modelInstance.modelInstance.materials.get(0).set(goIDa);
     }
 
     public MModelInstance getModelInstance() {

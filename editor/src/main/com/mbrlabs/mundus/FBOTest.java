@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -37,7 +38,17 @@ public class FBOTest {
     private Viewport viewport;
 
     public FBOTest(Viewport viewport) {
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        // to support multiple monitors.
+        // Mundus can eventually span multiple monitors..thats why the framebuffer must be this big.
+        Graphics.DisplayMode[] dps = Gdx.graphics.getDisplayModes();
+        int fbHeight = 0;
+        int fbWidth = 0;
+        for(Graphics.DisplayMode dp : dps) {
+            fbHeight += dp.height;
+            fbWidth += dp.width;
+        }
+
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, fbWidth, fbHeight, true);
         this.viewport = viewport;
     }
 
@@ -77,8 +88,6 @@ public class FBOTest {
 
 
         return pixmap;
-
-       // return pixmap;
     }
 
 
