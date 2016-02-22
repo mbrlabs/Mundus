@@ -141,8 +141,8 @@ public class GameObject implements Iterable<GameObject> {
             parent.getChilds().removeValue(this, true);
             return true;
         }
-
-        return false;
+        sceneGraph.getGameObjects().removeValue(this, true);
+        return true;
     }
 
     public void setTrans(float x, float y, float z) {
@@ -371,7 +371,7 @@ public class GameObject implements Iterable<GameObject> {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 16));
+        int result = (id ^ (id >>> 16));
         result = 31 * result + name.hashCode();
         return result;
     }

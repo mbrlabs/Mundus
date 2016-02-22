@@ -124,9 +124,8 @@ public class OutlineTab extends Tab implements
                 if (Input.Buttons.RIGHT != button) return;
 
                 Tree.Node node = tree.getNodeAt(y);
-                if (node == null) return;
-
-                GameObject go = (GameObject) node.getObject();
+                GameObject go = null;
+                if(node != null) go = (GameObject) node.getObject();
                 rightClickMenu.show(go, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
             }
 
@@ -236,11 +235,14 @@ public class OutlineTab extends Tab implements
             addEmpty.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (selectedGO != null) {
-                        int id = projectContext.obtainID();
-                        selectedGO.addChild(new GameObject(selectedGO.sceneGraph, GameObject.DEFAULT_NAME, id));
-                        Mundus.postEvent(new SceneGraphChangedEvent());
+                    int id = projectContext.obtainID();
+                    SceneGraph sg = projectContext.currScene.sceneGraph;
+                    if (selectedGO == null) {
+                        sg.getGameObjects().add(new GameObject(sg, GameObject.DEFAULT_NAME, id));
+                    } else {
+                        selectedGO.addChild(new GameObject(sg, GameObject.DEFAULT_NAME, id));
                     }
+                    Mundus.postEvent(new SceneGraphChangedEvent());
                 }
             });
 
