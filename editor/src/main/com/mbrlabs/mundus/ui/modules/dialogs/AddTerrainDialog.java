@@ -131,8 +131,8 @@ public class AddTerrainDialog extends BaseDialog {
                     terrainGO.setId(projectContext.obtainID());
                     terrainGO.setName(name.getText());
                     terrainGO.setTransform(terrain.transform);
-                    terrainGO.setParent(sceneGraph.getRoot());
-                    sceneGraph.getRoot().addChild(terrainGO);
+                    terrainGO.setParent(null);
+                    sceneGraph.getGameObjects().add(terrainGO);
 
                     TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
                     terrainComponent.setTerrain(terrain);

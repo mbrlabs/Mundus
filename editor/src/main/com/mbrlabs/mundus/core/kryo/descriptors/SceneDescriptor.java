@@ -18,6 +18,9 @@ package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Marcus Brummer
  * @version 22-12-2015
@@ -29,7 +32,7 @@ public class SceneDescriptor {
     @Tag(1)
     private String name;
     @Tag(2)
-    private GameObjectDescriptor sceneGraphRoot;
+    private List<GameObjectDescriptor> gameObjects;
     @Tag(3)
     private FogDescriptor fog;
     @Tag(4)
@@ -46,6 +49,7 @@ public class SceneDescriptor {
     private float camDirZ = 0;
 
     public SceneDescriptor() {
+        gameObjects = new ArrayList<>();
     }
 
     public long getId() {
@@ -120,12 +124,11 @@ public class SceneDescriptor {
         this.fog = fog;
     }
 
-    public GameObjectDescriptor getSceneGraphRoot() {
-        return sceneGraphRoot;
+    public List<GameObjectDescriptor> getGameObjects() {
+        return gameObjects;
     }
 
-    public void setSceneGraphRoot(GameObjectDescriptor sceneGraphRoot) {
-        this.sceneGraphRoot = sceneGraphRoot;
+    public void setGameObjects(List<GameObjectDescriptor> gameObjects) {
+        this.gameObjects = gameObjects;
     }
-
 }

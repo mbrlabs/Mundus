@@ -155,24 +155,19 @@ public class OutlineTab extends Tab implements
     private void buildTree(SceneGraph sceneGraph) {
         tree.clearChildren();
 
-        GameObject rootGo = sceneGraph.getRoot();
-        VisTree.Node treeRoot = new VisTree.Node(new TreeNode(rootGo));
-        treeRoot.setObject(rootGo);
-        tree.add(treeRoot);
-
-        if(rootGo.getChilds() != null) {
-            for(GameObject goChild : rootGo.getChilds()) {
-                addGameObject(treeRoot, goChild);
-            }
+        for(GameObject go : sceneGraph.getGameObjects()) {
+            addGameObject(null, go);
         }
-
-        treeRoot.setExpanded(true);
     }
 
     private void addGameObject(Tree.Node treeParentNode, GameObject gameObject) {
         Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
         leaf.setObject(gameObject);
-        treeParentNode.add(leaf);
+        if(treeParentNode == null) {
+            tree.add(leaf);
+        } else {
+            treeParentNode.add(leaf);
+        }
 
         if(gameObject.getChilds() != null) {
             for(GameObject goChild : gameObject.getChilds()) {

@@ -201,18 +201,35 @@ public class TransformWidget extends BaseInspectorWidget {
 
     @Override
     public void setValues(GameObject go) {
-        posX.setText(StringUtils.formatFloat(go.position.x, 2));
-        posY.setText(StringUtils.formatFloat(go.position.y, 2));
-        posZ.setText(StringUtils.formatFloat(go.position.z, 2));
+        Vector3 pos = go.getTransRel(tempV3);
+        posX.setText(StringUtils.formatFloat(pos.x, 2));
+        posY.setText(StringUtils.formatFloat(pos.y, 2));
+        posZ.setText(StringUtils.formatFloat(pos.z, 2));
 
         rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
         rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
         rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
 
-        scaleX.setText(StringUtils.formatFloat(go.scale.x, 2));
-        scaleY.setText(StringUtils.formatFloat(go.scale.y, 2));
-        scaleZ.setText(StringUtils.formatFloat(go.scale.z, 2));
+        Vector3 scl = go.getSclRel(tempV3);
+        scaleX.setText(StringUtils.formatFloat(scl.x, 2));
+        scaleY.setText(StringUtils.formatFloat(scl.y, 2));
+        scaleZ.setText(StringUtils.formatFloat(scl.z, 2));
     }
+
+//    @Override
+//    public void setValues(GameObject go) {
+//        posX.setText(StringUtils.formatFloat(go.position.x, 2));
+//        posY.setText(StringUtils.formatFloat(go.position.y, 2));
+//        posZ.setText(StringUtils.formatFloat(go.position.z, 2));
+//
+//        rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
+//        rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
+//        rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
+//
+//        scaleX.setText(StringUtils.formatFloat(go.scale.x, 2));
+//        scaleY.setText(StringUtils.formatFloat(go.scale.y, 2));
+//        scaleZ.setText(StringUtils.formatFloat(go.scale.z, 2));
+//    }
 
     @Override
     public void onDelete() {

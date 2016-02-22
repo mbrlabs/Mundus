@@ -99,14 +99,8 @@ public class ModelPlacementTool extends Tool {
 
         if(curEntity != null && button == Input.Buttons.LEFT) {
             int id = projectContext.obtainID();
-            GameObject selected = projectContext.currScene.sceneGraph.getSelected();
-
             GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, id);
-            if(selected == null) {
-                projectContext.currScene.sceneGraph.getRoot().addChild(modelGo);
-            } else {
-                selected.addChild(modelGo);
-            }
+            projectContext.currScene.sceneGraph.getGameObjects().add(modelGo);
 
             modelGo.setTransform(curEntity.modelInstance.transform);
             ModelComponent modelComponent = new ModelComponent(modelGo);

@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.commons.scene3d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 
 /**
@@ -26,7 +27,7 @@ import com.mbrlabs.mundus.commons.Scene;
  */
 public class SceneGraph {
 
-    protected GameObject root;
+    protected Array<GameObject> gameObjects;
 
     public Scene scene;
     public ModelBatch batch;
@@ -34,7 +35,7 @@ public class SceneGraph {
     private GameObject selected;
 
     public SceneGraph(Scene scene) {
-        root = new GameObject(this);
+        gameObjects = new Array<GameObject>();
         this.scene = scene;
     }
 
@@ -46,32 +47,30 @@ public class SceneGraph {
         this.batch = batch;
     }
 
-    public GameObject getRoot() {
-        return this.root;
-    }
-
-    public void setRoot(GameObject root) {
-        this.root = root;
-    }
-
     public void render() {
-        batch.begin(scene.cam);
-        root.render(Gdx.graphics.getDeltaTime());
-        batch.end();
+        render(Gdx.graphics.getDeltaTime());
     }
 
     public void render(float delta) {
         batch.begin(scene.cam);
-        root.render(delta);
+        for(GameObject go : gameObjects) {
+            go.render(delta);
+        }
         batch.end();
     }
 
     public void update() {
-        root.update(Gdx.graphics.getDeltaTime());
+        update(Gdx.graphics.getDeltaTime());
     }
 
     public void update(float delta) {
-        root.update(delta);
+        for(GameObject go : gameObjects) {
+            go.update(delta);
+        }
+    }
+
+    public Array<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
     public GameObject getSelected() {

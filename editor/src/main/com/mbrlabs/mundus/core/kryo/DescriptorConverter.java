@@ -400,7 +400,9 @@ public class DescriptorConverter {
         descriptor.setId(scene.getId());
 
         // scene graph
-        descriptor.setSceneGraphRoot(convert(scene.sceneGraph.getRoot()));
+        for(GameObject go : scene.sceneGraph.getGameObjects()) {
+            descriptor.getGameObjects().add(convert(go));
+        }
 
         // fog
         descriptor.setFog(convert(scene.environment.getFog()));
@@ -428,7 +430,9 @@ public class DescriptorConverter {
 
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
-        scene.sceneGraph.setRoot(convert(sceneDescriptor.getSceneGraphRoot(), scene.sceneGraph, models, terrains));
+        for(GameObjectDescriptor descriptor : sceneDescriptor.getGameObjects()) {
+            scene.sceneGraph.getGameObjects().add(convert(descriptor, scene.sceneGraph, models, terrains));
+        }
 
         // camera
         scene.cam.position.x = sceneDescriptor.getCamPosX();

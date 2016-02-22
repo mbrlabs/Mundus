@@ -237,11 +237,15 @@ public class ProjectManager {
 
         SceneGraph sceneGraph = scene.sceneGraph;
         sceneGraph.batch = Mundus.modelBatch;
-        initSceneGraph(context, sceneGraph.getRoot());
+        for(GameObject go : sceneGraph.getGameObjects()) {
+            initGameObject(context, go);
+        }
 
         // create TerrainGroup for active scene
         Array<Component> terrainComponents = new Array<>();
-        sceneGraph.getRoot().findComponentsByType(terrainComponents, Component.Type.TERRAIN, true);
+        for(GameObject go : sceneGraph.getGameObjects()) {
+            go.findComponentsByType(terrainComponents, Component.Type.TERRAIN, true);
+        }
         for(Component terrain : terrainComponents) {
             scene.terrainGroup.add(((TerrainComponent)terrain).getTerrain());
         }
@@ -265,11 +269,11 @@ public class ProjectManager {
         }
     }
 
-    private void initSceneGraph(ProjectContext context, GameObject root) {
+    private void initGameObject(ProjectContext context, GameObject root) {
         initComponents(context, root);
         if(root.getChilds() != null) {
             for(GameObject c : root.getChilds()) {
-                initSceneGraph(context, c);
+                initGameObject(context, c);
             }
         }
     }

@@ -119,7 +119,7 @@ public class GameObject implements Iterable<GameObject> {
         }
 
         // TerrainComponents only in GO, directly under root
-        if(getParent().id != -1 && component.getType() == Component.Type.TERRAIN) {
+        if(parent == null && component.getType() == Component.Type.TERRAIN) {
             throw new InvalidComponentException("Terrain components can only be applied to direct children of the root");
         }
     }
@@ -160,7 +160,7 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setTransRel(float x, float y, float z) {
-        // TODO implement
+        setTrans(parent.position.x + x, parent.position.y + y, parent.position.z + z);
     }
 
     public void trans(float x, float y, float z) {
@@ -174,11 +174,6 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
-    public void transRel(float x, float y, float z) {
-        // TODO implement
-    }
-
-
     public void setRot(float x, float y, float z) {
         rotation.setEulerAngles(y, x, z);
         calculateTransform();
@@ -191,7 +186,7 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setRotRel(float x, float y, float z) {
-        // TODO implement
+        setTrans(parent.scale.x + x, parent.scale.y + y, parent.scale.z + z);
     }
 
     public void rot(float x, float y, float z) {
@@ -204,10 +199,6 @@ public class GameObject implements Iterable<GameObject> {
                 node.rot(x, y, z);
             }
         }
-    }
-
-    public void rotRel(float x, float y, float z) {
-        // TODO implement
     }
 
     public void setScl(float x, float y, float z) {
@@ -229,28 +220,19 @@ public class GameObject implements Iterable<GameObject> {
         // TODO implement
     }
 
-    public void sclRel(float x, float y, float z) {
-        // TODO implement
-    }
-
     public Vector3 getTransRel(Vector3 out) {
-        // TODO implement
-        return out;
+        if(!hasParent()) return out.set(position);
+        return out.set(position).sub(parent.position);
     }
 
     public Quaternion getRotRel(Quaternion out) {
-        // TODO implement
-        return out;
-    }
-
-    public Vector3 getRotRel(Vector3 out) {
-        // TODO implement
-        return out;
+        if(!hasParent()) return out.set(rotation);
+        return out.set(parent.rotation).conjugate().add(rotation);
     }
 
     public Vector3 getSclRel(Vector3 out) {
-        // TODO implement
-        return out;
+        if(!hasParent()) return out.set(scale);
+        return out.set(scale).sub(parent.scale).add(1);
     }
 
     public void calculateTransform() {
@@ -265,6 +247,21 @@ public class GameObject implements Iterable<GameObject> {
             out.add(go.position);
         }
         return out.scl(1f / (childs.size+1));
+    }
+
+    public Vector3 calculateWeightedMedium(Vector3 out) {
+        out.set(position);
+        if(childs == null) return out;
+
+        for(GameObject go : childs) {
+            tempVec.set(go.position).scl(go.scale);
+            out.add(tempVec);
+        }
+        return out.scl(1f / (childs.size+1));
+    }
+
+    public boolean hasParent() {
+        return parent != null && parent.getId() >= 0;
     }
 
     public void render(float delta) {
