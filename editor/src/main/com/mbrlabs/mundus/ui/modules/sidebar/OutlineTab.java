@@ -192,6 +192,7 @@ public class OutlineTab extends Tab implements
 
         tree.getSelection().clear();
         tree.getSelection().add(node);
+        node.expandTo();
     }
 
     /**
