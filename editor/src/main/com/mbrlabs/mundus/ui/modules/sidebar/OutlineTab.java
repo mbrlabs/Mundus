@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.sidebar;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -131,6 +130,10 @@ public class OutlineTab extends Tab implements
         dragAndDrop.addTarget(new DragAndDrop.Target(tree) {
             @Override
             public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                // Select node under mouse if not over the selection.
+                Tree.Node overNode = tree.getNodeAt(y);
+                if (overNode == null && tree.getSelection().isEmpty()) return true;
+                if (overNode != null && !tree.getSelection().contains(overNode)) tree.getSelection().set(overNode);
                 return true;
             }
 
