@@ -128,6 +128,14 @@ public class GameObject implements Iterable<GameObject> {
         return this.childs;
     }
 
+    public boolean isChildOf(GameObject other) {
+        for(GameObject go : other) {
+            if(go.getId() == this.id) return true;
+        }
+
+        return false;
+    }
+
     public void addChild(GameObject child) {
         if(this.childs == null) {
             childs = new Array<GameObject>();

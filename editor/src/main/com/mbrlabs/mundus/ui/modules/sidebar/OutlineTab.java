@@ -116,9 +116,7 @@ public class OutlineTab extends Tab implements
                 DragAndDrop.Payload payload = new DragAndDrop.Payload();
                 Tree.Node node = tree.getNodeAt(y);
                 if(node != null) {
-                    tree.remove(node);
                     payload.setObject(node);
-                    payload.setDragActor(node.getActor());
                     return payload;
                 }
 
@@ -145,6 +143,14 @@ public class OutlineTab extends Tab implements
                     GameObject draggedGo = (GameObject) node.getObject();
                     Tree.Node newParent = tree.getNodeAt(y);
 
+                    // check if a go is dragged in one of its' children or itself
+                    if(newParent != null) {
+                        GameObject parentGo = (GameObject) newParent.getObject();
+                        if(parentGo.isChildOf(draggedGo)) {
+                            return;
+                        }
+                    }
+
                     // remove child from old parent
                     GameObject oldParent = draggedGo.getParent();
                     if(oldParent == null) {
@@ -156,9 +162,11 @@ public class OutlineTab extends Tab implements
                     // add to new parent
                     if(newParent == null) {
                         projectContext.currScene.sceneGraph.getGameObjects().add(draggedGo);
+                        draggedGo.setParent(null);
                     } else {
                         GameObject parentGo = (GameObject) newParent.getObject();
                         parentGo.addChild(draggedGo);
+                        draggedGo.setParent(parentGo);
                     }
 
                     // update tree
