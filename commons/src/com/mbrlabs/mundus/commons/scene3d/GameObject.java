@@ -146,9 +146,8 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setTrans(float x, float y, float z) {
-        final Vector3 diff = tempVec.set(position);
+        final Vector3 diff = tempVec.set(x, y, z).sub(position);
         this.position.set(x, y, z);
-        diff.sub(position);
 
         calculateTransform();
 
@@ -221,17 +220,17 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public Vector3 getTransRel(Vector3 out) {
-        if(!hasParent()) return out.set(position);
+        if(parent == null) return out.set(position);
         return out.set(position).sub(parent.position);
     }
 
     public Quaternion getRotRel(Quaternion out) {
-        if(!hasParent()) return out.set(rotation);
+        if(parent == null) return out.set(rotation);
         return out.set(parent.rotation).conjugate().add(rotation);
     }
 
     public Vector3 getSclRel(Vector3 out) {
-        if(!hasParent()) return out.set(scale);
+        if(parent == null) return out.set(scale);
         return out.set(scale).sub(parent.scale).add(1);
     }
 
@@ -258,10 +257,6 @@ public class GameObject implements Iterable<GameObject> {
             out.add(tempVec);
         }
         return out.scl(1f / (childs.size+1));
-    }
-
-    public boolean hasParent() {
-        return parent != null && parent.getId() >= 0;
     }
 
     public void render(float delta) {

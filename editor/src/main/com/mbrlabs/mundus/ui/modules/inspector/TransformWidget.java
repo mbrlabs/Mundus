@@ -106,7 +106,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                go.setTrans(posX.getFloat(), go.position.y, go.position.z);
+                Vector3 pos = go.getTransRel(tempV3);
+                go.setTransRel(posX.getFloat(), pos.y, pos.z);
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -119,7 +120,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                go.setTrans(go.position.x, posY.getFloat(), go.position.z);
+                Vector3 pos = go.getTransRel(tempV3);
+                go.setTransRel(pos.x, posY.getFloat(), pos.z);
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -132,7 +134,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                go.setTrans(go.position.x, go.position.y, posZ.getFloat());
+                Vector3 pos = go.getTransRel(tempV3);
+                go.setTransRel(pos.x, pos.y, posZ.getFloat());
                 command.setAfter(go.position);
                 history.add(command);
             }
