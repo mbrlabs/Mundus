@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.modules.sidebar;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.util.dialog.DialogUtils;
@@ -59,6 +61,8 @@ public class OutlineTab extends Tab implements
     private VisTree tree;
     private ScrollPane scrollPane;
 
+    private DragAndDrop dragAndDrop;
+
     private RightClickMenu rightClickMenu;
 
     @Inject
@@ -81,9 +85,10 @@ public class OutlineTab extends Tab implements
         scrollPane = new VisScrollPane(tree);
         scrollPane.setFlickScroll(false);
         scrollPane.setFadeScrollBars(false);
-
         content.add(scrollPane).fill().expand();
 
+
+        setupDragAndDrop();
         setupListeners();
     }
 
@@ -100,6 +105,65 @@ public class OutlineTab extends Tab implements
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
         buildTree(projectContext.currScene.sceneGraph);
+    }
+
+    private void setupDragAndDrop() {
+        dragAndDrop = new DragAndDrop();
+
+        // source
+        dragAndDrop.addSource(new DragAndDrop.Source(tree) {
+            @Override
+            public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
+                DragAndDrop.Payload payload = new DragAndDrop.Payload();
+                Tree.Node node = tree.getNodeAt(y);
+                if(node != null) {
+                    tree.remove(node);
+                    payload.setObject(node);
+                    payload.setDragActor(node.getActor());
+                    return payload;
+                }
+
+                return null;
+            }
+        });
+
+        // target
+        dragAndDrop.addTarget(new DragAndDrop.Target(tree) {
+            @Override
+            public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                return true;
+            }
+
+            @Override
+            public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
+                Tree.Node node = (Tree.Node) payload.getObject();
+
+                if(node != null) {
+                    GameObject draggedGo = (GameObject) node.getObject();
+                    Tree.Node newParent = tree.getNodeAt(y);
+
+                    // remove child from old parent
+                    GameObject oldParent = draggedGo.getParent();
+                    if(oldParent == null) {
+                        projectContext.currScene.sceneGraph.getGameObjects().removeValue(draggedGo, true);
+                    } else {
+                        oldParent.getChilds().removeValue(draggedGo, true);
+                    }
+
+                    // add to new parent
+                    if(newParent == null) {
+                        projectContext.currScene.sceneGraph.getGameObjects().add(draggedGo);
+                    } else {
+                        GameObject parentGo = (GameObject) newParent.getObject();
+                        parentGo.addChild(draggedGo);
+                    }
+
+                    // update tree
+                    buildTree(projectContext.currScene.sceneGraph);
+                }
+            }
+        });
+
     }
 
     private void setupListeners() {
