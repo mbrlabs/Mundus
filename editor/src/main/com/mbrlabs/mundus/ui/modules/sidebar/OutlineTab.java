@@ -29,7 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -326,7 +326,7 @@ public class OutlineTab extends Tab implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if(selectedGO.getParent() != null) {
-                        DialogUtils.showErrorDialog(Ui.getInstance(), "Terrains must be direct children of the root game object.");
+                        Dialogs.showErrorDialog(Ui.getInstance(), "Terrains must be direct children of the root game object.");
                     }
                 }
             });

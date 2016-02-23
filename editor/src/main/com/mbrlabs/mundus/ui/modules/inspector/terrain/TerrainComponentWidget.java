@@ -74,7 +74,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     }
 
     private void setupUI() {
-        collapsibleContent.add(tabbedPane.getTable()).padBottom(7).row();
+        collapsibleContent.add(tabbedPane.getTable()).padBottom(7).top().left().expand().fill().row();
         collapsibleContent.add(tabContainer).expand().fill().row();
     }
 

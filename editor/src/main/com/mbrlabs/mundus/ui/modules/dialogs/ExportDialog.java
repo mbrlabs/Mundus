@@ -28,6 +28,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.RuntimeExporter;
@@ -126,10 +127,9 @@ public class ExportDialog extends BaseDialog {
         });
 
         // file chooser
-        fileChooser.setListener(new FileChooserAdapter() {
+        fileChooser.setListener(new SingleFileChooserListener() {
             @Override
             public void selected(FileHandle file) {
-                super.selected(file);
                 output.setText(file.path());
             }
         });

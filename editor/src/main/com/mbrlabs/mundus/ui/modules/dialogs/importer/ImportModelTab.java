@@ -31,14 +31,12 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.UBJsonReader;
-import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -219,10 +217,10 @@ public class ImportModelTab extends Tab {
 
             if(importedModel == null) {
                 if(FileFormatUtils.isCollada(model) || FileFormatUtils.isFBX(model) || FileFormatUtils.isWavefont(model)) {
-                    DialogUtils.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right " +
+                    Dialogs.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right " +
                             "files & have set the correct fbc-conv binary in the settings menu.");
                 } else {
-                    DialogUtils.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right files");
+                    Dialogs.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right files");
                 }
             }
 
@@ -233,7 +231,7 @@ public class ImportModelTab extends Tab {
                     previewInstance = new ModelInstance(previewModel);
                     showPreview();
                 } catch (GdxRuntimeException e) {
-                    DialogUtils.showErrorDialog(getStage(), e.getMessage());
+                    Dialogs.showErrorDialog(getStage(), e.getMessage());
                 }
             }
         }

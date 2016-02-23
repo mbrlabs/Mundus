@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -64,7 +64,7 @@ public class LoadingProjectDialog extends VisDialog {
             close();
         } else {
             close();
-            DialogUtils.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.absolutePath);
+            Dialogs.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.absolutePath);
         }
 
     }

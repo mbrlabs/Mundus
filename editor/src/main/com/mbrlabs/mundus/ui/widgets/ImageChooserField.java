@@ -25,11 +25,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
@@ -95,13 +96,12 @@ public class ImageChooserField extends VisTable {
     private void setupListeners() {
 
         // file chooser
-        fileChooser.setListener(new FileChooserAdapter() {
-            @Override
+        fileChooser.setListener(new SingleFileChooserListener() {
             public void selected(FileHandle file) {
                 if(FileFormatUtils.isImage(file)) {
                     setImage(file);
                 } else {
-                    DialogUtils.showErrorDialog(Ui.getInstance(), "This is no image");
+                    Dialogs.showErrorDialog(Ui.getInstance(), "This is no image");
                 }
             }
         });

@@ -11,6 +11,7 @@
 - Implemented a highly accurate game object picking system (see: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/)
 - Drag'n Drop for game objects in the outline
 - In the inspector, translation is now displayed as relative translation with the parent object as origin
+- Updated VisUI to version 1.0.1
 
 [0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2

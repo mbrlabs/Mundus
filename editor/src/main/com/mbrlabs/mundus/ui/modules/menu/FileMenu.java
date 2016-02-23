@@ -20,12 +20,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -83,7 +84,7 @@ public class FileMenu extends Menu {
                         projectManager.changeProject(projectContext);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        DialogUtils.showErrorDialog(Ui.getInstance(), "Could not open project");
+                        Dialogs.showErrorDialog(Ui.getInstance(), "Could not open project");
                     }
                 }
             });
@@ -117,8 +118,7 @@ public class FileMenu extends Menu {
         });
 
         // file chooser
-        fileChooser.setListener(new FileChooserAdapter() {
-            @Override
+        fileChooser.setListener(new SingleFileChooserListener() {
             public void selected(FileHandle file) {
                 importNewProject(file);
             }
@@ -131,10 +131,10 @@ public class FileMenu extends Menu {
             projectManager.changeProject(context);
         } catch (ProjectAlreadyImportedException e) {
             e.printStackTrace();
-            DialogUtils.showErrorDialog(Ui.getInstance(), "This Project is already imported.");
+            Dialogs.showErrorDialog(Ui.getInstance(), "This Project is already imported.");
         } catch (ProjectOpenException e) {
             e.printStackTrace();
-            DialogUtils.showErrorDialog(Ui.getInstance(), "This Project can't be opened.");
+            Dialogs.showErrorDialog(Ui.getInstance(), "This Project can't be opened.");
         }
     }
 

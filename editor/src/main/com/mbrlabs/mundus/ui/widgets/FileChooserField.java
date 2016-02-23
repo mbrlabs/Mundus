@@ -24,6 +24,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
+import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**
@@ -99,8 +100,7 @@ public class FileChooserField extends VisTable {
     private void setupListeners() {
 
         // file chooser
-        fileChooser.setListener(new FileChooserAdapter() {
-            @Override
+        fileChooser.setListener(new SingleFileChooserListener() {
             public void selected(FileHandle file) {
                 fileHandle = file;
                 path = file.path();

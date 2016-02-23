@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -111,7 +111,7 @@ public class ModelPlacementTool extends Tool {
             try {
                 modelGo.addComponent(modelComponent);
             } catch (InvalidComponentException e) {
-                DialogUtils.showErrorDialog(Ui.getInstance(), e.getMessage());
+                Dialogs.showErrorDialog(Ui.getInstance(), e.getMessage());
                 return false;
             }
 

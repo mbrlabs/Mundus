@@ -19,7 +19,7 @@ package com.mbrlabs.mundus.ui.modules.menu;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
@@ -57,7 +57,7 @@ public class SceneMenu extends Menu implements
         addScene.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                DialogUtils.showInputDialog(Ui.getInstance(), "Add Scene", "Name:", new InputDialogAdapter() {
+                Dialogs.showInputDialog(Ui.getInstance(), "Add Scene", "Name:", new InputDialogAdapter() {
                     @Override
                     public void finished(String input) {
                         Scene scene = projectManager.createScene(projectContext, input);

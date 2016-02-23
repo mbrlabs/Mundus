@@ -132,7 +132,7 @@ public class Mundus {
         BitmapFont fontSmall = generator.generateFont(params);
         generator.dispose();
 
-        // skin3
+        // skin
         Skin skin = new Skin();
         //skin.add("font-big", fontBig, BitmapFont.class);
         skin.add("font-norm", fontNorm, BitmapFont.class);

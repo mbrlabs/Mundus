@@ -59,31 +59,31 @@ public class MundusToolbar extends Toolbar {
         Mundus.inject(this);
         saveBtn = new FaTextButton(Fa.SAVE);
         saveBtn.padRight(7).padLeft(7);
-        new Tooltip(saveBtn, "Save project");
+        new Tooltip.Builder("Save project").target(saveBtn).build();
 
         importBtn = new FaTextButton(Fa.DOWNLOAD);
         importBtn.padRight(7).padLeft(7);
-        new Tooltip(importBtn, "Import model");
+        new Tooltip.Builder("Import model").target(importBtn).build();
 
         exportBtn = new FaTextButton(Fa.GIFT);
         exportBtn.padRight(12).padLeft(7);
-        new Tooltip(exportBtn, "Export project");
+        new Tooltip.Builder("Export project").target(exportBtn).build();
 
         selectBtn = new FaTextButton(toolManager.selectionTool.getIconFont());
         selectBtn.padRight(7).padLeft(12);
-        new Tooltip(selectBtn, toolManager.selectionTool.getName());
+        new Tooltip.Builder(toolManager.selectionTool.getName()).target(selectBtn).build();
 
         translateBtn = new FaTextButton(toolManager.translateTool.getIconFont());
         translateBtn.padRight(7).padLeft(7);
-        new Tooltip(translateBtn, toolManager.translateTool.getName());
+        new Tooltip.Builder(toolManager.translateTool.getName()).target(translateBtn).build();
 
         rotateBtn = new FaTextButton(toolManager.rotateTool.getIconFont());
         rotateBtn.padRight(7).padLeft(7);
-        new Tooltip(rotateBtn, toolManager.rotateTool.getName());
+        new Tooltip.Builder(toolManager.rotateTool.getName()).target(rotateBtn).build();
 
         scaleBtn = new FaTextButton(toolManager.scaleTool.getIconFont());
         scaleBtn.padRight(7).padLeft(7);
-        new Tooltip(scaleBtn, toolManager.scaleTool.getName());
+        new Tooltip.Builder(toolManager.scaleTool.getName()).target(scaleBtn).build();
 
         globalLocalSwitch = new ToggleButton("Global space", "Local space");
 

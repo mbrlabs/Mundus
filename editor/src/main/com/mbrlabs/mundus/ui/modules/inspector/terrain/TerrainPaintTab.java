@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.util.dialog.DialogUtils;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
@@ -128,7 +128,7 @@ public class TerrainPaintTab extends Tab {
                     textureGrid.addTexture(st);
                     addTextureBrowser.fadeOut();
                 } else {
-                    DialogUtils.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
+                    Dialogs.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
                     return;
                 }
 
@@ -226,7 +226,7 @@ public class TerrainPaintTab extends Tab {
                 public void clicked(InputEvent event, float x, float y) {
                     if(channel != null) {
                         if(channel == SplatTexture.Channel.BASE) {
-                            DialogUtils.showErrorDialog(Ui.getInstance(), "Currently you can't remove the base texture");
+                            Dialogs.showErrorDialog(Ui.getInstance(), "Currently you can't remove the base texture");
                             return;
                         }
                         TerrainTexture tt = parent.component.getTerrain().getTerrainTexture();

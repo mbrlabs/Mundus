@@ -37,7 +37,9 @@ public class Sidebar extends VisTable implements TabbedPaneListener {
 
     public Sidebar() {
         super();
-        tabbedPane = new TabbedPane();
+        TabbedPane.TabbedPaneStyle style = VisUI.getSkin().get(TabbedPane.TabbedPaneStyle.class);
+        style.vertical = false;
+        tabbedPane = new TabbedPane(style);
         outlineTab = new OutlineTab();
         modelTab = new ModelTab();
 
