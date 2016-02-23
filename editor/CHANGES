@@ -9,6 +9,8 @@
 - Improved the translate tool
 - Implemented game object rotation & scaling
 - Implemented a highly accurate game object picking system (see: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/)
+- Improved outline
+- In the inspector, translation is now displayed as relative translation with the parent object as origin
 
 [0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2

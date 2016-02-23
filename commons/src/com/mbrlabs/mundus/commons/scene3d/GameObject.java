@@ -159,7 +159,11 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setTransRel(float x, float y, float z) {
-        setTrans(parent.position.x + x, parent.position.y + y, parent.position.z + z);
+        if(parent == null) {
+            setTrans(x, y, z);
+        } else {
+            setTrans(parent.position.x + x, parent.position.y + y, parent.position.z + z);
+        }
     }
 
     public void trans(float x, float y, float z) {
@@ -185,7 +189,12 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setRotRel(float x, float y, float z) {
-        setTrans(parent.scale.x + x, parent.scale.y + y, parent.scale.z + z);
+        if(parent == null) {
+            setRot(x, y, z);
+        } else {
+            // TODO relative rot
+            setRot(x, y, z);
+        }
     }
 
     public void rot(float x, float y, float z) {
