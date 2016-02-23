@@ -100,11 +100,6 @@ public class SelectionTool extends Tool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT) {
             GameObject selection = goPicker.pick(projectContext.currScene, screenX, screenY);
             if(selection != null && !selection.equals(projectContext.currScene.currentSelection)) {
@@ -113,6 +108,11 @@ public class SelectionTool extends Tool {
             }
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
