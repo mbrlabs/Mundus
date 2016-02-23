@@ -99,11 +99,11 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     public void setupUi() {
         root.add(identifierWidget).expandX().fillX().pad(7).row();
-        root.add(transformWidget).expandX().fillX().padLeft(15).row();
+        root.add(transformWidget).expandX().fillX().pad(7).row();
         for(BaseInspectorWidget cw : componentWidgets) {
             componentTable.add(cw).row();
         }
-        root.add(componentTable).fillX().expandX().padLeft(5).row();
+        root.add(componentTable).fillX().expandX().pad(7).row();
         root.add(addComponentBtn).expandX().fill().top().center().pad(10).row();
 //
 //        for(int i = 0; i < 100; i++) {

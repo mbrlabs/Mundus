@@ -92,7 +92,7 @@ public class TransformWidget extends BaseInspectorWidget {
         collapsibleContent.add(rotY).padBottom(pad).padRight(pad);
         collapsibleContent.add(rotZ).padBottom(pad).row();
 
-        collapsibleContent.add(new VisLabel("Scale: ")).padRight(10).padBottom(pad).left();
+        collapsibleContent.add(new VisLabel("Scale: ")).padRight(5).padBottom(pad).left();
         collapsibleContent.add(scaleX).padBottom(pad).padRight(pad);
         collapsibleContent.add(scaleY).padBottom(pad).padRight(pad);
         collapsibleContent.add(scaleZ).padBottom(pad).row();
