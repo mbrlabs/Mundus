@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.utils;
 
+import java.util.Locale;
+
 /**
  * @author Marcus Brummer
  * @version 02-01-2016
@@ -23,7 +25,7 @@ package com.mbrlabs.mundus.utils;
 public class StringUtils {
 
     public static String formatFloat(float f, int digits) {
-        return String.format("%."+ digits + "f", f);
+        return String.format(Locale.US, "%."+ digits + "f", f);
     }
 
 }
