@@ -29,7 +29,7 @@ import com.mbrlabs.mundus.shader.Shaders;
  * @author Marcus Brummer
  * @version 17-01-2016
  */
-public class ModelComponent extends AbstractComponent {
+public class ModelComponent extends PickableComponent {
 
     private MModelInstance modelInstance;
     private Shader shader;

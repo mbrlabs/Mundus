@@ -43,6 +43,7 @@ import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
 import com.mbrlabs.mundus.exceptions.ProjectOpenException;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.Terrain;
@@ -289,12 +290,16 @@ public class ProjectManager {
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.getModelInstance().calculateBounds();
                     modelComponent.setShader(shaders.entityShader);
-                    modelComponent.encodeRaypickColorId();
                 } else {
                     Log.fatal("model for modelInstance not found: " + modelComponent.getModelInstance().getModel().id);
                 }
             } else if(c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent)c).setShader(shaders.terrainShader);
+            }
+
+            // encode id for picking
+            if(c instanceof PickableComponent) {
+                ((PickableComponent) c).encodeRaypickColorId();
             }
         }
     }

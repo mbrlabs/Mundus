@@ -57,4 +57,13 @@ public class GameObjectIdAttribute extends Attribute {
     public int compareTo (Attribute o) {
         return 0; // FIXME implement comparing
     }
+
+    @Override
+    public String toString() {
+        return "GameObjectIdAttribute{" +
+                "r=" + r +
+                ", g=" + g +
+                ", b=" + b +
+                '}';
+    }
 }

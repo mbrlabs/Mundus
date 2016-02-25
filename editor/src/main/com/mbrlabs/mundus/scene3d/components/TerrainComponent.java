@@ -20,13 +20,16 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.Terrain;
+import com.mbrlabs.mundus.tools.picker.GameObjectColorEncoder;
+import com.mbrlabs.mundus.tools.picker.GameObjectIdAttribute;
 
 /**
  * @author Marcus Brummer
  * @version 18-01-2016
  */
-public class TerrainComponent extends AbstractComponent {
+public class TerrainComponent extends PickableComponent {
 
     private Terrain terrain;
     private Shader shader;
@@ -34,6 +37,12 @@ public class TerrainComponent extends AbstractComponent {
     public TerrainComponent(GameObject go) {
         super(go);
         type = Type.TERRAIN;
+    }
+
+    @Override
+    public void encodeRaypickColorId() {
+        GameObjectIdAttribute goIDa = GameObjectColorEncoder.encodeRaypickColorId(gameObject);
+        terrain.renderable.material.set(goIDa);
     }
 
     public void setTerrain(Terrain terrain) {
@@ -54,7 +63,9 @@ public class TerrainComponent extends AbstractComponent {
 
     @Override
     public void render(float delta) {
-        if(!Mundus.RAY_PICK_RENDERING) {
+        if(Mundus.RAY_PICK_RENDERING) {
+            gameObject.sceneGraph.batch.render(terrain, Shaders.gameObjectPickerShader);
+        } else {
             gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
         }
     }

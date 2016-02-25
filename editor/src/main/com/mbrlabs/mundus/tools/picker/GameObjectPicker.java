@@ -68,14 +68,14 @@ public class GameObjectPicker implements Disposable {
         return null;
     }
 
-    private void begin(Viewport viewport) {
+    public void begin(Viewport viewport) {
         Mundus.RAY_PICK_RENDERING = true;
         fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
     }
 
-    private void end() {
+    public void end() {
         fbo.end();
         Mundus.RAY_PICK_RENDERING = false;
     }

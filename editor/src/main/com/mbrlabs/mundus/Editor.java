@@ -72,6 +72,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     private HomeManager homeManager;
     @Inject
     private ToolManager toolManager;
+    @Inject
+    private GameObjectPicker goPicker;
 
 	@Override
 	public void create () {
@@ -140,6 +142,9 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         toolManager.act();
         ui.draw();
 
+//        if(Gdx.input.isKeyPressed(Input.Keys.F1)) {
+//            takeGoPickerFboScreenshot();
+//        }
     }
 
     private void resetCam() {
@@ -177,6 +182,16 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
             Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
                     boxModel, projectContext.currScene.terrainGroup.first()));
         }
+    }
+
+    @Deprecated
+    private void takeGoPickerFboScreenshot(String path) {
+        goPicker.begin(projectContext.currScene.viewport);
+        projectContext.currScene.sceneGraph.render();
+        Mundus.RAY_PICK_RENDERING = false;
+        Pixmap p = goPicker.getFrameBufferPixmap(projectContext.currScene.viewport);
+        goPicker.end();
+        PixmapIO.writePNG(Gdx.files.absolute(path), p);
     }
 
     private void createDefaultProject() {
