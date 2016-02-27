@@ -26,8 +26,11 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 
 import java.nio.ByteBuffer;
 
@@ -50,7 +53,7 @@ public class GameObjectPicker implements Disposable {
 
     public GameObject pick(EditorScene scene, int screenX, int screenY) {
         begin(scene.viewport);
-        scene.sceneGraph.render();
+        renderPickableScene(scene.sceneGraph);
         end();
         Pixmap pm = getFrameBufferPixmap(scene.viewport);
 
@@ -58,6 +61,7 @@ public class GameObjectPicker implements Disposable {
         int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
 
         int id = GameObjectColorEncoder.decode(pm.getPixel(x, y));
+        System.out.println(id);
         for(GameObject go : scene.sceneGraph.getGameObjects()) {
             if(id == go.getId()) return go;
             for(GameObject child : go) {
@@ -68,16 +72,36 @@ public class GameObjectPicker implements Disposable {
         return null;
     }
 
-    public void begin(Viewport viewport) {
-        Mundus.RAY_PICK_RENDERING = true;
+    private void begin(Viewport viewport) {
         fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
     }
 
-    public void end() {
+    private void end() {
         fbo.end();
-        Mundus.RAY_PICK_RENDERING = false;
+    }
+
+    private void renderPickableScene(SceneGraph sceneGraph) {
+        sceneGraph.batch.begin(sceneGraph.scene.cam);
+        for(GameObject go : sceneGraph.getGameObjects()) {
+            renderPickableGameObject(go);
+        }
+        sceneGraph.batch.end();
+    }
+
+    private void renderPickableGameObject(GameObject go) {
+        for(Component c : go.getComponents()) {
+            if(c instanceof PickableComponent) {
+                ((PickableComponent) c).renderPick();
+            }
+        }
+
+        if(go.getChilds() != null) {
+            for(GameObject goc : go.getChilds()) {
+                renderPickableGameObject(goc);
+            }
+        }
     }
 
     public Pixmap getFrameBufferPixmap (Viewport viewport) {

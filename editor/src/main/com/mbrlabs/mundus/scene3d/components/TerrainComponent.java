@@ -45,6 +45,11 @@ public class TerrainComponent extends PickableComponent {
         terrain.renderable.material.set(goIDa);
     }
 
+    @Override
+    public void renderPick() {
+        gameObject.sceneGraph.batch.render(terrain, Shaders.gameObjectPickerShader);
+    }
+
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
     }
@@ -63,11 +68,7 @@ public class TerrainComponent extends PickableComponent {
 
     @Override
     public void render(float delta) {
-        if(Mundus.RAY_PICK_RENDERING) {
-            gameObject.sceneGraph.batch.render(terrain, Shaders.gameObjectPickerShader);
-        } else {
-            gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
-        }
+        gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override

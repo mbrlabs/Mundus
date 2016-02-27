@@ -33,4 +33,6 @@ public abstract class PickableComponent extends AbstractComponent {
 
     public abstract void encodeRaypickColorId();
 
+    public abstract void renderPick();
+
 }

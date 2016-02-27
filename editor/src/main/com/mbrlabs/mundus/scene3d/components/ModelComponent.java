@@ -51,9 +51,16 @@ public class ModelComponent extends PickableComponent {
         this.modelInstance = modelInstance;
     }
 
+    @Override
     public void encodeRaypickColorId() {
         GameObjectIdAttribute goIDa = GameObjectColorEncoder.encodeRaypickColorId(gameObject);
         this.modelInstance.modelInstance.materials.get(0).set(goIDa);
+    }
+
+    @Override
+    public void renderPick() {
+        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
+                Shaders.gameObjectPickerShader);
     }
 
     public MModelInstance getModelInstance() {
@@ -62,12 +69,9 @@ public class ModelComponent extends PickableComponent {
 
     @Override
     public void render(float delta) {
-        if(Mundus.RAY_PICK_RENDERING) {
-            gameObject.sceneGraph.batch.render(modelInstance.modelInstance, Shaders.gameObjectPickerShader);
-        } else {
-            gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
-                    gameObject.sceneGraph.scene.environment, shader);
-        }
+        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
+                gameObject.sceneGraph.scene.environment, shader);
+
     }
 
     @Override
