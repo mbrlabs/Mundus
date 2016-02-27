@@ -129,6 +129,13 @@ public class SceneGraphTest {
         assertEquals(v0.set(4, 6, 8), child.scale);
         assertEquals(v0.set(2, 2, 2), child.getSclRel(v1));
 
+        // scl root
+        root.setSclRel(4, 4, 4);
+        v0.set(4, 4, 4);
+        assertEquals(v0, root.scale);
+        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0.set(8, 8, 8), child.scale);
+        assertEquals(v0.set(2, 2, 2), child.getSclRel(v1));
 
     }
 

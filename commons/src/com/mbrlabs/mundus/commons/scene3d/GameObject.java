@@ -218,12 +218,13 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setScl(float x, float y, float z) {
-        scale.set(x, y, z);
+        final Vector3 diff = tempVec.set(x / scale.x, y / scale.y, z / scale.z);
+        this.scale.set(x, y, z);
         calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.setScl(x, y, z);
+                node.scl(diff.x, diff.y, diff.z);
             }
         }
     }
