@@ -61,7 +61,6 @@ public class GameObjectPicker implements Disposable {
         int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
 
         int id = GameObjectColorEncoder.decode(pm.getPixel(x, y));
-        System.out.println(id);
         for(GameObject go : scene.sceneGraph.getGameObjects()) {
             if(id == go.getId()) return go;
             for(GameObject child : go) {

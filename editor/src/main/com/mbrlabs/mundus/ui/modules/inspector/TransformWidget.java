@@ -162,7 +162,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(scaleX.getFloat() > 0f) {
+                if(go != null && scaleX.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
                     go.getSclRel(tempV3);
@@ -177,7 +177,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(scaleY.getFloat() > 0f) {
+                if(go != null && scaleY.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
                     go.getSclRel(tempV3);
@@ -192,7 +192,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(scaleZ.getFloat() > 0f) {
+                if(go != null && scaleZ.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
                     go.getSclRel(tempV3);

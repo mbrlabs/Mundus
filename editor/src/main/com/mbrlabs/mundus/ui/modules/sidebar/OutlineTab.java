@@ -41,8 +41,11 @@ import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
+import com.mbrlabs.mundus.shader.Shaders;
+import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer
@@ -64,6 +67,8 @@ public class OutlineTab extends Tab implements
 
     private RightClickMenu rightClickMenu;
 
+    @Inject
+    private Shaders shaders;
     @Inject
     private ProjectContext projectContext;
     @Inject
@@ -325,9 +330,13 @@ public class OutlineTab extends Tab implements
             addTerrain.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(selectedGO.getParent() != null) {
-                        Dialogs.showErrorDialog(Ui.getInstance(), "Terrains must be direct children of the root game object.");
-                    }
+                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
+                    projectContext.terrains.add(terrain);
+                    projectContext.currScene.terrainGroup.add(terrain);
+                    GameObject terrainGO = TerrainUtils.createTerrainGO(
+                            projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), "Terrain", terrain);
+                    projectContext.currScene.sceneGraph.getGameObjects().add(terrainGO);
+                    Mundus.postEvent(new SceneGraphChangedEvent());
                 }
             });
 

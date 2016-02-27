@@ -108,19 +108,11 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void isComponentAddable(Component component) throws InvalidComponentException {
-        // no component for root
-        if(id == -1) throw new InvalidComponentException("Can't add component to the root.");
-
         // check for component of the same type
         for(Component c : components) {
             if(c.getType() == component.getType()) {
                 throw new InvalidComponentException("One Game object can't have more then 1 component of type " + c.getType());
             }
-        }
-
-        // TerrainComponents only in GO, directly under root
-        if(parent == null && component.getType() == Component.Type.TERRAIN) {
-            throw new InvalidComponentException("Terrain components can only be applied to direct children of the root");
         }
     }
 

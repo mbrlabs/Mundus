@@ -40,6 +40,7 @@ import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
 import com.mbrlabs.mundus.terrain.TerrainTexture;
 import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer
@@ -115,29 +116,13 @@ public class AddTerrainDialog extends BaseDialog {
                     float posX = Float.valueOf(positionX.getText());
                     float posZ = Float.valueOf(positionZ.getText());
 
-                    // create model
-                    Terrain terrain = generateTerrain(width, depth, res);
-                    terrain.name = nom;
-                    terrain.id = projectContext.obtainID();
-                    terrain.terraPath = ProjectManager.PROJECT_TERRAIN_DIR + terrain.id + "." + TerrainIO.FILE_EXTENSION;
+                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
                     terrain.transform.setTranslation(posX, 0, posZ);
-
                     projectContext.terrains.add(terrain);
                     projectContext.currScene.terrainGroup.add(terrain);
-
-                    SceneGraph sceneGraph = projectContext.currScene.sceneGraph;
-
-                    GameObject terrainGO = new GameObject(sceneGraph);
-                    terrainGO.setId(projectContext.obtainID());
-                    terrainGO.setName(name.getText());
-                    terrainGO.setTransform(terrain.transform);
-                    terrainGO.setParent(null);
-                    sceneGraph.getGameObjects().add(terrainGO);
-
-                    TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
-                    terrainComponent.setTerrain(terrain);
-                    terrainGO.getComponents().add(terrainComponent);
-                    terrainComponent.setShader(shaders.terrainShader);
+                    GameObject terrainGO = TerrainUtils.createTerrainGO(
+                            projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), nom, terrain);
+                    projectContext.currScene.sceneGraph.getGameObjects().add(terrainGO);
 
                     Mundus.postEvent(new SceneGraphChangedEvent());
 
@@ -148,22 +133,6 @@ public class AddTerrainDialog extends BaseDialog {
             }
         });
 
-    }
-
-    private Terrain generateTerrain(int terrainWidth, int terrainDepth, int res) {
-        Terrain terrain = new Terrain(res);
-        terrain.terrainWidth = terrainWidth;
-        terrain.terrainDepth = terrainDepth;
-        terrain.init();
-        terrain.update();
-
-        TerrainTexture splat = terrain.getTerrainTexture();
-        MTexture base = new MTexture();
-        base.setId(-1);
-        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
-        splat.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
-
-        return terrain;
     }
 
 }
