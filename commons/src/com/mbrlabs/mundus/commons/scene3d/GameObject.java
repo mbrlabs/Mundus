@@ -229,7 +229,6 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setSclRel(float x, float y, float z) {
-        // TODO implement
         if(parent == null) {
             setScl(x, y, z);
         } else {

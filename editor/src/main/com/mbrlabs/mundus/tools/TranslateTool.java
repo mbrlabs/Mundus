@@ -236,7 +236,7 @@ public class TranslateTool extends SelectionTool {
     }
 
     private void positionHandles() {
-        final Vector3 medium = projectContext.currScene.currentSelection.calculateWeightedMedium(temp0);
+        final Vector3 medium = projectContext.currScene.currentSelection.calculateMedium(temp0);
         xHandle.setTranslation(medium);
         yHandle.setTranslation(medium);
         zHandle.setTranslation(medium);
