@@ -165,7 +165,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(scaleX.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.setScl(scaleX.getFloat(), go.scale.y, go.scale.z);
+                    go.getSclRel(tempV3);
+                    go.setSclRel(scaleX.getFloat(), tempV3.y, tempV3.z);
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -179,7 +180,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(scaleY.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.setScl(go.scale.x, scaleY.getFloat(), go.scale.z);
+                    go.getSclRel(tempV3);
+                    go.setSclRel(tempV3.x, scaleY.getFloat(), tempV3.z);
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -193,7 +195,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(scaleZ.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.setScl(go.scale.x, go.scale.y, scaleZ.getFloat());
+                    go.getSclRel(tempV3);
+                    go.setSclRel(tempV3.x, tempV3.y, scaleZ.getFloat());
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }

@@ -96,4 +96,40 @@ public class SceneGraphTest {
         assertEquals(c1.position, v0.set(-95, -95, -95));
     }
 
+    @Test
+    public void testScaling() {
+        SceneGraph sg = new SceneGraph(null);
+        GameObject root = new GameObject(sg);
+        sg.getGameObjects().add(root);
+
+
+        GameObject child = new GameObject(sg);
+        root.addChild(child);
+
+        // check initial rel scale & abs scale
+        v0.set(1, 1, 1);
+        assertEquals(v0, child.getSclRel(v1));
+        assertEquals(v0, child.scale);
+        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0, root.scale);
+
+        // scl root
+        root.scl(2, 3, 4);
+        v0.set(2, 3, 4);
+        assertEquals(v0, root.scale);
+        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0, child.scale);
+        assertEquals(v0.set(1, 1, 1), child.getSclRel(v1));
+
+        // scl child
+        child.scl(2, 2, 2);
+        v0.set(2, 3, 4);
+        assertEquals(v0, root.scale);
+        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0.set(4, 6, 8), child.scale);
+        assertEquals(v0.set(2, 2, 2), child.getSclRel(v1));
+
+
+    }
+
 }

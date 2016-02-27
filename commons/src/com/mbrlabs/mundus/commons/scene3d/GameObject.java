@@ -230,10 +230,23 @@ public class GameObject implements Iterable<GameObject> {
 
     public void setSclRel(float x, float y, float z) {
         // TODO implement
+        if(parent == null) {
+            setScl(x, y, z);
+        } else {
+            setScl(parent.scale.x * x, parent.scale.y * y, parent.scale.z * z);
+        }
     }
 
     public void scl(float x, float y, float z) {
-        // TODO implement
+        scale.scl(x, y, z);
+        calculateTransform();
+
+        if(childs != null) {
+            for(GameObject c : childs) {
+                c.scl(x, y, z);
+            }
+        }
+
     }
 
     public Vector3 getTransRel(Vector3 out) {
@@ -248,7 +261,9 @@ public class GameObject implements Iterable<GameObject> {
 
     public Vector3 getSclRel(Vector3 out) {
         if(parent == null) return out.set(scale);
-        return out.set(scale).sub(parent.scale).add(1);
+        out.set(scale.x / parent.scale.x, scale.y / parent.scale.y , scale.z / parent.scale.z);
+
+        return out;
     }
 
     public void calculateTransform() {
