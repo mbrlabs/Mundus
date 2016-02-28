@@ -18,8 +18,6 @@ package com.mbrlabs.mundus.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
-import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.terrain.Terrain;
 import com.mbrlabs.mundus.tools.picker.GameObjectColorEncoder;

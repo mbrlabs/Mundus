@@ -19,8 +19,8 @@ package com.mbrlabs.mundus.test;
 import com.badlogic.gdx.math.Vector3;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
-
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 /**

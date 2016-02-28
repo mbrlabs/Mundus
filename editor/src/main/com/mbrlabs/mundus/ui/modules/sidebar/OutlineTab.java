@@ -29,7 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
-import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;

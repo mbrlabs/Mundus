@@ -46,7 +46,6 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.core.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.ModelImportEvent;
-import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.FileFormatUtils;

@@ -29,7 +29,6 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.EditorScene;
-import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 
 import java.nio.ByteBuffer;

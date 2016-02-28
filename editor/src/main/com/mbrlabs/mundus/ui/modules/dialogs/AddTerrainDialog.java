@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -24,21 +23,13 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
-import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
-import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
-import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
-import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.terrain.SplatTexture;
 import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainIO;
-import com.mbrlabs.mundus.terrain.TerrainTexture;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.TerrainUtils;
 

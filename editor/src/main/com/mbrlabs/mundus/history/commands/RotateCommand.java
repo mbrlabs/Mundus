@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.history.commands;
 
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Mundus;

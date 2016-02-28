@@ -24,8 +24,6 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
-import com.mbrlabs.mundus.tools.picker.GameObjectIdAttribute;
-import com.mbrlabs.mundus.utils.GlUtils;
 
 /**
  * Used to render game objects in only one color.

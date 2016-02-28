@@ -25,7 +25,6 @@ import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;

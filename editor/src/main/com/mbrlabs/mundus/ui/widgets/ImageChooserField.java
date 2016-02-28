@@ -29,7 +29,6 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
-import com.kotcrab.vis.ui.widget.file.FileChooserAdapter;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
