@@ -1,3 +1,6 @@
+[0.0.8]
+
+
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations
 - Implemented a shortcut system
