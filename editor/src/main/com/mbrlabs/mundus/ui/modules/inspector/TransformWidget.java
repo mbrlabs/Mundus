@@ -99,6 +99,8 @@ public class TransformWidget extends BaseInspectorWidget {
     }
 
     private void setupListeners() {
+
+        // position
         posX.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -112,7 +114,6 @@ public class TransformWidget extends BaseInspectorWidget {
                 history.add(command);
             }
         });
-
         posY.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -126,7 +127,6 @@ public class TransformWidget extends BaseInspectorWidget {
                 history.add(command);
             }
         });
-
         posZ.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -141,6 +141,7 @@ public class TransformWidget extends BaseInspectorWidget {
             }
         });
 
+        // rotation
         rotX.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -148,12 +149,12 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.setRot(rotX.getFloat(), go.rotation.y, go.rotation.z);
+                go.getRotRel(tempV3);
+                go.setRotRel(rotX.getFloat(), tempV3.y, tempV3.z);
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
         });
-
         rotY.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -161,12 +162,12 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.setRot(go.rotation.x, rotY.getFloat(), go.rotation.z);
+                go.getRotRel(tempV3);
+                go.setRotRel(tempV3.x, rotY.getFloat(), tempV3.z);
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
         });
-
         rotZ.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -174,12 +175,14 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.setRot(go.rotation.x, go.rotation.y, rotZ.getFloat());
+                go.getRotRel(tempV3);
+                go.setRotRel(tempV3.x, tempV3.y, rotZ.getFloat());
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
         });
 
+        // scale
         scaleX.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -194,7 +197,6 @@ public class TransformWidget extends BaseInspectorWidget {
                 }
             }
         });
-
         scaleY.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -209,7 +211,6 @@ public class TransformWidget extends BaseInspectorWidget {
                 }
             }
         });
-
         scaleZ.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

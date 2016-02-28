@@ -145,6 +145,11 @@ public class GameObject implements Iterable<GameObject> {
         return true;
     }
 
+    public Vector3 getTransRel(Vector3 out) {
+        if(parent == null) return out.set(position);
+        return out.set(position).sub(parent.position);
+    }
+
     public void setTrans(float x, float y, float z) {
         final Vector3 diff = tempVec.set(x, y, z).sub(position);
         this.position.set(x, y, z);
@@ -177,6 +182,11 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
+    public Vector3 getRotRel(Vector3 out) {
+        if(parent == null) return out.set(rotation);
+        return out.set(rotation).sub(parent.rotation);
+    }
+
     public void setRot(float x, float y, float z) {
         final Vector3 diff = tempVec.set(x, y, z).sub(rotation);
         this.rotation.set(x, y, z);
@@ -184,7 +194,7 @@ public class GameObject implements Iterable<GameObject> {
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.setRot(diff.x, diff.y, diff.z);
+                node.rot(diff.x, diff.y, diff.z);
             }
         }
     }
@@ -193,8 +203,7 @@ public class GameObject implements Iterable<GameObject> {
         if(parent == null) {
             setRot(x, y, z);
         } else {
-            // TODO relative rot
-            setRot(x, y, z);
+            setRot(parent.rotation.x + x, parent.rotation.y + y, parent.rotation.z + z);
         }
     }
 
@@ -239,16 +248,6 @@ public class GameObject implements Iterable<GameObject> {
             }
         }
 
-    }
-
-    public Vector3 getTransRel(Vector3 out) {
-        if(parent == null) return out.set(position);
-        return out.set(position).sub(parent.position);
-    }
-
-    public Vector3 getRotRel(Vector3 out) {
-        if(parent == null) return out.set(rotation);
-        return out.set(rotation).sub(parent.rotation);
     }
 
     public Vector3 getSclRel(Vector3 out) {

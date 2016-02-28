@@ -136,7 +136,11 @@ public class SceneGraphTest {
         assertEquals(v0, root.getSclRel(v1));
         assertEquals(v0.set(8, 8, 8), child.scale);
         assertEquals(v0.set(2, 2, 2), child.getSclRel(v1));
+    }
 
+    @Test
+    public void testRotation() {
+        // TODO implement
     }
 
 }
