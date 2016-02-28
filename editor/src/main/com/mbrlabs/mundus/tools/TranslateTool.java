@@ -152,11 +152,11 @@ public class TranslateTool extends SelectionTool {
         xHandle.resetRotation();
         yHandle.resetRotation();
         zHandle.resetRotation();
-        if(!global) {
-            xHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
-            yHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
-            zHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
-        }
+//        if(!global) {
+//            xHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
+//            yHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
+//            zHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
+//        }
     }
 
     @Override

@@ -46,7 +46,7 @@ public class GameObject implements Iterable<GameObject> {
 
     private Matrix4 transform;
     public Vector3 position;
-    public Quaternion rotation;
+    public Vector3 rotation;
     public Vector3 scale;
 
     public GameObject(SceneGraph sceneGraph) {
@@ -61,7 +61,7 @@ public class GameObject implements Iterable<GameObject> {
         this.transform = new Matrix4();
         this.position = new Vector3(0, 0, 0);
         this.scale = new Vector3(1, 1, 1);
-        this.rotation = new Quaternion();
+        this.rotation = new Vector3();
     }
 
     public GameObject(SceneGraph sceneGraph, String name, int id) {
@@ -178,12 +178,13 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void setRot(float x, float y, float z) {
-        rotation.setEulerAngles(y, x, z);
+        final Vector3 diff = tempVec.set(x, y, z).sub(rotation);
+        this.rotation.set(x, y, z);
         calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
-                node.setRot(x, y, z);
+                node.setRot(diff.x, diff.y, diff.z);
             }
         }
     }
@@ -198,9 +199,8 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void rot(float x, float y, float z) {
-        tempQuat.setEulerAngles(y, x, z);
-        rotation.add(tempQuat);
-        transform.rotate(tempQuat);
+        rotation.add(x, y, z);
+        calculateTransform();
 
         if (childs != null) {
             for (GameObject node : this.childs) {
@@ -246,9 +246,9 @@ public class GameObject implements Iterable<GameObject> {
         return out.set(position).sub(parent.position);
     }
 
-    public Quaternion getRotRel(Quaternion out) {
+    public Vector3 getRotRel(Vector3 out) {
         if(parent == null) return out.set(rotation);
-        return out.set(parent.rotation).conjugate().add(rotation);
+        return out.set(rotation).sub(parent.rotation);
     }
 
     public Vector3 getSclRel(Vector3 out) {
@@ -259,7 +259,8 @@ public class GameObject implements Iterable<GameObject> {
     }
 
     public void calculateTransform() {
-        transform.set(position, rotation, scale);
+        tempQuat.setEulerAngles(rotation.y, rotation.x, rotation.z);
+        transform.set(position, tempQuat, scale);
     }
 
     public Vector3 calculateMedium(Vector3 out) {
@@ -354,7 +355,8 @@ public class GameObject implements Iterable<GameObject> {
     public void setTransform(Matrix4 transform) {
         this.transform = transform;
         transform.getTranslation(position);
-        transform.getRotation(rotation);
+        transform.getRotation(tempQuat);
+        rotation.set(tempQuat.getPitch(), tempQuat.getYaw(), tempQuat.getRoll());
         transform.getScale(scale);
     }
 

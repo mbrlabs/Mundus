@@ -141,22 +141,44 @@ public class TransformWidget extends BaseInspectorWidget {
             }
         });
 
-        // rotation
-        ChangeListener rotateListener = new ChangeListener() {
+        rotX.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.setRot(rotX.getFloat(), rotY.getFloat(), rotZ.getFloat());
+                go.setRot(rotX.getFloat(), go.rotation.y, go.rotation.z);
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
-        };
-        rotX.addListener(rotateListener);
-        rotY.addListener(rotateListener);
-        rotZ.addListener(rotateListener);
+        });
+
+        rotY.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go == null) return;
+                RotateCommand rotateCommand = new RotateCommand(go);
+                rotateCommand.setBefore(go.rotation);
+                go.setRot(go.rotation.x, rotY.getFloat(), go.rotation.z);
+                rotateCommand.setAfter(go.rotation);
+                history.add(rotateCommand);
+            }
+        });
+
+        rotZ.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go == null) return;
+                RotateCommand rotateCommand = new RotateCommand(go);
+                rotateCommand.setBefore(go.rotation);
+                go.setRot(go.rotation.x, go.rotation.y, rotZ.getFloat());
+                rotateCommand.setAfter(go.rotation);
+                history.add(rotateCommand);
+            }
+        });
 
         scaleX.addListener(new ChangeListener() {
             @Override
@@ -212,9 +234,10 @@ public class TransformWidget extends BaseInspectorWidget {
         posY.setText(StringUtils.formatFloat(pos.y, 2));
         posZ.setText(StringUtils.formatFloat(pos.z, 2));
 
-        rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
-        rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
-        rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
+        Vector3 rot = go.getRotRel(tempV3);
+        rotX.setText(StringUtils.formatFloat(rot.x, 2));
+        rotY.setText(StringUtils.formatFloat(rot.y, 2));
+        rotZ.setText(StringUtils.formatFloat(rot.z, 2));
 
         Vector3 scl = go.getSclRel(tempV3);
         scaleX.setText(StringUtils.formatFloat(scl.x, 2));
