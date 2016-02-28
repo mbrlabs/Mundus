@@ -140,7 +140,43 @@ public class SceneGraphTest {
 
     @Test
     public void testRotation() {
-        // TODO implement
+        SceneGraph sg = new SceneGraph(null);
+        GameObject root = new GameObject(sg);
+        sg.getGameObjects().add(root);
+
+        GameObject child = new GameObject(sg);
+        root.addChild(child);
+
+        // check initial rel rot & abs rot
+        v0.set(0, 0, 0);
+        assertEquals(v0, child.getRotRel(v1));
+        assertEquals(v0, child.rotation);
+        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.rotation);
+
+        // set root rotation
+        root.setRotRel(5, 5, 5);
+        v0.set(5, 5, 5);
+        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.rotation);
+        assertEquals(v0, child.rotation);
+        assertEquals(v0.scl(0, 0, 0), child.getRotRel(v1));
+
+        // rotate root
+        root.rot(10, 20, 30);
+        v0.set(15, 25, 35);
+        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.rotation);
+        assertEquals(v0, child.rotation);
+        assertEquals(v0.scl(0, 0, 0), child.getRotRel(v1));
+
+        // set child rot rel
+        child.setRotRel(-10, -20, -30);
+        v0.set(15, 25, 35);
+        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.rotation);
+        assertEquals(v0.set(5, 5, 5), child.rotation);
+        assertEquals(v0.set(-10, -20, -30), child.getRotRel(v1));
     }
 
 }
