@@ -1,5 +1,5 @@
 [0.0.8]
-
+- Added an option to the settings dialog to change the keyboard layout
 
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations

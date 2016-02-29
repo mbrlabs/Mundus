@@ -18,6 +18,8 @@ package com.mbrlabs.mundus.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 
 /**
  * Workaround for LWJGL3's (or GLFW's) ignorance of keyboard layouts for raw keyboard events.
@@ -27,17 +29,15 @@ import com.badlogic.gdx.InputAdapter;
  */
 public class KeyboardLayoutInputAdapter extends InputAdapter {
 
-    /**
-     *
-     */
-    public static enum KeyboardLayout {
-        QWERTY, QWERTZ
+    private HomeManager homeManager;
+
+    public KeyboardLayoutInputAdapter(HomeManager homeManager) {
+        super();
+        this.homeManager = homeManager;
     }
 
-    public KeyboardLayout layout = KeyboardLayout.QWERTZ;
-
     protected int convertKeycode(int code) {
-        if(layout == KeyboardLayout.QWERTZ) {
+        if(homeManager.homeDescriptor.settingsDescriptor.keyboardLayout == HomeDescriptor.KeyboardLayout.QWERTZ) {
             if(code == Input.Keys.Z) {
                 return Input.Keys.Y;
             } else if(code ==  Input.Keys.Y) {
@@ -45,6 +45,7 @@ public class KeyboardLayoutInputAdapter extends InputAdapter {
             }
         }
 
+        // return default QWERTY
         return code;
     }
 

@@ -16,13 +16,17 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs.settings;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
 /**
@@ -32,6 +36,8 @@ import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 public class GeneralSettingsTable extends VisTable {
 
     private FileChooserField fbxBinary;
+    private VisSelectBox<HomeDescriptor.KeyboardLayout> keyboardLayouts;
+
     private VisTextButton save;
 
     private HomeManager homeManager;
@@ -48,9 +54,18 @@ public class GeneralSettingsTable extends VisTable {
         fbxBinary = new FileChooserField(300);
         add(fbxBinary).left().row();
 
+        keyboardLayouts = new VisSelectBox<>();
+        keyboardLayouts.setItems(
+                HomeDescriptor.KeyboardLayout.QWERTY,
+                HomeDescriptor.KeyboardLayout.QWERTZ);
+        keyboardLayouts.setSelected(homeManager.homeDescriptor.settingsDescriptor.keyboardLayout);
+
+        add(new VisLabel("Keyboard Layout:")).left();
+        add(keyboardLayouts).left().row();
+
         save = new VisTextButton("Save");
         save.align(Align.bottom);
-        add(save).expandX().fillX().expandY().height(25).bottom().colspan(2);
+        add(save).expandX().fillX().expandY().height(25).bottom().colspan(2).row();
 
         addHandlers();
         reloadSettings();
@@ -68,6 +83,14 @@ public class GeneralSettingsTable extends VisTable {
                 String fbxPath = fbxBinary.getPath();
                 homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary = fbxPath;
                 homeManager.save();
+            }
+        });
+
+        keyboardLayouts.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                HomeDescriptor.KeyboardLayout selection = keyboardLayouts.getSelected();
+                homeManager.homeDescriptor.settingsDescriptor.keyboardLayout = selection;
             }
         });
     }

@@ -109,7 +109,7 @@ public class Mundus {
         assetManager = new AssetManager(projectContext, projectManager);
         freeCamController = new FreeCamController();
 
-        ShortcutController shortcutController = new ShortcutController(commandHistory);
+        ShortcutController shortcutController = new ShortcutController(homeManager, commandHistory);
         input.addProcessor(shortcutController);
     }
 
