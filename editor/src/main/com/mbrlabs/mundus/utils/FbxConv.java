@@ -67,7 +67,7 @@ public class FbxConv {
             throw new OsNotSupported();
         }
 
-        pb = new ProcessBuilder(homeManager.homeDescriptor.settings.fbxConvBinary);
+        pb = new ProcessBuilder(homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary);
     }
 
     public void clear() {
@@ -76,7 +76,7 @@ public class FbxConv {
         flipTexture = false;
         input = null;
         output = null;
-        pb = new ProcessBuilder(homeManager.homeDescriptor.settings.fbxConvBinary);
+        pb = new ProcessBuilder(homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary);
     }
 
     public FbxConv input(String pathToFile) {

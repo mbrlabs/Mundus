@@ -57,7 +57,7 @@ public class GeneralSettingsTable extends VisTable {
     }
 
     public void reloadSettings() {
-        fbxBinary.setText(homeManager.homeDescriptor.settings.fbxConvBinary);
+        fbxBinary.setText(homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary);
     }
 
     private void addHandlers() {
@@ -66,7 +66,7 @@ public class GeneralSettingsTable extends VisTable {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 String fbxPath = fbxBinary.getPath();
-                homeManager.homeDescriptor.settings.fbxConvBinary = fbxPath;
+                homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary = fbxPath;
                 homeManager.save();
             }
         });

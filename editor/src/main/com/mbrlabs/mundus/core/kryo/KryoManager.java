@@ -52,7 +52,7 @@ public class KryoManager {
 
         kryo.register(HomeDescriptor.class, 2);
         kryo.register(HomeDescriptor.ProjectRef.class, 3);
-        kryo.register(HomeDescriptor.Settings.class, 4);
+        kryo.register(HomeDescriptor.SettingsDescriptor.class, 4);
         kryo.register(ProjectDescriptor.class, 5);
         kryo.register(TerrainDescriptor.class, 6);
         kryo.register(ModelDescriptor.class, 7);
@@ -64,6 +64,9 @@ public class KryoManager {
         kryo.register(ModelComponentDescriptor.class, 12);
         kryo.register(TerrainComponentDescriptor.class, 13);
         kryo.register(TerrainTextureDescriptor.class, 14);
+
+        kryo.register(HomeDescriptor.KeyboardLayout.class, 15);
+
     }
 
     public HomeDescriptor loadHomeDescriptor() {

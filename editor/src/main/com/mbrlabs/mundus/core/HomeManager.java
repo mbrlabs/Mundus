@@ -23,6 +23,7 @@ import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -43,8 +44,19 @@ public class HomeManager {
     public HomeManager(KryoManager kryoManager) {
         this.kryoManager = kryoManager;
         homeDescriptor = kryoManager.loadHomeDescriptor();
-        if(homeDescriptor.settings.fbxConvBinary == null) {
-            homeDescriptor.settings.fbxConvBinary = "";
+
+        // fbx conv
+        if(homeDescriptor.settingsDescriptor.fbxConvBinary == null) {
+            homeDescriptor.settingsDescriptor.fbxConvBinary = "";
+        }
+
+        // default locale / keyboard layout
+        if(homeDescriptor.settingsDescriptor.keyboardLayout == null) {
+            if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
+                homeDescriptor.settingsDescriptor.keyboardLayout = HomeDescriptor.KeyboardLayout.QWERTZ;
+            } else {
+                homeDescriptor.settingsDescriptor.keyboardLayout = HomeDescriptor.KeyboardLayout.QWERTY;
+            }
         }
     }
 
@@ -80,14 +92,5 @@ public class HomeManager {
     public HomeDescriptor.ProjectRef getLastOpenedProject() {
         return homeDescriptor.lastProject;
     }
-
-//    public ProjectRef findProjectById(String id) {
-//        for(ProjectRef projectRef : homeDescriptor.projects) {
-//            if(projectRef.getId().endsWith(id)) {
-//                return projectRef;
-//            }
-//        }
-//        return null;
-//    }
 
 }

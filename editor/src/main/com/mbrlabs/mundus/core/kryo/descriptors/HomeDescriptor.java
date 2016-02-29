@@ -28,7 +28,7 @@ import java.util.List;
 public class HomeDescriptor {
 
     @Tag(0)
-    public Settings settings;
+    public SettingsDescriptor settingsDescriptor;
     @Tag(1)
     public List<ProjectRef> projects;
     @Tag(2)
@@ -36,16 +36,30 @@ public class HomeDescriptor {
 
     public HomeDescriptor() {
         projects = new ArrayList<>();
-        settings = new Settings();
+        settingsDescriptor = new SettingsDescriptor();
     }
 
     /**
      * Settings class
      */
-    public static class Settings {
+    public static class SettingsDescriptor {
         @Tag(0)
         public String fbxConvBinary = "";
+
+        @Tag(1)
+        public KeyboardLayout keyboardLayout;
     }
+
+    /**
+     * Necessary, because of stupid GLFW keyocde mapping.
+     */
+    public enum KeyboardLayout {
+        /** German layout. */
+        QWERTZ,
+        /** English layout*/
+        QWERTY
+    }
+
 
     /**
      *
