@@ -35,7 +35,7 @@ Below are some of the more interesting features, that already work
 - Mundus is constantly changing. Especially the internal representation of save files. At this stage of the project i don't care 
 very much for backward compatibility, so don't fall to much in love with your creations if you want to stay up to date ;)
 - Depending on your keyboard layout some key shortcuts might be twisted (especially CTRL+Z and CTRL+Y for QWERTZ and QWERTY layouts).
-I will add an option in the settings menu in the future, so that you set the layout yourself. 
+I will add an option in the settings menu in the future, so that you can set the layout yourself. 
 
 ## Runtime
 Currently i'm in the progress of implementing the libGDX runtime, which is included in this repository.

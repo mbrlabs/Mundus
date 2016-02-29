@@ -16,18 +16,14 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs.settings;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
-import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
 /**
  * @author Marcus Brummer
@@ -37,11 +33,8 @@ public class SettingsDialog extends BaseDialog {
 
     private VisSplitPane splitPane;
     private VerticalGroup settingsSelection;
-    private VisTable content;
 
-    private FileChooserField fbxBinary;
-
-    private VisTextButton save;
+    private GeneralSettingsTable generalSettings;
 
     @Inject
     private HomeManager homeManager;
@@ -59,39 +52,11 @@ public class SettingsDialog extends BaseDialog {
         settingsSelection.addActor(new VisLabel("Appearance"));
         settingsSelection.addActor(new VisLabel("Export"));
 
-        content = new VisTable();
-        content.top().left();
+        generalSettings = new GeneralSettingsTable(homeManager);
 
-        content.padTop(6).padRight(6).padLeft(6).padBottom(22);
-
-        splitPane = new VisSplitPane(settingsSelection, content, false);
+        splitPane = new VisSplitPane(settingsSelection, generalSettings, false);
         splitPane.setSplitAmount(0.3f);
         root.add(splitPane).width(700).minHeight(400).fill().expand();
-
-        content.add(new VisLabel("fbx-conv:")).padRight(5);
-        fbxBinary = new FileChooserField(300);
-        content.add(fbxBinary).row();
-
-        save = new VisTextButton("Save");
-        content.add(save).width(93).height(25).padTop(15).colspan(2);
-
-        addHandlers();
-    }
-
-    public void reloadSettings() {
-        fbxBinary.setText(homeManager.homeDescriptor.settings.fbxConvBinary);
-    }
-
-    private void addHandlers() {
-        save.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                String fbxPath = fbxBinary.getPath();
-                homeManager.homeDescriptor.settings.fbxConvBinary = fbxPath;
-                homeManager.save();
-            }
-        });
     }
 
 }

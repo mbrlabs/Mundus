@@ -45,7 +45,6 @@ public class WindowMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 final Ui ui = Ui.getInstance();
                 SettingsDialog dialog = ui.getSettingsDialog();
-                dialog.reloadSettings();
                 ui.showDialog(dialog);
             }
         });
