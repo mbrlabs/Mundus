@@ -45,7 +45,7 @@ public class Terrain extends BaseTerrain {
     public Material material;
 
     private Model model;
-    private ModelInstance modelInstance;
+    public ModelInstance modelInstance;
     private Mesh mesh;
 
     public Terrain(int vertexResolution) {
@@ -87,7 +87,6 @@ public class Terrain extends BaseTerrain {
         mb.begin();
         mb.part(meshPart, material);
         model = mb.end();
-
         modelInstance = new ModelInstance(model);
     }
 
@@ -116,6 +115,8 @@ public class Terrain extends BaseTerrain {
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
         modelInstance.getRenderables(renderables, pool);
+        renderables.first().material = material;
+        renderables.first().worldTransform.set(transform);
     }
 
     /**
