@@ -159,8 +159,9 @@ public class RuntimeExporter {
         SceneDTO dto = new SceneDTO();
         dto.setId(scene.getId());
         dto.setName(scene.getName());
-        // TODO scene graph
-        //dto.setSceneGraph(convert(scene.sceneGraph.getRoot()));
+        for(GameObject go : scene.sceneGraph.getGameObjects()) {
+            dto.getSceneGraph().add(convert(go));
+        }
 
         return dto;
     }

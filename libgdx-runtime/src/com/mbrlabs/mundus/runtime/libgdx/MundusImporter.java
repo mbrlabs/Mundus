@@ -144,7 +144,9 @@ public class MundusImporter {
         scene.setName(dto.getName());
 
         scene.sceneGraph = new SceneGraph(scene);
-        scene.sceneGraph.getGameObjects().add(convert(dto.getSceneGraph(), scene.sceneGraph, terrains, models));
+        for(GameObjectDTO go : dto.getSceneGraph()) {
+            scene.sceneGraph.getGameObjects().add(convert(go, scene.sceneGraph, terrains, models));
+        }
 
         return scene;
     }

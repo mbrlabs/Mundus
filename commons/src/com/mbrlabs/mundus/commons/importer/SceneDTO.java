@@ -17,6 +17,9 @@
 package com.mbrlabs.mundus.commons.importer;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Marcus Brummer
  * @version 26-12-2015
@@ -26,10 +29,10 @@ public class SceneDTO {
     private long id;
     private String name;
 
-    private GameObjectDTO sceneGraph;
+    private List<GameObjectDTO> sceneGraph;
 
     public SceneDTO() {
-
+        sceneGraph = new ArrayList<GameObjectDTO>();
     }
 
     public long getId() {
@@ -48,12 +51,11 @@ public class SceneDTO {
         this.name = name;
     }
 
-    public GameObjectDTO getSceneGraph() {
+    public List<GameObjectDTO> getSceneGraph() {
         return sceneGraph;
     }
 
-    public void setSceneGraph(GameObjectDTO sceneGraph) {
+    public void setSceneGraph(List<GameObjectDTO> sceneGraph) {
         this.sceneGraph = sceneGraph;
     }
-
 }
