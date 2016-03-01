@@ -78,16 +78,16 @@ public class MundusImporter {
             texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexR());
-            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, tex));
+            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexG());
-            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, tex));
+            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexB());
-            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, tex));
+            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexA());
-            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, tex));
+            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, tex));
 
 
             if(ter.getSplatmapPath() != null) {
@@ -97,6 +97,8 @@ public class MundusImporter {
 
             final float[] heightData = TerraLoader.readTerraFile(Gdx.files.internal(assetsFolder + ter.getTerraPath()));
             final Terrain t = new Terrain(ter.getVertexRes(), ter.getWidth(), ter.getDepth(), heightData, texture);
+            t.id = ter.getId();
+            t.init();
             project.getTerrains().add(t);
         }
 
@@ -178,6 +180,7 @@ public class MundusImporter {
         terrainComponent.setShader(terrainShader);
 
         Terrain terrain = Utils.findTerrainById(terrains, dto.getTerrainID());
+        System.out.println(dto.getTerrainID());
         terrain.transform.set(go.getTransform());
         terrainComponent.setTerrain(terrain);
 

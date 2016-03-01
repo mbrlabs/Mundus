@@ -56,7 +56,6 @@ public class SplatMap implements Disposable {
 
         this.pixmap = pixmap;
         texture = new Texture(pixmap);
-        clear();
 
         width = pixmap.getWidth();
         height = pixmap.getHeight();
