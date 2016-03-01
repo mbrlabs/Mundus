@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.terrain;
+package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
- * @version 10-02-2016
+ * @version 01-03-2016
  */
 public class TerrainComponent extends AbstractComponent {
 
@@ -31,7 +33,7 @@ public class TerrainComponent extends AbstractComponent {
 
     public TerrainComponent(GameObject go) {
         super(go);
-        type = Type.TERRAIN;
+        type = Component.Type.TERRAIN;
     }
 
     public void setTerrain(Terrain terrain) {

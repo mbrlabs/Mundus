@@ -33,9 +33,9 @@ import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
-import com.mbrlabs.mundus.terrain.SplatTexture;
-import com.mbrlabs.mundus.terrain.Terrain;
-import com.mbrlabs.mundus.terrain.TerrainTexture;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 

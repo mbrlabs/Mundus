@@ -17,7 +17,7 @@
 package com.mbrlabs.mundus.runtime.libgdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
@@ -30,10 +30,11 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
-import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
-import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainComponent;
-import com.mbrlabs.mundus.runtime.libgdx.terrain.TerrainTexture;
 
 /**
  * @author Marcus Brummer
@@ -72,17 +73,30 @@ public class MundusImporter {
         for(TerrainDTO ter : dto.getTerrains()) {
             // textures
             final TerrainTexture texture = new TerrainTexture();
-            texture.base = Utils.findTextureById(project.getTextures(), ter.getTexBase());
-            texture.r = Utils.findTextureById(project.getTextures(), ter.getTexR());
-            texture.g = Utils.findTextureById(project.getTextures(), ter.getTexG());
-            texture.b = Utils.findTextureById(project.getTextures(), ter.getTexB());
-            texture.a = Utils.findTextureById(project.getTextures(), ter.getTexA());
+
+            MTexture tex = Utils.findTextureById(project.getTextures(), ter.getTexBase());
+            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, tex));
+
+            tex = Utils.findTextureById(project.getTextures(), ter.getTexR());
+            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, tex));
+
+            tex = Utils.findTextureById(project.getTextures(), ter.getTexG());
+            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, tex));
+
+            tex = Utils.findTextureById(project.getTextures(), ter.getTexB());
+            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, tex));
+
+            tex = Utils.findTextureById(project.getTextures(), ter.getTexA());
+            texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, tex));
+
+
             if(ter.getSplatmapPath() != null) {
-                texture.splatmap = new Texture(assetsFolder + Gdx.files.internal(ter.getSplatmapPath()));
+                SplatMap sm = new SplatMap(new Pixmap(Gdx.files.internal(assetsFolder + ter.getSplatmapPath())));
+                texture.setSplatmap(sm);
             }
 
-            final float[] heightData = Terrain.readTerraFile(Gdx.files.internal(assetsFolder + ter.getTerraPath()));
-            final Terrain t = new Terrain(ter.getId(), ter.getVertexRes(), ter.getWidth(), ter.getDepth(), heightData, texture);
+            final float[] heightData = TerraLoader.readTerraFile(Gdx.files.internal(assetsFolder + ter.getTerraPath()));
+            final Terrain t = new Terrain(ter.getVertexRes(), ter.getWidth(), ter.getDepth(), heightData, texture);
             project.getTerrains().add(t);
         }
 
@@ -128,19 +142,19 @@ public class MundusImporter {
         scene.setName(dto.getName());
 
         scene.sceneGraph = new SceneGraph(scene);
-        scene.sceneGraph.setRoot(convert(dto.getSceneGraph(), scene.sceneGraph, terrains, models));
+        scene.sceneGraph.getGameObjects().add(convert(dto.getSceneGraph(), scene.sceneGraph, terrains, models));
 
         return scene;
     }
 
     public GameObject convert(GameObjectDTO dto, SceneGraph sceneGraph, Array<Terrain> terrains, Array<MModel> models) {
-        final GameObject go = new GameObject(sceneGraph, dto.getName(), dto.getId());
+        final GameObject go = new GameObject(sceneGraph, dto.getName(), (int)dto.getId());
         go.setActive(dto.isActive());
 
         final float[] trans = dto.getTrans();
-        go.trans(trans[0], trans[1], trans[2], true);
+        go.trans(trans[0], trans[1], trans[2]);
         go.rot(trans[3], trans[4], trans[5]);
-        go.transform.scl(trans[6], trans[7], trans[8]);
+        go.scl(trans[6], trans[7], trans[8]);
 
         if(dto.getTerrC() != null) {
             go.getComponents().add(convert(go, dto.getTerrC(), terrains));

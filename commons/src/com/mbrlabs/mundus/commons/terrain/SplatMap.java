@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -49,7 +49,17 @@ public class SplatMap implements Disposable {
 
         this.width = width;
         this.height = height;
+    }
 
+    public SplatMap(Pixmap pixmap) {
+        Pixmap.setBlending(Pixmap.Blending.None);
+
+        this.pixmap = pixmap;
+        texture = new Texture(pixmap);
+        clear();
+
+        width = pixmap.getWidth();
+        height = pixmap.getHeight();
     }
 
     public Texture getTexture() {

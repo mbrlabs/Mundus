@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016. See AUTHORS file.
+ * Copyright (c) 2015. See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -94,8 +94,8 @@ public class TerrainShader extends BaseShader {
     public void begin(Camera camera, RenderContext context) {
         this.context = context;
         context.begin();
+        context.setCullFace(GL20.GL_BACK);
 
-        this.context.setCullFace(GL20.GL_BACK);
         this.context.setDepthTest(GL20.GL_LEQUAL, 0f, 1f);
         this.context.setDepthMask(true);
 
@@ -108,10 +108,10 @@ public class TerrainShader extends BaseShader {
     @Override
     public void render(Renderable renderable) {
         final MundusEnvironment env = (MundusEnvironment) renderable.environment;
-        set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
         setLights(env);
         setTerrainSplatTextures(renderable);
+        set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
         // Fog
         final Fog fog = env.getFog();
@@ -153,23 +153,27 @@ public class TerrainShader extends BaseShader {
     private void setTerrainSplatTextures(Renderable renderable) {
         final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
                 renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
-        final TerrainTexture tex = splatAttrib.terrainTexture;
+        final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
 
-        set(UNIFORM_TEXTURE_BASE, tex.base);
-        if(tex.splatmap != null) {
+        set(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.texture);
+        if(terrainTexture.getSplatmap() != null) {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 1);
-            if(tex.r != null) set(UNIFORM_TEXTURE_R, tex.r);
-            if(tex.g != null) set(UNIFORM_TEXTURE_G, tex.g);
-            if(tex.b != null) set(UNIFORM_TEXTURE_B, tex.b);
-            if(tex.a != null) set(UNIFORM_TEXTURE_A, tex.a);
-            set(UNIFORM_TEXTURE_SPLAT, tex.splatmap);
+            SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.R);
+            if(st != null) set(UNIFORM_TEXTURE_R, st.texture.texture);
+            st = terrainTexture.getTexture(SplatTexture.Channel.G);
+            if(st != null) set(UNIFORM_TEXTURE_G, st.texture.texture);
+            st = terrainTexture.getTexture(SplatTexture.Channel.B);
+            if(st != null) set(UNIFORM_TEXTURE_B, st.texture.texture);
+            st = terrainTexture.getTexture(SplatTexture.Channel.A);
+            if(st != null) set(UNIFORM_TEXTURE_A, st.texture.texture);
+            set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
         } else {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 0);
         }
 
         // set terrain world size
-        terrainSize.x = tex.terrain.terrainWidth;
-        terrainSize.y = tex.terrain.terrainDepth;
+        terrainSize.x = terrainTexture.getTerrain().terrainWidth;
+        terrainSize.y = terrainTexture.getTerrain().terrainDepth;
         set(UNIFORM_TERRAIN_SIZE, terrainSize);
     }
 

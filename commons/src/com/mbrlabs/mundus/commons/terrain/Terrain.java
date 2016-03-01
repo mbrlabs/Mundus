@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.model.MeshPart;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Pool;
-import com.mbrlabs.mundus.commons.terrain.BaseTerrain;
 
 import java.nio.ByteBuffer;
 
@@ -39,18 +42,32 @@ public class Terrain extends BaseTerrain {
 
     // Textures
     private TerrainTexture terrainTexture;
+    public Material material;
 
+    private Model model;
+    private ModelInstance modelInstance;
     private Mesh mesh;
-    public Renderable renderable;
 
     public Terrain(int vertexResolution) {
         super(vertexResolution);
-        this.renderable = new Renderable();
 
         this.terrainTexture = new TerrainTexture();
         this.terrainTexture.setTerrain(this);
-        this.renderable.material = new Material();
-        this.renderable.material.set(new TerrainTextureAttribute(
+        material = new Material();
+        material.set(new TerrainTextureAttribute(
+                TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
+    }
+
+    public Terrain(int vertexResolution, int width, int depth, float[] heightData, TerrainTexture texture) {
+        super(vertexResolution);
+        this.terrainWidth = width;
+        this.terrainDepth = depth;
+        this.heightData = heightData;
+        this.terrainTexture = texture;
+        this.terrainTexture.setTerrain(this);
+
+        material = new Material();
+        material.set(new TerrainTextureAttribute(
                 TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
     }
 
@@ -58,9 +75,20 @@ public class Terrain extends BaseTerrain {
         final int numVertices = this.vertexResolution * vertexResolution;
         final int numIndices = (this.vertexResolution - 1) * (vertexResolution - 1) * 6;
 
-        this.mesh = new Mesh(false, numVertices, numIndices, attribs);
+        mesh = new Mesh(true, numVertices, numIndices, attribs);
         this.vertices = new float[numVertices * stride];
         mesh.setIndices(buildIndices());
+        buildVertices();
+        mesh.setVertices(vertices);
+
+        MeshPart meshPart = new MeshPart(null, mesh, 0, numIndices, GL20.GL_TRIANGLES);
+        meshPart.update();
+        ModelBuilder mb = new ModelBuilder();
+        mb.begin();
+        mb.part(meshPart, material);
+        model = mb.end();
+
+        modelInstance = new ModelInstance(model);
     }
 
     public void loadHeightMap(Pixmap map, float maxHeight) {
@@ -76,27 +104,18 @@ public class Terrain extends BaseTerrain {
         terrainTexture.setTerrain(this);
         this.terrainTexture = terrainTexture;
 
-        this.renderable.material.set(new TerrainTextureAttribute(
+        material.set(new TerrainTextureAttribute(
                 TerrainTextureAttribute.ATTRIBUTE_SPLAT0, this.terrainTexture));
     }
 
     public void update () {
         buildVertices();
         mesh.setVertices(vertices);
-        renderable.meshPart.mesh = mesh;
-        renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
-        renderable.meshPart.offset = 0;
-        renderable.meshPart.size = mesh.getNumIndices();
-        renderable.meshPart.update();
     }
 
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
-        renderable.worldTransform.set(transform);
-
-        Renderable pooledRenderable = pool.obtain();
-        pooledRenderable.set(renderable);
-        renderables.add(pooledRenderable);
+        modelInstance.getRenderables(renderables, pool);
     }
 
     /**

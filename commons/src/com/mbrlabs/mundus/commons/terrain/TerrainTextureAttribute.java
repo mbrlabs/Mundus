@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -22,16 +22,18 @@ import com.badlogic.gdx.utils.NumberUtils;
 
 /**
  * @author Marcus Brummer
- * @version 09-02-2016
+ * @version 28-01-2016
  */
 public class TerrainTextureAttribute extends Attribute {
 
     public static final String ATTRIBUTE_SPLAT0_ALIAS  = "splat0";
     public static final long ATTRIBUTE_SPLAT0 = register(ATTRIBUTE_SPLAT0_ALIAS);
+    public static final String ATTRIBUTE_SPLAT1_ALIAS  = "splat1";
+    public static final long ATTRIBUTE_SPLAT1 = register(ATTRIBUTE_SPLAT1_ALIAS);
 
     public TerrainTexture terrainTexture;
 
-    protected static long Mask = ATTRIBUTE_SPLAT0;
+    protected static long Mask = ATTRIBUTE_SPLAT0 | ATTRIBUTE_SPLAT1;
 
     /** Method to check whether the specified type is a valid DoubleAttribute type */
     public static Boolean is(final long type) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.commons.terrain;
 
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class TerrainTexture {
     private Terrain terrain;
     
     public TerrainTexture() {
-        textures = new HashMap<>(5, 1);
+        textures = new HashMap<SplatTexture.Channel, SplatTexture>(5, 1);
     }
 
     public SplatTexture getTexture(SplatTexture.Channel channel) {

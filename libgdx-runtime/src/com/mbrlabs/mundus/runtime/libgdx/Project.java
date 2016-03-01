@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
  * @author Marcus Brummer

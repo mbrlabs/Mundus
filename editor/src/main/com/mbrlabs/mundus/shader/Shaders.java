@@ -19,7 +19,7 @@ package com.mbrlabs.mundus.shader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.mbrlabs.mundus.commons.shaders.EntityShader;
 import com.mbrlabs.mundus.commons.skybox.SkyboxShader;
-import com.mbrlabs.mundus.terrain.TerrainShader;
+import com.mbrlabs.mundus.commons.terrain.TerrainShader;
 import com.mbrlabs.mundus.tools.picker.GameObjectPickerShader;
 
 /**

@@ -21,7 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
  * @author Marcus Brummer
@@ -29,10 +29,10 @@ import com.mbrlabs.mundus.runtime.libgdx.terrain.Terrain;
  */
 public class Utils {
 
-    public static Texture findTextureById(Array<MTexture> textures, Long id) {
+    public static MTexture findTextureById(Array<MTexture> textures, Long id) {
         if(id == null) return null;
         for(MTexture t : textures) {
-            if(t.getId() == id) return t.texture;
+            if(t.getId() == id) return t;
         }
 
         return null;
