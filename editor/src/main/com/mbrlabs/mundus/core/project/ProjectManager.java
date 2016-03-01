@@ -288,7 +288,6 @@ public class ProjectManager {
                 if(model != null) {
                     modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
-                    modelComponent.getModelInstance().calculateBounds();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
                     Log.fatal("model for modelInstance not found: " + modelComponent.getModelInstance().getModel().id);

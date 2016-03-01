@@ -29,11 +29,6 @@ public class MModelInstance {
     private MModel model;
     public ModelInstance modelInstance = null;
 
-    private final static BoundingBox bounds = new BoundingBox();
-    public final Vector3 center = new Vector3();
-    public final Vector3 dimensions = new Vector3();
-    public float radius;
-
     public MModelInstance(MModel model) {
         this.model = model;
         if(model.getModel() != null) {
@@ -41,19 +36,11 @@ public class MModelInstance {
         }
     }
 
-    public void calculateBounds() {
-        modelInstance.calculateBoundingBox(bounds);
-        bounds.getCenter(center);
-        bounds.getDimensions(dimensions);
-        radius = dimensions.len() / 2f;
-    }
-
     public void replaceModel(MModel model) {
         this.model = model;
         ModelInstance mi = new ModelInstance(model.getModel());
         mi.transform  = modelInstance.transform;
         modelInstance = mi;
-        calculateBounds();
     }
 
     public MModel getModel() {

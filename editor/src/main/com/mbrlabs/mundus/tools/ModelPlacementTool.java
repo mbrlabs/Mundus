@@ -57,7 +57,6 @@ public class ModelPlacementTool extends Tool {
     public void setModel(MModel model) {
         this.model = model;
         curEntity = new MModelInstance(model);
-        curEntity.calculateBounds();
     }
 
     @Override
@@ -118,7 +117,6 @@ public class ModelPlacementTool extends Tool {
             Mundus.postEvent(new SceneGraphChangedEvent());
 
             curEntity = new MModelInstance(model);
-            curEntity.calculateBounds();
             mouseMoved(screenX, screenY);
         }
         return false;
