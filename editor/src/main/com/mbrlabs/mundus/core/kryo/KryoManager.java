@@ -23,6 +23,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.env.lights.BaseLight;
 import com.mbrlabs.mundus.core.HomeManager;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -66,6 +67,7 @@ public class KryoManager {
         kryo.register(TerrainTextureDescriptor.class, 14);
 
         kryo.register(HomeDescriptor.KeyboardLayout.class, 15);
+        kryo.register(BaseLightDescriptor.class, 16);
 
     }
 

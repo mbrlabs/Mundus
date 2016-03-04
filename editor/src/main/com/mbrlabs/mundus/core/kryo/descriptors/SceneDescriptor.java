@@ -35,6 +35,8 @@ public class SceneDescriptor {
     private List<GameObjectDescriptor> gameObjects;
     @Tag(3)
     private FogDescriptor fog;
+    @Tag(10)
+    private BaseLightDescriptor ambientLight;
     @Tag(4)
     private float camPosX;
     @Tag(5)
@@ -122,6 +124,14 @@ public class SceneDescriptor {
 
     public void setFog(FogDescriptor fog) {
         this.fog = fog;
+    }
+
+    public BaseLightDescriptor getAmbientLight() {
+        return ambientLight;
+    }
+
+    public void setAmbientLight(BaseLightDescriptor ambientLight) {
+        this.ambientLight = ambientLight;
     }
 
     public List<GameObjectDescriptor> getGameObjects() {

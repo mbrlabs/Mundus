@@ -20,49 +20,29 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
  * @author Marcus Brummer
- * @version 09-01-2016
+ * @version 04-03-2016
  */
-public class ColorDescriptor {
+public class BaseLightDescriptor {
 
     @Tag(0)
-    private float r;
+    private float intensity;
     @Tag(1)
-    private float g;
-    @Tag(2)
-    private float b;
-    @Tag(3)
-    private float a;
+    private int color;
 
-    public float getR() {
-        return r;
+    public float getIntensity() {
+        return intensity;
     }
 
-    public void setR(float r) {
-        this.r = r;
+    public void setIntensity(float intensity) {
+        this.intensity = intensity;
     }
 
-    public float getG() {
-        return g;
+    public int getColor() {
+        return color;
     }
 
-    public void setG(float g) {
-        this.g = g;
-    }
-
-    public float getB() {
-        return b;
-    }
-
-    public void setB(float b) {
-        this.b = b;
-    }
-
-    public float getA() {
-        return a;
-    }
-
-    public void setA(float a) {
-        this.a = a;
+    public void setColor(int color) {
+        this.color = color;
     }
 
 }

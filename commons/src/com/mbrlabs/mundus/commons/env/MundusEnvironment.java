@@ -54,6 +54,10 @@ public class MundusEnvironment extends Environment {
         return ambientLight;
     }
 
+    public void setAmbientLight(BaseLight ambientLight) {
+        this.ambientLight = ambientLight;
+    }
+
     public Fog getFog() {
         return fog;
     }

@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.env.Fog;
+import com.mbrlabs.mundus.commons.env.lights.BaseLight;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.model.MTexture;
@@ -387,11 +388,32 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                              Base light
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static BaseLight convert(BaseLightDescriptor lightDescriptor) {
+        if(lightDescriptor == null) return null;
+        BaseLight light = new BaseLight();
+        light.intensity = lightDescriptor.getIntensity();
+        light.color.set(lightDescriptor.getColor());
+
+        return light;
+    }
+
+    public static BaseLightDescriptor convert(BaseLight light) {
+        if(light == null) return null;
+        BaseLightDescriptor lightDescriptor = new BaseLightDescriptor();
+        lightDescriptor.setIntensity(light.intensity);
+        lightDescriptor.setColor(Color.rgba8888(light.color));
+
+        return lightDescriptor;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                          Scene
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static SceneDescriptor convert(Scene scene) {
-        // TODO enviroenment
         SceneDescriptor descriptor = new SceneDescriptor();
 
         // meta
@@ -403,8 +425,9 @@ public class DescriptorConverter {
             descriptor.getGameObjects().add(convert(go));
         }
 
-        // fog
+        // environment stuff
         descriptor.setFog(convert(scene.environment.getFog()));
+        descriptor.setAmbientLight(convert(scene.environment.getAmbientLight()));
 
         // camera
         descriptor.setCamPosX(scene.cam.position.x);
@@ -417,15 +440,18 @@ public class DescriptorConverter {
     }
 
     public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<MModel> models) {
-        // TODO enviroenment
         EditorScene scene = new EditorScene();
 
         // meta
         scene.setId(sceneDescriptor.getId());
         scene.setName(sceneDescriptor.getName());
 
-        // fog
+        // environment stuff
         scene.environment.setFog(convert(sceneDescriptor.getFog()));
+        BaseLight ambientLight = convert(sceneDescriptor.getAmbientLight());
+        if(ambientLight != null) {
+            scene.environment.setAmbientLight(ambientLight);
+        }
 
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
