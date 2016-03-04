@@ -42,6 +42,7 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     private TerrainUpDownTab raiseLowerTab;
     private TerrainFlattenTab flattenTab;
     private TerrainPaintTab paintTab;
+    private TerrainGenTab genTab;
     private TerrainSettingsTab settingsTab;
 
     @Inject
@@ -61,11 +62,13 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
         raiseLowerTab = new TerrainUpDownTab(this);
         flattenTab = new TerrainFlattenTab(this);
         paintTab = new TerrainPaintTab(this);
+        genTab = new TerrainGenTab(this);
         settingsTab = new TerrainSettingsTab();
 
         tabbedPane.add(raiseLowerTab);
         tabbedPane.add(flattenTab);
         tabbedPane.add(paintTab);
+        tabbedPane.add(genTab);
         tabbedPane.add(settingsTab);
 
         setupUI();
