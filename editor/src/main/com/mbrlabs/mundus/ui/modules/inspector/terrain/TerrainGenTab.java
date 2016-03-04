@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -26,6 +27,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.tools.ToolManager;
@@ -62,6 +64,7 @@ public class TerrainGenTab extends Tab {
         root.add(hmInput).left().row();
         root.add(loadHeightmpBtn).row();
 
+        setupListeners();
     }
 
     private void setupListeners() {
@@ -79,7 +82,25 @@ public class TerrainGenTab extends Tab {
     }
 
     public void loadHeigtmap(FileHandle heightMap) {
-        
+        Terrain terrain = parent.component.getTerrain();
+        Pixmap originalMap = new Pixmap(heightMap);
+
+        // scale pixmap if it doesn't fit the terrain
+        if(originalMap.getWidth() != terrain.vertexResolution || originalMap.getHeight() != terrain.vertexResolution) {
+            Pixmap scaledPixmap = new Pixmap(terrain.vertexResolution, terrain.vertexResolution, originalMap.getFormat());
+            // 	public void drawPixmap (Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth,
+            scaledPixmap.drawPixmap(originalMap, 0, 0, originalMap.getWidth(),
+                    originalMap.getHeight(), 0, 0, scaledPixmap.getWidth(), scaledPixmap.getHeight());
+
+            originalMap.dispose();
+            terrain.loadHeightMap(scaledPixmap, terrain.terrainWidth * 0.17f);
+            scaledPixmap.dispose();
+        } else {
+            terrain.loadHeightMap(originalMap, terrain.terrainWidth * 0.17f);
+            originalMap.dispose();
+        }
+
+        terrain.update();
     }
 
     @Override
