@@ -30,6 +30,8 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
@@ -49,6 +51,8 @@ public class TerrainGenTab extends Tab {
 
     @Inject
     private ToolManager toolManager;
+    @Inject
+    private CommandHistory history;
 
     public TerrainGenTab(final TerrainComponentWidget parent) {
         super(false, false);
@@ -85,6 +89,9 @@ public class TerrainGenTab extends Tab {
 
     public void loadHeigtmap(FileHandle heightMap) {
         Terrain terrain = parent.component.getTerrain();
+        TerrainHeightCommand command = new TerrainHeightCommand(terrain);
+        command.setHeightDataBefore(terrain.heightData);
+
         Pixmap originalMap = new Pixmap(heightMap);
 
         // scale pixmap if it doesn't fit the terrain
@@ -102,6 +109,8 @@ public class TerrainGenTab extends Tab {
         }
 
         terrain.update();
+        command.setHeightDataAfter(terrain.heightData);
+        history.add(command);
     }
 
     @Override
