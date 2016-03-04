@@ -56,6 +56,7 @@ public class Ui extends Stage {
     private ExportDialog exportDialog;
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
+    private AmbientLightDialog ambientLightDialog;
 
     private RenderWidget widget3D;
 
@@ -113,6 +114,7 @@ public class Ui extends Stage {
         exportDialog = new ExportDialog();
         fogDialog = new FogDialog();
         skyboxDialog = new SkyboxDialog();
+        ambientLightDialog = new AmbientLightDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -168,6 +170,10 @@ public class Ui extends Stage {
 
     public FogDialog getFogDialog() {
         return fogDialog;
+    }
+
+    public AmbientLightDialog getAmbientLightDialog() {
+        return ambientLightDialog;
     }
 
     public SkyboxDialog getSkyboxDialog() {
