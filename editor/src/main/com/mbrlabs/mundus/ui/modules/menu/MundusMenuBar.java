@@ -34,7 +34,6 @@ public class MundusMenuBar extends MenuBar {
     private FileMenu fileMenu;
     private EditMenu editMenu;
     private WindowMenu windowMenu;
-    private TerrainMenu terrainMenu;
     private ModelsMenu modelsMenu;
     private EnvironmentMenu environmentMenu;
     private SceneMenu sceneMenu;
@@ -44,14 +43,12 @@ public class MundusMenuBar extends MenuBar {
         fileMenu = new FileMenu();
         editMenu = new EditMenu();
         modelsMenu = new ModelsMenu();
-        terrainMenu = new TerrainMenu();
         windowMenu = new WindowMenu();
         environmentMenu = new EnvironmentMenu();
         sceneMenu = new SceneMenu();
         addMenu(fileMenu);
         addMenu(editMenu);
         addMenu(modelsMenu);
-        addMenu(terrainMenu);
         addMenu(environmentMenu);
         addMenu(sceneMenu);
         addMenu(windowMenu);
@@ -83,10 +80,6 @@ public class MundusMenuBar extends MenuBar {
 
     public WindowMenu getWindowMenu() {
         return windowMenu;
-    }
-
-    public TerrainMenu getTerrainMenu() {
-        return terrainMenu;
     }
 
     public ModelsMenu getModelsMenu() {

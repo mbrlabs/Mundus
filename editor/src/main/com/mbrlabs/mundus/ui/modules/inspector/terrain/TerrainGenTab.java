@@ -60,9 +60,11 @@ public class TerrainGenTab extends Tab {
         hmInput = new FileChooserField(250);
         loadHeightmpBtn = new VisTextButton("Load heightmap");
 
-        root.add(new VisLabel("Load Heightmap")).padLeft(5).left().row();
+        root.add(new VisLabel("Load Heightmap")).pad(5).left().row();
         root.add(hmInput).left().row();
-        root.add(loadHeightmpBtn).row();
+        root.add(loadHeightmpBtn).padLeft(5).left().row();
+
+        root.add(new VisLabel("Perlin Noise")).pad(5).padTop(10).left().row();
 
         setupListeners();
     }
@@ -88,7 +90,6 @@ public class TerrainGenTab extends Tab {
         // scale pixmap if it doesn't fit the terrain
         if(originalMap.getWidth() != terrain.vertexResolution || originalMap.getHeight() != terrain.vertexResolution) {
             Pixmap scaledPixmap = new Pixmap(terrain.vertexResolution, terrain.vertexResolution, originalMap.getFormat());
-            // 	public void drawPixmap (Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth,
             scaledPixmap.drawPixmap(originalMap, 0, 0, originalMap.getWidth(),
                     originalMap.getHeight(), 0, 0, scaledPixmap.getWidth(), scaledPixmap.getHeight());
 
