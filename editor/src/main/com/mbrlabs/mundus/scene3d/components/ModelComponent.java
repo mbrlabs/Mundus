@@ -52,7 +52,7 @@ public class ModelComponent extends PickableComponent {
     @Override
     public void encodeRaypickColorId() {
         GameObjectIdAttribute goIDa = GameObjectColorEncoder.encodeRaypickColorId(gameObject);
-        this.modelInstance.modelInstance.materials.get(0).set(goIDa);
+        this.modelInstance.modelInstance.materials.first().set(goIDa);
     }
 
     @Override

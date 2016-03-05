@@ -69,7 +69,7 @@ public class Terrain implements RenderableProvider, Disposable {
 
     // Textures
     private TerrainTexture terrainTexture;
-    public Material material;
+    private final Material material;
 
     private Model model;
     public ModelInstance modelInstance;
@@ -92,6 +92,7 @@ public class Terrain implements RenderableProvider, Disposable {
         material = new Material();
         material.set(new TerrainTextureAttribute(
                 TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
+
     }
 
     public Terrain(int vertexResolution, int width, int depth, float[] heightData, TerrainTexture texture) {
@@ -102,9 +103,33 @@ public class Terrain implements RenderableProvider, Disposable {
         this.terrainTexture = texture;
         this.terrainTexture.setTerrain(this);
 
-        material = new Material();
         material.set(new TerrainTextureAttribute(
                 TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
+    }
+
+    public void setTransform(Matrix4 transform) {
+        this.transform = transform;
+        modelInstance.transform = this.transform;
+    }
+
+    public void init() {
+        final int numVertices = this.vertexResolution * vertexResolution;
+        final int numIndices = (this.vertexResolution - 1) * (vertexResolution - 1) * 6;
+
+        mesh = new Mesh(true, numVertices, numIndices, attribs);
+        this.vertices = new float[numVertices * stride];
+        mesh.setIndices(buildIndices());
+        buildVertices();
+        mesh.setVertices(vertices);
+
+        MeshPart meshPart = new MeshPart(null, mesh, 0, numIndices, GL20.GL_TRIANGLES);
+        meshPart.update();
+        ModelBuilder mb = new ModelBuilder();
+        mb.begin();
+        mb.part(meshPart, material);
+        model = mb.end();
+        modelInstance = new ModelInstance(model);
+        modelInstance.transform = transform;
     }
 
     public Vector3 getVertexPosition(Vector3 out, int x, int z) {
@@ -264,25 +289,6 @@ public class Terrain implements RenderableProvider, Disposable {
         return out;
     }
 
-    public void init() {
-        final int numVertices = this.vertexResolution * vertexResolution;
-        final int numIndices = (this.vertexResolution - 1) * (vertexResolution - 1) * 6;
-
-        mesh = new Mesh(true, numVertices, numIndices, attribs);
-        this.vertices = new float[numVertices * stride];
-        mesh.setIndices(buildIndices());
-        buildVertices();
-        mesh.setVertices(vertices);
-
-        MeshPart meshPart = new MeshPart(null, mesh, 0, numIndices, GL20.GL_TRIANGLES);
-        meshPart.update();
-        ModelBuilder mb = new ModelBuilder();
-        mb.begin();
-        mb.part(meshPart, material);
-        model = mb.end();
-        modelInstance = new ModelInstance(model);
-    }
-
     public void loadHeightMap(Pixmap map, float maxHeight) {
         if (map.getWidth() != vertexResolution || map.getHeight() != vertexResolution) throw new GdxRuntimeException("Incorrect map size");
         heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
@@ -308,8 +314,6 @@ public class Terrain implements RenderableProvider, Disposable {
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
         modelInstance.getRenderables(renderables, pool);
-        renderables.first().material = material;
-        renderables.first().worldTransform.set(transform);
     }
 
     /**

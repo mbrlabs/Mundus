@@ -40,7 +40,7 @@ public class TerrainComponent extends PickableComponent {
     @Override
     public void encodeRaypickColorId() {
         GameObjectIdAttribute goIDa = GameObjectColorEncoder.encodeRaypickColorId(gameObject);
-        terrain.material.set(goIDa);
+        terrain.modelInstance.materials.first().set(goIDa);
     }
 
     @Override

@@ -99,8 +99,8 @@ public class TerrainIO {
         }
         //Log.debug("Terrain import. floats: " + floatArray.size);
 
-        terrain.init();
         terrain.heightData = floatArray.toArray();
+        terrain.init();
         terrain.update();
 
         // set default terrain base texture if none is present
@@ -118,6 +118,7 @@ public class TerrainIO {
             String splatPath = FilenameUtils.concat(projectContext.absolutePath, splatmap.getPath());
             splatmap.loadPNG(Gdx.files.absolute(splatPath));
         }
+
 
         return terrain;
     }

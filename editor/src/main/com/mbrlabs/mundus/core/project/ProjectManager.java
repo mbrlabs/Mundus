@@ -294,6 +294,7 @@ public class ProjectManager {
                 }
             } else if(c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent)c).setShader(shaders.terrainShader);
+                ((TerrainComponent)c).getTerrain().setTransform(go.getTransform());
             }
 
             // encode id for picking

@@ -42,10 +42,13 @@ public class TerrainUtils {
         terrainGO.setTransform(terrain.transform);
         terrainGO.setParent(null);
 
+        terrain.setTransform(terrainGO.getTransform());
+
         TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
         terrainComponent.setTerrain(terrain);
         terrainGO.getComponents().add(terrainComponent);
         terrainComponent.setShader(shader);
+
 
         return terrainGO;
     }

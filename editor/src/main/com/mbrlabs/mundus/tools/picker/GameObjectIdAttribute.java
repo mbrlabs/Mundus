@@ -50,12 +50,12 @@ public class GameObjectIdAttribute extends Attribute {
 
     @Override
     public int hashCode () {
-        return r + g*2 + b*3;
+        return r + g*255 + b*255*255;
     }
 
     @Override
     public int compareTo (Attribute o) {
-        return 0; // FIXME implement comparing
+        return -1; // FIXME implement comparing
     }
 
     @Override

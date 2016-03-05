@@ -22,6 +22,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
 
 /**
+ *
  * @author Marcus Brummer
  * @version 16-01-2016
  */
