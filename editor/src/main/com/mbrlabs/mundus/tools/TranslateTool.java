@@ -114,10 +114,10 @@ public class TranslateTool extends SelectionTool {
                 new Material(ColorAttribute.createDiffuse(COLOR_XZ)),
                 VertexAttributes.Usage.Position);
 
-        xHandle = new TranslateHandle(0, xHandleModel);
-        yHandle = new TranslateHandle(1, yHandleModel);
-        zHandle = new TranslateHandle(2, zHandleModel);
-        xzPlaneHandle = new TranslateHandle(3, xzPlaneHandleModel);
+        xHandle = new TranslateHandle(TranslateHandle.X_HANDLE_ID, xHandleModel);
+        yHandle = new TranslateHandle(TranslateHandle.Y_HANDLE_ID, yHandleModel);
+        zHandle = new TranslateHandle(TranslateHandle.Z_HANDLE_ID, zHandleModel);
+        xzPlaneHandle = new TranslateHandle(TranslateHandle.XZ_HANDLE_ID, xzPlaneHandleModel);
         handles = new TranslateHandle[]{xHandle, yHandle, zHandle, xzPlaneHandle};
 
         gameObjectModifiedEvent = new GameObjectModifiedEvent();
@@ -263,19 +263,19 @@ public class TranslateTool extends SelectionTool {
                 return false;
             }
 
-            if(handle.getId() == 3) {
+            if(handle.getId() == TranslateHandle.XZ_HANDLE_ID) {
                 state = State.TRANSLATE_XZ;
                 initTranslate = true;
                 xzPlaneHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == 0) {
+            } else if(handle.getId() == TranslateHandle.X_HANDLE_ID) {
                 state = State.TRANSLATE_X;
                 initTranslate = true;
                 xHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == 1) {
+            } else if(handle.getId() == TranslateHandle.Y_HANDLE_ID) {
                 state = State.TRANSLATE_Y;
                 initTranslate = true;
                 yHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == 2) {
+            } else if(handle.getId() == TranslateHandle.Z_HANDLE_ID) {
                 state = State.TRANSLATE_Z;
                 initTranslate = true;
                 zHandle.changeColor(COLOR_SELECTED);
@@ -320,6 +320,12 @@ public class TranslateTool extends SelectionTool {
      * 
      */
     private class TranslateHandle extends ToolHandle {
+
+        public static final int X_HANDLE_ID = 0;
+        public static final int Y_HANDLE_ID = 1;
+        public static final int Z_HANDLE_ID = 2;
+        public static final int XZ_HANDLE_ID = 3;
+
 
         private Model model;
         private ModelInstance modelInstance;
