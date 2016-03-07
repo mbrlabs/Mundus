@@ -20,8 +20,8 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.tools.picker.GameObjectColorEncoder;
-import com.mbrlabs.mundus.tools.picker.GameObjectIdAttribute;
+import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
+import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
 
 /**
  * @author Marcus Brummer
@@ -51,14 +51,14 @@ public class ModelComponent extends PickableComponent {
 
     @Override
     public void encodeRaypickColorId() {
-        GameObjectIdAttribute goIDa = GameObjectColorEncoder.encodeRaypickColorId(gameObject);
+        PickerIDAttribute goIDa = PickerColorEncoder.encodeRaypickColorId(gameObject);
         this.modelInstance.modelInstance.materials.first().set(goIDa);
     }
 
     @Override
     public void renderPick() {
         gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
-                Shaders.gameObjectPickerShader);
+                Shaders.pickerShader);
     }
 
     public MModelInstance getModelInstance() {

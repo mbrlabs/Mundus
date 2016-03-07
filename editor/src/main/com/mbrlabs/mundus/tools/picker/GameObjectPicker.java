@@ -30,6 +30,7 @@ import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
+import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 
 import java.nio.ByteBuffer;
 
@@ -42,12 +43,10 @@ import java.nio.ByteBuffer;
  * @author Marcus Brummer
  * @version 20-02-2016
  */
-public class GameObjectPicker implements Disposable {
-
-    private FrameBuffer fbo;
+public class GameObjectPicker extends BasePicker {
 
     public GameObjectPicker() {
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        super();
     }
 
     public GameObject pick(EditorScene scene, int screenX, int screenY) {
@@ -59,7 +58,7 @@ public class GameObjectPicker implements Disposable {
         int x = screenX - scene.viewport.getScreenX();
         int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
 
-        int id = GameObjectColorEncoder.decode(pm.getPixel(x, y));
+        int id = PickerColorEncoder.decode(pm.getPixel(x, y));
         System.out.println(id);
         for(GameObject go : scene.sceneGraph.getGameObjects()) {
             if(id == go.getId()) return go;
@@ -69,16 +68,6 @@ public class GameObjectPicker implements Disposable {
         }
 
         return null;
-    }
-
-    private void begin(Viewport viewport) {
-        fbo.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
-    }
-
-    private void end() {
-        fbo.end();
     }
 
     private void renderPickableScene(SceneGraph sceneGraph) {
@@ -103,34 +92,4 @@ public class GameObjectPicker implements Disposable {
         }
     }
 
-    public Pixmap getFrameBufferPixmap (Viewport viewport) {
-        int w = viewport.getScreenWidth();
-        int h = viewport.getScreenHeight();
-        int x = viewport.getScreenX();
-        int y = viewport.getScreenY();
-        final ByteBuffer pixelBuffer = BufferUtils.newByteBuffer(w * h * 4);
-
-        Gdx.gl.glBindFramebuffer(GL20.GL_FRAMEBUFFER, fbo.getFramebufferHandle());
-        Gdx.gl.glReadPixels(x, y, w, h, GL30.GL_RGBA, GL30.GL_UNSIGNED_BYTE, pixelBuffer);
-        Gdx.gl.glBindFramebuffer(GL20.GL_FRAMEBUFFER, 0);
-
-        final int numBytes = w * h * 4;
-        byte[] imgLines = new byte[numBytes];
-        final int numBytesPerLine = w * 4;
-        for (int i = 0; i < h; i++) {
-            pixelBuffer.position((h - i - 1) * numBytesPerLine);
-            pixelBuffer.get(imgLines, i * numBytesPerLine, numBytesPerLine);
-        }
-
-        Pixmap pixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
-        BufferUtils.copy(imgLines, 0, pixmap.getPixels(), imgLines.length);
-
-        return pixmap;
-    }
-
-
-    @Override
-    public void dispose() {
-        fbo.dispose();
-    }
 }

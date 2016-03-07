@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.g3d.Attribute;
  * @author Marcus Brummer
  * @version 20-02-2016
  */
-public class GameObjectIdAttribute extends Attribute {
+public class PickerIDAttribute extends Attribute {
 
     public final static String Alias = "goID";
     public final static long Type = register(Alias);
@@ -35,17 +35,17 @@ public class GameObjectIdAttribute extends Attribute {
         return (mask & Type) == mask;
     }
 
-    public GameObjectIdAttribute () {
+    public PickerIDAttribute() {
         super(Type);
     }
 
-    public GameObjectIdAttribute (GameObjectIdAttribute other) {
+    public PickerIDAttribute(PickerIDAttribute other) {
         super(Type);
     }
 
     @Override
-    public GameObjectIdAttribute copy () {
-        return new GameObjectIdAttribute(this);
+    public PickerIDAttribute copy () {
+        return new PickerIDAttribute(this);
     }
 
     @Override

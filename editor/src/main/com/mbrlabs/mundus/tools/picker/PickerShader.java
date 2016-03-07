@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
+import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
 
 /**
  * Used to render game objects in only one color.
@@ -37,7 +38,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author Marcus Brummer
  * @version 20-02-2016
  */
-public class GameObjectPickerShader extends BaseShader {
+public class PickerShader extends BaseShader {
 
     private static final String VERTEX_SHADER =
             "attribute vec3 a_position;" +
@@ -68,7 +69,7 @@ public class GameObjectPickerShader extends BaseShader {
 
     private ShaderProgram program;
 
-    public GameObjectPickerShader() {
+    public PickerShader() {
         super();
         program = new ShaderProgram(VERTEX_SHADER, FRAGMENT_SHADER);
     }
@@ -104,7 +105,7 @@ public class GameObjectPickerShader extends BaseShader {
     public void render(Renderable renderable) {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
-        GameObjectIdAttribute goID = (GameObjectIdAttribute) renderable.material.get(GameObjectIdAttribute.Type);
+        PickerIDAttribute goID = (PickerIDAttribute) renderable.material.get(PickerIDAttribute.Type);
         if(goID != null) {
             set(UNIFORM_COLOR, vec3.set(goID.r, goID.g, goID.b));
         }

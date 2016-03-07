@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.tools.picker;
 
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
 
 /**
  * Encodes/Decides game object ids to rgb color values.
@@ -24,7 +25,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
  * @author Marcus Brummer
  * @version 21-02-2016
  */
-public class GameObjectColorEncoder {
+public class PickerColorEncoder {
 
     /**
      * Decodes a rgba8888 color code to a game object id.
@@ -46,8 +47,8 @@ public class GameObjectColorEncoder {
      * @param   go  game object, who's id must be encoded
      * @return  the game object id, encoded as rgb values
      */
-    public static GameObjectIdAttribute encodeRaypickColorId(GameObject go) {
-        GameObjectIdAttribute goIDa = new GameObjectIdAttribute();
+    public static PickerIDAttribute encodeRaypickColorId(GameObject go) {
+        PickerIDAttribute goIDa = new PickerIDAttribute();
         goIDa.r = go.getId() & 0x000000FF;
         goIDa.g = (go.getId() & 0x0000FF00) >>> 8;
         goIDa.b = (go.getId() & 0x00FF0000) >>> 16;

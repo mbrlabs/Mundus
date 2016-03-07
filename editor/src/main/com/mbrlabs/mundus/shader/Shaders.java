@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.mbrlabs.mundus.commons.shaders.EntityShader;
 import com.mbrlabs.mundus.commons.skybox.SkyboxShader;
 import com.mbrlabs.mundus.commons.terrain.TerrainShader;
-import com.mbrlabs.mundus.tools.picker.GameObjectPickerShader;
+import com.mbrlabs.mundus.tools.picker.PickerShader;
 
 /**
  * @author Marcus Brummer
@@ -32,7 +32,7 @@ public class Shaders {
     public TerrainShader terrainShader;
     public EntityShader entityShader;
     public SkyboxShader skyboxShader;
-    public static GameObjectPickerShader gameObjectPickerShader;
+    public static PickerShader pickerShader;
 
     public Shaders() {
         ShaderProgram.pedantic = false;
@@ -44,8 +44,8 @@ public class Shaders {
         entityShader.init();
         skyboxShader = new SkyboxShader();
         skyboxShader.init();
-        gameObjectPickerShader = new GameObjectPickerShader();
-        gameObjectPickerShader.init();
+        pickerShader = new PickerShader();
+        pickerShader.init();
     }
 
     public void dispose() {
@@ -53,7 +53,7 @@ public class Shaders {
         terrainShader.dispose();
         entityShader.dispose();
         skyboxShader.dispose();
-        gameObjectPickerShader.dispose();
+        pickerShader.dispose();
     }
 
 }
