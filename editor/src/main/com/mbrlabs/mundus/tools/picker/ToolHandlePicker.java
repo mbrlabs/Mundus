@@ -20,7 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.tools.ToolHandle;
 
@@ -34,7 +33,7 @@ public class ToolHandlePicker extends BasePicker {
         super();
     }
 
-    public ToolHandle pick(Array<ToolHandle> handles, EditorScene scene, int screenX, int screenY) {
+    public ToolHandle pick(ToolHandle[] handles, EditorScene scene, int screenX, int screenY) {
         begin(scene.viewport);
         renderPickableScene(handles, scene.sceneGraph.batch, scene.cam);
         end();
@@ -55,10 +54,10 @@ public class ToolHandlePicker extends BasePicker {
         return null;
     }
 
-    private void renderPickableScene(Array<ToolHandle> handles, ModelBatch batch, PerspectiveCamera cam) {
+    private void renderPickableScene(ToolHandle[] handles, ModelBatch batch, PerspectiveCamera cam) {
         batch.begin(cam);
         for(ToolHandle handle : handles) {
-            handle.renderPick();
+            handle.renderPick(batch);
         }
         batch.end();
     }

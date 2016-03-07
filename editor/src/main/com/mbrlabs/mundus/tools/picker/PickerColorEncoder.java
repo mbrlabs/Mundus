@@ -49,11 +49,20 @@ public class PickerColorEncoder {
      */
     public static PickerIDAttribute encodeRaypickColorId(GameObject go) {
         PickerIDAttribute goIDa = new PickerIDAttribute();
-        goIDa.r = go.getId() & 0x000000FF;
-        goIDa.g = (go.getId() & 0x0000FF00) >>> 8;
-        goIDa.b = (go.getId() & 0x00FF0000) >>> 16;
-
+        encodeRaypickColorId(go.getId(), goIDa);
         return goIDa;
+    }
+
+    /**
+     * Encodes a id to a GameObjectIdAttribute with rgb channels.
+     *
+     * @param id        id
+     * @param out       encoded id as attribute
+     */
+    public static void encodeRaypickColorId(int id, PickerIDAttribute out) {
+        out.r = id & 0x000000FF;
+        out.g = (id & 0x0000FF00) >>> 8;
+        out.b = (id & 0x00FF0000) >>> 16;
     }
 
 

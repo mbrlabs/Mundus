@@ -16,8 +16,12 @@
 
 package com.mbrlabs.mundus.tools;
 
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
+import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
+import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
 
 /**
  * A tool handle is the visual part of a tool (e.g. x arrow handle of the translate tool).
@@ -29,21 +33,26 @@ import com.badlogic.gdx.utils.Disposable;
  */
 public abstract class ToolHandle implements Disposable {
 
-    private int id;
-    public Vector3 position;
-    public Vector3 rotation;
-    public Vector3 scale;
+    private final int id;
+    public final Vector3 position;
+    public final Vector3 rotationEuler;
+    public final Quaternion rotation;
+    public final Vector3 scale;
+    public final PickerIDAttribute idAttribute;
 
     public ToolHandle(int id) {
         this.id = id;
         position = new Vector3();
-        rotation = new Vector3();
+        rotationEuler = new Vector3();
+        rotation = new Quaternion();
         scale = new Vector3();
+        idAttribute = new PickerIDAttribute();
+        PickerColorEncoder.encodeRaypickColorId(id, idAttribute);
     }
 
-    public abstract void render();
+    public abstract void render(ModelBatch batch);
+    public abstract void renderPick(ModelBatch modelBatch);
 
-    public abstract void renderPick();
     public abstract void act();
     public abstract void applyTransform();
 

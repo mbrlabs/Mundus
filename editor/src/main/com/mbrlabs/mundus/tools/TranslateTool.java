@@ -18,10 +18,7 @@ package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -40,9 +37,12 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
+import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
+import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
+import org.omg.CORBA.ValueBaseHelper;
 
 /**
  * @author Marcus Brummer
@@ -60,8 +60,6 @@ public class TranslateTool extends SelectionTool {
     private static Color COLOR_XZ = Color.CYAN;
     private static Color COLOR_SELECTED = Color.YELLOW;
 
-    private static final boolean DEBUG = false;
-
     private final float ARROW_THIKNESS = 0.4f;
     private final float ARROW_CAP_SIZE = 0.15f;
     private final int ARROW_DIVISIONS = 12;
@@ -72,55 +70,55 @@ public class TranslateTool extends SelectionTool {
     private State state = State.IDLE;
     private boolean initTranslate = true;
 
-    private Model xHandleModel;
-    private Model yHandleModel;
-    private Model zHandleModel;
-    private Model xzPlaneHandleModel;
-
-    private Handle xHandle;
-    private Handle yHandle;
-    private Handle zHandle;
-    private Handle xzPlaneHandle;
+    private TranslateHandle xHandle;
+    private TranslateHandle yHandle;
+    private TranslateHandle zHandle;
+    private TranslateHandle xzPlaneHandle;
+    private TranslateHandle[] handles;
 
     private Vector3 lastPos = new Vector3();
     private boolean globalSpace = true;
 
     private Vector3 temp0 = new Vector3();
-    private Vector3 temp1 = new Vector3();
-    private Vector3 temp2 = new Vector3();
-    private Vector3 temp3 = new Vector3();
-    private Quaternion tempQuat = new Quaternion();
+
+    private ToolHandlePicker handlePicker;
 
     private GameObjectModifiedEvent gameObjectModifiedEvent;
     private TranslateCommand command;
 
 
-    public TranslateTool(ProjectContext projectContext, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
+    public TranslateTool(ProjectContext projectContext,
+                         GameObjectPicker goPicker,
+                         ToolHandlePicker handlePicker,
+                         Shader shader, ModelBatch batch, CommandHistory history) {
+
         super(projectContext, goPicker, shader, batch, history);
+        this.handlePicker = handlePicker;
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/translateTool.png"))));
 
         ModelBuilder modelBuilder = new ModelBuilder();
 
-        xHandleModel =  modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
+        Model xHandleModel =  modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(COLOR_X)),
                 VertexAttributes.Usage.Position);
-        yHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
+        Model yHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(COLOR_Y)),
                 VertexAttributes.Usage.Position);
-        zHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS,
+        Model zHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS,
                 ARROW_DIVISIONS, GL20.GL_TRIANGLES,
                 new Material(ColorAttribute.createDiffuse(COLOR_Z)),
                 VertexAttributes.Usage.Position);
-        xzPlaneHandleModel = modelBuilder.createSphere(1, 1, 1, 20, 20,
+        Model xzPlaneHandleModel = modelBuilder.createSphere(1, 1, 1, 20, 20,
                 new Material(ColorAttribute.createDiffuse(COLOR_XZ)),
                 VertexAttributes.Usage.Position);
 
-        xHandle = new Handle(xHandleModel);
-        yHandle = new Handle(yHandleModel);
-        zHandle = new Handle(zHandleModel);
-        xzPlaneHandle = new Handle(xzPlaneHandleModel);
+        xHandle = new TranslateHandle(0, xHandleModel);
+        yHandle = new TranslateHandle(1, yHandleModel);
+        zHandle = new TranslateHandle(2, zHandleModel);
+        xzPlaneHandle = new TranslateHandle(3, xzPlaneHandleModel);
+        handles = new TranslateHandle[]{xHandle, yHandle, zHandle, xzPlaneHandle};
 
         gameObjectModifiedEvent = new GameObjectModifiedEvent();
     }
@@ -149,9 +147,15 @@ public class TranslateTool extends SelectionTool {
 
     public void setGlobalSpace(boolean global) {
         this.globalSpace = global;
-        xHandle.resetRotation();
-        yHandle.resetRotation();
-        zHandle.resetRotation();
+        xHandle.rotation.idt();
+        xHandle.applyTransform();
+
+        yHandle.rotation.idt();
+        yHandle.applyTransform();
+
+        zHandle.rotation.idt();
+        zHandle.applyTransform();
+
 //        if(!global) {
 //            xHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
 //            yHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
@@ -165,16 +169,10 @@ public class TranslateTool extends SelectionTool {
         if(projectContext.currScene.currentSelection != null) {
             batch.begin(projectContext.currScene.cam);
             GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-            batch.render(xHandle);
-            batch.render(yHandle);
-            batch.render(zHandle);
-            batch.render(xzPlaneHandle);
-
-            if(DEBUG) {
-                batch.render(xHandle.boundingBoxModelInst, shader);
-                batch.render(yHandle.boundingBoxModelInst, shader);
-                batch.render(zHandle.boundingBoxModelInst, shader);
-            }
+            xHandle.render(batch);
+            yHandle.render(batch);
+            zHandle.render(batch);
+            xzPlaneHandle.render(batch);
 
             batch.end();
         }
@@ -229,18 +227,29 @@ public class TranslateTool extends SelectionTool {
     private void scaleHandles() {
         Vector3 pos = projectContext.currScene.currentSelection.position;
         float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.25f;
-        xHandle.setToScaling(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
-        yHandle.setToScaling(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
-        zHandle.setToScaling(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
-        xzPlaneHandle.setToScaling(scaleFactor*0.13f,scaleFactor*0.13f, scaleFactor*0.13f);
+        xHandle.scale.set(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
+        xHandle.applyTransform();
+
+        yHandle.scale.set(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
+        yHandle.applyTransform();
+
+        zHandle.scale.set(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
+        zHandle.applyTransform();
+
+        xzPlaneHandle.scale.set(scaleFactor*0.13f,scaleFactor*0.13f, scaleFactor*0.13f);
+        xzPlaneHandle.applyTransform();
     }
 
     private void positionHandles() {
         final Vector3 medium = projectContext.currScene.currentSelection.calculateMedium(temp0);
-        xHandle.setTranslation(medium);
-        yHandle.setTranslation(medium);
-        zHandle.setTranslation(medium);
-        xzPlaneHandle.setTranslation(medium);
+        xHandle.position.set(medium);
+        xHandle.applyTransform();
+        yHandle.position.set(medium);
+        yHandle.applyTransform();
+        zHandle.position.set(medium);
+        zHandle.applyTransform();
+        xzPlaneHandle.position.set(medium);
+        xzPlaneHandle.applyTransform();
     }
 
     @Override
@@ -248,25 +257,28 @@ public class TranslateTool extends SelectionTool {
         super.touchDown(screenX, screenY, pointer, button);
 
         if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
-            Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
-            if(xzPlaneHandle.isSelected(ray)) {
+            TranslateHandle handle = (TranslateHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
+            if(handle == null) {
+                state = State.IDLE;
+                return false;
+            }
+
+            if(handle.getId() == 3) {
                 state = State.TRANSLATE_XZ;
                 initTranslate = true;
                 xzPlaneHandle.changeColor(COLOR_SELECTED);
-            } else if(xHandle.isSelected(ray)) {
+            } else if(handle.getId() == 0) {
                 state = State.TRANSLATE_X;
                 initTranslate = true;
                 xHandle.changeColor(COLOR_SELECTED);
-            } else if(yHandle.isSelected(ray)) {
+            } else if(handle.getId() == 1) {
                 state = State.TRANSLATE_Y;
                 initTranslate = true;
                 yHandle.changeColor(COLOR_SELECTED);
-            } else if(zHandle.isSelected(ray)) {
+            } else if(handle.getId() == 2) {
                 state = State.TRANSLATE_Z;
                 initTranslate = true;
                 zHandle.changeColor(COLOR_SELECTED);
-            } else {
-                state = State.IDLE;
             }
         }
 
@@ -298,11 +310,6 @@ public class TranslateTool extends SelectionTool {
     @Override
     public void dispose() {
         super.dispose();
-        xHandleModel.dispose();
-        yHandleModel.dispose();
-        zHandleModel.dispose();
-        xzPlaneHandleModel.dispose();
-
         xHandle.dispose();
         yHandle.dispose();
         zHandle.dispose();
@@ -310,103 +317,51 @@ public class TranslateTool extends SelectionTool {
     }
 
     /**
-     *
-     * @author Marcus Brummer
-     * @version 02-1-2016
+     * 
      */
-    private class Handle extends ModelInstance implements Disposable {
+    private class TranslateHandle extends ToolHandle {
 
-        public BoundingBox boundingBox;
-        public Vector3 center;
-        public Vector3 dimensions;
-        public float radius;
+        private Model model;
+        private ModelInstance modelInstance;
 
-        private Vector3 tv0;
-        private Vector3 tv1;
-
-        private Model boundingBoxModel;
-        public ModelInstance boundingBoxModelInst;
-
-        public Handle(Model model) {
-            super(model);
-            tv0 = new Vector3();
-            tv1 = new Vector3();
-            center = new Vector3();
-            dimensions = new Vector3();
-            boundingBox = new BoundingBox();
-
-            calculateBounds();
-
-            if(DEBUG) {
-                boundingBoxModel = new ModelBuilder().createBox(boundingBox.getWidth(), boundingBox.getHeight(),
-                        boundingBox.getDepth(), new Material(), VertexAttributes.Usage.Position);
-                boundingBoxModelInst = new ModelInstance(boundingBoxModel);
-            }
-
-            transform.getTranslation(tv0);
-            setTranslation(tv0);
-        }
-
-        public void calculateBounds() {
-            calculateBoundingBox(boundingBox);
-            boundingBox.getCenter(center);
-            boundingBox.getDimensions(dimensions);
-            radius = dimensions.len() / 2f;
-        }
-
-        public void setTranslation(Vector3 t) {
-            tv0.set(t);
-            transform.setTranslation(tv0);
-
-            if(DEBUG) {
-                boundingBoxModelInst.transform.setTranslation(tv0);
-                boundingBoxModelInst.transform.translate(center);
-            }
-        }
-
-        public void setToScaling(float x, float y, float z) {
-            transform.setToScaling(x, y, z);
-            if(DEBUG) {
-                boundingBoxModelInst.transform.setToScaling(x, y, z);
-            }
-        }
-
-        public void resetRotation() {
-            transform.getRotation(tempQuat);
-            transform.getTranslation(tv0);
-            transform.getScale(tv1);
-
-            transform.setToRotation(0,0,0,0);
-            transform.translate(tv0);
-            transform.scl(tv1);
+        public TranslateHandle(int id, Model model) {
+            super(id);
+            this.model = model;
+            this.modelInstance = new ModelInstance(model);
+            modelInstance.materials.first().set(idAttribute);
         }
 
         public void changeColor(Color color) {
-            ColorAttribute diffuse = (ColorAttribute) materials.get(0).get(ColorAttribute.Diffuse);
+            ColorAttribute diffuse = (ColorAttribute) modelInstance.materials.get(0).get(ColorAttribute.Diffuse);
             diffuse.color.set(color);
         }
 
-        public boolean isSelected(Ray ray) {
-            // scl
-            transform.getScale(temp0);
+        @Override
+        public void render(ModelBatch batch) {
+            batch.render(modelInstance);
+        }
 
-            // dim
-            temp1.set(dimensions);
-            temp1.scl(temp0);
+        @Override
+        public void renderPick(ModelBatch modelBatch) {
+            batch.render(modelInstance, Shaders.pickerShader);
+        }
 
-            // center
-            transform.getTranslation(temp2);
-            temp2.add(temp3.set(center).scl(temp0));
+        @Override
+        public void act() {
 
-            return Intersector.intersectRayBoundsFast(ray, temp2, temp1);
+        }
+
+        @Override
+        public void applyTransform() {
+            rotation.setEulerAngles(rotationEuler.y, rotationEuler.x, rotationEuler.z);
+            modelInstance.transform.set(position, rotation, scale);
         }
 
         @Override
         public void dispose() {
-            if(DEBUG) {
-                boundingBoxModel.dispose();
-            }
+            this.model.dispose();
         }
+
     }
 
 }

@@ -27,6 +27,7 @@ import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.brushes.*;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
+import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 
 /**
  * @author Marcus Brummer
@@ -50,7 +51,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
 
     public ToolManager(InputManager inputManager, ProjectContext projectContext, GameObjectPicker goPicker,
-                       ModelBatch modelBatch, Shaders shaders, CommandHistory history) {
+                       ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, Shaders shaders, CommandHistory history) {
         this.inputManager = inputManager;
         this.activeTool = null;
 
@@ -62,7 +63,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
         selectionTool = new SelectionTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
-        translateTool = new TranslateTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
+        translateTool = new TranslateTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
         rotateTool = new RotateTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
         scaleTool = new ScaleTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
     }

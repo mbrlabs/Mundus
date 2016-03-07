@@ -39,6 +39,7 @@ import com.mbrlabs.mundus.input.ShortcutController;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
+import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.ReflectionUtils;
@@ -69,6 +70,7 @@ public class Mundus {
     private static ImportManager importManager;
     private static CommandHistory commandHistory;
     private static GameObjectPicker goPicker;
+    private static ToolHandlePicker handlePicker;
 
     public static EventBus eventBus;
 
@@ -100,7 +102,8 @@ public class Mundus {
         input = new InputManager();
         commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
         goPicker = new GameObjectPicker();
-        toolManager = new ToolManager(input, projectContext, goPicker, modelBatch, shaders, commandHistory);
+        handlePicker = new ToolHandlePicker();
+        toolManager = new ToolManager(input, projectContext, goPicker, handlePicker, modelBatch, shaders, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
