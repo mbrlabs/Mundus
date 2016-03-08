@@ -23,7 +23,7 @@ Below are some of the more interesting features, that already work
 - A skybox (not exportable yet)
 - Loading of g3db files
 - Loading of obj/fbx/dae files (note, that the [fbx-conv](https://github.com/libgdx/fbx-conv) binary must be set in the settings)
-- A visual model translate tool (rotation and scaling coming soon)
+- A visual translation & rotation tool (scaling coming soon)
 - Multiple scenes in one project
 - A component based scene graph (not fully implemented yet)
 - Basic export of the project into a json format + assets

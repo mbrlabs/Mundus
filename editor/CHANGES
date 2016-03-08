@@ -1,7 +1,7 @@
 [0.0.8]
 - Added an option to the settings dialog to change the keyboard layout
 - Added a heightmap loader to the terrain component widget in the inspector
-
+- Implemented a Blender-like rotation tool
 
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations
