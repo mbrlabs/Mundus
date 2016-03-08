@@ -38,18 +38,9 @@ import org.lwjgl.opengl.GL11;
  * @author Marcus Brummer
  * @version 19-02-2016
  */
-public class RotateTool extends SelectionTool {
-
-    private enum State {
-        ROTATE_X, ROTATE_Y, ROTATE_Z, IDLE
-    }
+public class RotateTool extends TransformTool {
 
     public static final String NAME = "Rotate Tool";
-
-    private static Color COLOR_X = Color.RED;
-    private static Color COLOR_Y = Color.GREEN;
-    private static Color COLOR_Z = Color.BLUE;
-    private static Color COLOR_SELECTED = Color.YELLOW;
 
     private RotateHandle xHandle;
     private RotateHandle yHandle;
@@ -58,19 +49,16 @@ public class RotateTool extends SelectionTool {
 
     private Vector3 temp0 = new Vector3();
 
-    private State state = State.IDLE;
+    private TransformState state = TransformState.IDLE;
     private boolean initRotate = true;
 
-    private ToolHandlePicker handlePicker;
+    public RotateTool(ProjectContext projectContext, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
+                      Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectContext, goPicker, handlePicker, shader, batch, history);
 
-    public RotateTool(ProjectContext projectContext, GameObjectPicker goPicker,
-                      ToolHandlePicker handlePicker, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, goPicker, shader, batch, history);
-        this.handlePicker = handlePicker;
-
-        xHandle = new RotateHandle(RotateHandle.X_HANDLE_ID, COLOR_X);
-        yHandle = new RotateHandle(RotateHandle.Y_HANDLE_ID, COLOR_Y);
-        zHandle = new RotateHandle(RotateHandle.Z_HANDLE_ID, COLOR_Z);
+        xHandle = new RotateHandle(X_HANDLE_ID, COLOR_X);
+        yHandle = new RotateHandle(Y_HANDLE_ID, COLOR_Y);
+        zHandle = new RotateHandle(Z_HANDLE_ID, COLOR_Z);
         handles = new RotateHandle[]{xHandle, yHandle, zHandle};
     }
 
@@ -94,20 +82,20 @@ public class RotateTool extends SelectionTool {
         if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             RotateHandle handle = (RotateHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
             if(handle == null) {
-                state = State.IDLE;
+                state = TransformState.IDLE;
                 return false;
             }
 
-            if(handle.getId() == RotateHandle.X_HANDLE_ID) {
-                state = State.ROTATE_X;
+            if(handle.getId() == X_HANDLE_ID) {
+                state = TransformState.TRANSFORM_X;
                 initRotate = true;
                 xHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == RotateHandle.Y_HANDLE_ID) {
-                state = State.ROTATE_Y;
+            } else if(handle.getId() == Y_HANDLE_ID) {
+                state = TransformState.TRANSFORM_Y;
                 initRotate = true;
                 yHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == RotateHandle.Z_HANDLE_ID) {
-                state = State.ROTATE_Z;
+            } else if(handle.getId() == Z_HANDLE_ID) {
+                state = TransformState.TRANSFORM_Z;
                 initRotate = true;
                 zHandle.changeColor(COLOR_SELECTED);
             }
@@ -119,12 +107,12 @@ public class RotateTool extends SelectionTool {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         super.touchUp(screenX, screenY, pointer, button);
-        if(state != State.IDLE) {
+        if(state != TransformState.IDLE) {
             xHandle.changeColor(COLOR_X);
             yHandle.changeColor(COLOR_Y);
             zHandle.changeColor(COLOR_Z);
 
-            state = State.IDLE;
+            state = TransformState.IDLE;
         }
         return false;
     }
@@ -134,10 +122,11 @@ public class RotateTool extends SelectionTool {
         super.gameObjectSelected(selection);
         scaleHandles();
         rotateHandles();
-        positionHandles();
+        translateHandles();
     }
 
-    private void rotateHandles() {
+    @Override
+    protected void rotateHandles() {
         final GameObject go = projectContext.currScene.currentSelection;
         xHandle.rotationEuler.set(go.rotation.x, go.rotation.y + 90, go.rotation.z);
         xHandle.applyTransform();
@@ -147,7 +136,8 @@ public class RotateTool extends SelectionTool {
         zHandle.applyTransform();
     }
 
-    private void positionHandles() {
+    @Override
+    protected void translateHandles() {
         final Vector3 medium = projectContext.currScene.currentSelection.calculateMedium(temp0);
         xHandle.position.set(medium);
         xHandle.applyTransform();
@@ -157,7 +147,8 @@ public class RotateTool extends SelectionTool {
         zHandle.applyTransform();
     }
 
-    private void scaleHandles() {
+    @Override
+    protected void scaleHandles() {
         Vector3 pos = projectContext.currScene.currentSelection.position;
         float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.01f;
         xHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
@@ -197,11 +188,6 @@ public class RotateTool extends SelectionTool {
      *
      */
     private class RotateHandle extends ToolHandle {
-
-        public static final int X_HANDLE_ID = 0;
-        public static final int Y_HANDLE_ID = 1;
-        public static final int Z_HANDLE_ID = 2;
-
         private Model model;
         private ModelInstance modelInstance;
 
