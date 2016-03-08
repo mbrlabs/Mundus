@@ -45,7 +45,7 @@ public abstract class ToolHandle implements Disposable {
         position = new Vector3();
         rotationEuler = new Vector3();
         rotation = new Quaternion();
-        scale = new Vector3();
+        scale = new Vector3(1, 1, 1);
         idAttribute = new PickerIDAttribute();
         PickerColorEncoder.encodeRaypickColorId(id, idAttribute);
     }

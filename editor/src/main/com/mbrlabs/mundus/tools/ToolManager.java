@@ -64,7 +64,7 @@ public class ToolManager extends InputAdapter implements Disposable {
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
         selectionTool = new SelectionTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
         translateTool = new TranslateTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
-        rotateTool = new RotateTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
+        rotateTool = new RotateTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
         scaleTool = new ScaleTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
     }
 
