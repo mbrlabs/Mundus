@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -70,9 +71,7 @@ public class TranslateTool extends TransformTool {
 
     private Vector3 temp0 = new Vector3();
 
-    private GameObjectModifiedEvent gameObjectModifiedEvent;
     private TranslateCommand command;
-
 
     public TranslateTool(ProjectContext projectContext,
                          GameObjectPicker goPicker,

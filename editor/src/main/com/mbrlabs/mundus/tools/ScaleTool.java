@@ -18,22 +18,40 @@ package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
+import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.utils.Fa;
 
 /**
  * @author Marcus Brummer
  * @version 19-02-2016
  */
-public class ScaleTool extends SelectionTool {
+public class ScaleTool extends TransformTool {
 
     public static final String NAME = "Scale Tool";
 
-    public ScaleTool(ProjectContext projectContext, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, goPicker, shader, batch, history);
+    public ScaleTool(ProjectContext projectContext, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader,
+                     ModelBatch batch, CommandHistory history) {
+        super(projectContext, goPicker, handlePicker, shader, batch, history);
+    }
+
+    @Override
+    protected void scaleHandles() {
+
+    }
+
+    @Override
+    protected void translateHandles() {
+
+    }
+
+    @Override
+    protected void rotateHandles() {
+
     }
 
     @Override

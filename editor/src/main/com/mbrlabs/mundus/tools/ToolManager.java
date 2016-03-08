@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.tools;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -51,7 +52,8 @@ public class ToolManager extends InputAdapter implements Disposable {
 
 
     public ToolManager(InputManager inputManager, ProjectContext projectContext, GameObjectPicker goPicker,
-                       ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, Shaders shaders, CommandHistory history) {
+                       ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, Shaders shaders, ShapeRenderer shapeRenderer,
+                       CommandHistory history) {
         this.inputManager = inputManager;
         this.activeTool = null;
 
@@ -64,8 +66,8 @@ public class ToolManager extends InputAdapter implements Disposable {
         modelPlacementTool = new ModelPlacementTool(projectContext, shaders.entityShader, modelBatch, history);
         selectionTool = new SelectionTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
         translateTool = new TranslateTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
-        rotateTool = new RotateTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
-        scaleTool = new ScaleTool(projectContext, goPicker, shaders.wireframeShader, modelBatch, history);
+        rotateTool = new RotateTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer, modelBatch, history);
+        scaleTool = new ScaleTool(projectContext, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
     }
 
     public void activateTool(Tool tool) {

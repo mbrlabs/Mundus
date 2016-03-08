@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
@@ -63,6 +64,7 @@ public class Mundus {
     private static InputManager input;
     private static FreeCamController freeCamController;
     private static Shaders shaders;
+    private static ShapeRenderer shapeRenderer;
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
     private static AssetManager assetManager;
@@ -96,6 +98,7 @@ public class Mundus {
         Log.init();
         initFontAwesome();
 
+        shapeRenderer = new ShapeRenderer();
         modelBatch = new ModelBatch();
         shaders = new Shaders();
         projectContext = new ProjectContext(-1);
@@ -103,7 +106,7 @@ public class Mundus {
         commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
         goPicker = new GameObjectPicker();
         handlePicker = new ToolHandlePicker();
-        toolManager = new ToolManager(input, projectContext, goPicker, handlePicker, modelBatch, shaders, commandHistory);
+        toolManager = new ToolManager(input, projectContext, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         homeManager = new HomeManager(kryoManager);
@@ -234,6 +237,7 @@ public class Mundus {
      */
     public static void dispose() {
         VisUI.dispose();
+        shapeRenderer.dispose();
         goPicker.dispose();
         modelBatch.dispose();
         shaders.dispose();
