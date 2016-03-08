@@ -150,7 +150,7 @@ public class RotateTool extends TransformTool {
     @Override
     protected void scaleHandles() {
         Vector3 pos = projectContext.currScene.currentSelection.position;
-        float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.01f;
+        float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.005f;
         xHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
         xHandle.applyTransform();
 
@@ -195,7 +195,8 @@ public class RotateTool extends TransformTool {
             super(id);
             model = UsefulMeshs.torus(new Material(ColorAttribute.createDiffuse(color)), 20, 1f, 50, 50);
             modelInstance = new ModelInstance(model);
-           // mi.transform.translate(0, 100, 0);
+            modelInstance.materials.first().set(idAttribute);
+            // mi.transform.translate(0, 100, 0);
         }
 
         @Override
