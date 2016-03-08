@@ -37,4 +37,17 @@ public class MathUtils {
         return (float) Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     }
 
+    /**
+     * Angle between 2 points.
+     *
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    public static float angle(float x1, float y1, float x2, float y2) {
+        return (float) Math.toDegrees(Math.atan2(x2 - x1, y2 - y1));
+    }
+
 }

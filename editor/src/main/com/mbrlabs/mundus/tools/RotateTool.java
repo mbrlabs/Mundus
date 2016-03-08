@@ -21,19 +21,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.history.CommandHistory;
-import com.mbrlabs.mundus.history.commands.TranslateCommand;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
@@ -57,12 +54,14 @@ public class RotateTool extends TransformTool {
     private Matrix4 shapeRenderMat = new Matrix4();
 
     private Vector3 temp0 = new Vector3();
+    private Vector3 temp1 = new Vector3();
 
 
     private ShapeRenderer shapeRenderer;
 
     private TransformState state = TransformState.IDLE;
     private boolean initRotate = true;
+    private float lastRot = 0;
 
     public RotateTool(ProjectContext projectContext, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
                       Shader shader, ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
@@ -88,7 +87,6 @@ public class RotateTool extends TransformTool {
             batch.end();
         } else if(projectContext.currScene.currentSelection != null) {
             Viewport vp = projectContext.currScene.viewport;
-            temp0.set(projectContext.currScene.currentSelection.position);
 
             temp0.set(projectContext.currScene.currentSelection.position);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
@@ -112,33 +110,41 @@ public class RotateTool extends TransformTool {
             translateHandles();
             if(state == TransformState.IDLE) return;
 
-            Ray ray = projectContext.currScene.viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
-            Vector3 rayEnd = temp0.set(projectContext.currScene.currentSelection.position);
-            float dst = projectContext.currScene.cam.position.dst(rayEnd);
-            rayEnd = ray.getEndPoint(rayEnd, dst);
-
+            float angle = getCurrentAngle();
+            float rot = angle - lastRot;
 
             boolean modified = false;
-//            if(state == TransformState.TRANSFORM_X) {
-//                projectContext.currScene.currentSelection.rot(rayEnd.x - lastPos.x,
-//                        0, 0);
-//                modified = true;
-//            } else if(state == TransformState.TRANSFORM_Y) {
-//                projectContext.currScene.currentSelection.rot(0,
-//                        rayEnd.y - lastPos.y, 0);
-//                modified = true;
-//            } else if(state == TransformState.TRANSFORM_Z) {
-//                projectContext.currScene.currentSelection.rot(0, 0,
-//                        rayEnd.z - lastPos.z);
-//                modified = true;
-//            }
+            if(state == TransformState.TRANSFORM_X) {
+                projectContext.currScene.currentSelection.rot(-rot, 0, 0);
+                modified = true;
+            } else if(state == TransformState.TRANSFORM_Y) {
+                projectContext.currScene.currentSelection.rot(0, -rot, 0);
+                modified = true;
+            } else if(state == TransformState.TRANSFORM_Z) {
+                projectContext.currScene.currentSelection.rot(0, 0, -rot);
+                modified = true;
+            }
 
             if(modified) {
                 gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
                 Mundus.postEvent(gameObjectModifiedEvent);
             }
 
+            lastRot = angle;
+
         }
+    }
+
+    private float getCurrentAngle() {
+        if(projectContext.currScene.currentSelection != null) {
+            temp0.set(projectContext.currScene.currentSelection.position);
+            Vector3 pivot = projectContext.currScene.cam.project(temp0);
+            Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() -  Gdx.input.getY(), 0);
+
+            return MathUtils.angle(pivot.x, pivot.y, mouse.x, mouse.y);
+        }
+
+        return 0;
     }
 
     @Override
@@ -146,6 +152,8 @@ public class RotateTool extends TransformTool {
         super.touchDown(screenX, screenY, pointer, button);
 
         if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
+            lastRot = getCurrentAngle();
+
             RotateHandle handle = (RotateHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
             if(handle == null) {
                 state = TransformState.IDLE;
