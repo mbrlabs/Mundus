@@ -50,7 +50,8 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             public void changed (ChangeListener.ChangeEvent event, Actor actor) {
                 MModel model = selectBox.getSelected();
                 if(model != null) {
-                    modelComponent.getModelInstance().replaceModel(model);
+                    component.getModelInstance().replaceModel(model);
+                    component.encodeRaypickColorId();
                 }
             }
         });
