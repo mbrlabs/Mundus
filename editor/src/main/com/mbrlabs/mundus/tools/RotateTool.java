@@ -34,6 +34,7 @@ import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
+import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.lwjgl.opengl.GL11;
@@ -88,14 +89,17 @@ public class RotateTool extends TransformTool {
         } else if(projectContext.currScene.currentSelection != null) {
             Viewport vp = projectContext.currScene.viewport;
 
-            temp0.set(projectContext.currScene.currentSelection.position);
+            GameObject go = projectContext.currScene.currentSelection;
+            go.calculateMedium(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
 
             shapeRenderMat.setToOrtho2D(vp.getScreenX(), vp.getScreenY(), vp.getScreenWidth(), vp.getScreenHeight());
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.BLACK);
             shapeRenderer.setProjectionMatrix(shapeRenderMat);
-            shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() -  Gdx.input.getY(), 2);
+            shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+            shapeRenderer.setColor(Colors.TURQUOISE);
+            shapeRenderer.circle(pivot.x, pivot.y, 7);
             shapeRenderer.end();
         }
 
