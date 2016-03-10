@@ -42,7 +42,6 @@ public class FaTextButton extends VisTextButton {
     public final static TextButton.TextButtonStyle styleBg = new TextButton.TextButtonStyle();
     static {
         styleBg.font = Mundus.fa;
-        styleBg.fontColor = Color.WHITE;
         styleBg.pressedOffsetX = 1;
         styleBg.unpressedOffsetX = 0;
         styleBg.pressedOffsetY = -1;
@@ -51,8 +50,17 @@ public class FaTextButton extends VisTextButton {
         styleBg.down = VisUI.getSkin().getDrawable("menu-bg");
     }
 
+    public final static TextButton.TextButtonStyle styleActive = new TextButton.TextButtonStyle();
+    static {
+        styleActive.font = Mundus.fa;
+        styleActive.pressedOffsetX = 1;
+        styleActive.unpressedOffsetX = 0;
+        styleActive.pressedOffsetY = -1;
+        styleActive.fontColor = Color.WHITE;
+    }
+
     public FaTextButton(String text) {
-        this(text, styleNoBg);
+        this(text, styleBg);
     }
 
 

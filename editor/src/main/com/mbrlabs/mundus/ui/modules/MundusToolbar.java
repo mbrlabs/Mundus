@@ -96,8 +96,9 @@ public class MundusToolbar extends Toolbar {
         addItem(rotateBtn, true);
         addItem(scaleBtn, true);
         addSeperator(true);
-        // TODO add back in, once i implemented proper ray picking for rotated objects
         //addItem(globalLocalSwitch, true);
+
+        setActive(translateBtn);
 
         // save btn
         saveBtn.addListener(new ClickListener() {
@@ -130,6 +131,7 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 toolManager.activateTool(toolManager.selectionTool);
+                setActive(selectBtn);
             }
         });
 
@@ -138,6 +140,7 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 toolManager.activateTool(toolManager.translateTool);
+                setActive(translateBtn);
             }
         });
 
@@ -146,6 +149,7 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 toolManager.activateTool(toolManager.rotateTool);
+                setActive(rotateBtn);
             }
         });
 
@@ -154,6 +158,7 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 toolManager.activateTool(toolManager.scaleTool);
+                setActive(scaleBtn);
             }
         });
 
@@ -165,6 +170,14 @@ public class MundusToolbar extends Toolbar {
             }
         });
 
+    }
+
+    private void setActive(FaTextButton btn) {
+        selectBtn.setStyle(FaTextButton.styleNoBg);
+        translateBtn.setStyle(FaTextButton.styleNoBg);
+        rotateBtn.setStyle(FaTextButton.styleNoBg);
+        scaleBtn.setStyle(FaTextButton.styleNoBg);
+        btn.setStyle(FaTextButton.styleActive);
     }
 
     public FaTextButton getSaveBtn() {

@@ -110,8 +110,6 @@ public class ToolManager extends InputAdapter implements Disposable {
         if(keycode == KEY_DEACTIVATE) {
             if(activeTool != null) {
                 activeTool.reset();
-                setDefaultTool();
-                activeTool.reset();
             }
             return true;
         }

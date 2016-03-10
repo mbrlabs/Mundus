@@ -200,11 +200,11 @@ public class RotateTool extends TransformTool {
 
     @Override
     protected void rotateHandles() {
-        xHandle.rotationEuler.set(0, 0, 0);
+        xHandle.rotationEuler.set(0, 90, 0);
         xHandle.applyTransform();
         yHandle.rotationEuler.set(90, 0, 0);
         yHandle.applyTransform();
-        zHandle.rotationEuler.set(0, 90, 0);
+        zHandle.rotationEuler.set(0, 0, 0);
         zHandle.applyTransform();
     }
 
