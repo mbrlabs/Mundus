@@ -33,6 +33,10 @@ task run(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+    if (System.properties['os.name'].toLowerCase().contains('mac')) {
+        jvmArgs "-XstartOnFirstThread"
+        jvmArgs "-Djava.awt.headless=true"
+    }
 }
 
 task distEditor(type: Jar) {
