@@ -125,10 +125,6 @@ public class Mundus {
         params.kerning = true;
         params.borderStraight = false;
 
-        // font big
-//        params.size = 14;
-//        BitmapFont fontBig = generator.generateFont(params);
-
         // font norm
         params.size = 13;
         BitmapFont fontNorm = generator.generateFont(params);
@@ -140,7 +136,6 @@ public class Mundus {
 
         // skin
         Skin skin = new Skin();
-        //skin.add("font-big", fontBig, BitmapFont.class);
         skin.add("font-norm", fontNorm, BitmapFont.class);
         skin.add("font-small", fontSmall, BitmapFont.class);
 
