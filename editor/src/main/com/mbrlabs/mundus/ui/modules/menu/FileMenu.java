@@ -26,10 +26,10 @@ import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
@@ -51,7 +51,7 @@ public class FileMenu extends Menu {
     private FileChooser fileChooser;
 
     @Inject
-    private HomeManager homeManager;
+    private Registry registry;
     @Inject
     private ProjectManager projectManager;
 
@@ -73,8 +73,8 @@ public class FileMenu extends Menu {
 
         // setup recent projects
         PopupMenu recentPrjectsPopup = new PopupMenu();
-        for(final HomeDescriptor.ProjectRef ref : homeManager.homeDescriptor.projects) {
-            MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getAbsolutePath() + "]");
+        for(final RegistryDescriptor.ProjectRef ref : registry.registryDescriptor.projects) {
+            MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getPath() + "]");
             pro.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {

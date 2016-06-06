@@ -19,7 +19,7 @@ package com.mbrlabs.mundus.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
-import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -27,41 +27,45 @@ import java.util.Locale;
 import java.util.UUID;
 
 /**
+ * Manages global settings.
+ *
+ * Files are stored in ~/.mundus/
+ *
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class HomeManager {
+public class Registry {
 
     public static final String HOME_DIR = FilenameUtils.concat(FileUtils.getUserDirectoryPath(), ".mundus/");
     public static final String LOGS_DIR = FilenameUtils.concat(HOME_DIR, "logs/");
     public static final String TEMP_DIR = FilenameUtils.concat(HOME_DIR, "temp/");
-    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "mundus");
+    public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "mundus.registry");
 
-    public HomeDescriptor homeDescriptor;
+    public RegistryDescriptor registryDescriptor;
 
     private KryoManager kryoManager;
 
-    public HomeManager(KryoManager kryoManager) {
+    public Registry(KryoManager kryoManager) {
         this.kryoManager = kryoManager;
-        homeDescriptor = kryoManager.loadHomeDescriptor();
+        registryDescriptor = kryoManager.loadHomeDescriptor();
 
         // fbx conv
-        if(homeDescriptor.settingsDescriptor.fbxConvBinary == null) {
-            homeDescriptor.settingsDescriptor.fbxConvBinary = "";
+        if(registryDescriptor.settingsDescriptor.fbxConvBinary == null) {
+            registryDescriptor.settingsDescriptor.fbxConvBinary = "";
         }
 
         // default locale / keyboard layout
-        if(homeDescriptor.settingsDescriptor.keyboardLayout == null) {
+        if(registryDescriptor.settingsDescriptor.keyboardLayout == null) {
             if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
-                homeDescriptor.settingsDescriptor.keyboardLayout = HomeDescriptor.KeyboardLayout.QWERTZ;
+                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTZ;
             } else {
-                homeDescriptor.settingsDescriptor.keyboardLayout = HomeDescriptor.KeyboardLayout.QWERTY;
+                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTY;
             }
         }
     }
 
     public void save() {
-        kryoManager.saveHomeDescriptor(this.homeDescriptor);
+        kryoManager.saveHomeDescriptor(this.registryDescriptor);
     }
 
     public FileHandle createTempFolder() {
@@ -73,24 +77,24 @@ public class HomeManager {
         return tempFolder;
     }
 
-    public void purgeModelCache() {
+    public void purgeTempDirectory() {
         for(FileHandle f : Gdx.files.absolute(TEMP_DIR).list()) {
             f.deleteDirectory();
         }
     }
 
-    public HomeDescriptor.ProjectRef createProjectRef(String name, String folder) {
-        HomeDescriptor.ProjectRef projectRef = new HomeDescriptor.ProjectRef();
+    public RegistryDescriptor.ProjectRef createProjectRef(String name, String folder) {
+        RegistryDescriptor.ProjectRef projectRef = new RegistryDescriptor.ProjectRef();
         projectRef.setName(name);
-        projectRef.setAbsolutePath(FilenameUtils.concat(folder, name));
-        homeDescriptor.projects.add(projectRef);
+        projectRef.setPath(FilenameUtils.concat(folder, name));
+        registryDescriptor.projects.add(projectRef);
         save();
 
         return projectRef;
     }
 
-    public HomeDescriptor.ProjectRef getLastOpenedProject() {
-        return homeDescriptor.lastProject;
+    public RegistryDescriptor.ProjectRef getLastOpenedProject() {
+        return registryDescriptor.lastProject;
     }
 
 }

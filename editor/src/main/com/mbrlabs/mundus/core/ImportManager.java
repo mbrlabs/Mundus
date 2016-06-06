@@ -36,11 +36,11 @@ public class ImportManager {
     }
 
     private FbxConv fbxConv;
-    private HomeManager homeManager;
+    private Registry registry;
 
-    public ImportManager(HomeManager homeManager) {
+    public ImportManager(Registry registry) {
         this.fbxConv = new FbxConv();
-        this.homeManager = homeManager;
+        this.registry = registry;
 
     }
 
@@ -53,7 +53,7 @@ public class ImportManager {
         }
 
         ImportedModel imported = new ImportedModel();
-        FileHandle tempModelCache = homeManager.createTempFolder();
+        FileHandle tempModelCache = registry.createTempFolder();
 
         // copy texture file to temp folder
         textureFile.copyTo(tempModelCache);

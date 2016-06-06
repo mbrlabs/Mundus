@@ -60,7 +60,7 @@ public class ImportModelTab extends Tab {
     private ImportDialog dialog;
 
     @Inject
-    private HomeManager homeManager;
+    private Registry registry;
     @Inject
     private ProjectContext projectContext;
     @Inject

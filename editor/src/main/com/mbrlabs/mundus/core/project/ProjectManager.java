@@ -32,11 +32,11 @@ import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.EditorScene;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
-import com.mbrlabs.mundus.core.kryo.descriptors.HomeDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
@@ -74,7 +74,7 @@ public class ProjectManager {
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
     private ProjectContext projectContext;
-    private HomeManager homeManager;
+    private Registry registry;
     private KryoManager kryoManager;
 
     private ToolManager toolManager;
@@ -82,9 +82,9 @@ public class ProjectManager {
     private Shaders shaders;
 
     public ProjectManager(ProjectContext projectContext, KryoManager kryoManager,
-                          HomeManager homeManager, ToolManager toolManager, ModelBatch batch, Shaders shaders) {
+                          Registry registry, ToolManager toolManager, ModelBatch batch, Shaders shaders) {
         this.projectContext = projectContext;
-        this.homeManager = homeManager;
+        this.registry = registry;
         this.kryoManager = kryoManager;
         this.toolManager = toolManager;
         this.modelBatch = batch;
@@ -92,8 +92,8 @@ public class ProjectManager {
     }
 
     public ProjectContext createProject(String name, String folder) {
-        HomeDescriptor.ProjectRef ref = homeManager.createProjectRef(name, folder);
-        String path = ref.getAbsolutePath();
+        RegistryDescriptor.ProjectRef ref = registry.createProjectRef(name, folder);
+        String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
@@ -124,29 +124,29 @@ public class ProjectManager {
 
     public ProjectContext importProject(String absolutePath) throws ProjectAlreadyImportedException, ProjectOpenException {
         // check if already imported
-        for (HomeDescriptor.ProjectRef ref : homeManager.homeDescriptor.projects) {
-            if (ref.getAbsolutePath().equals(absolutePath)) {
+        for (RegistryDescriptor.ProjectRef ref : registry.registryDescriptor.projects) {
+            if (ref.getPath().equals(absolutePath)) {
                 throw new ProjectAlreadyImportedException("Project " + absolutePath + " is already imported");
             }
         }
 
-        HomeDescriptor.ProjectRef ref = new HomeDescriptor.ProjectRef();
-        ref.setAbsolutePath(absolutePath);
+        RegistryDescriptor.ProjectRef ref = new RegistryDescriptor.ProjectRef();
+        ref.setPath(absolutePath);
 
         try {
             ProjectContext context = loadProject(ref);
             ref.setName(context.name);
-            homeManager.homeDescriptor.projects.add(ref);
-            homeManager.save();
+            registry.registryDescriptor.projects.add(ref);
+            registry.save();
             return context;
         } catch (Exception e) {
             throw new ProjectOpenException(e.getMessage());
         }
     }
 
-    public ProjectContext loadProject(HomeDescriptor.ProjectRef ref) throws FileNotFoundException {
+    public ProjectContext loadProject(RegistryDescriptor.ProjectRef ref) throws FileNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
-        context.absolutePath = ref.getAbsolutePath();
+        context.absolutePath = ref.getPath();
 
         // load textures
         for(MTexture tex : context.textures) {
@@ -187,7 +187,7 @@ public class ProjectManager {
     }
 
     public boolean openLastOpenedProject() {
-        HomeDescriptor.ProjectRef lastOpenedProject = homeManager.getLastOpenedProject();
+        RegistryDescriptor.ProjectRef lastOpenedProject = registry.getLastOpenedProject();
         if (lastOpenedProject != null) {
             try {
                 ProjectContext context = loadProject(lastOpenedProject);
@@ -208,10 +208,10 @@ public class ProjectManager {
 
     public void changeProject(ProjectContext context) {
         toolManager.deactivateTool();
-        homeManager.homeDescriptor.lastProject = new HomeDescriptor.ProjectRef();
-        homeManager.homeDescriptor.lastProject.setName(context.name);
-        homeManager.homeDescriptor.lastProject.setAbsolutePath(context.absolutePath);
-        homeManager.save();
+        registry.registryDescriptor.lastProject = new RegistryDescriptor.ProjectRef();
+        registry.registryDescriptor.lastProject.setName(context.name);
+        registry.registryDescriptor.lastProject.setPath(context.absolutePath);
+        registry.save();
         projectContext.dispose();
         projectContext.copyFrom(context);
         Gdx.graphics.setTitle(constructWindowTitle());

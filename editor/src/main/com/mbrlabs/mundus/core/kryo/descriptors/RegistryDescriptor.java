@@ -25,7 +25,7 @@ import java.util.List;
  * @author Marcus Brummer
  * @version 11-12-2015
  */
-public class HomeDescriptor {
+public class RegistryDescriptor {
 
     @Tag(0)
     public SettingsDescriptor settingsDescriptor;
@@ -34,7 +34,7 @@ public class HomeDescriptor {
     @Tag(2)
     public ProjectRef lastProject = null;
 
-    public HomeDescriptor() {
+    public RegistryDescriptor() {
         projects = new ArrayList<>();
         settingsDescriptor = new SettingsDescriptor();
     }
@@ -68,7 +68,7 @@ public class HomeDescriptor {
         @Tag(0)
         private String name;
         @Tag(1)
-        private String absolutePath;
+        private String path;
 
         public String getName() {
             return name;
@@ -78,12 +78,12 @@ public class HomeDescriptor {
             this.name = name;
         }
 
-        public String getAbsolutePath() {
-            return absolutePath;
+        public String getPath() {
+            return path;
         }
 
-        public void setAbsolutePath(String absolutePath) {
-            this.absolutePath = absolutePath;
+        public void setPath(String path) {
+            this.path = path;
         }
 
     }

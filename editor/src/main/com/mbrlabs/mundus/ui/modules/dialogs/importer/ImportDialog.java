@@ -21,7 +21,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneAdapter;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
@@ -44,7 +44,7 @@ public class ImportDialog extends BaseDialog implements Disposable {
     private ImportTextureTab importTextureTab;
 
     @Inject
-    private HomeManager homeManager;
+    private Registry registry;
 
     public ImportDialog() {
         super("Import Assets");
@@ -99,7 +99,7 @@ public class ImportDialog extends BaseDialog implements Disposable {
 
     @Override
     public void dispose() {
-        homeManager.purgeModelCache();
+        registry.purgeTempDirectory();
     }
 
 }

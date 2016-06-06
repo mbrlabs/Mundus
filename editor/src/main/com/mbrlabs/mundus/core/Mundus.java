@@ -68,7 +68,7 @@ public class Mundus {
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
     private static AssetManager assetManager;
-    private static HomeManager homeManager;
+    private static Registry registry;
     private static ImportManager importManager;
     private static CommandHistory commandHistory;
     private static GameObjectPicker goPicker;
@@ -89,7 +89,7 @@ public class Mundus {
      *
      */
     public static void init() {
-        File homeDir = new File(HomeManager.HOME_DIR);
+        File homeDir = new File(Registry.HOME_DIR);
         if(!homeDir.exists()) {
             homeDir.mkdir();
         }
@@ -109,13 +109,13 @@ public class Mundus {
         toolManager = new ToolManager(input, projectContext, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
-        homeManager = new HomeManager(kryoManager);
-        projectManager = new ProjectManager(projectContext, kryoManager, homeManager, toolManager, modelBatch, shaders);
-        importManager = new ImportManager(homeManager);
+        registry = new Registry(kryoManager);
+        projectManager = new ProjectManager(projectContext, kryoManager, registry, toolManager, modelBatch, shaders);
+        importManager = new ImportManager(registry);
         assetManager = new AssetManager(projectContext, projectManager);
         freeCamController = new FreeCamController();
 
-        ShortcutController shortcutController = new ShortcutController(homeManager, commandHistory);
+        ShortcutController shortcutController = new ShortcutController(registry, commandHistory);
         input.addProcessor(shortcutController);
     }
 

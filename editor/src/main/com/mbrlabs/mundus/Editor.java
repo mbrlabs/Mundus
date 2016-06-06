@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -67,7 +67,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Inject
     private ProjectManager projectManager;
     @Inject
-    private HomeManager homeManager;
+    private Registry registry;
     @Inject
     private ToolManager toolManager;
     @Inject
@@ -164,22 +164,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         resetCam();
     }
 
-    @Deprecated
-    private void createTestModels() {
-        // boxes to test terrain height
-        if(projectContext.currScene.terrainGroup.size() > 0) {
-            float boxSize = 10f;
-            Model boxModel = new ModelBuilder().createBox(boxSize, boxSize,boxSize,
-                    new Material(ColorAttribute.createDiffuse(Color.RED)),
-                    VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-            Mundus.testModels.add(boxModel);
-            Mundus.testInstances.addAll(TestUtils.createABunchOfModelsOnTheTerrain(1000,
-                    boxModel, projectContext.currScene.terrainGroup.first()));
-        }
-    }
-
     private void createDefaultProject() {
-        if(homeManager.homeDescriptor.lastProject == null || homeManager.homeDescriptor.projects.size() == 0) {
+        if(registry.registryDescriptor.lastProject == null || registry.registryDescriptor.projects.size() == 0) {
             String name = "Default Project";
             String path = FileUtils.getUserDirectoryPath();
             path = FilenameUtils.concat(path, "MundusProjects");

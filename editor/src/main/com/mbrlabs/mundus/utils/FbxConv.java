@@ -17,7 +17,7 @@
 package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
@@ -53,7 +53,7 @@ public class FbxConv {
     private String output = null;
 
     @Inject
-    private HomeManager homeManager;
+    private Registry registry;
 
     public FbxConv() {
         Mundus.inject(this);
@@ -67,7 +67,7 @@ public class FbxConv {
             throw new OsNotSupported();
         }
 
-        pb = new ProcessBuilder(homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary);
+        pb = new ProcessBuilder(registry.registryDescriptor.settingsDescriptor.fbxConvBinary);
     }
 
     public void clear() {
@@ -76,7 +76,7 @@ public class FbxConv {
         flipTexture = false;
         input = null;
         output = null;
-        pb = new ProcessBuilder(homeManager.homeDescriptor.settingsDescriptor.fbxConvBinary);
+        pb = new ProcessBuilder(registry.registryDescriptor.settingsDescriptor.fbxConvBinary);
     }
 
     public FbxConv input(String pathToFile) {

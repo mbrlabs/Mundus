@@ -23,8 +23,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.commons.Scene;
-import com.mbrlabs.mundus.commons.env.lights.BaseLight;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -51,9 +50,9 @@ public class KryoManager {
         kryo.register(ArrayList.class, 0);
         kryo.register(Date.class, 1);
 
-        kryo.register(HomeDescriptor.class, 2);
-        kryo.register(HomeDescriptor.ProjectRef.class, 3);
-        kryo.register(HomeDescriptor.SettingsDescriptor.class, 4);
+        kryo.register(RegistryDescriptor.class, 2);
+        kryo.register(RegistryDescriptor.ProjectRef.class, 3);
+        kryo.register(RegistryDescriptor.SettingsDescriptor.class, 4);
         kryo.register(ProjectDescriptor.class, 5);
         kryo.register(TerrainDescriptor.class, 6);
         kryo.register(ModelDescriptor.class, 7);
@@ -66,30 +65,30 @@ public class KryoManager {
         kryo.register(TerrainComponentDescriptor.class, 13);
         kryo.register(TerrainTextureDescriptor.class, 14);
 
-        kryo.register(HomeDescriptor.KeyboardLayout.class, 15);
+        kryo.register(RegistryDescriptor.KeyboardLayout.class, 15);
         kryo.register(BaseLightDescriptor.class, 16);
 
     }
 
-    public HomeDescriptor loadHomeDescriptor() {
+    public RegistryDescriptor loadHomeDescriptor() {
         try {
-            Input input = new Input(new FileInputStream(HomeManager.HOME_DATA_FILE));
-            HomeDescriptor homeDescriptor = kryo.readObjectOrNull(input, HomeDescriptor.class);
-            if(homeDescriptor == null) {
-                homeDescriptor = new HomeDescriptor();
+            Input input = new Input(new FileInputStream(Registry.HOME_DATA_FILE));
+            RegistryDescriptor registryDescriptor = kryo.readObjectOrNull(input, RegistryDescriptor.class);
+            if(registryDescriptor == null) {
+                registryDescriptor = new RegistryDescriptor();
             }
-            return homeDescriptor;
+            return registryDescriptor;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return new HomeDescriptor();
+        return new RegistryDescriptor();
     }
 
-    public void saveHomeDescriptor(HomeDescriptor homeDescriptor) {
+    public void saveHomeDescriptor(RegistryDescriptor registryDescriptor) {
         try {
-            Output output = new Output(new FileOutputStream(HomeManager.HOME_DATA_FILE));
-            kryo.writeObject(output, homeDescriptor);
+            Output output = new Output(new FileOutputStream(Registry.HOME_DATA_FILE));
+            kryo.writeObject(output, registryDescriptor);
             output.flush();
             output.close();
         } catch (FileNotFoundException e) {
@@ -111,11 +110,11 @@ public class KryoManager {
         }
     }
 
-    public ProjectContext loadProjectContext(HomeDescriptor.ProjectRef ref) throws FileNotFoundException {
+    public ProjectContext loadProjectContext(RegistryDescriptor.ProjectRef ref) throws FileNotFoundException {
         // find .pro file
-        System.out.println(ref.getAbsolutePath());
+        System.out.println(ref.getPath());
         FileHandle projectFile = null;
-        for(FileHandle f : Gdx.files.absolute(ref.getAbsolutePath()).list()) {
+        for(FileHandle f : Gdx.files.absolute(ref.getPath()).list()) {
             if(f.extension().equals("pro")) {
                 projectFile = f;
                 break;

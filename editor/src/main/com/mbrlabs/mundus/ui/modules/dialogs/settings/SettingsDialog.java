@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.mbrlabs.mundus.core.HomeManager;
+import com.mbrlabs.mundus.core.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
@@ -37,7 +37,7 @@ public class SettingsDialog extends BaseDialog {
     private GeneralSettingsTable generalSettings;
 
     @Inject
-    private HomeManager homeManager;
+    private Registry registry;
 
     public SettingsDialog() {
         super("Settings");
@@ -52,7 +52,7 @@ public class SettingsDialog extends BaseDialog {
         settingsSelection.addActor(new VisLabel("Appearance"));
         settingsSelection.addActor(new VisLabel("Export"));
 
-        generalSettings = new GeneralSettingsTable(homeManager);
+        generalSettings = new GeneralSettingsTable(registry);
 
         splitPane = new VisSplitPane(settingsSelection, generalSettings, false);
         splitPane.setSplitAmount(0.3f);
