@@ -14,6 +14,11 @@ import com.kotcrab.vis.ui.widget.toast.Toast;
  */
 public class Toaster {
 
+    /** Toast type determines background color of toast. */
+    enum ToastType {
+        SUCCESS, INFO, ERROR
+    }
+
     private ToastManager toastManager;
 
     public Toaster(Stage stage) {
@@ -26,7 +31,7 @@ public class Toaster {
      */
     public void info(String msg) {
         final VisTable table = newTable(msg);
-        final Toast toast = new Toast("info", table);
+        final Toast toast = new Toast(ToastType.INFO.name().toLowerCase(), table);
         toastManager.show(toast, 3);
     }
 
@@ -36,7 +41,7 @@ public class Toaster {
      */
     public void error(String msg) {
         final VisTable table = newTable(msg);
-        final Toast toast = new Toast("error", table);
+        final Toast toast = new Toast(ToastType.ERROR.name().toLowerCase(), table);
         toastManager.show(toast, 5);
     }
 
@@ -46,8 +51,28 @@ public class Toaster {
      */
     public void success(String msg) {
         final VisTable table = newTable(msg);
-        final Toast toast = new Toast("success", table);
+        final Toast toast = new Toast(ToastType.SUCCESS.name().toLowerCase(), table);
         toastManager.show(toast, 3);
+    }
+
+    /**
+     * Does not close itself. User has to
+     *
+     * @param type
+     * @param msg
+     */
+    public void sticky(ToastType type, String msg) {
+        VisTable table = newTable(msg);
+        Toast toast = null;
+        if(type == ToastType.SUCCESS) {
+            toast = new Toast(ToastType.SUCCESS.name().toLowerCase(), table);
+        } else if(type == ToastType.INFO) {
+            toast = new Toast(ToastType.INFO.name().toLowerCase(), table);
+        } else if(type == ToastType.ERROR) {
+            toast = new Toast(ToastType.ERROR.name().toLowerCase(), table);
+        }
+
+        toastManager.show(toast);
     }
 
     private VisTable newTable(String text) {

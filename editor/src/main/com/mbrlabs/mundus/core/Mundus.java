@@ -115,7 +115,7 @@ public class Mundus {
         projectManager = new ProjectManager(kryoManager, registry, shaders);
         assetManager = new AssetManager(projectManager);
         toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
-        shortcutController = new ShortcutController(registry, commandHistory);
+        shortcutController = new ShortcutController(registry, projectManager, commandHistory);
     }
 
     private static void initStyle() {

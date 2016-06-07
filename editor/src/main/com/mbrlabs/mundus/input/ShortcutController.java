@@ -20,6 +20,8 @@ import com.badlogic.gdx.Input;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.utils.Toaster;
 
 /**
  * @author Marcus Brummer
@@ -29,9 +31,11 @@ public class ShortcutController extends KeyboardLayoutInputAdapter {
 
     private boolean isCtrlPressed = false;
     private CommandHistory history;
+    private ProjectManager projectManager;
 
-    public ShortcutController(Registry registry, CommandHistory history) {
+    public ShortcutController(Registry registry, ProjectManager projectManager, CommandHistory history) {
         super(registry);
+        this.projectManager = projectManager;
         this.history = history;
     }
 
@@ -48,9 +52,12 @@ public class ShortcutController extends KeyboardLayoutInputAdapter {
             history.goBack();
         } else if(keycode == Input.Keys.Y) {
             history.goForward();
+        } else if(keycode == Input.Keys.S) {
+            projectManager.saveCurrentProject();
+            Ui.getInstance().getToaster().success("Project saved");
         }
 
-        return false;
+        return true;
     }
 
     @Override
