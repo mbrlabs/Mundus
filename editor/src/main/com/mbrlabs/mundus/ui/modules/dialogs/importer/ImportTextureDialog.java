@@ -17,6 +17,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.events.TextureImportEvent;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
@@ -94,12 +95,13 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     FileHandle texture = imageChooserField.getFile();
-                    if(texture.exists() && FileFormatUtils.isImage(texture)) {
+                    if(texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
                         MTexture tex = assetManager.importTexture(texture, true);
                         Mundus.postEvent(new TextureImportEvent(tex));
                         close();
+                        Ui.getInstance().getToaster().success("Texture imported");
                     } else {
-                        // TODO show error msg
+                        Ui.getInstance().getToaster().error("There is nothing to import");
                     }
                 }
             });

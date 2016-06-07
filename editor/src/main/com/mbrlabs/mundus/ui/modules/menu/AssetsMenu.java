@@ -26,21 +26,21 @@ import com.mbrlabs.mundus.ui.Ui;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class ModelsMenu extends Menu {
+public class AssetsMenu extends Menu {
 
-    private MenuItem importModel;
+    private MenuItem importMesh;
 
-    public ModelsMenu() {
-        super("Models");
+    public AssetsMenu() {
+        super("Assets");
 
-        importModel = new MenuItem("Import Model");
-        addItem(importModel);
+        importMesh = new MenuItem("Import Mesh");
+        addItem(importMesh);
 
         addListeners();
     }
 
     private void addListeners() {
-        importModel.addListener(new ClickListener() {
+        importMesh.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
@@ -49,7 +49,4 @@ public class ModelsMenu extends Menu {
         });
     }
 
-    public MenuItem getImportModel() {
-        return importModel;
-    }
 }

@@ -30,6 +30,7 @@ import com.mbrlabs.mundus.ui.modules.dock.assets.AssetsDock;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
+@Deprecated
 public class DockBar extends VisTable implements TabbedPaneListener {
 
     private AssetsDock assetsDock;

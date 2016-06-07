@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
 /**
@@ -91,6 +92,7 @@ public class GeneralSettingsTable extends VisTable {
                 String fbxPath = fbxBinary.getPath();
                 registry.getSettings().setFbxConvBinary(fbxPath);
                 kryoManager.saveRegistry(registry);
+                Ui.getInstance().getToaster().success("Settings saved");
             }
         });
 

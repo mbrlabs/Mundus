@@ -34,6 +34,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.events.ModelImportEvent;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
@@ -189,6 +190,9 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                         Mundus.postEvent(new ModelImportEvent(mModel));
                         dispose();
                         close();
+                        Ui.getInstance().getToaster().success("Mesh imported");
+                    } else {
+                        Ui.getInstance().getToaster().error("There is nothing to import");
                     }
                 }
             });

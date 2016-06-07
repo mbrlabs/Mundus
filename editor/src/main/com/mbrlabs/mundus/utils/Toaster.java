@@ -27,7 +27,7 @@ public class Toaster {
     public void info(String msg) {
         final VisTable table = newTable(msg);
         final Toast toast = new Toast("info", table);
-        toastManager.show(toast, 3f);
+        toastManager.show(toast, 3);
     }
 
     /**
@@ -37,7 +37,7 @@ public class Toaster {
     public void error(String msg) {
         final VisTable table = newTable(msg);
         final Toast toast = new Toast("error", table);
-        toastManager.show(toast, 1.5f);
+        toastManager.show(toast, 5);
     }
 
     /**
@@ -47,7 +47,7 @@ public class Toaster {
     public void success(String msg) {
         final VisTable table = newTable(msg);
         final Toast toast = new Toast("success", table);
-        toastManager.show(toast, 1.5f);
+        toastManager.show(toast, 3);
     }
 
     private VisTable newTable(String text) {
