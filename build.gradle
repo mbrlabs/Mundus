@@ -16,7 +16,7 @@ allprojects {
         appName = "Mundus"
         gdxVersion = '1.9.3'
         aiVersion = '1.8.0'
-        visuiVersion = '1.1.1'
+        visuiVersion = '1.1.2-SNAPSHOT'
         kryoVersion = '3.0.3'
     }
 
