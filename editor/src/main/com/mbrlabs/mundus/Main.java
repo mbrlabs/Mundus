@@ -19,6 +19,8 @@ package com.mbrlabs.mundus;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowListener;
 
 /**
  * @author Marcus Brummer
@@ -28,12 +30,30 @@ public class Main {
 
     public static final String TITLE = "Mundus v0.0.8";
 
+    public static WindowCloseListener closeListener = null;
+
     public static void main (String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
         config.setWindowedMode(dm.width, dm.height-10);
         config.setTitle(TITLE);
+
+
+        config.setWindowListener(new Lwjgl3WindowAdapter() {
+            @Override
+            public boolean closeRequested() {
+                if(closeListener != null) {
+                    closeListener.onCloseRequested();
+                    return false;
+                }
+                return true;
+            }
+        });
         new Lwjgl3Application(new Editor(), config);
+    }
+
+    public interface WindowCloseListener {
+        boolean onCloseRequested();
     }
 
 }

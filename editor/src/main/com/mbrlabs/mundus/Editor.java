@@ -17,11 +17,14 @@
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -114,6 +117,32 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
         setupInput();
+
+        setupCloseListener();
+    }
+
+    private void setupCloseListener() {
+        Main.closeListener = new Main.WindowCloseListener() {
+            @Override
+            public boolean onCloseRequested() {
+                Dialogs.showOptionDialog(Ui.getInstance(),
+                    "Confirm exit", "Do you really want to close Mundus?",
+                    Dialogs.OptionDialogType.YES_NO,
+                    new OptionDialogAdapter() {
+                        @Override
+                        public void yes() {
+                            Gdx.app.exit();
+                        }
+
+                        @Override
+                        public void no() {
+                            super.no();
+                        }
+                    }
+                );
+                return true;
+            }
+        };
     }
 
     private void setupInput() {
