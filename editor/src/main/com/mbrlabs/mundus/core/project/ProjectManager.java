@@ -32,7 +32,8 @@ import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.EditorScene;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.ProjectRef;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
@@ -92,7 +93,7 @@ public class ProjectManager {
     }
 
     public ProjectContext createProject(String name, String folder) {
-        RegistryDescriptor.ProjectRef ref = registry.createProjectRef(name, folder);
+        ProjectRef ref = registry.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
         new File(path, PROJECT_MODEL_DIR).mkdirs();
@@ -124,27 +125,27 @@ public class ProjectManager {
 
     public ProjectContext importProject(String absolutePath) throws ProjectAlreadyImportedException, ProjectOpenException {
         // check if already imported
-        for (RegistryDescriptor.ProjectRef ref : registry.registryDescriptor.projects) {
+        for (ProjectRef ref : registry.getProjects()) {
             if (ref.getPath().equals(absolutePath)) {
                 throw new ProjectAlreadyImportedException("Project " + absolutePath + " is already imported");
             }
         }
 
-        RegistryDescriptor.ProjectRef ref = new RegistryDescriptor.ProjectRef();
+        ProjectRef ref = new ProjectRef();
         ref.setPath(absolutePath);
 
         try {
             ProjectContext context = loadProject(ref);
             ref.setName(context.name);
-            registry.registryDescriptor.projects.add(ref);
-            registry.save();
+            registry.getProjects().add(ref);
+            kryoManager.saveRegistry(registry);
             return context;
         } catch (Exception e) {
             throw new ProjectOpenException(e.getMessage());
         }
     }
 
-    public ProjectContext loadProject(RegistryDescriptor.ProjectRef ref) throws FileNotFoundException {
+    public ProjectContext loadProject(ProjectRef ref) throws FileNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.absolutePath = ref.getPath();
 
@@ -187,7 +188,7 @@ public class ProjectManager {
     }
 
     public boolean openLastOpenedProject() {
-        RegistryDescriptor.ProjectRef lastOpenedProject = registry.getLastOpenedProject();
+        ProjectRef lastOpenedProject = registry.getLastOpenedProject();
         if (lastOpenedProject != null) {
             try {
                 ProjectContext context = loadProject(lastOpenedProject);
@@ -208,10 +209,12 @@ public class ProjectManager {
 
     public void changeProject(ProjectContext context) {
         toolManager.deactivateTool();
-        registry.registryDescriptor.lastProject = new RegistryDescriptor.ProjectRef();
-        registry.registryDescriptor.lastProject.setName(context.name);
-        registry.registryDescriptor.lastProject.setPath(context.absolutePath);
-        registry.save();
+        registry.setLastProject(new ProjectRef());
+        registry.getLastOpenedProject().setName(context.name);
+        registry.getLastOpenedProject().setPath(context.absolutePath);
+
+        kryoManager.saveRegistry(registry);
+
         projectContext.dispose();
         projectContext.copyFrom(context);
         Gdx.graphics.setTitle(constructWindowTitle());

@@ -26,7 +26,8 @@ import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.ProjectRef;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
@@ -73,7 +74,7 @@ public class FileMenu extends Menu {
 
         // setup recent projects
         PopupMenu recentPrjectsPopup = new PopupMenu();
-        for(final RegistryDescriptor.ProjectRef ref : registry.registryDescriptor.projects) {
+        for(final ProjectRef ref : registry.getProjects()) {
             MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getPath() + "]");
             pro.addListener(new ClickListener() {
                 @Override

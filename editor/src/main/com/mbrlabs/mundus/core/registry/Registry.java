@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.core.registry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.mbrlabs.mundus.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -41,31 +44,30 @@ public class Registry {
     public static final String TEMP_DIR = FilenameUtils.concat(HOME_DIR, "temp/");
     public static final String HOME_DATA_FILE = FilenameUtils.concat(HOME_DIR, "mundus.registry");
 
-    public RegistryDescriptor registryDescriptor;
+    private List<ProjectRef> projects;
+    private ProjectRef lastProject;
+    private Settings settings;
 
     private KryoManager kryoManager;
 
-    public Registry(KryoManager kryoManager) {
-        this.kryoManager = kryoManager;
-        registryDescriptor = kryoManager.loadHomeDescriptor();
+    public Registry() {
+        projects = new ArrayList<>();
+        settings = new Settings();
+
 
         // fbx conv
-        if(registryDescriptor.settingsDescriptor.fbxConvBinary == null) {
-            registryDescriptor.settingsDescriptor.fbxConvBinary = "";
-        }
-
-        // default locale / keyboard layout
-        if(registryDescriptor.settingsDescriptor.keyboardLayout == null) {
-            if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
-                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTZ;
-            } else {
-                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTY;
-            }
-        }
-    }
-
-    public void save() {
-        kryoManager.saveHomeDescriptor(this.registryDescriptor);
+//        if(registryDescriptor.settingsDescriptor.fbxConvBinary == null) {
+//            registryDescriptor.settingsDescriptor.fbxConvBinary = "";
+//        }
+//
+//        // default locale / keyboard layout
+//        if(registryDescriptor.settingsDescriptor.keyboardLayout == null) {
+//            if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
+//                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTZ;
+//            } else {
+//                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTY;
+//            }
+//        }
     }
 
     public FileHandle createTempFolder() {
@@ -83,18 +85,36 @@ public class Registry {
         }
     }
 
-    public RegistryDescriptor.ProjectRef createProjectRef(String name, String folder) {
-        RegistryDescriptor.ProjectRef projectRef = new RegistryDescriptor.ProjectRef();
+    public ProjectRef createProjectRef(String name, String folder) {
+        ProjectRef projectRef = new ProjectRef();
         projectRef.setName(name);
         projectRef.setPath(FilenameUtils.concat(folder, name));
-        registryDescriptor.projects.add(projectRef);
-        save();
+        projects.add(projectRef);
 
         return projectRef;
     }
 
-    public RegistryDescriptor.ProjectRef getLastOpenedProject() {
-        return registryDescriptor.lastProject;
+    public List<ProjectRef> getProjects() {
+        return projects;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public ProjectRef getLastOpenedProject() {
+        return lastProject;
+    }
+
+    public ProjectRef getLastProject() {
+        return lastProject;
+    }
+
+    public void setLastProject(ProjectRef lastProject) {
+        this.lastProject = lastProject;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 }

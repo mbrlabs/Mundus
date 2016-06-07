@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,64 +29,39 @@ import java.util.List;
 public class RegistryDescriptor {
 
     @Tag(0)
-    public SettingsDescriptor settingsDescriptor;
+    private SettingsDescriptor settingsDescriptor;
     @Tag(1)
-    public List<ProjectRef> projects;
+    private List<ProjectRefDescriptor> projects;
     @Tag(2)
-    public ProjectRef lastProject = null;
+    private ProjectRefDescriptor lastProject = null;
 
     public RegistryDescriptor() {
         projects = new ArrayList<>();
         settingsDescriptor = new SettingsDescriptor();
     }
 
-    /**
-     * Settings class
-     */
-    public static class SettingsDescriptor {
-        @Tag(0)
-        public String fbxConvBinary = "";
-
-        @Tag(1)
-        public KeyboardLayout keyboardLayout;
+    public SettingsDescriptor getSettingsDescriptor() {
+        return settingsDescriptor;
     }
 
-    /**
-     * Necessary, because of stupid GLFW keyocde mapping.
-     */
-    public enum KeyboardLayout {
-        /** German layout. */
-        QWERTZ,
-        /** English layout*/
-        QWERTY
+    public void setSettingsDescriptor(SettingsDescriptor settingsDescriptor) {
+        this.settingsDescriptor = settingsDescriptor;
     }
 
+    public List<ProjectRefDescriptor> getProjects() {
+        return projects;
+    }
 
-    /**
-     *
-     */
-    public static class ProjectRef {
-        @Tag(0)
-        private String name;
-        @Tag(1)
-        private String path;
+    public void setProjects(List<ProjectRefDescriptor> projects) {
+        this.projects = projects;
+    }
 
-        public String getName() {
-            return name;
-        }
+    public ProjectRefDescriptor getLastProject() {
+        return lastProject;
+    }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-
+    public void setLastProject(ProjectRefDescriptor lastProject) {
+        this.lastProject = lastProject;
     }
 
 }

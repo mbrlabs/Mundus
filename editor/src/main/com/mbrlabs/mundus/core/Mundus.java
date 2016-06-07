@@ -32,6 +32,7 @@ import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.events.EventBus;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.input.FreeCamController;
@@ -109,7 +110,7 @@ public class Mundus {
         toolManager = new ToolManager(input, projectContext, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
-        registry = new Registry(kryoManager);
+        registry = kryoManager.loadRegistry();
         projectManager = new ProjectManager(projectContext, kryoManager, registry, toolManager, modelBatch, shaders);
         importManager = new ImportManager(registry);
         assetManager = new AssetManager(projectContext, projectManager);

@@ -29,7 +29,7 @@ import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.core.AssetManager;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;

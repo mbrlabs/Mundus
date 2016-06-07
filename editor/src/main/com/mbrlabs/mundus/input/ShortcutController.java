@@ -17,7 +17,7 @@
 package com.mbrlabs.mundus.input;
 
 import com.badlogic.gdx.Input;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.history.CommandHistory;
 
 /**

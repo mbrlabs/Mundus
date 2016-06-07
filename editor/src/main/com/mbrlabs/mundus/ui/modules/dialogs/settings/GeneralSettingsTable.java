@@ -25,7 +25,11 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.kryo.KryoManager;
+import com.mbrlabs.mundus.core.registry.KeyboardLayout;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 
@@ -36,14 +40,18 @@ import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 public class GeneralSettingsTable extends VisTable {
 
     private FileChooserField fbxBinary;
-    private VisSelectBox<RegistryDescriptor.KeyboardLayout> keyboardLayouts;
-
+    private VisSelectBox<KeyboardLayout> keyboardLayouts;
     private VisTextButton save;
 
     private Registry registry;
 
+    @Inject
+    private KryoManager kryoManager;
+
     public GeneralSettingsTable(Registry registry) {
         super();
+        Mundus.inject(this);
+
         this.registry = registry;
         top().left();
         padTop(6).padRight(6).padLeft(6).padBottom(22);
@@ -56,9 +64,9 @@ public class GeneralSettingsTable extends VisTable {
 
         keyboardLayouts = new VisSelectBox<>();
         keyboardLayouts.setItems(
-                RegistryDescriptor.KeyboardLayout.QWERTY,
-                RegistryDescriptor.KeyboardLayout.QWERTZ);
-        keyboardLayouts.setSelected(registry.registryDescriptor.settingsDescriptor.keyboardLayout);
+                KeyboardLayout.QWERTY,
+                KeyboardLayout.QWERTZ);
+        keyboardLayouts.setSelected(registry.getSettings().getKeyboardLayout());
 
         add(new VisLabel("Keyboard Layout:")).left();
         add(keyboardLayouts).left().row();
@@ -72,7 +80,7 @@ public class GeneralSettingsTable extends VisTable {
     }
 
     public void reloadSettings() {
-        fbxBinary.setText(registry.registryDescriptor.settingsDescriptor.fbxConvBinary);
+        fbxBinary.setText(registry.getSettings().getFbxConvBinary());
     }
 
     private void addHandlers() {
@@ -81,16 +89,16 @@ public class GeneralSettingsTable extends VisTable {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 String fbxPath = fbxBinary.getPath();
-                registry.registryDescriptor.settingsDescriptor.fbxConvBinary = fbxPath;
-                registry.save();
+                registry.getSettings().setFbxConvBinary(fbxPath);
+                kryoManager.saveRegistry(registry);
             }
         });
 
         keyboardLayouts.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                RegistryDescriptor.KeyboardLayout selection = keyboardLayouts.getSelected();
-                registry.registryDescriptor.settingsDescriptor.keyboardLayout = selection;
+                KeyboardLayout selection = keyboardLayouts.getSelected();
+                registry.getSettings().setKeyboardLayout(selection);
             }
         });
     }

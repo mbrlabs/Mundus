@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 import org.apache.commons.io.FilenameUtils;

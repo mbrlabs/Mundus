@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 import com.kotcrab.vis.ui.widget.VisTable;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;

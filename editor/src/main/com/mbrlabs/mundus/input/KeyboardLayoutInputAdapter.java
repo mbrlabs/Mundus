@@ -18,7 +18,8 @@ package com.mbrlabs.mundus.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.KeyboardLayout;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 
 /**
@@ -37,7 +38,7 @@ public class KeyboardLayoutInputAdapter extends InputAdapter {
     }
 
     protected int convertKeycode(int code) {
-        if(registry.registryDescriptor.settingsDescriptor.keyboardLayout == RegistryDescriptor.KeyboardLayout.QWERTZ) {
+        if(registry.getSettings().getKeyboardLayout() == KeyboardLayout.QWERTZ) {
             if(code == Input.Keys.Z) {
                 return Input.Keys.Y;
             } else if(code ==  Input.Keys.Y) {

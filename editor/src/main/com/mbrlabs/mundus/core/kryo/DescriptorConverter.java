@@ -32,6 +32,9 @@ import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.registry.ProjectRef;
+import com.mbrlabs.mundus.core.registry.Registry;
+import com.mbrlabs.mundus.core.registry.Settings;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
@@ -51,6 +54,67 @@ public class DescriptorConverter {
 
     private static final Vector3 tempV3 = new Vector3();
     private static final Quaternion tempQuat = new Quaternion();
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                                     Registry
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static RegistryDescriptor convert(Registry registry) {
+        RegistryDescriptor descriptor = new RegistryDescriptor();
+
+        descriptor.setLastProject(convert(registry.getLastOpenedProject()));
+        for(ProjectRef projectRef : registry.getProjects()) {
+            descriptor.getProjects().add(convert(projectRef));
+        }
+        descriptor.setSettingsDescriptor(convert(registry.getSettings()));
+
+        return descriptor;
+    }
+
+    public static Registry convert(RegistryDescriptor descriptor) {
+        Registry registry = new Registry();
+
+        registry.setLastProject(convert(descriptor.getLastProject()));
+        for(ProjectRefDescriptor projectRef : descriptor.getProjects()) {
+            registry.getProjects().add(convert(projectRef));
+        }
+        registry.setSettings(convert(descriptor.getSettingsDescriptor()));
+
+        return registry;
+    }
+
+    private static ProjectRef convert(ProjectRefDescriptor descriptor) {
+        ProjectRef project = new ProjectRef();
+        project.setName(descriptor.getName());
+        project.setPath(descriptor.getPath());
+
+        return project;
+    }
+
+    private static ProjectRefDescriptor convert(ProjectRef project) {
+        ProjectRefDescriptor descriptor = new ProjectRefDescriptor();
+        descriptor.setPath(project.getPath());
+        descriptor.setName(project.getName());
+
+        return descriptor;
+    }
+
+    private static Settings convert(SettingsDescriptor descriptor) {
+        Settings settings = new Settings();
+        settings.setFbxConvBinary(descriptor.getFbxConvBinary());
+        settings.setKeyboardLayout(descriptor.getKeyboardLayout());
+
+        return settings;
+    }
+
+    private static SettingsDescriptor convert(Settings settings) {
+        SettingsDescriptor descriptor = new SettingsDescriptor();
+        descriptor.setKeyboardLayout(settings.getKeyboardLayout());
+        descriptor.setFbxConvBinary(settings.getFbxConvBinary());
+
+        return descriptor;
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                     Model
@@ -332,7 +396,7 @@ public class DescriptorConverter {
         return tex;
     }
 
-    private static MTexture findTextureById(Array<MTexture> textures, long id) {
+    public static MTexture findTextureById(Array<MTexture> textures, long id) {
         for(MTexture t : textures) {
             if(t.getId() == id) {
                 return t;

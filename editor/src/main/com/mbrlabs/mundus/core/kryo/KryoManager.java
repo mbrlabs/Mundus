@@ -23,7 +23,9 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.commons.Scene;
-import com.mbrlabs.mundus.core.Registry;
+import com.mbrlabs.mundus.core.registry.KeyboardLayout;
+import com.mbrlabs.mundus.core.registry.ProjectRef;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -50,45 +52,48 @@ public class KryoManager {
         kryo.register(ArrayList.class, 0);
         kryo.register(Date.class, 1);
 
+        // core stuff
         kryo.register(RegistryDescriptor.class, 2);
-        kryo.register(RegistryDescriptor.ProjectRef.class, 3);
-        kryo.register(RegistryDescriptor.SettingsDescriptor.class, 4);
-        kryo.register(ProjectDescriptor.class, 5);
-        kryo.register(TerrainDescriptor.class, 6);
-        kryo.register(ModelDescriptor.class, 7);
-        kryo.register(TextureDescriptor.class, 8);
-        kryo.register(FogDescriptor.class, 9);
+        kryo.register(ProjectRefDescriptor.class, 3);
+        kryo.register(SettingsDescriptor.class, 4);
+        kryo.register(KeyboardLayout.class, 5);
+        kryo.register(ProjectDescriptor.class, 6);
+        kryo.register(SceneDescriptor.class, 7);
 
-        kryo.register(SceneDescriptor.class, 10);
-        kryo.register(GameObjectDescriptor.class, 11);
-        kryo.register(ModelComponentDescriptor.class, 12);
-        kryo.register(TerrainComponentDescriptor.class, 13);
-        kryo.register(TerrainTextureDescriptor.class, 14);
+        // basic building blocks
+        kryo.register(TerrainDescriptor.class, 8);
+        kryo.register(ModelDescriptor.class, 9);
+        kryo.register(TextureDescriptor.class, 10);
+        kryo.register(FogDescriptor.class, 11);
+        kryo.register(GameObjectDescriptor.class, 12);
+        kryo.register(BaseLightDescriptor.class, 13);
 
-        kryo.register(RegistryDescriptor.KeyboardLayout.class, 15);
-        kryo.register(BaseLightDescriptor.class, 16);
-
+        // components
+        kryo.register(ModelComponentDescriptor.class, 14);
+        kryo.register(TerrainComponentDescriptor.class, 15);
+        kryo.register(TerrainTextureDescriptor.class, 16);
     }
 
-    public RegistryDescriptor loadHomeDescriptor() {
+    public Registry loadRegistry() {
         try {
             Input input = new Input(new FileInputStream(Registry.HOME_DATA_FILE));
             RegistryDescriptor registryDescriptor = kryo.readObjectOrNull(input, RegistryDescriptor.class);
             if(registryDescriptor == null) {
                 registryDescriptor = new RegistryDescriptor();
             }
-            return registryDescriptor;
+            return DescriptorConverter.convert(registryDescriptor);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return new RegistryDescriptor();
+        return new Registry();
     }
 
-    public void saveHomeDescriptor(RegistryDescriptor registryDescriptor) {
+    public void saveRegistry(Registry registry) {
         try {
             Output output = new Output(new FileOutputStream(Registry.HOME_DATA_FILE));
-            kryo.writeObject(output, registryDescriptor);
+            RegistryDescriptor descriptor = DescriptorConverter.convert(registry);
+            kryo.writeObject(output, descriptor);
             output.flush();
             output.close();
         } catch (FileNotFoundException e) {
@@ -110,9 +115,8 @@ public class KryoManager {
         }
     }
 
-    public ProjectContext loadProjectContext(RegistryDescriptor.ProjectRef ref) throws FileNotFoundException {
+    public ProjectContext loadProjectContext(ProjectRef ref) throws FileNotFoundException {
         // find .pro file
-        System.out.println(ref.getPath());
         FileHandle projectFile = null;
         for(FileHandle f : Gdx.files.absolute(ref.getPath()).list()) {
             if(f.extension().equals("pro")) {
