@@ -53,7 +53,7 @@ public class TerrainIO {
         long start = System.currentTimeMillis();
 
         // create file
-        File file = new File(FilenameUtils.concat(projectContext.absolutePath, terrain.terraPath));
+        File file = new File(FilenameUtils.concat(projectContext.path, terrain.terraPath));
         try {
             FileUtils.touch(file);
         } catch (IOException e) {
@@ -76,7 +76,7 @@ public class TerrainIO {
         // write splatmap
         SplatMap splatmap = terrain.getTerrainTexture().getSplatmap();
         if(splatmap != null) {
-            splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.absolutePath, splatmap.getPath())));
+            splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.path, splatmap.getPath())));
         }
 
         //Log.debug("Terrain export execution time (" + data.length + " floats): "
@@ -86,7 +86,7 @@ public class TerrainIO {
     public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
         FloatArray floatArray = new FloatArray();
 
-        String terraPath = FilenameUtils.concat(projectContext.absolutePath, terrain.terraPath);
+        String terraPath = FilenameUtils.concat(projectContext.path, terrain.terraPath);
         try(DataInputStream is = new DataInputStream(new BufferedInputStream(
                 new GZIPInputStream(new FileInputStream(terraPath))))) {
             while (is.available() > 0) {
@@ -115,7 +115,7 @@ public class TerrainIO {
         // load splat map if available
         SplatMap splatmap = terrainTexture.getSplatmap();
         if(splatmap != null) {
-            String splatPath = FilenameUtils.concat(projectContext.absolutePath, splatmap.getPath());
+            String splatPath = FilenameUtils.concat(projectContext.path, splatmap.getPath());
             splatmap.loadPNG(Gdx.files.absolute(splatPath));
         }
 

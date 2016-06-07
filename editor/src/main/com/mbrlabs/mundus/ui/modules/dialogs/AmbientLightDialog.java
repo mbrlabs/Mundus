@@ -26,6 +26,7 @@ import com.mbrlabs.mundus.commons.env.lights.BaseLight;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
@@ -41,7 +42,7 @@ public class AmbientLightDialog extends BaseDialog implements ProjectChangedEven
     private ColorPickerField colorPickerField = new ColorPickerField(150);
 
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public AmbientLightDialog() {
         super("Ambient Light");
@@ -65,6 +66,7 @@ public class AmbientLightDialog extends BaseDialog implements ProjectChangedEven
     }
 
     private void setupListeners() {
+        final ProjectContext projectContext = projectManager.current();
 
         // intensity
         intensity.addListener(new ChangeListener() {
@@ -88,7 +90,7 @@ public class AmbientLightDialog extends BaseDialog implements ProjectChangedEven
     }
 
     private void resetValues() {
-        BaseLight light = projectContext.currScene.environment.getAmbientLight();
+        BaseLight light = projectManager.current().currScene.environment.getAmbientLight();
         intensity.setText(String.valueOf(light.intensity));
         colorPickerField.setColor(light.color);
     }

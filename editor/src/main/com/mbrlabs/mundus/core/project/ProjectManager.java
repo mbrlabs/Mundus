@@ -17,10 +17,10 @@
 package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.commons.Scene;
@@ -37,7 +37,6 @@ import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
-import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
@@ -49,7 +48,6 @@ import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.terrain.TerrainIO;
-import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
 import org.apache.commons.io.FilenameUtils;
@@ -58,40 +56,62 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
+ * Manages Mundus projects and scenes.
+ *
  * @author Marcus Brummer
  * @version 25-11-2015
  */
-public class ProjectManager {
+public class ProjectManager implements Disposable {
+
+    private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
     public static final String PROJECT_ASSETS_DIR           =    "assets/";
     public static final String PROJECT_MODEL_DIR            =    PROJECT_ASSETS_DIR + "models/";
     public static final String PROJECT_TERRAIN_DIR          =    PROJECT_ASSETS_DIR + "terrains/";
-    public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "textures/";
 
+    public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "textures/";
     public static final String PROJECT_SCENES_DIR           =    "scenes/";
+
     public static final String PROJECT_SCENE_EXTENSION      =    ".mundus";
 
-
-    private static final String DEFAULT_SCENE_NAME = "Main Scene";
-
-    private ProjectContext projectContext;
+    private ProjectContext currentProject;
     private Registry registry;
     private KryoManager kryoManager;
 
-    private ToolManager toolManager;
-    private ModelBatch modelBatch;
     private Shaders shaders;
 
-    public ProjectManager(ProjectContext projectContext, KryoManager kryoManager,
-                          Registry registry, ToolManager toolManager, ModelBatch batch, Shaders shaders) {
-        this.projectContext = projectContext;
+    public ProjectManager(KryoManager kryoManager, Registry registry, Shaders shaders) {
         this.registry = registry;
         this.kryoManager = kryoManager;
-        this.toolManager = toolManager;
-        this.modelBatch = batch;
         this.shaders = shaders;
+        currentProject = new ProjectContext(-1);
     }
 
+    /**
+     * Returns current project.
+     *
+     * @return  current project
+     */
+    public ProjectContext current() {
+        return currentProject;
+    }
+
+    /**
+     * Saves the active project
+     */
+    public void saveCurrentProject() {
+        saveProject(currentProject);
+    }
+
+    /**
+     * Creates & saves a new project.
+     *
+     * Creates a new project. However, it does not switch the current project.
+     *
+     * @param name      project name
+     * @param folder    absolute path to project folder
+     * @return          new project context
+     */
     public ProjectContext createProject(String name, String folder) {
         ProjectRef ref = registry.createProjectRef(name, folder);
         String path = ref.getPath();
@@ -101,9 +121,9 @@ public class ProjectManager {
         new File(path, PROJECT_TEXTURE_DIR).mkdirs();
         new File(path, PROJECT_SCENES_DIR).mkdirs();
 
-        // create project context
+        // create currentProject current
         ProjectContext newProjectContext = new ProjectContext(-1);
-        newProjectContext.absolutePath = path;
+        newProjectContext.path = path;
         newProjectContext.name = ref.getName();
 
         // create default scene & save .mundus
@@ -123,6 +143,14 @@ public class ProjectManager {
         return newProjectContext;
     }
 
+    /**
+     * Imports (opens) a mundus project, that is not in the registry.
+     *
+     * @param absolutePath                          path to project
+     * @return                                      project context of imported project
+     * @throws ProjectAlreadyImportedException      if project exists already in registry
+     * @throws ProjectOpenException                 project could not be opened
+     */
     public ProjectContext importProject(String absolutePath) throws ProjectAlreadyImportedException, ProjectOpenException {
         // check if already imported
         for (ProjectRef ref : registry.getProjects()) {
@@ -145,14 +173,23 @@ public class ProjectManager {
         }
     }
 
+    /**
+     * Loads the project context for a project.
+     *
+     * This does not open to that project, it only loads it.
+     *
+     * @param ref                       project reference to the project
+     * @return                          loaded project context
+     * @throws FileNotFoundException    if project can't be found
+     */
     public ProjectContext loadProject(ProjectRef ref) throws FileNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
-        context.absolutePath = ref.getPath();
+        context.path = ref.getPath();
 
         // load textures
         for(MTexture tex : context.textures) {
             tex.texture = TextureUtils.loadMipmapTexture(
-                    Gdx.files.absolute(FilenameUtils.concat(context.absolutePath, tex.getPath())), true);
+                    Gdx.files.absolute(FilenameUtils.concat(context.path, tex.getPath())), true);
             Log.debug("Loaded texture: " + tex.getPath());
         }
 
@@ -160,7 +197,7 @@ public class ProjectManager {
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
         for(MModel model : context.models) {
             model.setModel(loader.loadModel(Gdx.files.absolute(
-                    FilenameUtils.concat(context.absolutePath, model.g3dbPath))));
+                    FilenameUtils.concat(context.path, model.g3dbPath))));
         }
 
         // load terrain .terra files
@@ -173,67 +210,98 @@ public class ProjectManager {
         return context;
     }
 
+    /**
+     * Completely saves a project & all scenes.
+     *
+     * @param projectContext    project context
+     */
     public void saveProject(ProjectContext projectContext) {
         // save .terra files & the splat map
         for(Terrain terrain : projectContext.terrains) {
             TerrainIO.exportTerrain(projectContext, terrain);
         }
 
-        // save context in .pro file
+        // save current in .pro file
         kryoManager.saveProjectContext(projectContext);
         // save scene in .mundus file
         kryoManager.saveScene(projectContext, projectContext.currScene);
 
-        Log.debug("Saving project " + projectContext.name+ " [" + projectContext.absolutePath + "]");
+        Log.debug("Saving currentProject " + projectContext.name+ " [" + projectContext.path + "]");
     }
 
-    public boolean openLastOpenedProject() {
+    /**
+     * Loads the project that was open when the user quit the program.
+     *
+     * Does not open open the project.
+     *
+     * @return      project context of last project
+     */
+    public ProjectContext loadLastProject() {
         ProjectRef lastOpenedProject = registry.getLastOpenedProject();
         if (lastOpenedProject != null) {
             try {
-                ProjectContext context = loadProject(lastOpenedProject);
-                if (new File(context.absolutePath).exists()) {
-                    changeProject(context);
-                    return true;
-                } else {
-                    Log.error("Failed to load last opened project");
-                }
+                return loadProject(lastOpenedProject);
             } catch (FileNotFoundException fnf) {
+                Log.error(fnf.getMessage());
                 fnf.printStackTrace();
-                return false;
+                return null;
             }
         }
 
-        return false;
+        return null;
     }
 
+    /**
+     * Opens a project.
+     *
+     * Opens a project. If a project is already open it will be disposed.
+     * @param context   project context to open
+     */
     public void changeProject(ProjectContext context) {
-        toolManager.deactivateTool();
+        if(currentProject != null) {
+            currentProject.dispose();
+        }
+
+        currentProject.copyFrom(context);
         registry.setLastProject(new ProjectRef());
         registry.getLastOpenedProject().setName(context.name);
-        registry.getLastOpenedProject().setPath(context.absolutePath);
+        registry.getLastOpenedProject().setPath(context.path);
 
         kryoManager.saveRegistry(registry);
 
-        projectContext.dispose();
-        projectContext.copyFrom(context);
         Gdx.graphics.setTitle(constructWindowTitle());
         Mundus.postEvent(new ProjectChangedEvent());
-        toolManager.setDefaultTool();
     }
 
-    public Scene createScene(ProjectContext projectContext, String name) {
+    /**
+     * Creates a new scene for the given project.
+     *
+     * @param project   project
+     * @param name      scene name
+     * @return          newly created scene
+     */
+    public Scene createScene(ProjectContext project, String name) {
         Scene scene = new Scene();
-        long id = projectContext.obtainID();
+        long id = project.obtainID();
         scene.setId(id);
         scene.setName(name);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
-        projectContext.scenes.add(scene.getName());
-        kryoManager.saveScene(projectContext, scene);
+        project.scenes.add(scene.getName());
+        kryoManager.saveScene(project, scene);
 
         return scene;
     }
 
+    /**
+     * Loads a scene.
+     *
+     * This does not open the scene.
+     *
+     * @param context                   project context of the scene
+     * @param sceneName                 name of the scene
+     * @return                          loaded scene
+     * @throws FileNotFoundException    if scene file not found
+     */
     public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
         EditorScene scene = DescriptorConverter.convert(descriptor, context.terrains, context.models);
@@ -257,19 +325,23 @@ public class ProjectManager {
         return scene;
     }
 
-    public void changeScene(ProjectContext projectContext, String scenename) {
-        toolManager.deactivateTool();
-
+    /**
+     * Loads and opens scene
+     *
+     * @param projectContext    project context of scene
+     * @param sceneName         scene name
+     */
+    public void changeScene(ProjectContext projectContext, String sceneName) {
         try {
-            EditorScene newScene = loadScene(projectContext, scenename);
+            EditorScene newScene = loadScene(projectContext, sceneName);
             projectContext.currScene.dispose();
             projectContext.currScene = newScene;
 
             Gdx.graphics.setTitle(constructWindowTitle());
             Mundus.postEvent(new SceneChangedEvent());
-            toolManager.setDefaultTool();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Log.error(e.getMessage());
         }
     }
 
@@ -318,8 +390,12 @@ public class ProjectManager {
     }
 
     public String constructWindowTitle() {
-        return projectContext.name + " - " + projectContext.currScene.getName() +
-                " [" + projectContext.absolutePath +"]" + " - " + Main.TITLE;
+        return currentProject.name + " - " + currentProject.currScene.getName() +
+                " [" + currentProject.path +"]" + " - " + Main.TITLE;
     }
 
+    @Override
+    public void dispose() {
+        currentProject.dispose();
+    }
 }

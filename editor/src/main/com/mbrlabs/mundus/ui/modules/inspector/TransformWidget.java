@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.RotateCommand;
 import com.mbrlabs.mundus.history.commands.ScaleCommand;
@@ -54,9 +55,9 @@ public class TransformWidget extends BaseInspectorWidget {
     private FloatFieldWithLabel scaleZ;
 
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private CommandHistory history;
+    @Inject
+    private ProjectManager projectManager;
 
     public TransformWidget() {
         super("Transform");
@@ -99,6 +100,7 @@ public class TransformWidget extends BaseInspectorWidget {
     }
 
     private void setupListeners() {
+        final ProjectContext projectContext = projectManager.current();
 
         // position
         posX.addListener(new ChangeListener() {

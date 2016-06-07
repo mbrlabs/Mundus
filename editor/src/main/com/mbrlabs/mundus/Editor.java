@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.input.InputManager;
+import com.mbrlabs.mundus.input.ShortcutController;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
@@ -55,9 +56,9 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Inject
     private FreeCamController camController;
     @Inject
-    private InputManager inputManager;
+    private ShortcutController shortcutController;
     @Inject
-    private ProjectContext projectContext;
+    private InputManager inputManager;
     @Inject
     private Shaders shaders;
     @Inject
@@ -81,6 +82,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         axesInstance = new ModelInstance(axesModel);
         Mundus.testModels.add(axesModel);
 
+        final ProjectContext projectContext = projectManager.current();
+
         widget3D =  Ui.getInstance().getWidget3D();
         widget3D.setCam(projectContext.currScene.cam);
         widget3D.setRenderer(new RenderWidget.Renderer() {
@@ -102,17 +105,20 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         });
 
         // open last edited project or create default project
-        boolean projectOpened = projectManager.openLastOpenedProject();
-        if(!projectOpened) {
-            createDefaultProject();
+        ProjectContext context = projectManager.loadLastProject();
+        if(context == null) {
+            context = createDefaultProject();
         }
 
+        projectManager.changeProject(context);
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
         setupInput();
     }
 
     private void setupInput() {
+        inputManager.addProcessor(shortcutController);
+
         // NOTE: order in wich processors are added is important: first added, first executed!
         inputManager.addProcessor(ui);
         // when user does not click on a ui element -> unfocus UI
@@ -138,6 +144,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     }
 
     private void resetCam() {
+        final ProjectContext projectContext = projectManager.current();
         if(compass != null) {
             compass.setWorldCam(projectContext.currScene.cam);
         }
@@ -160,7 +167,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         resetCam();
     }
 
-    private void createDefaultProject() {
+    private ProjectContext createDefaultProject() {
         if(registry.getLastOpenedProject() == null || registry.getProjects().size() == 0) {
             String name = "Default Project";
             String path = FileUtils.getUserDirectoryPath();
@@ -168,8 +175,10 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
             ProjectContext project = projectManager.createProject(name, path);
             projectManager.saveProject(project);
-            projectManager.changeProject(project);
+            return project;
         }
+
+        return null;
     }
 
     @Override

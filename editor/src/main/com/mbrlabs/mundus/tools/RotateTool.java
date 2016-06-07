@@ -30,6 +30,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
@@ -64,9 +65,9 @@ public class RotateTool extends TransformTool {
     private boolean initRotate = true;
     private float lastRot = 0;
 
-    public RotateTool(ProjectContext projectContext, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
+    public RotateTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
                       Shader shader, ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
-        super(projectContext, goPicker, handlePicker, shader, batch, history);
+        super(projectManager, goPicker, handlePicker, shader, batch, history);
         this.shapeRenderer = shapeRenderer;
 
         xHandle = new RotateHandle(X_HANDLE_ID, COLOR_X);
@@ -78,6 +79,8 @@ public class RotateTool extends TransformTool {
     @Override
     public void render() {
         super.render();
+
+        ProjectContext projectContext = projectManager.current();
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
         if(state == TransformState.IDLE && projectContext.currScene.currentSelection != null) {
@@ -109,6 +112,8 @@ public class RotateTool extends TransformTool {
     public void act() {
         super.act();
 
+        ProjectContext projectContext = projectManager.current();
+
         if(projectContext.currScene.currentSelection != null) {
             translateHandles();
             if(state == TransformState.IDLE) return;
@@ -139,6 +144,8 @@ public class RotateTool extends TransformTool {
     }
 
     private float getCurrentAngle() {
+        ProjectContext projectContext = projectManager.current();
+
         if(projectContext.currScene.currentSelection != null) {
             temp0.set(projectContext.currScene.currentSelection.position);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
@@ -153,6 +160,7 @@ public class RotateTool extends TransformTool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
+        ProjectContext projectContext = projectManager.current();
 
         if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             lastRot = getCurrentAngle();
@@ -214,7 +222,7 @@ public class RotateTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
-        final Vector3 medium = projectContext.currScene.currentSelection.calculateMedium(temp0);
+        final Vector3 medium = projectManager.current().currScene.currentSelection.calculateMedium(temp0);
         xHandle.position.set(medium);
         xHandle.applyTransform();
         yHandle.position.set(medium);
@@ -225,6 +233,8 @@ public class RotateTool extends TransformTool {
 
     @Override
     protected void scaleHandles() {
+        ProjectContext projectContext = projectManager.current();
+
         Vector3 pos = projectContext.currScene.currentSelection.position;
         float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.005f;
         xHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);

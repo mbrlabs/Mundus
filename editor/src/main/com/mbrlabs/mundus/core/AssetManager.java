@@ -25,7 +25,6 @@ import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
-import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import org.apache.commons.io.FilenameUtils;
 
@@ -35,11 +34,9 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class AssetManager {
 
-    private ProjectContext projectContext;
     private ProjectManager projectManager;
 
-    public AssetManager(ProjectContext projectContext, ProjectManager projectManager) {
-        this.projectContext = projectContext;
+    public AssetManager(ProjectManager projectManager) {
         this.projectManager = projectManager;
     }
 
@@ -49,10 +46,10 @@ public class AssetManager {
      * @return
      */
     public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
-        long id = projectContext.obtainID();
+        long id = projectManager.current().obtainID();
 
         String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
-        String absoluteImportFolder = projectContext.absolutePath + "/" + relativeImportFolder;
+        String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
 
         String g3dbFilename = importedModel.name + ".g3db";
         String textureFilename = importedModel.textureFile.name();
@@ -74,10 +71,10 @@ public class AssetManager {
         mModel.id = id;
         mModel.g3dbPath = relativeImportFolder + g3dbFilename;
         mModel.texturePath = relativeImportFolder + textureFilename;
-        projectContext.models.add(mModel);
+        projectManager.current().models.add(mModel);
 
         // save whole project
-        projectManager.saveProject(projectContext);
+        projectManager.saveCurrentProject();
 
         return mModel;
     }
@@ -89,10 +86,10 @@ public class AssetManager {
      * @return
      */
     public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
-        long id = projectContext.obtainID();
+        long id = projectManager.current().obtainID();
 
         String relativeImportPath = ProjectManager.PROJECT_TEXTURE_DIR + textureFile.name();
-        String absoluteImportPath = FilenameUtils.concat(projectContext.absolutePath, relativeImportPath);
+        String absoluteImportPath = FilenameUtils.concat(projectManager.current().path, relativeImportPath);
         FileHandle absoluteImportFile = Gdx.files.absolute(absoluteImportPath);
 
         textureFile.copyTo(absoluteImportFile);
@@ -106,10 +103,10 @@ public class AssetManager {
             tex.texture = new Texture(absoluteImportFile);
         }
 
-        projectContext.textures.add(tex);
+        projectManager.current().textures.add(tex);
 
         // save whole project
-        projectManager.saveProject(projectContext);
+        projectManager.saveCurrentProject();
 
         return tex;
     }

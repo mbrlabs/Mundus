@@ -23,7 +23,7 @@ import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 
 /**
- * Workaround for LWJGL3's (or GLFW's) ignorance of keyboard layouts for raw keyboard events.
+ * Workaround for LWJGL3's (or GLFW's) key codes and different keyboard layouts.
  *
  * @author Marcus Brummer
  * @version 07-02-2016

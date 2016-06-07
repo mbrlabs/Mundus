@@ -36,6 +36,7 @@ import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
@@ -69,9 +70,9 @@ public class OutlineTab extends Tab implements
     @Inject
     private Shaders shaders;
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private ToolManager toolManager;
+    @Inject
+    private ProjectManager projectManager;
 
     public OutlineTab() {
         super(false, false);
@@ -97,17 +98,17 @@ public class OutlineTab extends Tab implements
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
-        buildTree(projectContext.currScene.sceneGraph);
+        buildTree(projectManager.current().currScene.sceneGraph);
     }
 
     @Override
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
-        buildTree(projectContext.currScene.sceneGraph);
+        buildTree(projectManager.current().currScene.sceneGraph);
     }
 
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
-        buildTree(projectContext.currScene.sceneGraph);
+        buildTree(projectManager.current().currScene.sceneGraph);
     }
 
     private void setupDragAndDrop() {
@@ -142,6 +143,8 @@ public class OutlineTab extends Tab implements
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 Tree.Node node = (Tree.Node) payload.getObject();
+
+                final ProjectContext projectContext = projectManager.current();
 
                 if(node != null) {
                     GameObject draggedGo = (GameObject) node.getObject();
@@ -221,7 +224,7 @@ public class OutlineTab extends Tab implements
                 Selection<Tree.Node> selection =  tree.getSelection();
                 if(selection != null && selection.size() > 0) {
                     GameObject go = (GameObject) selection.first().getObject();
-                    projectContext.currScene.sceneGraph.setSelected(go);
+                    projectManager.current().currScene.sceneGraph.setSelected(go);
                     toolManager.translateTool.gameObjectSelected(go);
                     Mundus.postEvent(new GameObjectSelectedEvent(go));
                 }
@@ -305,6 +308,7 @@ public class OutlineTab extends Tab implements
         public RightClickMenu() {
             super();
 
+            final ProjectContext projectContext = projectManager.current();
             addEmpty = new MenuItem("Add Empty");
             addTerrain = new MenuItem("Add terrain");
             duplicate = new MenuItem("Duplicate");

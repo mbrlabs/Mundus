@@ -69,6 +69,7 @@ public class EventBus {
                         }
 
                         if(method.getParameterTypes()[0].equals(eventType)) {
+                            //System.out.println(subscriber.getClass().getName());
                             method.invoke(subscriber, eventType.cast(event));
                         }
                     }

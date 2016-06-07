@@ -59,12 +59,12 @@ public class LoadingProjectDialog extends VisDialog {
         Ui.getInstance().showDialog(this);
 
 
-        if(new File(projectContext.absolutePath).exists()) {
+        if(new File(projectContext.path).exists()) {
             projectManager.changeProject(projectContext);
             close();
         } else {
             close();
-            Dialogs.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.absolutePath);
+            Dialogs.showErrorDialog(Ui.getInstance(), "Faild to load project " + projectContext.path);
         }
 
     }

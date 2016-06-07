@@ -53,21 +53,6 @@ public class Registry {
     public Registry() {
         projects = new ArrayList<>();
         settings = new Settings();
-
-
-        // fbx conv
-//        if(registryDescriptor.settingsDescriptor.fbxConvBinary == null) {
-//            registryDescriptor.settingsDescriptor.fbxConvBinary = "";
-//        }
-//
-//        // default locale / keyboard layout
-//        if(registryDescriptor.settingsDescriptor.keyboardLayout == null) {
-//            if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
-//                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTZ;
-//            } else {
-//                registryDescriptor.settingsDescriptor.keyboardLayout = RegistryDescriptor.KeyboardLayout.QWERTY;
-//            }
-//        }
     }
 
     public FileHandle createTempFolder() {

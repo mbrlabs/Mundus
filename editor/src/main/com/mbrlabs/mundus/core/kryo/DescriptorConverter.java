@@ -32,6 +32,7 @@ import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.core.registry.ProjectRef;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.registry.Settings;
@@ -42,6 +43,8 @@ import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.utils.Log;
+
+import java.util.Locale;
 
 /**
  * Converts runtime formats into Kryo compatible formats for internal
@@ -103,6 +106,14 @@ public class DescriptorConverter {
         Settings settings = new Settings();
         settings.setFbxConvBinary(descriptor.getFbxConvBinary());
         settings.setKeyboardLayout(descriptor.getKeyboardLayout());
+
+        if(settings.getKeyboardLayout() == null) {
+            if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
+                settings.setKeyboardLayout(KeyboardLayout.QWERTZ);
+            } else {
+                settings.setKeyboardLayout(KeyboardLayout.QWERTY);
+            }
+        }
 
         return settings;
     }

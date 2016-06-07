@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
@@ -49,9 +50,9 @@ public abstract class TransformTool extends SelectionTool {
     protected ToolHandlePicker handlePicker;
     protected GameObjectModifiedEvent gameObjectModifiedEvent;
 
-    public TransformTool(ProjectContext projectContext, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
+    public TransformTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
                          Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, goPicker, shader, batch, history);
+        super(projectManager, goPicker, shader, batch, history);
         this.handlePicker = handlePicker;
 
         gameObjectModifiedEvent = new GameObjectModifiedEvent();

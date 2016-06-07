@@ -103,7 +103,7 @@ public class KryoManager {
 
     public void saveProjectContext(ProjectContext context) {
         try {
-            Output output = new Output(new FileOutputStream(context.absolutePath + "/" + context.name + ".pro"));
+            Output output = new Output(new FileOutputStream(context.path + "/" + context.name + ".pro"));
 
             ProjectDescriptor descriptor = DescriptorConverter.convert(context);
             kryo.writeObject(output, descriptor);
@@ -138,7 +138,7 @@ public class KryoManager {
 
     public void saveScene(ProjectContext context, Scene scene) {
         try {
-            String sceneDir = FilenameUtils.concat(context.absolutePath + "/" + ProjectManager.PROJECT_SCENES_DIR,
+            String sceneDir = FilenameUtils.concat(context.path + "/" + ProjectManager.PROJECT_SCENES_DIR,
                     scene.getName() + ProjectManager.PROJECT_SCENE_EXTENSION);
 
             Output output = new Output(new FileOutputStream(sceneDir));
@@ -154,7 +154,7 @@ public class KryoManager {
     }
 
     public SceneDescriptor loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
-        String sceneDir = FilenameUtils.concat(context.absolutePath + "/" + ProjectManager.PROJECT_SCENES_DIR,
+        String sceneDir = FilenameUtils.concat(context.path + "/" + ProjectManager.PROJECT_SCENES_DIR,
                 sceneName + ProjectManager.PROJECT_SCENE_EXTENSION);
 
         Input input = new Input(new FileInputStream(sceneDir));

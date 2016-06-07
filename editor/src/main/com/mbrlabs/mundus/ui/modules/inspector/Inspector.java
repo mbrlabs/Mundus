@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
@@ -56,7 +57,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     private VisTable componentTable;
 
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public Inspector() {
         super();
@@ -112,6 +113,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     }
 
     private void buildComponentWidgets() {
+        final ProjectContext projectContext = projectManager.current();
         componentWidgets.clear();
         if(projectContext.currScene.currentSelection != null) {
             for(Component component : projectContext.currScene.currentSelection.getComponents()) {
@@ -133,6 +135,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     }
 
     private void setValues(GameObject go) {
+        final ProjectContext projectContext = projectManager.current();
         identifierWidget.setValues(go);
         transformWidget.setValues(go);
 
@@ -147,11 +150,12 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
-        setValues(projectContext.currScene.currentSelection);
+        setValues(projectManager.current().currScene.currentSelection);
     }
 
     @Override
     public void onGameObjectModified(GameObjectModifiedEvent gameObjectModifiedEvent) {
+        final ProjectContext projectContext = projectManager.current();
         identifierWidget.setValues(projectContext.currScene.currentSelection);
         transformWidget.setValues(projectContext.currScene.currentSelection);
     }

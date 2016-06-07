@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -30,8 +31,8 @@ import com.mbrlabs.mundus.utils.Fa;
  */
 public class CircleBrush extends TerrainBrush {
 
-    public CircleBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, shader, batch, history, Gdx.files.internal("brushes/circle.png"));
+    public CircleBrush(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectManager, shader, batch, history, Gdx.files.internal("brushes/circle.png"));
     }
 
     @Override

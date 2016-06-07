@@ -41,8 +41,6 @@ public class SceneMenu extends Menu implements
         SceneAddedEvent.SceneAddedListener {
 
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private ProjectManager projectManager;
 
     private Array<MenuItem> sceneItems = new Array<>();
@@ -52,6 +50,8 @@ public class SceneMenu extends Menu implements
         super("Scenes");
         Mundus.inject(this);
         Mundus.registerEventListener(this);
+
+        final ProjectContext projectContext = projectManager.current();
 
         addScene = new MenuItem("Add scene");
         addScene.addListener(new ClickListener() {
@@ -79,7 +79,7 @@ public class SceneMenu extends Menu implements
             removeActor(item);
         }
         // add new items
-        for(final String scene : projectContext.scenes) {
+        for(final String scene : projectManager.current().scenes) {
             buildMenuItem(scene);
         }
 
@@ -90,7 +90,7 @@ public class SceneMenu extends Menu implements
         menuItem.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                projectManager.changeScene(projectContext, sceneName);
+                projectManager.changeScene(projectManager.current(), sceneName);
             }
         });
         addItem(menuItem);

@@ -22,6 +22,7 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -29,7 +30,7 @@ import com.mbrlabs.mundus.commons.terrain.Terrain;
  */
 public class ProjectContext implements Disposable {
 
-    public String absolutePath;
+    public String path;
     public String name;
 
     public Array<String> scenes;
@@ -54,7 +55,7 @@ public class ProjectContext implements Disposable {
     }
 
     public void copyFrom(ProjectContext other) {
-        absolutePath = other.absolutePath;
+        path = other.path;
         name = other.name;
         terrains = other.terrains;
         currScene = other.currScene;
@@ -75,6 +76,7 @@ public class ProjectContext implements Disposable {
 
     @Override
     public void dispose() {
+        Log.debug("Disposing project current " + path);
         for(MModel model : models) {
             model.getModel().dispose();
         }

@@ -27,7 +27,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.utils.StringUtils;
 
@@ -50,9 +50,9 @@ public class StatusBar extends VisTable {
     private VisTextButton speed10;
 
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private FreeCamController freeCamController;
+    @Inject
+    private ProjectManager projectManager;
 
     public StatusBar() {
         super();
@@ -116,7 +116,7 @@ public class StatusBar extends VisTable {
     @Override
     public void act(float delta) {
         setFps(Gdx.graphics.getFramesPerSecond());
-        setCamPos(projectContext.currScene.cam.position);
+        setCamPos(projectManager.current().currScene.cam.position);
         super.act(delta);
     }
 

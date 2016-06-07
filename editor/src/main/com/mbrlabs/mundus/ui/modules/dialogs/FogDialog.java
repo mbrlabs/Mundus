@@ -27,6 +27,7 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
@@ -44,7 +45,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
     private ColorPickerField colorPickerField = new ColorPickerField(150);
 
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public FogDialog() {
         super("Fog");
@@ -72,6 +73,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
     }
 
     private void setupListeners() {
+        final ProjectContext projectContext = projectManager.current();
 
         // use fog checkbox
         useFog.addListener(new ChangeListener() {
@@ -127,7 +129,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
     }
 
     private void resetValues() {
-        Fog fog = projectContext.currScene.environment.getFog();
+        Fog fog = projectManager.current().currScene.environment.getFog();
         if(fog == null) {
             density.setDisabled(true);
             gradient.setDisabled(true);

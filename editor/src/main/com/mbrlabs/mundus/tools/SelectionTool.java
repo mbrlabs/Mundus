@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
@@ -45,14 +45,14 @@ public class SelectionTool extends Tool {
 
     private GameObjectPicker goPicker;
 
-    public SelectionTool(ProjectContext projectContext, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, shader, batch, history);
+    public SelectionTool(ProjectManager projectManager, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectManager, shader, batch, history);
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/selectionTool.png"))));
         this.goPicker = goPicker;
     }
 
     public void gameObjectSelected(GameObject selection) {
-        projectContext.currScene.currentSelection = selection;
+        projectManager.current().currScene.currentSelection = selection;
     }
 
     @Override
@@ -72,14 +72,14 @@ public class SelectionTool extends Tool {
 
     @Override
     public void reset() {
-        projectContext.currScene.currentSelection = null;
+        projectManager.current().currScene.currentSelection = null;
     }
 
     @Override
     public void render() {
-        if(projectContext.currScene.currentSelection != null) {
-            batch.begin(projectContext.currScene.cam);
-            for(GameObject go : projectContext.currScene.currentSelection) {
+        if(projectManager.current().currScene.currentSelection != null) {
+            batch.begin(projectManager.current().currScene.cam);
+            for(GameObject go : projectManager.current().currScene.currentSelection) {
                 ModelComponent mc = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
                 if(mc != null) {
                     batch.render(mc.getModelInstance().modelInstance, shader);
@@ -97,8 +97,8 @@ public class SelectionTool extends Tool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == Input.Buttons.RIGHT) {
-            GameObject selection = goPicker.pick(projectContext.currScene, screenX, screenY);
-            if(selection != null && !selection.equals(projectContext.currScene.currentSelection)) {
+            GameObject selection = goPicker.pick(projectManager.current().currScene, screenX, screenY);
+            if(selection != null && !selection.equals(projectManager.current().currScene.currentSelection)) {
                 System.out.println(selection.rotation);
                 gameObjectSelected(selection);
                 Mundus.postEvent(new GameObjectSelectedEvent(selection));

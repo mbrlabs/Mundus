@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
@@ -113,8 +113,8 @@ public abstract class TerrainBrush extends Tool {
     private boolean terrainHeightModified = false;
     private boolean splatmapModified = false;
 
-    public TerrainBrush(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history, FileHandle pixmapBrush) {
-        super(projectContext, shader, batch, history);
+    public TerrainBrush(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history, FileHandle pixmapBrush) {
+        super(projectManager, shader, batch, history);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(1, 1, 1, 30, 30, new Material(), VertexAttributes.Usage.Position);
@@ -319,7 +319,7 @@ public abstract class TerrainBrush extends Tool {
     @Override
     public void render() {
         if(terrain.isOnTerrain(brushPos.x, brushPos.z)) {
-            batch.begin(projectContext.currScene.cam);
+            batch.begin(projectManager.current().currScene.cam);
             batch.render(sphereModelInstance, shader);
             batch.end();
         }
@@ -395,7 +395,7 @@ public abstract class TerrainBrush extends Tool {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if(terrain != null) {
-            Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
+            Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
             terrain.getRayIntersection(brushPos, ray);
         }
 

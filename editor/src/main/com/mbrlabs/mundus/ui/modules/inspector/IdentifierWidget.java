@@ -27,6 +27,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 
 /**
  * @author Marcus Brummer
@@ -39,7 +40,7 @@ public class IdentifierWidget extends VisTable {
     private VisTextField tag;
 
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public IdentifierWidget() {
         super();
@@ -63,6 +64,8 @@ public class IdentifierWidget extends VisTable {
     }
 
     private void setupListeners() {
+        final ProjectContext projectContext = projectManager.current();
+
         active.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

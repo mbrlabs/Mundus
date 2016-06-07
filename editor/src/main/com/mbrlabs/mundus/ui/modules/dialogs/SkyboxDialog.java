@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.commons.skybox.Skybox;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
@@ -48,7 +49,7 @@ public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.Proj
     private VisTextButton deletBtn;
 
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public SkyboxDialog() {
         super("Skybox");
@@ -98,6 +99,7 @@ public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.Proj
     }
 
     private void setupListeners() {
+        final ProjectContext projectContext = projectManager.current();
 
         // create btn
         createBtn.addListener(new ClickListener() {
@@ -139,7 +141,7 @@ public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.Proj
     }
 
     private void resetImages() {
-        Skybox skybox = projectContext.currScene.skybox;
+        Skybox skybox = projectManager.current().currScene.skybox;
         if(skybox != null) {
             positiveX.setImage(skybox.getPositiveX());
             negativeX.setImage(skybox.getNegativeX());

@@ -27,6 +27,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -54,9 +55,9 @@ public class AddTerrainDialog extends BaseDialog {
     private VisTextButton generateBtn = new VisTextButton("GENERATE TERRAIN");
 
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private Shaders shaders;
+    @Inject
+    private ProjectManager projectManager;
 
     public AddTerrainDialog() {
         super("Add Terrain");
@@ -107,6 +108,7 @@ public class AddTerrainDialog extends BaseDialog {
                     float posX = Float.valueOf(positionX.getText());
                     float posZ = Float.valueOf(positionZ.getText());
 
+                    final ProjectContext projectContext = projectManager.current();
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
                     terrain.transform.setTranslation(posX, 0, posZ);
                     projectContext.terrains.add(terrain);

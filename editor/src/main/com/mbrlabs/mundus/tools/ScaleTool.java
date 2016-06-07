@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
@@ -34,9 +35,9 @@ public class ScaleTool extends TransformTool {
 
     public static final String NAME = "Scale Tool";
 
-    public ScaleTool(ProjectContext projectContext, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader,
+    public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader,
                      ModelBatch batch, CommandHistory history) {
-        super(projectContext, goPicker, handlePicker, shader, batch, history);
+        super(projectManager, goPicker, handlePicker, shader, batch, history);
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
@@ -47,7 +48,7 @@ public class ModelTab extends Tab implements ProjectChangedEvent.ProjectChangedL
     @Inject
     private ToolManager toolManager;
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public ModelTab() {
         super(false, false);
@@ -68,6 +69,7 @@ public class ModelTab extends Tab implements ProjectChangedEvent.ProjectChangedL
 
     private void reloadModels() {
         modelGrid.clearChildren();
+        ProjectContext projectContext = projectManager.current();
         for(MModel model : projectContext.models) {
             AssetItem assetItem = new AssetItem(model);
             modelGrid.addActor(assetItem);

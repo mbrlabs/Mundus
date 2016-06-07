@@ -25,7 +25,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 
 /**
@@ -37,14 +37,14 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     private VisSelectBox<MModel> selectBox = new VisSelectBox<>();
 
     @Inject
-    private ProjectContext projectContext;
+    private ProjectManager projectManager;
 
     public ModelComponentWidget(final ModelComponent modelComponent) {
         super("Model Component", modelComponent);
         Mundus.inject(this);
         this.component = modelComponent;
 
-        selectBox.setItems(projectContext.models);
+        selectBox.setItems(projectManager.current().models);
         selectBox.setSelected(modelComponent.getModelInstance().getModel());
         selectBox.addListener(new ChangeListener() {
             public void changed (ChangeListener.ChangeEvent event, Actor actor) {

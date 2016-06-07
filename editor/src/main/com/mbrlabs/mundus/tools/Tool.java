@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 
 /**
@@ -30,13 +31,13 @@ import com.mbrlabs.mundus.history.CommandHistory;
  */
 public abstract class Tool extends InputAdapter implements Disposable {
 
-    protected ProjectContext projectContext;
+    protected ProjectManager projectManager;
     protected ModelBatch batch;
     protected Shader shader;
     protected CommandHistory history;
 
-    public Tool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory commandHistory) {
-        this.projectContext = projectContext;
+    public Tool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory commandHistory) {
+        this.projectManager = projectManager;
         this.batch = batch;
         this.shader = shader;
         this.history = commandHistory;

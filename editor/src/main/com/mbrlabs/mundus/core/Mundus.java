@@ -60,10 +60,10 @@ import java.util.List;
  */
 public class Mundus {
 
-    private static ProjectContext projectContext;
     private static ToolManager toolManager;
     private static InputManager input;
     private static FreeCamController freeCamController;
+    private static ShortcutController shortcutController;
     private static Shaders shaders;
     private static ShapeRenderer shapeRenderer;
     private static KryoManager kryoManager;
@@ -102,22 +102,20 @@ public class Mundus {
         shapeRenderer = new ShapeRenderer();
         modelBatch = new ModelBatch();
         shaders = new Shaders();
-        projectContext = new ProjectContext(-1);
         input = new InputManager();
-        commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
         goPicker = new GameObjectPicker();
         handlePicker = new ToolHandlePicker();
-        toolManager = new ToolManager(input, projectContext, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
         eventBus = new EventBus();
         kryoManager = new KryoManager();
         registry = kryoManager.loadRegistry();
-        projectManager = new ProjectManager(projectContext, kryoManager, registry, toolManager, modelBatch, shaders);
-        importManager = new ImportManager(registry);
-        assetManager = new AssetManager(projectContext, projectManager);
         freeCamController = new FreeCamController();
+        commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
 
-        ShortcutController shortcutController = new ShortcutController(registry, commandHistory);
-        input.addProcessor(shortcutController);
+        importManager = new ImportManager(registry);
+        projectManager = new ProjectManager(kryoManager, registry, shaders);
+        assetManager = new AssetManager(projectManager);
+        toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
+        shortcutController = new ShortcutController(registry, commandHistory);
     }
 
     private static void initStyle() {
@@ -243,7 +241,7 @@ public class Mundus {
         for(Model model : testModels) {
             model.dispose();
         }
-        projectContext.dispose();
+        projectManager.dispose();
     }
 
 }

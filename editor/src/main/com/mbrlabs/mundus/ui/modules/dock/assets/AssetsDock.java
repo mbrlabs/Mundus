@@ -44,8 +44,6 @@ public class AssetsDock {
     private AssetsTab assetsTab;
 
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private ToolManager toolManager;
 
     public AssetsDock() {

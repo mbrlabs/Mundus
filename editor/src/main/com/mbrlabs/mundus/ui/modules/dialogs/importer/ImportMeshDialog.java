@@ -51,8 +51,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
     @Inject
     private Registry registry;
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private ImportManager importManager;
     @Inject
     private AssetManager assetManager;

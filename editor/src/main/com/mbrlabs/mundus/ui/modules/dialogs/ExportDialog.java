@@ -32,7 +32,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.RuntimeExporter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
-import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.ui.Ui;
 
 import java.io.File;
@@ -56,9 +56,9 @@ public class ExportDialog extends BaseDialog {
     private VisCheckBox prettyPrintCheckbox = new VisCheckBox("Pretty print");
 
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private KryoManager kryoManager;
+    @Inject
+    private ProjectManager projectManager;
 
     public ExportDialog() {
         super("Export");
@@ -107,7 +107,7 @@ public class ExportDialog extends BaseDialog {
                     boolean pretty = prettyPrintCheckbox.isChecked();
 
                     try {
-                        RuntimeExporter.export(kryoManager, projectContext, Gdx.files.absolute(folder), pretty);
+                        RuntimeExporter.export(kryoManager, projectManager.current(), Gdx.files.absolute(folder), pretty);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

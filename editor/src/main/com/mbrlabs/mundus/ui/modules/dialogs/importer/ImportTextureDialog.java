@@ -33,8 +33,6 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
     @Inject
     private Registry registry;
     @Inject
-    private ProjectContext projectContext;
-    @Inject
     private AssetManager assetManager;
 
     public ImportTextureDialog() {

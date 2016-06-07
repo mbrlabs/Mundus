@@ -28,7 +28,7 @@ import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
@@ -48,8 +48,8 @@ public class ModelPlacementTool extends Tool {
     private MModel model;
     private MModelInstance curEntity;
 
-    public ModelPlacementTool(ProjectContext projectContext, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectContext, shader, batch, history);
+    public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectManager, shader, batch, history);
         model = null;
         curEntity = null;
     }
@@ -82,8 +82,8 @@ public class ModelPlacementTool extends Tool {
     @Override
     public void render() {
         if(curEntity != null) {
-            batch.begin(projectContext.currScene.cam);
-            batch.render(curEntity.modelInstance, projectContext.currScene.environment, shader);
+            batch.begin(projectManager.current().currScene.cam);
+            batch.render(curEntity.modelInstance, projectManager.current().currScene.environment, shader);
             batch.end();
         }
     }
@@ -97,9 +97,9 @@ public class ModelPlacementTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if(curEntity != null && button == Input.Buttons.LEFT) {
-            int id = projectContext.obtainID();
-            GameObject modelGo = new GameObject(projectContext.currScene.sceneGraph, model.name, id);
-            projectContext.currScene.sceneGraph.getGameObjects().add(modelGo);
+            int id = projectManager.current().obtainID();
+            GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.name, id);
+            projectManager.current().currScene.sceneGraph.getGameObjects().add(modelGo);
 
             modelGo.setTransform(curEntity.modelInstance.transform);
             ModelComponent modelComponent = new ModelComponent(modelGo);
@@ -124,11 +124,11 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Ray ray = projectContext.currScene.viewport.getPickRay(screenX, screenY);
-        if(projectContext.currScene.terrainGroup.size() > 0 && curEntity != null) {
-            projectContext.currScene.terrainGroup.getRayIntersection(tempV3, ray);
+        Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
+        if(projectManager.current().currScene.terrainGroup.size() > 0 && curEntity != null) {
+            projectManager.current().currScene.terrainGroup.getRayIntersection(tempV3, ray);
         } else {
-            tempV3.set(projectContext.currScene.cam.position);
+            tempV3.set(projectManager.current().currScene.cam.position);
             tempV3.add(ray.direction.nor().scl(200));
         }
         curEntity.modelInstance.transform.setTranslation(tempV3);

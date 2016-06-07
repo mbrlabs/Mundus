@@ -49,8 +49,6 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     private ToolManager toolManager;
     @Inject
     private ProjectManager projectManager;
-    @Inject
-    private ProjectContext projectContext;
 
     public TerrainComponentWidget(TerrainComponent terrainComponent) {
         super("Terrain Component", terrainComponent);

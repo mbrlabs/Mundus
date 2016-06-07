@@ -103,7 +103,7 @@ public class RuntimeExporter {
 
         // copy assets
         FileHandle assetOutput = Gdx.files.absolute(FilenameUtils.concat(destFolder.path(), "assets"));
-        Gdx.files.absolute(FilenameUtils.concat(projectContext.absolutePath, "assets")).copyTo(assetOutput);
+        Gdx.files.absolute(FilenameUtils.concat(projectContext.path, "assets")).copyTo(assetOutput);
     }
 
     public static TerrainDTO convert(Terrain terrain) {
