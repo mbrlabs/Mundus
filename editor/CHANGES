@@ -2,6 +2,10 @@
 - Added an option to the settings dialog to change the keyboard layout
 - Added a heightmap loader to the terrain component widget in the inspector
 - Implemented a Blender-like rotation tool
+- Toast messages at top right corner of the screen
+- Huge internal refactoring
+- Ctrl+S shortcut for saving the project
+- Fixed crash on MacOS
 
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations

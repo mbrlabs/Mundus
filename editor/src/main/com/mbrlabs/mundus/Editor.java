@@ -46,6 +46,10 @@ import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * @author Marcus Brummer
+ * @version 07-06-2016
+ */
 public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private ModelInstance axesInstance;
@@ -146,10 +150,9 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     }
 
     private void setupInput() {
-        inputManager.addProcessor(shortcutController);
-
         // NOTE: order in wich processors are added is important: first added, first executed!
         inputManager.addProcessor(ui);
+        inputManager.addProcessor(shortcutController);
         // when user does not click on a ui element -> unfocus UI
         inputManager.addProcessor(new InputAdapter() {
             @Override
