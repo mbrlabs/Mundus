@@ -44,7 +44,7 @@ public class ModelsMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getImportDialog());
+                ui.showDialog(ui.getImportMeshDialog());
             }
         });
     }

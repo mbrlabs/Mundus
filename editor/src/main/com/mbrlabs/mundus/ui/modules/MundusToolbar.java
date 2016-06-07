@@ -18,7 +18,10 @@ package com.mbrlabs.mundus.ui.modules;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.widget.MenuItem;
+import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.Tooltip;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -44,8 +47,11 @@ public class MundusToolbar extends Toolbar {
     private FaTextButton translateBtn;
     private FaTextButton rotateBtn;
     private FaTextButton scaleBtn;
-
     private ToggleButton globalLocalSwitch;
+
+    private PopupMenu importMenu;
+    private MenuItem importMesh;
+    private MenuItem importTexture;
 
     @Inject
     private ToolManager toolManager;
@@ -57,6 +63,13 @@ public class MundusToolbar extends Toolbar {
     public MundusToolbar() {
         super();
         Mundus.inject(this);
+
+        importMesh = new MenuItem("Import mesh");
+        importTexture = new MenuItem("Import texture");
+        importMenu = new PopupMenu();
+        importMenu.addItem(importMesh);
+        importMenu.addItem(importTexture);
+
         saveBtn = new FaTextButton(Fa.SAVE);
         saveBtn.padRight(7).padLeft(7);
         new Tooltip.Builder("Save project").target(saveBtn).build();
@@ -122,8 +135,23 @@ public class MundusToolbar extends Toolbar {
         importBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                final Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getImportDialog());
+                importMenu.showMenu(Ui.getInstance(), importBtn);
+            }
+        });
+
+        // import mesh
+        importMesh.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui.getInstance().showDialog(Ui.getInstance().getImportMeshDialog());
+            }
+        });
+
+        // import texture
+        importTexture.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui.getInstance().showDialog(Ui.getInstance().getImportTextureDialog());
             }
         });
 

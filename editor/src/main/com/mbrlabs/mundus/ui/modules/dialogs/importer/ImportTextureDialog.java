@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2016. See AUTHORS file.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.mbrlabs.mundus.ui.modules.dialogs.importer;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -26,25 +10,24 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
-import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.core.AssetManager;
-import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.events.TextureImportEvent;
+import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
  * @author Marcus Brummer
- * @version 11-01-2016
+ * @version 07-06-2016
  */
-public class ImportTextureTab extends Tab {
+public class ImportTextureDialog extends BaseDialog implements Disposable {
 
     private ImportTextureTable importTextureTable;
-    private ImportDialog dialog;
 
     @Inject
     private Registry registry;
@@ -53,26 +36,21 @@ public class ImportTextureTab extends Tab {
     @Inject
     private AssetManager assetManager;
 
-    public ImportTextureTab(ImportDialog dialog) {
-        super(false, false);
+    public ImportTextureDialog() {
+        super("Import Texture");
         Mundus.inject(this);
-        this.dialog = dialog;
+        setModal(true);
+        setMovable(true);
+
+        Table root = new VisTable();
+        add(root).expand().fill();
         importTextureTable = new ImportTextureTable();
-    }
 
-    @Override
-    public String getTabTitle() {
-        return "Texture";
-    }
-
-    @Override
-    public Table getContentTable() {
-        return importTextureTable;
+        root.add(importTextureTable).minWidth(600).expand().fill().left().top();
     }
 
     @Override
     public void dispose() {
-        super.dispose();
         importTextureTable.dispose();
     }
 
@@ -119,7 +97,7 @@ public class ImportTextureTab extends Tab {
                     if(texture.exists() && FileFormatUtils.isImage(texture)) {
                         MTexture tex = assetManager.importTexture(texture, true);
                         Mundus.postEvent(new TextureImportEvent(tex));
-                        dialog.close();
+                        close();
                     } else {
                         // TODO show error msg
                     }
@@ -133,4 +111,5 @@ public class ImportTextureTab extends Tab {
 
         }
     }
+
 }

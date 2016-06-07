@@ -25,7 +25,8 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.ui.modules.MundusToolbar;
 import com.mbrlabs.mundus.ui.modules.StatusBar;
 import com.mbrlabs.mundus.ui.modules.dialogs.*;
-import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportMeshDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportTextureDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
@@ -52,10 +53,11 @@ public class Ui extends Stage {
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
-    private ImportDialog importDialog;
     private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
     private ExportDialog exportDialog;
+    private ImportMeshDialog importMeshDialog;
+    private ImportTextureDialog importTextureDialog;
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
     private AmbientLightDialog ambientLightDialog;
@@ -108,16 +110,17 @@ public class Ui extends Stage {
         statusBar = new StatusBar();
         root.add(statusBar).expandX().fillX().height(25).row();
 
-        // settings dialog
+        // dialogs
         settingsDialog = new SettingsDialog();
         newProjectDialog = new NewProjectDialog();
-        importDialog = new ImportDialog();
         addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
         exportDialog = new ExportDialog();
         fogDialog = new FogDialog();
         skyboxDialog = new SkyboxDialog();
         ambientLightDialog = new AmbientLightDialog();
+        importMeshDialog = new ImportMeshDialog();
+        importTextureDialog = new ImportTextureDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -155,10 +158,6 @@ public class Ui extends Stage {
         return newProjectDialog;
     }
 
-    public ImportDialog getImportDialog() {
-        return importDialog;
-    }
-
     public AddTerrainDialog getAddTerrainDialog() {
         return addTerrainDialog;
     }
@@ -169,6 +168,14 @@ public class Ui extends Stage {
 
     public ExportDialog getExportDialog() {
         return exportDialog;
+    }
+
+    public ImportMeshDialog getImportMeshDialog() {
+        return importMeshDialog;
+    }
+
+    public ImportTextureDialog getImportTextureDialog() {
+        return importTextureDialog;
     }
 
     public Sidebar getSidebar() {
@@ -190,4 +197,6 @@ public class Ui extends Stage {
     public RenderWidget getWidget3D() {
         return widget3D;
     }
+
+
 }
