@@ -17,9 +17,6 @@
 package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
-import com.mbrlabs.mundus.core.registry.Registry;
-import com.mbrlabs.mundus.core.Inject;
-import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.exceptions.OsNotSupported;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -33,7 +30,7 @@ import java.util.List;
  * Wrapper around the command line program fbx-conv.
  *
  * Converts FBX & Collada (dae) 3D files into the g3db/g3dj format.
- * Supports Linux, Windows & Mac. Binaries must be in asset folder under fbx-conv.
+ * Supports Linux, Windows & Mac.
  *
  * @author Marcus Brummer
  * @version 24-11-2015
@@ -52,11 +49,10 @@ public class FbxConv {
     private String input = null;
     private String output = null;
 
-    @Inject
-    private Registry registry;
+    private String fbxBinary;
 
-    public FbxConv() {
-        Mundus.inject(this);
+    public FbxConv(String fbxBinary) {
+        this.fbxBinary = fbxBinary;
         if(SystemUtils.IS_OS_MAC) {
             os = Os.MAC;
         } else if(SystemUtils.IS_OS_WINDOWS) {
@@ -67,7 +63,7 @@ public class FbxConv {
             throw new OsNotSupported();
         }
 
-        pb = new ProcessBuilder(registry.getSettings().getFbxConvBinary());
+        pb = new ProcessBuilder(fbxBinary);
     }
 
     public void clear() {
@@ -76,7 +72,7 @@ public class FbxConv {
         flipTexture = false;
         input = null;
         output = null;
-        pb = new ProcessBuilder(registry.getSettings().getFbxConvBinary());
+        pb = new ProcessBuilder(fbxBinary);
     }
 
     public FbxConv input(String pathToFile) {

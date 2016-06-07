@@ -105,6 +105,7 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 projectManager.saveProject(projectContext);
+                Ui.getInstance().getToaster().success("Project saved");
             }
         });
 

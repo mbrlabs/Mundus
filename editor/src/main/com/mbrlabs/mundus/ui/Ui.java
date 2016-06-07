@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
+import com.mbrlabs.mundus.utils.Toaster;
 
 /**
  * @author Marcus Brummer
@@ -39,6 +40,7 @@ import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 public class Ui extends Stage {
 
     private VisTable root;
+    private Toaster toaster;
     private MundusMenuBar menuBar;
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
@@ -72,6 +74,7 @@ public class Ui extends Stage {
 
     private Ui() {
         super(new ScreenViewport());
+        toaster = new Toaster(this);
         root = new VisTable();
         //root.setDebug(true);
         root.setFillParent(true);
@@ -122,6 +125,10 @@ public class Ui extends Stage {
 
     public void showDialog(VisDialog dialog) {
         dialog.show(this);
+    }
+
+    public Toaster getToaster() {
+        return toaster;
     }
 
     public MundusMenuBar getMenuBar() {

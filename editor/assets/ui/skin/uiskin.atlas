@@ -497,13 +497,6 @@ separator
   orig: 1, 1
   offset: 0, 0
   index: -1
-separator-green
-    rotate: false
-    xy: 287, 174
-    size: 1, 1
-    orig: 1, 1
-    offset: 0, 0
-    index: -1
 tree-over
   rotate: false
   xy: 87, 4
@@ -748,5 +741,45 @@ window-resizable
   split: 5, 12, 3, 12
   pad: 5, 5, 25, 3
   orig: 27, 43
+  offset: 0, 0
+  index: -1
+toast-error-bg
+  rotate: false
+  xy: 263, 18
+  size: 3, 3
+  split: 1, 1, 1, 1
+  orig: 3, 3
+  offset: 0, 0
+  index: -1
+toast-info-bg
+    rotate: false
+    xy: 360, 226
+    size: 3, 3
+    split: 1, 1, 1, 1
+    orig: 3, 3
+    offset: 0, 0
+    index: -1
+toast-success-bg
+    rotate: false
+    xy: 321, 212
+    size: 3, 3
+    split: 1, 1, 1, 1
+    orig: 3, 3
+    offset: 0, 0
+    index: -1
+separator-green
+    rotate: false
+    xy: 287, 174
+    size: 1, 1
+    orig: 1, 1
+    offset: 0, 0
+    index: -1
+close-toast-button
+  rotate: false
+  xy: 500, 0
+  size: 12, 20
+  split: 5, 5, 5, 4
+  pad: 4, 4, 1, 1
+  orig: 12, 20
   offset: 0, 0
   index: -1

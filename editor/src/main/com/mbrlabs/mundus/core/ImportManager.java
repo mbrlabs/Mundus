@@ -40,9 +40,8 @@ public class ImportManager {
     private Registry registry;
 
     public ImportManager(Registry registry) {
-        this.fbxConv = new FbxConv();
+        this.fbxConv = new FbxConv(registry.getSettings().getFbxConvBinary());
         this.registry = registry;
-
     }
 
     public ImportedModel importToTempFolder(FileHandle modelFile, FileHandle textureFile) {
@@ -76,10 +75,14 @@ public class ImportManager {
         boolean convert = FileFormatUtils.isFBX(rawModelFile)
                 || FileFormatUtils.isCollada(rawModelFile)
                 || FileFormatUtils.isWavefont(rawModelFile);
+
         if(convert) {
-            imported.convResult = new FbxConv().input(rawModelFile.path())
-                    .output(tempModelCache.file().getAbsolutePath()).
-                            flipTexture(true).execute();
+            fbxConv.clear();
+            imported.convResult = fbxConv.input(rawModelFile.path())
+                    .output(tempModelCache.file().getAbsolutePath())
+                    .flipTexture(true)
+                    .execute();
+
             if(imported.convResult.isSuccess()) {
                 imported.g3dbFile = Gdx.files.absolute(imported.convResult.getOutputFile());
             }

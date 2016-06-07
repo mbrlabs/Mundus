@@ -105,6 +105,7 @@
 	blue: {down: button-blue-down, up: button-blue, over: button-blue-over, disabled: button-blue, focusBorder: border-dark-blue },
 	toggle: {checked: button-down, focusBorder: border, down: button-down, up: button, over: button-over, disabled: button },
 	close: {down: button-red, up: button, over: button-over, imageUp: icon-close, disabled: button },
+	close-toast: {down: close-toast-button, up: close-toast-button, over: close-toast-button, imageUp: icon-close, disabled: button },
 	close-active-tab: {down: button-red, imageUp: icon-close, up: button-blue, over: button-blue-over, disabled: button-blue },
 	close-window: {up: button-window-bg, down: button-red, over: button-over, imageUp: icon-close, disabled: button }
 },
@@ -167,6 +168,9 @@
 },
 	com.kotcrab.vis.ui.widget.toast.Toast$ToastStyle: {
 	default: {background: tooltip-bg, closeButtonStyleName: "close" },
+	info: {background: toast-info-bg, closeButtonStyleName: "close-toast" },
+	success: {background: toast-success-bg, closeButtonStyleName: "close-toast" },
+	error: {background: toast-error-bg, closeButtonStyleName: "close-toast" },
 	dark: {background: window-border-bg, closeButtonStyleName: "close-window" }
 },
 	com.kotcrab.vis.ui.util.form.SimpleFormValidator$FormValidatorStyle: {
