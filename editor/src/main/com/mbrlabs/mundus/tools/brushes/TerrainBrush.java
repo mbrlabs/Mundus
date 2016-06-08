@@ -244,7 +244,7 @@ public abstract class TerrainBrush extends Tool {
      * Interpolates the brush texture in the range of centerX - radius to centerX + radius
      * and centerZ - radius to centerZ + radius. PointZ & pointX lies between these ranges.
      *
-     * Interpolation is necessary, since the brush pixmap is fixed sized, whereas the input values can scl.
+     * Interpolation is necessary, since the brush pixmap is fixed sized, whereas the input values can scale.
      * (Input points can be vertices or splatmap texture coordinates)
      *
      * @param centerX

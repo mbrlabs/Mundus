@@ -31,7 +31,7 @@ public class FaLabel extends VisLabel {
     static {
         style.font = Mundus.fa;
         style.fontColor = Color.WHITE;
-        style.fontColor = Colors.TURQUOISE;
+        style.fontColor = Colors.TEAL;
     }
 
     public FaLabel(String text) {

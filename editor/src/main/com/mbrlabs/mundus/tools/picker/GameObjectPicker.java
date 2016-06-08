@@ -75,8 +75,8 @@ public class GameObjectPicker extends BasePicker {
             }
         }
 
-        if(go.getChilds() != null) {
-            for(GameObject goc : go.getChilds()) {
+        if(go.getChildren() != null) {
+            for(GameObject goc : go.getChildren()) {
                 renderPickableGameObject(goc);
             }
         }

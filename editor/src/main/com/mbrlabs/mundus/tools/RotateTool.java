@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -57,12 +58,12 @@ public class RotateTool extends TransformTool {
 
     private Vector3 temp0 = new Vector3();
     private Vector3 temp1 = new Vector3();
+    private Quaternion tempQuat = new Quaternion();
 
 
     private ShapeRenderer shapeRenderer;
 
     private TransformState state = TransformState.IDLE;
-    private boolean initRotate = true;
     private float lastRot = 0;
 
     public RotateTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
@@ -101,7 +102,7 @@ public class RotateTool extends TransformTool {
             shapeRenderer.setColor(Color.BLACK);
             shapeRenderer.setProjectionMatrix(shapeRenderMat);
             shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-            shapeRenderer.setColor(Colors.TURQUOISE);
+            shapeRenderer.setColor(Color.BLUE);
             shapeRenderer.circle(pivot.x, pivot.y, 7);
             shapeRenderer.end();
         }
@@ -123,13 +124,13 @@ public class RotateTool extends TransformTool {
 
             boolean modified = false;
             if(state == TransformState.TRANSFORM_X) {
-                projectContext.currScene.currentSelection.rot(-rot, 0, 0);
+                projectContext.currScene.currentSelection.rotate(-rot, 0, 0);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Y) {
-                projectContext.currScene.currentSelection.rot(0, -rot, 0);
+                projectContext.currScene.currentSelection.rotate(0, -rot, 0);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Z) {
-                projectContext.currScene.currentSelection.rot(0, 0, -rot);
+                projectContext.currScene.currentSelection.rotate(0, 0, -rot);
                 modified = true;
             }
 
@@ -173,16 +174,10 @@ public class RotateTool extends TransformTool {
 
             if(handle.getId() == X_HANDLE_ID) {
                 state = TransformState.TRANSFORM_X;
-                initRotate = true;
-                xHandle.changeColor(COLOR_SELECTED);
             } else if(handle.getId() == Y_HANDLE_ID) {
                 state = TransformState.TRANSFORM_Y;
-                initRotate = true;
-                yHandle.changeColor(COLOR_SELECTED);
             } else if(handle.getId() == Z_HANDLE_ID) {
                 state = TransformState.TRANSFORM_Z;
-                initRotate = true;
-                zHandle.changeColor(COLOR_SELECTED);
             }
         }
 
@@ -191,14 +186,7 @@ public class RotateTool extends TransformTool {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        super.touchUp(screenX, screenY, pointer, button);
-        if(state != TransformState.IDLE) {
-            xHandle.changeColor(COLOR_X);
-            yHandle.changeColor(COLOR_Y);
-            zHandle.changeColor(COLOR_Z);
-
-            state = TransformState.IDLE;
-        }
+        state = TransformState.IDLE;
         return false;
     }
 
@@ -304,11 +292,6 @@ public class RotateTool extends TransformTool {
         public void applyTransform() {
             rotation.setEulerAngles(rotationEuler.y, rotationEuler.x, rotationEuler.z);
             modelInstance.transform.set(position, rotation, scale);
-        }
-
-        public void changeColor(Color color) {
-            ColorAttribute diffuse = (ColorAttribute) modelInstance.materials.get(0).get(ColorAttribute.Diffuse);
-            diffuse.color.set(color);
         }
 
         @Override

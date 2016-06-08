@@ -347,8 +347,8 @@ public class ProjectManager implements Disposable {
 
     private void initGameObject(ProjectContext context, GameObject root) {
         initComponents(context, root);
-        if(root.getChilds() != null) {
-            for(GameObject c : root.getChilds()) {
+        if(root.getChildren() != null) {
+            for(GameObject c : root.getChildren()) {
                 initGameObject(context, c);
             }
         }

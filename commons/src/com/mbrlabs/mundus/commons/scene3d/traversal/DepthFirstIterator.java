@@ -42,8 +42,8 @@ public class DepthFirstIterator implements Iterator<GameObject> {
     @Override
     public GameObject next() {
         GameObject top = stack.pop();
-        if(top.getChilds() != null) {
-            for (GameObject child : top.getChilds()) {
+        if(top.getChildren() != null) {
+            for (GameObject child : top.getChildren()) {
                 stack.push(child);
             }
         }

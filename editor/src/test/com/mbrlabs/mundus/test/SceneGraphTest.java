@@ -40,18 +40,18 @@ public class SceneGraphTest {
         sg.getGameObjects().add(root0);
 
         // both must be 0
-        root0.getTransRel(v0);
+        root0.getPositionRel(v0);
         assertEquals(v0, root0.position);
 
         // set relative translation, then translate -> both must be same
-        root0.setTransRel(10, 20, 30);
-        root0.trans(10, 10, 10);
-        root0.getTransRel(v0);
+        root0.setPositionRel(10, 20, 30);
+        root0.translate(10, 10, 10);
+        root0.getPositionRel(v0);
         assertEquals(v0, root0.position);
 
         // reset to 0
-        root0.setTrans(0,0,0);
-        root0.getTransRel(v0);
+        root0.setPosition(0,0,0);
+        root0.getPositionRel(v0);
         assertEquals(v0, root0.position);
     }
 
@@ -65,34 +65,34 @@ public class SceneGraphTest {
         root0.addChild(c0);
 
         // translate parent, child must move too
-        root0.setTrans(10, 20, 30);
+        root0.setPosition(10, 20, 30);
         assertEquals(root0.position, c0.position);
 
         // move child relative to parent
-        c0.trans(10, 10, 10);
-        c0.setTransRel(5, 5, 5);
-        assertEquals(c0.getTransRel(v0), v1.set(5, 5, 5));
+        c0.translate(10, 10, 10);
+        c0.setPositionRel(5, 5, 5);
+        assertEquals(c0.getPositionRel(v0), v1.set(5, 5, 5));
         assertEquals(c0.position, v1.set(15, 25, 35));
 
         // add child to child
         GameObject c1 = new GameObject(sg);
         c0.addChild(c1);
-        c1.setTransRel(10, 10, 10);
+        c1.setPositionRel(10, 10, 10);
         assertEquals(c1.position, v1.set(25, 35, 45));
 
         // move root0, children must move as well
-        root0.setTrans(0, 0, 0);
+        root0.setPosition(0, 0, 0);
         assertEquals(c0.position, v0.set(5, 5, 5));
         assertEquals(c1.position, v0.set(15, 15, 15));
-        assertEquals(c0.getTransRel(v0), v1.set(5, 5, 5));
-        assertEquals(c1.getTransRel(v0), v1.set(10, 10, 10)); // the rel trans of this should stay the same
+        assertEquals(c0.getPositionRel(v0), v1.set(5, 5, 5));
+        assertEquals(c1.getPositionRel(v0), v1.set(10, 10, 10)); // the rel translate of this should stay the same
 
         // move inner c1, others should stay untouched
-        c1.setTransRel(-100, -100, -100);
+        c1.setPositionRel(-100, -100, -100);
         assertEquals(root0.position, v0.set(0,0,0));
         assertEquals(c0.position, v0.set(5, 5, 5));
-        assertEquals(c0.getTransRel(v0), v1.set(5, 5, 5));
-        assertEquals(c1.getTransRel(v0), v1.set(-100, -100, -100));
+        assertEquals(c0.getPositionRel(v0), v1.set(5, 5, 5));
+        assertEquals(c1.getPositionRel(v0), v1.set(-100, -100, -100));
         assertEquals(c1.position, v0.set(-95, -95, -95));
     }
 
@@ -108,34 +108,34 @@ public class SceneGraphTest {
 
         // check initial rel scale & abs scale
         v0.set(1, 1, 1);
-        assertEquals(v0, child.getSclRel(v1));
+        assertEquals(v0, child.getScaleRel(v1));
         assertEquals(v0, child.scale);
-        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0, root.getScaleRel(v1));
         assertEquals(v0, root.scale);
 
-        // scl root
-        root.scl(2, 3, 4);
+        // scale root
+        root.scale(2, 3, 4);
         v0.set(2, 3, 4);
         assertEquals(v0, root.scale);
-        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0, root.getScaleRel(v1));
         assertEquals(v0, child.scale);
-        assertEquals(v0.set(1, 1, 1), child.getSclRel(v1));
+        assertEquals(v0.set(1, 1, 1), child.getScaleRel(v1));
 
-        // scl child
-        child.scl(2, 2, 2);
+        // scale child
+        child.scale(2, 2, 2);
         v0.set(2, 3, 4);
         assertEquals(v0, root.scale);
-        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0, root.getScaleRel(v1));
         assertEquals(v0.set(4, 6, 8), child.scale);
-        assertEquals(v0.set(2, 2, 2), child.getSclRel(v1));
+        assertEquals(v0.set(2, 2, 2), child.getScaleRel(v1));
 
-        // scl root
-        root.setSclRel(4, 4, 4);
+        // scale root
+        root.setScaleRel(4, 4, 4);
         v0.set(4, 4, 4);
         assertEquals(v0, root.scale);
-        assertEquals(v0, root.getSclRel(v1));
+        assertEquals(v0, root.getScaleRel(v1));
         assertEquals(v0.set(8, 8, 8), child.scale);
-        assertEquals(v0.set(2, 2, 2), child.getSclRel(v1));
+        assertEquals(v0.set(2, 2, 2), child.getScaleRel(v1));
     }
 
     @Test
@@ -147,36 +147,36 @@ public class SceneGraphTest {
         GameObject child = new GameObject(sg);
         root.addChild(child);
 
-        // check initial rel rot & abs rot
+        // check initial rel rotate & abs rotate
         v0.set(0, 0, 0);
-        assertEquals(v0, child.getRotRel(v1));
+        assertEquals(v0, child.getRotationRel(v1));
         assertEquals(v0, child.rotation);
-        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.getRotationRel(v1));
         assertEquals(v0, root.rotation);
 
         // set root rotation
-        root.setRotRel(5, 5, 5);
+        root.setRotationRel(5, 5, 5);
         v0.set(5, 5, 5);
-        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.getRotationRel(v1));
         assertEquals(v0, root.rotation);
         assertEquals(v0, child.rotation);
-        assertEquals(v0.scl(0, 0, 0), child.getRotRel(v1));
+        assertEquals(v0.scl(0, 0, 0), child.getRotationRel(v1));
 
         // rotate root
-        root.rot(10, 20, 30);
+        root.rotate(10, 20, 30);
         v0.set(15, 25, 35);
-        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.getRotationRel(v1));
         assertEquals(v0, root.rotation);
         assertEquals(v0, child.rotation);
-        assertEquals(v0.scl(0, 0, 0), child.getRotRel(v1));
+        assertEquals(v0.scl(0, 0, 0), child.getRotationRel(v1));
 
-        // set child rot rel
-        child.setRotRel(-10, -20, -30);
+        // set child rotate rel
+        child.setRotationRel(-10, -20, -30);
         v0.set(15, 25, 35);
-        assertEquals(v0, root.getRotRel(v1));
+        assertEquals(v0, root.getRotationRel(v1));
         assertEquals(v0, root.rotation);
         assertEquals(v0.set(5, 5, 5), child.rotation);
-        assertEquals(v0.set(-10, -20, -30), child.getRotRel(v1));
+        assertEquals(v0.set(-10, -20, -30), child.getRotationRel(v1));
     }
 
 }

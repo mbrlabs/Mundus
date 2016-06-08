@@ -54,14 +54,14 @@ public class RotateCommand implements Command {
 
     @Override
     public void execute() {
-        go.setRot(after.x, after.y, after.z);
+        go.setRotation(after.x, after.y, after.z);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }
 
     @Override
     public void undo() {
-        go.setRot(before.x, before.y, before.z);
+        go.setRotation(before.x, before.y, before.z);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }

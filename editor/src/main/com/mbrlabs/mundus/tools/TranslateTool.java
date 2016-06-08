@@ -176,19 +176,19 @@ public class TranslateTool extends TransformTool {
 
             boolean modified = false;
             if(state == TransformState.TRANSFORM_XZ) {
-                projectManager.current().currScene.currentSelection.trans(rayEnd.x - lastPos.x,
+                projectManager.current().currScene.currentSelection.translate(rayEnd.x - lastPos.x,
                         0, rayEnd.z - lastPos.z);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_X) {
-                projectManager.current().currScene.currentSelection.trans(rayEnd.x - lastPos.x,
+                projectManager.current().currScene.currentSelection.translate(rayEnd.x - lastPos.x,
                         0, 0);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Y) {
-                projectManager.current().currScene.currentSelection.trans(0,
+                projectManager.current().currScene.currentSelection.translate(0,
                         rayEnd.y - lastPos.y, 0);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Z) {
-                projectManager.current().currScene.currentSelection.trans(0, 0,
+                projectManager.current().currScene.currentSelection.translate(0, 0,
                         rayEnd.z - lastPos.z);
                 modified = true;
             }

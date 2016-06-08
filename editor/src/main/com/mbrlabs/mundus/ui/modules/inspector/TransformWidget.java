@@ -110,8 +110,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                Vector3 pos = go.getTransRel(tempV3);
-                go.setTransRel(posX.getFloat(), pos.y, pos.z);
+                Vector3 pos = go.getPositionRel(tempV3);
+                go.setPositionRel(posX.getFloat(), pos.y, pos.z);
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -123,8 +123,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                Vector3 pos = go.getTransRel(tempV3);
-                go.setTransRel(pos.x, posY.getFloat(), pos.z);
+                Vector3 pos = go.getPositionRel(tempV3);
+                go.setPositionRel(pos.x, posY.getFloat(), pos.z);
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -136,8 +136,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 command.setBefore(go.position);
-                Vector3 pos = go.getTransRel(tempV3);
-                go.setTransRel(pos.x, pos.y, posZ.getFloat());
+                Vector3 pos = go.getPositionRel(tempV3);
+                go.setPositionRel(pos.x, pos.y, posZ.getFloat());
                 command.setAfter(go.position);
                 history.add(command);
             }
@@ -151,8 +151,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.getRotRel(tempV3);
-                go.setRotRel(rotX.getFloat(), tempV3.y, tempV3.z);
+                go.getRotationRel(tempV3);
+                go.setRotationRel(rotX.getFloat(), tempV3.y, tempV3.z);
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
@@ -164,8 +164,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.getRotRel(tempV3);
-                go.setRotRel(tempV3.x, rotY.getFloat(), tempV3.z);
+                go.getRotationRel(tempV3);
+                go.setRotationRel(tempV3.x, rotY.getFloat(), tempV3.z);
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
@@ -177,8 +177,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go == null) return;
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(go.rotation);
-                go.getRotRel(tempV3);
-                go.setRotRel(tempV3.x, tempV3.y, rotZ.getFloat());
+                go.getRotationRel(tempV3);
+                go.setRotationRel(tempV3.x, tempV3.y, rotZ.getFloat());
                 rotateCommand.setAfter(go.rotation);
                 history.add(rotateCommand);
             }
@@ -192,8 +192,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go != null && scaleX.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.getSclRel(tempV3);
-                    go.setSclRel(scaleX.getFloat(), tempV3.y, tempV3.z);
+                    go.getScaleRel(tempV3);
+                    go.setScaleRel(scaleX.getFloat(), tempV3.y, tempV3.z);
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -206,8 +206,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go != null && scaleY.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.getSclRel(tempV3);
-                    go.setSclRel(tempV3.x, scaleY.getFloat(), tempV3.z);
+                    go.getScaleRel(tempV3);
+                    go.setScaleRel(tempV3.x, scaleY.getFloat(), tempV3.z);
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -220,8 +220,8 @@ public class TransformWidget extends BaseInspectorWidget {
                 if(go != null && scaleZ.getFloat() > 0f) {
                     ScaleCommand scaleCommand = new ScaleCommand(go);
                     scaleCommand.setBefore(go.scale);
-                    go.getSclRel(tempV3);
-                    go.setSclRel(tempV3.x, tempV3.y, scaleZ.getFloat());
+                    go.getScaleRel(tempV3);
+                    go.setScaleRel(tempV3.x, tempV3.y, scaleZ.getFloat());
                     scaleCommand.setAfter(go.scale);
                     history.add(scaleCommand);
                 }
@@ -232,17 +232,17 @@ public class TransformWidget extends BaseInspectorWidget {
 
     @Override
     public void setValues(GameObject go) {
-        Vector3 pos = go.getTransRel(tempV3);
+        Vector3 pos = go.getPositionRel(tempV3);
         posX.setText(StringUtils.formatFloat(pos.x, 2));
         posY.setText(StringUtils.formatFloat(pos.y, 2));
         posZ.setText(StringUtils.formatFloat(pos.z, 2));
 
-        Vector3 rot = go.getRotRel(tempV3);
+        Vector3 rot = go.getRotationRel(tempV3);
         rotX.setText(StringUtils.formatFloat(rot.x, 2));
         rotY.setText(StringUtils.formatFloat(rot.y, 2));
         rotZ.setText(StringUtils.formatFloat(rot.z, 2));
 
-        Vector3 scl = go.getSclRel(tempV3);
+        Vector3 scl = go.getScaleRel(tempV3);
         scaleX.setText(StringUtils.formatFloat(scl.x, 2));
         scaleY.setText(StringUtils.formatFloat(scl.y, 2));
         scaleZ.setText(StringUtils.formatFloat(scl.z, 2));

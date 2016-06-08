@@ -200,7 +200,7 @@ public class RuntimeExporter {
         dto.getTrans()[4] = gameObject.rotation.y;
         dto.getTrans()[5] = gameObject.rotation.z;
 
-        // scl
+        // scale
         dto.getTrans()[6] = gameObject.scale.x;
         dto.getTrans()[7] = gameObject.scale.y;
         dto.getTrans()[8] = gameObject.scale.z;
@@ -218,10 +218,10 @@ public class RuntimeExporter {
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // recursively convert children
-        if(gameObject.getChilds() != null) {
-            GameObjectDTO[] childs = new GameObjectDTO[gameObject.getChilds().size];
+        if(gameObject.getChildren() != null) {
+            GameObjectDTO[] childs = new GameObjectDTO[gameObject.getChildren().size];
             for(int i = 0; i < childs.length; i++) {
-                childs[i] = convert(gameObject.getChilds().get(i));
+                childs[i] = convert(gameObject.getChildren().get(i));
             }
             dto.setChilds(childs);
         }

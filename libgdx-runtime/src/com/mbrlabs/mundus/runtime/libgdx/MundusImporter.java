@@ -156,9 +156,9 @@ public class MundusImporter {
         go.setActive(dto.isActive());
 
         final float[] trans = dto.getTrans();
-        go.trans(trans[0], trans[1], trans[2]);
-        go.rot(trans[3], trans[4], trans[5]);
-        go.scl(trans[6], trans[7], trans[8]);
+        go.translate(trans[0], trans[1], trans[2]);
+        go.rotate(trans[3], trans[4], trans[5]);
+        go.scale(trans[6], trans[7], trans[8]);
 
         if(dto.getTerrC() != null) {
             go.getComponents().add(convert(go, dto.getTerrC(), terrains));

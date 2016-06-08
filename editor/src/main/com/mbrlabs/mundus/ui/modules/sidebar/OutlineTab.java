@@ -163,7 +163,7 @@ public class OutlineTab extends Tab implements
                     if(oldParent == null) {
                         projectContext.currScene.sceneGraph.getGameObjects().removeValue(draggedGo, true);
                     } else {
-                        oldParent.getChilds().removeValue(draggedGo, true);
+                        oldParent.getChildren().removeValue(draggedGo, true);
                     }
 
                     // add to new parent
@@ -250,8 +250,8 @@ public class OutlineTab extends Tab implements
             treeParentNode.add(leaf);
         }
 
-        if(gameObject.getChilds() != null) {
-            for(GameObject goChild : gameObject.getChilds()) {
+        if(gameObject.getChildren() != null) {
+            for(GameObject goChild : gameObject.getChildren()) {
                 addGameObject(leaf, goChild);
             }
         }

@@ -65,7 +65,7 @@ public class Compass implements Disposable {
         compassModel =  modelBuilder.end();
         compassInstance = new ModelInstance(compassModel);
 
-        // trans to top left corner
+        // translate to top left corner
         compassInstance.transform.translate(0.93f, 0.94f,0);
     }
 

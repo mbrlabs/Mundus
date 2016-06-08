@@ -25,6 +25,10 @@ import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
+ * A project context represents an loaded and opened project.
+ *
+ * A project context can have many scenes, nut only one scene at a time can be active.
+ *
  * @author Marcus Brummer
  * @version 28-11-2015
  */

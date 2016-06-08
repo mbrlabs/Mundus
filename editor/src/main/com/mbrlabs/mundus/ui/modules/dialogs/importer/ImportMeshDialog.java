@@ -237,7 +237,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
         private void showPreview() {
             previewInstance = new ModelInstance(previewModel);
 
-            // scl to 2 open gl units
+            // scale to 2 open gl units
             BoundingBox boundingBox = previewInstance.calculateBoundingBox(new BoundingBox());
             Vector3 max = boundingBox.getMax(new Vector3());
             float maxDim = 0;

@@ -17,8 +17,6 @@
 package com.mbrlabs.mundus.core.kryo;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.env.Fog;
@@ -54,9 +52,6 @@ import java.util.Locale;
  * @version 17-12-2015
  */
 public class DescriptorConverter {
-
-    private static final Vector3 tempV3 = new Vector3();
-    private static final Quaternion tempQuat = new Quaternion();
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                     Registry
@@ -219,8 +214,8 @@ public class DescriptorConverter {
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // recursively convert children
-        if(go.getChilds() != null) {
-            for(GameObject c : go.getChilds()) {
+        if(go.getChildren() != null) {
+            for(GameObject c : go.getChildren()) {
                 descriptor.getChilds().add(convert(c));
             }
         }
