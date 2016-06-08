@@ -5,7 +5,8 @@
 - Toast messages at top right corner of the screen
 - Huge internal refactoring
 - Ctrl+S shortcut for saving the project
-- Fixed crash on MacOS
+- Fixed crash on MacOS: https://github.com/mbrlabs/Mundus/commit/fdd193caa7b75e5a1607f448c1f81d1faeec86dd
+- Added a confirm dialog when exiting the editor
 
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations

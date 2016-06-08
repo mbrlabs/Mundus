@@ -205,7 +205,7 @@ public class ProjectManager implements Disposable {
             TerrainIO.importTerrain(context, terrain);
         }
 
-        context.currScene = loadScene(context, context.kryoActiveScene);
+        context.currScene = loadScene(context, context.activeSceneName);
 
         return context;
     }
@@ -389,7 +389,7 @@ public class ProjectManager implements Disposable {
         return null;
     }
 
-    public String constructWindowTitle() {
+    private String constructWindowTitle() {
         return currentProject.name + " - " + currentProject.currScene.getName() +
                 " [" + currentProject.path +"]" + " - " + Main.TITLE;
     }

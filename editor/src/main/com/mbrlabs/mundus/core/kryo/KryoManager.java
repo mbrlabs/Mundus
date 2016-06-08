@@ -38,6 +38,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * Manages descriptor object <-> file io.
+ *
+ * This provides only method for loading the serialized data into POJOs.
+ * It does not load or initialize any data (like for example it does not load meshes or textures).
+ * This has to be done separately (ProjectManager).
+ *
  * @author Marcus Brummer
  * @version 12-12-2015
  */
@@ -74,6 +80,13 @@ public class KryoManager {
         kryo.register(TerrainTextureDescriptor.class, 16);
     }
 
+    /**
+     * Loads the registry.
+     *
+     * Save to use afterwards, nothing else needs to be loaded.
+     *
+     * @return  mundus registry
+     */
     public Registry loadRegistry() {
         try {
             Input input = new Input(new FileInputStream(Registry.HOME_DATA_FILE));
@@ -89,6 +102,11 @@ public class KryoManager {
         return new Registry();
     }
 
+    /**
+     * Saves the registry
+     *
+     * @param registry  mundus registry
+     */
     public void saveRegistry(Registry registry) {
         try {
             Output output = new Output(new FileOutputStream(Registry.HOME_DATA_FILE));
@@ -101,6 +119,13 @@ public class KryoManager {
         }
     }
 
+    /**
+     * Saves the project context.
+     *
+     * Saves only the project's .pro file, not the individual scenes.
+     *
+     * @param context      project context to save
+     */
     public void saveProjectContext(ProjectContext context) {
         try {
             Output output = new Output(new FileOutputStream(context.path + "/" + context.name + ".pro"));
@@ -115,6 +140,16 @@ public class KryoManager {
         }
     }
 
+    /**
+     * Loads the project context .pro.
+     *
+     * Does however not load the scenes (only the scene names as reference) or
+     * meshes/textures (see ProjectManager).
+     *
+     * @param ref       project to load
+     * @return          loaded project context without scenes
+     * @throws FileNotFoundException
+     */
     public ProjectContext loadProjectContext(ProjectRef ref) throws FileNotFoundException {
         // find .pro file
         FileHandle projectFile = null;
@@ -129,13 +164,19 @@ public class KryoManager {
             Input input = new Input(new FileInputStream(projectFile.path()));
             ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
             ProjectContext context = DescriptorConverter.convert(projectDescriptor);
-            context.kryoActiveScene = projectDescriptor.getCurrentSceneName();
+            context.activeSceneName = projectDescriptor.getCurrentSceneName();
             return context;
         }
 
         return null;
     }
 
+    /**
+     * Saves a scene.
+     *
+     * @param context   project context of the scene
+     * @param scene     scene to save
+     */
     public void saveScene(ProjectContext context, Scene scene) {
         try {
             String sceneDir = FilenameUtils.concat(context.path + "/" + ProjectManager.PROJECT_SCENES_DIR,
@@ -153,6 +194,17 @@ public class KryoManager {
         }
     }
 
+    /**
+     * Loads a scene.
+     *
+     * Does however not initialize ModelInstances, Terrains, ...
+     * -> ProjectManager
+     *
+     * @param context       project context of the scene
+     * @param sceneName     name of the scene to load
+     * @return              loaded scene
+     * @throws FileNotFoundException
+     */
     public SceneDescriptor loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         String sceneDir = FilenameUtils.concat(context.path + "/" + ProjectManager.PROJECT_SCENES_DIR,
                 sceneName + ProjectManager.PROJECT_SCENE_EXTENSION);

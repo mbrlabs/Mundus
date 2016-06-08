@@ -43,7 +43,7 @@ public class ProjectContext implements Disposable {
     private int idProvider;
 
     /** set by kryo when project is loaded. do not use this */
-    public String kryoActiveScene;
+    public String activeSceneName;
 
     public ProjectContext(int idProvider) {
         models = new Array<>();
