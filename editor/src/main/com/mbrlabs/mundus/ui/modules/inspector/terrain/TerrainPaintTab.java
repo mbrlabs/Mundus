@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,13 +26,13 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
-import com.mbrlabs.mundus.commons.terrain.SplatTexture;
-import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;

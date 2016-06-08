@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016. See AUTHORS file.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.mbrlabs.mundus.tools.brushes;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +28,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -19,9 +38,6 @@ import com.mbrlabs.mundus.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.history.commands.TerrainPaintCommand;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
-import com.mbrlabs.mundus.commons.terrain.SplatTexture;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.tools.Tool;
 
 /**
