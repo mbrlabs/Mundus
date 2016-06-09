@@ -186,4 +186,23 @@ public interface Node<T extends Node> {
      */
     void setLocalPosition(float x, float y, float z);
 
+    /**
+     * Sets the rotation relative to the parent node.
+     *
+     * @param x x component of a quaternion
+     * @param y y component of a quaternion
+     * @param z z component of a quaternion
+     * @param w w component of a quaternion
+     */
+    void setLocalRotation(float x, float y, float z, float w);
+
+    /**
+     * Sets the scale relative to the parent node.
+     *
+     * @param x scale on the x axis
+     * @param y scale on the y axis
+     * @param z scale on the z axis
+     */
+    void setLocalScale(float x, float y, float z);
+
 }

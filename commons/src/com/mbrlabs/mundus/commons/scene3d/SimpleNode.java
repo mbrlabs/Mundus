@@ -122,6 +122,16 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
     }
 
     @Override
+    public void setLocalRotation(float x, float y, float z, float w) {
+        localRotation.set(x, y, z, w);
+    }
+
+    @Override
+    public void setLocalScale(float x, float y, float z) {
+        localScale.set(x, y, z);
+    }
+
+    @Override
     public void addChild(T child) {
         if(children == null) children = new Array<T>();
         children.add(child);

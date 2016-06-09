@@ -55,15 +55,14 @@ public class ScaleCommand implements Command {
 
     @Override
     public void execute() {
-        go.getLocalScale(after);
+        go.setLocalScale(after.x, after.y, after.z);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }
 
     @Override
     public void undo() {
-        // TODO implement
-        //go.setScale(before.x, before.y, before.z);
+        go.setLocalScale(before.x, before.y, before.z);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }
