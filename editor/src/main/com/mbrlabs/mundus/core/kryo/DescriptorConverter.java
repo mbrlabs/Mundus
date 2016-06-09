@@ -158,7 +158,7 @@ public class DescriptorConverter {
         final float[] scl = descriptor.getScale();
 
         go.position.set(pos[0], pos[1], pos[2]);
-        go.rotation.set(rot[0], rot[1], rot[2]);
+        go.rotation.set(rot[0], rot[1], rot[2], rot[3]);
         go.scale.set(scl[0], scl[1], scl[2]);
         go.calculateTransform();
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -196,6 +196,7 @@ public class DescriptorConverter {
         descriptor.getRotation()[0] = go.rotation.x;
         descriptor.getRotation()[1] = go.rotation.y;
         descriptor.getRotation()[2] = go.rotation.z;
+        descriptor.getRotation()[3] = go.rotation.w;
 
         // scaling
         descriptor.getScale()[0] = go.scale.x;

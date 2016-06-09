@@ -46,7 +46,7 @@ public class GameObject implements Iterable<GameObject> {
 
     private Matrix4 transform;
     public Vector3 position;
-    public Vector3 rotation;
+    public Quaternion rotation;
     public Vector3 scale;
 
     public GameObject(SceneGraph sceneGraph) {
@@ -61,7 +61,7 @@ public class GameObject implements Iterable<GameObject> {
         this.transform = new Matrix4();
         this.position = new Vector3(0, 0, 0);
         this.scale = new Vector3(1, 1, 1);
-        this.rotation = new Vector3();
+        this.rotation = new Quaternion();
     }
 
     public GameObject(SceneGraph sceneGraph, String name, int id) {
@@ -141,59 +141,53 @@ public class GameObject implements Iterable<GameObject> {
      * @param out   vector for storing the rotation
      * @return      vector, containing the rotation
      */
-    public Vector3 getRotationRel(Vector3 out) {
-        if(parent == null) return out.set(rotation);
-        return out.set(rotation).sub(parent.rotation);
+    public Quaternion getRotationRel(Quaternion out) {
+        // TODO fix
+//        if(parent == null) return out.set(rotation);
+//        return out.set(rotation).sub(parent.rotation);
+        return out.set(rotation);
     }
 
     /**
      * Sets the rotation (euler angles) in world space.
-     *
-     * @param x     x axis rotation
-     * @param y     y axis rotation
-     * @param z     z axis rotation
      */
-    public void setRotation(float x, float y, float z) {
-        final Vector3 diff = tempVec.set(x, y, z).sub(rotation);
-        this.rotation.set(x, y, z);
+    public void setRotation(Quaternion rot) {
+        this.rotation.set(rot);
         calculateTransform();
 
-        if (children != null) {
-            for (GameObject node : this.children) {
-                node.rotate(diff.x, diff.y, diff.z);
-            }
-        }
+        // TODO do children
+//        if (children != null) {
+//            for (GameObject node : this.children) {
+//                node.rotate(diff.x, diff.y, diff.z);
+//            }
+//        }
     }
 
     /**
      * Sets the rotation (euler angles) relative to the parent node.
      *
-     * @param x     x axis rotation
-     * @param y     y axis rotation
-     * @param z     z axis rotation
      */
-    public void setRotationRel(float x, float y, float z) {
+    public void setRotationRel(Quaternion rot) {
         if(parent == null) {
-            setRotation(x, y, z);
+            setRotation(rot);
         } else {
-            setRotation(parent.rotation.x + x, parent.rotation.y + y, parent.rotation.z + z);
+            tempQuat.set(parent.rotation).mul(rot);
+            setRotation(tempQuat);
         }
     }
 
     /**
      * Rotates the game object.
      *
-     * @param x     x axis rotation
-     * @param y     y axis rotation
-     * @param z     z axis rotation
      */
-    public void rotate(float x, float y, float z) {
-        rotation.add(x, y, z);
+    public void rotate(Quaternion rot) {
+        tempQuat.set(rot).mul(rotation);
+        rotation.set(tempQuat);
         calculateTransform();
 
         if (children != null) {
             for (GameObject node : this.children) {
-                node.rotate(x, y, z);
+                node.rotate(rot);
             }
         }
     }
@@ -272,8 +266,7 @@ public class GameObject implements Iterable<GameObject> {
     public void setTransform(Matrix4 transform) {
         this.transform = transform;
         transform.getTranslation(position);
-        transform.getRotation(tempQuat);
-        rotation.set(tempQuat.getPitch(), tempQuat.getYaw(), tempQuat.getRoll());
+        transform.getRotation(rotation);
         transform.getScale(scale);
     }
 
@@ -281,8 +274,7 @@ public class GameObject implements Iterable<GameObject> {
      * Recalculates the transformation matrix.
      */
     public void calculateTransform() {
-        tempQuat.setEulerAngles(rotation.y, rotation.x, rotation.z);
-        transform.set(position, tempQuat, scale);
+        transform.set(position, rotation, scale);
     }
 
     /**

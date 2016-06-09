@@ -124,13 +124,16 @@ public class RotateTool extends TransformTool {
 
             boolean modified = false;
             if(state == TransformState.TRANSFORM_X) {
-                projectContext.currScene.currentSelection.rotate(-rot, 0, 0);
+                tempQuat.setEulerAngles(0, -rot, 0);
+                projectContext.currScene.currentSelection.rotate(tempQuat);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Y) {
-                projectContext.currScene.currentSelection.rotate(0, -rot, 0);
+                tempQuat.setEulerAngles(-rot, 0, 0);
+                projectContext.currScene.currentSelection.rotate(tempQuat);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Z) {
-                projectContext.currScene.currentSelection.rotate(0, 0, -rot);
+                tempQuat.setEulerAngles(0, 0, -rot);
+                projectContext.currScene.currentSelection.rotate(tempQuat);
                 modified = true;
             }
 

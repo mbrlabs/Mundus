@@ -38,7 +38,7 @@ public class GameObjectDescriptor {
     @Tag(3)
     private float[] position = new float[3];
     @Tag(4)
-    private float[] rotation = new float[3];
+    private float[] rotation = new float[4];
     @Tag(5)
     private float[] scale = new float[3];
 

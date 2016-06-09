@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.history.commands;
 
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Quaternion;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
@@ -30,21 +30,21 @@ public class RotateCommand implements Command {
 
     private static GameObjectModifiedEvent modEvent = new GameObjectModifiedEvent();
 
-    private Vector3 before;
-    private Vector3 after;
+    private Quaternion before;
+    private Quaternion after;
     private GameObject go;
 
     public RotateCommand(GameObject go) {
-        this.before = new Vector3();
-        this.after = new Vector3();
+        this.before = new Quaternion();
+        this.after = new Quaternion();
         this.go = go;
     }
 
-    public void setBefore(Vector3 before) {
+    public void setBefore(Quaternion before) {
         this.before.set(before);
     }
 
-    public void setAfter(Vector3 after) {
+    public void setAfter(Quaternion after) {
         this.after.set(after);
     }
 
@@ -54,14 +54,14 @@ public class RotateCommand implements Command {
 
     @Override
     public void execute() {
-        go.setRotation(after.x, after.y, after.z);
+        go.setRotation(after);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }
 
     @Override
     public void undo() {
-        go.setRotation(before.x, before.y, before.z);
+        go.setRotation(before);
         modEvent.setGameObject(go);
         Mundus.postEvent(modEvent);
     }

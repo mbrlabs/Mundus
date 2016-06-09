@@ -144,45 +144,46 @@ public class TransformWidget extends BaseInspectorWidget {
         });
 
         // rotation
-        rotX.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
-                RotateCommand rotateCommand = new RotateCommand(go);
-                rotateCommand.setBefore(go.rotation);
-                go.getRotationRel(tempV3);
-                go.setRotationRel(rotX.getFloat(), tempV3.y, tempV3.z);
-                rotateCommand.setAfter(go.rotation);
-                history.add(rotateCommand);
-            }
-        });
-        rotY.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
-                RotateCommand rotateCommand = new RotateCommand(go);
-                rotateCommand.setBefore(go.rotation);
-                go.getRotationRel(tempV3);
-                go.setRotationRel(tempV3.x, rotY.getFloat(), tempV3.z);
-                rotateCommand.setAfter(go.rotation);
-                history.add(rotateCommand);
-            }
-        });
-        rotZ.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
-                RotateCommand rotateCommand = new RotateCommand(go);
-                rotateCommand.setBefore(go.rotation);
-                go.getRotationRel(tempV3);
-                go.setRotationRel(tempV3.x, tempV3.y, rotZ.getFloat());
-                rotateCommand.setAfter(go.rotation);
-                history.add(rotateCommand);
-            }
-        });
+//        rotX.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go == null) return;
+//                RotateCommand rotateCommand = new RotateCommand(go);
+//                rotateCommand.setBefore(go.rotation);
+//                tempQuat.setEulerAngles(rotY.getFloat(), rotX.getFloat(), rotZ.getFloat());
+//                go.getRotationRel(tempV3);
+//                go.setRotationRel(rotX.getFloat(), tempV3.y, tempV3.z);
+//                rotateCommand.setAfter(go.rotation);
+//                history.add(rotateCommand);
+//            }
+//        });
+//        rotY.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go == null) return;
+//                RotateCommand rotateCommand = new RotateCommand(go);
+//                rotateCommand.setBefore(go.rotation);
+//                go.getRotationRel(tempV3);
+//                go.setRotationRel(tempV3.x, rotY.getFloat(), tempV3.z);
+//                rotateCommand.setAfter(go.rotation);
+//                history.add(rotateCommand);
+//            }
+//        });
+//        rotZ.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go == null) return;
+//                RotateCommand rotateCommand = new RotateCommand(go);
+//                rotateCommand.setBefore(go.rotation);
+//                go.getRotationRel(tempV3);
+//                go.setRotationRel(tempV3.x, tempV3.y, rotZ.getFloat());
+//                rotateCommand.setAfter(go.rotation);
+//                history.add(rotateCommand);
+//            }
+//        });
 
         // scale
         scaleX.addListener(new ChangeListener() {
@@ -237,31 +238,15 @@ public class TransformWidget extends BaseInspectorWidget {
         posY.setText(StringUtils.formatFloat(pos.y, 2));
         posZ.setText(StringUtils.formatFloat(pos.z, 2));
 
-        Vector3 rot = go.getRotationRel(tempV3);
-        rotX.setText(StringUtils.formatFloat(rot.x, 2));
-        rotY.setText(StringUtils.formatFloat(rot.y, 2));
-        rotZ.setText(StringUtils.formatFloat(rot.z, 2));
+        rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
+        rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
+        rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
 
         Vector3 scl = go.getScaleRel(tempV3);
         scaleX.setText(StringUtils.formatFloat(scl.x, 2));
         scaleY.setText(StringUtils.formatFloat(scl.y, 2));
         scaleZ.setText(StringUtils.formatFloat(scl.z, 2));
     }
-
-//    @Override
-//    public void setValues(GameObject go) {
-//        posX.setText(StringUtils.formatFloat(go.position.x, 2));
-//        posY.setText(StringUtils.formatFloat(go.position.y, 2));
-//        posZ.setText(StringUtils.formatFloat(go.position.z, 2));
-//
-//        rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
-//        rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
-//        rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
-//
-//        scaleX.setText(StringUtils.formatFloat(go.scale.x, 2));
-//        scaleY.setText(StringUtils.formatFloat(go.scale.y, 2));
-//        scaleZ.setText(StringUtils.formatFloat(go.scale.z, 2));
-//    }
 
     @Override
     public void onDelete() {
