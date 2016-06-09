@@ -67,6 +67,7 @@ public class ModelComponent extends PickableComponent {
 
     @Override
     public void render(float delta) {
+        modelInstance.modelInstance.transform.set(gameObject.toMatrix());
         gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
                 gameObject.sceneGraph.scene.environment, shader);
 

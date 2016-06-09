@@ -133,12 +133,6 @@ public class TranslateTool extends TransformTool {
 
         zHandle.rotation.idt();
         zHandle.applyTransform();
-
-//        if(!global) {
-//            xHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
-//            yHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
-//            zHandle.transform.rotate(projectContext.currScene.currentSelection.rotation);
-//        }
     }
 
     @Override
@@ -165,7 +159,7 @@ public class TranslateTool extends TransformTool {
             if(state == TransformState.IDLE) return;
 
             Ray ray = projectManager.current().currScene.viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
-            Vector3 rayEnd = temp0.set(projectManager.current().currScene.currentSelection.position);
+            Vector3 rayEnd = projectManager.current().currScene.currentSelection.getLocalPosition(temp0);
             float dst = projectManager.current().currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
 
@@ -204,7 +198,7 @@ public class TranslateTool extends TransformTool {
 
     @Override
     protected void scaleHandles() {
-        Vector3 pos = projectManager.current().currScene.currentSelection.position;
+        Vector3 pos = projectManager.current().currScene.currentSelection.getPosition(temp0);
         float scaleFactor = projectManager.current().currScene.cam.position.dst(pos) * 0.25f;
         xHandle.scale.set(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
         xHandle.applyTransform();
@@ -221,14 +215,14 @@ public class TranslateTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
-        final Vector3 medium = projectManager.current().currScene.currentSelection.calculateMedium(temp0);
-        xHandle.position.set(medium);
+        final Vector3 pos = projectManager.current().currScene.currentSelection.toMatrix().getTranslation(temp0);
+        xHandle.position.set(pos);
         xHandle.applyTransform();
-        yHandle.position.set(medium);
+        yHandle.position.set(pos);
         yHandle.applyTransform();
-        zHandle.position.set(medium);
+        zHandle.position.set(pos);
         zHandle.applyTransform();
-        xzPlaneHandle.position.set(medium);
+        xzPlaneHandle.position.set(pos);
         xzPlaneHandle.applyTransform();
     }
 
@@ -269,7 +263,7 @@ public class TranslateTool extends TransformTool {
 
         if(state != TransformState.IDLE) {
             command = new TranslateCommand(projectManager.current().currScene.currentSelection);
-            command.setBefore(projectManager.current().currScene.currentSelection.position);
+            command.setBefore(projectManager.current().currScene.currentSelection.getLocalPosition(temp0));
         }
 
         return false;
@@ -284,7 +278,7 @@ public class TranslateTool extends TransformTool {
             zHandle.changeColor(COLOR_Z);
             xzPlaneHandle.changeColor(COLOR_XZ);
 
-            command.setAfter(projectManager.current().currScene.currentSelection.position);
+            command.setAfter( projectManager.current().currScene.currentSelection.getLocalPosition(temp0));
             history.add(command);
             command = null;
             state = TransformState.IDLE;

@@ -60,7 +60,7 @@ public class TransformWidget extends BaseInspectorWidget {
     private ProjectManager projectManager;
 
     public TransformWidget() {
-        super("Transform");
+        super("TransformWidget");
         Mundus.inject(this);
         setDeletable(false);
         init();
@@ -103,45 +103,45 @@ public class TransformWidget extends BaseInspectorWidget {
         final ProjectContext projectContext = projectManager.current();
 
         // position
-        posX.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
-                TranslateCommand command = new TranslateCommand(go);
-                command.setBefore(go.position);
-                Vector3 pos = go.getPositionRel(tempV3);
-                go.setPositionRel(posX.getFloat(), pos.y, pos.z);
-                command.setAfter(go.position);
-                history.add(command);
-            }
-        });
-        posY.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
-                TranslateCommand command = new TranslateCommand(go);
-                command.setBefore(go.position);
-                Vector3 pos = go.getPositionRel(tempV3);
-                go.setPositionRel(pos.x, posY.getFloat(), pos.z);
-                command.setAfter(go.position);
-                history.add(command);
-            }
-        });
-        posZ.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
-                TranslateCommand command = new TranslateCommand(go);
-                command.setBefore(go.position);
-                Vector3 pos = go.getPositionRel(tempV3);
-                go.setPositionRel(pos.x, pos.y, posZ.getFloat());
-                command.setAfter(go.position);
-                history.add(command);
-            }
-        });
+//        posX.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go == null) return;
+//                TranslateCommand command = new TranslateCommand(go);
+//                command.setBefore(go.position);
+//                Vector3 pos = go.getPositionRel(tempV3);
+//                go.setPositionRel(posX.getFloat(), pos.y, pos.z);
+//                command.setAfter(go.position);
+//                history.add(command);
+//            }
+//        });
+//        posY.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go == null) return;
+//                TranslateCommand command = new TranslateCommand(go);
+//                command.setBefore(go.position);
+//                Vector3 pos = go.getPositionRel(tempV3);
+//                go.setPositionRel(pos.x, posY.getFloat(), pos.z);
+//                command.setAfter(go.position);
+//                history.add(command);
+//            }
+//        });
+//        posZ.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go == null) return;
+//                TranslateCommand command = new TranslateCommand(go);
+//                command.setBefore(go.position);
+//                Vector3 pos = go.getPositionRel(tempV3);
+//                go.setPositionRel(pos.x, pos.y, posZ.getFloat());
+//                command.setAfter(go.position);
+//                history.add(command);
+//            }
+//        });
 
         // rotation
 //        rotX.addListener(new ChangeListener() {
@@ -186,63 +186,64 @@ public class TransformWidget extends BaseInspectorWidget {
 //        });
 
         // scale
-        scaleX.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go != null && scaleX.getFloat() > 0f) {
-                    ScaleCommand scaleCommand = new ScaleCommand(go);
-                    scaleCommand.setBefore(go.scale);
-                    go.getScaleRel(tempV3);
-                    go.setScaleRel(scaleX.getFloat(), tempV3.y, tempV3.z);
-                    scaleCommand.setAfter(go.scale);
-                    history.add(scaleCommand);
-                }
-            }
-        });
-        scaleY.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go != null && scaleY.getFloat() > 0f) {
-                    ScaleCommand scaleCommand = new ScaleCommand(go);
-                    scaleCommand.setBefore(go.scale);
-                    go.getScaleRel(tempV3);
-                    go.setScaleRel(tempV3.x, scaleY.getFloat(), tempV3.z);
-                    scaleCommand.setAfter(go.scale);
-                    history.add(scaleCommand);
-                }
-            }
-        });
-        scaleZ.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                GameObject go = projectContext.currScene.currentSelection;
-                if(go != null && scaleZ.getFloat() > 0f) {
-                    ScaleCommand scaleCommand = new ScaleCommand(go);
-                    scaleCommand.setBefore(go.scale);
-                    go.getScaleRel(tempV3);
-                    go.setScaleRel(tempV3.x, tempV3.y, scaleZ.getFloat());
-                    scaleCommand.setAfter(go.scale);
-                    history.add(scaleCommand);
-                }
-            }
-        });
+//        scaleX.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go != null && scaleX.getFloat() > 0f) {
+//                    ScaleCommand scaleCommand = new ScaleCommand(go);
+//                    scaleCommand.setBefore(go.scale);
+//                    go.getScaleRel(tempV3);
+//                    go.setScaleRel(scaleX.getFloat(), tempV3.y, tempV3.z);
+//                    scaleCommand.setAfter(go.scale);
+//                    history.add(scaleCommand);
+//                }
+//            }
+//        });
+//        scaleY.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go != null && scaleY.getFloat() > 0f) {
+//                    ScaleCommand scaleCommand = new ScaleCommand(go);
+//                    scaleCommand.setBefore(go.scale);
+//                    go.getScaleRel(tempV3);
+//                    go.setScaleRel(tempV3.x, scaleY.getFloat(), tempV3.z);
+//                    scaleCommand.setAfter(go.scale);
+//                    history.add(scaleCommand);
+//                }
+//            }
+//        });
+//        scaleZ.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                GameObject go = projectContext.currScene.currentSelection;
+//                if(go != null && scaleZ.getFloat() > 0f) {
+//                    ScaleCommand scaleCommand = new ScaleCommand(go);
+//                    scaleCommand.setBefore(go.scale);
+//                    go.getScaleRel(tempV3);
+//                    go.setScaleRel(tempV3.x, tempV3.y, scaleZ.getFloat());
+//                    scaleCommand.setAfter(go.scale);
+//                    history.add(scaleCommand);
+//                }
+//            }
+//        });
 
     }
 
     @Override
     public void setValues(GameObject go) {
-        Vector3 pos = go.getPositionRel(tempV3);
+        Vector3 pos = go.getLocalPosition(tempV3);
         posX.setText(StringUtils.formatFloat(pos.x, 2));
         posY.setText(StringUtils.formatFloat(pos.y, 2));
         posZ.setText(StringUtils.formatFloat(pos.z, 2));
 
-        rotX.setText(StringUtils.formatFloat(go.rotation.getPitch(), 2));
-        rotY.setText(StringUtils.formatFloat(go.rotation.getYaw(), 2));
-        rotZ.setText(StringUtils.formatFloat(go.rotation.getRoll(), 2));
+        Quaternion rot = go.getLocalRotation(tempQuat);
+        rotX.setText(StringUtils.formatFloat(rot.getPitch(), 2));
+        rotY.setText(StringUtils.formatFloat(rot.getYaw(), 2));
+        rotZ.setText(StringUtils.formatFloat(rot.getRoll(), 2));
 
-        Vector3 scl = go.getScaleRel(tempV3);
+        Vector3 scl = go.getLocalScale(tempV3);
         scaleX.setText(StringUtils.formatFloat(scl.x, 2));
         scaleY.setText(StringUtils.formatFloat(scl.y, 2));
         scaleZ.setText(StringUtils.formatFloat(scl.z, 2));

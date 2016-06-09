@@ -16,9 +16,6 @@
 
 package com.mbrlabs.mundus.commons.scene3d;
 
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.scene3d.traversal.DepthFirstIterator;
@@ -29,294 +26,32 @@ import java.util.Iterator;
  * @author Marcus Brummer
  * @version 16-01-2016
  */
-public class GameObject implements Iterable<GameObject> {
+public class GameObject extends SimpleNode<GameObject> implements Iterable<GameObject> {
 
     public static final String DEFAULT_NAME = "GameObject";
-    private static Quaternion tempQuat = new Quaternion();
-    private static Vector3 tempVec = new Vector3();
 
     private int id;
     private String name;
     private boolean active;
     private Array<String> tags;
     private Array<Component> components;
-    private Array<GameObject> children;
-    private GameObject parent;
-    public SceneGraph sceneGraph;
 
-    private Matrix4 transform;
-    public Vector3 position;
-    public Quaternion rotation;
-    public Vector3 scale;
+    public final SceneGraph sceneGraph;
 
     public GameObject(SceneGraph sceneGraph) {
+        super();
+        this.sceneGraph = sceneGraph;
         this.name = DEFAULT_NAME;
         this.active = true;
         this.id = -1;
         this.tags = null;
-        this.children = null;
         this.components = new Array<Component>(3);
-        this.sceneGraph = sceneGraph;
-
-        this.transform = new Matrix4();
-        this.position = new Vector3(0, 0, 0);
-        this.scale = new Vector3(1, 1, 1);
-        this.rotation = new Quaternion();
     }
 
     public GameObject(SceneGraph sceneGraph, String name, int id) {
         this(sceneGraph);
         this.name = name;
         this.id = id;
-    }
-
-    /**
-     * Returns the position, relative to the parent node.
-     *
-     * @param out   vector for storing the position
-     * @return      vector, containing the relative position
-     */
-    public Vector3 getPositionRel(Vector3 out) {
-        if(parent == null) return out.set(position);
-        return out.set(position).sub(parent.position);
-    }
-
-    /**
-     * Sets the absolute position in world coordinates.
-     *
-     * @param x     x axis position
-     * @param y     y axis position
-     * @param z     z axis position
-     */
-    public void setPosition(float x, float y, float z) {
-        final Vector3 diff = tempVec.set(x, y, z).sub(position);
-        this.position.set(x, y, z);
-
-        calculateTransform();
-
-        if (children != null) {
-            for (GameObject node : this.children) {
-                node.translate(diff.x, diff.y, diff.z);
-            }
-        }
-    }
-
-    /**
-     * Sets the position relative to the parent node.
-     *
-     * @param x     x axis position
-     * @param y     y axis position
-     * @param z     z axis position
-     */
-    public void setPositionRel(float x, float y, float z) {
-        if(parent == null) {
-            setPosition(x, y, z);
-        } else {
-            setPosition(parent.position.x + x, parent.position.y + y, parent.position.z + z);
-        }
-    }
-
-    /**
-     * Translates the game object
-     *
-     * @param x     x axis translation
-     * @param y     y axis translation
-     * @param z     z axis translation
-     */
-    public void translate(float x, float y, float z) {
-        position.add(x, y, z);
-        //transform.trn(x, y, z);
-        calculateTransform();
-
-        if (children != null) {
-            for (GameObject node : this.children) {
-                node.translate(x, y, z);
-            }
-        }
-    }
-
-    /**
-     * Returns the rotation in euler angles, relative to the parent node.
-     *
-     * @param out   vector for storing the rotation
-     * @return      vector, containing the rotation
-     */
-    public Quaternion getRotationRel(Quaternion out) {
-        // TODO fix
-//        if(parent == null) return out.set(rotation);
-//        return out.set(rotation).sub(parent.rotation);
-        return out.set(rotation);
-    }
-
-    /**
-     * Sets the rotation (euler angles) in world space.
-     */
-    public void setRotation(Quaternion rot) {
-        this.rotation.set(rot);
-        calculateTransform();
-
-        // TODO do children
-//        if (children != null) {
-//            for (GameObject node : this.children) {
-//                node.rotate(diff.x, diff.y, diff.z);
-//            }
-//        }
-    }
-
-    /**
-     * Sets the rotation (euler angles) relative to the parent node.
-     *
-     */
-    public void setRotationRel(Quaternion rot) {
-        if(parent == null) {
-            setRotation(rot);
-        } else {
-            tempQuat.set(parent.rotation).mul(rot);
-            setRotation(tempQuat);
-        }
-    }
-
-    /**
-     * Rotates the game object.
-     *
-     */
-    public void rotate(Quaternion rot) {
-        tempQuat.set(rot).mul(rotation);
-        rotation.set(tempQuat);
-        calculateTransform();
-
-        if (children != null) {
-            for (GameObject node : this.children) {
-                node.rotate(rot);
-            }
-        }
-    }
-
-    /**
-     * Sets the scale in world coordinates.
-     *
-     * @param x     x axis scale
-     * @param y     y axis scale
-     * @param z     z axis scale
-     */
-    public void setScale(float x, float y, float z) {
-        final Vector3 diff = tempVec.set(x / scale.x, y / scale.y, z / scale.z);
-        this.scale.set(x, y, z);
-        calculateTransform();
-
-        if (children != null) {
-            for (GameObject node : this.children) {
-                node.scale(diff.x, diff.y, diff.z);
-            }
-        }
-    }
-
-    /**
-     * Sets the scaling relative to the parent node.
-     *
-     * @param x     x axis scale
-     * @param y     y axis scale
-     * @param z     z axis scale
-     */
-    public void setScaleRel(float x, float y, float z) {
-        if(parent == null) {
-            setScale(x, y, z);
-        } else {
-            setScale(parent.scale.x * x, parent.scale.y * y, parent.scale.z * z);
-        }
-    }
-
-    /**
-     * Scales the game object.
-     *
-     * @param x     x axis scale
-     * @param y     y axis scale
-     * @param z     z axis scale
-     */
-    public void scale(float x, float y, float z) {
-        scale.scl(x, y, z);
-        calculateTransform();
-
-        if(children != null) {
-            for(GameObject c : children) {
-                c.scale(x, y, z);
-            }
-        }
-
-    }
-
-    /**
-     * Returns the scaling relative to the parent node.
-     *
-     * @param out   vector for storing the scale
-     * @return      vector, containing the scale
-     */
-    public Vector3 getScaleRel(Vector3 out) {
-        if(parent == null) return out.set(scale);
-        out.set(scale.x / parent.scale.x, scale.y / parent.scale.y , scale.z / parent.scale.z);
-
-        return out;
-    }
-
-    /**
-     * Sets position, rotation & scale in world coordinates.
-     *
-     * @param transform     transformation matrix
-     */
-    public void setTransform(Matrix4 transform) {
-        this.transform = transform;
-        transform.getTranslation(position);
-        transform.getRotation(rotation);
-        transform.getScale(scale);
-    }
-
-    /**
-     * Recalculates the transformation matrix.
-     */
-    public void calculateTransform() {
-        transform.set(position, rotation, scale);
-    }
-
-    /**
-     * Returns the transformation matrix.
-     *
-     * @return transformation matrix of this game object
-     */
-    public Matrix4 getTransform() {
-        return this.transform;
-    }
-
-    /**
-     * Calculates the unweighted medium position of this node and all it's children.
-     *
-     * @param out   input vector
-     * @return      input vector containing the medium position
-     */
-    public Vector3 calculateMedium(Vector3 out) {
-        out.set(position);
-        if(children == null) return out;
-
-        for(GameObject go : children) {
-            out.add(go.position);
-        }
-        return out.scl(1f / (children.size+1));
-    }
-
-    /**
-     * Calculates the weighted (by scale) medium position of this node and all it's children.
-     *
-     * @param out   input vector
-     * @return      input vector containing the medium position
-     */
-    public Vector3 calculateWeightedMedium(Vector3 out) {
-        out.set(position);
-        if(children == null) return out;
-
-        for(GameObject go : children) {
-            tempVec.set(go.position).scl(go.scale);
-            out.add(tempVec);
-        }
-        return out.scl(1f / (children.size+1));
     }
 
     /**
@@ -330,8 +65,8 @@ public class GameObject implements Iterable<GameObject> {
                 component.render(delta);
             }
 
-            if (children != null) {
-                for (GameObject node : this.children) {
+            if (getChildren() != null) {
+                for (GameObject node : getChildren()) {
                     node.render(delta);
                 }
             }
@@ -349,8 +84,8 @@ public class GameObject implements Iterable<GameObject> {
                 component.update(delta);
             }
 
-            if (children != null) {
-                for (GameObject node : this.children) {
+            if (getChildren() != null) {
+                for (GameObject node : getChildren()) {
                     node.update(delta);
                 }
             }
@@ -385,24 +120,12 @@ public class GameObject implements Iterable<GameObject> {
         return this.tags;
     }
 
-    public SceneGraph getSceneGraph() {
-        return sceneGraph;
-    }
-
     public void addTag(String tag) {
         if(this.tags == null) {
             this.tags = new Array<String>(2);
         }
 
         this.tags.add(tag);
-    }
-
-    public GameObject getParent() {
-        return this.parent;
-    }
-
-    public void setParent(GameObject parent) {
-        this.parent = parent;
     }
 
     public Array<Component> findComponentsByType(Array<Component> out, Component.Type type, boolean includeChilds) {
@@ -451,9 +174,6 @@ public class GameObject implements Iterable<GameObject> {
         }
     }
 
-    public Array<GameObject> getChildren() {
-        return this.children;
-    }
 
     public boolean isChildOf(GameObject other) {
         for(GameObject go : other) {
@@ -461,23 +181,6 @@ public class GameObject implements Iterable<GameObject> {
         }
 
         return false;
-    }
-
-    public void addChild(GameObject child) {
-        if(this.children == null) {
-            children = new Array<GameObject>();
-        }
-        child.setParent(this);
-        children.add(child);
-    }
-
-    public boolean remove() {
-        if(parent != null) {
-            parent.getChildren().removeValue(this, true);
-            return true;
-        }
-        sceneGraph.getGameObjects().removeValue(this, true);
-        return true;
     }
 
     @Override

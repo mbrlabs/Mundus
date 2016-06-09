@@ -36,16 +36,8 @@ public class ModelComponent extends AbstractComponent {
         type = Type.MODEL;
     }
 
-    public Shader getShader() {
-        return shader;
-    }
-
     public void setShader(Shader shader) {
         this.shader = shader;
-    }
-
-    public ModelInstance getModelInstance() {
-        return modelInstance;
     }
 
     public void setModelInstance(ModelInstance modelInstance) {

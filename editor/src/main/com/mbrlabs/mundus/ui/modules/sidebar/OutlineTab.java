@@ -348,10 +348,9 @@ public class OutlineTab extends Tab implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if(selectedGO != null) {
-                        if(selectedGO.remove()) {
-                            selectedGO = null;
-                            Mundus.postEvent(new SceneGraphChangedEvent());
-                        }
+                        selectedGO.remove();
+                        selectedGO = null;
+                        Mundus.postEvent(new SceneGraphChangedEvent());
                     }
                 }
             });

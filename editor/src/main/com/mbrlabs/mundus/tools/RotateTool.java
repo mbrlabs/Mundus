@@ -94,7 +94,7 @@ public class RotateTool extends TransformTool {
             Viewport vp = projectContext.currScene.viewport;
 
             GameObject go = projectContext.currScene.currentSelection;
-            go.calculateMedium(temp0);
+            go.toMatrix().getTranslation(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
 
             shapeRenderMat.setToOrtho2D(vp.getScreenX(), vp.getScreenY(), vp.getScreenWidth(), vp.getScreenHeight());
@@ -151,7 +151,7 @@ public class RotateTool extends TransformTool {
         ProjectContext projectContext = projectManager.current();
 
         if(projectContext.currScene.currentSelection != null) {
-            temp0.set(projectContext.currScene.currentSelection.position);
+            projectContext.currScene.currentSelection.getPosition(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
             Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() -  Gdx.input.getY(), 0);
 
@@ -213,12 +213,12 @@ public class RotateTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
-        final Vector3 medium = projectManager.current().currScene.currentSelection.calculateMedium(temp0);
-        xHandle.position.set(medium);
+        final Vector3 pos = projectManager.current().currScene.currentSelection.toMatrix().getTranslation(temp0);
+        xHandle.position.set(pos);
         xHandle.applyTransform();
-        yHandle.position.set(medium);
+        yHandle.position.set(pos);
         yHandle.applyTransform();
-        zHandle.position.set(medium);
+        zHandle.position.set(pos);
         zHandle.applyTransform();
     }
 
@@ -226,7 +226,7 @@ public class RotateTool extends TransformTool {
     protected void scaleHandles() {
         ProjectContext projectContext = projectManager.current();
 
-        Vector3 pos = projectContext.currScene.currentSelection.position;
+        Vector3 pos = projectContext.currScene.currentSelection.getPosition(temp0);
         float scaleFactor = projectContext.currScene.cam.position.dst(pos) * 0.005f;
         xHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
         xHandle.applyTransform();

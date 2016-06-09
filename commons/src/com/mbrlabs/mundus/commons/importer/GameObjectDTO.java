@@ -26,8 +26,8 @@ public class GameObjectDTO {
     private String name;
     private boolean active;
 
-    /** position, rotation, scale */
-    private float[] trans = new float[9];
+    /** position, rotation (quaternion), scale */
+    private float[] trans = new float[10];
 
     private ModelComponentDTO modelC;
     private TerrainComponentDTO terrC;

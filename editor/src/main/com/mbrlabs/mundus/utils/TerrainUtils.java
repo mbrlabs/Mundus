@@ -39,10 +39,9 @@ public class TerrainUtils {
         GameObject terrainGO = new GameObject(sg);
         terrainGO.setId(goID);
         terrainGO.setName(goName);
-        terrainGO.setTransform(terrain.transform);
-        terrainGO.setParent(null);
+       // terrainGO.setTransform(terrain.transform);
 
-        terrain.setTransform(terrainGO.getTransform());
+        terrain.setTransform(terrainGO.toMatrix());
 
         TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
         terrainComponent.setTerrain(terrain);

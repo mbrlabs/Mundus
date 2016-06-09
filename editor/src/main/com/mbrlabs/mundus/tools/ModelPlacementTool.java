@@ -101,7 +101,8 @@ public class ModelPlacementTool extends Tool {
             GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.name, id);
             projectManager.current().currScene.sceneGraph.getGameObjects().add(modelGo);
 
-            modelGo.setTransform(curEntity.modelInstance.transform);
+            curEntity.modelInstance.transform.getTranslation(tempV3);
+            modelGo.translate(tempV3);
             ModelComponent modelComponent = new ModelComponent(modelGo);
             modelComponent.setShader(shader);
             modelComponent.setModelInstance(curEntity);

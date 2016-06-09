@@ -99,7 +99,6 @@ public class SelectionTool extends Tool {
         if(button == Input.Buttons.RIGHT) {
             GameObject selection = goPicker.pick(projectManager.current().currScene, screenX, screenY);
             if(selection != null && !selection.equals(projectManager.current().currScene.currentSelection)) {
-                System.out.println(selection.rotation);
                 gameObjectSelected(selection);
                 Mundus.postEvent(new GameObjectSelectedEvent(selection));
             }

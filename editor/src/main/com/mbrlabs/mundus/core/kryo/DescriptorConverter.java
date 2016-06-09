@@ -17,6 +17,8 @@
 package com.mbrlabs.mundus.core.kryo;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.env.Fog;
@@ -52,6 +54,9 @@ import java.util.Locale;
  * @version 17-12-2015
  */
 public class DescriptorConverter {
+
+    private static final Vector3 tempVec = new Vector3();
+    private static final Quaternion tempQuat = new Quaternion();
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                     Registry
@@ -157,10 +162,9 @@ public class DescriptorConverter {
         final float[] rot = descriptor.getRotation();
         final float[] scl = descriptor.getScale();
 
-        go.position.set(pos[0], pos[1], pos[2]);
-        go.rotation.set(rot[0], rot[1], rot[2], rot[3]);
-        go.scale.set(scl[0], scl[1], scl[2]);
-        go.calculateTransform();
+        go.translate(pos[0], pos[1], pos[2]);
+        go.rotate(rot[0], rot[1], rot[2], rot[3]);
+        go.scale(scl[0], scl[1], scl[2]);
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // convert components
@@ -188,20 +192,23 @@ public class DescriptorConverter {
         descriptor.setActive(go.isActive());
 
         // translation
-        descriptor.getPosition()[0] = go.position.x;
-        descriptor.getPosition()[1] = go.position.y;
-        descriptor.getPosition()[2] = go.position.z;
+        go.getLocalPosition(tempVec);
+        descriptor.getPosition()[0] = tempVec.x;
+        descriptor.getPosition()[1] = tempVec.y;
+        descriptor.getPosition()[2] = tempVec.z;
 
         // rotation
-        descriptor.getRotation()[0] = go.rotation.x;
-        descriptor.getRotation()[1] = go.rotation.y;
-        descriptor.getRotation()[2] = go.rotation.z;
-        descriptor.getRotation()[3] = go.rotation.w;
+        go.getLocalRotation(tempQuat);
+        descriptor.getRotation()[0] = tempQuat.x;
+        descriptor.getRotation()[1] = tempQuat.y;
+        descriptor.getRotation()[2] = tempQuat.z;
+        descriptor.getRotation()[3] = tempQuat.w;
 
         // scaling
-        descriptor.getScale()[0] = go.scale.x;
-        descriptor.getScale()[1] = go.scale.y;
-        descriptor.getScale()[2] = go.scale.z;
+        go.getLocalScale(tempVec);
+        descriptor.getScale()[0] = tempVec.x;
+        descriptor.getScale()[1] = tempVec.y;
+        descriptor.getScale()[2] = tempVec.z;
 
         // convert components
         for(Component c : go.getComponents()) {
@@ -276,7 +283,7 @@ public class DescriptorConverter {
             return null;
         }
 
-        terrain.transform = go.getTransform();
+        terrain.transform = go.toMatrix();
         TerrainComponent terrainComponent = new TerrainComponent(go);
         terrainComponent.setTerrain(terrain);
 

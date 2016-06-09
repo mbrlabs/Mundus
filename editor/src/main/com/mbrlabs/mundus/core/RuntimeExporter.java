@@ -191,19 +191,22 @@ public class RuntimeExporter {
         dto.setActive(gameObject.isActive());
 
         // position
-        dto.getTrans()[0] = gameObject.position.x;
-        dto.getTrans()[1] = gameObject.position.y;
-        dto.getTrans()[2] = gameObject.position.z;
-
-        // rotation
-        dto.getTrans()[3] = gameObject.rotation.x;
-        dto.getTrans()[4] = gameObject.rotation.y;
-        dto.getTrans()[5] = gameObject.rotation.z;
-
-        // scale
-        dto.getTrans()[6] = gameObject.scale.x;
-        dto.getTrans()[7] = gameObject.scale.y;
-        dto.getTrans()[8] = gameObject.scale.z;
+        Vector3 pos = gameObject.getLocalPosition(vec3);
+        dto.getTrans()[0] = pos.x;
+        dto.getTrans()[1] = pos.y;
+        dto.getTrans()[2] = pos.z;
+//
+//        // rotation
+//        Quaternion rot = gameObject.getLocalPosition(quat);
+//
+//        dto.getTrans()[3] = gameObject.rotation.x;
+//        dto.getTrans()[4] = gameObject.rotation.y;
+//        dto.getTrans()[5] = gameObject.rotation.z;
+//
+//        // scale
+//        dto.getTrans()[6] = gameObject.scale.x;
+//        dto.getTrans()[7] = gameObject.scale.y;
+//        dto.getTrans()[8] = gameObject.scale.z;
 
         // components
         for(Component c : gameObject.getComponents()) {
