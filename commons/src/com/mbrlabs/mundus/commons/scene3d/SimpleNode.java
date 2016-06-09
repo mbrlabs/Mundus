@@ -22,6 +22,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
+ * Very simple and inefficient implementation of a scene graph node.
+ *
+ * Inefficient, because each call to getTransform() multiplies all parent transformation matrices
+ * without caching them.
+ *
  * @author Marcus Brummer
  * @version 09-06-2016
  */
@@ -61,24 +66,24 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
 
     @Override
     public Vector3 getPosition(Vector3 out) {
-        return toMatrix().getTranslation(out);
+        return getTransform().getTranslation(out);
     }
 
     @Override
     public Quaternion getRotation(Quaternion out) {
-        return toMatrix().getRotation(out);
+        return getTransform().getRotation(out);
     }
 
     @Override
     public Vector3 getScale(Vector3 out) {
-        return toMatrix().getScale(out);
+        return getTransform().getScale(out);
     }
 
     @Override
-    public Matrix4 toMatrix() {
+    public Matrix4 getTransform() {
         if(parent == null) return combined.set(localPosition, localRotation, localScale);
         combined.set(localPosition, localRotation, localScale);
-        return combined.mulLeft(parent.toMatrix());
+        return combined.mulLeft(parent.getTransform());
     }
 
     @Override

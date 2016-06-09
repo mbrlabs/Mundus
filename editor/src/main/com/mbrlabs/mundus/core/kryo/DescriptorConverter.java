@@ -283,7 +283,7 @@ public class DescriptorConverter {
             return null;
         }
 
-        terrain.transform = go.toMatrix();
+        terrain.transform = go.getTransform();
         TerrainComponent terrainComponent = new TerrainComponent(go);
         terrainComponent.setTerrain(terrain);
 

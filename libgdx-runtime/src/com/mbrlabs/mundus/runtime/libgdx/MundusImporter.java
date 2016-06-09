@@ -183,7 +183,7 @@ public class MundusImporter {
 
         Terrain terrain = Utils.findTerrainById(terrains, dto.getTerrainID());
         System.out.println(dto.getTerrainID());
-        terrain.transform.set(go.toMatrix());
+        terrain.transform.set(go.getTransform());
         terrainComponent.setTerrain(terrain);
 
         return terrainComponent;
@@ -194,7 +194,7 @@ public class MundusImporter {
         // TODO save models in map to remove the search every time
 
         ModelInstance mi = new ModelInstance(Utils.findModelById(models, dto.getModelID()));
-        mi.transform.set(go.toMatrix());
+        mi.transform.set(go.getTransform());
 
         modelComponent.setModelInstance(mi);
         modelComponent.setShader(entityShader);

@@ -54,7 +54,7 @@ public class TerrainComponent extends AbstractComponent {
 
     @Override
     public void render(float delta) {
-        terrain.setTransform(getGameObject().toMatrix());
+        terrain.setTransform(getGameObject().getTransform());
         gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
     }
 

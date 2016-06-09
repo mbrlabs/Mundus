@@ -215,7 +215,7 @@ public class TranslateTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
-        final Vector3 pos = projectManager.current().currScene.currentSelection.toMatrix().getTranslation(temp0);
+        final Vector3 pos = projectManager.current().currScene.currentSelection.getTransform().getTranslation(temp0);
         xHandle.position.set(pos);
         xHandle.applyTransform();
         yHandle.position.set(pos);

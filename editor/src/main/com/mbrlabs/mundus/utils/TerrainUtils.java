@@ -41,7 +41,7 @@ public class TerrainUtils {
         terrainGO.setName(goName);
        // terrainGO.setTransform(terrain.transform);
 
-        terrain.setTransform(terrainGO.toMatrix());
+        terrain.setTransform(terrainGO.getTransform());
 
         TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
         terrainComponent.setTerrain(terrain);

@@ -36,7 +36,6 @@ import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
-import com.mbrlabs.mundus.utils.Colors;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.lwjgl.opengl.GL11;
@@ -94,7 +93,7 @@ public class RotateTool extends TransformTool {
             Viewport vp = projectContext.currScene.viewport;
 
             GameObject go = projectContext.currScene.currentSelection;
-            go.toMatrix().getTranslation(temp0);
+            go.getTransform().getTranslation(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
 
             shapeRenderMat.setToOrtho2D(vp.getScreenX(), vp.getScreenY(), vp.getScreenWidth(), vp.getScreenHeight());
@@ -213,7 +212,7 @@ public class RotateTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
-        final Vector3 pos = projectManager.current().currScene.currentSelection.toMatrix().getTranslation(temp0);
+        final Vector3 pos = projectManager.current().currScene.currentSelection.getTransform().getTranslation(temp0);
         xHandle.position.set(pos);
         xHandle.applyTransform();
         yHandle.position.set(pos);
