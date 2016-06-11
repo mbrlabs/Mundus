@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -168,24 +170,34 @@ public class TranslateTool extends TransformTool {
                 lastPos.set(rayEnd);
             }
 
+            GameObject go = projectManager.current().currScene.currentSelection;
+
             boolean modified = false;
+            Vector3 vec = new Vector3();
             if(state == TransformState.TRANSFORM_XZ) {
-                projectManager.current().currScene.currentSelection.translate(rayEnd.x - lastPos.x,
-                        0, rayEnd.z - lastPos.z);
+                vec.set(rayEnd.x - lastPos.x, 0, rayEnd.z - lastPos.z);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_X) {
-                projectManager.current().currScene.currentSelection.translate(rayEnd.x - lastPos.x,
+                vec.set(rayEnd.x - lastPos.x,
                         0, 0);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Y) {
-                projectManager.current().currScene.currentSelection.translate(0,
+                vec.set(0,
                         rayEnd.y - lastPos.y, 0);
                 modified = true;
             } else if(state == TransformState.TRANSFORM_Z) {
-                projectManager.current().currScene.currentSelection.translate(0, 0,
+                vec.set(0, 0,
                         rayEnd.z - lastPos.z);
                 modified = true;
             }
+
+            // TODO translation in global sapce
+//            if(globalSpace) {
+//                System.out.println("Before: " + vec);
+//                System.out.println("After: " + vec);
+//            }
+
+            go.translate(vec);
 
             if(modified) {
                 gameObjectModifiedEvent.setGameObject(projectManager.current().currScene.currentSelection);

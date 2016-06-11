@@ -32,6 +32,9 @@ import com.badlogic.gdx.utils.Array;
  */
 public class SimpleNode<T extends SimpleNode> implements Node<T> {
 
+    static boolean WORLD_SPACE_TRANSFORM = true;
+    private static Matrix4 tempMat = new Matrix4();
+
     private Vector3         localPosition;
     private Quaternion      localRotation;
     private Vector3         localScale;
@@ -81,7 +84,10 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
 
     @Override
     public Matrix4 getTransform() {
-        if(parent == null) return combined.set(localPosition, localRotation, localScale);
+        if(parent == null) {
+            return combined.set(localPosition, localRotation, localScale);
+        }
+
         combined.set(localPosition, localRotation, localScale);
         return combined.mulLeft(parent.getTransform());
     }

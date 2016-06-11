@@ -7,6 +7,9 @@
 - Ctrl+S shortcut for saving the project
 - Fixed crash on MacOS: https://github.com/mbrlabs/Mundus/commit/fdd193caa7b75e5a1607f448c1f81d1faeec86dd
 - Added a confirm dialog when exiting the editor
+- Reimplemented the scene graph
+- Updated libGDX to 1.9.3
+- Updated VisUI to 1.1.2
 
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations
