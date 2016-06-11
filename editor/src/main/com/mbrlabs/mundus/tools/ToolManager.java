@@ -114,6 +114,7 @@ public class ToolManager extends InputAdapter implements Disposable {
             if(activeTool != null) {
                 activeTool.reset();
             }
+            setDefaultTool();
             return true;
         }
         return false;

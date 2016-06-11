@@ -49,14 +49,17 @@ public class ShortcutController extends KeyboardLayoutInputAdapter {
 
         if(keycode == Input.Keys.Z) {
             history.goBack();
+            return true;
         } else if(keycode == Input.Keys.Y) {
             history.goForward();
+            return true;
         } else if(keycode == Input.Keys.S) {
             projectManager.saveCurrentProject();
             Ui.getInstance().getToaster().success("Project saved");
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override

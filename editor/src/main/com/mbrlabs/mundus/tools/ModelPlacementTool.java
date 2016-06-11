@@ -76,7 +76,7 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public void reset() {
-
+        dispose();
     }
 
     @Override
