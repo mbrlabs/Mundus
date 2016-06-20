@@ -157,7 +157,8 @@ public class MundusImporter {
 
         final float[] trans = dto.getTrans();
         go.translate(trans[0], trans[1], trans[2]);
-        go.rotate(trans[3], trans[4], trans[5]);
+        // FIXME
+        // go.rotate(trans[3], trans[4], trans[5]);
         go.scale(trans[6], trans[7], trans[8]);
 
         if(dto.getTerrC() != null) {
