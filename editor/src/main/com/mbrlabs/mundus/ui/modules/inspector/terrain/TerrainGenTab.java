@@ -130,14 +130,13 @@ public class TerrainGenTab extends Tab {
                     originalMap.getHeight(), 0, 0, scaledPixmap.getWidth(), scaledPixmap.getHeight());
 
             originalMap.dispose();
-            terrain.loadHeightMap(scaledPixmap, terrain.terrainWidth * 0.17f);
+            Terraform.heightMap(terrain, scaledPixmap, terrain.terrainWidth * 0.17f);
             scaledPixmap.dispose();
         } else {
-            terrain.loadHeightMap(originalMap, terrain.terrainWidth * 0.17f);
+            Terraform.heightMap(terrain, originalMap, terrain.terrainWidth * 0.17f);
             originalMap.dispose();
         }
 
-        terrain.update();
         command.setHeightDataAfter(terrain.heightData);
         history.add(command);
     }

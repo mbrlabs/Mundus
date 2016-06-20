@@ -289,11 +289,6 @@ public class Terrain implements RenderableProvider, Disposable {
         return out;
     }
 
-    public void loadHeightMap(Pixmap map, float maxHeight) {
-        if (map.getWidth() != vertexResolution || map.getHeight() != vertexResolution) throw new GdxRuntimeException("Incorrect map size");
-        heightData = heightColorsToMap(map.getPixels(), map.getFormat(), this.vertexResolution, this.vertexResolution, maxHeight);
-    }
-
     public TerrainTexture getTerrainTexture() {
         return terrainTexture;
     }
@@ -315,37 +310,6 @@ public class Terrain implements RenderableProvider, Disposable {
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
         modelInstance.getRenderables(renderables, pool);
     }
-
-    /**
-     * Simply creates an array containing only all the red components of the heightData.
-     */
-    private float[] heightColorsToMap (final ByteBuffer data, final Pixmap.Format format, int width, int height, float maxHeight) {
-        final int bytesPerColor = (format == Pixmap.Format.RGB888 ? 3 : (format == Pixmap.Format.RGBA8888 ? 4 : 0));
-        if (bytesPerColor == 0) throw new GdxRuntimeException("Unsupported format, should be either RGB8 or RGBA8");
-        if (data.remaining() < (width * height * bytesPerColor)) throw new GdxRuntimeException("Incorrect map size");
-
-        final int startPos = data.position();
-        byte[] source = null;
-        int sourceOffset = 0;
-        if (data.hasArray() && !data.isReadOnly()) {
-            source = data.array();
-            sourceOffset = data.arrayOffset() + startPos;
-        } else {
-            source = new byte[width * height * bytesPerColor];
-            data.get(source);
-            data.position(startPos);
-        }
-
-        float[] dest = new float[width * height];
-        for (int i = 0; i < dest.length; ++i) {
-            int v = source[sourceOffset + i * 3];
-            v = v < 0 ? 256 + v : v;
-            dest[i] = maxHeight * ((float)v / 255f);
-        }
-
-        return dest;
-    }
-
 
     @Override
     public void dispose() {

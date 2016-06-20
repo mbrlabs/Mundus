@@ -17,6 +17,10 @@
 package com.mbrlabs.mundus.commons.terrain;
 
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+
+import java.nio.ByteBuffer;
 import java.util.Random;
 
 /**
@@ -36,6 +40,53 @@ public class Terraform {
         }
 
         terrain.update();
+    }
+
+    /**
+     * Loads a heightmap.
+     *
+     * The pixmap dimensions must match the terrain size, otherwise a GdxRuntimeException is thrown.
+     *
+     * @param terrain   the terrain
+     * @param map       height map
+     * @param maxHeight max amplitude
+     */
+    public static void heightMap(Terrain terrain, Pixmap map, float maxHeight) {
+        if (map.getWidth() != terrain.vertexResolution ||
+                map.getHeight() != terrain.vertexResolution) {
+            throw new GdxRuntimeException("Incorrect map size");
+        }
+        terrain.heightData = heightColorsToMap(map.getPixels(), map.getFormat(),
+                terrain.vertexResolution, terrain.vertexResolution, maxHeight);
+        terrain.update();
+    }
+
+    // Simply creates an array containing only all the red components of the heightData.
+    private static float[] heightColorsToMap (final ByteBuffer data, final Pixmap.Format format, int width, int height, float maxHeight) {
+        final int bytesPerColor = (format == Pixmap.Format.RGB888 ? 3 : (format == Pixmap.Format.RGBA8888 ? 4 : 0));
+        if (bytesPerColor == 0) throw new GdxRuntimeException("Unsupported format, should be either RGB8 or RGBA8");
+        if (data.remaining() < (width * height * bytesPerColor)) throw new GdxRuntimeException("Incorrect map size");
+
+        final int startPos = data.position();
+        byte[] source = null;
+        int sourceOffset = 0;
+        if (data.hasArray() && !data.isReadOnly()) {
+            source = data.array();
+            sourceOffset = data.arrayOffset() + startPos;
+        } else {
+            source = new byte[width * height * bytesPerColor];
+            data.get(source);
+            data.position(startPos);
+        }
+
+        float[] dest = new float[width * height];
+        for (int i = 0; i < dest.length; ++i) {
+            int v = source[sourceOffset + i * 3];
+            v = v < 0 ? 256 + v : v;
+            dest[i] = maxHeight * ((float)v / 255f);
+        }
+
+        return dest;
     }
 
 }
