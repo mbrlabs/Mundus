@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,7 +27,9 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.commons.terrain.Terraform;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -35,6 +38,7 @@ import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
+import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
@@ -47,7 +51,11 @@ public class TerrainGenTab extends Tab {
     private VisTable root;
 
     private FileChooserField hmInput;
-    private VisTextButton loadHeightmpBtn;
+    private VisTextButton loadHeightMapBtn;
+
+    private VisTextButton perlinNoiseBtn;
+    private VisTextField perlinNoiseSeed;
+    private VisTextField perlinNoiseAmplitude;
 
     @Inject
     private ToolManager toolManager;
@@ -62,32 +70,53 @@ public class TerrainGenTab extends Tab {
         root.align(Align.left);
 
         hmInput = new FileChooserField(250);
-        loadHeightmpBtn = new VisTextButton("Load heightmap");
+        loadHeightMapBtn = new VisTextButton("Load heightmap");
+        perlinNoiseBtn = new VisTextButton("Generate Perlin noise");
+        perlinNoiseSeed = new VisTextField("Seed");
+        perlinNoiseAmplitude = new VisTextField("Amplitude");
 
         root.add(new VisLabel("Load Heightmap")).pad(5).left().row();
         root.add(hmInput).left().row();
-        root.add(loadHeightmpBtn).padLeft(5).left().row();
+        root.add(loadHeightMapBtn).padLeft(5).left().row();
 
         root.add(new VisLabel("Perlin Noise")).pad(5).padTop(10).left().row();
+        root.add(perlinNoiseSeed).pad(5).left().fillX().expandX().row();
+        root.add(perlinNoiseAmplitude).pad(5).left().fillX().expandX().row();
+        root.add(perlinNoiseBtn).pad(5).left().row();
 
         setupListeners();
     }
 
     private void setupListeners() {
-        loadHeightmpBtn.addListener(new ClickListener() {
+        loadHeightMapBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 FileHandle hm = hmInput.getFile();
                 if(hm != null && hm.exists() && FileFormatUtils.isImage(hm)) {
-                    loadHeigtmap(hm);
+                    loadHeightMap(hm);
                 } else {
                     Dialogs.showErrorDialog(Ui.getInstance(), "Please select a heightmap image");
                 }
             }
         });
+
+        perlinNoiseBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                String seedInput = perlinNoiseSeed.getText();
+                String amplitudeInput = perlinNoiseAmplitude.getText();
+                try {
+                    int seed = Integer.valueOf(seedInput);
+                    float amplitude = Float.valueOf(amplitudeInput);
+                    Terraform.perlin(parent.component.getTerrain(), amplitude, seed);
+                } catch (NumberFormatException nfe) {
+                    Dialogs.showErrorDialog(Ui.getInstance(), "Perlin noise seed and amplitude must be numbers");
+                }
+            }
+        });
     }
 
-    public void loadHeigtmap(FileHandle heightMap) {
+    private void loadHeightMap(FileHandle heightMap) {
         Terrain terrain = parent.component.getTerrain();
         TerrainHeightCommand command = new TerrainHeightCommand(terrain);
         command.setHeightDataBefore(terrain.heightData);

@@ -43,20 +43,20 @@ import java.nio.ByteBuffer;
  */
 public class Terrain implements RenderableProvider, Disposable {
 
-    protected static final MeshPartBuilder.VertexInfo tempVertexInfo = new MeshPartBuilder.VertexInfo();
-    protected static final Vector3 c00 = new Vector3();
-    protected static final Vector3 c01 = new Vector3();
-    protected static final Vector3 c10 = new Vector3();
-    protected static final Vector3 c11 = new Vector3();
+    private static final MeshPartBuilder.VertexInfo tempVertexInfo = new MeshPartBuilder.VertexInfo();
+    private static final Vector3 c00 = new Vector3();
+    private static final Vector3 c01 = new Vector3();
+    private static final Vector3 c10 = new Vector3();
+    private static final Vector3 c11 = new Vector3();
 
     public long id;
-    protected VertexAttributes attribs;
-    protected final Vector2 uvScale = new Vector2(60, 60);
-    protected float vertices[];
-    protected int stride;
-    protected int posPos;
-    protected int norPos;
-    protected int uvPos;
+    private VertexAttributes attribs;
+    private final Vector2 uvScale = new Vector2(60, 60);
+    private float vertices[];
+    private int stride;
+    private int posPos;
+    private int norPos;
+    private int uvPos;
 
     public Matrix4 transform;
     public float[] heightData;
@@ -190,7 +190,7 @@ public class Terrain implements RenderableProvider, Disposable {
 
     }
 
-    protected short[] buildIndices() {
+    private short[] buildIndices() {
         final int w = vertexResolution - 1;
         final int h = vertexResolution - 1;
         short indices[] = new short[w * h * 6];
@@ -212,7 +212,7 @@ public class Terrain implements RenderableProvider, Disposable {
         return indices;
     }
 
-    protected void buildVertices() {
+    private void buildVertices() {
         for (int x = 0; x < vertexResolution; x++) {
             for (int z = 0; z < vertexResolution; z++) {
                 calculateVertexAt(tempVertexInfo, x, z);
@@ -222,7 +222,7 @@ public class Terrain implements RenderableProvider, Disposable {
         }
     }
 
-    protected void setVertex (int index, MeshPartBuilder.VertexInfo info) {
+    private void setVertex (int index, MeshPartBuilder.VertexInfo info) {
         index *= stride;
         if (posPos >= 0) {
             vertices[index + posPos + 0] = info.position.x;
@@ -240,7 +240,7 @@ public class Terrain implements RenderableProvider, Disposable {
         }
     }
 
-    protected MeshPartBuilder.VertexInfo calculateVertexAt(MeshPartBuilder.VertexInfo out, int x, int z) {
+    private MeshPartBuilder.VertexInfo calculateVertexAt(MeshPartBuilder.VertexInfo out, int x, int z) {
         final float dx = (float)x / (float)(vertexResolution - 1);
         final float dz = (float)z / (float)(vertexResolution - 1);
         final float height = heightData[z * vertexResolution + x];
@@ -254,7 +254,7 @@ public class Terrain implements RenderableProvider, Disposable {
     /**
      * Calculates normal of a vertex at x,y based on the verticesOnZ of the surrounding vertices
      */
-    protected MeshPartBuilder.VertexInfo calculateNormalAt(MeshPartBuilder.VertexInfo out, int x, int y) {
+    private MeshPartBuilder.VertexInfo calculateNormalAt(MeshPartBuilder.VertexInfo out, int x, int y) {
         // handle edges of terrain
         int xP1 = (x+1 >= vertexResolution) ? vertexResolution -1 : x+1;
         int yP1 = (y+1 >= vertexResolution) ? vertexResolution -1 : y+1;
