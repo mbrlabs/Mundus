@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,7 +28,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.commons.terrain.Terraform;
+import com.mbrlabs.mundus.commons.terrain.terraform.Terraform;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -38,7 +37,6 @@ import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
-import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
@@ -108,7 +106,11 @@ public class TerrainGenTab extends Tab {
                 try {
                     int seed = Integer.valueOf(seedInput);
                     float amplitude = Float.valueOf(amplitudeInput);
-                    Terraform.perlin(parent.component.getTerrain(), amplitude, seed);
+                    Terraform.perlin(parent.component.getTerrain())
+                            .minHeight(0)
+                            .maxHeight(amplitude)
+                            .seed(seed)
+                            .generate();
                 } catch (NumberFormatException nfe) {
                     Dialogs.showErrorDialog(Ui.getInstance(), "Perlin noise seed and amplitude must be numbers");
                 }
@@ -130,10 +132,14 @@ public class TerrainGenTab extends Tab {
                     originalMap.getHeight(), 0, 0, scaledPixmap.getWidth(), scaledPixmap.getHeight());
 
             originalMap.dispose();
-            Terraform.heightMap(terrain, scaledPixmap, terrain.terrainWidth * 0.17f);
+            Terraform.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
+                    .heightMap(scaledPixmap)
+                    .generate();
             scaledPixmap.dispose();
         } else {
-            Terraform.heightMap(terrain, originalMap, terrain.terrainWidth * 0.17f);
+            Terraform.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
+                    .heightMap(originalMap)
+                    .generate();
             originalMap.dispose();
         }
 
