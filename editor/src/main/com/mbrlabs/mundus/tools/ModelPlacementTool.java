@@ -22,17 +22,22 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainUpDownTab;
+import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer
@@ -50,13 +55,15 @@ public class ModelPlacementTool extends Tool {
 
     public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
         super(projectManager, shader, batch, history);
-        model = null;
-        curEntity = null;
+        this.model = null;
+        this.curEntity = null;
     }
 
     public void setModel(MModel model) {
         this.model = model;
-        curEntity = new MModelInstance(model);
+        this.curEntity = new MModelInstance(model);
+        ProjectContext context = projectManager.current();
+        System.out.println(context.terrains.size);
     }
 
     @Override
@@ -125,9 +132,12 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-        if(projectManager.current().currScene.terrainGroup.size() > 0 && curEntity != null) {
-            projectManager.current().currScene.terrainGroup.getRayIntersection(tempV3, ray);
+        if(this.model == null || curEntity == null) return false;
+
+        final ProjectContext context = projectManager.current();
+        final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
+        if(context.terrains.size > 0 && curEntity != null) {
+            TerrainUtils.getRayIntersection(context.terrains, ray, tempV3);
         } else {
             tempV3.set(projectManager.current().currScene.cam.position);
             tempV3.add(ray.direction.nor().scl(200));
@@ -138,7 +148,8 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public void dispose() {
-
+        this.model = null;
+        this.curEntity = null;
     }
 
 }

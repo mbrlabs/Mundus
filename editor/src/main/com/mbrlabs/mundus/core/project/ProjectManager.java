@@ -47,7 +47,7 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.terrain.TerrainIO;
+import com.mbrlabs.mundus.utils.TerrainIO;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
 import org.apache.commons.io.FilenameUtils;
@@ -317,9 +317,6 @@ public class ProjectManager implements Disposable {
         Array<Component> terrainComponents = new Array<>();
         for(GameObject go : sceneGraph.getGameObjects()) {
             go.findComponentsByType(terrainComponents, Component.Type.TERRAIN, true);
-        }
-        for(Component terrain : terrainComponents) {
-            scene.terrainGroup.add(((TerrainComponent)terrain).getTerrain());
         }
 
         return scene;

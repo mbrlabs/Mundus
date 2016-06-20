@@ -17,6 +17,9 @@
 package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
@@ -27,7 +30,6 @@ import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
-import com.mbrlabs.mundus.terrain.TerrainIO;
 
 /**
  * @author Marcus Brummer
@@ -69,6 +71,16 @@ public class TerrainUtils {
         terrain.terraPath = ProjectManager.PROJECT_TERRAIN_DIR + terrain.id + "." + TerrainIO.FILE_EXTENSION;
 
         return terrain;
+    }
+
+    public static Vector3 getRayIntersection(Array<Terrain> terrains, Ray ray, Vector3 out) {
+        for(Terrain terrain : terrains) {
+            terrain.getRayIntersection(out, ray);
+            if(terrain.isOnTerrain(out.x, out.z)) {
+                return out;
+            }
+        }
+        return null;
     }
 
 }

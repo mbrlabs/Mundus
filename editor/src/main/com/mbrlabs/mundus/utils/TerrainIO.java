@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.terrain;
+package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.FloatArray;

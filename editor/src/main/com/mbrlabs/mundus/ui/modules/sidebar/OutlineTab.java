@@ -335,7 +335,7 @@ public class OutlineTab extends Tab implements
                 public void clicked(InputEvent event, float x, float y) {
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
                     projectContext.terrains.add(terrain);
-                    projectContext.currScene.terrainGroup.add(terrain);
+                    //projectContext.currScene.terrainGroup.add(terrain);
                     GameObject terrainGO = TerrainUtils.createTerrainGO(
                             projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), "Terrain", terrain);
                     projectContext.currScene.sceneGraph.getGameObjects().add(terrainGO);
