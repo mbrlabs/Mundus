@@ -114,7 +114,7 @@ public class AddTerrainDialog extends BaseDialog {
                     projectContext.terrains.add(terrain);
                     GameObject terrainGO = TerrainUtils.createTerrainGO(
                             projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), nom, terrain);
-                    projectContext.currScene.sceneGraph.getGameObjects().add(terrainGO);
+                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
 
                     Mundus.postEvent(new SceneGraphChangedEvent());
 

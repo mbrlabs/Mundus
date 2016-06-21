@@ -27,7 +27,7 @@ import com.mbrlabs.mundus.commons.Scene;
  */
 public class SceneGraph {
 
-    protected Array<GameObject> gameObjects;
+    protected GameObject root;
 
     public Scene scene;
     public ModelBatch batch;
@@ -35,16 +35,10 @@ public class SceneGraph {
     private GameObject selected;
 
     public SceneGraph(Scene scene) {
-        gameObjects = new Array<GameObject>();
+        root = new GameObject(this);
+        root.initChildren();
+        root.setActive(false);
         this.scene = scene;
-    }
-
-    public ModelBatch getBatch() {
-        return batch;
-    }
-
-    public void setBatch(ModelBatch batch) {
-        this.batch = batch;
     }
 
     public void render() {
@@ -53,7 +47,7 @@ public class SceneGraph {
 
     public void render(float delta) {
         batch.begin(scene.cam);
-        for(GameObject go : gameObjects) {
+        for(GameObject go : root.getChildren()) {
             go.render(delta);
         }
         batch.end();
@@ -64,13 +58,17 @@ public class SceneGraph {
     }
 
     public void update(float delta) {
-        for(GameObject go : gameObjects) {
+        for(GameObject go : root.getChildren()) {
             go.update(delta);
         }
     }
 
     public Array<GameObject> getGameObjects() {
-        return gameObjects;
+        return root.getChildren();
+    }
+
+    public void addGameObject(GameObject go) {
+        root.addChild(go);
     }
 
     public GameObject getSelected() {

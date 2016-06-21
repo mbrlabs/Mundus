@@ -159,21 +159,14 @@ public class OutlineTab extends Tab implements
                     }
 
                     // remove child from old parent
-                    GameObject oldParent = draggedGo.getParent();
-                    if(oldParent == null) {
-                        projectContext.currScene.sceneGraph.getGameObjects().removeValue(draggedGo, true);
-                    } else {
-                        oldParent.getChildren().removeValue(draggedGo, true);
-                    }
+                    draggedGo.remove();
 
                     // add to new parent
                     if(newParent == null) {
-                        projectContext.currScene.sceneGraph.getGameObjects().add(draggedGo);
-                        draggedGo.setParent(null);
+                        projectContext.currScene.sceneGraph.addGameObject(draggedGo);
                     } else {
                         GameObject parentGo = (GameObject) newParent.getObject();
                         parentGo.addChild(draggedGo);
-                        draggedGo.setParent(parentGo);
                     }
 
                     // update tree
@@ -237,11 +230,11 @@ public class OutlineTab extends Tab implements
         tree.clearChildren();
 
         for(GameObject go : sceneGraph.getGameObjects()) {
-            addGameObject(null, go);
+            addGoToTree(null, go);
         }
     }
 
-    private void addGameObject(Tree.Node treeParentNode, GameObject gameObject) {
+    private void addGoToTree(Tree.Node treeParentNode, GameObject gameObject) {
         Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
         leaf.setObject(gameObject);
         if(treeParentNode == null) {
@@ -252,7 +245,7 @@ public class OutlineTab extends Tab implements
 
         if(gameObject.getChildren() != null) {
             for(GameObject goChild : gameObject.getChildren()) {
-                addGameObject(leaf, goChild);
+                addGoToTree(leaf, goChild);
             }
         }
     }
@@ -321,7 +314,7 @@ public class OutlineTab extends Tab implements
                     int id = projectContext.obtainID();
                     SceneGraph sg = projectContext.currScene.sceneGraph;
                     if (selectedGO == null) {
-                        sg.getGameObjects().add(new GameObject(sg, GameObject.DEFAULT_NAME, id));
+                        sg.addGameObject(new GameObject(sg, GameObject.DEFAULT_NAME, id));
                     } else {
                         selectedGO.addChild(new GameObject(sg, GameObject.DEFAULT_NAME, id));
                     }
@@ -338,7 +331,7 @@ public class OutlineTab extends Tab implements
                     //projectContext.currScene.terrainGroup.add(terrain);
                     GameObject terrainGO = TerrainUtils.createTerrainGO(
                             projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), "Terrain", terrain);
-                    projectContext.currScene.sceneGraph.getGameObjects().add(terrainGO);
+                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
                     Mundus.postEvent(new SceneGraphChangedEvent());
                 }
             });

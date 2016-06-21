@@ -534,7 +534,7 @@ public class DescriptorConverter {
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
         for(GameObjectDescriptor descriptor : sceneDescriptor.getGameObjects()) {
-            scene.sceneGraph.getGameObjects().add(convert(descriptor, scene.sceneGraph, models, terrains));
+            scene.sceneGraph.addGameObject(convert(descriptor, scene.sceneGraph, models, terrains));
         }
 
         // camera

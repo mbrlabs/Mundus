@@ -52,6 +52,10 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
         combined = new Matrix4();
     }
 
+    void initChildren() {
+        this.children = new Array<T>();
+    }
+
     @Override
     public Vector3 getLocalPosition(Vector3 out) {
         return out.set(localPosition);
@@ -161,7 +165,12 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
 
     @Override
     public void remove() {
-        // TODO implement
+        System.out.println("asd");
+        if(parent != null) {
+            boolean removed = parent.getChildren().removeValue(this, false);
+            System.out.println(removed);
+            this.parent = null;
+        }
 
     }
 
