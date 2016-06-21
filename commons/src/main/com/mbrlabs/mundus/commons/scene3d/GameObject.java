@@ -174,7 +174,11 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         }
     }
 
-
+    /**
+     * Tests if this game object is a child of the other one.
+     *
+     * @return  true if this is a child of other, false otherwise
+     */
     public boolean isChildOf(GameObject other) {
         for(GameObject go : other) {
             if(go.getId() == this.id) return true;
