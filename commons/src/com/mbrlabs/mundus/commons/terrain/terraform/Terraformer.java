@@ -19,12 +19,12 @@ package com.mbrlabs.mundus.commons.terrain.terraform;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
- * Provides static methods to manipulate the height of terrains.
+ * Factory class for terraform generators.
  *
  * @author Marcus Brummer
  * @version 20-06-2016
  */
-public class Terraform {
+public class Terraformer {
 
     public static PerlinNoiseGenerator perlin(Terrain terrain) {
         return new PerlinNoiseGenerator(terrain);

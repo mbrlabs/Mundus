@@ -16,15 +16,33 @@
 
 package com.mbrlabs.mundus.commons.terrain.terraform;
 
+import com.mbrlabs.mundus.commons.terrain.Terrain;
+
 /**
  *
  * @author Marcus Brummer
  * @version 20-06-2016
  */
-public interface Generator<T extends Generator> {
+public abstract class Generator<T extends Generator<T>> {
 
-    T minHeight(float min);
-    T maxHeight(float max);
-    void generate();
+    protected Terrain terrain;
+    protected float minHeight = 0;
+    protected float maxHeight = 50;
+
+    Generator(Terrain terrain) {
+        this.terrain = terrain;
+    }
+
+    public T minHeight(float min) {
+        this.minHeight = min;
+        return (T)this;
+    }
+
+    public T maxHeight(float max) {
+        this.maxHeight = max;
+        return (T)this;
+    }
+
+    public abstract void terraform();
 
 }

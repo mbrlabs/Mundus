@@ -26,29 +26,13 @@ import java.util.Random;
  * @author Marcus Brummer
  * @version 20-06-2016
  */
-public class PerlinNoiseGenerator implements Generator<PerlinNoiseGenerator> {
+public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
 
     private Random rand = new Random();
-    private Terrain terrain;
-
     private long seed = 0;
-    private float minHeight = 0;
-    private float maxHeight = 50;
 
-    public PerlinNoiseGenerator(Terrain terrain) {
-        this.terrain = terrain;
-    }
-
-    @Override
-    public PerlinNoiseGenerator minHeight(float min) {
-        this.minHeight = min;
-        return this;
-    }
-
-    @Override
-    public PerlinNoiseGenerator maxHeight(float max) {
-        this.maxHeight = max;
-        return this;
+    PerlinNoiseGenerator(Terrain terrain) {
+        super(terrain);
     }
 
     public PerlinNoiseGenerator seed(long seed) {
@@ -57,7 +41,7 @@ public class PerlinNoiseGenerator implements Generator<PerlinNoiseGenerator> {
     }
 
     @Override
-    public void generate() {
+    public void terraform() {
         rand.setSeed(seed);
 
         for(int i = 0; i < terrain.heightData.length; i++) {

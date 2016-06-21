@@ -10,6 +10,7 @@
 - Fixed crash on MacOS: https://github.com/mbrlabs/Mundus/commit/fdd193caa7b75e5a1607f448c1f81d1faeec86dd
 - Added a confirm dialog when exiting the editor
 - Reimplemented the scene graph
+- Added perlin noise for terrains
 
 [0.0.7] ~ 28/02/2016
 - Implemented a undo/redo system for most operations

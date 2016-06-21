@@ -28,7 +28,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.commons.terrain.terraform.Terraform;
+import com.mbrlabs.mundus.commons.terrain.terraform.Terraformer;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -106,11 +106,11 @@ public class TerrainGenTab extends Tab {
                 try {
                     int seed = Integer.valueOf(seedInput);
                     float amplitude = Float.valueOf(amplitudeInput);
-                    Terraform.perlin(parent.component.getTerrain())
+                    Terraformer.perlin(parent.component.getTerrain())
                             .minHeight(0)
                             .maxHeight(amplitude)
                             .seed(seed)
-                            .generate();
+                            .terraform();
                 } catch (NumberFormatException nfe) {
                     Dialogs.showErrorDialog(Ui.getInstance(), "Perlin noise seed and amplitude must be numbers");
                 }
@@ -132,14 +132,14 @@ public class TerrainGenTab extends Tab {
                     originalMap.getHeight(), 0, 0, scaledPixmap.getWidth(), scaledPixmap.getHeight());
 
             originalMap.dispose();
-            Terraform.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
-                    .heightMap(scaledPixmap)
-                    .generate();
+            Terraformer.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
+                    .map(scaledPixmap)
+                    .terraform();
             scaledPixmap.dispose();
         } else {
-            Terraform.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
-                    .heightMap(originalMap)
-                    .generate();
+            Terraformer.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
+                    .map(originalMap)
+                    .terraform();
             originalMap.dispose();
         }
 

@@ -94,7 +94,7 @@ public class AddTerrainDialog extends BaseDialog {
 
     private void setupListeners() {
 
-        // generate btn
+        // terraform btn
         generateBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

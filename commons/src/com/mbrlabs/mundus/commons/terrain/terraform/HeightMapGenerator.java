@@ -27,36 +27,21 @@ import java.nio.ByteBuffer;
  * @author Marcus Brummer
  * @version 20-06-2016
  */
-public class HeightMapGenerator implements Generator<HeightMapGenerator> {
+public class HeightMapGenerator extends Generator<HeightMapGenerator> {
 
-    private Terrain terrain;
-    private float minHeight = 0;
-    private float maxHeight = 20;
     private Pixmap map;
 
-    public HeightMapGenerator(Terrain terrain) {
-        this.terrain = terrain;
+    HeightMapGenerator(Terrain terrain) {
+        super(terrain);
     }
 
-    @Override
-    public HeightMapGenerator minHeight(float min) {
-        this.minHeight = min;
-        return this;
-    }
-
-    @Override
-    public HeightMapGenerator maxHeight(float max) {
-        this.maxHeight = max;
-        return this;
-    }
-
-    public HeightMapGenerator heightMap(Pixmap map) {
+    public HeightMapGenerator map(Pixmap map) {
         this.map = map;
         return this;
     }
 
     @Override
-    public void generate() {
+    public void terraform() {
         if (map.getWidth() != terrain.vertexResolution ||
                 map.getHeight() != terrain.vertexResolution) {
             throw new GdxRuntimeException("Incorrect map size");
