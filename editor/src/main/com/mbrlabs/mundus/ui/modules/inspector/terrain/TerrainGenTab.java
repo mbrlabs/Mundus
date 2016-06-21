@@ -70,7 +70,7 @@ public class TerrainGenTab extends Tab {
         root = new VisTable();
         root.align(Align.left);
 
-        hmInput = new FileChooserField(250);
+        hmInput = new FileChooserField();
         loadHeightMapBtn = new VisTextButton("Load heightmap");
         perlinNoiseBtn = new VisTextButton("Generate Perlin noise");
         perlinNoiseSeed = new IntFieldWithLabel("Seed", -1, false);
@@ -78,7 +78,7 @@ public class TerrainGenTab extends Tab {
         perlinNoiseMaxHeight = new FloatFieldWithLabel("Max height", -1, true);
 
         root.add(new VisLabel("Load Heightmap")).pad(5).left().row();
-        root.add(hmInput).left().row();
+        root.add(hmInput).left().expandX().fillX().row();
         root.add(loadHeightMapBtn).padLeft(5).left().row();
 
         root.add(new VisLabel("Perlin Noise")).pad(5).padTop(10).left().row();
@@ -109,11 +109,7 @@ public class TerrainGenTab extends Tab {
                 int seed = perlinNoiseSeed.getInt();
                 float min = perlinNoiseMinHeight.getFloat();
                 float max = perlinNoiseMaxHeight.getFloat();
-                Terraformer.perlin(parent.component.getTerrain())
-                        .minHeight(min)
-                        .maxHeight(max)
-                        .seed(seed)
-                        .terraform();
+                generatePerlinNoise(seed, min, max);
             }
         });
     }
@@ -142,6 +138,21 @@ public class TerrainGenTab extends Tab {
                     .terraform();
             originalMap.dispose();
         }
+
+        command.setHeightDataAfter(terrain.heightData);
+        history.add(command);
+    }
+
+    private void generatePerlinNoise(int seed, float min, float max) {
+        Terrain terrain = parent.component.getTerrain();
+        TerrainHeightCommand command = new TerrainHeightCommand(terrain);
+        command.setHeightDataBefore(terrain.heightData);
+
+        Terraformer.perlin(terrain)
+                .minHeight(min)
+                .maxHeight(max)
+                .seed(seed)
+                .terraform();
 
         command.setHeightDataAfter(terrain.heightData);
         history.add(command);

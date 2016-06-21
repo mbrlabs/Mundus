@@ -36,7 +36,7 @@ public class FileChooserField extends VisTable {
         public void selected(FileHandle fileHandle);
     }
 
-    private int width;
+    private int width = -1;
 
     private FileSelected fileSelected;
     private VisTextField textField;
@@ -55,6 +55,10 @@ public class FileChooserField extends VisTable {
 
         setupUI();
         setupListeners();
+    }
+
+    public FileChooserField() {
+        this(-1);
     }
 
     public void setEditable(boolean editable) {
@@ -92,8 +96,13 @@ public class FileChooserField extends VisTable {
 
     private void setupUI() {
         pad(5);
-        add(textField).width(width*0.75f).padRight(5);
-        add(fcBtn).expandX().fillX();
+        if(width <= 0) {
+            add(textField).expandX().fillX().padRight(5);
+            add(fcBtn).expandX().fillX().row();
+        } else {
+            add(textField).width(width*0.75f).padRight(5);
+            add(fcBtn).expandX().fillX();
+        }
     }
 
     private void setupListeners() {

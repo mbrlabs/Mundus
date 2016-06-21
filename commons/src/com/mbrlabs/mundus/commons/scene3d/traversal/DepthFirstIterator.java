@@ -34,8 +34,6 @@ public class DepthFirstIterator implements Iterator<GameObject> {
         stack.push(root);
     }
 
-
-
     @Override
     public boolean hasNext() {
         return !stack.isEmpty();

@@ -162,6 +162,7 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
     @Override
     public void remove() {
         // TODO implement
+
     }
 
 }

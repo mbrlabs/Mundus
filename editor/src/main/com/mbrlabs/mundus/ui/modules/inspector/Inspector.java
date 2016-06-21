@@ -79,7 +79,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
         addSeparator().row();
         root = new VisTable();
-        root.align(Align.top).padRight(15);
+        root.align(Align.top);
         scrollPane = new VisScrollPane(root);
         scrollPane.setScrollingDisabled(true, false);
         scrollPane.setFlickScroll(false);
@@ -108,7 +108,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         root.add(addComponentBtn).expandX().fill().top().center().pad(10).row();
 //
 //        for(int i = 0; i < 100; i++) {
-//            root.add(new VisLabel("asdfasdsdasd " + i)).fillX().expandX().center().row();
+//            root.add(new VisLabel("item " + i)).fillX().expandX().center().row();
 //        }
     }
 
