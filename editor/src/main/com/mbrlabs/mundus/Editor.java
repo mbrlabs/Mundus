@@ -152,8 +152,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
     private void setupInput() {
         // NOTE: order in wich processors are added is important: first added, first executed!
-        inputManager.addProcessor(ui);
         inputManager.addProcessor(shortcutController);
+        inputManager.addProcessor(ui);
         // when user does not click on a ui element -> unfocus UI
         inputManager.addProcessor(new InputAdapter() {
             @Override

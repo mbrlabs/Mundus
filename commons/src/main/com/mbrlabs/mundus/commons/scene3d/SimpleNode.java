@@ -165,13 +165,10 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
 
     @Override
     public void remove() {
-        System.out.println("asd");
         if(parent != null) {
-            boolean removed = parent.getChildren().removeValue(this, false);
-            System.out.println(removed);
+            parent.getChildren().removeValue(this, false);
             this.parent = null;
         }
-
     }
 
 }
