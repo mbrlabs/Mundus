@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.test;
+package com.mbrlabs.mundus.editor.test;
 
 import com.mbrlabs.mundus.history.Command;
 import com.mbrlabs.mundus.history.CommandHistory;
