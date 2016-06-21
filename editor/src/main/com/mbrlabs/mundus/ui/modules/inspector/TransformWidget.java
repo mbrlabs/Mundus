@@ -188,48 +188,48 @@ public class TransformWidget extends BaseInspectorWidget {
         });
 
         // scale
-//        scaleX.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                GameObject go = projectContext.currScene.currentSelection;
-//                if(go != null && scaleX.getFloat() > 0f) {
-//                    ScaleCommand scaleCommand = new ScaleCommand(go);
-//                    scaleCommand.setBefore(go.scale);
-//                    go.getScaleRel(tempV3);
-//                    go.setScaleRel(scaleX.getFloat(), tempV3.y, tempV3.z);
-//                    scaleCommand.setAfter(go.scale);
-//                    history.add(scaleCommand);
-//                }
-//            }
-//        });
-//        scaleY.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                GameObject go = projectContext.currScene.currentSelection;
-//                if(go != null && scaleY.getFloat() > 0f) {
-//                    ScaleCommand scaleCommand = new ScaleCommand(go);
-//                    scaleCommand.setBefore(go.scale);
-//                    go.getScaleRel(tempV3);
-//                    go.setScaleRel(tempV3.x, scaleY.getFloat(), tempV3.z);
-//                    scaleCommand.setAfter(go.scale);
-//                    history.add(scaleCommand);
-//                }
-//            }
-//        });
-//        scaleZ.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                GameObject go = projectContext.currScene.currentSelection;
-//                if(go != null && scaleZ.getFloat() > 0f) {
-//                    ScaleCommand scaleCommand = new ScaleCommand(go);
-//                    scaleCommand.setBefore(go.scale);
-//                    go.getScaleRel(tempV3);
-//                    go.setScaleRel(tempV3.x, tempV3.y, scaleZ.getFloat());
-//                    scaleCommand.setAfter(go.scale);
-//                    history.add(scaleCommand);
-//                }
-//            }
-//        });
+        scaleX.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go != null && scaleX.getFloat() > 0f) {
+                    ScaleCommand command = new ScaleCommand(go);
+                    Vector3 scl = go.getLocalScale(tempV3);
+                    command.setBefore(scl);
+                    go.setLocalScale(scaleX.getFloat(), scl.y, scl.z);
+                    command.setAfter(go.getLocalScale(tempV3));
+                    history.add(command);
+                }
+            }
+        });
+        scaleY.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go != null && scaleY.getFloat() > 0f) {
+                    ScaleCommand command = new ScaleCommand(go);
+                    Vector3 scl = go.getLocalScale(tempV3);
+                    command.setBefore(scl);
+                    go.setLocalScale(scl.x, scaleY.getFloat(), scl.z);
+                    command.setAfter(go.getLocalScale(tempV3));
+                    history.add(command);
+                }
+            }
+        });
+        scaleZ.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                GameObject go = projectContext.currScene.currentSelection;
+                if(go != null && scaleZ.getFloat() > 0f) {
+                    ScaleCommand command = new ScaleCommand(go);
+                    Vector3 scl = go.getLocalScale(tempV3);
+                    command.setBefore(scl);
+                    go.setLocalScale(scl.x, scl.y, scaleZ.getFloat());
+                    command.setAfter(go.getLocalScale(tempV3));
+                    history.add(command);
+                }
+            }
+        });
 
     }
 
