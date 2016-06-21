@@ -37,6 +37,8 @@ import com.mbrlabs.mundus.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
+import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
+import com.mbrlabs.mundus.ui.widgets.IntFieldWithLabel;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
 /**
@@ -52,8 +54,9 @@ public class TerrainGenTab extends Tab {
     private VisTextButton loadHeightMapBtn;
 
     private VisTextButton perlinNoiseBtn;
-    private VisTextField perlinNoiseSeed;
-    private VisTextField perlinNoiseAmplitude;
+    private IntFieldWithLabel perlinNoiseSeed;
+    private FloatFieldWithLabel perlinNoiseMinHeight;
+    private FloatFieldWithLabel perlinNoiseMaxHeight;
 
     @Inject
     private ToolManager toolManager;
@@ -70,8 +73,9 @@ public class TerrainGenTab extends Tab {
         hmInput = new FileChooserField(250);
         loadHeightMapBtn = new VisTextButton("Load heightmap");
         perlinNoiseBtn = new VisTextButton("Generate Perlin noise");
-        perlinNoiseSeed = new VisTextField("Seed");
-        perlinNoiseAmplitude = new VisTextField("Amplitude");
+        perlinNoiseSeed = new IntFieldWithLabel("Seed", -1, false);
+        perlinNoiseMinHeight = new FloatFieldWithLabel("Min height", -1, true);
+        perlinNoiseMaxHeight = new FloatFieldWithLabel("Max height", -1, true);
 
         root.add(new VisLabel("Load Heightmap")).pad(5).left().row();
         root.add(hmInput).left().row();
@@ -79,7 +83,8 @@ public class TerrainGenTab extends Tab {
 
         root.add(new VisLabel("Perlin Noise")).pad(5).padTop(10).left().row();
         root.add(perlinNoiseSeed).pad(5).left().fillX().expandX().row();
-        root.add(perlinNoiseAmplitude).pad(5).left().fillX().expandX().row();
+        root.add(perlinNoiseMinHeight).pad(5).left().fillX().expandX().row();
+        root.add(perlinNoiseMaxHeight).pad(5).left().fillX().expandX().row();
         root.add(perlinNoiseBtn).pad(5).left().row();
 
         setupListeners();
@@ -101,19 +106,14 @@ public class TerrainGenTab extends Tab {
         perlinNoiseBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                String seedInput = perlinNoiseSeed.getText();
-                String amplitudeInput = perlinNoiseAmplitude.getText();
-                try {
-                    int seed = Integer.valueOf(seedInput);
-                    float amplitude = Float.valueOf(amplitudeInput);
-                    Terraformer.perlin(parent.component.getTerrain())
-                            .minHeight(0)
-                            .maxHeight(amplitude)
-                            .seed(seed)
-                            .terraform();
-                } catch (NumberFormatException nfe) {
-                    Dialogs.showErrorDialog(Ui.getInstance(), "Perlin noise seed and amplitude must be numbers");
-                }
+                int seed = perlinNoiseSeed.getInt();
+                float min = perlinNoiseMinHeight.getFloat();
+                float max = perlinNoiseMaxHeight.getFloat();
+                Terraformer.perlin(parent.component.getTerrain())
+                        .minHeight(min)
+                        .maxHeight(max)
+                        .seed(seed)
+                        .terraform();
             }
         });
     }

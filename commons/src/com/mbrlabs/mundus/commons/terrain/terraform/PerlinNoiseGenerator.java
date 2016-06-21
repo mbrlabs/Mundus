@@ -30,6 +30,10 @@ public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
 
     private Random rand = new Random();
     private long seed = 0;
+    // number of noise functions
+    private int octaves = 1;
+    // decrease of amplitude per octave
+    private float roughness = 0;
 
     PerlinNoiseGenerator(Terrain terrain) {
         super(terrain);
@@ -40,15 +44,28 @@ public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
         return this;
     }
 
+    public PerlinNoiseGenerator octaves(int octaves) {
+        this.octaves = octaves;
+        return this;
+    }
+
+    public PerlinNoiseGenerator roughness(float roughness) {
+        this.roughness = roughness;
+        return this;
+    }
+
     @Override
     public void terraform() {
         rand.setSeed(seed);
+
+        //final float d = (float) Math.pow(2, this.octaves);
 
         for(int i = 0; i < terrain.heightData.length; i++) {
             int x = i % terrain.vertexResolution;
             int z = (int) Math.floor((double)i / terrain.vertexResolution);
 
-            float height = getInterpolatedNoise(x / 8f, z / 8f);
+            float height = Interpolation.linear.apply(minHeight, maxHeight, getInterpolatedNoise(x / 4f, z / 4f));
+            height += Interpolation.linear.apply(minHeight/ 3f, maxHeight / 3f, getInterpolatedNoise(x / 2f, z / 2f));
 
             terrain.heightData[z * terrain.vertexResolution + x] = height;
         }
@@ -64,7 +81,7 @@ public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
 
     private float getNoise(int x, int z) {
         rand.setSeed(x * 49632 + z * 325176 + seed);
-        return Interpolation.linear.apply(minHeight, maxHeight, rand.nextFloat());
+        return rand.nextFloat();
     }
 
     private float getInterpolatedNoise(float x, float z){
