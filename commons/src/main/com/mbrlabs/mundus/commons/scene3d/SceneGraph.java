@@ -35,8 +35,8 @@ public class SceneGraph {
     private GameObject selected;
 
     public SceneGraph(Scene scene) {
-        root = new GameObject(this);
-        root.initChildren();
+        root = new GameObject(this, null, -1);
+        root.initChildrenArray();
         root.setActive(false);
         this.scene = scene;
     }

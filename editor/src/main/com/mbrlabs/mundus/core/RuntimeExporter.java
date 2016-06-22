@@ -186,7 +186,7 @@ public class RuntimeExporter {
 
     public static GameObjectDTO convert(GameObject gameObject) {
         GameObjectDTO dto = new GameObjectDTO();
-        dto.setId(gameObject.getId());
+        dto.setId(gameObject.id);
         dto.setName(gameObject.getName());
         dto.setActive(gameObject.isActive());
 

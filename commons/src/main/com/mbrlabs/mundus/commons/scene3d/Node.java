@@ -49,6 +49,18 @@ public interface Node<T extends Node> {
     Array<T> getChildren();
 
     /**
+     * Tests if this game object is a child of the other one.
+     *
+     * @return  true if this is a child of other, false otherwise
+     */
+    boolean isChildOf(GameObject other);
+
+    /**
+     * Initializes the array, that holds the child nodes, which would be null otherwise.
+     */
+    void initChildrenArray();
+
+    /**
      * Returns the parent of this node.
      *
      * @return the parent node of this node

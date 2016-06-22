@@ -188,7 +188,7 @@ public class DescriptorConverter {
 
         GameObjectDescriptor descriptor = new GameObjectDescriptor();
         descriptor.setName(go.getName());
-        descriptor.setId(go.getId());
+        descriptor.setId(go.id);
         descriptor.setActive(go.isActive());
 
         // translation

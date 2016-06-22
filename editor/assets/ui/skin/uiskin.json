@@ -90,6 +90,7 @@
 	x2: {scaleFactor: 2, menuItemIconSize: 44, spinnerButtonSize: 24, spinnerButtonsWidth: 20, spinnerFieldSize: 80, spinnerFieldRightPadding: 5, spacingBottom: 8, spacingRight: 6, buttonBarSpacing: 10, borderSize: 1, fileChooserViewModeBigIconsSize: 200, fileChooserViewModeMediumIconsSize: 128, fileChooserViewModeSmallIconsSize: 64, fileChooserViewModeListWidthSize: 155 }
 },
 	com.kotcrab.vis.ui.widget.VisTextField$VisTextFieldStyle: {
+	textArea: {errorBorder: border-error, font: font-norm, fontColor: white, disabledFontColor: grey, selection: selection, background: textfield, cursor: cursor },
 	default: {focusBorder: border, errorBorder: border-error, font: font-norm, fontColor: white, disabledFontColor: grey, selection: selection, background: textfield, backgroundOver: textfield-over, cursor: cursor },
 	small: {focusBorder: border, errorBorder: border-error, font: font-norm, fontColor: white, disabledFontColor: grey, selection: selection, background: textfield, backgroundOver: textfield-over, cursor: cursor },
 	label: {selection: selection, errorBorder: border-error, font: font-norm, fontColor: white, disabledFontColor: grey }

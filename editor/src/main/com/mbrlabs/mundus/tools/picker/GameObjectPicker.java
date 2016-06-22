@@ -51,9 +51,9 @@ public class GameObjectPicker extends BasePicker {
         int id = PickerColorEncoder.decode(pm.getPixel(x, y));
         System.out.println(id);
         for(GameObject go : scene.sceneGraph.getGameObjects()) {
-            if(id == go.getId()) return go;
+            if(id == go.id) return go;
             for(GameObject child : go) {
-                if(id == child.getId()) return child;
+                if(id == child.id) return child;
             }
         }
 

@@ -38,8 +38,7 @@ import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 public class TerrainUtils {
 
     public static GameObject createTerrainGO(SceneGraph sg, TerrainShader shader, int goID, String goName, Terrain terrain) {
-        GameObject terrainGO = new GameObject(sg);
-        terrainGO.setId(goID);
+        GameObject terrainGO = new GameObject(sg, null, goID);
         terrainGO.setName(goName);
        // terrainGO.setTransform(terrain.transform);
 

@@ -30,7 +30,7 @@ import com.badlogic.gdx.utils.Array;
  * @author Marcus Brummer
  * @version 09-06-2016
  */
-public class SimpleNode<T extends SimpleNode> implements Node<T> {
+public class SimpleNode<T extends SimpleNode> extends BaseNode<T> {
 
     static boolean WORLD_SPACE_TRANSFORM = true;
     private static Matrix4 tempMat = new Matrix4();
@@ -42,18 +42,13 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
     // root * p0 * p1 * localMat = combined (absolute transfrom)
     private Matrix4         combined;
 
-    private Array<T> children;
-    private T parent;
 
-    public SimpleNode() {
+    public SimpleNode(int id) {
+        super(id);
         localPosition = new Vector3();
         localRotation = new Quaternion();
         localScale = new Vector3(1, 1, 1);
         combined = new Matrix4();
-    }
-
-    void initChildren() {
-        this.children = new Array<T>();
     }
 
     @Override
@@ -139,36 +134,6 @@ public class SimpleNode<T extends SimpleNode> implements Node<T> {
     @Override
     public void setLocalScale(float x, float y, float z) {
         localScale.set(x, y, z);
-    }
-
-    @Override
-    public void addChild(T child) {
-        if(children == null) children = new Array<T>();
-        children.add(child);
-        child.setParent(this);
-    }
-
-    @Override
-    public Array<T> getChildren() {
-        return this.children;
-    }
-
-    @Override
-    public T getParent() {
-        return this.parent;
-    }
-
-    @Override
-    public void setParent(T parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public void remove() {
-        if(parent != null) {
-            parent.getChildren().removeValue(this, false);
-            this.parent = null;
-        }
     }
 
 }

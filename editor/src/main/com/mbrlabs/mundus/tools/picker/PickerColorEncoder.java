@@ -48,7 +48,7 @@ public class PickerColorEncoder {
      */
     public static PickerIDAttribute encodeRaypickColorId(GameObject go) {
         PickerIDAttribute goIDa = new PickerIDAttribute();
-        encodeRaypickColorId(go.getId(), goIDa);
+        encodeRaypickColorId(go.id, goIDa);
         return goIDa;
     }
 

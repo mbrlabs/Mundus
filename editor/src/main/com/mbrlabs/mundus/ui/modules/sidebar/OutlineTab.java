@@ -280,7 +280,7 @@ public class OutlineTab extends Tab implements
             super();
             name = new VisLabel();
             add(name).expand().fill();
-            name.setText(go.getName() + " [" + go.getId() + "]");
+            name.setText(go.getName() + " [" + go.id + "]");
         }
 
     }

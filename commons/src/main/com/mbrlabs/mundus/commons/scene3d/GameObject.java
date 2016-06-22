@@ -30,7 +30,6 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     public static final String DEFAULT_NAME = "GameObject";
 
-    private int id;
     private String name;
     private boolean active;
     private Array<String> tags;
@@ -38,20 +37,13 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     public final SceneGraph sceneGraph;
 
-    public GameObject(SceneGraph sceneGraph) {
-        super();
+    public GameObject(SceneGraph sceneGraph, String name, int id) {
+        super(id);
         this.sceneGraph = sceneGraph;
-        this.name = DEFAULT_NAME;
+        this.name = (name == null) ? DEFAULT_NAME : name;
         this.active = true;
-        this.id = -1;
         this.tags = null;
         this.components = new Array<Component>(3);
-    }
-
-    public GameObject(SceneGraph sceneGraph, String name, int id) {
-        this(sceneGraph);
-        this.name = name;
-        this.id = id;
     }
 
     /**
@@ -90,14 +82,6 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
                 }
             }
         }
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -172,19 +156,6 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
                 throw new InvalidComponentException("One Game object can't have more then 1 component of type " + c.getType());
             }
         }
-    }
-
-    /**
-     * Tests if this game object is a child of the other one.
-     *
-     * @return  true if this is a child of other, false otherwise
-     */
-    public boolean isChildOf(GameObject other) {
-        for(GameObject go : other) {
-            if(go.getId() == this.id) return true;
-        }
-
-        return false;
     }
 
     @Override
