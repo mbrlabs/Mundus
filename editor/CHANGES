@@ -1,8 +1,11 @@
-[0.0.8]
+[0.0.9]
+
+
+[0.0.8] ~ 23/06/2016
 - Updated libGDX to 1.9.3
-- Updated VisUI to 1.1.2
+- Updated VisUI to 1.1.1
 - Added an option to the settings dialog to change the keyboard layout
-- Added a heightmap loader to the terrain component widget in the inspector
+- Added a height map loader to the terrain component widget in the inspector
 - Implemented a Blender-like rotation tool
 - Toast messages at top right corner of the screen
 - Huge internal refactoring

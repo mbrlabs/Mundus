@@ -15,7 +15,8 @@ implemented.
 Below are some of the more interesting features, that already work
 
 - Creation of multiple terrains
-- Basic support for loading heightmaps
+- Height map loader for terrains
+- Procedural terrain generation
 - Texture splatting for the terrain texture (max 5 textures per terrain)
 - A complete terrain editing system with texture & height brushes
 - 4 different brushes (brush form can be an arbitrary image, like in Blender or Gimp)
