@@ -153,7 +153,7 @@ public class MundusImporter {
 
     public GameObject convert(GameObjectDTO dto, SceneGraph sceneGraph, Array<Terrain> terrains, Array<MModel> models) {
         final GameObject go = new GameObject(sceneGraph, dto.getName(), (int)dto.getId());
-        go.setActive(dto.isActive());
+        go.active = dto.isActive();
 
         final float[] trans = dto.getTrans();
         go.translate(trans[0], trans[1], trans[2]);
