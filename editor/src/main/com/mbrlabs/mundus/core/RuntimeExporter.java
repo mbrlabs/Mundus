@@ -187,8 +187,8 @@ public class RuntimeExporter {
     public static GameObjectDTO convert(GameObject gameObject) {
         GameObjectDTO dto = new GameObjectDTO();
         dto.setId(gameObject.id);
-        dto.setName(gameObject.getName());
-        dto.setActive(gameObject.isActive());
+        dto.setName(gameObject.name);
+        dto.setActive(gameObject.active);
 
         // position
         Vector3 pos = gameObject.getLocalPosition(vec3);

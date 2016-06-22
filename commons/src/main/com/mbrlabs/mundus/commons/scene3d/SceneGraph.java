@@ -37,7 +37,7 @@ public class SceneGraph {
     public SceneGraph(Scene scene) {
         root = new GameObject(this, null, -1);
         root.initChildrenArray();
-        root.setActive(false);
+        root.active = false;
         this.scene = scene;
     }
 

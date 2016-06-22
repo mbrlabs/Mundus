@@ -70,7 +70,7 @@ public class IdentifierWidget extends VisTable {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(projectContext.currScene.currentSelection == null) return;
-                projectContext.currScene.currentSelection.setActive(active.isChecked());
+                projectContext.currScene.currentSelection.active = active.isChecked();
             }
         });
 
@@ -78,15 +78,15 @@ public class IdentifierWidget extends VisTable {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if(projectContext.currScene.currentSelection == null) return;
-                projectContext.currScene.currentSelection.setName(name.getText());
+                projectContext.currScene.currentSelection.name = name.getText();
             }
         });
 
     }
 
     public void setValues(GameObject go) {
-        active.setChecked(go.isActive());
-        name.setText(go.getName());
+        active.setChecked(go.active);
+        name.setText(go.name);
     }
 
 }

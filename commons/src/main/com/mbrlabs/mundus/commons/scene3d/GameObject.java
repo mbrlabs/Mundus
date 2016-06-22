@@ -30,13 +30,18 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     public static final String DEFAULT_NAME = "GameObject";
 
-    private String name;
-    private boolean active;
+    public String name;
+    public boolean active;
     private Array<String> tags;
     private Array<Component> components;
 
     public final SceneGraph sceneGraph;
 
+    /**
+     * @param sceneGraph    scene graph
+     * @param name          game object name; can be null
+     * @param id            game object id
+     */
     public GameObject(SceneGraph sceneGraph, String name, int id) {
         super(id);
         this.sceneGraph = sceneGraph;
@@ -84,26 +89,18 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         }
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
+    /**
+     * Returns the tags
+     * @return  tags or null if none available
+     */
     public Array<String> getTags() {
         return this.tags;
     }
 
+    /**
+     * Adds a tag.
+     * @param tag tag to add
+     */
     public void addTag(String tag) {
         if(this.tags == null) {
             this.tags = new Array<String>(2);
@@ -112,6 +109,14 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         this.tags.add(tag);
     }
 
+    /**
+     * Finds all component by a given type.
+     *
+     * @param out           output array
+     * @param type          component type
+     * @param includeChilds search in node children of this game object as well?
+     * @return              components found
+     */
     public Array<Component> findComponentsByType(Array<Component> out, Component.Type type, boolean includeChilds) {
         if(includeChilds) {
             for(GameObject go : this) {
@@ -128,6 +133,12 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         return out;
     }
 
+    /**
+     * Finds one component by type.
+     *
+     * @param type  component type
+     * @return      component if found or null
+     */
     public Component findComponentByType(Component.Type type) {
         for(Component c : components) {
             if(c.getType() == type) return c;
@@ -136,19 +147,38 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         return null;
     }
 
+    /**
+     * Returns all components of this go.
+     * @return  components
+     */
     public Array<Component> getComponents() {
         return this.components;
     }
 
+    /**
+     * Removes a component.
+     * @param component component to remove
+     */
     public void removeComponent(Component component) {
         components.removeValue(component, true);
     }
 
+    /**
+     * Adds a component.
+     *
+     * @param component component to add
+     * @throws InvalidComponentException
+     */
     public void addComponent(Component component) throws InvalidComponentException {
         isComponentAddable(component);
         components.add(component);
     }
 
+    /**
+     *
+     * @param component
+     * @throws InvalidComponentException
+     */
     public void isComponentAddable(Component component) throws InvalidComponentException {
         // check for component of the same type
         for(Component c : components) {

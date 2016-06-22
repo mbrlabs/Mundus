@@ -39,7 +39,7 @@ public class TerrainUtils {
 
     public static GameObject createTerrainGO(SceneGraph sg, TerrainShader shader, int goID, String goName, Terrain terrain) {
         GameObject terrainGO = new GameObject(sg, null, goID);
-        terrainGO.setName(goName);
+        terrainGO.name = goName;
        // terrainGO.setTransform(terrain.transform);
 
         terrain.setTransform(terrainGO.getTransform());
