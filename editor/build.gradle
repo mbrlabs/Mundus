@@ -25,7 +25,7 @@ task run(dependsOn: classes, type: JavaExec) {
 
 task distEditor(type: Jar) {
     baseName = 'Mundus'
-    version = '0.0.8'
+    version = '0.0.9'
 
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)

@@ -27,7 +27,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
  */
 public class Main {
 
-    public static final String TITLE = "Mundus v0.0.8";
+    public static final String TITLE = "Mundus v0.0.9";
 
     public static WindowCloseListener closeListener = null;
 
