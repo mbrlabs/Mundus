@@ -31,12 +31,11 @@ import com.mbrlabs.mundus.ui.Ui;
  */
 public class RenderWidget extends Widget {
 
+    private static Vector2 vec = new Vector2();
+
     private ScreenViewport viewport;
     private PerspectiveCamera cam;
-
     private Renderer renderer;
-
-    private static Vector2 vec = new Vector2();
 
     public RenderWidget(PerspectiveCamera cam) {
         super();
@@ -71,10 +70,18 @@ public class RenderWidget extends Widget {
 
         vec.set(getOriginX(), getOriginY());
         vec = localToStageCoordinates(vec);
-        viewport.setScreenPosition((int)vec.x, (int) vec.y);
+        final int width = (int) getWidth();
+        final int height = (int) getHeight();
+
+        // apply widget viewport
+        viewport.setScreenBounds((int)vec.x, (int)vec.y, width, height);
+        viewport.setWorldSize(width * viewport.getUnitsPerPixel(), height * viewport.getUnitsPerPixel());
         viewport.apply();
+
+        // render 3d scene
         renderer.render(cam);
 
+        // re-apply stage viewport
         Ui.getInstance().getViewport().apply();
 
         // proceed ui rendering
@@ -84,9 +91,11 @@ public class RenderWidget extends Widget {
     @Override
     protected void sizeChanged () {
         super.sizeChanged();
-        viewport.update((int)getWidth(), (int)getHeight());
     }
 
+    /**
+     * Used to render the 3d scene within this widget.
+     */
     public static interface Renderer {
         public void render(Camera cam);
     }
