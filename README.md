@@ -1,5 +1,5 @@
 # Mundus [![](https://travis-ci.org/mbrlabs/Mundus.svg?branch=master)](https://travis-ci.org/mbrlabs/Mundus)
-Mundus is a 3D world editor, built with Java and LibGDX.
+Mundus is a 3D world editor, built with Java and LibGDX + VisUI.
 The plan is, that the world you create with Mundus can be exported
 into a unified format (such as JSON + assets). The exported data can then be imported into any Game Engine,
 if someone writes a runtime/parser for that engine.

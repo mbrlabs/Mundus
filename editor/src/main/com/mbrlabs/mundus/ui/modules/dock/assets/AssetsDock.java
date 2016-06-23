@@ -28,13 +28,17 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectContext;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.ModelImportEvent;
+import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 
 /**
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class AssetsDock extends Tab {
+public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener, ModelImportEvent.ModelImportListener {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
@@ -42,6 +46,8 @@ public class AssetsDock extends Tab {
 
     @Inject
     private ToolManager toolManager;
+    @Inject
+    ProjectManager projectManager;
 
     public AssetsDock() {
         super(false, false);
@@ -53,24 +59,32 @@ public class AssetsDock extends Tab {
     public void initUi () {
         root = new VisTable();
         filesViewContextContainer = new VisTable(false);
-        filesView = new GridGroup(92, 4);
+        filesView = new GridGroup(60, 4);
         filesView.setTouchable(Touchable.enabled);
 
-        VisTable contentsTable = new VisTable(false);
-        contentsTable.add(new VisLabel("Assets")).left().padLeft(3).row();
-        contentsTable.add(new Separator()).padTop(3).expandX().fillX();
-        contentsTable.row();
-        contentsTable.add(filesViewContextContainer).expandX().fillX();
-        contentsTable.row();
-        contentsTable.add(createScrollPane(filesView, true)).expand().fill();
+        VisTable contentTable = new VisTable(false);
+        contentTable.add(new VisLabel("Assets")).left().padLeft(3).row();
+        contentTable.add(new Separator()).padTop(3).expandX().fillX();
+        contentTable.row();
+        contentTable.add(filesViewContextContainer).expandX().fillX();
+        contentTable.row();
+        contentTable.add(createScrollPane(filesView, true)).expand().fill();
 
-        VisSplitPane splitPane = new VisSplitPane(new VisLabel("file tree here"), contentsTable, false);
+        VisSplitPane splitPane = new VisSplitPane(new VisLabel("file tree here"), contentTable, false);
         splitPane.setSplitAmount(0.2f);
 
         root = new VisTable();
         root.setBackground("window-bg");
         root.add(splitPane).expand().fill();
+    }
 
+    private void reloadModels() {
+        filesView.clearChildren();
+        ProjectContext projectContext = projectManager.current();
+        for(MModel model : projectContext.models) {
+            AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(model);
+            filesView.addActor(assetItem);
+        }
     }
 
     private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
@@ -90,6 +104,16 @@ public class AssetsDock extends Tab {
         return root;
     }
 
+    @Override
+    public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        reloadModels();
+    }
+
+    @Override
+    public void onModelImported(ModelImportEvent importEvent) {
+        AssetItem assetItem = new AssetItem(importEvent.getModel());
+        filesView.addActor(assetItem);
+    }
 
     /**
      * Asset item in the grid.
@@ -116,8 +140,6 @@ public class AssetsDock extends Tab {
                     toolManager.activateTool(toolManager.modelPlacementTool);
                 }
             });
-
         }
-
     }
 }

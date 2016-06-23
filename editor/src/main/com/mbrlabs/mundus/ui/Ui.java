@@ -19,9 +19,11 @@ package com.mbrlabs.mundus.ui;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.ui.modules.MundusToolbar;
+import com.mbrlabs.mundus.ui.modules.Outline;
 import com.mbrlabs.mundus.ui.modules.StatusBar;
 import com.mbrlabs.mundus.ui.modules.dialogs.*;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportMeshDialog;
@@ -30,7 +32,6 @@ import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.dock.DockBar;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
-import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
 import com.mbrlabs.mundus.ui.widgets.MundusSplitPane;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.Toaster;
@@ -48,8 +49,8 @@ public class Ui extends Stage {
     private MundusToolbar toolbar;
     private FileChooser fileChooser;
     private StatusBar statusBar;
-    private Sidebar sidebar;
     private Inspector inspector;
+    private Outline outline;
 
     private DockBar docker;
 
@@ -97,14 +98,14 @@ public class Ui extends Stage {
 
         // row 3: sidebar & 3d viewport & inspector
         VisTable center = new VisTable();
-        sidebar = new Sidebar();
+        outline = new Outline();
         inspector = new Inspector();
         widget3D = new RenderWidget();
 
-        center.add(sidebar).width(300).top().left().expandY().fillY();
-        center.add(widget3D).pad(2).expand().fill();
-        center.add(inspector).width(300).top().right().expandY().fillY();
-        mainContainer.add(center).top().left().expand().fill().row();
+        center.add(outline).width(300).expandY().fillY();
+        center.add(widget3D).expand().fill();
+        center.add(inspector).width(300).expandY().fillY();
+        mainContainer.add(center).expand().fill().row();
         root.add(splitPane).expand().fill().row();
 
         // row 4: DOCKER
@@ -184,8 +185,8 @@ public class Ui extends Stage {
         return importTextureDialog;
     }
 
-    public Sidebar getSidebar() {
-        return sidebar;
+    public Outline getOutline() {
+        return outline;
     }
 
     public FogDialog getFogDialog() {

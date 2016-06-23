@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.modules.sidebar;
+package com.mbrlabs.mundus.ui.modules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -51,7 +51,7 @@ import com.mbrlabs.mundus.utils.TerrainUtils;
  * @author Marcus Brummer
  * @version 30-11-2015
  */
-public class OutlineTab extends Tab implements
+public class Outline extends VisTable implements
         ProjectChangedEvent.ProjectChangedListener,
         SceneChangedEvent.SceneChangedListener,
         SceneGraphChangedEvent.SceneGraphChangedListener,
@@ -74,10 +74,11 @@ public class OutlineTab extends Tab implements
     @Inject
     private ProjectManager projectManager;
 
-    public OutlineTab() {
-        super(false, false);
+    public Outline() {
+        super();
         Mundus.inject(this);
         Mundus.registerEventListener(this);
+        setBackground("window-bg");
 
         rightClickMenu = new RightClickMenu();
 
@@ -91,6 +92,9 @@ public class OutlineTab extends Tab implements
         scrollPane.setFadeScrollBars(false);
         content.add(scrollPane).fill().expand();
 
+        add(new VisLabel("Outline")).expandX().fillX().pad(3).row();
+        addSeparator().row();
+        add(content).fill().expand();
 
         setupDragAndDrop();
         setupListeners();
@@ -248,16 +252,6 @@ public class OutlineTab extends Tab implements
                 addGoToTree(leaf, goChild);
             }
         }
-    }
-
-    @Override
-    public String getTabTitle() {
-        return TITLE;
-    }
-
-    @Override
-    public Table getContentTable() {
-        return content;
     }
 
     @Override
