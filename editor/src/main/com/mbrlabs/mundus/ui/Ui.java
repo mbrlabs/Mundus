@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -28,9 +27,11 @@ import com.mbrlabs.mundus.ui.modules.dialogs.*;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportMeshDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportTextureDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
+import com.mbrlabs.mundus.ui.modules.dock.DockBar;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
 import com.mbrlabs.mundus.ui.modules.sidebar.Sidebar;
+import com.mbrlabs.mundus.ui.widgets.MundusSplitPane;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.Toaster;
 
@@ -41,6 +42,7 @@ import com.mbrlabs.mundus.utils.Toaster;
 public class Ui extends Stage {
 
     private VisTable root;
+    private MundusSplitPane splitPane;
     private Toaster toaster;
     private MundusMenuBar menuBar;
     private MundusToolbar toolbar;
@@ -49,7 +51,7 @@ public class Ui extends Stage {
     private Sidebar sidebar;
     private Inspector inspector;
 
-    //private DockBar docker;
+    private DockBar docker;
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
@@ -77,11 +79,13 @@ public class Ui extends Stage {
     private Ui() {
         super(new ScreenViewport());
         toaster = new Toaster(this);
+
         root = new VisTable();
-        //root.setDebug(true);
-        root.setFillParent(true);
-        root.align(Align.center | Align.top);
         addActor(root);
+        root.setFillParent(true);
+
+        VisTable mainContainer = new VisTable();
+        splitPane = new MundusSplitPane(mainContainer, null, true);
 
         // row 1: add menu
         menuBar = new MundusMenuBar();
@@ -100,11 +104,12 @@ public class Ui extends Stage {
         center.add(sidebar).width(300).top().left().expandY().fillY();
         center.add(widget3D).pad(2).expand().fill();
         center.add(inspector).width(300).top().right().expandY().fillY();
-        root.add(center).top().left().expand().fill().row();
+        mainContainer.add(center).top().left().expand().fill().row();
+        root.add(splitPane).expand().fill().row();
 
         // row 4: DOCKER
-        //docker = new DockBar();
-        //root.add(docker).expandX().fillX().row();
+        docker = new DockBar(splitPane);
+        root.add(docker).bottom().expandX().fillX().height(30).row();
 
         // row 5: status bar
         statusBar = new StatusBar();
@@ -125,6 +130,7 @@ public class Ui extends Stage {
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
     }
+
 
     public void showDialog(VisDialog dialog) {
         dialog.show(this);

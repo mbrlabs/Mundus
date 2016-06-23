@@ -43,7 +43,8 @@ import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
  * @author Marcus Brummer
  * @version 19-01-2016
  */
-public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener, GameObjectModifiedEvent.GameObjectModifiedListener {
+public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener,
+        GameObjectModifiedEvent.GameObjectModifiedListener {
 
     private VisTable root;
     private ScrollPane scrollPane;
@@ -75,7 +76,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     }
 
     public void init() {
-        setBackground("default-pane");
+        setBackground("window-bg");
         add(new VisLabel("Inspector")).expandX().fillX().pad(3).row();
         addSeparator().row();
         root = new VisTable();

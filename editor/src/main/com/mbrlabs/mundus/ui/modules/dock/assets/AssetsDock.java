@@ -34,18 +34,17 @@ import com.mbrlabs.mundus.tools.ToolManager;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-@Deprecated
-public class AssetsDock {
+public class AssetsDock extends Tab {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
     private GridGroup filesView;
-    private AssetsTab assetsTab;
 
     @Inject
     private ToolManager toolManager;
 
     public AssetsDock() {
+        super(false, false);
         Mundus.inject(this);
         Mundus.registerEventListener(this);
         initUi();
@@ -72,25 +71,7 @@ public class AssetsDock {
         root.setBackground("window-bg");
         root.add(splitPane).expand().fill();
 
-        assetsTab = new AssetsTab();
-
-
     }
-
-//    @Subscribe
-//    public void modelImported(ModelImportEvent modelImportEvent) {
-//        AssetItem assetItem = new AssetItem(modelImportEvent.getModelInstance());
-//        filesView.addActor(assetItem);
-//    }
-//
-//    @Subscribe
-//    public void reloadAllModels(ProjectChangedEvent projectChangedEvent) {
-//        filesView.clearChildren();
-//        for(MModel model : projectContext.models) {
-//            AssetItem assetItem = new AssetItem(model);
-//            filesView.addActor(assetItem);
-//        }
-//    }
 
     private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
         VisScrollPane scrollPane = new VisScrollPane(actor);
@@ -99,34 +80,16 @@ public class AssetsDock {
         return scrollPane;
     }
 
-
-    public AssetsTab getAssetsTab() {
-        return assetsTab;
+    @Override
+    public String getTabTitle() {
+        return "Assets";
     }
 
-    public VisTable getRoot() {
+    @Override
+    public Table getContentTable() {
         return root;
     }
 
-    /**
-     * Assets Tab in the dock.
-     */
-    private class AssetsTab extends Tab {
-
-        public AssetsTab() {
-            super(false, false);
-        }
-
-        @Override
-        public String getTabTitle() {
-            return "Assets";
-        }
-
-        @Override
-        public Table getContentTable() {
-            return root;
-        }
-    }
 
     /**
      * Asset item in the grid.

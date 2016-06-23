@@ -52,7 +52,7 @@ public class Sidebar extends VisTable implements TabbedPaneListener {
 
     public void setupUi() {
         contentContainer = new VisTable();
-        contentContainer.setBackground(VisUI.getSkin().getDrawable("default-pane"));
+        contentContainer.setBackground("window-bg");
         contentContainer.align(Align.topLeft);
 
         tabbedPane.add(outlineTab);

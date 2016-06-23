@@ -16,65 +16,76 @@
 
 package com.mbrlabs.mundus.ui.modules.dock;
 
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPaneListener;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.input.FreeCamController;
 import com.mbrlabs.mundus.ui.modules.dock.assets.AssetsDock;
+import com.mbrlabs.mundus.ui.widgets.MundusSplitPane;
 
 /**
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-@Deprecated
 public class DockBar extends VisTable implements TabbedPaneListener {
 
     private AssetsDock assetsDock;
     private TabbedPane tabbedPane;
 
-    private DockBar() {
-        super();
-        TabbedPane.TabbedPaneStyle tabStyle = new TabbedPane.TabbedPaneStyle(VisUI.getSkin().get(TabbedPane.TabbedPaneStyle.class));
-        tabStyle.buttonStyle = new VisTextButton.VisTextButtonStyle(VisUI.getSkin().get("toggle", VisTextButton.VisTextButtonStyle.class));
-        tabStyle.buttonStyle.font = getSkin().getFont("opensans-regular");
-        //tabStyle.bottomBar = null;
+    @Inject
+    private FreeCamController freeCamController;
+    @Inject
+    private ProjectManager projectManager;
 
-        tabbedPane = new TabbedPane(tabStyle);
+    private MundusSplitPane splitPane;
+
+    public DockBar(MundusSplitPane splitPane) {
+        super();
+        this.splitPane = splitPane;
+        Mundus.inject(this);
+
+        TabbedPane.TabbedPaneStyle style = new TabbedPane.TabbedPaneStyle(
+                VisUI.getSkin().get(TabbedPane.TabbedPaneStyle.class));
+        style.buttonStyle = new VisTextButton.VisTextButtonStyle(
+                VisUI.getSkin().get("toggle", VisTextButton.VisTextButtonStyle.class));
+
+        tabbedPane = new TabbedPane(style);
         tabbedPane.setAllowTabDeselect(true);
         tabbedPane.addListener(this);
 
         assetsDock = new AssetsDock();
-        tabbedPane.add(assetsDock.getAssetsTab());
-
-        switchedTab(null);
-
+        tabbedPane.add(assetsDock);
+        add(tabbedPane.getTable()).expandX().fillX().left().bottom().height(30).row();
     }
 
     @Override
     public void switchedTab(Tab tab) {
-        if(tab == null) {
-            clear();
-            add(tabbedPane.getTable()).expand().fill().left().row();
+        if(tab != null) {
+            splitPane.setSecondWidget(tab.getContentTable());
+            splitPane.setSplitAmount(0.8f);
         } else {
-            clear();
-            add(tab.getContentTable()).left().expand().fill().height(Gdx.graphics.getHeight()*0.4f).row();
-            add(tabbedPane.getTable()).expand().fill().left().row();
+            splitPane.setSecondWidget(null);
+            splitPane.setSplitAmount(1f);
         }
-
+        splitPane.invalidate();
     }
 
     @Override
     public void removedTab(Tab tab) {
-
+        // user can't do that
     }
 
     @Override
     public void removedAllTabs() {
-
+        // user can't do that
     }
 
 }
