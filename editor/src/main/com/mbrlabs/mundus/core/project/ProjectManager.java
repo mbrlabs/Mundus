@@ -318,6 +318,11 @@ public class ProjectManager implements Disposable {
         for(GameObject go : sceneGraph.getGameObjects()) {
             go.findComponentsByType(terrainComponents, Component.Type.TERRAIN, true);
         }
+        for(Component c : terrainComponents) {
+            if(c instanceof TerrainComponent) {
+                scene.terrains.add(((TerrainComponent) c).getTerrain());
+            }
+        }
 
         return scene;
     }

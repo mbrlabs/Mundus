@@ -36,7 +36,6 @@ import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainUpDownTab;
 import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
@@ -135,9 +134,10 @@ public class ModelPlacementTool extends Tool {
         if(this.model == null || curEntity == null) return false;
 
         final ProjectContext context = projectManager.current();
+
         final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-        if(context.terrains.size > 0 && curEntity != null) {
-            TerrainUtils.getRayIntersection(context.terrains, ray, tempV3);
+        if(context.currScene.terrains.size > 0 && curEntity != null) {
+            TerrainUtils.getRayIntersection(context.currScene.terrains, ray, tempV3);
         } else {
             tempV3.set(projectManager.current().currScene.cam.position);
             tempV3.add(ray.direction.nor().scl(200));

@@ -112,6 +112,7 @@ public class AddTerrainDialog extends BaseDialog {
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
                     terrain.transform.setTranslation(posX, 0, posZ);
                     projectContext.terrains.add(terrain);
+                    projectContext.currScene.terrains.add(terrain);
                     GameObject terrainGO = TerrainUtils.createTerrainGO(
                             projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), nom, terrain);
                     projectContext.currScene.sceneGraph.addGameObject(terrainGO);
