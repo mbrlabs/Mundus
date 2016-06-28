@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.glutils.HdpiUtils;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mbrlabs.mundus.utils.Log;
 
 import java.nio.ByteBuffer;
 
@@ -37,8 +38,22 @@ public abstract class BasePicker implements Disposable {
     protected FrameBuffer fbo;
 
     public BasePicker() {
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getBackBufferWidth(),
-                Gdx.graphics.getBackBufferHeight(), true);
+        int width = Gdx.graphics.getWidth();
+        int height = Gdx.graphics.getHeight();
+
+        try {
+            fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+        } catch (Exception e) {
+            Log.error("FBO dimensions 100%: " + e.getMessage());
+            width *= 0.9f;
+            height *= 0.9f;
+            try {
+                fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+            } catch (Exception ee) {
+                Log.error("FBO dimensions 90%: " + e.getMessage());
+            }
+        }
+
     }
 
     protected void begin(Viewport viewport) {

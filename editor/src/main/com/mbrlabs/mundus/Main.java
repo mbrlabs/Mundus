@@ -32,11 +32,11 @@ public class Main {
     public static WindowCloseListener closeListener = null;
 
     public static void main (String[] arg) {
+
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
-        config.setWindowedMode(dm.width, dm.height-10);
+        config.setWindowedMode((int) (dm.width*0.95f), (int) (dm.height*0.95f));
         config.setTitle(TITLE);
-
 
         config.setWindowListener(new Lwjgl3WindowAdapter() {
             @Override
