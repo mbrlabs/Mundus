@@ -230,17 +230,17 @@ public class Mundus {
      */
     public static void dispose() {
         VisUI.dispose();
-        shapeRenderer.dispose();
-        goPicker.dispose();
-        modelBatch.dispose();
-        shaders.dispose();
-        toolManager.dispose();
-        commandHistory.clear();
-        fa.dispose();
+        if (shapeRenderer != null) shapeRenderer.dispose();
+        if (goPicker != null) goPicker.dispose();
+        if (modelBatch != null) modelBatch.dispose();
+        if (shaders != null) shaders.dispose();
+        if (toolManager != null) toolManager.dispose();
+        if (commandHistory != null) commandHistory.clear();
+        if (fa != null) fa.dispose();
         for(Model model : testModels) {
             model.dispose();
         }
-        projectManager.dispose();
+        if (projectManager != null) projectManager.dispose();
     }
 
 }
