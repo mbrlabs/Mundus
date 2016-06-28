@@ -37,7 +37,8 @@ public abstract class BasePicker implements Disposable {
     protected FrameBuffer fbo;
 
     public BasePicker() {
-        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getBackBufferWidth(),
+                Gdx.graphics.getBackBufferHeight(), true);
     }
 
     protected void begin(Viewport viewport) {
