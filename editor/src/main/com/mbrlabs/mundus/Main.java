@@ -34,9 +34,16 @@ public class Main {
     public static void main (String[] arg) {
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
-        config.setWindowedMode((int) (dm.width*0.95f), (int) (dm.height*0.95f));
         config.setTitle(TITLE);
+
+        // Set initial window size. See issue #11
+        DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
+        if(System.getProperties().getProperty("os.name").toLowerCase().contains("mac")) {
+            config.setWindowedMode((int) (dm.width * 0.80f), (int) (dm.height * 0.80f));
+        } else {
+            config.setWindowedMode((int) (dm.width*0.95f), (int) (dm.height*0.95f));
+        }
+        config.setWindowPosition(-1, -1);
 
         config.setWindowListener(new Lwjgl3WindowAdapter() {
             @Override
