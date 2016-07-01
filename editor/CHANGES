@@ -1,5 +1,9 @@
 [0.0.9]
-
+- Updated VisUI to 1.1.3
+- Fixed window size bug on mac: https://github.com/mbrlabs/Mundus/issues/11
+- Darker ui colors
+- Added the IntelliJ-like "docker bar" at the bottom
+- Removed the models tab on the left and put it into the docker bar
 
 [0.0.8] ~ 23/06/2016
 - Updated libGDX to 1.9.3
