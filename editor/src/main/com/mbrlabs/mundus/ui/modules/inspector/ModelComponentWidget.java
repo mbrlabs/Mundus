@@ -23,10 +23,8 @@ import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.kotcrab.vis.ui.widget.CollapsibleWidget;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
-import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -70,14 +68,13 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
     private void setupUI() {
         // create Model select dropdown
-        VisTable tab = new VisTable();
-        tab.add(new VisLabel("Model: ")).expandX().fillX();
-        tab.add(selectBox).expandX().fillX().row();
-        collapsibleContent.add(tab).expandX().fillX().row();
+        collapsibleContent.add(new VisLabel("Model")).left().row();
+        collapsibleContent.addSeparator().padBottom(5).row();
+        collapsibleContent.add(selectBox).expandX().fillX().row();
 
         // create materials for all model nodes
         MModelInstance mi = component.getModelInstance();
-        collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(7).padTop(7).row();
+        collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(3).padTop(3).row();
         collapsibleContent.addSeparator().row();
         // iterate over nodes
         for(Node node : mi.modelInstance.nodes) {

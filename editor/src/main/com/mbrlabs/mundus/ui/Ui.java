@@ -18,6 +18,8 @@ package com.mbrlabs.mundus.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.Separator;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
@@ -40,6 +42,8 @@ import com.mbrlabs.mundus.utils.Toaster;
  * @version 27-11-2015
  */
 public class Ui extends Stage {
+
+    public static Separator.SeparatorStyle greenSeperator;
 
     private VisTable root;
     private MundusSplitPane splitPane;
@@ -78,8 +82,11 @@ public class Ui extends Stage {
 
     private Ui() {
         super(new ScreenViewport());
-        toaster = new Toaster(this);
 
+        // init custom styles
+        greenSeperator = new Separator.SeparatorStyle(VisUI.getSkin().getDrawable("separator-green"), 1);
+
+        toaster = new Toaster(this);
         root = new VisTable();
         addActor(root);
         root.setFillParent(true);

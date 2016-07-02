@@ -24,6 +24,7 @@ import com.kotcrab.vis.ui.widget.Separator;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.CollapseWidget;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.utils.Fa;
@@ -95,12 +96,10 @@ public abstract class BaseInspectorWidget extends VisTable {
         header.add(collapseBtn).right().top().width(20).height(20).expand().row();
 
         // add seperator
-        Separator.SeparatorStyle seperatorStyle =
-                new Separator.SeparatorStyle(VisUI.getSkin().getDrawable("separator-green"), 1);
-        header.add(new Separator(seperatorStyle)).fillX().expandX().colspan(3).padBottom(4).row();
+        header.add(new Separator(Ui.greenSeperator)).fillX().expandX().colspan(3).row();
 
         // add everything to root
-        add(header).expand().fill().row();
+        add(header).expand().fill().padBottom(10).row();
         add(collapsibleWidget).expand().fill().row();
         setDeletable(deletable);
     }
