@@ -42,7 +42,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
     private VisTextField density = new VisTextField("0");
     private VisTextField gradient = new VisTextField("0");
 
-    private ColorPickerField colorPickerField = new ColorPickerField(150);
+    private ColorPickerField colorPickerField = new ColorPickerField("Color: ");
 
     @Inject
     private ProjectManager projectManager;
@@ -67,8 +67,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
         root.add(density).fillX().expandX().padBottom(10).row();
         root.add(new VisLabel("Gradient: ")).left().padBottom(10);
         root.add(gradient).fillX().expandX().padBottom(10).row();
-        root.add(new VisLabel("Color: ")).left().padBottom(10).colspan(2).row();
-        root.add(colorPickerField).fillX().expandX().padBottom(10).colspan(2).row();
+        root.add(colorPickerField).left().fillX().expandX().colspan(2).row();
         resetValues();
     }
 

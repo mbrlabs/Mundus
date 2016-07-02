@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.ui.widgets;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
@@ -36,7 +37,7 @@ public class ColorPickerField extends VisTable {
         public void selected(Color color);
     }
 
-    private int width;
+    private String label;
 
     private VisTextField textField;
     private VisTextButton cpBtn;
@@ -45,12 +46,13 @@ public class ColorPickerField extends VisTable {
     private Color color;
     private ColorSelected callback;
 
-    public ColorPickerField(int width) {
+    public ColorPickerField(String label) {
         super();
-        this.width = width;
+        this.label = label;
         textField = new VisTextField();
         cpBtn = new VisTextButton("Select");
         colorPicker = new ColorPicker();
+        setEditable(false);
 
         setupUI();
         setupListeners();
@@ -80,14 +82,14 @@ public class ColorPickerField extends VisTable {
     }
 
     private void setupUI() {
-        pad(5);
-        add(textField).width(width*0.75f).padRight(5);
-        add(cpBtn).expandX().fillX();
+        add(new VisLabel(label)).left();
+        add(textField).padLeft(5).padRight(5).expandX().fillX();
+        add(cpBtn).row();
     }
 
     private void setupListeners() {
 
-        // file chooser
+        // color chooser
         colorPicker.setListener(new ColorPickerAdapter() {
             @Override
             public void finished(Color newColor) {
@@ -97,7 +99,7 @@ public class ColorPickerField extends VisTable {
             }
         });
 
-        // file chooser button
+        // color chooser button
         cpBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

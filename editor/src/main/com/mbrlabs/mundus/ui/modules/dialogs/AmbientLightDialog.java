@@ -39,7 +39,7 @@ public class AmbientLightDialog extends BaseDialog implements ProjectChangedEven
 
     private VisTextField intensity = new VisTextField("0");
 
-    private ColorPickerField colorPickerField = new ColorPickerField(150);
+    private ColorPickerField colorPickerField = new ColorPickerField("Color: ");
 
     @Inject
     private ProjectManager projectManager;
@@ -60,8 +60,7 @@ public class AmbientLightDialog extends BaseDialog implements ProjectChangedEven
 
         root.add(new VisLabel("Intensity: ")).left().padBottom(10);
         root.add(intensity).fillX().expandX().padBottom(10).row();
-        root.add(new VisLabel("Color: ")).left().padBottom(10).colspan(2).row();
-        root.add(colorPickerField).fillX().expandX().padBottom(10).colspan(2).row();
+        root.add(colorPickerField).left().fillX().expandX().colspan(2).row();
         resetValues();
     }
 
