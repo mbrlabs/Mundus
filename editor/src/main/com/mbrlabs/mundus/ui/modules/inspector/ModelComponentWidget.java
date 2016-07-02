@@ -16,11 +16,16 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
+import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Inject;
@@ -60,8 +65,30 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     }
 
     private void setupUI() {
-        collapsibleContent.add(new VisLabel("Model: "));
-        collapsibleContent.add(selectBox).expand().fill().minWidth(200).row();
+
+        collapsibleContent.add(new VisLabel("Model: ")).expandX().fillX();
+        collapsibleContent.add(selectBox).expandX().fillX().row();
+
+        MModelInstance mi = component.getModelInstance();
+        // iterate over nodes
+        for(Node node : mi.modelInstance.nodes) {
+            collapsibleContent.add(new VisLabel("Node: " + node.id)).expandX().fillX().left().row();
+
+            // iterate over node parts
+            for(NodePart nodePart : node.parts) {
+                ColorAttribute diffuse = (ColorAttribute) nodePart.material.get(ColorAttribute.Diffuse);
+                ColorAttribute ambient = (ColorAttribute) nodePart.material.get(ColorAttribute.Ambient);
+                ColorAttribute specular = (ColorAttribute) nodePart.material.get(ColorAttribute.Specular);
+                FloatAttribute shininess = (FloatAttribute) nodePart.material.get(FloatAttribute.Shininess);
+
+                collapsibleContent.add(new VisLabel("Diffuse: " + diffuse.color.toString())).expandX().fillX().left().row();
+                collapsibleContent.add(new VisLabel("Ambient: " + ambient.color.toString())).expandX().fillX().left().row();
+                collapsibleContent.add(new VisLabel("Specular: " + specular.color.toString())).expandX().fillX().left().row();
+                collapsibleContent.add(new VisLabel("Shininess: " + shininess.value)).expandX().fillX().left().row();
+
+            }
+        }
+
     }
 
     @Override
