@@ -19,6 +19,8 @@ package com.mbrlabs.mundus.ui.modules.inspector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.Separator;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -91,7 +93,11 @@ public abstract class BaseInspectorWidget extends VisTable {
         deletableBtnCell = header.add(deleteBtn).top().left().padBottom(4);
         header.add(titleLabel);
         header.add(collapseBtn).right().top().width(20).height(20).expand().row();
-        header.addSeparator().colspan(3).padBottom(4).row();
+
+        // add seperator
+        Separator.SeparatorStyle seperatorStyle =
+                new Separator.SeparatorStyle(VisUI.getSkin().getDrawable("separator-green"), 1);
+        header.add(new Separator(seperatorStyle)).fillX().expandX().colspan(3).padBottom(4).row();
 
         // add everything to root
         add(header).expand().fill().row();

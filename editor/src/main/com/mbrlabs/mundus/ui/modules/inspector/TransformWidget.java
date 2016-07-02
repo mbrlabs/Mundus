@@ -60,7 +60,7 @@ public class TransformWidget extends BaseInspectorWidget {
     private ProjectManager projectManager;
 
     public TransformWidget() {
-        super("TransformWidget");
+        super("Transformation");
         Mundus.inject(this);
         setDeletable(false);
         init();

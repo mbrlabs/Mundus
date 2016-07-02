@@ -53,7 +53,6 @@ public class ColorPickerField extends VisTable {
         cpBtn = new VisTextButton("Select");
         colorPicker = new ColorPicker();
         setEditable(false);
-
         setupUI();
         setupListeners();
     }
@@ -82,9 +81,9 @@ public class ColorPickerField extends VisTable {
     }
 
     private void setupUI() {
-        add(new VisLabel(label)).left();
-        add(textField).padLeft(5).padRight(5).expandX().fillX();
-        add(cpBtn).row();
+        add(new VisLabel(label)).fillX().expandX();
+        add(textField).padLeft(5).padRight(5).fillX().expandX();
+        add(cpBtn).fillX().expandX().row();
     }
 
     private void setupListeners() {

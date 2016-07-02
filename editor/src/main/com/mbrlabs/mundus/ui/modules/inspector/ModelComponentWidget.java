@@ -16,14 +16,17 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.kotcrab.vis.ui.widget.CollapsibleWidget;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
+import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -32,6 +35,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
 
 /**
  * @author Marcus Brummer
@@ -65,27 +69,61 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     }
 
     private void setupUI() {
+        // create Model select dropdown
+        VisTable tab = new VisTable();
+        tab.add(new VisLabel("Model: ")).expandX().fillX();
+        tab.add(selectBox).expandX().fillX().row();
+        collapsibleContent.add(tab).expandX().fillX().row();
 
-        collapsibleContent.add(new VisLabel("Model: ")).expandX().fillX();
-        collapsibleContent.add(selectBox).expandX().fillX().row();
-
+        // create materials for all model nodes
         MModelInstance mi = component.getModelInstance();
+        collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(7).padTop(7).row();
+        collapsibleContent.addSeparator().row();
         // iterate over nodes
         for(Node node : mi.modelInstance.nodes) {
             collapsibleContent.add(new VisLabel("Node: " + node.id)).expandX().fillX().left().row();
 
             // iterate over node parts
             for(NodePart nodePart : node.parts) {
-                ColorAttribute diffuse = (ColorAttribute) nodePart.material.get(ColorAttribute.Diffuse);
-                ColorAttribute ambient = (ColorAttribute) nodePart.material.get(ColorAttribute.Ambient);
-                ColorAttribute specular = (ColorAttribute) nodePart.material.get(ColorAttribute.Specular);
+
+                // diffuse
+                final ColorAttribute diffuse = (ColorAttribute) nodePart.material.get(ColorAttribute.Diffuse);
+                ColorPickerField diffusePicker = new ColorPickerField("Diffuse: ");
+                diffusePicker.setColor(diffuse.color);
+                diffusePicker.setCallback(new ColorPickerField.ColorSelected() {
+                    @Override
+                    public void selected(Color color) {
+                        diffuse.color.set(color);
+                    }
+                });
+                collapsibleContent.add(diffusePicker).expandX().fillX().left().padBottom(5).row();
+
+                // ambient
+                final ColorAttribute ambient = (ColorAttribute) nodePart.material.get(ColorAttribute.Ambient);
+                ColorPickerField ambientPicker = new ColorPickerField("Ambient: ");
+                ambientPicker.setColor(diffuse.color);
+                ambientPicker.setCallback(new ColorPickerField.ColorSelected() {
+                    @Override
+                    public void selected(Color color) {
+                        ambient.color.set(color);
+                    }
+                });
+                collapsibleContent.add(ambientPicker).expandX().fillX().left().padBottom(5).row();
+
+                // specular
+                final ColorAttribute specular = (ColorAttribute) nodePart.material.get(ColorAttribute.Specular);
+                ColorPickerField specularPicker = new ColorPickerField("Specular: ");
+                specularPicker.setColor(specular.color);
+                specularPicker.setCallback(new ColorPickerField.ColorSelected() {
+                    @Override
+                    public void selected(Color color) {
+                        specular.color.set(color);
+                    }
+                });
+                collapsibleContent.add(specularPicker).expandX().fillX().left().row();
+
+                // shininess
                 FloatAttribute shininess = (FloatAttribute) nodePart.material.get(FloatAttribute.Shininess);
-
-                collapsibleContent.add(new VisLabel("Diffuse: " + diffuse.color.toString())).expandX().fillX().left().row();
-                collapsibleContent.add(new VisLabel("Ambient: " + ambient.color.toString())).expandX().fillX().left().row();
-                collapsibleContent.add(new VisLabel("Specular: " + specular.color.toString())).expandX().fillX().left().row();
-                collapsibleContent.add(new VisLabel("Shininess: " + shininess.value)).expandX().fillX().left().row();
-
             }
         }
 
