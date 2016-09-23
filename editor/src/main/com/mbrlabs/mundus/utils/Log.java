@@ -32,7 +32,7 @@ import java.util.Date;
  * {} will be replaced with parameter in left to right order.
  * 
  * @author Marcus Brummer, codenigma
- * @version 26-11-2015
+ * @version 23-09-2015
  */
 public class Log {
 
@@ -271,7 +271,7 @@ public class Log {
     }
 
     public final static void printHeadLine(int logLevel, String title) {
-        log(logLevel, "|                  > " + title + " <");
+        log(logLevel, "|                  > {} <", title);
     }
 
     public final static void printUpperSeperationLine(int logLevel) {
