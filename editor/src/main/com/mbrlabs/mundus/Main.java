@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -31,24 +31,26 @@ public class Main {
 
     public static WindowCloseListener closeListener = null;
 
-    public static void main (String[] arg) {
-
+    public static void main(String[] arg) {
+        //Start Log instance
+        Log.init();
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(TITLE);
+        Log.info("Starting [{}]", TITLE);
 
         // Set initial window size. See issue #11
         DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
-        if(System.getProperties().getProperty("os.name").toLowerCase().contains("mac")) {
+        if (System.getProperties().getProperty("os.name").toLowerCase().contains("mac")) {
             config.setWindowedMode((int) (dm.width * 0.80f), (int) (dm.height * 0.80f));
         } else {
-            config.setWindowedMode((int) (dm.width*0.95f), (int) (dm.height*0.95f));
+            config.setWindowedMode((int) (dm.width * 0.95f), (int) (dm.height * 0.95f));
         }
         config.setWindowPosition(-1, -1);
 
         config.setWindowListener(new Lwjgl3WindowAdapter() {
             @Override
             public boolean closeRequested() {
-                if(closeListener != null) {
+                if (closeListener != null) {
                     closeListener.onCloseRequested();
                     return false;
                 }
@@ -56,9 +58,11 @@ public class Main {
             }
         });
         new Lwjgl3Application(new Editor(), config);
+        Log.info("Shutting down [{}]", TITLE);
     }
 
     public interface WindowCloseListener {
+
         boolean onCloseRequested();
     }
 
