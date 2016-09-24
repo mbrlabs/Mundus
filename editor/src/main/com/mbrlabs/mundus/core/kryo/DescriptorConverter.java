@@ -245,7 +245,7 @@ public class DescriptorConverter {
         }
 
         if(model == null) {
-            Log.fatal("MModel for MModelInstance not found: " + descriptor.getModelID());
+            Log.fatal("MModel for MModelInstance not found: {}", descriptor.getModelID());
             return null;
         }
 

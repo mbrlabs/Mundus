@@ -97,7 +97,7 @@ public class TerrainIO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Log.debug("Terrain import. floats: " + floatArray.size);
+        //Log.debug("Terrain import. floats: {}", floatArray.size);
 
         terrain.heightData = floatArray.toArray();
         terrain.init();

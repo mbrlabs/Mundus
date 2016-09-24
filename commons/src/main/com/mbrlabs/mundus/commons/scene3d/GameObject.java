@@ -50,6 +50,25 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         this.tags = null;
         this.components = new Array<Component>(3);
     }
+    
+//    /**
+//     * Make copy with existing gameObject and new id
+//     * @param gameObject 
+//     */
+//    public GameObject(GameObject gameObject, int id) {
+//        super(id);
+//        this.sceneGraph = gameObject.sceneGraph;
+//        this.setParent(gameObject.parent);
+//        this.children = gameObject.children;
+//        
+//        //no transformation is copied ! -> Copy constructor in super classes ?
+//                
+//        this.name = (name == null) ? DEFAULT_NAME : name;
+//        this.name = this.name + "_copy";
+//        this.active = gameObject.active;
+//        this.tags = gameObject.tags;
+//        this.components = gameObject.getComponents();
+//    }
 
     /**
      * Calls the render() method for each component in this and all child nodes.
@@ -211,6 +230,11 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         int result = (id ^ (id >>> 16));
         result = 31 * result + name.hashCode();
         return result;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

@@ -95,7 +95,6 @@ public class Mundus {
         }
 
         initStyle();
-        Log.init();
         initFontAwesome();
 
         shapeRenderer = new ShapeRenderer();
@@ -191,7 +190,7 @@ public class Mundus {
         for(Field f : fields) {
             if(ReflectionUtils.hasFieldAnnotation(f, Inject.class)) {
                 injectableFields.add(f);
-                //Log.debug("DI: found injectable field: " + f.getName());
+                //Log.debug("DI: found injectable field: {}", f.getName());
             }
         }
 

@@ -80,7 +80,7 @@ public class ProjectContext implements Disposable {
 
     @Override
     public void dispose() {
-        Log.debug("Disposing project current " + path);
+        Log.debug("Disposing project current {}", path);
         for(MModel model : models) {
             model.getModel().dispose();
         }

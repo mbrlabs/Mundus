@@ -190,7 +190,7 @@ public class ProjectManager implements Disposable {
         for(MTexture tex : context.textures) {
             tex.texture = TextureUtils.loadMipmapTexture(
                     Gdx.files.absolute(FilenameUtils.concat(context.path, tex.getPath())), true);
-            Log.debug("Loaded texture: " + tex.getPath());
+            Log.debug("Loaded texture: {}", tex.getPath());
         }
 
         // load g3db models
@@ -226,7 +226,7 @@ public class ProjectManager implements Disposable {
         // save scene in .mundus file
         kryoManager.saveScene(projectContext, projectContext.currScene);
 
-        Log.debug("Saving currentProject " + projectContext.name+ " [" + projectContext.path + "]");
+        Log.debug("Saving currentProject {}", projectContext.name+ " [" + projectContext.path + "]");
     }
 
     /**
@@ -367,7 +367,7 @@ public class ProjectManager implements Disposable {
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
-                    Log.fatal("model for modelInstance not found: " + modelComponent.getModelInstance().getModel().id);
+                    Log.fatal("model for modelInstance not found: {}", modelComponent.getModelInstance().getModel().id);
                 }
             } else if(c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent)c).setShader(shaders.terrainShader);

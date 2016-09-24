@@ -44,13 +44,13 @@ public abstract class BasePicker implements Disposable {
         try {
             fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
         } catch (Exception e) {
-            Log.error("FBO dimensions 100%: " + e.getMessage());
+            Log.error("FBO dimensions 100%: {}", e.getMessage());
             width *= 0.9f;
             height *= 0.9f;
             try {
                 fbo = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
             } catch (Exception ee) {
-                Log.error("FBO dimensions 90%: " + e.getMessage());
+                Log.error("FBO dimensions 90%: {}", e.getMessage());
             }
         }
 
