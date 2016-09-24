@@ -16,8 +16,10 @@ allprojects {
         gdxVersion = '1.9.4'
         aiVersion = '1.8.0'
         visuiVersion = '1.2.3'
-        kryoVersion = '3.0.3'
+        kryoVersion = '4.0.0'
         junitVersion = '4.12'
+        commonsIoVersion = '2.5'
+        commonsLangVersion = '3.4'
     }
 
     repositories {
@@ -50,13 +52,12 @@ project(":editor") {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-        //compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
         compile "com.kotcrab.vis:vis-ui:$visuiVersion"
         compile "com.esotericsoftware:kryo:$kryoVersion"
-        compile "org.apache.commons:commons-lang3:3.4"
-        compile "commons-io:commons-io:2.5"
+        compile "org.apache.commons:commons-lang3:$commonsLangVersion"
+        compile "commons-io:commons-io:$commonsIoVersion"
 
         testCompile "junit:junit:$junitVersion"
     }

@@ -52,13 +52,16 @@ public class KryoManager {
     private Kryo kryo;
 
     public KryoManager() {
+        // setup kryo
         kryo = new Kryo();
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
+        kryo.getTaggedFieldSerializerConfig().setOptimizedGenerics(true);
+
         // !!!!! DO NOT CHANGE THIS, OTHERWISE ALREADY SERIALIZED OBJECTS WILL BE UNREADABLE !!!!
-        kryo.register(ArrayList.class, 0);
-        kryo.register(Date.class, 1);
 
         // core stuff
+        kryo.register(ArrayList.class, 0);
+        kryo.register(Date.class, 1);
         kryo.register(RegistryDescriptor.class, 2);
         kryo.register(ProjectRefDescriptor.class, 3);
         kryo.register(SettingsDescriptor.class, 4);
