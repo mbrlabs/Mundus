@@ -56,6 +56,7 @@ public class Outline extends VisTable implements
         GameObjectSelectedEvent.GameObjectSelectedListener {
 
     private static final String TITLE = "Outline";
+    private static final String TAG = Outline.class.getSimpleName();
 
     private VisTable content;
     private VisTree tree;
@@ -109,7 +110,7 @@ public class Outline extends VisTable implements
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
         //update to new sceneGraph
         sceneGraph = projectManager.current().currScene.sceneGraph;
-        Log.traceTag("Outline", "Project changed. Building scene graph.");
+        Log.traceTag(TAG, "Project changed. Building scene graph.");
         buildTree(sceneGraph);
     }
 
@@ -117,13 +118,14 @@ public class Outline extends VisTable implements
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
         //update to new sceneGraph
         sceneGraph = projectManager.current().currScene.sceneGraph;
-        Log.traceTag("Outline", "Scene changed. Building scene graph.");
+        Log.traceTag(TAG, "Scene changed. Building scene graph.");
         buildTree(sceneGraph);
     }
 
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
-        
+        Log.traceTag(TAG, "SceneGraph changed. Building scene graph.");
+        buildTree(sceneGraph);
     }
 
     private void setupDragAndDrop() {
@@ -323,7 +325,7 @@ public class Outline extends VisTable implements
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
         Tree.Node node = tree.findNode(gameObjectSelectedEvent.getGameObject());
-        Log.traceTag("Outline", "Select game object [{}].", node.getObject());
+        Log.traceTag(TAG, "Select game object [{}].", node.getObject());
         tree.getSelection().clear();
         tree.getSelection().add(node);
         node.expandTo();
@@ -375,12 +377,12 @@ public class Outline extends VisTable implements
                     //update outline
                     if (selectedGO == null) {
                         //update sceneGraph
-                        Log.traceTag("Outline", "Add empty game object [{}] in root node.", go);
+                        Log.traceTag(TAG, "Add empty game object [{}] in root node.", go);
                         sceneGraph.addGameObject(go);
                         //update outline
                         addGoToTree(null, go);
                     } else {
-                        Log.traceTag("Outline", "Add empty game object [{}] child in node [{}].", go, selectedGO);
+                        Log.traceTag(TAG, "Add empty game object [{}] child in node [{}].", go, selectedGO);
                         //update sceneGraph
                         selectedGO.addChild(go);
                         //update outline
