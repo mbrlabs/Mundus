@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneAddedEvent;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -107,7 +108,9 @@ public class SceneMenu extends Menu implements
 
     @Override
     public void onSceneAdded(SceneAddedEvent sceneAddedEvent) {
-        buildMenuItem(sceneAddedEvent.getScene().getName());
+        String sceneName = sceneAddedEvent.getScene().getName();
+        buildMenuItem(sceneName);
+        Log.traceTag("SceneMenu", "New scene [{}] added.", sceneName);
     }
 
 }

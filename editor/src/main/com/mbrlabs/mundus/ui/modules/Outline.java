@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.ui.modules;
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -30,7 +28,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.*;
-import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -45,6 +42,7 @@ import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
@@ -67,12 +65,16 @@ public class Outline extends VisTable implements
 
     private RightClickMenu rightClickMenu;
 
+    private SceneGraph sceneGraph;
+
     @Inject
     private Shaders shaders;
     @Inject
     private ToolManager toolManager;
     @Inject
     private ProjectManager projectManager;
+    
+    private final ProjectContext projectContext;
 
     public Outline() {
         super();
@@ -98,21 +100,30 @@ public class Outline extends VisTable implements
 
         setupDragAndDrop();
         setupListeners();
+
+        sceneGraph = projectManager.current().currScene.sceneGraph;
+        projectContext = projectManager.current();
     }
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
-        buildTree(projectManager.current().currScene.sceneGraph);
+        //update to new sceneGraph
+        sceneGraph = projectManager.current().currScene.sceneGraph;
+        Log.traceTag("Outline", "Project changed. Building scene graph.");
+        buildTree(sceneGraph);
     }
 
     @Override
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
-        buildTree(projectManager.current().currScene.sceneGraph);
+        //update to new sceneGraph
+        sceneGraph = projectManager.current().currScene.sceneGraph;
+        Log.traceTag("Outline", "Scene changed. Building scene graph.");
+        buildTree(sceneGraph);
     }
 
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
-        buildTree(projectManager.current().currScene.sceneGraph);
+        
     }
 
     private void setupDragAndDrop() {
@@ -124,7 +135,7 @@ public class Outline extends VisTable implements
             public DragAndDrop.Payload dragStart(InputEvent event, float x, float y, int pointer) {
                 DragAndDrop.Payload payload = new DragAndDrop.Payload();
                 Tree.Node node = tree.getNodeAt(y);
-                if(node != null) {
+                if (node != null) {
                     payload.setObject(node);
                     return payload;
                 }
@@ -139,8 +150,12 @@ public class Outline extends VisTable implements
             public boolean drag(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 // Select node under mouse if not over the selection.
                 Tree.Node overNode = tree.getNodeAt(y);
-                if (overNode == null && tree.getSelection().isEmpty()) return true;
-                if (overNode != null && !tree.getSelection().contains(overNode)) tree.getSelection().set(overNode);
+                if (overNode == null && tree.getSelection().isEmpty()) {
+                    return true;
+                }
+                if (overNode != null && !tree.getSelection().contains(overNode)) {
+                    tree.getSelection().set(overNode);
+                }
                 return true;
             }
 
@@ -150,14 +165,14 @@ public class Outline extends VisTable implements
 
                 final ProjectContext projectContext = projectManager.current();
 
-                if(node != null) {
+                if (node != null) {
                     GameObject draggedGo = (GameObject) node.getObject();
                     Tree.Node newParent = tree.getNodeAt(y);
 
                     // check if a go is dragged in one of its' children or itself
-                    if(newParent != null) {
+                    if (newParent != null) {
                         GameObject parentGo = (GameObject) newParent.getObject();
-                        if(parentGo.isChildOf(draggedGo)) {
+                        if (parentGo.isChildOf(draggedGo)) {
                             return;
                         }
                     }
@@ -166,7 +181,7 @@ public class Outline extends VisTable implements
                     draggedGo.remove();
 
                     // add to new parent
-                    if(newParent == null) {
+                    if (newParent == null) {
                         projectContext.currScene.sceneGraph.addGameObject(draggedGo);
                     } else {
                         GameObject parentGo = (GameObject) newParent.getObject();
@@ -200,11 +215,15 @@ public class Outline extends VisTable implements
         tree.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (Input.Buttons.RIGHT != button) return;
+                if (Input.Buttons.RIGHT != button) {
+                    return;
+                }
 
                 Tree.Node node = tree.getNodeAt(y);
                 GameObject go = null;
-                if(node != null) go = (GameObject) node.getObject();
+                if (node != null) {
+                    go = (GameObject) node.getObject();
+                }
                 rightClickMenu.show(go, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
             }
 
@@ -218,8 +237,8 @@ public class Outline extends VisTable implements
         tree.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Selection<Tree.Node> selection =  tree.getSelection();
-                if(selection != null && selection.size() > 0) {
+                Selection<Tree.Node> selection = tree.getSelection();
+                if (selection != null && selection.size() > 0) {
                     GameObject go = (GameObject) selection.first().getObject();
                     projectManager.current().currScene.sceneGraph.setSelected(go);
                     toolManager.translateTool.gameObjectSelected(go);
@@ -230,34 +249,81 @@ public class Outline extends VisTable implements
 
     }
 
+    /**
+     * Building tree from game objects in sceneGraph
+     *
+     * @param sceneGraph
+     */
     private void buildTree(SceneGraph sceneGraph) {
         tree.clearChildren();
 
-        for(GameObject go : sceneGraph.getGameObjects()) {
+        for (GameObject go : sceneGraph.getGameObjects()) {
             addGoToTree(null, go);
         }
     }
 
+    /**
+     * Adding game object to outline
+     *
+     * @param treeParentNode
+     * @param gameObject
+     */
     private void addGoToTree(Tree.Node treeParentNode, GameObject gameObject) {
         Tree.Node leaf = new Tree.Node(new TreeNode(gameObject));
         leaf.setObject(gameObject);
-        if(treeParentNode == null) {
+        if (treeParentNode == null) {
             tree.add(leaf);
         } else {
             treeParentNode.add(leaf);
         }
-
-        if(gameObject.getChildren() != null) {
-            for(GameObject goChild : gameObject.getChildren()) {
+        //Always expand after adding new node
+        leaf.expandTo();
+        if (gameObject.getChildren() != null) {
+            for (GameObject goChild : gameObject.getChildren()) {
                 addGoToTree(leaf, goChild);
             }
         }
     }
 
+    /**
+     * Removing game object from tree and outline
+     *
+     * @param go
+     */
+    private void removeGo(GameObject go) {
+        //remove from outline
+        Tree.Node n = tree.findNode(go);
+        tree.remove(n);
+        //remove from sceneGraph
+        go.remove();
+        go = null;
+    }
+
+//    private void duplicateGO(GameObject go) {
+//        int id = projectContext.obtainID();
+//
+//        GameObject parentGameObject = go.getParent();
+//        //the game object for duplication, usage of copy constructor
+//        GameObject duplicateGameObject = new GameObject(go, id);
+//        //update sceneGraph
+//        Log.traceTag("Outline", "Duplicate game object [{}] in parent layer [{}].", go, parentGameObject);
+//        parentGameObject.addChild(duplicateGameObject);
+//        //update outline
+//        Tree.Node n = tree.findNode(parentGameObject);
+//        addGoToTree(n, duplicateGameObject);
+//        //children of go, duplicate recursiv  ---> NOT WORKING YET, LOOP :(
+//        if (go.getChildren() != null) {
+//            for (GameObject goChild : go.getChildren()) {
+//                
+//                duplicateGO(goChild);
+//            }
+//        }
+//    }
+
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
         Tree.Node node = tree.findNode(gameObjectSelectedEvent.getGameObject());
-
+        Log.traceTag("Outline", "Select game object [{}].", node.getObject());
         tree.getSelection().clear();
         tree.getSelection().add(node);
         node.expandTo();
@@ -289,13 +355,11 @@ public class Outline extends VisTable implements
         private MenuItem duplicate;
         private MenuItem delete;
 
-
         private GameObject selectedGO;
 
         public RightClickMenu() {
             super();
 
-            final ProjectContext projectContext = projectManager.current();
             addEmpty = new MenuItem("Add Empty");
             addTerrain = new MenuItem("Add terrain");
             duplicate = new MenuItem("Duplicate");
@@ -306,11 +370,22 @@ public class Outline extends VisTable implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     int id = projectContext.obtainID();
-                    SceneGraph sg = projectContext.currScene.sceneGraph;
+                    //the new game object
+                    GameObject go = new GameObject(sceneGraph, GameObject.DEFAULT_NAME, id);
+                    //update outline
                     if (selectedGO == null) {
-                        sg.addGameObject(new GameObject(sg, GameObject.DEFAULT_NAME, id));
+                        //update sceneGraph
+                        Log.traceTag("Outline", "Add empty game object [{}] in root node.", go);
+                        sceneGraph.addGameObject(go);
+                        //update outline
+                        addGoToTree(null, go);
                     } else {
-                        selectedGO.addChild(new GameObject(sg, GameObject.DEFAULT_NAME, id));
+                        Log.traceTag("Outline", "Add empty game object [{}] child in node [{}].", go, selectedGO);
+                        //update sceneGraph
+                        selectedGO.addChild(go);
+                        //update outline
+                        Tree.Node n = tree.findNode(selectedGO);
+                        addGoToTree(n, go);
                     }
                     Mundus.postEvent(new SceneGraphChangedEvent());
                 }
@@ -320,23 +395,37 @@ public class Outline extends VisTable implements
             addTerrain.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    //To-DO: Terrain config popup: set width and height values, maybe heightmap import options
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
                     projectContext.terrains.add(terrain);
                     //projectContext.currScene.terrainGroup.add(terrain);
                     GameObject terrainGO = TerrainUtils.createTerrainGO(
-                            projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), "Terrain", terrain);
-                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
+                            sceneGraph, shaders.terrainShader, projectContext.obtainID(), "Terrain", terrain);
+                    //update sceneGraph
+                    sceneGraph.addGameObject(terrainGO);
+                    //update outline
+                    addGoToTree(null, terrainGO);
+
                     Mundus.postEvent(new SceneGraphChangedEvent());
                 }
             });
+
+            // duplicate node, (How to solve copy/clone of game objects?)
+//            duplicate.addListener(new ClickListener() {
+//                @Override
+//                public void clicked(InputEvent event, float x, float y) {
+//                    duplicateGO(selectedGO);
+//
+//                    Mundus.postEvent(new SceneGraphChangedEvent());
+//                }
+//            });
 
             // delete game object
             delete.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(selectedGO != null) {
-                        selectedGO.remove();
-                        selectedGO = null;
+                    if (selectedGO != null) {
+                        removeGo(selectedGO);
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     }
                 }
@@ -354,6 +443,4 @@ public class Outline extends VisTable implements
         }
 
     }
-
 }
-
