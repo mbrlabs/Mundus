@@ -95,7 +95,7 @@ public class Outline extends VisTable implements
         scrollPane.setFadeScrollBars(false);
         content.add(scrollPane).fill().expand();
 
-        add(new VisLabel("Outline")).expandX().fillX().pad(3).row();
+        add(new VisLabel(TITLE)).expandX().fillX().pad(3).row();
         addSeparator().row();
         add(content).fill().expand();
 
