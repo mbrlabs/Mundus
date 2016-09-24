@@ -36,13 +36,14 @@ import java.util.Date;
  */
 public class Log {
 
+    public static final int TRACE = 5;
     public static final int DEBUG = 4;
     public static final int INFO = 3;
     public static final int WARN = 2;
     public static final int ERROR = 1;
     public static final int FATAL = 0;
 
-    public static int LOG_LEVEL = DEBUG;
+    public static int LOG_LEVEL = TRACE;
 
     private static File logFile;
     private static PrintWriter logFileWriter;
@@ -95,6 +96,12 @@ public class Log {
         return logFile.getParent();
     }
 
+    public static void trace(String msg, Object... params) {
+        if (LOG_LEVEL >= DEBUG) {
+            msg = completeMsg(msg, params);
+            print("[Trace] " + msg);
+        }
+    }
     public static void debug(String msg, Object... params) {
         if (LOG_LEVEL >= DEBUG) {
             msg = completeMsg(msg, params);
@@ -131,6 +138,12 @@ public class Log {
     }
 
     //Log with tag
+    public static void traceTag(String tag, String msg, Object... params) {
+        if (LOG_LEVEL >= DEBUG) {
+            msg = completeMsg(msg, params);
+            print("[Trace][" + tag + "] " + msg);
+        }
+    }
     public static void debugTag(String tag, String msg, Object... params) {
         if (LOG_LEVEL >= DEBUG) {
             msg = completeMsg(msg, params);
@@ -203,11 +216,8 @@ public class Log {
     }
 
     private static String completeMsg(String msg, Object... params) {
-        String tmp = null;
-        for(Object p : params) {
-            tmp = ""+p;
-            msg = msg.replaceFirst("\\{\\}", tmp);
-        }
+        for(Object p : params)
+            msg = msg.replaceFirst("\\{\\}", String.valueOf(p));
         return msg;
     }
     
@@ -220,6 +230,9 @@ public class Log {
      */
     public static void log(int logLevel, String msg, Object... params) {
         switch (logLevel) {
+            case TRACE:
+                trace(msg, params);
+                break;
             case DEBUG:
                 debug(msg, params);
                 break;
@@ -250,6 +263,9 @@ public class Log {
      */
     public static void logTag(int logLevel, String tag, String msg, Object... params) {
         switch (logLevel) {
+            case TRACE:
+                traceTag(tag, msg, params);
+                break;
             case DEBUG:
                 debugTag(tag, msg, params);
                 break;
