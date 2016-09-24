@@ -97,7 +97,7 @@ public class Log {
     }
 
     public static void trace(String msg, Object... params) {
-        if (LOG_LEVEL >= DEBUG) {
+        if (LOG_LEVEL >= TRACE) {
             msg = completeMsg(msg, params);
             print("[Trace] " + msg);
         }
@@ -139,7 +139,7 @@ public class Log {
 
     //Log with tag
     public static void traceTag(String tag, String msg, Object... params) {
-        if (LOG_LEVEL >= DEBUG) {
+        if (LOG_LEVEL >= TRACE) {
             msg = completeMsg(msg, params);
             print("[Trace][" + tag + "] " + msg);
         }
