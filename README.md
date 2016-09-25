@@ -1,5 +1,5 @@
 # Mundus [![](https://travis-ci.org/mbrlabs/Mundus.svg?branch=master)](https://travis-ci.org/mbrlabs/Mundus)
-Mundus is a 3D world editor, built with Java and LibGDX + VisUI.
+Mundus is a platform independent 3D world editor, built with Java and LibGDX + VisUI.
 The plan is, that the world you create with Mundus can be exported
 into a unified format (such as JSON + assets). The exported data can then be imported into any Game Engine,
 if someone writes a runtime/parser for that engine.
@@ -31,7 +31,7 @@ Below are some of the more interesting features, that already work
 - Undo/Redo system for most operations
 - Highly accurate game object picking system, based on id color coding & offscreen framebuffer rendering.
   Basic concept: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
-
+  
 ## Things to consider
 - Mundus is constantly changing. Especially the internal representation of save files. At this stage of the project i don't care 
 very much for backward compatibility, so don't fall to much in love with your creations if you want to stay up to date ;)
@@ -39,16 +39,12 @@ very much for backward compatibility, so don't fall to much in love with your cr
 because of the default GLFW keycode mapping. You can change the layout mapping in the settings dialog under Window -> Settings.
 
 ## Runtime
-Currently i'm in the progress of implementing the libGDX runtime, which is included in this repository.
+Currently i'm in the process of implementing the libGDX runtime, which is included in this repository.
 Runtimes for other engines/frameworks are not planed in the near future.
 
-## Dev Platforms
-Since this is Java (+ libGDX with some native libs) it should run on Windows, Mac & Linux 
-(all platforms must support at least OpenGL 3.2). 
-I develop on a Linux machine, so the only tested OS is Linux so far.
-Android & iOS are obviously not supported as development platforms (but of course as target platform). 
+## Contributing
+Contributions are greatly appreciated. To make the process as easy as possible please follow the [Contribution Guide](https://github.com/mbrlabs/Mundus/blob/master/CONTRIBUTIONS.md).
+To get an overview over the project you might also want to check out the [Project overview & architecture](https://github.com/mbrlabs/Mundus/wiki/Project-overview-%26-architecture) article.
 
-## Building
-Gradle is used as build tool. You can simply import this project into Eclipse/Netbeans/IntelliJ as Gradle project
-and execute the editor:run task. Dependencies will be fetched automatically.
-If you're more of a terminal guy, type "./gradlew editor:run" and hit enter.
+## Working from source
+See this [wiki article](https://github.com/mbrlabs/Mundus/wiki/Working-from-source).
