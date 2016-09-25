@@ -23,7 +23,8 @@ import com.kotcrab.vis.ui.util.CursorManager;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 
 /**
- * This is a slightly modified version of kotcrab's VisSplitPane.
+ * This is a slightly modified version of kotcrab's VisSplitPane and fixes an input issue.
+ * touchDown() in line 94 originally returned true, which prevents the event to be passed on
  *
  * Extends functionality of standard {@link SplitPane}. Style supports handle over {@link Drawable}. Due to scope of
  * changes made this widget is not compatible with {@link SplitPane}.
@@ -113,7 +114,7 @@ public class MundusSplitPane extends WidgetGroup {
                         currentCursor = targetCursor;
                     }
                 } else {
-                    if(currentCursor != null) {
+                    if (currentCursor != null) {
                         CursorManager.restoreDefaultCursor();
                         currentCursor = null;
                     }
@@ -257,7 +258,7 @@ public class MundusSplitPane extends WidgetGroup {
 
     /** @return first widgets bounds, changing returned rectangle values does not have any effect */
     public Rectangle getFirstWidgetBounds () {
-        return firstWidgetBounds;
+        return new Rectangle(firstWidgetBounds);
     }
 
     /** @return seconds widgets bounds, changing returned rectangle values does not have any effect */
@@ -281,11 +282,7 @@ public class MundusSplitPane extends WidgetGroup {
 
         firstWidgetBounds.set(0, 0, leftAreaWidth, height);
         secondWidgetBounds.set(leftAreaWidth + handleWidth, 0, rightAreaWidth, height);
-        if(secondWidget != null) {
-            handleBounds.set(leftAreaWidth, 0, handleWidth, height);
-        } else {
-            handleBounds.set(0, 0, 0, 0);
-        }
+        handleBounds.set(leftAreaWidth, 0, handleWidth, height);
     }
 
     private void calculateVertBoundsAndPositions () {
@@ -294,21 +291,14 @@ public class MundusSplitPane extends WidgetGroup {
         float width = getWidth();
         float height = getHeight();
 
-        float availHeight = height;
-        if(secondWidget != null) {
-            availHeight -= handle.getMinHeight();
-        }
+        float availHeight = height - handle.getMinHeight();
         float topAreaHeight = (int) (availHeight * splitAmount);
         float bottomAreaHeight = availHeight - topAreaHeight;
         float handleHeight = handle.getMinHeight();
 
         firstWidgetBounds.set(0, height - topAreaHeight, width, topAreaHeight);
         secondWidgetBounds.set(0, 0, width, bottomAreaHeight);
-        if(secondWidget != null) {
-            handleBounds.set(0, bottomAreaHeight, width, handleHeight);
-        } else {
-            handleBounds.set(0, 0, 0, 0);
-        }
+        handleBounds.set(0, bottomAreaHeight, width, handleHeight);
     }
 
     @Override
@@ -334,12 +324,12 @@ public class MundusSplitPane extends WidgetGroup {
                 batch.flush();
                 ScissorStack.popScissors();
             }
-            Drawable handle = style.handle;
-            if (mouseOnHandle && isTouchable() && style.handleOver != null) handle = style.handleOver;
-            batch.setColor(color.r, color.g, color.b, parentAlpha * color.a);
-            handle.draw(batch, handleBounds.x, handleBounds.y, handleBounds.width, handleBounds.height);
         }
 
+        Drawable handle = style.handle;
+        if (mouseOnHandle && isTouchable() && style.handleOver != null) handle = style.handleOver;
+        batch.setColor(color.r, color.g, color.b, parentAlpha * color.a);
+        handle.draw(batch, handleBounds.x, handleBounds.y, handleBounds.width, handleBounds.height);
         resetTransform(batch);
 
     }
@@ -403,22 +393,22 @@ public class MundusSplitPane extends WidgetGroup {
 
     @Override
     public void addActor (Actor actor) {
-        throw new UnsupportedOperationException("Use ScrollPane#setWidget.");
+        throw new UnsupportedOperationException("Manual actor manipulation not supported");
     }
 
     @Override
     public void addActorAt (int index, Actor actor) {
-        throw new UnsupportedOperationException("Use ScrollPane#setWidget.");
+        throw new UnsupportedOperationException("Manual actor manipulation not supported");
     }
 
     @Override
     public void addActorBefore (Actor actorBefore, Actor actor) {
-        throw new UnsupportedOperationException("Use ScrollPane#setWidget.");
+        throw new UnsupportedOperationException("Manual actor manipulation not supported");
     }
 
     @Override
     public boolean removeActor (Actor actor) {
-        throw new UnsupportedOperationException("Use ScrollPane#setWidget(null).");
+        throw new UnsupportedOperationException("Manual actor manipulation not supported");
     }
 
     public static class VisSplitPaneStyle extends SplitPane.SplitPaneStyle {
@@ -426,6 +416,16 @@ public class MundusSplitPane extends WidgetGroup {
         public Drawable handleOver;
 
         public VisSplitPaneStyle () {
+        }
+
+        public VisSplitPaneStyle (VisSplitPane.VisSplitPaneStyle style) {
+            super(style);
+            this.handleOver = style.handleOver;
+        }
+
+        public VisSplitPaneStyle (Drawable handle, Drawable handleOver) {
+            super(handle);
+            this.handleOver = handleOver;
         }
     }
 }
