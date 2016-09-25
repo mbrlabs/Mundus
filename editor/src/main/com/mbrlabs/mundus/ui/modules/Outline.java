@@ -27,6 +27,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.Selection;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.util.dialog.Dialogs.InputDialog;
+import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter;
 import com.kotcrab.vis.ui.widget.*;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
@@ -46,8 +49,10 @@ import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
- * @author Marcus Brummer
- * @version 30-11-2015
+ * Outline shows overview about all game objects in the scene
+ *
+ * @author Marcus Brummer, codenigma
+ * @version 25-09-2016
  */
 public class Outline extends VisTable implements
         ProjectChangedEvent.ProjectChangedListener,
@@ -74,7 +79,7 @@ public class Outline extends VisTable implements
     private ToolManager toolManager;
     @Inject
     private ProjectManager projectManager;
-    
+
     private final ProjectContext projectContext;
 
     public Outline() {
@@ -191,7 +196,7 @@ public class Outline extends VisTable implements
                     }
 
                     // update tree
-                    buildTree(projectContext.currScene.sceneGraph);
+                    buildTree(sceneGraph);
                 }
             }
         });
@@ -252,7 +257,8 @@ public class Outline extends VisTable implements
     }
 
     /**
-     * Building tree from game objects in sceneGraph
+     * Building tree from game objects in sceneGraph, clearing previous
+     * sceneGraph
      *
      * @param sceneGraph
      */
@@ -321,7 +327,6 @@ public class Outline extends VisTable implements
 //            }
 //        }
 //    }
-
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
         Tree.Node node = tree.findNode(gameObjectSelectedEvent.getGameObject());
@@ -344,7 +349,6 @@ public class Outline extends VisTable implements
             add(name).expand().fill();
             name.setText(go.name + " [" + go.id + "]");
         }
-
     }
 
     /**
@@ -355,6 +359,7 @@ public class Outline extends VisTable implements
         private MenuItem addEmpty;
         private MenuItem addTerrain;
         private MenuItem duplicate;
+        private MenuItem rename;
         private MenuItem delete;
 
         private GameObject selectedGO;
@@ -365,6 +370,7 @@ public class Outline extends VisTable implements
             addEmpty = new MenuItem("Add Empty");
             addTerrain = new MenuItem("Add terrain");
             duplicate = new MenuItem("Duplicate");
+            rename = new MenuItem("Rename");
             delete = new MenuItem("Delete");
 
             // add empty
@@ -398,6 +404,7 @@ public class Outline extends VisTable implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     //To-DO: Terrain config popup: set width and height values, maybe heightmap import options
+                    Log.traceTag(TAG, "Add terrain game object in root node.");
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
                     projectContext.terrains.add(terrain);
                     //projectContext.currScene.terrainGroup.add(terrain);
@@ -412,6 +419,12 @@ public class Outline extends VisTable implements
                 }
             });
 
+            rename.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    showRenameDialog();
+                }
+            });
             // duplicate node, (How to solve copy/clone of game objects?)
 //            duplicate.addListener(new ClickListener() {
 //                @Override
@@ -421,12 +434,12 @@ public class Outline extends VisTable implements
 //                    Mundus.postEvent(new SceneGraphChangedEvent());
 //                }
 //            });
-
             // delete game object
             delete.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (selectedGO != null) {
+                        Log.traceTag(TAG, "Remove game object [{}].", selectedGO);
                         removeGo(selectedGO);
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     }
@@ -435,13 +448,56 @@ public class Outline extends VisTable implements
 
             addItem(addEmpty);
             addItem(addTerrain);
-            addItem(duplicate);
+            addItem(rename);
+            //addItem(duplicate);
             addItem(delete);
+
         }
 
+        /**
+         * Right click event opens menu and enables more options if selected
+         * game object is active.
+         *
+         * @param go
+         * @param x
+         * @param y
+         */
         public void show(GameObject go, float x, float y) {
             selectedGO = go;
             showMenu(Ui.getInstance(), x, y);
+
+            //check if game oject is selected
+            if (selectedGO != null) {
+                //Activate menu options for selected game objects
+                rename.setDisabled(false);
+                //duplicate.setDisabled(false);
+                delete.setDisabled(false);
+            } else {
+                //disable MenuItems which only work with selected Item
+                rename.setDisabled(true);
+                //duplicate.setDisabled(true);
+                delete.setDisabled(true);
+            }
+        }
+
+        public void showRenameDialog() {
+            final Tree.Node node = tree.findNode(selectedGO);
+            final GameObject go = (GameObject) node.getObject();
+
+            InputDialog renameDialog = Dialogs.showInputDialog(Ui.getInstance(), "Rename", "", new InputDialogAdapter() {
+                @Override
+                public void finished(String input) {
+                    Log.traceTag(TAG, "Rename game object [{}] to [{}].", go, input);
+                    //update name
+                    go.name = input;
+
+                    Mundus.postEvent(new SceneGraphChangedEvent());
+                }
+            });
+            //set position of dialog to menuItem position
+            float nodePosX = node.getActor().getX();
+            float nodePosY = node.getActor().getY();
+            renameDialog.setPosition(nodePosX, nodePosY);
         }
 
     }
