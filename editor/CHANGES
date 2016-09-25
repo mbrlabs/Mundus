@@ -7,7 +7,8 @@
 - Added the IntelliJ-like "docker bar" at the bottom
 - Removed the models tab on the left and put it into the docker bar
 - Improved logging
-- Fixed expanding of the game object tree in the Outline if the scene graph has been modified (https://github.com/mbrlabs/Mundus/issues/8)
+- Fixed expanding of the game object tree in the outline if the scene graph has been modified (https://github.com/mbrlabs/Mundus/issues/8)
+- Implemented game object renaming in the outline
 
 [0.0.8] ~ 23/06/2016
 - Updated libGDX to 1.9.3
