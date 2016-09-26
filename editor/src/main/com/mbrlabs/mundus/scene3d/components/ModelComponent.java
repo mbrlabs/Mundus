@@ -80,11 +80,10 @@ public class ModelComponent extends PickableComponent {
     }
 
     @Override
-    public Component deepCopy(GameObject go) {
+    public Component clone(GameObject go) {
         ModelComponent mc = new ModelComponent(go);
         mc.shader = this.shader;
         mc.modelInstance = this.modelInstance;
         return mc;
     }
-
 }

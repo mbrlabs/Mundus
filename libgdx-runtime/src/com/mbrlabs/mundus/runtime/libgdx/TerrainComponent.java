@@ -63,4 +63,10 @@ public class TerrainComponent extends AbstractComponent {
 
     }
 
+    @Override
+    public Component clone(GameObject go) {
+        throw new UnsupportedOperationException("Terrain can not be cloned.");
+    }
+
+
 }

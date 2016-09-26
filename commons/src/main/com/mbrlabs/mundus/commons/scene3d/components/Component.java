@@ -35,5 +35,5 @@ public interface Component {
     public Type getType();
     public void setType(Type type);
     public void remove();
-    public Component deepCopy(GameObject go);
+    public Component clone(GameObject go);
 }

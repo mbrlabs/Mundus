@@ -23,7 +23,7 @@ import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
-import org.apache.commons.lang3.NotImplementedException;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -77,8 +77,9 @@ public class TerrainComponent extends PickableComponent {
     }
 
     @Override
-    public Component deepCopy(GameObject go) {
-        throw new NotImplementedException("Terrain can not be copied.");
+    public Component clone(GameObject go) {
+        Log.fatalTag("TerrainComponent", "Terrain can not be cloned!");
+        return null;
     }
 
 }
