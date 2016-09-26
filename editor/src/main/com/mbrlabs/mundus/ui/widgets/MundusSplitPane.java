@@ -24,7 +24,7 @@ import com.kotcrab.vis.ui.widget.VisSplitPane;
 
 /**
  * This is a slightly modified version of kotcrab's VisSplitPane and fixes an input issue.
- * touchDown() in line 94 originally returned true, which prevents the event to be passed on
+ * touchDown() in line 95 originally returned true, which prevents the event to be passed on
  *
  * Extends functionality of standard {@link SplitPane}. Style supports handle over {@link Drawable}. Due to scope of
  * changes made this widget is not compatible with {@link SplitPane}.
@@ -91,6 +91,7 @@ public class MundusSplitPane extends WidgetGroup {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                // originally returned true
                 return false;
             }
 
