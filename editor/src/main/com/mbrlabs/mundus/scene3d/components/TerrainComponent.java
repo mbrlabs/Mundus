@@ -18,10 +18,12 @@ package com.mbrlabs.mundus.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * @author Marcus Brummer
@@ -72,6 +74,11 @@ public class TerrainComponent extends PickableComponent {
     @Override
     public void update(float delta) {
 
+    }
+
+    @Override
+    public Component deepCopy(GameObject go) {
+        throw new NotImplementedException("Terrain can not be copied.");
     }
 
 }

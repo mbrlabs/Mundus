@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.scene3d.components;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
@@ -76,6 +77,14 @@ public class ModelComponent extends PickableComponent {
     @Override
     public void update(float delta) {
 
+    }
+
+    @Override
+    public Component deepCopy(GameObject go) {
+        ModelComponent mc = new ModelComponent(go);
+        mc.shader = this.shader;
+        mc.modelInstance = this.modelInstance;
+        return mc;
     }
 
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.commons.scene3d;
 
 import com.badlogic.gdx.utils.Array;
@@ -38,9 +37,9 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
     public final SceneGraph sceneGraph;
 
     /**
-     * @param sceneGraph    scene graph
-     * @param name          game object name; can be null
-     * @param id            game object id
+     * @param sceneGraph scene graph
+     * @param name game object name; can be null
+     * @param id game object id
      */
     public GameObject(SceneGraph sceneGraph, String name, int id) {
         super(id);
@@ -50,33 +49,38 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         this.tags = null;
         this.components = new Array<Component>(3);
     }
-    
-//    /**
-//     * Make copy with existing gameObject and new id
-//     * @param gameObject 
-//     */
-//    public GameObject(GameObject gameObject, int id) {
-//        super(id);
-//        this.sceneGraph = gameObject.sceneGraph;
-//        this.setParent(gameObject.parent);
-//        this.children = gameObject.children;
-//        
-//        //no transformation is copied ! -> Copy constructor in super classes ?
-//                
-//        this.name = (name == null) ? DEFAULT_NAME : name;
-//        this.name = this.name + "_copy";
-//        this.active = gameObject.active;
-//        this.tags = gameObject.tags;
-//        this.components = gameObject.getComponents();
-//    }
+
+    /**
+     * Make copy with existing gameObject and new id
+     *
+     * @param gameObject
+     */
+    public GameObject(GameObject gameObject, int id) {
+        super(gameObject, id); //call copy constructor of base class
+        this.sceneGraph = gameObject.sceneGraph;
+        //set name _copy  
+        this.name = gameObject.name + "_copy";
+        this.active = gameObject.active;
+        //deep copy tags
+        if (tags != null) {
+            Array<String> newTags = new Array<String>();
+            for (String t : gameObject.tags) {
+                newTags.add(t);
+            }
+            this.tags = newTags;
+        }
+        //ref components
+        this.components = gameObject.components;
+        this.setParent(gameObject.parent);
+    }
 
     /**
      * Calls the render() method for each component in this and all child nodes.
      *
-     * @param delta     time since last render
+     * @param delta time since last render
      */
     public void render(float delta) {
-        if(active) {
+        if (active) {
             for (Component component : this.components) {
                 component.render(delta);
             }
@@ -92,10 +96,10 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
     /**
      * Calls the update() method for each component in this and all child nodes.
      *
-     * @param delta     time since last update
+     * @param delta time since last update
      */
     public void update(float delta) {
-        if(active) {
+        if (active) {
             for (Component component : this.components) {
                 component.update(delta);
             }
@@ -110,7 +114,8 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     /**
      * Returns the tags
-     * @return  tags or null if none available
+     *
+     * @return tags or null if none available
      */
     public Array<String> getTags() {
         return this.tags;
@@ -118,10 +123,11 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     /**
      * Adds a tag.
+     *
      * @param tag tag to add
      */
     public void addTag(String tag) {
-        if(this.tags == null) {
+        if (this.tags == null) {
             this.tags = new Array<String>(2);
         }
 
@@ -131,21 +137,25 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
     /**
      * Finds all component by a given type.
      *
-     * @param out           output array
-     * @param type          component type
+     * @param out output array
+     * @param type component type
      * @param includeChilds search in node children of this game object as well?
-     * @return              components found
+     * @return components found
      */
     public Array<Component> findComponentsByType(Array<Component> out, Component.Type type, boolean includeChilds) {
-        if(includeChilds) {
-            for(GameObject go : this) {
-                for(Component c : go.components) {
-                    if(c.getType() == type) out.add(c);
+        if (includeChilds) {
+            for (GameObject go : this) {
+                for (Component c : go.components) {
+                    if (c.getType() == type) {
+                        out.add(c);
+                    }
                 }
             }
         } else {
-            for(Component c : components) {
-                if(c.getType() == type) out.add(c);
+            for (Component c : components) {
+                if (c.getType() == type) {
+                    out.add(c);
+                }
             }
         }
 
@@ -155,12 +165,14 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
     /**
      * Finds one component by type.
      *
-     * @param type  component type
-     * @return      component if found or null
+     * @param type component type
+     * @return component if found or null
      */
     public Component findComponentByType(Component.Type type) {
-        for(Component c : components) {
-            if(c.getType() == type) return c;
+        for (Component c : components) {
+            if (c.getType() == type) {
+                return c;
+            }
         }
 
         return null;
@@ -168,7 +180,8 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     /**
      * Returns all components of this go.
-     * @return  components
+     *
+     * @return components
      */
     public Array<Component> getComponents() {
         return this.components;
@@ -176,6 +189,7 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     /**
      * Removes a component.
+     *
      * @param component component to remove
      */
     public void removeComponent(Component component) {
@@ -200,8 +214,8 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
      */
     public void isComponentAddable(Component component) throws InvalidComponentException {
         // check for component of the same type
-        for(Component c : components) {
-            if(c.getType() == component.getType()) {
+        for (Component c : components) {
+            if (c.getType() == component.getType()) {
                 throw new InvalidComponentException("One Game object can't have more then 1 component of type " + c.getType());
             }
         }
@@ -214,13 +228,21 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         GameObject that = (GameObject) o;
 
-        if (id != that.id) return false;
-        if (!name.equals(that.name)) return false;
+        if (id != that.id) {
+            return false;
+        }
+        if (!name.equals(that.name)) {
+            return false;
+        }
 
         return true;
     }
@@ -231,7 +253,7 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         result = 31 * result + name.hashCode();
         return result;
     }
-    
+
     @Override
     public String toString() {
         return name;

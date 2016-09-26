@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.commons.scene3d;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 
 /**
  * Very simple and incredible inefficient implementation of a scene graph node.
@@ -50,7 +49,20 @@ public class SimpleNode<T extends SimpleNode> extends BaseNode<T> {
         localScale = new Vector3(1, 1, 1);
         combined = new Matrix4();
     }
-
+    
+    /**
+     * Copy construction
+     * @param simpleNode
+     * @param id 
+     */
+    public SimpleNode(SimpleNode simpleNode, int id) {
+        super(id);
+        this.localPosition = new Vector3(simpleNode.localPosition);
+        this.localRotation = new Quaternion(simpleNode.localRotation);
+        this.localScale = new Vector3(simpleNode.localScale);
+        this.combined = new Matrix4(simpleNode.combined);
+    }
+    
     @Override
     public Vector3 getLocalPosition(Vector3 out) {
         return out.set(localPosition);
