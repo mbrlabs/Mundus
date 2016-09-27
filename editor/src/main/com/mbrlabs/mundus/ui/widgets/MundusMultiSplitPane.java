@@ -66,6 +66,9 @@ public class MundusMultiSplitPane extends WidgetGroup {
     private Rectangle handleOver;
     private int handleOverIndex;
 
+    //@Changed
+    private boolean isDraggable = false;
+
     public MundusMultiSplitPane (boolean vertical) {
         this(vertical, "default-" + (vertical ? "vertical" : "horizontal"));
     }
@@ -79,6 +82,11 @@ public class MundusMultiSplitPane extends WidgetGroup {
         setStyle(style);
         setSize(getPrefWidth(), getPrefHeight());
         initialize();
+    }
+
+    //@Changed
+    public void setDraggable(boolean draggable) {
+        this.isDraggable = draggable;
     }
 
     private void initialize () {
@@ -160,6 +168,8 @@ public class MundusMultiSplitPane extends WidgetGroup {
             @Override
             public void touchDragged (InputEvent event, float x, float y, int pointer) {
                 if (pointer != draggingPointer) return;
+                //@Changed
+                if(!isDraggable) return;
 
                 Drawable handle = style.handle;
                 if (!vertical) {

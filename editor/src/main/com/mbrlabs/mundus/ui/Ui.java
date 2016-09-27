@@ -109,7 +109,7 @@ public class Ui extends Stage {
         inspector = new Inspector();
         widget3D = new RenderWidget();
         MundusMultiSplitPane multiSplit = new MundusMultiSplitPane(false);
-        multiSplit.setTouchable(Touchable.disabled);
+        multiSplit.setDraggable(false);
         multiSplit.setWidgets(outline, widget3D, inspector);
         multiSplit.setSplit(0, 0.2f);
         multiSplit.setSplit(1, 0.8f);
