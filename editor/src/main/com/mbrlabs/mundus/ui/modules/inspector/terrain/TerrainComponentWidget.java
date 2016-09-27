@@ -75,8 +75,8 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
         tabbedPane.add(settingsTab);
 
         collapsibleContent.add(tabbedPane.getTable()).growX().row();
-      //  collapsibleContent.add(tabContainer).expand().fill().row();
-     //   tabbedPane.switchTab(0);
+        collapsibleContent.add(tabContainer).expand().fill().row();
+        tabbedPane.switchTab(0);
     }
 
 
@@ -90,8 +90,8 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
 
     @Override
     public void switchedTab(Tab tab) {
-       // tabContainer.clearChildren();
-       // tabContainer.add(tab.getContentTable()).expand().fill();
+        tabContainer.clearChildren();
+        tabContainer.add(tab.getContentTable()).expand().fill();
     }
 
     @Override

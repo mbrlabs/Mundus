@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Separator;
@@ -108,6 +109,7 @@ public class Ui extends Stage {
         inspector = new Inspector();
         widget3D = new RenderWidget();
         MundusMultiSplitPane multiSplit = new MundusMultiSplitPane(false);
+        multiSplit.setTouchable(Touchable.disabled);
         multiSplit.setWidgets(outline, widget3D, inspector);
         multiSplit.setSplit(0, 0.2f);
         multiSplit.setSplit(1, 0.8f);
