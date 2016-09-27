@@ -53,7 +53,7 @@ import com.mbrlabs.mundus.utils.TerrainUtils;
  * Outline shows overview about all game objects in the scene
  *
  * @author Marcus Brummer, codenigma
- * @version 26-09-2016
+ * @version 27-09-2016
  */
 public class Outline extends VisTable implements
         ProjectChangedEvent.ProjectChangedListener,
@@ -130,10 +130,8 @@ public class Outline extends VisTable implements
 
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
-//        Log.traceTag(TAG, "SceneGraph changed. Building scene graph.");
-        //rebuilding sceneGraph not needed. It is builded on scene change and project change
-        //updating sceneGraph nodes must be made manually in methods
-
+        Log.traceTag(TAG, "SceneGraph changed. Building scene graph.");
+        buildTree(sceneGraph);
     }
 
     private void setupDragAndDrop() {
@@ -310,6 +308,11 @@ public class Outline extends VisTable implements
         go = null;
     }
 
+    /**
+     * Deep copy of all game objects
+     * @param go        the game object for cloning, with children
+     * @param parent    game object on which clone will be added
+     */
     private void duplicateGO(GameObject go, GameObject parent) {
         Log.traceTag(TAG, "Duplicate [{}] with parent [{}]", go, parent);
         //create duplicate
@@ -342,20 +345,13 @@ public class Outline extends VisTable implements
      */
     private class TreeNode extends VisTable {
 
-        private final VisLabel vLabel;
-        final private GameObject go;
+        private VisLabel name;
 
         public TreeNode(final GameObject go) {
             super();
-            this.go = go;
-            vLabel = new VisLabel();
-            add(vLabel).expand().fill();
-            setLabel(go.name);
-        }
-
-        private void setLabel(String label) {
-            go.name = label;
-            vLabel.setText(label + " [" + go.id + "]");
+            name = new VisLabel();
+            add(name).expand().fill();
+            name.setText(go.name + " [" + go.id + "]");
         }
     }
 
@@ -430,12 +426,13 @@ public class Outline extends VisTable implements
             rename.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (selectedGO != null && !rename.isDisabled()) {
+                    if (selectedGO != null) {
                         showRenameDialog();
                     }
                 }
             });
-            // duplicate node, (How to solve copy/clone of game objects?)
+
+            // duplicate node
             duplicate.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -445,11 +442,12 @@ public class Outline extends VisTable implements
                     }
                 }
             });
+            
             // delete game object
             delete.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (selectedGO != null && !delete.isDisabled()) {
+                    if (selectedGO != null) {
                         Log.traceTag(TAG, "Remove game object [{}].", selectedGO);
                         removeGo(selectedGO);
                         Mundus.postEvent(new SceneGraphChangedEvent());
@@ -462,7 +460,6 @@ public class Outline extends VisTable implements
             addItem(rename);
             addItem(duplicate);
             addItem(delete);
-
         }
 
         /**
@@ -482,19 +479,18 @@ public class Outline extends VisTable implements
                 //Activate menu options for selected game objects
                 rename.setDisabled(false);
                 delete.setDisabled(false);
-
             } else {
                 //disable MenuItems which only work with selected Item
                 rename.setDisabled(true);
                 delete.setDisabled(true);
             }
+            
             //terrain can not be duplicated
             if (selectedGO == null || selectedGO.findComponentByType(Component.Type.TERRAIN) != null) {
                 duplicate.setDisabled(true);
             } else {
                 duplicate.setDisabled(false);
             }
-
         }
 
         public void showRenameDialog() {
@@ -504,9 +500,11 @@ public class Outline extends VisTable implements
             InputDialog renameDialog = Dialogs.showInputDialog(Ui.getInstance(), "Rename", "", new InputDialogAdapter() {
                 @Override
                 public void finished(String input) {
-                    Log.traceTag(TAG, "Rename game object [{}] to [{}].", goNode.go, input);
-                    //update name
-                    goNode.setLabel(input);
+                    Log.traceTag(TAG, "Rename game object [{}] to [{}].", selectedGO, input);
+                    //update sceneGraph           
+                    selectedGO.name = input;
+                    //update Outline
+                    goNode.name.setText(input + " [" + selectedGO.id + "]");
 
                     Mundus.postEvent(new SceneGraphChangedEvent());
                 }
@@ -516,6 +514,5 @@ public class Outline extends VisTable implements
             float nodePosY = node.getActor().getY();
             renameDialog.setPosition(nodePosX, nodePosY);
         }
-
     }
 }
