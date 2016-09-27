@@ -40,15 +40,13 @@ public class TerrainUtils {
     public static GameObject createTerrainGO(SceneGraph sg, TerrainShader shader, int goID, String goName, Terrain terrain) {
         GameObject terrainGO = new GameObject(sg, null, goID);
         terrainGO.name = goName;
-       // terrainGO.setTransform(terrain.transform);
 
         terrain.setTransform(terrainGO.getTransform());
-
         TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
         terrainComponent.setTerrain(terrain);
         terrainGO.getComponents().add(terrainComponent);
         terrainComponent.setShader(shader);
-
+        terrainComponent.encodeRaypickColorId();
 
         return terrainGO;
     }

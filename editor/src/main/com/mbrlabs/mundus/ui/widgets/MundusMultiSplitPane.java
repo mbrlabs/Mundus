@@ -67,7 +67,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
     private int handleOverIndex;
 
     //@Changed
-    private boolean isDraggable = false;
+    private boolean isDraggable = true;
 
     public MundusMultiSplitPane (boolean vertical) {
         this(vertical, "default-" + (vertical ? "vertical" : "horizontal"));
