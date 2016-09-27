@@ -67,6 +67,7 @@ public class TerrainComponent extends PickableComponent {
     @Override
     public void render(float delta) {
         gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
+
     }
 
     @Override

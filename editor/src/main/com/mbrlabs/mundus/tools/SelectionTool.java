@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.utils.Fa;
 
@@ -80,9 +81,16 @@ public class SelectionTool extends Tool {
         if(projectManager.current().currScene.currentSelection != null) {
             batch.begin(projectManager.current().currScene.cam);
             for(GameObject go : projectManager.current().currScene.currentSelection) {
+                // model component
                 ModelComponent mc = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
                 if(mc != null) {
                     batch.render(mc.getModelInstance().modelInstance, shader);
+                }
+
+                // terrain component
+                TerrainComponent tc = (TerrainComponent) go.findComponentByType(Component.Type.TERRAIN);
+                if(tc != null) {
+                    batch.render(tc.getTerrain(), shader);
                 }
             }
             batch.end();
