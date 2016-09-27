@@ -18,10 +18,12 @@ package com.mbrlabs.mundus.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -73,6 +75,12 @@ public class TerrainComponent extends PickableComponent {
     @Override
     public void update(float delta) {
 
+    }
+
+    @Override
+    public Component clone(GameObject go) {
+        Log.fatalTag("TerrainComponent", "Terrain can not be cloned!");
+        return null;
     }
 
 }

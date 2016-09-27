@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 
 /**
  *
@@ -53,6 +54,14 @@ public class ModelComponent extends AbstractComponent {
     @Override
     public void update(float delta) {
 
+    }
+
+    @Override
+    public Component clone(GameObject go) {
+        ModelComponent mc = new ModelComponent(go);
+        mc.shader = this.shader;
+        mc.modelInstance = this.modelInstance;
+        return mc;
     }
 
 }
