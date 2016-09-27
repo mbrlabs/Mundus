@@ -36,8 +36,10 @@ import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
+import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer
@@ -107,10 +109,6 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         }
         root.add(componentTable).fillX().expandX().pad(7).row();
         root.add(addComponentBtn).expandX().fill().top().center().pad(10).row();
-//
-//        for(int i = 0; i < 100; i++) {
-//            root.add(new VisLabel("item " + i)).fillX().expandX().center().row();
-//        }
     }
 
     private void buildComponentWidgets() {

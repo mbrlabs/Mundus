@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;
@@ -52,8 +54,12 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
     public TerrainComponentWidget(TerrainComponent terrainComponent) {
         super("Terrain Component", terrainComponent);
         Mundus.inject(this);
+        setupUI();
+    }
 
+    private void setupUI() {
         tabbedPane = new TabbedPane();
+
         tabbedPane.addListener(this);
 
         raiseLowerTab = new TerrainUpDownTab(this);
@@ -68,15 +74,11 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
         tabbedPane.add(genTab);
         tabbedPane.add(settingsTab);
 
-        setupUI();
-
+        collapsibleContent.add(tabbedPane.getTable()).growX().row();
+        collapsibleContent.add(tabContainer).expand().fill().row();
         tabbedPane.switchTab(0);
     }
 
-    private void setupUI() {
-        collapsibleContent.add(tabbedPane.getTable()).padBottom(7).top().left().expand().fill().row();
-        collapsibleContent.add(tabContainer).expand().fill().row();
-    }
 
     @Override
     public void setValues(GameObject go) {

@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Separator;
@@ -33,6 +34,7 @@ import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.dock.DockBar;
 import com.mbrlabs.mundus.ui.modules.inspector.Inspector;
 import com.mbrlabs.mundus.ui.modules.menu.MundusMenuBar;
+import com.mbrlabs.mundus.ui.widgets.MundusMultiSplitPane;
 import com.mbrlabs.mundus.ui.widgets.MundusSplitPane;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.Toaster;
@@ -103,16 +105,17 @@ public class Ui extends Stage {
         root.add(toolbar.getRoot()).fillX().expandX().row();
 
         // row 3: sidebar & 3d viewport & inspector
-        VisTable center = new VisTable();
         outline = new Outline();
         inspector = new Inspector();
         widget3D = new RenderWidget();
+        MundusMultiSplitPane multiSplit = new MundusMultiSplitPane(false);
+        multiSplit.setTouchable(Touchable.disabled);
+        multiSplit.setWidgets(outline, widget3D, inspector);
+        multiSplit.setSplit(0, 0.2f);
+        multiSplit.setSplit(1, 0.8f);
+        mainContainer.add(multiSplit).grow().row();
 
-        center.add(outline).width(300).expandY().fillY();
-        center.add(widget3D).expand().fill();
-        center.add(inspector).width(300).expandY().fillY();
-        mainContainer.add(center).expand().fill().row();
-        root.add(splitPane).expand().fill().row();
+        root.add(splitPane).grow().row();
 
         // row 4: DOCKER
         docker = new DockBar(splitPane);
