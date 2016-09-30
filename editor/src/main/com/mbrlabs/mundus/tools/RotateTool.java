@@ -34,7 +34,6 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.shader.Shaders;
-import static com.mbrlabs.mundus.tools.TransformTool.X_HANDLE_ID;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.utils.Fa;
@@ -65,7 +64,7 @@ public class RotateTool extends TransformTool {
     private ShapeRenderer shapeRenderer;
     private ProjectContext projectContext;
 
-    private TransformTool.TransformState state = TransformTool.TransformState.IDLE;
+    private TransformState state = TransformState.IDLE;
     private float lastRot = 0;
 
     public RotateTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
@@ -84,7 +83,7 @@ public class RotateTool extends TransformTool {
         super.render();
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        if(state == TransformTool.TransformState.IDLE && projectContext.currScene.currentSelection != null) {
+        if(state == TransformState.IDLE && projectContext.currScene.currentSelection != null) {
             batch.begin(projectContext.currScene.cam);
             xHandle.render(batch);
             yHandle.render(batch);
@@ -141,7 +140,7 @@ public class RotateTool extends TransformTool {
 
         if(projectContext.currScene.currentSelection != null) {
             translateHandles();
-            if(state == TransformTool.TransformState.IDLE) return;
+            if(state == TransformState.IDLE) return;
 
             float angle = getCurrentAngle();
             float rot = angle - lastRot;
@@ -198,19 +197,19 @@ public class RotateTool extends TransformTool {
 
             RotateHandle handle = (RotateHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
             if(handle == null) {
-                state = TransformTool.TransformState.IDLE;
+                state = TransformState.IDLE;
                 return false;
             }
 
             switch (handle.getId()) {
                 case X_HANDLE_ID:
-                                    state = TransformTool.TransformState.TRANSFORM_X;
+                                    state = TransformState.TRANSFORM_X;
                                     break;
                 case Y_HANDLE_ID:
-                                    state = TransformTool.TransformState.TRANSFORM_Y;
+                                    state = TransformState.TRANSFORM_Y;
                                     break;
                 case Z_HANDLE_ID:
-                                    state = TransformTool.TransformState.TRANSFORM_Z;
+                                    state = TransformState.TRANSFORM_Z;
                                     break;
                 default:
                                     break;
@@ -222,7 +221,7 @@ public class RotateTool extends TransformTool {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        state = TransformTool.TransformState.IDLE;
+        state = TransformState.IDLE;
         return false;
     }
 
