@@ -43,6 +43,9 @@ import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
 import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
+import com.mbrlabs.mundus.history.Command;
+import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.DeleteCommand;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
@@ -80,6 +83,8 @@ public class Outline extends VisTable implements
     private ToolManager toolManager;
     @Inject
     private ProjectManager projectManager;
+    @Inject
+    private CommandHistory history;
 
     private final ProjectContext projectContext;
 
@@ -300,12 +305,10 @@ public class Outline extends VisTable implements
      * @param go
      */
     private void removeGo(GameObject go) {
-        //remove from outline
-        Tree.Node n = tree.findNode(go);
-        tree.remove(n);
-        //remove from sceneGraph
-        go.remove();
-        go = null;
+        //run delete command, updating sceneGraph and outline
+        Command deleteCommand = new DeleteCommand(go, tree.findNode(go));
+        history.add(deleteCommand);
+        deleteCommand.execute(); //run delete
     }
 
     /**
@@ -448,7 +451,6 @@ public class Outline extends VisTable implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (selectedGO != null) {
-                        Log.traceTag(TAG, "Remove game object [{}].", selectedGO);
                         removeGo(selectedGO);
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     }

@@ -17,8 +17,10 @@
 package com.mbrlabs.mundus.history;
 
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 
 /**
+ * Add commands to undo/redo a previously called process
  * @author Marcus Brummer
  * @version 07-02-2016
  */
@@ -87,7 +89,7 @@ public class CommandHistory {
             pointer++;
             commands.get(pointer).execute();
         }
-
+        
         return pointer;
     }
 
