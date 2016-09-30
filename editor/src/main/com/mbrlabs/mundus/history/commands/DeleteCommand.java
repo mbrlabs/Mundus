@@ -17,6 +17,8 @@ package com.mbrlabs.mundus.history.commands;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.history.Command;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -52,6 +54,7 @@ public class DeleteCommand implements Command {
         go.remove();
         //remove from outline tree
         tree.remove(node);
+        Mundus.postEvent(new SceneGraphChangedEvent());
     }
 
     @Override
@@ -65,6 +68,7 @@ public class DeleteCommand implements Command {
         else
             parentNode.add(node);     
         node.expandTo();
+        Mundus.postEvent(new SceneGraphChangedEvent());
     }
 
     @Override
