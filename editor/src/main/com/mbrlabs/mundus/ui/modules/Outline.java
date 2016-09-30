@@ -318,15 +318,16 @@ public class Outline extends VisTable implements
      */
     private void duplicateGO(GameObject go, GameObject parent) {
         Log.traceTag(TAG, "Duplicate [{}] with parent [{}]", go, parent);
-        //create duplicate
         GameObject goCopy = new GameObject(go, projectContext.obtainID());
-        //add copy to tree
-        //outline
+
+        // add copy to tree
         Tree.Node n = tree.findNode(parent);
         addGoToTree(n, goCopy);
-        //sceneGraph
+
+        // add copy to scene graph
         parent.addChild(goCopy);
-        //look for children
+
+        // recursively clone child objects
         if (go.getChildren() != null) {
             for (GameObject child : go.getChildren()) {
                 duplicateGO(child, goCopy);
@@ -476,18 +477,18 @@ public class Outline extends VisTable implements
             selectedGO = go;
             showMenu(Ui.getInstance(), x, y);
 
-            //check if game oject is selected
+            // check if game object is selected
             if (selectedGO != null) {
                 //Activate menu options for selected game objects
                 rename.setDisabled(false);
                 delete.setDisabled(false);
             } else {
-                //disable MenuItems which only work with selected Item
+                // disable MenuItems which only works with selected item
                 rename.setDisabled(true);
                 delete.setDisabled(true);
             }
             
-            //terrain can not be duplicated
+            // terrain can not be duplicated
             if (selectedGO == null || selectedGO.findComponentByType(Component.Type.TERRAIN) != null) {
                 duplicate.setDisabled(true);
             } else {
@@ -503,9 +504,9 @@ public class Outline extends VisTable implements
                 @Override
                 public void finished(String input) {
                     Log.traceTag(TAG, "Rename game object [{}] to [{}].", selectedGO, input);
-                    //update sceneGraph           
+                    // update sceneGraph
                     selectedGO.name = input;
-                    //update Outline
+                    // update Outline
                     goNode.name.setText(input + " [" + selectedGO.id + "]");
 
                     Mundus.postEvent(new SceneGraphChangedEvent());

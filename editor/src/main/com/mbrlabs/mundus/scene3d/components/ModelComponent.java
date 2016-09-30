@@ -71,7 +71,6 @@ public class ModelComponent extends PickableComponent {
         modelInstance.modelInstance.transform.set(gameObject.getTransform());
         gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
                 gameObject.sceneGraph.scene.environment, shader);
-
     }
 
     @Override
@@ -82,8 +81,9 @@ public class ModelComponent extends PickableComponent {
     @Override
     public Component clone(GameObject go) {
         ModelComponent mc = new ModelComponent(go);
+        mc.modelInstance = new MModelInstance(this.modelInstance.getModel());
         mc.shader = this.shader;
-        mc.modelInstance = this.modelInstance;
+        mc.encodeRaypickColorId();
         return mc;
     }
 }

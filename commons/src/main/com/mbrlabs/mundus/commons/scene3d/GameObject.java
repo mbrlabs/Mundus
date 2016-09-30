@@ -51,18 +51,20 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
         this.components = new Array<Component>(3);
     }
     
-/**
+    /**
      * Make copy with existing gameObject and new id
      *
      * @param gameObject    game object for clone
      */
     public GameObject(GameObject gameObject, int id) {
-        super(gameObject, id); //call copy constructor of base class
+        super(gameObject, id);
         this.sceneGraph = gameObject.sceneGraph;
-        //set name _copy  
+
+        // set name _copy
         this.name = gameObject.name + "_copy";
         this.active = gameObject.active;
-        //deep copy tags
+
+        // copy tags
         if (tags != null) {
             Array<String> newTags = new Array<String>();
             for (String t : gameObject.tags) {
@@ -70,11 +72,14 @@ public class GameObject extends SimpleNode<GameObject> implements Iterable<GameO
             }
             this.tags = newTags;
         }
-        //ref components
-        this.components = gameObject.components;
-        this.setParent(gameObject.parent);
-    }
 
+        // copy components
+        this.components = new Array<Component>();
+        for(Component c : gameObject.components) {
+            this.components.add(c.clone(this));
+        }
+        setParent(gameObject.parent);
+    }
 
     /**
      * Calls the render() method for each component in this and all child nodes.
