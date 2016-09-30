@@ -43,7 +43,7 @@ Currently i'm in the process of implementing the libGDX runtime, which is includ
 Runtimes for other engines/frameworks are not planed in the near future.
 
 ## Contributing
-Contributions are greatly appreciated. To make the process as easy as possible please follow the [Contribution Guide](https://github.com/mbrlabs/Mundus/blob/master/CONTRIBUTING.md).
+Contributions are greatly appreciated. To make the process as easy as possible please follow the [Contribution Guide](https://github.com/mbrlabs/Mundus/wiki/Contributing).
 To get an overview over the project you might also want to check out the [Project overview & architecture](https://github.com/mbrlabs/Mundus/wiki/Project-overview-%26-architecture) article.
 
 ## Working from source
