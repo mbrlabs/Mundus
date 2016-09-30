@@ -27,7 +27,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.commons.model.MTexture;
-import com.mbrlabs.mundus.core.AssetManager;
+import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.registry.Registry;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -45,7 +45,7 @@ public class AssetManager {
      * @param importedModel
      * @return
      */
-    public MModel importG3dbModel(ImportManager.ImportedModel importedModel) {
+    public MModel importG3dbModel(ModelImporter.ImportedModel importedModel) {
         long id = projectManager.current().obtainID();
 
         String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";

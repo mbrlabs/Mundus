@@ -42,8 +42,8 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.commons.model.MModel;
-import com.mbrlabs.mundus.core.AssetManager;
-import com.mbrlabs.mundus.core.ImportManager;
+import com.mbrlabs.mundus.assets.AssetManager;
+import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.registry.Registry;
@@ -65,7 +65,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
     @Inject
     private Registry registry;
     @Inject
-    private ImportManager importManager;
+    private ModelImporter modelImporter;
     @Inject
     private AssetManager assetManager;
 
@@ -102,7 +102,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
         private Model previewModel;
         private ModelInstance previewInstance;
 
-        private ImportManager.ImportedModel importedModel;
+        private ModelImporter.ImportedModel importedModel;
 
         private ModelBatch modelBatch;
         private PerspectiveCamera cam;
@@ -211,7 +211,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
         }
 
         private void loadAndShowPreview(FileHandle model, FileHandle texture) {
-            this.importedModel = importManager.importToTempFolder(model, texture);
+            this.importedModel = modelImporter.importToTempFolder(model, texture);
 
             if(importedModel == null) {
                 if(FileFormatUtils.isCollada(model) || FileFormatUtils.isFBX(model) || FileFormatUtils.isWavefont(model)) {

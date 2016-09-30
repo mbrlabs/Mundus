@@ -29,6 +29,8 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.Main;
+import com.mbrlabs.mundus.assets.AssetManager;
+import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.Registry;
@@ -42,7 +44,6 @@ import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.utils.Fa;
-import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.ReflectionUtils;
 
 import java.io.File;
@@ -69,7 +70,7 @@ public class Mundus {
     private static ProjectManager projectManager;
     private static AssetManager assetManager;
     private static Registry registry;
-    private static ImportManager importManager;
+    private static ModelImporter modelImporter;
     private static CommandHistory commandHistory;
     private static GameObjectPicker goPicker;
     private static ToolHandlePicker handlePicker;
@@ -109,7 +110,7 @@ public class Mundus {
         freeCamController = new FreeCamController();
         commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
 
-        importManager = new ImportManager(registry);
+        modelImporter = new ModelImporter(registry);
         projectManager = new ProjectManager(kryoManager, registry, shaders);
         assetManager = new AssetManager(projectManager);
         toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.core;
+package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -27,7 +27,7 @@ import org.apache.commons.io.FilenameUtils;
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class ImportManager {
+public class ModelImporter {
 
     public static class ImportedModel {
         public String name;
@@ -39,7 +39,7 @@ public class ImportManager {
     private FbxConv fbxConv;
     private Registry registry;
 
-    public ImportManager(Registry registry) {
+    public ModelImporter(Registry registry) {
         this.fbxConv = new FbxConv(registry.getSettings().getFbxConvBinary());
         this.registry = registry;
     }
