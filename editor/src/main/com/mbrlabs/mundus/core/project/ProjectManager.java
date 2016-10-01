@@ -103,6 +103,10 @@ public class ProjectManager implements Disposable {
         saveProject(currentProject);
     }
 
+    public String assetFolder() {
+        return currentProject.path + "/" + PROJECT_ASSETS_DIR;
+    }
+
     /**
      * Creates & saves a new project.
      *
