@@ -18,7 +18,9 @@ package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.registry.Registry;
+import com.mbrlabs.mundus.events.SettingsChangedEvent;
 import com.mbrlabs.mundus.utils.FbxConv;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -27,7 +29,7 @@ import org.apache.commons.io.FilenameUtils;
  * @author Marcus Brummer
  * @version 12-12-2015
  */
-public class ModelImporter {
+public class ModelImporter implements SettingsChangedEvent.SettingsChangedListener {
 
     public static class ImportedModel {
         public String name;
@@ -40,8 +42,14 @@ public class ModelImporter {
     private Registry registry;
 
     public ModelImporter(Registry registry) {
+        Mundus.registerEventListener(this);
         this.fbxConv = new FbxConv(registry.getSettings().getFbxConvBinary());
         this.registry = registry;
+    }
+
+    @Override
+    public void onSettingsChanged(SettingsChangedEvent settingsChangedEvent) {
+        fbxConv.setFbxBinary(settingsChangedEvent.getSettings().getFbxConvBinary());
     }
 
     public ImportedModel importToTempFolder(FileHandle modelFile, FileHandle textureFile) {
