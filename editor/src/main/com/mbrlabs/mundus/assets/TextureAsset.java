@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
 /**
  * @author Marcus Brummer
@@ -26,6 +27,8 @@ import com.badlogic.gdx.graphics.Texture;
 public class TextureAsset extends Asset {
 
     private Texture texture;
+    private boolean generateMipMaps;
+    private boolean tileable;
 
     public TextureAsset(FileHandle file, String uuid) {
         super(file, uuid);
@@ -33,6 +36,29 @@ public class TextureAsset extends Asset {
 
     public TextureAsset(FileHandle file) {
         super(file);
+    }
+
+    public TextureAsset generateMipmaps(boolean mipmaps) {
+        this.generateMipMaps = mipmaps;
+        return this;
+    }
+
+    public TextureAsset setTileable(boolean tileable) {
+        this.tileable = tileable;
+        return this;
+    }
+
+    @Override
+    public void load() {
+        if(generateMipMaps) {
+            texture = TextureUtils.loadMipmapTexture(file, false);
+        } else {
+            texture = new Texture(file);
+        }
+
+        if(tileable) {
+            texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        }
     }
 
     @Override

@@ -51,7 +51,9 @@ import org.apache.commons.io.FilenameUtils;
  * @author Marcus Brummer
  * @version 07-06-2016
  */
-public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
+public class Editor implements ApplicationListener,
+        ProjectChangedEvent.ProjectChangedListener,
+        SceneChangedEvent.SceneChangedListener {
 
     private ModelInstance axesInstance;
 
@@ -86,9 +88,9 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         batch = Mundus.modelBatch;
         ui = Ui.getInstance();
 
+        // TODO dispose this
         Model axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
-        Mundus.testModels.add(axesModel);
 
         final ProjectContext projectContext = projectManager.current();
 

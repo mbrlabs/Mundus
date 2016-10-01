@@ -32,6 +32,11 @@ public class TerraAsset extends Asset {
     }
 
     @Override
+    public void load() {
+
+    }
+
+    @Override
     public void dispose() {
 
     }

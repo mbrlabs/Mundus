@@ -17,6 +17,7 @@ package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.mbrlabs.mundus.commons.utils.G3dUtils;
 
 /**
  * @author Marcus Brummer
@@ -35,8 +36,15 @@ public class ModelAsset extends Asset {
     }
 
     @Override
+    public void load() {
+        model = G3dUtils.loadWithoutTextures(file);
+    }
+
+    @Override
     public void dispose() {
-        model.dispose();
+        if(model != null) {
+            model.dispose();
+        }
     }
 
 }

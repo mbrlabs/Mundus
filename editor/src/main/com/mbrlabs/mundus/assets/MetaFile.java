@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
+ * Meta files contain additional information about a single asset file.
+ *
  * @author Marcus Brummer
  * @version 01-10-2016
  */
@@ -33,7 +35,8 @@ public class MetaFile {
     public static final String META_EXTENSION = "meta";
     private static final String TAG = MetaFile.class.getSimpleName();
 
-    private static final String PROP_COMMENT = " !!! WARNING, DO NOT MODIFY !!! \n This file is machine generated. Do not modify or delete it.\n";
+    private static final String COMMENT = " !!! WARNING, DO NOT MODIFY OR DELETE !!! \n " +
+            "This file is machine generated. If you delete or modify this, Mundus might not work anymore.\n";
     private static final String PROP_VERSION = "version";
     private static final String PROP_UUID = "uuid";
     private static final String PROP_LAST_MODIFIED = "last_modified";
@@ -45,13 +48,18 @@ public class MetaFile {
     private FileHandle file;
     private Properties props;
 
+    public MetaFile(FileHandle file) {
+        this.file = file;
+        this.props = new Properties();
+    }
+
     public void save() {
         props.clear();
         props.setProperty(PROP_VERSION, String.valueOf(this.version));
         props.setProperty(PROP_UUID, this.uuid);
         props.setProperty(PROP_LAST_MODIFIED, String.valueOf(this.lastModified.getTime()));
         try {
-            props.store(new FileOutputStream(file.file()), PROP_COMMENT);
+            props.store(new FileOutputStream(file.file()), COMMENT);
         } catch (IOException e) {
             Log.exception(e);
         }
@@ -68,11 +76,6 @@ public class MetaFile {
         } catch (Exception e) {
             Log.exception(e);
         }
-    }
-
-    public MetaFile(FileHandle file) {
-        this.file = file;
-        this.props = new Properties();
     }
 
     public int getVersion() {

@@ -77,8 +77,6 @@ public class Mundus {
 
     public static EventBus eventBus;
 
-    public static Array<Model> testModels = new Array<>();
-    public static Array<ModelInstance> testInstances = new Array<>();
     public static BitmapFont fa;
     public static ModelBatch modelBatch;
 
@@ -237,9 +235,6 @@ public class Mundus {
         if (toolManager != null) toolManager.dispose();
         if (commandHistory != null) commandHistory.clear();
         if (fa != null) fa.dispose();
-        for(Model model : testModels) {
-            model.dispose();
-        }
         if (projectManager != null) projectManager.dispose();
     }
 

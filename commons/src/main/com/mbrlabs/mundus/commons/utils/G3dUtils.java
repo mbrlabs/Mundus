@@ -30,7 +30,7 @@ import com.badlogic.gdx.utils.UBJsonReader;
  */
 public class G3dUtils {
 
-    public Model loadWithoutTextures(FileHandle model) {
+    public static Model loadWithoutTextures(FileHandle model) {
         G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
         ModelData modelData = loader.loadModelData(model);
         for(ModelMaterial mat : modelData.materials) {

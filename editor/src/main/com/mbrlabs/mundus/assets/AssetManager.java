@@ -21,11 +21,15 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
+import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.core.registry.ProjectRef;
+
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -36,8 +40,22 @@ public class AssetManager {
 
     private ProjectManager projectManager;
 
+    private Array<Asset> assets;
+
     public AssetManager(ProjectManager projectManager) {
         this.projectManager = projectManager;
+        this.assets = new Array<>();
+    }
+
+    public void loadAssets(ProjectRef project) {
+        // dispose old assets
+        for(Asset asset : assets) {
+            asset.dispose();
+        }
+        assets.clear();
+
+        // load new assets
+
     }
 
     /**
