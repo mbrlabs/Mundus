@@ -33,7 +33,7 @@ public class MetaFile {
     public static final String META_EXTENSION = "meta";
     private static final String TAG = MetaFile.class.getSimpleName();
 
-    private static final String PROP_COMMENT = "!!! WARNING !!! \n\nThis file is machine generated. Do not modify or delete it.";
+    private static final String PROP_COMMENT = " !!! WARNING, DO NOT MODIFY !!! \n This file is machine generated. Do not modify or delete it.\n";
     private static final String PROP_VERSION = "version";
     private static final String PROP_UUID = "uuid";
     private static final String PROP_LAST_MODIFIED = "last_modified";
@@ -43,13 +43,7 @@ public class MetaFile {
     private Date lastModified;
 
     private FileHandle file;
-
     private Properties props;
-
-    public MetaFile(FileHandle file) {
-        this.file = file;
-        this.props = new Properties();
-    }
 
     public void save() {
         props.clear();
@@ -74,6 +68,39 @@ public class MetaFile {
         } catch (Exception e) {
             Log.exception(e);
         }
+    }
+
+    public MetaFile(FileHandle file) {
+        this.file = file;
+        this.props = new Properties();
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public FileHandle getFile() {
+        return file;
     }
 
 }

@@ -13,30 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Disposable;
-
-import java.util.UUID;
 
 /**
  * @author Marcus Brummer
  * @version 01-10-2016
  */
-public abstract class Asset implements Disposable {
+public class TerraAsset extends Asset {
 
-    private final String uuid;
-    private FileHandle file;
-
-    public Asset(FileHandle file, String uuid) {
-        this.uuid = uuid;
-        this.file = file;
+    public TerraAsset(FileHandle file, String uuid) {
+        super(file, uuid);
     }
 
-    public Asset(FileHandle file) {
-        this(file, UUID.randomUUID().toString());
+    public TerraAsset(FileHandle file) {
+        super(file);
     }
 
+    @Override
+    public void dispose() {
+
+    }
 }
