@@ -17,6 +17,7 @@ package com.mbrlabs.mundus.ui.modules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -56,7 +57,7 @@ import com.mbrlabs.mundus.utils.TerrainUtils;
  * Outline shows overview about all game objects in the scene
  *
  * @author Marcus Brummer, codenigma
- * @version 27-09-2016
+ * @version 01-10-2016
  */
 public class Outline extends VisTable implements
         ProjectChangedEvent.ProjectChangedListener,
@@ -175,9 +176,7 @@ public class Outline extends VisTable implements
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 Tree.Node node = (Tree.Node) payload.getObject();
-
-                final ProjectContext projectContext = projectManager.current();
-
+                
                 if (node != null) {
                     GameObject draggedGo = (GameObject) node.getObject();
                     Tree.Node newParent = tree.getNodeAt(y);
@@ -189,16 +188,51 @@ public class Outline extends VisTable implements
                             return;
                         }
                     }
-
+                    GameObject oldParent = draggedGo.getParent();
+                    
                     // remove child from old parent
                     draggedGo.remove();
 
                     // add to new parent
                     if (newParent == null) {
+                        // recalculate position for root layer
+                        Vector3 newPos = new Vector3();
+                        Vector3 draggedPos = new Vector3();
+                        draggedGo.getPosition(draggedPos);
+                        //if moved from old parent
+                        if(oldParent != null) {
+                            // new position = oldParentPos + draggedPos
+                            Vector3 parentPos = new Vector3();
+                            oldParent.getPosition(parentPos);
+                            newPos = parentPos.add(draggedPos);
+                        } else {
+                            // new local position = World position
+                            newPos = draggedPos;
+                        }
                         projectContext.currScene.sceneGraph.addGameObject(draggedGo);
+                        draggedGo.setLocalPosition(newPos.x,newPos.y,newPos.z);
                     } else {
                         GameObject parentGo = (GameObject) newParent.getObject();
+                        // recalculate position
+                        Vector3 parentPos = new Vector3();
+                        Vector3 draggedPos = new Vector3();
+                        // World coorinates
+                        draggedGo.getPosition(draggedPos);
+                        parentGo.getPosition(parentPos);
+                        
+                        // if gameObject came from old parent
+                        if(oldParent != null) {
+                            // calculate oldParentPos + draggedPos
+                            Vector3 oldParentPos = new Vector3();
+                            oldParent.getPosition(oldParentPos);
+                            draggedPos = oldParentPos.add(draggedPos);
+                        }
+                        
+                        // Local in releation to new parent
+                        Vector3 newPos = draggedPos.sub(parentPos);
+                        // add
                         parentGo.addChild(draggedGo);
+                        draggedGo.setLocalPosition(newPos.x,newPos.y,newPos.z);
                     }
 
                     // update tree
@@ -206,7 +240,6 @@ public class Outline extends VisTable implements
                 }
             }
         });
-
     }
 
     private void setupListeners() {
