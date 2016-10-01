@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
+import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.model.MModel;
@@ -129,6 +130,7 @@ public class ProjectManager implements Disposable {
         ProjectContext newProjectContext = new ProjectContext(-1);
         newProjectContext.path = path;
         newProjectContext.name = ref.getName();
+        newProjectContext.assetManager = new AssetManager(path + "/" + ProjectManager.PROJECT_ASSETS_DIR);
 
         // create default scene & save .mundus
         EditorScene scene = new EditorScene();
@@ -189,6 +191,10 @@ public class ProjectManager implements Disposable {
     public ProjectContext loadProject(ProjectRef ref) throws FileNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.path = ref.getPath();
+
+        // load assets
+        context.assetManager = new AssetManager(ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR);
+        context.assetManager.loadAssets();
 
         // load textures
         for(MTexture tex : context.textures) {
@@ -274,7 +280,7 @@ public class ProjectManager implements Disposable {
         kryoManager.saveRegistry(registry);
 
         Gdx.graphics.setTitle(constructWindowTitle());
-        Mundus.postEvent(new ProjectChangedEvent());
+        Mundus.postEvent(new ProjectChangedEvent(context));
     }
 
     /**

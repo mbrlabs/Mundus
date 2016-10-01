@@ -23,12 +23,8 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class TerraAsset extends Asset {
 
-    public TerraAsset(FileHandle file, String uuid) {
-        super(file, uuid);
-    }
-
-    public TerraAsset(FileHandle file) {
-        super(file);
+    public TerraAsset(MetaFile meta, FileHandle assetFile) {
+        super(meta, assetFile);
     }
 
     @Override

@@ -27,12 +27,9 @@ public class ModelAsset extends Asset {
 
     private Model model;
 
-    public ModelAsset(FileHandle file, String uuid) {
-        super(file, uuid);
-    }
-
-    public ModelAsset(FileHandle file) {
-        super(file);
+    public ModelAsset(MetaFile meta, FileHandle assetFile, Model model) {
+        super(meta, assetFile);
+        this.model = model;
     }
 
     @Override

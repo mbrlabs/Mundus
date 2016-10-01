@@ -47,8 +47,6 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
 
     @Inject
     private Registry registry;
-    @Inject
-    private AssetManager assetManager;
 
     public ImportTextureDialog() {
         super("Import Texture");
@@ -104,20 +102,21 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
         }
 
         private void setupListener() {
-            importBtn.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    FileHandle texture = imageChooserField.getFile();
-                    if(texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
-                        MTexture tex = assetManager.importTexture(texture, true);
-                        Mundus.postEvent(new TextureImportEvent(tex));
-                        close();
-                        Ui.getInstance().getToaster().success("Texture imported");
-                    } else {
-                        Ui.getInstance().getToaster().error("There is nothing to import");
-                    }
-                }
-            });
+            // TODO import again
+//            importBtn.addListener(new ClickListener() {
+//                @Override
+//                public void clicked(InputEvent event, float x, float y) {
+//                    FileHandle texture = imageChooserField.getFile();
+//                    if(texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
+//                        MTexture tex = assetManager.importTexture(texture, true);
+//                        Mundus.postEvent(new TextureImportEvent(tex));
+//                        close();
+//                        Ui.getInstance().getToaster().success("Texture imported");
+//                    } else {
+//                        Ui.getInstance().getToaster().error("There is nothing to import");
+//                    }
+//                }
+//            });
         }
 
 

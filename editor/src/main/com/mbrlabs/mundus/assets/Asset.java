@@ -28,16 +28,11 @@ import java.util.UUID;
 public abstract class Asset implements Disposable {
 
     protected FileHandle file;
-    protected MetaFile meta;
+    private MetaFile meta;
 
-    public Asset(FileHandle file, String uuid) {
-        this.meta = new MetaFile(new FileHandle(file.path()));
-        this.meta.setUuid(uuid);
-        this.file = file;
-    }
-
-    public Asset(FileHandle file) {
-        this(file, UUID.randomUUID().toString());
+    public Asset(MetaFile meta, FileHandle assetFile) {
+        this.meta = meta;
+        this.file = assetFile;
     }
 
     public MetaFile getMeta() {

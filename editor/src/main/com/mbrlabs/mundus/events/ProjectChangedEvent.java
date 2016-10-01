@@ -16,11 +16,23 @@
 
 package com.mbrlabs.mundus.events;
 
+import com.mbrlabs.mundus.core.project.ProjectContext;
+
 /**
  * @author Marcus Brummer
  * @version 24-12-2015
  */
 public class ProjectChangedEvent {
+
+    private ProjectContext projectContext;
+
+    public ProjectChangedEvent(ProjectContext projectContext) {
+        this.projectContext = projectContext;
+    }
+
+    public ProjectContext getProjectContext() {
+        return projectContext;
+    }
 
     public static interface ProjectChangedListener {
         @Subscribe

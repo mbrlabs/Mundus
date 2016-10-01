@@ -30,12 +30,8 @@ public class TextureAsset extends Asset {
     private boolean generateMipMaps;
     private boolean tileable;
 
-    public TextureAsset(FileHandle file, String uuid) {
-        super(file, uuid);
-    }
-
-    public TextureAsset(FileHandle file) {
-        super(file);
+    public TextureAsset(MetaFile meta, FileHandle assetFile) {
+        super(meta, assetFile);
     }
 
     public TextureAsset generateMipmaps(boolean mipmaps) {

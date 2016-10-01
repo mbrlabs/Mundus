@@ -66,8 +66,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
     private Registry registry;
     @Inject
     private ModelImporter modelImporter;
-    @Inject
-    private AssetManager assetManager;
 
     public ImportMeshDialog() {
         super("Import Mesh");
@@ -192,22 +190,23 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             });
 
             // import btn
-            importBtn.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
-                        // create model
-                        importedModel.name = name.getText();
-                        MModel mModel = assetManager.importG3dbModel(importedModel);
-                        Mundus.postEvent(new ModelImportEvent(mModel));
-                        dispose();
-                        close();
-                        Ui.getInstance().getToaster().success("Mesh imported");
-                    } else {
-                        Ui.getInstance().getToaster().error("There is nothing to import");
-                    }
-                }
-            });
+            // TODO import again
+//            importBtn.addListener(new ClickListener() {
+//                @Override
+//                public void clicked(InputEvent event, float x, float y) {
+//                    if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
+//                        // create model
+//                        importedModel.name = name.getText();
+//                        MModel mModel = assetManager.importG3dbModel(importedModel);
+//                        Mundus.postEvent(new ModelImportEvent(mModel));
+//                        dispose();
+//                        close();
+//                        Ui.getInstance().getToaster().success("Mesh imported");
+//                    } else {
+//                        Ui.getInstance().getToaster().error("There is nothing to import");
+//                    }
+//                }
+//            });
         }
 
         private void loadAndShowPreview(FileHandle model, FileHandle texture) {

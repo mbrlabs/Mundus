@@ -40,8 +40,10 @@ public class MetaFile {
     private static final String PROP_VERSION = "version";
     private static final String PROP_UUID = "uuid";
     private static final String PROP_LAST_MODIFIED = "last_modified";
+    private static final String PROP_TYPE = "type";
 
     private int version;
+    private AssetType type;
     private String uuid;
     private Date lastModified;
 
@@ -56,6 +58,7 @@ public class MetaFile {
     public void save() {
         props.clear();
         props.setProperty(PROP_VERSION, String.valueOf(this.version));
+        props.setProperty(PROP_TYPE, this.type.name());
         props.setProperty(PROP_UUID, this.uuid);
         props.setProperty(PROP_LAST_MODIFIED, String.valueOf(this.lastModified.getTime()));
         try {
@@ -65,16 +68,20 @@ public class MetaFile {
         }
     }
 
-    public void load() {
+    public boolean load() {
         try {
             props.clear();
             props.load(new FileInputStream(file.file()));
 
             this.version = Integer.valueOf(props.getProperty(PROP_VERSION));
+            this.type = AssetType.valueOf(props.getProperty(PROP_TYPE));
             this.uuid = props.getProperty(PROP_UUID);
             this.lastModified = new Date(Long.valueOf(props.getProperty(PROP_LAST_MODIFIED)));
+            return true;
         } catch (Exception e) {
+            Log.errorTag(TAG, "Error while reading meta file: ", file.path());
             Log.exception(e);
+            return false;
         }
     }
 
@@ -100,6 +107,14 @@ public class MetaFile {
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public AssetType getType() {
+        return type;
+    }
+
+    public void setType(AssetType type) {
+        this.type = type;
     }
 
     public FileHandle getFile() {

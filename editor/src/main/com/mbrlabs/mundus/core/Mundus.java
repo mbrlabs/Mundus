@@ -20,16 +20,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -68,7 +64,6 @@ public class Mundus {
     private static ShapeRenderer shapeRenderer;
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
-    private static AssetManager assetManager;
     private static Registry registry;
     private static ModelImporter modelImporter;
     private static CommandHistory commandHistory;
@@ -110,7 +105,6 @@ public class Mundus {
 
         modelImporter = new ModelImporter(registry);
         projectManager = new ProjectManager(kryoManager, registry, shaders);
-        assetManager = new AssetManager(projectManager);
         toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
         shortcutController = new ShortcutController(registry, projectManager, commandHistory);
     }
