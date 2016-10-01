@@ -66,6 +66,10 @@ public class FbxConv {
         pb = new ProcessBuilder(fbxBinary);
     }
 
+    public void setFbxBinary(String path) {
+        this.fbxBinary = path;
+    }
+
     public void clear() {
         outputFormat = OUTPUT_FORMAT_G3DB;
         verbose = false;
