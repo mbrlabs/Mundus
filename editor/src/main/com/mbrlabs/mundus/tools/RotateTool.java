@@ -99,34 +99,32 @@ public class RotateTool extends TransformTool {
             shapeRenderMat.setToOrtho2D(vp.getScreenX(), vp.getScreenY(), vp.getScreenWidth(), vp.getScreenHeight());
             switch(state) {
                 case TRANSFORM_X : 
-                                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                                    shapeRenderer.setColor(Color.BLACK);
-                                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                                    shapeRenderer.setColor(COLOR_X);
-                                    shapeRenderer.circle(pivot.x, pivot.y, 7);
-                                    shapeRenderer.end();
-                                    break;
-                
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.setColor(Color.BLACK);
+                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+                    shapeRenderer.setColor(COLOR_X);
+                    shapeRenderer.circle(pivot.x, pivot.y, 7);
+                    shapeRenderer.end();
+                    break;
                 case TRANSFORM_Y : 
-                                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                                    shapeRenderer.setColor(Color.BLACK);
-                                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                                    shapeRenderer.setColor(COLOR_Y);
-                                    shapeRenderer.circle(pivot.x, pivot.y, 7);
-                                    shapeRenderer.end();
-                                    break;
-                
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.setColor(Color.BLACK);
+                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+                    shapeRenderer.setColor(COLOR_Y);
+                    shapeRenderer.circle(pivot.x, pivot.y, 7);
+                    shapeRenderer.end();
+                    break;
                 case TRANSFORM_Z : 
-                                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                                    shapeRenderer.setColor(Color.BLACK);
-                                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                                    shapeRenderer.setColor(COLOR_Z);
-                                    shapeRenderer.circle(pivot.x, pivot.y, 7);
-                                    shapeRenderer.end();
-                                    break;
+                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                    shapeRenderer.setColor(Color.BLACK);
+                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+                    shapeRenderer.setColor(COLOR_Z);
+                    shapeRenderer.circle(pivot.x, pivot.y, 7);
+                    shapeRenderer.end();
+                    break;
                 default:
                                     break;
             }
@@ -148,22 +146,22 @@ public class RotateTool extends TransformTool {
             boolean modified = false;
             if(null != state) switch (state) {
                 case TRANSFORM_X:
-                                    tempQuat.setEulerAngles(0, -rot, 0);
-                                    projectContext.currScene.currentSelection.rotate(tempQuat);
-                                    modified = true;
-                                    break;
+                    tempQuat.setEulerAngles(0, -rot, 0);
+                    projectContext.currScene.currentSelection.rotate(tempQuat);
+                    modified = true;
+                    break;
                 case TRANSFORM_Y:
-                                    tempQuat.setEulerAngles(-rot, 0, 0);
-                                    projectContext.currScene.currentSelection.rotate(tempQuat);
-                                    modified = true;
-                                    break;
+                    tempQuat.setEulerAngles(-rot, 0, 0);
+                    projectContext.currScene.currentSelection.rotate(tempQuat);
+                    modified = true;
+                    break;
                 case TRANSFORM_Z:
-                                    tempQuat.setEulerAngles(0, 0, -rot);
-                                    projectContext.currScene.currentSelection.rotate(tempQuat);
-                                    modified = true;
-                                    break;
+                    tempQuat.setEulerAngles(0, 0, -rot);
+                    projectContext.currScene.currentSelection.rotate(tempQuat);
+                    modified = true;
+                    break;
                 default:
-                                    break;
+                    break;
             }
 
             if(modified) {
@@ -203,16 +201,16 @@ public class RotateTool extends TransformTool {
 
             switch (handle.getId()) {
                 case X_HANDLE_ID:
-                                    state = TransformState.TRANSFORM_X;
-                                    break;
+                    state = TransformState.TRANSFORM_X;
+                    break;
                 case Y_HANDLE_ID:
-                                    state = TransformState.TRANSFORM_Y;
-                                    break;
+                    state = TransformState.TRANSFORM_Y;
+                    break;
                 case Z_HANDLE_ID:
-                                    state = TransformState.TRANSFORM_Z;
-                                    break;
+                    state = TransformState.TRANSFORM_Z;
+                    break;
                 default:
-                                    break;
+                    break;
             }
         }
 
@@ -306,21 +304,20 @@ public class RotateTool extends TransformTool {
             modelInstance.materials.first().set(idAttribute);
             switch(id) {
                 case X_HANDLE_ID : 
-                                   this.rotationEuler.y = 90;
-                                   this.scale.x = 0.9f;
-                                   this.scale.y = 0.9f;
-                                   this.scale.z = 0.9f;
-                                   break;
+                    this.rotationEuler.y = 90;
+                    this.scale.x = 0.9f;
+                    this.scale.y = 0.9f;
+                    this.scale.z = 0.9f;
+                    break;
                 case Y_HANDLE_ID : 
-                                   this.rotationEuler.x = 90;
-                                   break;
+                    this.rotationEuler.x = 90;
+                    break;
                 case Z_HANDLE_ID : 
-                                   this.rotationEuler.z = 90;
-                                   this.scale.x = 1.1f;
-                                   this.scale.y = 1.1f;
-                                   this.scale.z = 1.1f;
-                                   break;
-                                   
+                    this.rotationEuler.z = 90;
+                    this.scale.x = 1.1f;
+                    this.scale.y = 1.1f;
+                    this.scale.z = 1.1f;
+                    break;                 
             }
             // mi.transform.translate(0, 100, 0);
         }
