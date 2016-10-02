@@ -55,7 +55,7 @@ public class AssetsMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getAssetBrowser());
+                ui.showDialog(ui.getAssetSelectionDialog());
             }
         });
     }

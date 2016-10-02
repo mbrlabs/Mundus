@@ -33,12 +33,12 @@ import com.mbrlabs.mundus.utils.Log;
  * @author Marcus Brummer
  * @version 02-10-2016
  */
-public class AssetBrowser extends BaseDialog implements
+public class AssetSelectionDialog extends BaseDialog implements
         AssetImportEvent.AssetImportListener,
         ProjectChangedEvent.ProjectChangedListener {
 
-    private static final String TAG = AssetBrowser.class.getSimpleName();
-    private static final String TITLE = "Asset Browser";
+    private static final String TAG = AssetSelectionDialog.class.getSimpleName();
+    private static final String TITLE = "Select an asset";
 
     @Inject
     private ProjectManager projectManager;
@@ -46,7 +46,7 @@ public class AssetBrowser extends BaseDialog implements
     private ListView<Asset> list;
     private SimpleListAdapter<Asset> listAdapter;
 
-    public AssetBrowser() {
+    public AssetSelectionDialog() {
         super(TITLE);
         Mundus.inject(this);
         Mundus.registerEventListener(this);
