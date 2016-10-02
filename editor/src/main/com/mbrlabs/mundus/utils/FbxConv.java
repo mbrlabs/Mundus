@@ -37,6 +37,8 @@ import java.util.List;
  */
 public class FbxConv {
 
+    private final String TAG = FbxConv.class.getSimpleName();
+
     public static final int OUTPUT_FORMAT_G3DB = 0;
     public static final int OUTPUT_FORMAT_G3DJ = 1;
 
@@ -109,14 +111,14 @@ public class FbxConv {
         if(input == null || output == null) {
             result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_PARAM_ERROR);
-            Log.error("FbxCov input or output not defined");
+            Log.error(TAG, "FbxCov input or output not defined");
             return result;
         }
 
         if(!input.endsWith("fbx")) {
             result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_WRONG_INPUT_FORMAT);
-            Log.error("FbxCov input format not supported");
+            Log.error(TAG, "FbxCov input format not supported");
         }
 
         // build arguments

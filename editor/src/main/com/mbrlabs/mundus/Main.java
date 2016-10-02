@@ -27,6 +27,7 @@ import com.mbrlabs.mundus.utils.Log;
  */
 public class Main {
 
+    private static final String TAG = Main.class.getSimpleName();
     public static final String TITLE = "Mundus v0.0.9";
 
     public static WindowCloseListener closeListener = null;
@@ -36,7 +37,7 @@ public class Main {
         Log.init();
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(TITLE);
-        Log.info("Starting [{}]", TITLE);
+        Log.info(TAG, "Starting [{}]", TITLE);
 
         // Set initial window size. See issue #11
         DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
@@ -58,7 +59,7 @@ public class Main {
             }
         });
         new Lwjgl3Application(new Editor(), config);
-        Log.info("Shutting down [{}]", TITLE);
+        Log.info(TAG, "Shutting down [{}]", TITLE);
     }
 
     public interface WindowCloseListener {

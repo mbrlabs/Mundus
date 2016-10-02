@@ -53,7 +53,7 @@ public class AssetManager implements Disposable {
         this.assets = new Array<>();
         rootFolder = new FileHandle(path);
         if(!rootFolder.exists() || !rootFolder.isDirectory()) {
-            Log.fatal("Root asset folder is not a directory");
+            Log.fatal(TAG, "Root asset folder is not a directory");
         }
     }
 
@@ -79,7 +79,7 @@ public class AssetManager implements Disposable {
 
         // check if asset exists
         if(!assetFile.exists()) {
-            Log.warnTag(TAG, "Meta file found, but asset does not exist: {}", meta.getFile().path());
+            Log.warn(TAG, "Meta file found, but asset does not exist: {}", meta.getFile().path());
             return;
         }
 
@@ -93,7 +93,7 @@ public class AssetManager implements Disposable {
                 loadTextureAsset(meta, assetFile);
                 break;
             default:
-                Log.warnTag(TAG, "Assets of type {} can't be loaded right now" , meta.getType());
+                Log.warn(TAG, "Assets of type {} can't be loaded right now" , meta.getType());
                 return;
         }
     }
@@ -105,7 +105,7 @@ public class AssetManager implements Disposable {
         asset.load();
         assets.add(asset);
 
-        Log.debugTag(TAG, "Loaded texture asset: {}" , asset.file.path());
+        Log.debug(TAG, "Loaded texture asset: {}" , asset.file.path());
     }
 
     /**

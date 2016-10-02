@@ -49,7 +49,7 @@ public class DeleteCommand implements Command {
 
     @Override
     public void execute() {
-        Log.traceTag(TAG, "Remove game object [{}]", go);
+        Log.trace(TAG, "Remove game object [{}]", go);
         //remove go from sceneGraph
         go.remove();
         //remove from outline tree
@@ -59,7 +59,7 @@ public class DeleteCommand implements Command {
 
     @Override
     public void undo() {
-        Log.traceTag(TAG, "Undo remove of game object [{}]", go);
+        Log.trace(TAG, "Undo remove of game object [{}]", go);
         //add to sceneGraph
         parentGO.addChild(go);
         //add to outline

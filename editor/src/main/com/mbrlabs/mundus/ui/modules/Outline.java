@@ -122,7 +122,7 @@ public class Outline extends VisTable implements
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
         //update to new sceneGraph
         sceneGraph = projectManager.current().currScene.sceneGraph;
-        Log.traceTag(TAG, "Project changed. Building scene graph.");
+        Log.trace(TAG, "Project changed. Building scene graph.");
         buildTree(sceneGraph);
     }
 
@@ -130,13 +130,13 @@ public class Outline extends VisTable implements
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
         //update to new sceneGraph
         sceneGraph = projectManager.current().currScene.sceneGraph;
-        Log.traceTag(TAG, "Scene changed. Building scene graph.");
+        Log.trace(TAG, "Scene changed. Building scene graph.");
         buildTree(sceneGraph);
     }
 
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
-        Log.traceTag(TAG, "SceneGraph changed. Building scene graph.");
+        Log.trace(TAG, "SceneGraph changed. Building scene graph.");
         buildTree(sceneGraph);
     }
 
@@ -350,7 +350,7 @@ public class Outline extends VisTable implements
      * @param parent    game object on which clone will be added
      */
     private void duplicateGO(GameObject go, GameObject parent) {
-        Log.traceTag(TAG, "Duplicate [{}] with parent [{}]", go, parent);
+        Log.trace(TAG, "Duplicate [{}] with parent [{}]", go, parent);
         GameObject goCopy = new GameObject(go, projectContext.obtainID());
 
         // add copy to tree
@@ -371,7 +371,7 @@ public class Outline extends VisTable implements
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
         Tree.Node node = tree.findNode(gameObjectSelectedEvent.getGameObject());
-        Log.traceTag(TAG, "Select game object [{}].", node.getObject());
+        Log.trace(TAG, "Select game object [{}].", node.getObject());
         tree.getSelection().clear();
         tree.getSelection().add(node);
         node.expandTo();
@@ -424,12 +424,12 @@ public class Outline extends VisTable implements
                     //update outline
                     if (selectedGO == null) {
                         //update sceneGraph
-                        Log.traceTag(TAG, "Add empty game object [{}] in root node.", go);
+                        Log.trace(TAG, "Add empty game object [{}] in root node.", go);
                         sceneGraph.addGameObject(go);
                         //update outline
                         addGoToTree(null, go);
                     } else {
-                        Log.traceTag(TAG, "Add empty game object [{}] child in node [{}].", go, selectedGO);
+                        Log.trace(TAG, "Add empty game object [{}] child in node [{}].", go, selectedGO);
                         //update sceneGraph
                         selectedGO.addChild(go);
                         //update outline
@@ -445,7 +445,7 @@ public class Outline extends VisTable implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     //To-DO: Terrain config popup: set width and height values, maybe heightmap import options
-                    Log.traceTag(TAG, "Add terrain game object in root node.");
+                    Log.trace(TAG, "Add terrain game object in root node.");
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
                     projectContext.terrains.add(terrain);
                     //projectContext.currScene.terrainGroup.add(terrain);
@@ -536,7 +536,7 @@ public class Outline extends VisTable implements
             InputDialog renameDialog = Dialogs.showInputDialog(Ui.getInstance(), "Rename", "", new InputDialogAdapter() {
                 @Override
                 public void finished(String input) {
-                    Log.traceTag(TAG, "Rename game object [{}] to [{}].", selectedGO, input);
+                    Log.trace(TAG, "Rename game object [{}] to [{}].", selectedGO, input);
                     // update sceneGraph
                     selectedGO.name = input;
                     // update Outline

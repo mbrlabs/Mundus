@@ -65,7 +65,7 @@ public class MetaFile {
         try {
             props.store(new FileOutputStream(file.file()), COMMENT);
         } catch (IOException e) {
-            Log.exception(e);
+            Log.exception(TAG, e);
         }
     }
 
@@ -80,8 +80,8 @@ public class MetaFile {
             this.lastModified = new Date(Long.valueOf(props.getProperty(PROP_LAST_MODIFIED)));
             return true;
         } catch (Exception e) {
-            Log.errorTag(TAG, "Error while reading meta file: ", file.path());
-            Log.exception(e);
+            Log.error(TAG, "Error while reading meta file: ", file.path());
+            Log.exception(TAG, e);
             return false;
         }
     }

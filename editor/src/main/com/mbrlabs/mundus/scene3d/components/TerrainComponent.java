@@ -31,6 +31,8 @@ import com.mbrlabs.mundus.utils.Log;
  */
 public class TerrainComponent extends PickableComponent {
 
+    private static final String TAG = TerrainComponent.class.getSimpleName();
+
     private Terrain terrain;
     private Shader shader;
 
@@ -78,7 +80,7 @@ public class TerrainComponent extends PickableComponent {
 
     @Override
     public Component clone(GameObject go) {
-        Log.fatalTag("TerrainComponent", "Terrain can not be cloned!");
+        Log.fatal(TAG, "Terrain can not be cloned!");
         return null;
     }
 
