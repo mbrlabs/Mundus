@@ -29,12 +29,15 @@ import com.mbrlabs.mundus.ui.Ui;
 public class AssetsMenu extends Menu {
 
     private MenuItem importMesh;
+    private MenuItem assetBrowser;
 
     public AssetsMenu() {
         super("Assets");
 
         importMesh = new MenuItem("Import Mesh");
+        assetBrowser = new MenuItem("Asset Browser");
         addItem(importMesh);
+        addItem(assetBrowser);
 
         addListeners();
     }
@@ -45,6 +48,14 @@ public class AssetsMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
                 ui.showDialog(ui.getImportMeshDialog());
+            }
+        });
+
+        assetBrowser.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Ui ui = Ui.getInstance();
+                ui.showDialog(ui.getAssetBrowser());
             }
         });
     }

@@ -124,7 +124,7 @@ public class Editor implements ApplicationListener,
             context = createDefaultProject();
         }
 
-        context.assetManager.importAsset(new FileHandle("/home/marcus/Desktop/box.jpg"), TextureAsset.class);
+       // context.assetManager.importAsset(new FileHandle("/home/marcus/Desktop/box.jpg"), TextureAsset.class);
 
         projectManager.changeProject(context);
         compass = new Compass(projectContext.currScene.cam);

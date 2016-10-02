@@ -69,6 +69,7 @@ public class Ui extends Stage {
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
     private AmbientLightDialog ambientLightDialog;
+    private AssetBrowser assetBrowser;
 
     private RenderWidget widget3D;
 
@@ -136,6 +137,7 @@ public class Ui extends Stage {
         ambientLightDialog = new AmbientLightDialog();
         importMeshDialog = new ImportMeshDialog();
         importTextureDialog = new ImportTextureDialog();
+        assetBrowser = new AssetBrowser();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -208,6 +210,10 @@ public class Ui extends Stage {
 
     public SkyboxDialog getSkyboxDialog() {
         return skyboxDialog;
+    }
+
+    public AssetBrowser getAssetBrowser() {
+        return assetBrowser;
     }
 
     public RenderWidget getWidget3D() {
