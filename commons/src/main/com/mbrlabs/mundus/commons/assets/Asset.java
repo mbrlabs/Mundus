@@ -41,6 +41,10 @@ public abstract class Asset implements Disposable {
         return file;
     }
 
+    public String getUUID() {
+        return meta.getUuid();
+    }
+
     public abstract void load();
 
 }

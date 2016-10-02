@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
+import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerraAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.model.MModel;
@@ -90,6 +91,9 @@ public class AssetManager implements Disposable {
             case TEXTURE:
                 loadTextureAsset(meta, assetFile);
                 break;
+            case PIXMAP_TEXTURE:
+                loadPixmapTextureAsset(meta, assetFile);
+                break;
             case TERRA:
                 loadTerraAsset(meta, assetFile);
                 break;
@@ -117,8 +121,13 @@ public class AssetManager implements Disposable {
         Log.debug(TAG, "Loaded terra asset: {}" , asset.getFile().path());
     }
 
+    private void loadPixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
+        PixmapTextureAsset asset = new PixmapTextureAsset(meta, assetFile);
+        asset.load();
+        assets.add(asset);
 
-
+        Log.debug(TAG, "Loaded pixmap texture asset: {}" , asset.getFile().path());
+    }
     /**
      *
      * @param importedModel

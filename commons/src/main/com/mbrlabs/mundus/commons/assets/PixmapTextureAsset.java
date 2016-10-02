@@ -17,31 +17,24 @@
 package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
 /**
  * @author Marcus Brummer
- * @version 01-10-2016
+ * @version 02-10-2016
  */
-public class TextureAsset extends Asset {
+public class PixmapTextureAsset extends Asset {
 
+    private Pixmap pixmap;
     private Texture texture;
-    private boolean generateMipMaps;
-    private boolean tileable;
 
-    public TextureAsset(MetaFile meta, FileHandle assetFile) {
+    public PixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
     }
 
-    public TextureAsset generateMipmaps(boolean mipmaps) {
-        this.generateMipMaps = mipmaps;
-        return this;
-    }
-
-    public TextureAsset setTileable(boolean tileable) {
-        this.tileable = tileable;
-        return this;
+    public Pixmap getPixmap() {
+        return pixmap;
     }
 
     public Texture getTexture() {
@@ -50,21 +43,14 @@ public class TextureAsset extends Asset {
 
     @Override
     public void load() {
-        if(generateMipMaps) {
-            texture = TextureUtils.loadMipmapTexture(file, false);
-        } else {
-            texture = new Texture(file);
-        }
-
-        if(tileable) {
-            texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        }
+        pixmap = new Pixmap(file);
+        texture = new Texture(pixmap);
     }
 
     @Override
     public void dispose() {
-        if(texture != null) {
-            texture.dispose();
-        }
+        pixmap.dispose();
+        texture.dispose();
     }
+
 }

@@ -23,6 +23,8 @@ package com.mbrlabs.mundus.commons.assets;
 public enum AssetType {
     /** Texture type. Can be pretty much any type of image. */
     TEXTURE,
+    /** A Texture, backed by a pixmap. Can be pretty much any type of image. */
+    PIXMAP_TEXTURE,
     /** 3D file. Can be g3db, g3dbj, dae, obj, fbx. */
     MODEL,
     /** Terra file. Contains height data for terrains. */
