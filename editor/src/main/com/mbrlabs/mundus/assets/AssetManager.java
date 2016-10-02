@@ -111,9 +111,14 @@ public class AssetManager implements Disposable {
         if(newAsset != null) {
             assets.add(newAsset);
             Mundus.postEvent(new AssetImportEvent(newAsset));
+            // TODO log msg
         }
 
         return newAsset;
+    }
+
+    public Array<Asset> getAssets() {
+        return assets;
     }
 
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {

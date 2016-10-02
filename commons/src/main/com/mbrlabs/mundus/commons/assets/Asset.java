@@ -37,12 +37,21 @@ public abstract class Asset implements Disposable {
         return meta;
     }
 
+    public String getName() {
+        return meta.getFile().name();
+    }
+
     public FileHandle getFile() {
         return file;
     }
 
     public String getUUID() {
         return meta.getUuid();
+    }
+
+    @Override
+    public String toString() {
+        return "[" + meta.getType().toString() + "] " + file.name();
     }
 
     public abstract void load();

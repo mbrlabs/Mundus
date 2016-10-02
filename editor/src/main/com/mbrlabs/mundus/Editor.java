@@ -124,7 +124,6 @@ public class Editor implements ApplicationListener,
             context = createDefaultProject();
         }
 
-       // context.assetManager.importAsset(new FileHandle("/home/marcus/Desktop/box.jpg"), TextureAsset.class);
 
         projectManager.changeProject(context);
         compass = new Compass(projectContext.currScene.cam);
@@ -132,6 +131,10 @@ public class Editor implements ApplicationListener,
         setupInput();
 
         setupCloseListener();
+
+//        for(FileHandle file : new FileHandle("/home/marcus/Desktop/testAssets/").list()) {
+//            context.assetManager.importAsset(file, TextureAsset.class);
+//        }
     }
 
     private void setupCloseListener() {

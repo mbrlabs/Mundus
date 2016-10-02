@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.Separator;
@@ -28,6 +27,7 @@ import com.mbrlabs.mundus.ui.modules.MundusToolbar;
 import com.mbrlabs.mundus.ui.modules.Outline;
 import com.mbrlabs.mundus.ui.modules.StatusBar;
 import com.mbrlabs.mundus.ui.modules.dialogs.*;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetBrowser;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportMeshDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportTextureDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;

@@ -72,6 +72,7 @@ public class ProjectContext implements Disposable {
         models = other.models;
         idProvider = other.idProvider;
         textures = other.textures;
+        assetManager = other.assetManager;
     }
 
     public synchronized int obtainID() {
