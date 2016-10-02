@@ -16,6 +16,13 @@
 package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.FloatArray;
+
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author Marcus Brummer
@@ -23,13 +30,35 @@ import com.badlogic.gdx.files.FileHandle;
  */
 public class TerraAsset extends Asset {
 
+    private float[] data;
+
     public TerraAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
     }
 
+    public float[] getData() {
+        return data;
+    }
+
     @Override
     public void load() {
+        final FloatArray floatArray = new FloatArray();
 
+        DataInputStream is;
+        try {
+            is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(file.read())));
+            while (is.available() > 0) {
+                floatArray.add(is.readFloat());
+            }
+            is.close();
+        } catch (EOFException e) {
+            //e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        data = floatArray.toArray();
     }
 
     @Override
