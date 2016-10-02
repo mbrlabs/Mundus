@@ -11,6 +11,7 @@
 - Implemented game object renaming in the outline
 - Implemented duplicate game object (deep copy), terrain can not be duplicated
 - Implemented delete game object undo/redo command
+- Fixed parenting in outline. Now local position is correctly calculated
 
 [0.0.8] ~ 23/06/2016
 - Updated libGDX to 1.9.3
