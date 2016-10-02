@@ -35,12 +35,13 @@ public class MetaFile {
     public static final String META_EXTENSION = "meta";
     private static final String TAG = MetaFile.class.getSimpleName();
 
-    private static final String COMMENT = " !!! WARNING, DO NOT MODIFY OR DELETE !!! \n " +
+    private static final String COMMENT = "# !!! WARNING, DO NOT MODIFY OR DELETE !!! \n " +
             "This file is machine generated. If you delete or modify this, Mundus might not work anymore.\n";
-    private static final String PROP_VERSION = "version";
-    private static final String PROP_UUID = "uuid";
-    private static final String PROP_LAST_MODIFIED = "last_modified";
-    private static final String PROP_TYPE = "type";
+
+    private static final String PROP_VERSION            = "version";
+    private static final String PROP_UUID               = "uuid";
+    private static final String PROP_LAST_MODIFIED      = "last_modified";
+    private static final String PROP_TYPE               = "type";
 
     private int version;
     private AssetType type;
