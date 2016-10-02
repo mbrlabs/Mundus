@@ -13,27 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mbrlabs.mundus.assets;
 
-import com.badlogic.gdx.files.FileHandle;
+package com.mbrlabs.mundus.commons.assets;
 
 /**
  * @author Marcus Brummer
  * @version 01-10-2016
  */
-public class TerraAsset extends Asset {
-
-    public TerraAsset(MetaFile meta, FileHandle assetFile) {
-        super(meta, assetFile);
-    }
-
-    @Override
-    public void load() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
+public enum AssetType {
+    /** Texture type. Can be pretty much any type of image. */
+    TEXTURE,
+    /** 3D file. Can be g3db, g3dbj, dae, obj, fbx. */
+    MODEL,
+    /** Terra file. Contains height data for terrains. */
+    TERRA,
+    /** Material file. Mundus material file contains material information. */
+    MATERIAL
 }

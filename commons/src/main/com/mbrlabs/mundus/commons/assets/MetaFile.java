@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mbrlabs.mundus.assets;
+package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.mbrlabs.mundus.utils.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -56,20 +55,17 @@ public class MetaFile {
         this.props = new Properties();
     }
 
-    public void save() {
+    public void save() throws IOException {
         props.clear();
         props.setProperty(PROP_VERSION, String.valueOf(this.version));
         props.setProperty(PROP_TYPE, this.type.name());
         props.setProperty(PROP_UUID, this.uuid);
         props.setProperty(PROP_LAST_MODIFIED, String.valueOf(this.lastModified.getTime()));
-        try {
-            props.store(new FileOutputStream(file.file()), COMMENT);
-        } catch (IOException e) {
-            Log.exception(TAG, e);
-        }
+
+        props.store(new FileOutputStream(file.file()), COMMENT);
     }
 
-    public boolean load() {
+    public void load() throws MetaFileParseException {
         try {
             props.clear();
             props.load(new FileInputStream(file.file()));
@@ -78,11 +74,9 @@ public class MetaFile {
             this.type = AssetType.valueOf(props.getProperty(PROP_TYPE));
             this.uuid = props.getProperty(PROP_UUID);
             this.lastModified = new Date(Long.valueOf(props.getProperty(PROP_LAST_MODIFIED)));
-            return true;
         } catch (Exception e) {
-            Log.error(TAG, "Error while reading meta file: ", file.path());
-            Log.exception(TAG, e);
-            return false;
+            e.printStackTrace();
+            throw new MetaFileParseException();
         }
     }
 

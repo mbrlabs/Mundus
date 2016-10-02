@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.assets;
+package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
-
-import java.util.UUID;
 
 /**
  * @author Marcus Brummer
@@ -37,6 +35,10 @@ public abstract class Asset implements Disposable {
 
     public MetaFile getMeta() {
         return meta;
+    }
+
+    public FileHandle getFile() {
+        return file;
     }
 
     public abstract void load();

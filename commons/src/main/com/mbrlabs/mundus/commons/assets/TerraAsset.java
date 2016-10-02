@@ -13,35 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mbrlabs.mundus.assets;
+package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.mbrlabs.mundus.commons.utils.G3dUtils;
 
 /**
  * @author Marcus Brummer
  * @version 01-10-2016
  */
-public class ModelAsset extends Asset {
+public class TerraAsset extends Asset {
 
-    private Model model;
-
-    public ModelAsset(MetaFile meta, FileHandle assetFile, Model model) {
+    public TerraAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
-        this.model = model;
     }
 
     @Override
     public void load() {
-        model = G3dUtils.loadWithoutTextures(file);
+
     }
 
     @Override
     public void dispose() {
-        if(model != null) {
-            model.dispose();
-        }
-    }
 
+    }
 }
