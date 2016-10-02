@@ -41,6 +41,8 @@ public class SceneMenu extends Menu implements
         ProjectChangedEvent.ProjectChangedListener,
         SceneAddedEvent.SceneAddedListener {
 
+    private static final String TAG = SceneMenu.class.getSimpleName();
+
     @Inject
     private ProjectManager projectManager;
 
@@ -110,7 +112,7 @@ public class SceneMenu extends Menu implements
     public void onSceneAdded(SceneAddedEvent sceneAddedEvent) {
         String sceneName = sceneAddedEvent.getScene().getName();
         buildMenuItem(sceneName);
-        Log.traceTag("SceneMenu", "New scene [{}] added.", sceneName);
+        Log.trace(TAG, "SceneMenu", "New scene [{}] added.", sceneName);
     }
 
 }

@@ -55,6 +55,8 @@ import java.util.Locale;
  */
 public class DescriptorConverter {
 
+    private final static String TAG = DescriptorConverter.class.getSimpleName();
+
     private static final Vector3 tempVec = new Vector3();
     private static final Quaternion tempQuat = new Quaternion();
 
@@ -245,7 +247,7 @@ public class DescriptorConverter {
         }
 
         if(model == null) {
-            Log.fatal("MModel for MModelInstance not found: {}", descriptor.getModelID());
+            Log.fatal(TAG, "MModel for MModelInstance not found: {}", descriptor.getModelID());
             return null;
         }
 
@@ -279,7 +281,7 @@ public class DescriptorConverter {
         }
 
         if(terrain == null) {
-            Log.fatal("Terrain for TerrainInstance not found");
+            Log.fatal(TAG, "Terrain for TerrainInstance not found");
             return null;
         }
 
@@ -416,7 +418,7 @@ public class DescriptorConverter {
                 return t;
             }
         }
-        Log.fatal("MTexture (detail texture) for Terrain texture not found");
+        Log.fatal(TAG, "MTexture (detail texture) for Terrain texture not found");
         return null;
     }
 

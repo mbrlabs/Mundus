@@ -34,6 +34,8 @@ import com.mbrlabs.mundus.utils.Log;
  */
 public class ProjectContext implements Disposable {
 
+    private static final String TAG = ProjectContext.class.getSimpleName();
+
     public String path;
     public String name;
 
@@ -80,7 +82,7 @@ public class ProjectContext implements Disposable {
 
     @Override
     public void dispose() {
-        Log.debug("Disposing project current {}", path);
+        Log.debug(TAG, "Disposing project current {}", path);
         for(MModel model : models) {
             model.getModel().dispose();
         }

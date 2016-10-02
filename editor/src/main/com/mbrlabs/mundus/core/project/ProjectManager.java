@@ -63,6 +63,8 @@ import java.io.FileNotFoundException;
  */
 public class ProjectManager implements Disposable {
 
+    private static final String TAG = ProjectManager.class.getSimpleName();
+
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
     public static final String PROJECT_ASSETS_DIR           =    "assets/";
@@ -190,7 +192,7 @@ public class ProjectManager implements Disposable {
         for(MTexture tex : context.textures) {
             tex.texture = TextureUtils.loadMipmapTexture(
                     Gdx.files.absolute(FilenameUtils.concat(context.path, tex.getPath())), true);
-            Log.debug("Loaded texture: {}", tex.getPath());
+            Log.debug(TAG, "Loaded texture: {}", tex.getPath());
         }
 
         // load g3db models
@@ -226,7 +228,7 @@ public class ProjectManager implements Disposable {
         // save scene in .mundus file
         kryoManager.saveScene(projectContext, projectContext.currScene);
 
-        Log.debug("Saving currentProject {}", projectContext.name+ " [" + projectContext.path + "]");
+        Log.debug(TAG, "Saving currentProject {}", projectContext.name+ " [" + projectContext.path + "]");
     }
 
     /**
@@ -242,7 +244,7 @@ public class ProjectManager implements Disposable {
             try {
                 return loadProject(lastOpenedProject);
             } catch (FileNotFoundException fnf) {
-                Log.error(fnf.getMessage());
+                Log.error(TAG, fnf.getMessage());
                 fnf.printStackTrace();
                 return null;
             }
@@ -343,7 +345,7 @@ public class ProjectManager implements Disposable {
             Mundus.postEvent(new SceneChangedEvent());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.error(e.getMessage());
+            Log.error(TAG, e.getMessage());
         }
     }
 
@@ -367,7 +369,7 @@ public class ProjectManager implements Disposable {
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
-                    Log.fatal("model for modelInstance not found: {}", modelComponent.getModelInstance().getModel().id);
+                    Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelInstance().getModel().id);
                 }
             } else if(c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent)c).setShader(shaders.terrainShader);
