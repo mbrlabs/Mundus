@@ -24,10 +24,11 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -41,8 +42,8 @@ import com.mbrlabs.mundus.utils.Fa;
 import org.lwjgl.opengl.GL11;
 
 /**
- * @author Marcus Brummer, codenigma
- * @version 10-09-2015
+ * @author Marcus Brummer
+ * @version 26-12-2015
  */
 public class TranslateTool extends TransformTool {
 
