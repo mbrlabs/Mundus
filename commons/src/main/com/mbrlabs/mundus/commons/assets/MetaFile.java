@@ -31,8 +31,10 @@ import java.util.Properties;
  */
 public class MetaFile {
 
-    public static final String META_EXTENSION = "meta";
     private static final String TAG = MetaFile.class.getSimpleName();
+
+    public static final String META_EXTENSION = "meta";
+    public static final int CURRENT_VERSION = 1;
 
     private static final String COMMENT = "# !!! WARNING, DO NOT MODIFY OR DELETE !!! \n " +
             "This file is machine generated. If you delete or modify this, Mundus might not work anymore.\n";

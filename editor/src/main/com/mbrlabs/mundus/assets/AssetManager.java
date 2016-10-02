@@ -19,9 +19,12 @@ package com.mbrlabs.mundus.assets;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.kotcrab.vis.ui.widget.file.FileUtils;
 import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerraAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
@@ -29,8 +32,11 @@ import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.utils.Log;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -44,6 +50,10 @@ public class AssetManager implements Disposable {
 
     private FileHandle rootFolder;
 
+    /**
+     *
+     * @param path
+     */
     public AssetManager(String path) {
         this.assets = new Array<>();
         rootFolder = new FileHandle(path);
@@ -52,6 +62,9 @@ public class AssetManager implements Disposable {
         }
     }
 
+    /**
+     * Loads all imported assets in the project's asset folder.
+     */
     public void loadAssets() {
         // create meta file filter
         FileFilter metaFileFilter = new FileFilter() {
@@ -65,6 +78,81 @@ public class AssetManager implements Disposable {
         for(FileHandle meta : rootFolder.list(metaFileFilter)) {
             loadAsset(new MetaFile(meta));
         }
+    }
+
+    /**
+     *
+     * @param asset
+     * @param clazz
+     * @return
+     */
+    public Asset importAsset(FileHandle asset, Class clazz) {
+
+        // import asset
+        Asset newAsset = null;
+        try {
+            if (clazz == TextureAsset.class) {
+                newAsset = importTextureAsset(asset);
+            } else if (clazz == PixmapTextureAsset.class) {
+                newAsset = importPixmapTextureAsset(asset);
+            } else if (clazz == TerraAsset.class) {
+                newAsset = importTerraAsset(asset);
+            } else if (clazz == ModelAsset.class) {
+                newAsset = importModelAsset(asset);
+            }
+        } catch (IOException ioe) {
+            Log.exception(TAG, ioe);
+            return null;
+        }
+
+        // add to list
+        if(newAsset != null) {
+            assets.add(newAsset);
+            // TODO post event here
+        }
+
+        return newAsset;
+    }
+
+    private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
+        String metaName = assetFile.name() + "." + MetaFile.META_EXTENSION;
+        String metaPath = FilenameUtils.concat(assetFile.path(), metaName);
+        return AssetHelper.createNewMetaFile(new FileHandle(metaPath), type);
+    }
+
+    private FileHandle copyToAssetFolder(FileHandle file) {
+        FileHandle copy = new FileHandle(rootFolder.path());
+        file.copyTo(copy);
+        return copy;
+    }
+
+    private TextureAsset importTextureAsset(FileHandle assetFile) throws IOException {
+        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.TEXTURE);
+        FileHandle importedAssetFile = copyToAssetFolder(assetFile);
+
+        TextureAsset asset = new TextureAsset(meta, importedAssetFile);
+        // TODO parse special texture properties and apply
+        asset.load();
+
+        return asset;
+    }
+
+    private TextureAsset importPixmapTextureAsset(FileHandle assetFile) throws IOException {
+        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.PIXMAP_TEXTURE);
+        // TODO implement
+        return null;
+    }
+
+    private TextureAsset importTerraAsset(FileHandle assetFile) throws IOException {
+        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.TERRA);
+        // TODO implement
+        return null;
+    }
+
+    private TextureAsset importModelAsset(FileHandle assetFile) throws IOException {
+        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.MODEL);
+        // TODO implement
+        return null;
     }
 
     private void loadAsset(MetaFile meta) {
@@ -87,47 +175,54 @@ public class AssetManager implements Disposable {
         }
 
         // load actual asset
+        Asset asset = null;
         switch (meta.getType()) {
             case TEXTURE:
-                loadTextureAsset(meta, assetFile);
+                asset = loadTextureAsset(meta, assetFile);
                 break;
             case PIXMAP_TEXTURE:
-                loadPixmapTextureAsset(meta, assetFile);
+                asset = loadPixmapTextureAsset(meta, assetFile);
                 break;
             case TERRA:
-                loadTerraAsset(meta, assetFile);
+                asset = loadTerraAsset(meta, assetFile);
                 break;
             default:
                 Log.warn(TAG, "Assets of type {} can't be loaded right now" , meta.getType());
                 return;
         }
+
+        // add to list
+        if(asset != null) {
+            assets.add(asset);
+        }
     }
 
-    private void loadTextureAsset(MetaFile meta, FileHandle assetFile) {
+    private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {
         TextureAsset asset = new TextureAsset(meta, assetFile);
         asset.setTileable(true);
         asset.generateMipmaps(true);
         asset.load();
-        assets.add(asset);
-
         Log.debug(TAG, "Loaded texture asset: {}" , asset.getFile().path());
+
+        return asset;
     }
 
-    private void loadTerraAsset(MetaFile meta, FileHandle assetFile) {
+    private TerraAsset loadTerraAsset(MetaFile meta, FileHandle assetFile) {
         TerraAsset asset = new TerraAsset(meta, assetFile);
         asset.load();
-        assets.add(asset);
-
         Log.debug(TAG, "Loaded terra asset: {}" , asset.getFile().path());
+
+        return asset;
     }
 
-    private void loadPixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
+    private PixmapTextureAsset loadPixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
         PixmapTextureAsset asset = new PixmapTextureAsset(meta, assetFile);
         asset.load();
-        assets.add(asset);
-
         Log.debug(TAG, "Loaded pixmap texture asset: {}" , asset.getFile().path());
+
+        return asset;
     }
+
     /**
      *
      * @param importedModel
