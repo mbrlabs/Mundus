@@ -19,13 +19,17 @@ package com.mbrlabs.mundus;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
+import com.mbrlabs.mundus.commons.assets.AssetType;
+import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -119,6 +123,8 @@ public class Editor implements ApplicationListener,
         if(context == null) {
             context = createDefaultProject();
         }
+
+        context.assetManager.importAsset(new FileHandle("/home/marcus/Desktop/box.jpg"), TextureAsset.class);
 
         projectManager.changeProject(context);
         compass = new Compass(projectContext.currScene.cam);

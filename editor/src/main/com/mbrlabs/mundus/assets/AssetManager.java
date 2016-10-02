@@ -116,12 +116,12 @@ public class AssetManager implements Disposable {
 
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
         String metaName = assetFile.name() + "." + MetaFile.META_EXTENSION;
-        String metaPath = FilenameUtils.concat(assetFile.path(), metaName);
+        String metaPath = FilenameUtils.concat(rootFolder.path(), metaName);
         return AssetHelper.createNewMetaFile(new FileHandle(metaPath), type);
     }
 
     private FileHandle copyToAssetFolder(FileHandle file) {
-        FileHandle copy = new FileHandle(rootFolder.path());
+        FileHandle copy = new FileHandle(FilenameUtils.concat(rootFolder.path(), file.name()));
         file.copyTo(copy);
         return copy;
     }
