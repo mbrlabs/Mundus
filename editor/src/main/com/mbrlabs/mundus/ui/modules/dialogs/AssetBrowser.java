@@ -16,20 +16,24 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
-import com.mbrlabs.mundus.events.TextureImportEvent;
 
 /**
  * @author Marcus Brummer
  * @version 02-10-2016
  */
-public class AssetBrowser extends BaseDialog implements TextureImportEvent.TextureImportListener, ProjectChangedEvent.ProjectChangedListener {
+public class AssetBrowser extends BaseDialog implements
+        AssetImportEvent.AssetImportListener,
+        ProjectChangedEvent.ProjectChangedListener {
 
     private static final String TAG = AssetBrowser.class.getSimpleName();
     private static final String TITLE = "Asset Browser";
 
     public AssetBrowser() {
         super(TITLE);
+        Mundus.registerEventListener(this);
     }
 
     @Override
@@ -38,7 +42,7 @@ public class AssetBrowser extends BaseDialog implements TextureImportEvent.Textu
     }
 
     @Override
-    public void onTextureImported(TextureImportEvent importEvent) {
+    public void onAssetImported(AssetImportEvent event) {
 
     }
 

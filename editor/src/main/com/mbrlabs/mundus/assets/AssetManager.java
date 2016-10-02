@@ -30,6 +30,8 @@ import com.mbrlabs.mundus.commons.assets.TerraAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FilenameUtils;
@@ -108,7 +110,7 @@ public class AssetManager implements Disposable {
         // add to list
         if(newAsset != null) {
             assets.add(newAsset);
-            // TODO post event here
+            Mundus.postEvent(new AssetImportEvent(newAsset));
         }
 
         return newAsset;
