@@ -196,7 +196,7 @@ public class Outline extends VisTable implements
                     // add to new parent
                     if (newParent == null) {
                         // recalculate position for root layer
-                        Vector3 newPos = new Vector3();
+                        Vector3 newPos;
                         Vector3 draggedPos = new Vector3();
                         draggedGo.getPosition(draggedPos);
                         //if moved from old parent

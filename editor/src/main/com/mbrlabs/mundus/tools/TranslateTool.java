@@ -197,10 +197,6 @@ public class TranslateTool extends TransformTool {
 //            }
 
             go.translate(vec);
-            // translate child go
-//            if(go.getChildren() != null) {
-//                translateChildren(go.getChildren(), vec);
-//            }
 
             if(modified) {
                 gameObjectModifiedEvent.setGameObject(projectManager.current().currScene.currentSelection);
@@ -208,14 +204,6 @@ public class TranslateTool extends TransformTool {
             }
 
             lastPos.set(rayEnd);
-        }
-    }
-    
-    private void translateChildren(Array<GameObject> children, Vector3 translateValue) {
-        for(GameObject child : children) {
-            child.translate(translateValue);
-            if(child.getChildren() != null)
-                translateChildren(child.getChildren(), translateValue);
         }
     }
 
