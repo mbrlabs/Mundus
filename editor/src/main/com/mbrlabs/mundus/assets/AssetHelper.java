@@ -17,12 +17,24 @@
 package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
+import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
+import com.mbrlabs.mundus.commons.assets.TerraAsset;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @author Marcus Brummer
@@ -47,6 +59,60 @@ public class AssetHelper {
         meta.save();
 
         return meta;
+    }
+
+    public static TerraAsset createTerraAsset(FileHandle assetRoot, int vertexResolution) throws IOException {
+        String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
+        String metaFilename = terraFilename + ".meta";
+
+        // create meta file
+        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.TERRA);
+
+        // create terra file
+        String terraPath = FilenameUtils.concat(assetRoot.path(), terraFilename);
+        File terraFile = new File(terraPath);
+        FileUtils.touch(terraFile);
+
+        // create initial height data
+        float[] data = new float[vertexResolution * vertexResolution];
+        for(int i = 0; i < data.length; i++) {
+            data[i] = 0;
+        }
+
+        // write terra file
+        DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terraFile))));
+        for(float f : data) {
+            outputStream.writeFloat(f);
+        }
+        outputStream.flush();
+        outputStream.close();
+
+        // load & return asset
+        TerraAsset terra = new TerraAsset(meta, new FileHandle(terraFile));
+        terra.load();
+        return terra;
+    }
+
+    public static PixmapTextureAsset createPixmapTextureAsset(FileHandle assetRoot, int size) throws IOException {
+        String pixmapFilename = "pixmap_" + UUID.randomUUID().toString() + ".png";
+        String metaFilename = pixmapFilename + ".meta";
+
+        // create meta file
+        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.PIXMAP_TEXTURE);
+
+        // create pixmap
+        String pixmapPath = FilenameUtils.concat(assetRoot.path(), pixmapFilename);
+        Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
+        FileHandle pixmapAssetFile = new FileHandle(pixmapPath);
+        PixmapIO.writePNG(pixmapAssetFile, pixmap);
+        pixmap.dispose();
+
+        // load & return asset
+        PixmapTextureAsset asset = new PixmapTextureAsset(meta, pixmapAssetFile);
+        asset.load();
+        return asset;
     }
 
 }

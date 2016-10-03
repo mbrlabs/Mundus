@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
+import com.mbrlabs.mundus.assets.AssetHelper;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Inject;
@@ -50,6 +51,8 @@ import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -134,6 +137,18 @@ public class Editor implements ApplicationListener,
 
 //        for(FileHandle file : new FileHandle("/home/marcus/Desktop/testAssets/").list()) {
 //            context.assetManager.importAsset(file, TextureAsset.class);
+//        }
+
+//        try {
+//            AssetHelper.createTerraAsset(new FileHandle("/home/marcus/MundusProjects/Default Project/assets"), 180);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        try {
+//            AssetHelper.createPixmapTextureAsset(new FileHandle("/home/marcus/MundusProjects/Default Project/assets"), 512);
+//        } catch (IOException e) {
+//            e.printStackTrace();
 //        }
     }
 
