@@ -45,6 +45,9 @@ import com.badlogic.gdx.utils.JsonValue;
 /**
  * This is a modified version of the libGDX MG3dModelLoader.
  *
+ * It ignores all textures, set in the model. This is because, one should be able to assign
+ * materials (textures, colors) from the editor.
+ *
  * @author Marcus Brummer
  * @version 04-10-2016
  */
@@ -208,32 +211,32 @@ public class MG3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
                 jsonMaterial.opacity = material.getFloat("opacity", 1.0f);
 
                 // Read textures
-                JsonValue textures = material.get("textures");
-                if (textures != null) {
-                    for (JsonValue texture = textures.child; texture != null; texture = texture.next) {
-                        ModelTexture jsonTexture = new ModelTexture();
-
-                        String textureId = texture.getString("id", null);
-                        if (textureId == null) throw new GdxRuntimeException("Texture has no id.");
-                        jsonTexture.id = textureId;
-
-                        String fileName = texture.getString("filename", null);
-                        if (fileName == null) throw new GdxRuntimeException("Texture needs filename.");
-                        jsonTexture.fileName = materialDir + (materialDir.length() == 0 || materialDir.endsWith("/") ? "" : "/")
-                                + fileName;
-
-                        jsonTexture.uvTranslation = readVector2(texture.get("uvTranslation"), 0f, 0f);
-                        jsonTexture.uvScaling = readVector2(texture.get("uvScaling"), 1f, 1f);
-
-                        String textureType = texture.getString("type", null);
-                        if (textureType == null) throw new GdxRuntimeException("Texture needs type.");
-
-                        jsonTexture.usage = parseTextureUsage(textureType);
-
-                        if (jsonMaterial.textures == null) jsonMaterial.textures = new Array<ModelTexture>();
-                        jsonMaterial.textures.add(jsonTexture);
-                    }
-                }
+//                JsonValue textures = material.get("textures");
+//                if (textures != null) {
+//                    for (JsonValue texture = textures.child; texture != null; texture = texture.next) {
+//                        ModelTexture jsonTexture = new ModelTexture();
+//
+//                        String textureId = texture.getString("id", null);
+//                        if (textureId == null) throw new GdxRuntimeException("Texture has no id.");
+//                        jsonTexture.id = textureId;
+//
+//                        String fileName = texture.getString("filename", null);
+//                        if (fileName == null) throw new GdxRuntimeException("Texture needs filename.");
+//                        jsonTexture.fileName = materialDir + (materialDir.length() == 0 || materialDir.endsWith("/") ? "" : "/")
+//                                + fileName;
+//
+//                        jsonTexture.uvTranslation = readVector2(texture.get("uvTranslation"), 0f, 0f);
+//                        jsonTexture.uvScaling = readVector2(texture.get("uvScaling"), 1f, 1f);
+//
+//                        String textureType = texture.getString("type", null);
+//                        if (textureType == null) throw new GdxRuntimeException("Texture needs type.");
+//
+//                        jsonTexture.usage = parseTextureUsage(textureType);
+//
+//                        if (jsonMaterial.textures == null) jsonMaterial.textures = new Array<ModelTexture>();
+//                        jsonMaterial.textures.add(jsonTexture);
+//                    }
+//                }
 
                 model.materials.add(jsonMaterial);
             }

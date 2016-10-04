@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -40,7 +41,10 @@ public class EntityShader extends BaseShader {
     private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/entity.vert.glsl";
     private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/entity.frag.glsl";
 
-    protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
+    // ============================ MATERIALS ============================
+    protected final int UNIFORM_MATERIAL_DIFFUSE_TEXTURE = register(new Uniform("u_diffuseTexture"));
+    protected final int UNIFORM_MATERIAL_DIFFUSE_COLOR = register(new Uniform("u_diffuseColor"));
+    protected final int UNIFORM_MATERIAL_DIFFUSE_USE_TEXTURE = register(new Uniform("u_diffuseUseTexture"));
 
     // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
@@ -104,9 +108,15 @@ public class EntityShader extends BaseShader {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
         // texture uniform
-        TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
-        if(textureAttribute != null) {
-            set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
+        TextureAttribute diffuseTexture = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
+        ColorAttribute diffuseColor = ((ColorAttribute)(renderable.material.get(ColorAttribute.Diffuse)));
+
+        if(diffuseTexture != null) {
+            set(UNIFORM_MATERIAL_DIFFUSE_TEXTURE, diffuseTexture.textureDescription.texture);
+            set(UNIFORM_MATERIAL_DIFFUSE_USE_TEXTURE, 1);
+        } else {
+            set(UNIFORM_MATERIAL_DIFFUSE_COLOR, diffuseColor.color);
+            set(UNIFORM_MATERIAL_DIFFUSE_USE_TEXTURE, 0);
         }
 
         // Fog
