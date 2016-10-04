@@ -49,6 +49,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.Registry;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
@@ -186,6 +187,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                             // TODO use assetManager.importAsset() if implemented for models
                             ModelAsset asset = AssetHelper.createModelAsset(new FileHandle(assetRoot), importedModel);
                             assetManager.getAssets().add(asset);
+                            Mundus.postEvent(new AssetImportEvent(asset));
                             Ui.getInstance().getToaster().success("Mesh imported");
                         } catch (IOException e) {
                             e.printStackTrace();

@@ -133,7 +133,7 @@ public class AssetHelper {
         ModelAsset asset = new ModelAsset(meta, assetFile);
         asset.load();
 
-        return null;
+        return asset;
     }
 
 }

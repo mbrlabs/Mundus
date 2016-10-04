@@ -67,7 +67,6 @@ public class ProjectManager implements Disposable {
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
     public static final String PROJECT_ASSETS_DIR           =    "assets/";
-    public static final String PROJECT_MODEL_DIR            =    PROJECT_ASSETS_DIR + "models/";
     public static final String PROJECT_TERRAIN_DIR          =    PROJECT_ASSETS_DIR + "terrains/";
 
     public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "textures/";
@@ -121,7 +120,6 @@ public class ProjectManager implements Disposable {
         ProjectRef ref = registry.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
-        new File(path, PROJECT_MODEL_DIR).mkdirs();
         new File(path, PROJECT_TERRAIN_DIR).mkdirs();
         new File(path, PROJECT_TEXTURE_DIR).mkdirs();
         new File(path, PROJECT_SCENES_DIR).mkdirs();

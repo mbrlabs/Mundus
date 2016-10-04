@@ -32,6 +32,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 
@@ -39,7 +40,7 @@ import com.mbrlabs.mundus.tools.ToolManager;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener {
+public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener, AssetImportEvent.AssetImportListener {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
@@ -109,6 +110,11 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
+        reloadModels();
+    }
+
+    @Override
+    public void onAssetImported(AssetImportEvent event) {
         reloadModels();
     }
 
