@@ -24,6 +24,7 @@ import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerraAsset;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -116,7 +117,22 @@ public class AssetHelper {
         return asset;
     }
 
-    public static ModelAsset createModelAsset(ModelImporter.ImportedModel model) {
+    public static ModelAsset createModelAsset(FileHandle assetRoot, ModelImporter.ImportedModel model) throws IOException {
+        String modelFilename = model.g3dbFile.name();
+        String metaFilename = modelFilename + ".meta";
+
+        // create meta file
+        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.MODEL);
+
+        // copy model file
+        FileHandle assetFile = new FileHandle(FilenameUtils.concat(assetRoot.path(), metaFilename));
+        model.g3dbFile.copyTo(assetFile);
+
+        // load & return asset
+        ModelAsset asset = new ModelAsset(meta, assetFile);
+        asset.load();
+
         return null;
     }
 

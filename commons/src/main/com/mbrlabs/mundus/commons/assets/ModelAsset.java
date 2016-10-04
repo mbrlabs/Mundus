@@ -17,6 +17,8 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.utils.UBJsonReader;
+import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.utils.G3dUtils;
 
 /**
@@ -27,14 +29,15 @@ public class ModelAsset extends Asset {
 
     private Model model;
 
-    public ModelAsset(MetaFile meta, FileHandle assetFile, Model model) {
+    public ModelAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
-        this.model = model;
     }
 
     @Override
     public void load() {
-        model = G3dUtils.loadWithoutTextures(file);
+        // TODO don't create a new loader each time
+        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
+        model = loader.loadModel(file);
     }
 
     @Override
