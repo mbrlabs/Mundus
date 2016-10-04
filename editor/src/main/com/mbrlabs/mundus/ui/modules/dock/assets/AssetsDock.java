@@ -25,12 +25,13 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 
@@ -38,7 +39,7 @@ import com.mbrlabs.mundus.tools.ToolManager;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener, ModelImportEvent.ModelImportListener {
+public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
@@ -47,7 +48,7 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
     @Inject
     private ToolManager toolManager;
     @Inject
-    ProjectManager projectManager;
+    private ProjectManager projectManager;
 
     public AssetsDock() {
         super(false, false);
@@ -81,9 +82,11 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
     private void reloadModels() {
         filesView.clearChildren();
         ProjectContext projectContext = projectManager.current();
-        for(MModel model : projectContext.models) {
-            AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(model);
-            filesView.addActor(assetItem);
+        for(Asset asset : projectContext.assetManager.getAssets()) {
+            if(asset instanceof ModelAsset) {
+                AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(asset);
+                filesView.addActor(assetItem);
+            }
         }
     }
 
@@ -109,12 +112,6 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
         reloadModels();
     }
 
-    @Override
-    public void onModelImported(ModelImportEvent importEvent) {
-        AssetItem assetItem = new AssetItem(importEvent.getModel());
-        filesView.addActor(assetItem);
-    }
-
     /**
      * Asset item in the grid.
      */
@@ -123,13 +120,12 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
         private VisLabel nameLabel;
         private MModel model;
 
-        public AssetItem(MModel mModel) {
+        public AssetItem(Asset asset) {
             super();
             setBackground("menu-bg");
             align(Align.center);
-            nameLabel = new VisLabel(mModel.name, "small");
+            nameLabel = new VisLabel(asset.toString(), "small");
             nameLabel.setWrap(true);
-            model = mModel;
             add(nameLabel).fill().expand().row();
 
             // active ModelPlacementTool when selecting this model

@@ -40,6 +40,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.assets.AssetHelper;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.assets.ModelImporter;
@@ -47,7 +48,6 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.Registry;
-import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
@@ -180,7 +180,8 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                         // create model
                         importedModel.name = name.getText();
                         MModel mModel = projectManager.current().assetManager.importG3dbModel(importedModel);
-                        Mundus.postEvent(new ModelImportEvent(mModel));
+                        // Mundus.postEvent(new ModelImportEvent(mModel));
+                        // TODO create asset / post import event
                         dispose();
                         close();
                         Ui.getInstance().getToaster().success("Mesh imported");

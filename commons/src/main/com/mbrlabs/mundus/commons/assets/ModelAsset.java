@@ -19,7 +19,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
-import com.mbrlabs.mundus.commons.utils.G3dUtils;
 
 /**
  * @author Marcus Brummer
@@ -38,6 +37,7 @@ public class ModelAsset extends Asset {
         // TODO don't create a new loader each time
         MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
         model = loader.loadModel(file);
+        // TODO assign material values from meta file
     }
 
     @Override
