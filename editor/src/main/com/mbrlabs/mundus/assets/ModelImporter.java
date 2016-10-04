@@ -34,7 +34,6 @@ public class ModelImporter implements SettingsChangedEvent.SettingsChangedListen
     public static class ImportedModel {
         public String name;
         public FileHandle g3dbFile;
-        public FileHandle textureFile;
         public FbxConv.FbxConvResult convResult;
     }
 
@@ -52,25 +51,13 @@ public class ModelImporter implements SettingsChangedEvent.SettingsChangedListen
         fbxConv.setFbxBinary(settingsChangedEvent.getSettings().getFbxConvBinary());
     }
 
-    public ImportedModel importToTempFolder(FileHandle modelFile, FileHandle textureFile) {
+    public ImportedModel importToTempFolder(FileHandle modelFile) {
         if(modelFile == null || !modelFile.exists()) {
-            return null;
-        }
-        if(textureFile == null || !textureFile.exists()) {
             return null;
         }
 
         ImportedModel imported = new ImportedModel();
         FileHandle tempModelCache = registry.createTempFolder();
-
-        // copy texture file to temp folder
-        textureFile.copyTo(tempModelCache);
-        imported.textureFile = Gdx.files.absolute(FilenameUtils.concat(tempModelCache.path(), textureFile.name()));
-
-        // check if copied texture file exists
-        if(!imported.textureFile.exists()) {
-            return null;
-        }
 
         // copy model file
         modelFile.copyTo(tempModelCache);

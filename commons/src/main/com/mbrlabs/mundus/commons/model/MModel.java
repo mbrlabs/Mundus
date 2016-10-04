@@ -27,7 +27,6 @@ public class MModel {
     public long id;
     public String name;
     public String g3dbPath;
-    public String texturePath;
 
     private Model model;
 

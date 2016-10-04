@@ -42,7 +42,6 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.model.MModel;
-import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -97,7 +96,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
         private VisTextField name = new VisTextField();
         private VisTextButton importBtn = new VisTextButton("IMPORT");
         private FileChooserField modelInput = new FileChooserField(300);
-        private FileChooserField textureInput = new FileChooserField(300);
 
         // preview model + instance
         private Model previewModel;
@@ -134,7 +132,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             root.padTop(6).padRight(6).padBottom(22);
             add(root);
 
-
             VisTable inputTable = new VisTable();
             renderWidget = new RenderWidget(cam);
             renderWidget.setRenderer(new RenderWidget.Renderer() {
@@ -156,44 +153,26 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             inputTable.left().top();
             inputTable.add(new VisLabel("Model File")).left().padBottom(5).row();
             inputTable.add(modelInput).fillX().expandX().padBottom(10).row();
-            inputTable.add(new VisLabel("Texture File")).left().padBottom(5).row();
-            inputTable.add(textureInput).fillX().expandX().row();
             inputTable.add(new VisLabel("Name")).left().padBottom(5).row();
             inputTable.add(name).fillX().expandX().padBottom(10).row();
             inputTable.add(importBtn).fillX().expand().bottom();
 
             modelInput.setEditable(false);
-            textureInput.setEditable(false);
         }
 
         private void setupListener() {
-
-            // texture chooser
-            textureInput.setCallback(new FileChooserField.FileSelected() {
-                @Override
-                public void selected(FileHandle fileHandle) {
-                    if(fileHandle.exists()) {
-                        if(modelInput.getFile() != null && modelInput.getFile().exists()) {
-                            loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
-                        }
-                    }
-                }
-            });
 
             // model chooser
             modelInput.setCallback(new FileChooserField.FileSelected() {
                 @Override
                 public void selected(FileHandle fileHandle) {
                     if(fileHandle.exists()) {
-                        if(textureInput.getFile() != null && textureInput.getFile().exists()) {
-                            loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
-                        }
+                        loadAndShowPreview(modelInput.getFile());
                     }
                 }
             });
 
             // import btn
-            // TODO import again
             importBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -212,8 +191,8 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             });
         }
 
-        private void loadAndShowPreview(FileHandle model, FileHandle texture) {
-            this.importedModel = modelImporter.importToTempFolder(model, texture);
+        private void loadAndShowPreview(FileHandle model) {
+            this.importedModel = modelImporter.importToTempFolder(model);
 
             if(importedModel == null) {
                 if(FileFormatUtils.isCollada(model) || FileFormatUtils.isFBX(model) || FileFormatUtils.isWavefont(model)) {
@@ -257,7 +236,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                 previewInstance = null;
             }
             modelInput.clear();
-            textureInput.clear();
         }
     }
 

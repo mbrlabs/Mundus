@@ -171,7 +171,6 @@ public class RuntimeExporter {
         dto.setId(model.id);
         dto.setName(model.name);
         dto.setG3db(model.g3dbPath);
-        dto.setTex(model.texturePath);
 
         return dto;
     }

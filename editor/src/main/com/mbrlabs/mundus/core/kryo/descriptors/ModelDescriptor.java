@@ -31,6 +31,7 @@ public class ModelDescriptor {
     @Tag(2)
     private String g3dbPath;
     @Tag(3)
+    @Deprecated
     private String texturePath;
 
     public long getId() {
@@ -55,14 +56,6 @@ public class ModelDescriptor {
 
     public void setG3dbPath(String g3dbPath) {
         this.g3dbPath = g3dbPath;
-    }
-
-    public String getTexturePath() {
-        return texturePath;
-    }
-
-    public void setTexturePath(String texturePath) {
-        this.texturePath = texturePath;
     }
 
 }

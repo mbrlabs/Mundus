@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerraAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
+import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.utils.G3dUtils;
@@ -250,19 +251,12 @@ public class AssetManager implements Disposable {
         String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
 
         String g3dbFilename = importedModel.name + ".g3db";
-        String textureFilename = importedModel.textureFile.name();
-
         FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
-        FileHandle absoluteTextureImportPath = Gdx.files.absolute(absoluteImportFolder + textureFilename);
-
         importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
-        importedModel.textureFile.copyTo(absoluteTextureImportPath);
 
         // load model
-//        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
-//        Model model = loader.loadModel(absoluteG3dbImportPath);
-
-        Model model = G3dUtils.loadWithoutTextures(absoluteG3dbImportPath);
+        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
+        Model model = loader.loadModel(absoluteG3dbImportPath);
 
         // create model
         MModel mModel = new MModel();
@@ -270,7 +264,6 @@ public class AssetManager implements Disposable {
         mModel.name = importedModel.name;
         mModel.id = id;
         mModel.g3dbPath = relativeImportFolder + g3dbFilename;
-        mModel.texturePath = relativeImportFolder + textureFilename;
         projectManager.current().models.add(mModel);
 
         // save whole project

@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerraAsset;
 
@@ -113,6 +114,10 @@ public class AssetHelper {
         PixmapTextureAsset asset = new PixmapTextureAsset(meta, pixmapAssetFile);
         asset.load();
         return asset;
+    }
+
+    public static ModelAsset createModelAsset(ModelImporter.ImportedModel model) {
+        return null;
     }
 
 }
