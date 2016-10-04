@@ -16,6 +16,7 @@
 package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,13 +45,21 @@ public class MetaFile {
     private static final String PROP_LAST_MODIFIED      = "last_modified";
     private static final String PROP_TYPE               = "type";
 
+    private static final String PROP_MATERIAL_DIFFUSE_COLOR         = "mat.diffuse.color";
+    private static final String PROP_MATERIAL_DIFFUSE_TEXTURE       = "mat.diffuse.texture";
+
+    private FileHandle file;
+    private Properties props;
+
+    // general stuff
     private int version;
     private AssetType type;
     private String uuid;
     private Date lastModified;
 
-    private FileHandle file;
-    private Properties props;
+    // model specific
+    private Color diffuseColor = null;
+    private String diffuseTexture = null;
 
     public MetaFile(FileHandle file) {
         this.file = file;
@@ -64,6 +73,16 @@ public class MetaFile {
         props.setProperty(PROP_UUID, this.uuid);
         props.setProperty(PROP_LAST_MODIFIED, String.valueOf(this.lastModified.getTime()));
 
+        // model specific
+        if(type == AssetType.MODEL) {
+            if(diffuseColor != null) {
+                props.setProperty(PROP_MATERIAL_DIFFUSE_COLOR, diffuseColor.toString());
+            }
+            if(diffuseTexture != null) {
+                props.setProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, diffuseTexture);
+            }
+        }
+
         props.store(new FileOutputStream(file.file()), COMMENT);
     }
 
@@ -76,6 +95,16 @@ public class MetaFile {
             this.type = AssetType.valueOf(props.getProperty(PROP_TYPE));
             this.uuid = props.getProperty(PROP_UUID);
             this.lastModified = new Date(Long.valueOf(props.getProperty(PROP_LAST_MODIFIED)));
+
+            // model specific
+            if(type == AssetType.MODEL) {
+                String color = props.getProperty(PROP_MATERIAL_DIFFUSE_COLOR, null);
+                if(color != null) {
+                    this.diffuseColor = Color.valueOf(color);
+                }
+                this.diffuseTexture = props.getProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, null);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new MetaFileParseException();
