@@ -130,7 +130,7 @@ public class ScaleTool extends TransformTool {
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.setColor(COLOR_X);
-                    shapeRenderer.box(pivot.x, pivot.y, pivot.z, 5, 5, 5);
+                    shapeRenderer.box(pivot.x, pivot.y, 0, 10, 10, 10);
                     shapeRenderer.end();
                     break;
                 case TRANSFORM_Y : 
@@ -139,7 +139,7 @@ public class ScaleTool extends TransformTool {
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.setColor(COLOR_Y);
-                    shapeRenderer.box(pivot.x, pivot.y, pivot.z, 5, 5, 5);
+                    shapeRenderer.box(pivot.x, pivot.y, 0, 10, 10, 10);
                     shapeRenderer.end();
                     break;
                 case TRANSFORM_Z : 
@@ -148,7 +148,7 @@ public class ScaleTool extends TransformTool {
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.setColor(COLOR_Z);
-                    shapeRenderer.box(pivot.x, pivot.y, pivot.z, 5, 5, 5);
+                    shapeRenderer.box(pivot.x, pivot.y, 0, 10, 10, 10);
                     shapeRenderer.end();
                     break;
                 case TRANSFORM_XYZ : 
@@ -157,7 +157,7 @@ public class ScaleTool extends TransformTool {
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.setColor(COLOR_XYZ);
-                    shapeRenderer.box(pivot.x, pivot.y, pivot.z, 5, 5, 5);
+                    shapeRenderer.box(pivot.x, pivot.y, 0, 10, 10, 10);
                     shapeRenderer.end();
                     break;
                 default:
