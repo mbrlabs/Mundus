@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.ui.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -84,6 +85,15 @@ public class ColorPickerField extends VisTable {
         add(new VisLabel(label)).fillX().expandX();
         add(textField).padLeft(5).padRight(5).fillX().expandX();
         add(cpBtn).fillX().expandX().row();
+    }
+
+    public void setDisabled(boolean disable) {
+        cpBtn.setDisabled(disable);
+        if(disable) {
+            cpBtn.setTouchable(Touchable.disabled);
+        } else {
+            cpBtn.setTouchable(Touchable.enabled);
+        }
     }
 
     private void setupListeners() {
