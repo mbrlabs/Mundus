@@ -71,16 +71,15 @@ public class KryoManager {
 
         // basic building blocks
         kryo.register(TerrainDescriptor.class, 8);
-        kryo.register(ModelDescriptor.class, 9);
-        kryo.register(TextureDescriptor.class, 10);
-        kryo.register(FogDescriptor.class, 11);
-        kryo.register(GameObjectDescriptor.class, 12);
-        kryo.register(BaseLightDescriptor.class, 13);
+        kryo.register(TextureDescriptor.class, 9);
+        kryo.register(FogDescriptor.class, 10);
+        kryo.register(GameObjectDescriptor.class, 11);
+        kryo.register(BaseLightDescriptor.class, 12);
 
         // components
-        kryo.register(ModelComponentDescriptor.class, 14);
-        kryo.register(TerrainComponentDescriptor.class, 15);
-        kryo.register(TerrainTextureDescriptor.class, 16);
+        kryo.register(ModelComponentDescriptor.class, 13);
+        kryo.register(TerrainComponentDescriptor.class, 14);
+        kryo.register(TerrainTextureDescriptor.class, 15);
     }
 
     /**

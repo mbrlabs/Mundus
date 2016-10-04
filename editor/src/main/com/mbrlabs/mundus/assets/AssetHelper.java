@@ -126,7 +126,7 @@ public class AssetHelper {
         MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.MODEL);
 
         // copy model file
-        FileHandle assetFile = new FileHandle(FilenameUtils.concat(assetRoot.path(), metaFilename));
+        FileHandle assetFile = new FileHandle(FilenameUtils.concat(assetRoot.path(), modelFilename));
         model.g3dbFile.copyTo(assetFile);
 
         // load & return asset

@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.commons.model;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 
 /**
  * @author Marcus Brummer
@@ -24,28 +25,28 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
  */
 public class MModelInstance {
 
-    private MModel model;
+    private ModelAsset model;
     public ModelInstance modelInstance = null;
 
-    public MModelInstance(MModel model) {
+    public MModelInstance(ModelAsset model) {
         this.model = model;
         if(model.getModel() != null) {
             modelInstance = new ModelInstance(model.getModel());
         }
     }
 
-    public void replaceModel(MModel model) {
+    public void replaceModel(ModelAsset model) {
         this.model = model;
         ModelInstance mi = new ModelInstance(model.getModel());
         mi.transform  = modelInstance.transform;
         modelInstance = mi;
     }
 
-    public MModel getModel() {
+    public ModelAsset getModel() {
         return model;
     }
 
-    public void setModel(MModel model) {
+    public void setModel(ModelAsset model) {
         this.model = model;
     }
 

@@ -16,12 +16,9 @@
 
 package com.mbrlabs.mundus.assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
@@ -30,8 +27,6 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerraAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
-import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
-import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -128,6 +123,17 @@ public class AssetManager implements Disposable {
         return assets;
     }
 
+    public Array<ModelAsset> getModelAssets() {
+        Array<ModelAsset> models = new Array<>();
+        for(Asset asset : assets) {
+            if(asset instanceof ModelAsset) {
+                models.add((ModelAsset) asset);
+            }
+        }
+
+        return models;
+    }
+
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
         String metaName = assetFile.name() + "." + MetaFile.META_EXTENSION;
         String metaPath = FilenameUtils.concat(rootFolder.path(), metaName);
@@ -200,6 +206,9 @@ public class AssetManager implements Disposable {
             case TERRA:
                 asset = loadTerraAsset(meta, assetFile);
                 break;
+            case MODEL:
+                asset = loadModelAsset(meta, assetFile);
+                break;
             default:
                 Log.warn(TAG, "Assets of type {} can't be loaded right now" , meta.getType());
                 return;
@@ -221,6 +230,8 @@ public class AssetManager implements Disposable {
         return asset;
     }
 
+
+
     private TerraAsset loadTerraAsset(MetaFile meta, FileHandle assetFile) {
         TerraAsset asset = new TerraAsset(meta, assetFile);
         asset.load();
@@ -237,37 +248,45 @@ public class AssetManager implements Disposable {
         return asset;
     }
 
+    private ModelAsset loadModelAsset(MetaFile meta, FileHandle assetFile) {
+        ModelAsset asset = new ModelAsset(meta, assetFile);
+        asset.load();
+        Log.debug(TAG, "Loaded model asset: {}" , asset.getFile().path());
+
+        return asset;
+    }
+
     /**
      *
      * @param importedModel
      * @return
      */
-    public MModel importG3dbModel(ModelImporter.ImportedModel importedModel) {
-        long id = projectManager.current().obtainID();
+    public ModelAsset importG3dbModel(ModelImporter.ImportedModel importedModel) {
+//        long id = projectManager.current().obtainID();
+//
+//        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
+//        String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
+//
+//        String g3dbFilename = importedModel.name + ".g3db";
+//        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
+//        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
+//
+//        // load model
+//        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
+//        Model model = loader.loadModel(absoluteG3dbImportPath);
+//
+//        // create model
+//        MModel mModel = new MModel();
+//        mModel.setModel(model);
+//        mModel.name = importedModel.name;
+//        mModel.id = id;
+//        mModel.g3dbPath = relativeImportFolder + g3dbFilename;
+//        projectManager.current().models.add(mModel);
+//
+//        // save whole project
+//        projectManager.saveCurrentProject();
 
-        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
-        String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
-
-        String g3dbFilename = importedModel.name + ".g3db";
-        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
-        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
-
-        // load model
-        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
-        Model model = loader.loadModel(absoluteG3dbImportPath);
-
-        // create model
-        MModel mModel = new MModel();
-        mModel.setModel(model);
-        mModel.name = importedModel.name;
-        mModel.id = id;
-        mModel.g3dbPath = relativeImportFolder + g3dbFilename;
-        projectManager.current().models.add(mModel);
-
-        // save whole project
-        projectManager.saveCurrentProject();
-
-        return mModel;
+        return null;
     }
 
     /**

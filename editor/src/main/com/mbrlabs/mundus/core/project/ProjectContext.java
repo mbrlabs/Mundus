@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.core.project;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.assets.AssetManager;
-import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.EditorScene;
@@ -45,7 +44,6 @@ public class ProjectContext implements Disposable {
 
     public AssetManager assetManager;
 
-    public Array<MModel> models;
     public Array<Terrain> terrains;
     public Array<MTexture> textures;
 
@@ -55,7 +53,6 @@ public class ProjectContext implements Disposable {
     public String activeSceneName;
 
     public ProjectContext(int idProvider) {
-        models = new Array<>();
         textures = new Array<>();
         scenes = new Array<>();
         currScene = new EditorScene();
@@ -69,7 +66,6 @@ public class ProjectContext implements Disposable {
         terrains = other.terrains;
         currScene = other.currScene;
         scenes = other.scenes;
-        models = other.models;
         idProvider = other.idProvider;
         textures = other.textures;
         assetManager = other.assetManager;
@@ -86,11 +82,10 @@ public class ProjectContext implements Disposable {
 
     @Override
     public void dispose() {
-        Log.debug(TAG, "Disposing project current {}", path);
-        for(MModel model : models) {
-            model.getModel().dispose();
+        Log.debug(TAG, "Disposing current project: {}", path);
+        if(assetManager != null) {
+            assetManager.dispose();
         }
-        models = null;
     }
 
 }

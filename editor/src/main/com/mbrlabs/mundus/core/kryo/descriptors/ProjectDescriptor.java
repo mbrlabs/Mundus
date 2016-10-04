@@ -32,25 +32,18 @@ public class ProjectDescriptor {
     @Tag(1)
     private int nextAvailableID;
     @Tag(2)
-    private List<ModelDescriptor> models;
-    @Tag(3)
     private List<TextureDescriptor> textures;
-    @Tag(4)
+    @Tag(3)
     private List<TerrainDescriptor> terrains;
-    @Tag(5)
+    @Tag(4)
     private List<String> sceneNames;
-    @Tag(6)
+    @Tag(5)
     private String currentSceneName;
 
     public ProjectDescriptor() {
-        models = new ArrayList<>();
         terrains = new ArrayList<>();
         sceneNames = new ArrayList<>();
         textures = new ArrayList<>();
-    }
-
-    public List<ModelDescriptor> getModels() {
-        return models;
     }
 
     public List<TerrainDescriptor> getTerrains() {

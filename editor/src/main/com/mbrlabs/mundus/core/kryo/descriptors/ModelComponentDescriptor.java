@@ -26,13 +26,13 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 public class ModelComponentDescriptor {
 
     @Tag(0)
-    private long modelID;
+    private String modelID;
 
-    public long getModelID() {
+    public String getModelID() {
         return modelID;
     }
 
-    public void setModelID(long modelID) {
+    public void setModelID(String modelID) {
         this.modelID = modelID;
     }
 

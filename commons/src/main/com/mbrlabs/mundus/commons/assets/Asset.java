@@ -38,7 +38,7 @@ public abstract class Asset implements Disposable {
     }
 
     public String getName() {
-        return meta.getFile().name();
+        return file.name();
     }
 
     public FileHandle getFile() {

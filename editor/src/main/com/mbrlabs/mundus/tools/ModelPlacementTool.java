@@ -24,7 +24,7 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
-import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
@@ -49,7 +49,7 @@ public class ModelPlacementTool extends Tool {
     private Vector3 tempV3 = new Vector3();
 
     // DO NOT DISPOSE THIS
-    private MModel model;
+    private ModelAsset model;
     private MModelInstance curEntity;
 
     public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
@@ -58,7 +58,7 @@ public class ModelPlacementTool extends Tool {
         this.curEntity = null;
     }
 
-    public void setModel(MModel model) {
+    public void setModel(ModelAsset model) {
         this.model = model;
         this.curEntity = new MModelInstance(model);
         ProjectContext context = projectManager.current();
@@ -104,7 +104,7 @@ public class ModelPlacementTool extends Tool {
 
         if(curEntity != null && button == Input.Buttons.LEFT) {
             int id = projectManager.current().obtainID();
-            GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.name, id);
+            GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.getName(), id);
             projectManager.current().currScene.sceneGraph.addGameObject(modelGo);
 
             curEntity.modelInstance.transform.getTranslation(tempV3);

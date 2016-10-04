@@ -41,8 +41,9 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.AssetHelper;
+import com.mbrlabs.mundus.assets.AssetManager;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
-import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -53,6 +54,10 @@ import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
+
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -93,7 +98,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
     private class ImportModelTable extends VisTable implements Disposable {
         // UI elements
         private RenderWidget renderWidget;
-        private VisTextField name = new VisTextField();
         private VisTextButton importBtn = new VisTextButton("IMPORT");
         private FileChooserField modelInput = new FileChooserField(300);
 
@@ -153,8 +157,6 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             inputTable.left().top();
             inputTable.add(new VisLabel("Model File")).left().padBottom(5).row();
             inputTable.add(modelInput).fillX().expandX().padBottom(10).row();
-            inputTable.add(new VisLabel("Name")).left().padBottom(5).row();
-            inputTable.add(name).fillX().expandX().padBottom(10).row();
             inputTable.add(importBtn).fillX().expand().bottom();
 
             modelInput.setEditable(false);
@@ -176,15 +178,21 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             importBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
+                    if(previewModel != null && previewInstance != null) {
+                        AssetManager assetManager = projectManager.current().assetManager;
                         // create model
-                        importedModel.name = name.getText();
-                        MModel mModel = projectManager.current().assetManager.importG3dbModel(importedModel);
-                        // Mundus.postEvent(new ModelImportEvent(mModel));
-                        // TODO create asset / post import event
+                        String assetRoot = FilenameUtils.concat(projectManager.current().path, ProjectManager.PROJECT_ASSETS_DIR);
+                        try {
+                            // TODO use assetManager.importAsset() if implemented for models
+                            ModelAsset asset = AssetHelper.createModelAsset(new FileHandle(assetRoot), importedModel);
+                            assetManager.getAssets().add(asset);
+                            Ui.getInstance().getToaster().success("Mesh imported");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Ui.getInstance().getToaster().error("Error while creating a ModelAsset");
+                        }
                         dispose();
                         close();
-                        Ui.getInstance().getToaster().success("Mesh imported");
                     } else {
                         Ui.getInstance().getToaster().error("There is nothing to import");
                     }

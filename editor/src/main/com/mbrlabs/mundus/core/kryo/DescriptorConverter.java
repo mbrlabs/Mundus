@@ -21,9 +21,9 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.lights.BaseLight;
-import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -130,31 +130,10 @@ public class DescriptorConverter {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     Model
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static ModelDescriptor convert(MModel model) {
-        ModelDescriptor descriptor = new ModelDescriptor();
-        descriptor.setName(model.name);
-        descriptor.setId(model.id);
-        descriptor.setG3dbPath(model.g3dbPath);
-        return descriptor;
-    }
-
-    public static MModel convert(ModelDescriptor modelDescriptor) {
-        MModel model = new MModel();
-        model.id = modelDescriptor.getId();
-        model.name = modelDescriptor.getName();
-        model.g3dbPath = modelDescriptor.getG3dbPath();
-        return model;
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
     //                                     Game Object
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models, Array<Terrain> terrains) {
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models, Array<Terrain> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
 
@@ -235,10 +214,10 @@ public class DescriptorConverter {
     //                                     ModelComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<MModel> models) {
-        MModel model = null;
-        for(MModel m : models) {
-            if(descriptor.getModelID() == m.id) {
+    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<ModelAsset> models) {
+        ModelAsset model = null;
+        for(ModelAsset m : models) {
+            if(descriptor.getModelID().equals(m.getUUID())) {
                 model = m;
                 break;
             }
@@ -259,7 +238,7 @@ public class DescriptorConverter {
 
     public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
         ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
-        descriptor.setModelID(modelComponent.getModelInstance().getModel().id);
+        descriptor.setModelID(modelComponent.getModelInstance().getModel().getUUID());
 
         return descriptor;
     }
@@ -517,7 +496,7 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<MModel> models) {
+    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<ModelAsset> models) {
         EditorScene scene = new EditorScene();
 
         // meta
@@ -566,10 +545,6 @@ public class DescriptorConverter {
         for(Terrain terrain : project.terrains) {
             descriptor.getTerrains().add(convert(terrain));
         }
-        // models
-        for(MModel model : project.models) {
-            descriptor.getModels().add(convert(model));
-        }
         // scenes
         for(String sceneName : project.scenes) {
             descriptor.getSceneNames().add(sceneName);
@@ -585,10 +560,6 @@ public class DescriptorConverter {
         // textures
         for(TextureDescriptor texture : projectDescriptor.getTextures()) {
             context.textures.add(convert(texture));
-        }
-        // models
-        for(ModelDescriptor model : projectDescriptor.getModels()) {
-            context.models.add(convert(model));
         }
         // terrains
         for(TerrainDescriptor terrain : projectDescriptor.getTerrains()) {

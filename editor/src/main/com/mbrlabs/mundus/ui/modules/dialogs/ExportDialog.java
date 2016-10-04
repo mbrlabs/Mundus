@@ -30,10 +30,10 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.RuntimeExporter;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.utils.Toaster;
 
 import java.io.File;
 import java.io.IOException;
@@ -106,11 +106,12 @@ public class ExportDialog extends BaseDialog {
                     boolean compress = gzipCheckbox.isChecked();
                     boolean pretty = prettyPrintCheckbox.isChecked();
 
-                    try {
-                        RuntimeExporter.export(kryoManager, projectManager.current(), Gdx.files.absolute(folder), pretty);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        RuntimeExporter.export(kryoManager, projectManager.current(), Gdx.files.absolute(folder), pretty);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    Ui.getInstance().getToaster().error("Not implemented yet");
 
                 }
             }

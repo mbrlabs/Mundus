@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.modules.dock.assets;
 
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -27,7 +28,6 @@ import com.kotcrab.vis.ui.widget.*;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
-import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -118,12 +118,13 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
     private class AssetItem extends VisTable {
 
         private VisLabel nameLabel;
-        private MModel model;
+        private final Asset asset;
 
         public AssetItem(Asset asset) {
             super();
             setBackground("menu-bg");
             align(Align.center);
+            this.asset = asset;
             nameLabel = new VisLabel(asset.toString(), "small");
             nameLabel.setWrap(true);
             add(nameLabel).fill().expand().row();
@@ -132,8 +133,10 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
             addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    toolManager.modelPlacementTool.setModel(model);
-                    toolManager.activateTool(toolManager.modelPlacementTool);
+                    if(AssetItem.this.asset instanceof ModelAsset) {
+                        toolManager.modelPlacementTool.setModel((ModelAsset) AssetItem.this.asset);
+                        toolManager.activateTool(toolManager.modelPlacementTool);
+                    }
                 }
             });
         }

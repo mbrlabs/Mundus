@@ -32,6 +32,10 @@ public class ModelAsset extends Asset {
         super(meta, assetFile);
     }
 
+    public Model getModel() {
+        return model;
+    }
+
     @Override
     public void load() {
         // TODO don't create a new loader each time

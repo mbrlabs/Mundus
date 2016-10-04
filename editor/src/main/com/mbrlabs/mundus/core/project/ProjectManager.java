@@ -20,13 +20,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
-import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
-import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
@@ -205,13 +203,6 @@ public class ProjectManager implements Disposable {
             Log.debug(TAG, "Loaded texture: {}", tex.getPath());
         }
 
-        // load g3db models
-        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
-        for(MModel model : context.models) {
-            model.setModel(loader.loadModel(Gdx.files.absolute(
-                    FilenameUtils.concat(context.path, model.g3dbPath))));
-        }
-
         // load terrain .terra files
         for(Terrain terrain : context.terrains) {
             TerrainIO.importTerrain(context, terrain);
@@ -316,7 +307,8 @@ public class ProjectManager implements Disposable {
      */
     public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
-        EditorScene scene = DescriptorConverter.convert(descriptor, context.terrains, context.models);
+        Array<ModelAsset> models =  context.assetManager.getModelAssets();
+        EditorScene scene = DescriptorConverter.convert(descriptor, context.terrains, models);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
@@ -369,17 +361,18 @@ public class ProjectManager implements Disposable {
     }
 
     private void initComponents(ProjectContext context, GameObject go) {
+        Array<ModelAsset> models =  context.assetManager.getModelAssets();
         for(Component c : go.getComponents()) {
             // Model component
             if(c.getType() == Component.Type.MODEL) {
                 ModelComponent modelComponent = (ModelComponent) c;
-                MModel model = findModelById(context.models, modelComponent.getModelInstance().getModel().id);
+                ModelAsset model = findModelById(models, modelComponent.getModelInstance().getModel().getUUID());
                 if(model != null) {
                     modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
-                    Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelInstance().getModel().id);
+                    Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelInstance().getModel().getUUID());
                 }
             } else if(c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent)c).setShader(shaders.terrainShader);
@@ -393,9 +386,9 @@ public class ProjectManager implements Disposable {
         }
     }
 
-    private MModel findModelById(Array<MModel> models, long id) {
-        for(MModel m : models) {
-            if(m.id == id) {
+    private ModelAsset findModelById(Array<ModelAsset> models, String id) {
+        for(ModelAsset m : models) {
+            if(m.getUUID().equals(id)) {
                 return m;
             }
         }

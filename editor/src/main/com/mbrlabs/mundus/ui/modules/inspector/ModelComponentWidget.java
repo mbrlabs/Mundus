@@ -17,17 +17,15 @@
 package com.mbrlabs.mundus.ui.modules.inspector;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
-import com.mbrlabs.mundus.commons.model.MModel;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -43,7 +41,7 @@ import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
  */
 public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
-    private VisSelectBox<MModel> selectBox = new VisSelectBox<>();
+    private VisSelectBox<ModelAsset> selectBox = new VisSelectBox<>();
 
     @Inject
     private ProjectManager projectManager;
@@ -53,11 +51,11 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         Mundus.inject(this);
         this.component = modelComponent;
 
-        selectBox.setItems(projectManager.current().models);
+        selectBox.setItems(projectManager.current().assetManager.getModelAssets());
         selectBox.setSelected(modelComponent.getModelInstance().getModel());
         selectBox.addListener(new ChangeListener() {
             public void changed (ChangeListener.ChangeEvent event, Actor actor) {
-                MModel model = selectBox.getSelected();
+                ModelAsset model = selectBox.getSelected();
                 if(model != null) {
                     component.getModelInstance().replaceModel(model);
                     component.encodeRaypickColorId();
