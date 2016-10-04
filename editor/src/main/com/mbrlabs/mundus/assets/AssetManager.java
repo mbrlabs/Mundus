@@ -16,9 +16,12 @@
 
 package com.mbrlabs.mundus.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.UBJsonReader;
 import com.kotcrab.vis.ui.widget.file.FileUtils;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetType;
@@ -30,7 +33,9 @@ import com.mbrlabs.mundus.commons.assets.TerraAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.utils.G3dUtils;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -52,12 +57,15 @@ public class AssetManager implements Disposable {
 
     private FileHandle rootFolder;
 
+    private ProjectManager projectManager;
+
     /**
      *
      * @param path
      */
-    public AssetManager(String path) {
+    public AssetManager(ProjectManager projectManager, String path) {
         this.assets = new Array<>();
+        this.projectManager = projectManager;
         rootFolder = new FileHandle(path);
         if(!rootFolder.exists() || !rootFolder.isDirectory()) {
             Log.fatal(TAG, "Root asset folder is not a directory");
@@ -236,38 +244,39 @@ public class AssetManager implements Disposable {
      * @return
      */
     public MModel importG3dbModel(ModelImporter.ImportedModel importedModel) {
-//        long id = projectManager.current().obtainID();
-//
-//        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
-//        String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
-//
-//        String g3dbFilename = importedModel.name + ".g3db";
-//        String textureFilename = importedModel.textureFile.name();
-//
-//        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
-//        FileHandle absoluteTextureImportPath = Gdx.files.absolute(absoluteImportFolder + textureFilename);
-//
-//        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
-//        importedModel.textureFile.copyTo(absoluteTextureImportPath);
-//
-//        // load model
-//        G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
+        long id = projectManager.current().obtainID();
+
+        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
+        String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
+
+        String g3dbFilename = importedModel.name + ".g3db";
+        String textureFilename = importedModel.textureFile.name();
+
+        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
+        FileHandle absoluteTextureImportPath = Gdx.files.absolute(absoluteImportFolder + textureFilename);
+
+        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
+        importedModel.textureFile.copyTo(absoluteTextureImportPath);
+
+        // load model
+//        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
 //        Model model = loader.loadModel(absoluteG3dbImportPath);
-//
-//        // create model
-//        MModel mModel = new MModel();
-//        mModel.setModel(model);
-//        mModel.name = importedModel.name;
-//        mModel.id = id;
-//        mModel.g3dbPath = relativeImportFolder + g3dbFilename;
-//        mModel.texturePath = relativeImportFolder + textureFilename;
-//        projectManager.current().models.add(mModel);
-//
-//        // save whole project
-//        projectManager.saveCurrentProject();
-//
-//        return mModel;
-        return null;
+
+        Model model = G3dUtils.loadWithoutTextures(absoluteG3dbImportPath);
+
+        // create model
+        MModel mModel = new MModel();
+        mModel.setModel(model);
+        mModel.name = importedModel.name;
+        mModel.id = id;
+        mModel.g3dbPath = relativeImportFolder + g3dbFilename;
+        mModel.texturePath = relativeImportFolder + textureFilename;
+        projectManager.current().models.add(mModel);
+
+        // save whole project
+        projectManager.saveCurrentProject();
+
+        return mModel;
     }
 
     /**

@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -77,6 +78,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         MModelInstance mi = component.getModelInstance();
         collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(3).padTop(3).row();
         collapsibleContent.addSeparator().row();
+
         // iterate over nodes
         for(Node node : mi.modelInstance.nodes) {
             collapsibleContent.add(new VisLabel("Node: " + node.id)).expandX().fillX().left().row();

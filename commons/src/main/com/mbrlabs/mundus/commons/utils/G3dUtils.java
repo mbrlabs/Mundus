@@ -19,10 +19,10 @@ package com.mbrlabs.mundus.commons.utils;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelMaterial;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
 /**
  * @author Marcus Brummer
@@ -31,7 +31,7 @@ import com.badlogic.gdx.utils.UBJsonReader;
 public class G3dUtils {
 
     public static Model loadWithoutTextures(FileHandle model) {
-        G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
+        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
         ModelData modelData = loader.loadModelData(model);
         for(ModelMaterial mat : modelData.materials) {
             mat.textures.clear();

@@ -27,7 +27,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -41,11 +40,13 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
+import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.events.ModelImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
@@ -66,6 +67,8 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
     private Registry registry;
     @Inject
     private ModelImporter modelImporter;
+    @Inject
+    private ProjectManager projectManager;
 
     public ImportMeshDialog() {
         super("Import Mesh");
@@ -191,22 +194,22 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
 
             // import btn
             // TODO import again
-//            importBtn.addListener(new ClickListener() {
-//                @Override
-//                public void clicked(InputEvent event, float x, float y) {
-//                    if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
-//                        // create model
-//                        importedModel.name = name.getText();
-//                        MModel mModel = assetManager.importG3dbModel(importedModel);
-//                        Mundus.postEvent(new ModelImportEvent(mModel));
-//                        dispose();
-//                        close();
-//                        Ui.getInstance().getToaster().success("Mesh imported");
-//                    } else {
-//                        Ui.getInstance().getToaster().error("There is nothing to import");
-//                    }
-//                }
-//            });
+            importBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
+                        // create model
+                        importedModel.name = name.getText();
+                        MModel mModel = projectManager.current().assetManager.importG3dbModel(importedModel);
+                        Mundus.postEvent(new ModelImportEvent(mModel));
+                        dispose();
+                        close();
+                        Ui.getInstance().getToaster().success("Mesh imported");
+                    } else {
+                        Ui.getInstance().getToaster().error("There is nothing to import");
+                    }
+                }
+            });
         }
 
         private void loadAndShowPreview(FileHandle model, FileHandle texture) {
@@ -224,7 +227,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             // load and show preview
             if(importedModel != null) {
                 try {
-                    previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
+                    previewModel = new MG3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
                     previewInstance = new ModelInstance(previewModel);
                     showPreview();
                 } catch (GdxRuntimeException e) {

@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.UBJsonReader;
@@ -26,6 +25,7 @@ import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.assets.AssetManager;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.env.Fog;
+import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -132,7 +132,7 @@ public class ProjectManager implements Disposable {
         ProjectContext newProjectContext = new ProjectContext(-1);
         newProjectContext.path = path;
         newProjectContext.name = ref.getName();
-        newProjectContext.assetManager = new AssetManager(path + "/" + ProjectManager.PROJECT_ASSETS_DIR);
+        newProjectContext.assetManager = new AssetManager(this, path + "/" + ProjectManager.PROJECT_ASSETS_DIR);
 
         // create default scene & save .mundus
         EditorScene scene = new EditorScene();
@@ -195,7 +195,7 @@ public class ProjectManager implements Disposable {
         context.path = ref.getPath();
 
         // load assets
-        context.assetManager = new AssetManager(ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR);
+        context.assetManager = new AssetManager(this, ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR);
         context.assetManager.loadAssets();
 
         // load textures
@@ -206,7 +206,7 @@ public class ProjectManager implements Disposable {
         }
 
         // load g3db models
-        G3dModelLoader loader = new G3dModelLoader(new UBJsonReader());
+        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
         for(MModel model : context.models) {
             model.setModel(loader.loadModel(Gdx.files.absolute(
                     FilenameUtils.concat(context.path, model.g3dbPath))));

@@ -20,11 +20,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.commons.importer.*;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
@@ -46,7 +46,7 @@ public class MundusImporter {
     private Shader entityShader;
 
     private final String assetsFolder;
-    private G3dModelLoader g3dModelLoader;
+    private MG3dModelLoader g3dModelLoader;
 
     public MundusImporter(String assetsFolder, Shader terrainShader, Shader entityShader) {
         if(assetsFolder.endsWith("/")) {
@@ -57,7 +57,7 @@ public class MundusImporter {
 
         this.terrainShader = terrainShader;
         this.entityShader = entityShader;
-        this.g3dModelLoader = new G3dModelLoader(new UBJsonReader());
+        this.g3dModelLoader = new MG3dModelLoader(new UBJsonReader());
     }
 
     public Project importAll() {
