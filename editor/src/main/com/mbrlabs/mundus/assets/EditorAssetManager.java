@@ -278,13 +278,4 @@ public class EditorAssetManager extends AssetManager {
 //        return null;
 //    }
 
-    @Override
-    public void dispose() {
-        for(Asset asset : assets) {
-            asset.dispose();
-        }
-        assets.clear();
-        assetIndex.clear();
-    }
-
 }

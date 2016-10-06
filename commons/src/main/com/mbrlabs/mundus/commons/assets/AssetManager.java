@@ -205,6 +205,8 @@ public class AssetManager implements Disposable {
         for(Asset asset : assets) {
             asset.dispose();
         }
+        assets.clear();
+        assetIndex.clear();
     }
 
     /**
