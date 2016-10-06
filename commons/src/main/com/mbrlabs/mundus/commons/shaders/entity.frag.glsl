@@ -3,6 +3,7 @@ precision mediump float;
 #endif
 
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
+const vec4 AMBIENT = vec4(0.05,0.05,0.05,0.05);
 
 varying vec2 v_texCoord0;
 varying vec3 v_vectorToLight;
@@ -28,6 +29,7 @@ void main(void) {
         gl_FragColor = u_diffuseColor;
     }
 
+    gl_FragColor = max(gl_FragColor, AMBIENT); // TODO make ambient color a unifrom
     gl_FragColor *= v_lighting;
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
 }

@@ -59,14 +59,12 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     @Inject
     private ProjectManager projectManager;
 
-
-    private VisTextField diffuseTextureField;
-
     public ModelComponentWidget(final ModelComponent modelComponent) {
         super("Model Component", modelComponent);
         Mundus.inject(this);
         this.component = modelComponent;
 
+        // selection box
         selectBox.setItems(projectManager.current().assetManager.getModelAssets());
         selectBox.setSelected(modelComponent.getModelInstance().getModel());
         selectBox.addListener(new ChangeListener() {
@@ -102,7 +100,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
             // diffuse texture
             collapsibleContent.add(new VisLabel("Diffuse Texture (click to change)")).expandX().fillX().left().row();
-            diffuseTextureField = new VisTextField("");
+            final VisTextField diffuseTextureField = new VisTextField();
             final AssetSelectionDialog.AssetSelectionListener listener = new AssetSelectionDialog.AssetSelectionListener() {
                 @Override
                 public void onSelected(Array<Asset> assets) {
@@ -139,8 +137,10 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                     Ui.getInstance().getAssetSelectionDialog().show(filter, listener);
                 }
             });
-            TextureAsset assset = component.getModelInstance().getModel().getDiffuseTexture();
-            diffuseTextureField.setText(assset.toString());
+            TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
+            if(texAsset != null) {
+                diffuseTextureField.setText(texAsset.toString());
+            }
             diffuseTextureField.setDisabled(true);
             collapsibleContent.add(diffuseTextureField).expandX().fillX().left().padBottom(5).row();
 
