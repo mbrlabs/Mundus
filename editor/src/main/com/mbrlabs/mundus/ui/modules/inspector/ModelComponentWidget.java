@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
@@ -53,6 +55,7 @@ import java.io.IOException;
  * @author Marcus Brummer
  * @version 21-01-2016
  */
+// TODO refactor the whole class. kind of messy right now
 public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
     private VisSelectBox<ModelAsset> selectBox = new VisSelectBox<>();
@@ -147,6 +150,28 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             diffuseTextureField.setDisabled(true);
             collapsibleContent.add(diffuseTextureField).expandX().fillX().left().padBottom(5).row();
 
+
+            // delete texture btn
+            VisTextButton deletBtn = new VisTextButton("Remove texture");
+            deletBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    MetaFile meta = component.getModelInstance().getModel().getMeta();
+                    meta.setDiffuseTexture(null);
+                    try {
+                        meta.save();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    for(Material mat : component.getModelInstance().getModel().getModel().materials) {
+                        mat.remove(TextureAttribute.Diffuse);
+                    }
+                    updateModelInstaneceMaterials();
+                    diffuseTextureField.setText("");
+                }
+            });
+            collapsibleContent.add(deletBtn).expandX().fillX().left().padBottom(5).row();
+
             // diffuse color
             final ColorAttribute diffuse = (ColorAttribute) mat.get(ColorAttribute.Diffuse);
             ColorPickerField diffusePicker = new ColorPickerField("Diffuse: ");
@@ -166,33 +191,6 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                 }
             });
             collapsibleContent.add(diffusePicker).expandX().fillX().left().padBottom(5).row();
-
-//            // ambient color
-//            final ColorAttribute ambient = (ColorAttribute) mat.get(ColorAttribute.Ambient);
-//            ColorPickerField ambientPicker = new ColorPickerField("Ambient: ");
-//            ambientPicker.setColor(diffuse.color);
-//            ambientPicker.setCallback(new ColorPickerField.ColorSelected() {
-//                @Override
-//                public void selected(Color color) {
-//                    ambient.color.set(color);
-//                }
-//            });
-//            collapsibleContent.add(ambientPicker).expandX().fillX().left().padBottom(5).row();
-//
-//            // specular color
-//            final ColorAttribute specular = (ColorAttribute) mat.get(ColorAttribute.Specular);
-//            ColorPickerField specularPicker = new ColorPickerField("Specular: ");
-//            specularPicker.setColor(specular.color);
-//            specularPicker.setCallback(new ColorPickerField.ColorSelected() {
-//                @Override
-//                public void selected(Color color) {
-//                    specular.color.set(color);
-//                }
-//            });
-//            collapsibleContent.add(specularPicker).expandX().fillX().left().row();
-
-            // shininess
-//            FloatAttribute shininess = (FloatAttribute) mat.get(FloatAttribute.Shininess);
         }
 
     }

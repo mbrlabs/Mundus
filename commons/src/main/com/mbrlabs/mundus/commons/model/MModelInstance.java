@@ -59,6 +59,8 @@ public class MModelInstance {
             Attribute diffuseTex = modelMat.get(TextureAttribute.Diffuse);
             if(diffuseTex != null) {
                 instanceMat.set(diffuseTex);
+            } else {
+                instanceMat.remove(TextureAttribute.Diffuse);
             }
             // diffuse color
             Attribute diffuseColor = modelMat.get(ColorAttribute.Diffuse);
