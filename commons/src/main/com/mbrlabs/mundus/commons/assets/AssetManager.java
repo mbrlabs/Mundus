@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * @author Marcus Brummer
  * @version 06-10-2016
  */
@@ -37,7 +38,8 @@ public class AssetManager implements Disposable {
 
     /**
      * Asset manager constructor.
-     * @param assetsFolder
+     *
+     * @param assetsFolder  root directory of assets
      */
     public AssetManager(FileHandle assetsFolder) {
         this.rootFolder = assetsFolder;
@@ -45,14 +47,38 @@ public class AssetManager implements Disposable {
         this.assetIndex = new HashMap<String, Asset>();
     }
 
+    /**
+     * Returns an asset by id.
+     *
+     * @param id    id of asset
+     * @return      matching asset or null
+     */
     public Asset findAssetByID(String id) {
         return assetIndex.get(id);
     }
 
+    public void addAsset(Asset asset) {
+        if(asset == null) return;
+        if(assetIndex.get(asset.getUUID()) == null) {
+            assets.add(asset);
+            assetIndex.put(asset.getUUID(), asset);
+        }
+    }
+
+    /**
+     * Returns all assets.
+     *
+     * @return  all assets
+     */
     public Array<Asset> getAssets() {
         return assets;
     }
 
+    /**
+     * Returns all assets of type MODEL.
+     *
+     * @return  all model assets
+     */
     public Array<ModelAsset> getModelAssets() {
         Array<ModelAsset> models = new Array<ModelAsset>();
         for(Asset asset : assets) {
@@ -65,7 +91,10 @@ public class AssetManager implements Disposable {
     }
 
     /**
-     * Loads all imported assets in the project's asset folder.
+     * Loads all assets in the project's asset folder.
+     *
+     * @throws AssetNotFoundException   if a meta file points to a non existing asset
+     * @throws MetaFileParseException   if a meta file can't be parsed
      */
     public void loadAssets() throws AssetNotFoundException, MetaFileParseException {
         // create meta file filter
@@ -97,6 +126,14 @@ public class AssetManager implements Disposable {
         }
     }
 
+    /**
+     * Loads an asset, given it's meta file.
+     *
+     * @param meta  meta file of asset
+     * @return      asset or null
+     * @throws AssetNotFoundException   if a meta file points to a non existing asset
+     * @throws MetaFileParseException   if a meta file can't be parsed
+     */
     public Asset loadAsset(MetaFile meta) throws MetaFileParseException, AssetNotFoundException {
         // get handle to asset
         String assetPath = meta.getFile().pathWithoutExtension();
@@ -128,12 +165,7 @@ public class AssetManager implements Disposable {
                 return null;
         }
 
-        // add to list
-        if(asset != null) {
-            assets.add(asset);
-            assetIndex.put(asset.getUUID(), asset);
-        }
-
+        addAsset(asset);
         return asset;
     }
 

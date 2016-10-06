@@ -17,6 +17,8 @@
 package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.assets.Asset;
@@ -35,13 +37,20 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.utils.Log;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * @author Marcus Brummer
@@ -52,8 +61,9 @@ public class EditorAssetManager extends AssetManager {
     private static final String TAG = EditorAssetManager.class.getSimpleName();
 
     /**
+     * Editor asset manager constructor.
      *
-     * @param assetsRoot
+     * @param assetsRoot    assets root folder.
      */
     public EditorAssetManager(FileHandle assetsRoot) {
         super(assetsRoot);
@@ -63,13 +73,13 @@ public class EditorAssetManager extends AssetManager {
     }
 
     /**
+     * Imports a new asset.
      *
-     * @param asset
-     * @param clazz
-     * @return
+     * @param asset     handle to asset file
+     * @param clazz     asset type
+     * @return          asset or not if type not supported
      */
     public Asset importAsset(FileHandle asset, Class clazz) {
-
         // import asset
         Asset newAsset = null;
         try {
@@ -89,18 +99,114 @@ public class EditorAssetManager extends AssetManager {
 
         // add to list
         if(newAsset != null) {
-            assets.add(newAsset);
-            assetIndex.put(newAsset.getUUID(), newAsset);
+            addAsset(newAsset);
             Mundus.postEvent(new AssetImportEvent(newAsset));
         }
 
         return newAsset;
     }
 
+    /**
+     * Creates a new meta file and saves it at the given location.
+     *
+     * @param file  save location
+     * @param type  asset type
+     * @return      saved meta file
+     * @throws IOException
+     */
+    public MetaFile createNewMetaFile(FileHandle file, AssetType type) throws IOException {
+        final MetaFile meta = new MetaFile(file);
+        meta.setUuid(UUID.randomUUID().toString());
+        meta.setVersion(MetaFile.CURRENT_VERSION);
+        meta.setLastModified(new Date());
+        meta.setType(type);
+        meta.save();
+
+        return meta;
+    }
+
+    public ModelAsset createModelAsset(FileHandle assetRoot, ModelImporter.ImportedModel model) throws IOException {
+        String modelFilename = model.g3dbFile.name();
+        String metaFilename = modelFilename + ".meta";
+
+        // create meta file
+        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.MODEL);
+
+        // copy model file
+        FileHandle assetFile = new FileHandle(FilenameUtils.concat(assetRoot.path(), modelFilename));
+        model.g3dbFile.copyTo(assetFile);
+
+        // load & return asset
+        ModelAsset asset = new ModelAsset(meta, assetFile);
+        asset.load();
+        addAsset(asset);
+
+        return asset;
+    }
+
+    public TerraAsset createTerraAsset(FileHandle assetRoot, int vertexResolution) throws IOException {
+        String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
+        String metaFilename = terraFilename + ".meta";
+
+        // create meta file
+        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.TERRA);
+
+        // create terra file
+        String terraPath = FilenameUtils.concat(assetRoot.path(), terraFilename);
+        File terraFile = new File(terraPath);
+        FileUtils.touch(terraFile);
+
+        // create initial height data
+        float[] data = new float[vertexResolution * vertexResolution];
+        for(int i = 0; i < data.length; i++) {
+            data[i] = 0;
+        }
+
+        // write terra file
+        DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terraFile))));
+        for(float f : data) {
+            outputStream.writeFloat(f);
+        }
+        outputStream.flush();
+        outputStream.close();
+
+        // load & return asset
+        TerraAsset asset = new TerraAsset(meta, new FileHandle(terraFile));
+        asset.load();
+        addAsset(asset);
+
+        return asset;
+    }
+
+    public PixmapTextureAsset createPixmapTextureAsset(FileHandle assetRoot, int size) throws IOException {
+        String pixmapFilename = "pixmap_" + UUID.randomUUID().toString() + ".png";
+        String metaFilename = pixmapFilename + ".meta";
+
+        // create meta file
+        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.PIXMAP_TEXTURE);
+
+        // create pixmap
+        String pixmapPath = FilenameUtils.concat(assetRoot.path(), pixmapFilename);
+        Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
+        FileHandle pixmapAssetFile = new FileHandle(pixmapPath);
+        PixmapIO.writePNG(pixmapAssetFile, pixmap);
+        pixmap.dispose();
+
+        // load & return asset
+        PixmapTextureAsset asset = new PixmapTextureAsset(meta, pixmapAssetFile);
+        asset.load();
+        addAsset(asset);
+
+        return asset;
+    }
+
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
         String metaName = assetFile.name() + "." + MetaFile.META_EXTENSION;
         String metaPath = FilenameUtils.concat(rootFolder.path(), metaName);
-        return AssetHelper.createNewMetaFile(new FileHandle(metaPath), type);
+        return createNewMetaFile(new FileHandle(metaPath), type);
     }
 
     private FileHandle copyToAssetFolder(FileHandle file) {
@@ -138,12 +244,12 @@ public class EditorAssetManager extends AssetManager {
         return null;
     }
 
-    /**
-     *
-     * @param importedModel
-     * @return
-     */
-    public ModelAsset importG3dbModel(ModelImporter.ImportedModel importedModel) {
+//    /**
+//     *
+//     * @param importedModel
+//     * @return
+//     */
+//    public ModelAsset importG3dbModel(ModelImporter.ImportedModel importedModel) {
 //        long id = projectManager.current().obtainID();
 //
 //        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
@@ -167,17 +273,17 @@ public class EditorAssetManager extends AssetManager {
 //
 //        // save whole project
 //        projectManager.saveCurrentProject();
+//
+//        return null;
+//    }
 
-        return null;
-    }
-
-    /**
-     *
-     * @param textureFile
-     * @param mipMap
-     * @return
-     */
-    public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
+//    /**
+//     *
+//     * @param textureFile
+//     * @param mipMap
+//     * @return
+//     */
+//    public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
 //        long id = projectManager.current().obtainID();
 //
 //        String relativeImportPath = ProjectManager.PROJECT_TEXTURE_DIR + textureFile.name();
@@ -201,15 +307,17 @@ public class EditorAssetManager extends AssetManager {
 //        projectManager.saveCurrentProject();
 //
 //        return tex;
-
-        return null;
-    }
+//
+//        return null;
+//    }
 
     @Override
     public void dispose() {
         for(Asset asset : assets) {
             asset.dispose();
         }
+        assets.clear();
+        assetIndex.clear();
     }
 
 }
