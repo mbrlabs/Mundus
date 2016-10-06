@@ -18,9 +18,14 @@ package com.mbrlabs.mundus.ui.modules.menu;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
+import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -55,7 +60,21 @@ public class AssetsMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getAssetSelectionDialog());
+
+                ui.getAssetSelectionDialog().show(new AssetSelectionDialog.AssetFilter() {
+                    @Override
+                    public boolean ignore(Asset asset) {
+                        return false;
+                    }
+                }, new AssetSelectionDialog.AssetSelectionListener() {
+                    @Override
+                    public void onSelected(Array<Asset> assets) {
+                        for(Asset asset : assets) {
+                            Log.trace("AssetMenu", asset.toString());
+                        }
+                    }
+                });
+
             }
         });
     }

@@ -138,13 +138,13 @@ public class Editor implements ApplicationListener,
 //        for(FileHandle file : new FileHandle("/home/marcus/Desktop/testAssets/").list()) {
 //            context.assetManager.importAsset(file, TextureAsset.class);
 //        }
-
+//
 //        try {
 //            AssetHelper.createTerraAsset(new FileHandle("/home/marcus/MundusProjects/Default Project/assets"), 180);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
+//
 //        try {
 //            AssetHelper.createPixmapTextureAsset(new FileHandle("/home/marcus/MundusProjects/Default Project/assets"), 512);
 //        } catch (IOException e) {

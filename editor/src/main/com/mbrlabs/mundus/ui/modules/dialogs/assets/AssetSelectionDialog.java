@@ -26,6 +26,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -46,6 +47,9 @@ public class AssetSelectionDialog extends BaseDialog implements
     private ListView<Asset> list;
     private SimpleListAdapter<Asset> listAdapter;
 
+    private AssetFilter filter;
+    private AssetSelectionListener listener;
+
     public AssetSelectionDialog() {
         super(TITLE);
         Mundus.inject(this);
@@ -65,7 +69,12 @@ public class AssetSelectionDialog extends BaseDialog implements
         list.setItemClickListener(new ListView.ItemClickListener<Asset>() {
             @Override
             public void clicked (Asset item) {
-                Log.trace(TAG, "Clicked: " + item.toString());
+                if(listener != null) {
+                    Array<Asset> assets = new Array<>();
+                    assets.add(item);
+                    listener.onSelected(assets);
+                    close();
+                }
             }
         });
     }
@@ -83,10 +92,39 @@ public class AssetSelectionDialog extends BaseDialog implements
     private void reloadData() {
         AssetManager assetManager = projectManager.current().assetManager;
         listAdapter.clear();
-        listAdapter.addAll(assetManager.getAssets());
-        listAdapter.addAll(assetManager.getAssets());
+
+        // filter assets
+        for(Asset asset : assetManager.getAssets()) {
+            if(filter != null) {
+                if(filter.ignore(asset)) {
+                    continue;
+                }
+            }
+            listAdapter.add(asset);
+        }
 
         listAdapter.itemsDataChanged();
+    }
+
+    public void show(AssetFilter filter, AssetSelectionListener listener) {
+        this.listener = listener;
+        this.filter = filter;
+        reloadData();
+        Ui.getInstance().showDialog(this);
+    }
+
+    /**
+     *
+     */
+    public interface AssetSelectionListener {
+        void onSelected(Array<Asset> assets);
+    }
+
+    /**
+     *
+     */
+    public interface AssetFilter {
+        boolean ignore(Asset asset);
     }
 
 }
