@@ -66,6 +66,7 @@ public class MetaFile {
         this.props = new Properties();
     }
 
+    // TODO move this out into a manager class
     public void save() throws IOException {
         props.clear();
         props.setProperty(PROP_VERSION, String.valueOf(this.version));
@@ -86,6 +87,7 @@ public class MetaFile {
         props.store(new FileOutputStream(file.file()), COMMENT);
     }
 
+    // TODO move this out into a manager class
     public void load() throws MetaFileParseException {
         try {
             props.clear();
@@ -111,20 +113,20 @@ public class MetaFile {
         }
     }
 
-    public int getVersion() {
-        return version;
+    public String getDiffuseTexture() {
+        return diffuseTexture;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setDiffuseTexture(String diffuseTexture) {
+        this.diffuseTexture = diffuseTexture;
     }
 
-    public String getUuid() {
-        return uuid;
+    public Color getDiffuseColor() {
+        return diffuseColor;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setDiffuseColor(Color diffuseColor) {
+        this.diffuseColor = diffuseColor;
     }
 
     public Date getLastModified() {
@@ -135,12 +137,36 @@ public class MetaFile {
         this.lastModified = lastModified;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public AssetType getType() {
         return type;
     }
 
     public void setType(AssetType type) {
         this.type = type;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public Properties getProps() {
+        return props;
+    }
+
+    public void setProps(Properties props) {
+        this.props = props;
     }
 
     public FileHandle getFile() {

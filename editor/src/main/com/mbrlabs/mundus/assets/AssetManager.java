@@ -38,6 +38,8 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Marcus Brummer
@@ -48,6 +50,7 @@ public class AssetManager implements Disposable {
     private static final String TAG = AssetManager.class.getSimpleName();
 
     private Array<Asset> assets;
+    private Map<String, Asset> assetIndex;
 
     private FileHandle rootFolder;
 
@@ -59,6 +62,7 @@ public class AssetManager implements Disposable {
      */
     public AssetManager(ProjectManager projectManager, String path) {
         this.assets = new Array<>();
+        this.assetIndex = new HashMap<>();
         this.projectManager = projectManager;
         rootFolder = new FileHandle(path);
         if(!rootFolder.exists() || !rootFolder.isDirectory()) {
@@ -82,6 +86,25 @@ public class AssetManager implements Disposable {
         for(FileHandle meta : rootFolder.list(metaFileFilter)) {
             loadAsset(new MetaFile(meta));
         }
+
+        // resolve dependencies
+        for(Asset asset : assets) {
+            // model asset
+            if(asset instanceof ModelAsset) {
+                String diffuseTexture = asset.getMeta().getDiffuseTexture();
+                if(diffuseTexture != null) {
+                    TextureAsset tex = (TextureAsset) findAssetByID(diffuseTexture);
+                    if(tex != null) {
+                        Log.error(TAG, diffuseTexture);
+                        ((ModelAsset) asset).setDiffuseTexture(tex.getTexture());
+                    }
+                }
+            }
+        }
+    }
+
+    public Asset findAssetByID(String id) {
+        return assetIndex.get(id);
     }
 
     /**
@@ -112,8 +135,8 @@ public class AssetManager implements Disposable {
         // add to list
         if(newAsset != null) {
             assets.add(newAsset);
+            assetIndex.put(newAsset.getUUID(), newAsset);
             Mundus.postEvent(new AssetImportEvent(newAsset));
-            // TODO log msg
         }
 
         return newAsset;
@@ -217,6 +240,7 @@ public class AssetManager implements Disposable {
         // add to list
         if(asset != null) {
             assets.add(asset);
+            assetIndex.put(asset.getUUID(), asset);
         }
     }
 

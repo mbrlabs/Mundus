@@ -16,7 +16,10 @@
 package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
@@ -34,6 +37,14 @@ public class ModelAsset extends Asset {
 
     public Model getModel() {
         return model;
+    }
+
+    public void setDiffuseTexture(Texture tex) {
+        if(model == null) return;
+        for(Material mat : model.materials) {
+            TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, tex);
+            mat.set(diffuse);
+        }
     }
 
     @Override
