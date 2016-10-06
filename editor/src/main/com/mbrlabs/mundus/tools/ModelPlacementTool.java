@@ -38,10 +38,8 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.TerrainUtils;
 
-/**
- * @author Marcus Brummer
- * @version 25-12-2015
- */
+/** @author Marcus Brummer
+ * @version 25-12-2015 */
 public class ModelPlacementTool extends Tool {
 
 	public static final String NAME = "Placement Tool";
@@ -55,13 +53,13 @@ public class ModelPlacementTool extends Tool {
 	private MModel model;
 	private MModelInstance curEntity;
 
-	public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
+	public ModelPlacementTool (ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
 		super(projectManager, shader, batch, history);
 		this.model = null;
 		this.curEntity = null;
 	}
 
-	public void setModel(MModel model) {
+	public void setModel (MModel model) {
 		this.model = model;
 		this.curEntity = new MModelInstance(model);
 		ProjectContext context = projectManager.current();
@@ -69,35 +67,35 @@ public class ModelPlacementTool extends Tool {
 	}
 
 	@Override
-	public String getName() {
+	public String getName () {
 		return NAME;
 	}
 
 	@Override
-	public Drawable getIcon() {
+	public Drawable getIcon () {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public String getIconFont() {
+	public String getIconFont () {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean isShouldRespectTerrainSlope() {
+	public boolean isShouldRespectTerrainSlope () {
 		return shouldRespectTerrainSlope;
 	}
 
-	public void setShouldRespectTerrainSlope(boolean shouldRespectTerrainSlope) {
+	public void setShouldRespectTerrainSlope (boolean shouldRespectTerrainSlope) {
 		this.shouldRespectTerrainSlope = shouldRespectTerrainSlope;
 	}
 
 	@Override
-	public void reset() {
+	public void reset () {
 		dispose();
 	}
 
 	@Override
-	public void render() {
+	public void render () {
 		if (curEntity != null) {
 			batch.begin(projectManager.current().currScene.cam);
 			batch.render(curEntity.modelInstance, projectManager.current().currScene.environment, shader);
@@ -106,12 +104,12 @@ public class ModelPlacementTool extends Tool {
 	}
 
 	@Override
-	public void act() {
+	public void act () {
 
 	}
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 
 		if (curEntity != null && button == Input.Buttons.LEFT) {
 			int id = projectManager.current().obtainID();
@@ -144,9 +142,8 @@ public class ModelPlacementTool extends Tool {
 	}
 
 	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		if (this.model == null || curEntity == null)
-			return false;
+	public boolean mouseMoved (int screenX, int screenY) {
+		if (this.model == null || curEntity == null) return false;
 
 		final ProjectContext context = projectManager.current();
 
@@ -154,8 +151,7 @@ public class ModelPlacementTool extends Tool {
 		if (context.currScene.terrains.size > 0 && curEntity != null) {
 			VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
 			if (vi != null) {
-				if (shouldRespectTerrainSlope)
-					curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
+				if (shouldRespectTerrainSlope) curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
 				curEntity.modelInstance.transform.setTranslation(vi.position);
 			}
 		} else {
@@ -167,7 +163,7 @@ public class ModelPlacementTool extends Tool {
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		this.model = null;
 		this.curEntity = null;
 	}
