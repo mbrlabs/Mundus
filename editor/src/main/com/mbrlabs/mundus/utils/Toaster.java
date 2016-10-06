@@ -43,6 +43,7 @@ public class Toaster {
 
     /**
      * Amber background.
+     * 
      * @param msg
      */
     public void info(String msg) {
@@ -53,6 +54,7 @@ public class Toaster {
 
     /**
      * Red background
+     * 
      * @param msg
      */
     public void error(String msg) {
@@ -63,6 +65,7 @@ public class Toaster {
 
     /**
      * Teal background.
+     * 
      * @param msg
      */
     public void success(String msg) {
@@ -80,11 +83,11 @@ public class Toaster {
     public void sticky(ToastType type, String msg) {
         VisTable table = newTable(msg);
         Toast toast = null;
-        if(type == ToastType.SUCCESS) {
+        if (type == ToastType.SUCCESS) {
             toast = new Toast(ToastType.SUCCESS.name().toLowerCase(), table);
-        } else if(type == ToastType.INFO) {
+        } else if (type == ToastType.INFO) {
             toast = new Toast(ToastType.INFO.name().toLowerCase(), table);
-        } else if(type == ToastType.ERROR) {
+        } else if (type == ToastType.ERROR) {
             toast = new Toast(ToastType.ERROR.name().toLowerCase(), table);
         }
 

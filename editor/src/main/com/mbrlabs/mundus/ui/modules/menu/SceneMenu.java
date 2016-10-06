@@ -37,9 +37,8 @@ import com.mbrlabs.mundus.utils.Log;
  * @author Marcus Brummer
  * @version 23-12-2015
  */
-public class SceneMenu extends Menu implements
-        ProjectChangedEvent.ProjectChangedListener,
-        SceneAddedEvent.SceneAddedListener {
+public class SceneMenu extends Menu
+        implements ProjectChangedEvent.ProjectChangedListener, SceneAddedEvent.SceneAddedListener {
 
     private static final String TAG = SceneMenu.class.getSimpleName();
 
@@ -78,11 +77,11 @@ public class SceneMenu extends Menu implements
 
     private void buildSceneUi() {
         // remove old items
-        for(MenuItem item : sceneItems) {
+        for (MenuItem item : sceneItems) {
             removeActor(item);
         }
         // add new items
-        for(final String scene : projectManager.current().scenes) {
+        for (final String scene : projectManager.current().scenes) {
             buildMenuItem(scene);
         }
 
@@ -101,7 +100,6 @@ public class SceneMenu extends Menu implements
 
         return menuItem;
     }
-
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {

@@ -38,7 +38,8 @@ import com.mbrlabs.mundus.tools.ToolManager;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener, ModelImportEvent.ModelImportListener {
+public class AssetsDock extends Tab
+        implements ProjectChangedEvent.ProjectChangedListener, ModelImportEvent.ModelImportListener {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
@@ -56,7 +57,7 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
         initUi();
     }
 
-    public void initUi () {
+    public void initUi() {
         root = new VisTable();
         filesViewContextContainer = new VisTable(false);
         filesView = new GridGroup(60, 4);
@@ -81,13 +82,13 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
     private void reloadModels() {
         filesView.clearChildren();
         ProjectContext projectContext = projectManager.current();
-        for(MModel model : projectContext.models) {
+        for (MModel model : projectContext.models) {
             AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(model);
             filesView.addActor(assetItem);
         }
     }
 
-    private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
+    private VisScrollPane createScrollPane(Actor actor, boolean disableX) {
         VisScrollPane scrollPane = new VisScrollPane(actor);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(disableX, false);

@@ -83,14 +83,18 @@ public class HistoryTest {
         assertEquals(2, history.size());
     }
 
-
     private class MockCommand implements Command {
         @Override
-        public void execute() {}
+        public void execute() {
+        }
+
         @Override
-        public void undo() {}
+        public void undo() {
+        }
+
         @Override
-        public void dispose() {}
+        public void dispose() {
+        }
     }
 
 }

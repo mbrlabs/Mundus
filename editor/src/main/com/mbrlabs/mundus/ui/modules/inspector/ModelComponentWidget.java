@@ -55,9 +55,9 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         selectBox.setItems(projectManager.current().models);
         selectBox.setSelected(modelComponent.getModelInstance().getModel());
         selectBox.addListener(new ChangeListener() {
-            public void changed (ChangeListener.ChangeEvent event, Actor actor) {
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 MModel model = selectBox.getSelected();
-                if(model != null) {
+                if (model != null) {
                     component.getModelInstance().replaceModel(model);
                     component.encodeRaypickColorId();
                 }
@@ -78,11 +78,11 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(3).padTop(3).row();
         collapsibleContent.addSeparator().row();
         // iterate over nodes
-        for(Node node : mi.modelInstance.nodes) {
+        for (Node node : mi.modelInstance.nodes) {
             collapsibleContent.add(new VisLabel("Node: " + node.id)).expandX().fillX().left().row();
 
             // iterate over node parts
-            for(NodePart nodePart : node.parts) {
+            for (NodePart nodePart : node.parts) {
 
                 // diffuse
                 final ColorAttribute diffuse = (ColorAttribute) nodePart.material.get(ColorAttribute.Diffuse);
@@ -130,7 +130,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     @Override
     public void setValues(GameObject go) {
         Component c = go.findComponentByType(Component.Type.MODEL);
-        if(c != null) {
+        if (c != null) {
             component = (ModelComponent) c;
         }
     }

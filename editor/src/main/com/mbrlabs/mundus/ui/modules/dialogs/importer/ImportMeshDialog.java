@@ -114,7 +114,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
 
             cam = new PerspectiveCamera();
             cam.position.set(0, 5f, 0);
-            cam.lookAt(0,0,0);
+            cam.lookAt(0, 0, 0);
             cam.near = 0.1f;
             cam.far = 100f;
             cam.update();
@@ -129,17 +129,16 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
 
         private void setupUI() {
             Table root = new Table();
-            //root.debugAll();
+            // root.debugAll();
             root.padTop(6).padRight(6).padBottom(22);
             add(root);
-
 
             VisTable inputTable = new VisTable();
             renderWidget = new RenderWidget(cam);
             renderWidget.setRenderer(new RenderWidget.Renderer() {
                 @Override
                 public void render(Camera cam) {
-                    if(previewInstance != null) {
+                    if (previewInstance != null) {
                         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
                         previewInstance.transform.rotate(0, 0, 1, -1f);
                         modelBatch.begin(cam);
@@ -171,8 +170,8 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             textureInput.setCallback(new FileChooserField.FileSelected() {
                 @Override
                 public void selected(FileHandle fileHandle) {
-                    if(fileHandle.exists()) {
-                        if(modelInput.getFile() != null && modelInput.getFile().exists()) {
+                    if (fileHandle.exists()) {
+                        if (modelInput.getFile() != null && modelInput.getFile().exists()) {
                             loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
                         }
                     }
@@ -183,8 +182,8 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             modelInput.setCallback(new FileChooserField.FileSelected() {
                 @Override
                 public void selected(FileHandle fileHandle) {
-                    if(fileHandle.exists()) {
-                        if(textureInput.getFile() != null && textureInput.getFile().exists()) {
+                    if (fileHandle.exists()) {
+                        if (textureInput.getFile() != null && textureInput.getFile().exists()) {
                             loadAndShowPreview(modelInput.getFile(), textureInput.getFile());
                         }
                     }
@@ -195,7 +194,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             importBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(previewModel != null && previewInstance != null && name.getText().length() > 0) {
+                    if (previewModel != null && previewInstance != null && name.getText().length() > 0) {
                         // create model
                         importedModel.name = name.getText();
                         MModel mModel = assetManager.importG3dbModel(importedModel);
@@ -213,17 +212,18 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
         private void loadAndShowPreview(FileHandle model, FileHandle texture) {
             this.importedModel = modelImporter.importToTempFolder(model, texture);
 
-            if(importedModel == null) {
-                if(FileFormatUtils.isCollada(model) || FileFormatUtils.isFBX(model) || FileFormatUtils.isWavefont(model)) {
-                    Dialogs.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right " +
-                            "files & have set the correct fbc-conv binary in the settings menu.");
+            if (importedModel == null) {
+                if (FileFormatUtils.isCollada(model) || FileFormatUtils.isFBX(model)
+                        || FileFormatUtils.isWavefont(model)) {
+                    Dialogs.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right "
+                            + "files & have set the correct fbc-conv binary in the settings menu.");
                 } else {
                     Dialogs.showErrorDialog(getStage(), "Import error\nPlease make sure you specified the right files");
                 }
             }
 
             // load and show preview
-            if(importedModel != null) {
+            if (importedModel != null) {
                 try {
                     previewModel = new G3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
                     previewInstance = new ModelInstance(previewModel);
@@ -241,15 +241,15 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             BoundingBox boundingBox = previewInstance.calculateBoundingBox(new BoundingBox());
             Vector3 max = boundingBox.getMax(new Vector3());
             float maxDim = 0;
-            if(max.x > maxDim) maxDim = max.x;
-            if(max.y > maxDim) maxDim = max.y;
-            if(max.z > maxDim) maxDim = max.z;
+            if (max.x > maxDim) maxDim = max.x;
+            if (max.y > maxDim) maxDim = max.y;
+            if (max.z > maxDim) maxDim = max.z;
             previewInstance.transform.scl(2f / maxDim);
         }
 
         @Override
         public void dispose() {
-            if(previewModel != null) {
+            if (previewModel != null) {
                 previewModel.dispose();
                 previewModel = null;
                 previewInstance = null;

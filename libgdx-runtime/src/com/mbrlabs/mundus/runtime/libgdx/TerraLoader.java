@@ -36,14 +36,13 @@ public class TerraLoader {
 
         DataInputStream is = null;
         try {
-            is = new DataInputStream(new BufferedInputStream(
-                    new GZIPInputStream(terra.read())));
+            is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(terra.read())));
             while (is.available() > 0) {
                 floatArray.add(is.readFloat());
             }
             is.close();
         } catch (EOFException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

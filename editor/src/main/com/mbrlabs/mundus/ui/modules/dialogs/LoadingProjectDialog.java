@@ -53,13 +53,11 @@ public class LoadingProjectDialog extends VisDialog {
         root.add(projectName).right().padRight(5);
     }
 
-
     public void loadProjectAsync(ProjectContext projectContext) {
         this.projectName.setText("Loading project: " + projectContext.name);
         Ui.getInstance().showDialog(this);
 
-
-        if(new File(projectContext.path).exists()) {
+        if (new File(projectContext.path).exists()) {
             projectManager.changeProject(projectContext);
             close();
         } else {
@@ -68,6 +66,5 @@ public class LoadingProjectDialog extends VisDialog {
         }
 
     }
-
 
 }

@@ -43,12 +43,15 @@ public abstract class Tool extends InputAdapter implements Disposable {
     }
 
     public abstract String getName();
+
     public abstract Drawable getIcon();
+
     public abstract String getIconFont();
 
     public abstract void reset();
 
     public abstract void render();
+
     public abstract void act();
 
 }

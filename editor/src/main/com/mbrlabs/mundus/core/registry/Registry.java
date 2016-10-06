@@ -53,8 +53,7 @@ public class Registry {
     }
 
     public FileHandle createTempFolder() {
-        String tempFolderPath = FilenameUtils.concat(
-                TEMP_DIR, UUID.randomUUID().toString()) + "/";
+        String tempFolderPath = FilenameUtils.concat(TEMP_DIR, UUID.randomUUID().toString()) + "/";
         FileHandle tempFolder = Gdx.files.absolute(tempFolderPath);
         tempFolder.mkdirs();
 
@@ -62,7 +61,7 @@ public class Registry {
     }
 
     public void purgeTempDirectory() {
-        for(FileHandle f : Gdx.files.absolute(TEMP_DIR).list()) {
+        for (FileHandle f : Gdx.files.absolute(TEMP_DIR).list()) {
             f.deleteDirectory();
         }
     }

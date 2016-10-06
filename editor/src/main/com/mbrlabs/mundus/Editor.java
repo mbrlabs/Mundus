@@ -51,7 +51,8 @@ import org.apache.commons.io.FilenameUtils;
  * @author Marcus Brummer
  * @version 07-06-2016
  */
-public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
+public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener,
+        SceneChangedEvent.SceneChangedListener {
 
     private ModelInstance axesInstance;
 
@@ -78,8 +79,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     @Inject
     private GameObjectPicker goPicker;
 
-	@Override
-	public void create () {
+    @Override
+    public void create() {
         Mundus.init();
         Mundus.registerEventListener(this);
         Mundus.inject(this);
@@ -92,12 +93,12 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         final ProjectContext projectContext = projectManager.current();
 
-        widget3D =  Ui.getInstance().getWidget3D();
+        widget3D = Ui.getInstance().getWidget3D();
         widget3D.setCam(projectContext.currScene.cam);
         widget3D.setRenderer(new RenderWidget.Renderer() {
             @Override
             public void render(Camera cam) {
-                if(projectContext.currScene.skybox != null) {
+                if (projectContext.currScene.skybox != null) {
                     batch.begin(projectContext.currScene.cam);
                     batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
                             projectContext.currScene.environment, shaders.skyboxShader);
@@ -114,7 +115,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         // open last edited project or create default project
         ProjectContext context = projectManager.loadLastProject();
-        if(context == null) {
+        if (context == null) {
             context = createDefaultProject();
         }
 
@@ -130,28 +131,26 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         Main.closeListener = new Main.WindowCloseListener() {
             @Override
             public boolean onCloseRequested() {
-                Dialogs.showOptionDialog(Ui.getInstance(),
-                    "Confirm exit", "Do you really want to close Mundus?",
-                    Dialogs.OptionDialogType.YES_NO,
-                    new OptionDialogAdapter() {
-                        @Override
-                        public void yes() {
-                            Gdx.app.exit();
-                        }
+                Dialogs.showOptionDialog(Ui.getInstance(), "Confirm exit", "Do you really want to close Mundus?",
+                        Dialogs.OptionDialogType.YES_NO, new OptionDialogAdapter() {
+                            @Override
+                            public void yes() {
+                                Gdx.app.exit();
+                            }
 
-                        @Override
-                        public void no() {
-                            super.no();
-                        }
-                    }
-                );
+                            @Override
+                            public void no() {
+                                super.no();
+                            }
+                        });
                 return true;
             }
         };
     }
 
     private void setupInput() {
-        // NOTE: order in wich processors are added is important: first added, first executed!
+        // NOTE: order in wich processors are added is important: first added,
+        // first executed!
         inputManager.addProcessor(shortcutController);
         inputManager.addProcessor(ui);
         // when user does not click on a ui element -> unfocus UI
@@ -167,8 +166,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         toolManager.setDefaultTool();
     }
 
-	@Override
-	public void render () {
+    @Override
+    public void render() {
         GlUtils.clearScreen(Color.WHITE);
         ui.act();
         camController.update();
@@ -178,13 +177,13 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
     private void resetCam() {
         final ProjectContext projectContext = projectManager.current();
-        if(compass != null) {
+        if (compass != null) {
             compass.setWorldCam(projectContext.currScene.cam);
         }
-        if(camController != null) {
+        if (camController != null) {
             camController.setCamera(projectContext.currScene.cam);
         }
-        if(widget3D != null) {
+        if (widget3D != null) {
             widget3D.setCam(projectContext.currScene.cam);
             projectContext.currScene.viewport = widget3D.getViewport();
         }
@@ -201,7 +200,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     }
 
     private ProjectContext createDefaultProject() {
-        if(registry.getLastOpenedProject() == null || registry.getProjects().size() == 0) {
+        if (registry.getLastOpenedProject() == null || registry.getProjects().size() == 0) {
             String name = "Default Project";
             String path = FileUtils.getUserDirectoryPath();
             path = FilenameUtils.concat(path, "MundusProjects");
@@ -235,4 +234,3 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
     }
 
 }
-

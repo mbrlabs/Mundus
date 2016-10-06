@@ -25,7 +25,7 @@ import java.util.Locale;
 public class StringUtils {
 
     public static String formatFloat(float f, int digits) {
-        return String.format(Locale.US, "%."+ digits + "f", f);
+        return String.format(Locale.US, "%." + digits + "f", f);
     }
 
 }

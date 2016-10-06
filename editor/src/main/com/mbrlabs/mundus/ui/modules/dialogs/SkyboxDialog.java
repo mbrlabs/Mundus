@@ -35,7 +35,8 @@ import com.mbrlabs.mundus.utils.SkyboxBuilder;
  * @author Marcus Brummer
  * @version 10-01-2016
  */
-public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
+public class SkyboxDialog extends BaseDialog
+        implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private ImageChooserField positiveX;
     private ImageChooserField negativeX;
@@ -120,7 +121,7 @@ public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.Proj
         defaultBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(projectContext.currScene.skybox != null) {
+                if (projectContext.currScene.skybox != null) {
                     projectContext.currScene.skybox.dispose();
                 }
                 projectContext.currScene.skybox = SkyboxBuilder.createDefaultSkybox();
@@ -142,7 +143,7 @@ public class SkyboxDialog extends BaseDialog implements ProjectChangedEvent.Proj
 
     private void resetImages() {
         Skybox skybox = projectManager.current().currScene.skybox;
-        if(skybox != null) {
+        if (skybox != null) {
             positiveX.setImage(skybox.getPositiveX());
             negativeX.setImage(skybox.getNegativeX());
             positiveY.setImage(skybox.getPositiveY());

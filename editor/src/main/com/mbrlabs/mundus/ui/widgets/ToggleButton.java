@@ -51,7 +51,7 @@ public class ToggleButton extends VisTextButton {
 
     public void setOn(boolean on) {
         this.isOn = on;
-        if(isOn) {
+        if (isOn) {
             setText(textOn);
         } else {
             setText(textOff);

@@ -33,7 +33,7 @@ public class Main {
     public static WindowCloseListener closeListener = null;
 
     public static void main(String[] arg) {
-        //Start Log instance
+        // Start Log instance
         Log.init();
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(TITLE);

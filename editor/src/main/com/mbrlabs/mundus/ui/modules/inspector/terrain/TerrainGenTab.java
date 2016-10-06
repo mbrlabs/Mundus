@@ -95,7 +95,7 @@ public class TerrainGenTab extends Tab {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 FileHandle hm = hmInput.getFile();
-                if(hm != null && hm.exists() && FileFormatUtils.isImage(hm)) {
+                if (hm != null && hm.exists() && FileFormatUtils.isImage(hm)) {
                     loadHeightMap(hm);
                 } else {
                     Dialogs.showErrorDialog(Ui.getInstance(), "Please select a heightmap image");
@@ -122,20 +122,17 @@ public class TerrainGenTab extends Tab {
         Pixmap originalMap = new Pixmap(heightMap);
 
         // scale pixmap if it doesn't fit the terrain
-        if(originalMap.getWidth() != terrain.vertexResolution || originalMap.getHeight() != terrain.vertexResolution) {
-            Pixmap scaledPixmap = new Pixmap(terrain.vertexResolution, terrain.vertexResolution, originalMap.getFormat());
-            scaledPixmap.drawPixmap(originalMap, 0, 0, originalMap.getWidth(),
-                    originalMap.getHeight(), 0, 0, scaledPixmap.getWidth(), scaledPixmap.getHeight());
+        if (originalMap.getWidth() != terrain.vertexResolution || originalMap.getHeight() != terrain.vertexResolution) {
+            Pixmap scaledPixmap = new Pixmap(terrain.vertexResolution, terrain.vertexResolution,
+                    originalMap.getFormat());
+            scaledPixmap.drawPixmap(originalMap, 0, 0, originalMap.getWidth(), originalMap.getHeight(), 0, 0,
+                    scaledPixmap.getWidth(), scaledPixmap.getHeight());
 
             originalMap.dispose();
-            Terraformer.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
-                    .map(scaledPixmap)
-                    .terraform();
+            Terraformer.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f).map(scaledPixmap).terraform();
             scaledPixmap.dispose();
         } else {
-            Terraformer.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f)
-                    .map(originalMap)
-                    .terraform();
+            Terraformer.heightMap(terrain).maxHeight(terrain.terrainWidth * 0.17f).map(originalMap).terraform();
             originalMap.dispose();
         }
 
@@ -148,11 +145,7 @@ public class TerrainGenTab extends Tab {
         TerrainHeightCommand command = new TerrainHeightCommand(terrain);
         command.setHeightDataBefore(terrain.heightData);
 
-        Terraformer.perlin(terrain)
-                .minHeight(min)
-                .maxHeight(max)
-                .seed(seed)
-                .terraform();
+        Terraformer.perlin(terrain).minHeight(min).maxHeight(max).seed(seed).terraform();
 
         command.setHeightDataAfter(terrain.heightData);
         history.add(command);

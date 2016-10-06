@@ -29,18 +29,18 @@ import com.mbrlabs.mundus.commons.terrain.Terrain;
 public class Utils {
 
     public static MTexture findTextureById(Array<MTexture> textures, Long id) {
-        if(id == null) return null;
-        for(MTexture t : textures) {
-            if(t.getId() == id) return t;
+        if (id == null) return null;
+        for (MTexture t : textures) {
+            if (t.getId() == id) return t;
         }
 
         return null;
     }
 
     public static Terrain findTerrainById(Array<Terrain> terrains, Long id) {
-        if(id == null) return null;
-        for(Terrain t : terrains) {
-            if(t.id == id) return t;
+        if (id == null) return null;
+        for (Terrain t : terrains) {
+            if (t.id == id) return t;
         }
 
         return null;
@@ -48,9 +48,9 @@ public class Utils {
 
     // TODO save models in map to remove the search every time
     public static Model findModelById(Array<MModel> models, Long id) {
-        if(id == null) return null;
-        for(MModel m : models) {
-            if(m.id == id) return m.getModel();
+        if (id == null) return null;
+        for (MModel m : models) {
+            if (m.id == id) return m.getModel();
         }
 
         return null;

@@ -73,7 +73,7 @@ public class FileMenu extends Menu {
 
         // setup recent projects
         PopupMenu recentPrjectsPopup = new PopupMenu();
-        for(final ProjectRef ref : registry.getProjects()) {
+        for (final ProjectRef ref : registry.getProjects()) {
             MenuItem pro = new MenuItem(ref.getName() + " - [" + ref.getPath() + "]");
             pro.addListener(new ClickListener() {
                 @Override

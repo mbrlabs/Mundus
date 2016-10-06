@@ -29,7 +29,7 @@ public class MModelInstance {
 
     public MModelInstance(MModel model) {
         this.model = model;
-        if(model.getModel() != null) {
+        if (model.getModel() != null) {
             modelInstance = new ModelInstance(model.getModel());
         }
     }
@@ -37,7 +37,7 @@ public class MModelInstance {
     public void replaceModel(MModel model) {
         this.model = model;
         ModelInstance mi = new ModelInstance(model.getModel());
-        mi.transform  = modelInstance.transform;
+        mi.transform = modelInstance.transform;
         modelInstance = mi;
     }
 

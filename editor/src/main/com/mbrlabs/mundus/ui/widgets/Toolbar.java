@@ -48,7 +48,7 @@ public class Toolbar {
     }
 
     public void addItem(Actor actor, boolean addLeft) {
-        if(addLeft) {
+        if (addLeft) {
             left.add(actor);
         } else {
             right.add(actor);
@@ -56,7 +56,7 @@ public class Toolbar {
     }
 
     public void addSeperator(boolean addLeft) {
-        if(addLeft) {
+        if (addLeft) {
             left.addSeparator(true);
         } else {
             right.addSeparator(true);

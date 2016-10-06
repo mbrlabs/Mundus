@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisCheckBox;
@@ -69,7 +68,7 @@ public class IdentifierWidget extends VisTable {
         active.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(projectContext.currScene.currentSelection == null) return;
+                if (projectContext.currScene.currentSelection == null) return;
                 projectContext.currScene.currentSelection.active = active.isChecked();
             }
         });
@@ -77,7 +76,7 @@ public class IdentifierWidget extends VisTable {
         name.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(projectContext.currScene.currentSelection == null) return;
+                if (projectContext.currScene.currentSelection == null) return;
                 projectContext.currScene.currentSelection.name = name.getText();
             }
         });

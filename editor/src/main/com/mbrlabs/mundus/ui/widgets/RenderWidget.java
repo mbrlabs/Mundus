@@ -63,7 +63,7 @@ public class RenderWidget extends Widget {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if(renderer == null || cam == null) return;
+        if (renderer == null || cam == null) return;
 
         // render part of the ui & pause rest
         batch.end();
@@ -74,7 +74,7 @@ public class RenderWidget extends Widget {
         final int height = (int) getHeight();
 
         // apply widget viewport
-        viewport.setScreenBounds((int)vec.x, (int)vec.y, width, height);
+        viewport.setScreenBounds((int) vec.x, (int) vec.y, width, height);
         viewport.setWorldSize(width * viewport.getUnitsPerPixel(), height * viewport.getUnitsPerPixel());
         viewport.apply();
 
@@ -89,7 +89,7 @@ public class RenderWidget extends Widget {
     }
 
     @Override
-    protected void sizeChanged () {
+    protected void sizeChanged() {
         super.sizeChanged();
     }
 

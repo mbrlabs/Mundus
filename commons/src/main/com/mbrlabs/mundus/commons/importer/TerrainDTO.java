@@ -137,5 +137,4 @@ public class TerrainDTO {
         this.vertexRes = vertexRes;
     }
 
-
 }

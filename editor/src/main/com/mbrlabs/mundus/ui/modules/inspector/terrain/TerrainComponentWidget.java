@@ -79,11 +79,10 @@ public class TerrainComponentWidget extends ComponentWidget<TerrainComponent> im
         tabbedPane.switchTab(0);
     }
 
-
     @Override
     public void setValues(GameObject go) {
         Component c = go.findComponentByType(Component.Type.TERRAIN);
-        if(c != null) {
+        if (c != null) {
             this.component = (TerrainComponent) c;
         }
     }

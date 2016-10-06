@@ -69,7 +69,7 @@ public class AddTerrainDialog extends BaseDialog {
 
     private void setupUI() {
         Table root = new Table();
-        //root.debugAll();
+        // root.debugAll();
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
 
@@ -113,8 +113,8 @@ public class AddTerrainDialog extends BaseDialog {
                     terrain.transform.setTranslation(posX, 0, posZ);
                     projectContext.terrains.add(terrain);
                     projectContext.currScene.terrains.add(terrain);
-                    GameObject terrainGO = TerrainUtils.createTerrainGO(
-                            projectContext.currScene.sceneGraph, shaders.terrainShader, projectContext.obtainID(), nom, terrain);
+                    GameObject terrainGO = TerrainUtils.createTerrainGO(projectContext.currScene.sceneGraph,
+                            shaders.terrainShader, projectContext.obtainID(), nom, terrain);
                     projectContext.currScene.sceneGraph.addGameObject(terrainGO);
 
                     Mundus.postEvent(new SceneGraphChangedEvent());

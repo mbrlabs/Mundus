@@ -33,8 +33,8 @@ public class ScaleTool extends TransformTool {
 
     public static final String NAME = "Scale Tool";
 
-    public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader,
-                     ModelBatch batch, CommandHistory history) {
+    public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
+            Shader shader, ModelBatch batch, CommandHistory history) {
         super(projectManager, goPicker, handlePicker, shader, batch, history);
     }
 

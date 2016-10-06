@@ -38,134 +38,137 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.TerrainUtils;
 
-/** @author Marcus Brummer
- * @version 25-12-2015 */
+/**
+ * @author Marcus Brummer
+ * @version 25-12-2015
+ */
 public class ModelPlacementTool extends Tool {
 
-	public static final String NAME = "Placement Tool";
-	public static Vector3 DEFAULT_ORIENTATION = Vector3.Z.cpy();
+    public static final String NAME = "Placement Tool";
+    public static Vector3 DEFAULT_ORIENTATION = Vector3.Z.cpy();
 
-	private Vector3 tempV3 = new Vector3();
+    private Vector3 tempV3 = new Vector3();
 
-	private boolean shouldRespectTerrainSlope = true;
+    private boolean shouldRespectTerrainSlope = true;
 
-	// DO NOT DISPOSE THIS
-	private MModel model;
-	private MModelInstance curEntity;
+    // DO NOT DISPOSE THIS
+    private MModel model;
+    private MModelInstance curEntity;
 
-	public ModelPlacementTool (ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
-		super(projectManager, shader, batch, history);
-		this.model = null;
-		this.curEntity = null;
-	}
+    public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
+        super(projectManager, shader, batch, history);
+        this.model = null;
+        this.curEntity = null;
+    }
 
-	public void setModel (MModel model) {
-		this.model = model;
-		this.curEntity = new MModelInstance(model);
-		ProjectContext context = projectManager.current();
-		System.out.println(context.terrains.size);
-	}
+    public void setModel(MModel model) {
+        this.model = model;
+        this.curEntity = new MModelInstance(model);
+        ProjectContext context = projectManager.current();
+        System.out.println(context.terrains.size);
+    }
 
-	@Override
-	public String getName () {
-		return NAME;
-	}
+    @Override
+    public String getName() {
+        return NAME;
+    }
 
-	@Override
-	public Drawable getIcon () {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Drawable getIcon() {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public String getIconFont () {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public String getIconFont() {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean isShouldRespectTerrainSlope () {
-		return shouldRespectTerrainSlope;
-	}
+    public boolean isShouldRespectTerrainSlope() {
+        return shouldRespectTerrainSlope;
+    }
 
-	public void setShouldRespectTerrainSlope (boolean shouldRespectTerrainSlope) {
-		this.shouldRespectTerrainSlope = shouldRespectTerrainSlope;
-	}
+    public void setShouldRespectTerrainSlope(boolean shouldRespectTerrainSlope) {
+        this.shouldRespectTerrainSlope = shouldRespectTerrainSlope;
+    }
 
-	@Override
-	public void reset () {
-		dispose();
-	}
+    @Override
+    public void reset() {
+        dispose();
+    }
 
-	@Override
-	public void render () {
-		if (curEntity != null) {
-			batch.begin(projectManager.current().currScene.cam);
-			batch.render(curEntity.modelInstance, projectManager.current().currScene.environment, shader);
-			batch.end();
-		}
-	}
+    @Override
+    public void render() {
+        if (curEntity != null) {
+            batch.begin(projectManager.current().currScene.cam);
+            batch.render(curEntity.modelInstance, projectManager.current().currScene.environment, shader);
+            batch.end();
+        }
+    }
 
-	@Override
-	public void act () {
+    @Override
+    public void act() {
 
-	}
+    }
 
-	@Override
-	public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-		if (curEntity != null && button == Input.Buttons.LEFT) {
-			int id = projectManager.current().obtainID();
-			GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.name, id);
-			projectManager.current().currScene.sceneGraph.addGameObject(modelGo);
+        if (curEntity != null && button == Input.Buttons.LEFT) {
+            int id = projectManager.current().obtainID();
+            GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.name, id);
+            projectManager.current().currScene.sceneGraph.addGameObject(modelGo);
 
-			curEntity.modelInstance.transform.getTranslation(tempV3);
-			modelGo.translate(tempV3);
-			Quaternion rot = new Quaternion();
-			rot = curEntity.modelInstance.transform.getRotation(rot);
-			modelGo.setLocalRotation(rot.x, rot.y, rot.z, rot.w);
-			ModelComponent modelComponent = new ModelComponent(modelGo);
-			modelComponent.setShader(shader);
-			modelComponent.setModelInstance(curEntity);
-			modelComponent.encodeRaypickColorId();
+            curEntity.modelInstance.transform.getTranslation(tempV3);
+            modelGo.translate(tempV3);
+            Quaternion rot = new Quaternion();
+            rot = curEntity.modelInstance.transform.getRotation(rot);
+            modelGo.setLocalRotation(rot.x, rot.y, rot.z, rot.w);
+            ModelComponent modelComponent = new ModelComponent(modelGo);
+            modelComponent.setShader(shader);
+            modelComponent.setModelInstance(curEntity);
+            modelComponent.encodeRaypickColorId();
 
-			try {
-				modelGo.addComponent(modelComponent);
-			} catch (InvalidComponentException e) {
-				Dialogs.showErrorDialog(Ui.getInstance(), e.getMessage());
-				return false;
-			}
+            try {
+                modelGo.addComponent(modelComponent);
+            } catch (InvalidComponentException e) {
+                Dialogs.showErrorDialog(Ui.getInstance(), e.getMessage());
+                return false;
+            }
 
-			Mundus.postEvent(new SceneGraphChangedEvent());
+            Mundus.postEvent(new SceneGraphChangedEvent());
 
-			curEntity = new MModelInstance(model);
-			mouseMoved(screenX, screenY);
-		}
-		return false;
-	}
+            curEntity = new MModelInstance(model);
+            mouseMoved(screenX, screenY);
+        }
+        return false;
+    }
 
-	@Override
-	public boolean mouseMoved (int screenX, int screenY) {
-		if (this.model == null || curEntity == null) return false;
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        if (this.model == null || curEntity == null) return false;
 
-		final ProjectContext context = projectManager.current();
+        final ProjectContext context = projectManager.current();
 
-		final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-		if (context.currScene.terrains.size > 0 && curEntity != null) {
-			VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
-			if (vi != null) {
-				if (shouldRespectTerrainSlope) curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
-				curEntity.modelInstance.transform.setTranslation(vi.position);
-			}
-		} else {
-			tempV3.set(projectManager.current().currScene.cam.position);
-			tempV3.add(ray.direction.nor().scl(200));
-			curEntity.modelInstance.transform.setTranslation(tempV3);
-		}
-		return false;
-	}
+        final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
+        if (context.currScene.terrains.size > 0 && curEntity != null) {
+            VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
+            if (vi != null) {
+                if (shouldRespectTerrainSlope)
+                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
+                curEntity.modelInstance.transform.setTranslation(vi.position);
+            }
+        } else {
+            tempV3.set(projectManager.current().currScene.cam.position);
+            tempV3.add(ray.direction.nor().scl(200));
+            curEntity.modelInstance.transform.setTranslation(tempV3);
+        }
+        return false;
+    }
 
-	@Override
-	public void dispose () {
-		this.model = null;
-		this.curEntity = null;
-	}
+    @Override
+    public void dispose() {
+        this.model = null;
+        this.curEntity = null;
+    }
 
 }

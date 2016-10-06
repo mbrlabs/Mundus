@@ -58,14 +58,14 @@ public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
     public void terraform() {
         rand.setSeed(seed);
 
-        //final float d = (float) Math.pow(2, this.octaves);
+        // final float d = (float) Math.pow(2, this.octaves);
 
-        for(int i = 0; i < terrain.heightData.length; i++) {
+        for (int i = 0; i < terrain.heightData.length; i++) {
             int x = i % terrain.vertexResolution;
-            int z = (int) Math.floor((double)i / terrain.vertexResolution);
+            int z = (int) Math.floor((double) i / terrain.vertexResolution);
 
             float height = Interpolation.linear.apply(minHeight, maxHeight, getInterpolatedNoise(x / 4f, z / 4f));
-            height += Interpolation.linear.apply(minHeight/ 3f, maxHeight / 3f, getInterpolatedNoise(x / 2f, z / 2f));
+            height += Interpolation.linear.apply(minHeight / 3f, maxHeight / 3f, getInterpolatedNoise(x / 2f, z / 2f));
 
             terrain.heightData[z * terrain.vertexResolution + x] = height;
         }
@@ -84,7 +84,7 @@ public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
         return rand.nextFloat();
     }
 
-    private float getInterpolatedNoise(float x, float z){
+    private float getInterpolatedNoise(float x, float z) {
         int intX = (int) x;
         int intZ = (int) z;
         float fracX = x - intX;
@@ -101,10 +101,11 @@ public class PerlinNoiseGenerator extends Generator<PerlinNoiseGenerator> {
 
     private float getSmoothNoise(int x, int z) {
         // corner noise
-        float corners = getNoise(x+1, z-1) + getNoise(x+1, z-1) + getNoise(x-1, z+1) + getNoise(x+1, z+1);
+        float corners = getNoise(x + 1, z - 1) + getNoise(x + 1, z - 1) + getNoise(x - 1, z + 1)
+                + getNoise(x + 1, z + 1);
         corners /= 16f;
         // side noise
-        float sides = getNoise(x-1, z) + getNoise(x+1, z) + getNoise(x, z-1) + getNoise(x, z+1);
+        float sides = getNoise(x - 1, z) + getNoise(x + 1, z) + getNoise(x, z - 1) + getNoise(x, z + 1);
         sides /= 8f;
         // center noise
         float center = getNoise(x, z) / 4f;

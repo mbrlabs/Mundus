@@ -36,7 +36,8 @@ import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
  * @author Marcus Brummer
  * @version 06-01-2016
  */
-public class FogDialog extends BaseDialog implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
+public class FogDialog extends BaseDialog
+        implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private VisCheckBox useFog = new VisCheckBox("Use fog");
     private VisTextField density = new VisTextField("0");
@@ -58,7 +59,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
 
     private void setupUI() {
         Table root = new Table();
-        //root.debugAll();
+        // root.debugAll();
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
 
@@ -78,8 +79,8 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
         useFog.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if(useFog.isChecked()) {
-                    if(projectContext.currScene.environment.getFog() == null) {
+                if (useFog.isChecked()) {
+                    if (projectContext.currScene.environment.getFog() == null) {
                         Fog fog = new Fog();
                         projectContext.currScene.environment.setFog(fog);
                         density.setText(String.valueOf(fog.density));
@@ -102,7 +103,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Float g = convert(gradient.getText());
-                if(g != null) {
+                if (g != null) {
                     projectContext.currScene.environment.getFog().gradient = g;
                 }
             }
@@ -113,7 +114,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Float d = convert(density.getText());
-                if(d != null) {
+                if (d != null) {
                     projectContext.currScene.environment.getFog().density = d;
                 }
             }
@@ -131,7 +132,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
 
     private void resetValues() {
         Fog fog = projectManager.current().currScene.environment.getFog();
-        if(fog == null) {
+        if (fog == null) {
             density.setDisabled(true);
             gradient.setDisabled(true);
         } else {
@@ -144,7 +145,7 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
 
     private Float convert(String input) {
         try {
-            if(input.length() == 0) return null;
+            if (input.length() == 0) return null;
             return Float.valueOf(input);
         } catch (Exception e) {
             return null;

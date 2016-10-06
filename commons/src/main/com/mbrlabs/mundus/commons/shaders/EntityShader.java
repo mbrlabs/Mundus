@@ -42,7 +42,8 @@ public class EntityShader extends BaseShader {
 
     protected final int UNIFORM_TEXTURE = register(new Uniform("u_texture"));
 
-    // ============================ MATRICES & CAM POSITION ============================
+    // ============================ MATRICES & CAM POSITION
+    // ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
@@ -98,20 +99,20 @@ public class EntityShader extends BaseShader {
 
     @Override
     public void render(Renderable renderable) {
-        final MundusEnvironment env = (MundusEnvironment)renderable.environment;
+        final MundusEnvironment env = (MundusEnvironment) renderable.environment;
 
         setLights(env);
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
         // texture uniform
-        TextureAttribute textureAttribute = ((TextureAttribute)(renderable.material.get(TextureAttribute.Diffuse)));
-        if(textureAttribute != null) {
+        TextureAttribute textureAttribute = ((TextureAttribute) (renderable.material.get(TextureAttribute.Diffuse)));
+        if (textureAttribute != null) {
             set(UNIFORM_TEXTURE, textureAttribute.textureDescription.texture);
         }
 
         // Fog
         final Fog fog = env.getFog();
-        if(fog == null) {
+        if (fog == null) {
             set(UNIFORM_FOG_DENSITY, 0f);
             set(UNIFORM_FOG_GRADIENT, 0f);
         } else {
@@ -131,12 +132,11 @@ public class EntityShader extends BaseShader {
 
         // TODO light array for each light type
 
-
         // directional lights
-        final DirectionalLightsAttribute dirLightAttribs =
-                env.get(DirectionalLightsAttribute.class, DirectionalLightsAttribute.Type);
+        final DirectionalLightsAttribute dirLightAttribs = env.get(DirectionalLightsAttribute.class,
+                DirectionalLightsAttribute.Type);
         final Array<DirectionalLight> dirLights = dirLightAttribs == null ? null : dirLightAttribs.lights;
-        if(dirLights != null && dirLights.size > 0) {
+        if (dirLights != null && dirLights.size > 0) {
             final DirectionalLight light = dirLights.first();
             set(UNIFORM_DIRECTIONAL_LIGHT_COLOR, light.color);
             set(UNIFORM_DIRECTIONAL_LIGHT_DIR, light.direction);
@@ -145,7 +145,6 @@ public class EntityShader extends BaseShader {
 
         // TODO point lights, spot lights
     }
-
 
     @Override
     public void end() {

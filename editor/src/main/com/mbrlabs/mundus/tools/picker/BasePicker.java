@@ -59,14 +59,15 @@ public abstract class BasePicker implements Disposable {
     protected void begin(Viewport viewport) {
         fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        HdpiUtils.glViewport(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(),
+                viewport.getScreenHeight());
     }
 
     protected void end() {
         fbo.end();
     }
 
-    public Pixmap getFrameBufferPixmap (Viewport viewport) {
+    public Pixmap getFrameBufferPixmap(Viewport viewport) {
         int w = viewport.getScreenWidth();
         int h = viewport.getScreenHeight();
         int x = viewport.getScreenX();

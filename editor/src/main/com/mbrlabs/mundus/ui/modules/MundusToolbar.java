@@ -105,7 +105,7 @@ public class MundusToolbar extends Toolbar {
         addItem(rotateBtn, true);
         addItem(scaleBtn, true);
         addSeperator(true);
-        //addItem(globalLocalSwitch, true);
+        // addItem(globalLocalSwitch, true);
 
         setActive(translateBtn);
 

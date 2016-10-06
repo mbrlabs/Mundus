@@ -21,6 +21,7 @@ import com.esotericsoftware.minlog.Log;
 
 /**
  * Add commands to undo/redo a previously called process
+ * 
  * @author Marcus Brummer
  * @version 07-02-2016
  */
@@ -39,18 +40,18 @@ public class CommandHistory {
     }
 
     public int add(Command command) {
-        if(size() == 0) {
+        if (size() == 0) {
             commands.add(command);
             pointer++;
             return pointer;
         }
 
-        if(pointer < size() - 1) {
+        if (pointer < size() - 1) {
             removeCommands(pointer + 1, commands.size - 1);
             commands.add(command);
             pointer++;
         } else {
-            if(size() == limit) {
+            if (size() == limit) {
                 removeCommand(0);
                 commands.add(command);
             } else {
@@ -68,7 +69,7 @@ public class CommandHistory {
     }
 
     private void removeCommands(int from, int to) {
-        for(int i = from; i <= to; i++) {
+        for (int i = from; i <= to; i++) {
             commands.get(i).dispose();
         }
 
@@ -76,7 +77,7 @@ public class CommandHistory {
     }
 
     public int goBack() {
-        if(pointer >= 0) {
+        if (pointer >= 0) {
             commands.get(pointer).undo();
             pointer--;
         }
@@ -85,11 +86,11 @@ public class CommandHistory {
     }
 
     public int goForward() {
-        if(pointer < commands.size - 1 ) {
+        if (pointer < commands.size - 1) {
             pointer++;
             commands.get(pointer).execute();
         }
-        
+
         return pointer;
     }
 
@@ -98,7 +99,7 @@ public class CommandHistory {
     }
 
     public void clear() {
-        for(Command c : commands) {
+        for (Command c : commands) {
             c.dispose();
         }
         commands.clear();

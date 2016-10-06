@@ -44,7 +44,7 @@ public class TextFieldWithLabel extends VisTable {
     }
 
     private void setupUI() {
-        if(width > 0) {
+        if (width > 0) {
             add(label).left().width(width * 0.2f);
             add(textField).right().width(width * 0.8f).row();
         } else {

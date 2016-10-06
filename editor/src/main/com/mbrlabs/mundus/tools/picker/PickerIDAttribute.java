@@ -31,7 +31,7 @@ public class PickerIDAttribute extends Attribute {
     public int g = 255;
     public int b = 255;
 
-    public final static boolean is (final long mask) {
+    public final static boolean is(final long mask) {
         return (mask & Type) == mask;
     }
 
@@ -44,26 +44,22 @@ public class PickerIDAttribute extends Attribute {
     }
 
     @Override
-    public PickerIDAttribute copy () {
+    public PickerIDAttribute copy() {
         return new PickerIDAttribute(this);
     }
 
     @Override
-    public int hashCode () {
-        return r + g*255 + b*255*255;
+    public int hashCode() {
+        return r + g * 255 + b * 255 * 255;
     }
 
     @Override
-    public int compareTo (Attribute o) {
+    public int compareTo(Attribute o) {
         return -1; // FIXME implement comparing
     }
 
     @Override
     public String toString() {
-        return "GameObjectIdAttribute{" +
-                "r=" + r +
-                ", g=" + g +
-                ", b=" + b +
-                '}';
+        return "GameObjectIdAttribute{" + "r=" + r + ", g=" + g + ", b=" + b + '}';
     }
 }

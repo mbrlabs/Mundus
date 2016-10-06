@@ -74,8 +74,8 @@ public class NewProjectDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 String name = projectName.getText();
                 String path = locationPath.getPath();
-                if(validateInput(name, path)) {
-                    if(!path.endsWith("/")) {
+                if (validateInput(name, path)) {
+                    if (!path.endsWith("/")) {
                         path += "/";
                     }
                     ProjectContext projectContext = projectManager.createProject(name, path);

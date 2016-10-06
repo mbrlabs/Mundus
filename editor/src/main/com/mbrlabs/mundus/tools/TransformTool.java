@@ -50,7 +50,7 @@ public abstract class TransformTool extends SelectionTool {
     protected GameObjectModifiedEvent gameObjectModifiedEvent;
 
     public TransformTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
-                         Shader shader, ModelBatch batch, CommandHistory history) {
+            Shader shader, ModelBatch batch, CommandHistory history) {
         super(projectManager, goPicker, shader, batch, history);
         this.handlePicker = handlePicker;
 
@@ -58,7 +58,9 @@ public abstract class TransformTool extends SelectionTool {
     }
 
     protected abstract void scaleHandles();
+
     protected abstract void translateHandles();
+
     protected abstract void rotateHandles();
 
 }

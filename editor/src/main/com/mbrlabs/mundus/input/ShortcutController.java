@@ -41,19 +41,19 @@ public class ShortcutController extends KeyboardLayoutInputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         keycode = convertKeycode(keycode);
-        if(keycode == Input.Keys.CONTROL_LEFT) {
+        if (keycode == Input.Keys.CONTROL_LEFT) {
             isCtrlPressed = true;
         }
 
-        if(!isCtrlPressed) return false;
+        if (!isCtrlPressed) return false;
 
-        if(keycode == Input.Keys.Z) {
+        if (keycode == Input.Keys.Z) {
             history.goBack();
             return true;
-        } else if(keycode == Input.Keys.Y) {
+        } else if (keycode == Input.Keys.Y) {
             history.goForward();
             return true;
-        } else if(keycode == Input.Keys.S) {
+        } else if (keycode == Input.Keys.S) {
             projectManager.saveCurrentProject();
             Ui.getInstance().getToaster().success("Project saved");
             return true;
@@ -65,7 +65,7 @@ public class ShortcutController extends KeyboardLayoutInputAdapter {
     @Override
     public boolean keyUp(int keycode) {
         keycode = convertKeycode(keycode);
-        if(keycode == Input.Keys.CONTROL_LEFT) {
+        if (keycode == Input.Keys.CONTROL_LEFT) {
             isCtrlPressed = false;
         }
         return false;

@@ -25,10 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Log messages with different log levels.
- * To save performance during runtime, string concatination is only run
- * if log level is present.
- * Use for example: Log.log(Log.INFO, TAG, "Msg with param {} and param {}", "param1", "param2");
+ * Log messages with different log levels. To save performance during runtime,
+ * string concatination is only run if log level is present. Use for example:
+ * Log.log(Log.INFO, TAG, "Msg with param {} and param {}", "param1", "param2");
  * {} will be replaced with parameter in left to right order.
  * 
  * @author Marcus Brummer, codenigma
@@ -81,7 +80,7 @@ public class Log {
         SimpleDateFormat fileDateFormat = new SimpleDateFormat("yy-MM-dd");
         String fileName = fileDateFormat.format(new Date());
         fileName = "mundus " + fileName + ".log";
-        
+
         try {
             logFile = new File(logDirectory, fileName);
             logFile.createNewFile();
@@ -98,13 +97,14 @@ public class Log {
         return logFile.getParent();
     }
 
-    //Log with tag
+    // Log with tag
     public static void trace(String tag, String msg, Object... params) {
         if (LOG_LEVEL >= TRACE) {
             msg = completeMsg(msg, params);
             print("[Trace][" + tag + "] " + msg);
         }
     }
+
     public static void debug(String tag, String msg, Object... params) {
         if (LOG_LEVEL >= DEBUG) {
             msg = completeMsg(msg, params);
@@ -177,41 +177,41 @@ public class Log {
     }
 
     private static String completeMsg(String msg, Object... params) {
-        for(Object p : params)
+        for (Object p : params)
             msg = msg.replaceFirst("\\{\\}", String.valueOf(p));
         return msg;
     }
 
     /**
-     * Log msg with tag
-     * To save memory values will be concat to strings only when log level really is set
-     * Use {} in the msg as wild card
+     * Log msg with tag To save memory values will be concat to strings only
+     * when log level really is set Use {} in the msg as wild card
+     * 
      * @param logLevel
      * @param msg
-     * @param params 
+     * @param params
      */
     public static void log(int logLevel, String tag, String msg, Object... params) {
         switch (logLevel) {
-            case TRACE:
-                trace(tag, msg, params);
-                break;
-            case DEBUG:
-                debug(tag, msg, params);
-                break;
-            case INFO:
-                info(tag, msg, params);
-                break;
-            case WARN:
-                warn(tag, msg, params);
-                break;
-            case ERROR:
-                error(tag, msg, params);
-                break;
-            case FATAL:
-                fatal(tag, msg, params);
-                break;
-            default:
-                error(tag, "Log level " + logLevel + " is not supported!");
+        case TRACE:
+            trace(tag, msg, params);
+            break;
+        case DEBUG:
+            debug(tag, msg, params);
+            break;
+        case INFO:
+            info(tag, msg, params);
+            break;
+        case WARN:
+            warn(tag, msg, params);
+            break;
+        case ERROR:
+            error(tag, msg, params);
+            break;
+        case FATAL:
+            fatal(tag, msg, params);
+            break;
+        default:
+            error(tag, "Log level " + logLevel + " is not supported!");
         }
     }
 

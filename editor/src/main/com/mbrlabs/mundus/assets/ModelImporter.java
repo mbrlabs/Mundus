@@ -53,10 +53,10 @@ public class ModelImporter implements SettingsChangedEvent.SettingsChangedListen
     }
 
     public ImportedModel importToTempFolder(FileHandle modelFile, FileHandle textureFile) {
-        if(modelFile == null || !modelFile.exists()) {
+        if (modelFile == null || !modelFile.exists()) {
             return null;
         }
-        if(textureFile == null || !textureFile.exists()) {
+        if (textureFile == null || !textureFile.exists()) {
             return null;
         }
 
@@ -68,38 +68,35 @@ public class ModelImporter implements SettingsChangedEvent.SettingsChangedListen
         imported.textureFile = Gdx.files.absolute(FilenameUtils.concat(tempModelCache.path(), textureFile.name()));
 
         // check if copied texture file exists
-        if(!imported.textureFile.exists()) {
+        if (!imported.textureFile.exists()) {
             return null;
         }
 
         // copy model file
         modelFile.copyTo(tempModelCache);
         FileHandle rawModelFile = Gdx.files.absolute(FilenameUtils.concat(tempModelCache.path(), modelFile.name()));
-        if(!rawModelFile.exists()) {
+        if (!rawModelFile.exists()) {
             return null;
         }
 
         // convert copied importer
-        boolean convert = FileFormatUtils.isFBX(rawModelFile)
-                || FileFormatUtils.isCollada(rawModelFile)
+        boolean convert = FileFormatUtils.isFBX(rawModelFile) || FileFormatUtils.isCollada(rawModelFile)
                 || FileFormatUtils.isWavefont(rawModelFile);
 
-        if(convert) {
+        if (convert) {
             fbxConv.clear();
-            imported.convResult = fbxConv.input(rawModelFile.path())
-                    .output(tempModelCache.file().getAbsolutePath())
-                    .flipTexture(true)
-                    .execute();
+            imported.convResult = fbxConv.input(rawModelFile.path()).output(tempModelCache.file().getAbsolutePath())
+                    .flipTexture(true).execute();
 
-            if(imported.convResult.isSuccess()) {
+            if (imported.convResult.isSuccess()) {
                 imported.g3dbFile = Gdx.files.absolute(imported.convResult.getOutputFile());
             }
-        } else if(FileFormatUtils.isG3DB(rawModelFile)) {
+        } else if (FileFormatUtils.isG3DB(rawModelFile)) {
             imported.g3dbFile = rawModelFile;
         }
 
         // check if converted file exists
-        if(imported.g3dbFile == null || !imported.g3dbFile.exists()) {
+        if (imported.g3dbFile == null || !imported.g3dbFile.exists()) {
             return null;
         }
 
