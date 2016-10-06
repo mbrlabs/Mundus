@@ -34,7 +34,19 @@ import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.core.EditorScene;
-import com.mbrlabs.mundus.core.kryo.descriptors.*;
+import com.mbrlabs.mundus.core.kryo.descriptors.BaseLightDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.FogDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.GameObjectDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.ModelComponentDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.ProjectDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.ProjectRefDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.SettingsDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainComponentDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainTextureDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TextureDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.core.registry.ProjectRef;
@@ -129,10 +141,11 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     Game Object
+    // Game Object
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models, Array<Terrain> terrains) {
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models,
+            Array<Terrain> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
 
@@ -215,8 +228,8 @@ public class DescriptorConverter {
 
     public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<ModelAsset> models) {
         ModelAsset model = null;
-        for(ModelAsset m : models) {
-            if(descriptor.getModelID().equals(m.getUUID())) {
+        for (ModelAsset m : models) {
+            if (descriptor.getModelID().equals(m.getUUID())) {
                 model = m;
                 break;
             }
@@ -495,7 +508,8 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains, Array<ModelAsset> models) {
+    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains,
+            Array<ModelAsset> models) {
         EditorScene scene = new EditorScene();
 
         // meta

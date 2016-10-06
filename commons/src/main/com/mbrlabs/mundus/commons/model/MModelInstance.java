@@ -51,20 +51,20 @@ public class MModelInstance {
 
     public void applyModelMaterial() {
         Model m = model.getModel();
-        for(int i = 0; i < m.materials.size; i++) {
+        for (int i = 0; i < m.materials.size; i++) {
             Material modelMat = m.materials.get(i);
             Material instanceMat = modelInstance.materials.get(i);
 
             // diffuse texture
             Attribute diffuseTex = modelMat.get(TextureAttribute.Diffuse);
-            if(diffuseTex != null) {
+            if (diffuseTex != null) {
                 instanceMat.set(diffuseTex);
             } else {
                 instanceMat.remove(TextureAttribute.Diffuse);
             }
             // diffuse color
             Attribute diffuseColor = modelMat.get(ColorAttribute.Diffuse);
-            if(diffuseColor != null) {
+            if (diffuseColor != null) {
                 instanceMat.set(diffuseColor);
             }
 

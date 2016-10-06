@@ -37,16 +37,16 @@ public class MetaFile {
     public static final String META_EXTENSION = "meta";
     public static final int CURRENT_VERSION = 1;
 
-    private static final String COMMENT = "# !!! WARNING, DO NOT MODIFY OR DELETE !!! \n " +
-            "This file is machine generated. If you delete or modify this, Mundus might not work anymore.\n";
+    private static final String COMMENT = "# !!! WARNING, DO NOT MODIFY OR DELETE !!! \n "
+            + "This file is machine generated. If you delete or modify this, Mundus might not work anymore.\n";
 
-    private static final String PROP_VERSION            = "version";
-    private static final String PROP_UUID               = "uuid";
-    private static final String PROP_LAST_MODIFIED      = "last_modified";
-    private static final String PROP_TYPE               = "type";
+    private static final String PROP_VERSION = "version";
+    private static final String PROP_UUID = "uuid";
+    private static final String PROP_LAST_MODIFIED = "last_modified";
+    private static final String PROP_TYPE = "type";
 
-    private static final String PROP_MATERIAL_DIFFUSE_COLOR         = "mat.diffuse.color";
-    private static final String PROP_MATERIAL_DIFFUSE_TEXTURE       = "mat.diffuse.texture";
+    private static final String PROP_MATERIAL_DIFFUSE_COLOR = "mat.diffuse.color";
+    private static final String PROP_MATERIAL_DIFFUSE_TEXTURE = "mat.diffuse.texture";
 
     private FileHandle file;
     private Properties props;
@@ -75,11 +75,11 @@ public class MetaFile {
         props.setProperty(PROP_LAST_MODIFIED, String.valueOf(this.lastModified.getTime()));
 
         // model specific
-        if(type == AssetType.MODEL) {
-            if(diffuseColor != null) {
+        if (type == AssetType.MODEL) {
+            if (diffuseColor != null) {
                 props.setProperty(PROP_MATERIAL_DIFFUSE_COLOR, diffuseColor.toString());
             }
-            if(diffuseTexture != null) {
+            if (diffuseTexture != null) {
                 props.setProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, diffuseTexture);
             }
         }
@@ -99,9 +99,9 @@ public class MetaFile {
             this.lastModified = new Date(Long.valueOf(props.getProperty(PROP_LAST_MODIFIED)));
 
             // model specific
-            if(type == AssetType.MODEL) {
+            if (type == AssetType.MODEL) {
                 String color = props.getProperty(PROP_MATERIAL_DIFFUSE_COLOR, null);
-                if(color != null) {
+                if (color != null) {
                     this.diffuseColor = Color.valueOf(color);
                 }
                 this.diffuseTexture = props.getProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, null);

@@ -52,7 +52,7 @@ public class TerraAsset extends Asset {
             }
             is.close();
         } catch (EOFException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
             return;

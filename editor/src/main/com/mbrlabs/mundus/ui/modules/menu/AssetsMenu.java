@@ -22,7 +22,6 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.mbrlabs.mundus.commons.assets.Asset;
-import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
 import com.mbrlabs.mundus.utils.Log;
@@ -69,7 +68,7 @@ public class AssetsMenu extends Menu {
                 }, new AssetSelectionDialog.AssetSelectionListener() {
                     @Override
                     public void onSelected(Array<Asset> assets) {
-                        for(Asset asset : assets) {
+                        for (Asset asset : assets) {
                             Log.trace("AssetMenu", asset.toString());
                         }
                     }

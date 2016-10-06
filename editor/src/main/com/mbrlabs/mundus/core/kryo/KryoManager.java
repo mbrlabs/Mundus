@@ -23,12 +23,25 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.commons.Scene;
-import com.mbrlabs.mundus.core.kryo.descriptors.*;
+import com.mbrlabs.mundus.core.kryo.descriptors.BaseLightDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.FogDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.GameObjectDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.ModelComponentDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.ProjectDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.ProjectRefDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.SettingsDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainComponentDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TerrainTextureDescriptor;
+import com.mbrlabs.mundus.core.kryo.descriptors.TextureDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.core.registry.ProjectRef;
 import com.mbrlabs.mundus.core.registry.Registry;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.FileInputStream;

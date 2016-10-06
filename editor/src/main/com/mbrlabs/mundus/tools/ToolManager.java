@@ -26,7 +26,11 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.input.InputManager;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.tools.brushes.*;
+import com.mbrlabs.mundus.tools.brushes.CircleBrush;
+import com.mbrlabs.mundus.tools.brushes.ConfettiBrush;
+import com.mbrlabs.mundus.tools.brushes.SmoothCircleBrush;
+import com.mbrlabs.mundus.tools.brushes.StarBrush;
+import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 

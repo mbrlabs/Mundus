@@ -40,9 +40,9 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
-import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -167,7 +167,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
             modelInput.setCallback(new FileChooserField.FileSelected() {
                 @Override
                 public void selected(FileHandle fileHandle) {
-                    if(fileHandle.exists()) {
+                    if (fileHandle.exists()) {
                         loadAndShowPreview(modelInput.getFile());
                     }
                 }
@@ -181,9 +181,11 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                         EditorAssetManager assetManager = projectManager.current().assetManager;
 
                         // create model
-                        String assetRoot = FilenameUtils.concat(projectManager.current().path, ProjectManager.PROJECT_ASSETS_DIR);
+                        String assetRoot = FilenameUtils.concat(projectManager.current().path,
+                                ProjectManager.PROJECT_ASSETS_DIR);
                         try {
-                            // TODO use assetManager.importAsset() if implemented for models
+                            // TODO use assetManager.importAsset() if
+                            // implemented for models
                             ModelAsset asset = assetManager.createModelAsset(new FileHandle(assetRoot), importedModel);
                             Mundus.postEvent(new AssetImportEvent(asset));
                             Ui.getInstance().getToaster().success("Mesh imported");

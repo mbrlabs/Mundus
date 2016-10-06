@@ -39,7 +39,8 @@ public class AssetManager implements Disposable {
     /**
      * Asset manager constructor.
      *
-     * @param assetsFolder  root directory of assets
+     * @param assetsFolder
+     *            root directory of assets
      */
     public AssetManager(FileHandle assetsFolder) {
         this.rootFolder = assetsFolder;
@@ -50,16 +51,17 @@ public class AssetManager implements Disposable {
     /**
      * Returns an asset by id.
      *
-     * @param id    id of asset
-     * @return      matching asset or null
+     * @param id
+     *            id of asset
+     * @return matching asset or null
      */
     public Asset findAssetByID(String id) {
         return assetIndex.get(id);
     }
 
     public void addAsset(Asset asset) {
-        if(asset == null) return;
-        if(assetIndex.get(asset.getUUID()) == null) {
+        if (asset == null) return;
+        if (assetIndex.get(asset.getUUID()) == null) {
             assets.add(asset);
             assetIndex.put(asset.getUUID(), asset);
         }
@@ -68,7 +70,7 @@ public class AssetManager implements Disposable {
     /**
      * Returns all assets.
      *
-     * @return  all assets
+     * @return all assets
      */
     public Array<Asset> getAssets() {
         return assets;
@@ -77,12 +79,12 @@ public class AssetManager implements Disposable {
     /**
      * Returns all assets of type MODEL.
      *
-     * @return  all model assets
+     * @return all model assets
      */
     public Array<ModelAsset> getModelAssets() {
         Array<ModelAsset> models = new Array<ModelAsset>();
-        for(Asset asset : assets) {
-            if(asset instanceof ModelAsset) {
+        for (Asset asset : assets) {
+            if (asset instanceof ModelAsset) {
                 models.add((ModelAsset) asset);
             }
         }
@@ -93,9 +95,12 @@ public class AssetManager implements Disposable {
     /**
      * Loads all assets in the project's asset folder.
      *
-     * @param listener                  informs about current loading progress
-     * @throws AssetNotFoundException   if a meta file points to a non existing asset
-     * @throws MetaFileParseException   if a meta file can't be parsed
+     * @param listener
+     *            informs about current loading progress
+     * @throws AssetNotFoundException
+     *             if a meta file points to a non existing asset
+     * @throws MetaFileParseException
+     *             if a meta file can't be parsed
      */
     public void loadAssets(AssetLoadingListener listener) throws AssetNotFoundException, MetaFileParseException {
         // create meta file filter
@@ -108,19 +113,19 @@ public class AssetManager implements Disposable {
 
         // load assets
         FileHandle[] metaFiles = rootFolder.list(metaFileFilter);
-        for(FileHandle meta : metaFiles) {
+        for (FileHandle meta : metaFiles) {
             Asset asset = loadAsset(new MetaFile(meta));
             listener.onLoad(asset, assets.size, metaFiles.length);
         }
 
         // resolve dependencies
-        for(Asset asset : assets) {
+        for (Asset asset : assets) {
             // model asset
-            if(asset instanceof ModelAsset) {
+            if (asset instanceof ModelAsset) {
                 String diffuseTexture = asset.getMeta().getDiffuseTexture();
-                if(diffuseTexture != null) {
+                if (diffuseTexture != null) {
                     TextureAsset tex = (TextureAsset) findAssetByID(diffuseTexture);
-                    if(tex != null) {
+                    if (tex != null) {
                         // Log.error(TAG, diffuseTexture);
                         ((ModelAsset) asset).setDiffuseTexture(tex);
                     }
@@ -134,10 +139,13 @@ public class AssetManager implements Disposable {
     /**
      * Loads an asset, given it's meta file.
      *
-     * @param meta  meta file of asset
-     * @return      asset or null
-     * @throws AssetNotFoundException   if a meta file points to a non existing asset
-     * @throws MetaFileParseException   if a meta file can't be parsed
+     * @param meta
+     *            meta file of asset
+     * @return asset or null
+     * @throws AssetNotFoundException
+     *             if a meta file points to a non existing asset
+     * @throws MetaFileParseException
+     *             if a meta file can't be parsed
      */
     public Asset loadAsset(MetaFile meta) throws MetaFileParseException, AssetNotFoundException {
         // get handle to asset
@@ -145,7 +153,7 @@ public class AssetManager implements Disposable {
         FileHandle assetFile = new FileHandle(assetPath);
 
         // check if asset exists
-        if(!assetFile.exists()) {
+        if (!assetFile.exists()) {
             throw new AssetNotFoundException("Meta file found, but asset does not exist: " + meta.getFile().path());
         }
 
@@ -154,20 +162,20 @@ public class AssetManager implements Disposable {
         // load actual asset
         Asset asset = null;
         switch (meta.getType()) {
-            case TEXTURE:
-                asset = loadTextureAsset(meta, assetFile);
-                break;
-            case PIXMAP_TEXTURE:
-                asset = loadPixmapTextureAsset(meta, assetFile);
-                break;
-            case TERRA:
-                asset = loadTerraAsset(meta, assetFile);
-                break;
-            case MODEL:
-                asset = loadModelAsset(meta, assetFile);
-                break;
-            default:
-                return null;
+        case TEXTURE:
+            asset = loadTextureAsset(meta, assetFile);
+            break;
+        case PIXMAP_TEXTURE:
+            asset = loadPixmapTextureAsset(meta, assetFile);
+            break;
+        case TERRA:
+            asset = loadTerraAsset(meta, assetFile);
+            break;
+        case MODEL:
+            asset = loadModelAsset(meta, assetFile);
+            break;
+        default:
+            return null;
         }
 
         addAsset(asset);
@@ -202,7 +210,7 @@ public class AssetManager implements Disposable {
 
     @Override
     public void dispose() {
-        for(Asset asset : assets) {
+        for (Asset asset : assets) {
             asset.dispose();
         }
         assets.clear();
@@ -215,15 +223,21 @@ public class AssetManager implements Disposable {
     public interface AssetLoadingListener {
         /**
          * Called if an asset loaded
-         * @param asset         loaded asset
-         * @param progress      number of already loaded assets
-         * @param assetCount    total number of assets
+         * 
+         * @param asset
+         *            loaded asset
+         * @param progress
+         *            number of already loaded assets
+         * @param assetCount
+         *            total number of assets
          */
         void onLoad(Asset asset, int progress, int assetCount);
 
         /**
          * Called if all assets loaded.
-         * @param assetCount  total number of loaded assets
+         * 
+         * @param assetCount
+         *            total number of loaded assets
          */
         void onFinish(int assetCount);
     }

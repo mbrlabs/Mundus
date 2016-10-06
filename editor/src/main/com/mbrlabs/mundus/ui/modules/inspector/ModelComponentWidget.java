@@ -20,10 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.model.Node;
-import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -72,9 +69,9 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         selectBox.setItems(projectManager.current().assetManager.getModelAssets());
         selectBox.setSelected(modelComponent.getModelInstance().getModel());
         selectBox.addListener(new ChangeListener() {
-            public void changed (ChangeListener.ChangeEvent event, Actor actor) {
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 ModelAsset model = selectBox.getSelected();
-                if(model != null) {
+                if (model != null) {
                     component.getModelInstance().replaceModel(model);
                     component.encodeRaypickColorId();
                 }
@@ -86,9 +83,9 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
     private void updateModelInstaneceMaterials() {
         EditorScene scene = projectManager.current().currScene;
-        for(GameObject go : scene.sceneGraph.getGameObjects()) {
+        for (GameObject go : scene.sceneGraph.getGameObjects()) {
             ModelComponent c = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
-            if(c != null) c.getModelInstance().applyModelMaterial();
+            if (c != null) c.getModelInstance().applyModelMaterial();
         }
     }
 
@@ -107,7 +104,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         final Model model = asset.getModel();
 
         // iterate over materials
-        for(Material mat : model.materials) {
+        for (Material mat : model.materials) {
             collapsibleContent.add(new VisLabel(mat.id)).expandX().fillX().left().row();
 
             // diffuse texture
@@ -116,7 +113,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             final AssetSelectionDialog.AssetSelectionListener listener = new AssetSelectionDialog.AssetSelectionListener() {
                 @Override
                 public void onSelected(Array<Asset> assets) {
-                    if(assets.size > 0) {
+                    if (assets.size > 0) {
                         // set texture id & save
                         Asset selectedTexture = assets.first();
                         asset.setDiffuseTexture((TextureAsset) selectedTexture);
@@ -144,12 +141,11 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                 }
             });
             TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
-            if(texAsset != null) {
+            if (texAsset != null) {
                 diffuseTextureField.setText(texAsset.toString());
             }
             diffuseTextureField.setDisabled(true);
             collapsibleContent.add(diffuseTextureField).expandX().fillX().left().padBottom(5).row();
-
 
             // delete texture btn
             VisTextButton deletBtn = new VisTextButton("Remove texture");
@@ -163,7 +159,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    for(Material mat : component.getModelInstance().getModel().getModel().materials) {
+                    for (Material mat : component.getModelInstance().getModel().getModel().materials) {
                         mat.remove(TextureAttribute.Diffuse);
                     }
                     updateModelInstaneceMaterials();
@@ -198,7 +194,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
     @Override
     public void setValues(GameObject go) {
         Component c = go.findComponentByType(Component.Type.MODEL);
-        if(c != null) {
+        if (c != null) {
             component = (ModelComponent) c;
         }
     }

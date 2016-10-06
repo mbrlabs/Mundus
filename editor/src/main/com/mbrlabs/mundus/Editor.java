@@ -44,9 +44,9 @@ import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.Compass;
 import com.mbrlabs.mundus.utils.GlUtils;
 import com.mbrlabs.mundus.utils.UsefulMeshs;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-
 
 /**
  * @author Marcus Brummer
@@ -120,7 +120,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
             context = createDefaultProject();
         }
 
-
         projectManager.changeProject(context);
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
@@ -128,21 +127,26 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         setupCloseListener();
 
-//        for(FileHandle file : new FileHandle("/home/marcus/Desktop/testAssets/").list()) {
-//            context.assetManager.importAsset(file, TextureAsset.class);
-//        }
-//
-//        try {
-//            AssetHelper.createTerraAsset(new FileHandle("/home/marcus/MundusProjects/Default Project/assets"), 180);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            AssetHelper.createPixmapTextureAsset(new FileHandle("/home/marcus/MundusProjects/Default Project/assets"), 512);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        // for(FileHandle file : new
+        // FileHandle("/home/marcus/Desktop/testAssets/").list()) {
+        // context.assetManager.importAsset(file, TextureAsset.class);
+        // }
+        //
+        // try {
+        // AssetHelper.createTerraAsset(new
+        // FileHandle("/home/marcus/MundusProjects/Default Project/assets"),
+        // 180);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        //
+        // try {
+        // AssetHelper.createPixmapTextureAsset(new
+        // FileHandle("/home/marcus/MundusProjects/Default Project/assets"),
+        // 512);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
     }
 
     private void setupCloseListener() {

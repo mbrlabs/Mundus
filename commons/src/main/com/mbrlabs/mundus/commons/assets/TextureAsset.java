@@ -50,20 +50,20 @@ public class TextureAsset extends Asset {
 
     @Override
     public void load() {
-        if(generateMipMaps) {
+        if (generateMipMaps) {
             texture = TextureUtils.loadMipmapTexture(file, false);
         } else {
             texture = new Texture(file);
         }
 
-        if(tileable) {
+        if (tileable) {
             texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         }
     }
 
     @Override
     public void dispose() {
-        if(texture != null) {
+        if (texture != null) {
             texture.dispose();
         }
     }

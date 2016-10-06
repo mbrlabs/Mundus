@@ -28,12 +28,12 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectAlreadyImportedException;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.core.project.ProjectOpenException;
 import com.mbrlabs.mundus.core.registry.ProjectRef;
 import com.mbrlabs.mundus.core.registry.Registry;
-import com.mbrlabs.mundus.core.project.ProjectAlreadyImportedException;
-import com.mbrlabs.mundus.core.project.ProjectOpenException;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**

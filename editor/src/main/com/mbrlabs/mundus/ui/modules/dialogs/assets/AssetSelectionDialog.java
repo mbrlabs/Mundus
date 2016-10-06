@@ -33,9 +33,8 @@ import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
  * @author Marcus Brummer
  * @version 02-10-2016
  */
-public class AssetSelectionDialog extends BaseDialog implements
-        AssetImportEvent.AssetImportListener,
-        ProjectChangedEvent.ProjectChangedListener {
+public class AssetSelectionDialog extends BaseDialog
+        implements AssetImportEvent.AssetImportListener, ProjectChangedEvent.ProjectChangedListener {
 
     private static final String TAG = AssetSelectionDialog.class.getSimpleName();
     private static final String TITLE = "Select an asset";
@@ -67,8 +66,8 @@ public class AssetSelectionDialog extends BaseDialog implements
     private void setupListeners() {
         list.setItemClickListener(new ListView.ItemClickListener<Asset>() {
             @Override
-            public void clicked (Asset item) {
-                if(listener != null) {
+            public void clicked(Asset item) {
+                if (listener != null) {
                     Array<Asset> assets = new Array<>();
                     assets.add(item);
                     listener.onSelected(assets);
@@ -93,9 +92,9 @@ public class AssetSelectionDialog extends BaseDialog implements
         listAdapter.clear();
 
         // filter assets
-        for(Asset asset : assetManager.getAssets()) {
-            if(filter != null) {
-                if(filter.ignore(asset)) {
+        for (Asset asset : assetManager.getAssets()) {
+            if (filter != null) {
+                if (filter.ignore(asset)) {
                     continue;
                 }
             }

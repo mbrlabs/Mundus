@@ -103,11 +103,13 @@ public class ExportDialog extends BaseDialog {
                     boolean compress = gzipCheckbox.isChecked();
                     boolean pretty = prettyPrintCheckbox.isChecked();
 
-//                    try {
-//                        RuntimeExporter.export(kryoManager, projectManager.current(), Gdx.files.absolute(folder), pretty);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+                    // try {
+                    // RuntimeExporter.export(kryoManager,
+                    // projectManager.current(), Gdx.files.absolute(folder),
+                    // pretty);
+                    // } catch (IOException e) {
+                    // e.printStackTrace();
+                    // }
                     Ui.getInstance().getToaster().error("Not implemented yet");
 
                 }

@@ -16,8 +16,6 @@
 package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -43,8 +41,8 @@ public class ModelAsset extends Asset {
     }
 
     public void setDiffuseTexture(TextureAsset tex) {
-        if(model == null || tex == null) return;
-        for(Material mat : model.materials) {
+        if (model == null || tex == null) return;
+        for (Material mat : model.materials) {
             TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, tex.getTexture());
             mat.set(diffuse);
         }
@@ -61,8 +59,8 @@ public class ModelAsset extends Asset {
         // TODO don't create a new loader each time
         MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
         model = loader.loadModel(file);
-        for(Material mat : model.materials) {
-            if(getMeta().getDiffuseColor() != null) {
+        for (Material mat : model.materials) {
+            if (getMeta().getDiffuseColor() != null) {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, getMeta().getDiffuseColor()));
             }
         }
@@ -70,7 +68,7 @@ public class ModelAsset extends Asset {
 
     @Override
     public void dispose() {
-        if(model != null) {
+        if (model != null) {
             model.dispose();
         }
     }
