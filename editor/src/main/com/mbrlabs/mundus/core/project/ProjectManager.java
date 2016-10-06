@@ -17,12 +17,15 @@
 package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.Main;
-import com.mbrlabs.mundus.assets.AssetManager;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.assets.AssetNotFoundException;
+import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.model.MTexture;
@@ -128,7 +131,7 @@ public class ProjectManager implements Disposable {
         ProjectContext newProjectContext = new ProjectContext(-1);
         newProjectContext.path = path;
         newProjectContext.name = ref.getName();
-        newProjectContext.assetManager = new AssetManager(this, path + "/" + ProjectManager.PROJECT_ASSETS_DIR);
+        newProjectContext.assetManager = new EditorAssetManager(new FileHandle(path + "/" + ProjectManager.PROJECT_ASSETS_DIR));
 
         // create default scene & save .mundus
         EditorScene scene = new EditorScene();
@@ -186,12 +189,12 @@ public class ProjectManager implements Disposable {
      * @return                          loaded project context
      * @throws FileNotFoundException    if project can't be found
      */
-    public ProjectContext loadProject(ProjectRef ref) throws FileNotFoundException {
+    public ProjectContext loadProject(ProjectRef ref) throws FileNotFoundException, MetaFileParseException, AssetNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.path = ref.getPath();
 
         // load assets
-        context.assetManager = new AssetManager(this, ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR);
+        context.assetManager = new EditorAssetManager(new FileHandle(ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR));
         context.assetManager.loadAssets();
 
         // load textures
@@ -245,8 +248,12 @@ public class ProjectManager implements Disposable {
             } catch (FileNotFoundException fnf) {
                 Log.error(TAG, fnf.getMessage());
                 fnf.printStackTrace();
-                return null;
+            } catch (AssetNotFoundException anf) {
+                Log.error(TAG, anf.getMessage());
+            } catch (MetaFileParseException mfp) {
+                Log.error(TAG, mfp.getMessage());
             }
+            return null;
         }
 
         return null;

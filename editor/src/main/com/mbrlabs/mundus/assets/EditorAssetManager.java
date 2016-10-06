@@ -20,6 +20,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.AssetManager;
+import com.mbrlabs.mundus.commons.assets.AssetNotFoundException;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
@@ -45,66 +47,19 @@ import java.util.Map;
  * @author Marcus Brummer
  * @version 24-01-2016
  */
-public class AssetManager implements Disposable {
+public class EditorAssetManager extends AssetManager {
 
-    private static final String TAG = AssetManager.class.getSimpleName();
-
-    private Array<Asset> assets;
-    private Map<String, Asset> assetIndex;
-
-    private FileHandle rootFolder;
-
-    private ProjectManager projectManager;
+    private static final String TAG = EditorAssetManager.class.getSimpleName();
 
     /**
      *
-     * @param path
+     * @param assetsRoot
      */
-    public AssetManager(ProjectManager projectManager, String path) {
-        this.assets = new Array<>();
-        this.assetIndex = new HashMap<>();
-        this.projectManager = projectManager;
-        rootFolder = new FileHandle(path);
-        if(!rootFolder.exists() || !rootFolder.isDirectory()) {
+    public EditorAssetManager(FileHandle assetsRoot) {
+        super(assetsRoot);
+        if(rootFolder != null && (!rootFolder.exists() || !rootFolder.isDirectory())) {
             Log.fatal(TAG, "Root asset folder is not a directory");
         }
-    }
-
-    /**
-     * Loads all imported assets in the project's asset folder.
-     */
-    public void loadAssets() {
-        // create meta file filter
-        FileFilter metaFileFilter = new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.getName().endsWith(MetaFile.META_EXTENSION);
-            }
-        };
-
-        // load assets
-        for(FileHandle meta : rootFolder.list(metaFileFilter)) {
-            loadAsset(new MetaFile(meta));
-        }
-
-        // resolve dependencies
-        for(Asset asset : assets) {
-            // model asset
-            if(asset instanceof ModelAsset) {
-                String diffuseTexture = asset.getMeta().getDiffuseTexture();
-                if(diffuseTexture != null) {
-                    TextureAsset tex = (TextureAsset) findAssetByID(diffuseTexture);
-                    if(tex != null) {
-                        Log.error(TAG, diffuseTexture);
-                        ((ModelAsset) asset).setDiffuseTexture(tex);
-                    }
-                }
-            }
-        }
-    }
-
-    public Asset findAssetByID(String id) {
-        return assetIndex.get(id);
     }
 
     /**
@@ -140,21 +95,6 @@ public class AssetManager implements Disposable {
         }
 
         return newAsset;
-    }
-
-    public Array<Asset> getAssets() {
-        return assets;
-    }
-
-    public Array<ModelAsset> getModelAssets() {
-        Array<ModelAsset> models = new Array<>();
-        for(Asset asset : assets) {
-            if(asset instanceof ModelAsset) {
-                models.add((ModelAsset) asset);
-            }
-        }
-
-        return models;
     }
 
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
@@ -196,88 +136,6 @@ public class AssetManager implements Disposable {
         MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.MODEL);
         // TODO implement
         return null;
-    }
-
-    private void loadAsset(MetaFile meta) {
-        // get handle to asset
-        String assetPath = meta.getFile().pathWithoutExtension();
-        FileHandle assetFile = new FileHandle(assetPath);
-
-        // check if asset exists
-        if(!assetFile.exists()) {
-            Log.warn(TAG, "Meta file found, but asset does not exist: {}", meta.getFile().path());
-            return;
-        }
-
-        // load & parse meta file
-        try {
-            meta.load();
-        } catch (MetaFileParseException e) {
-            Log.error(TAG, "Error while parsing meta file: {}", meta.getFile().path());
-            return;
-        }
-
-        // load actual asset
-        Asset asset = null;
-        switch (meta.getType()) {
-            case TEXTURE:
-                asset = loadTextureAsset(meta, assetFile);
-                break;
-            case PIXMAP_TEXTURE:
-                asset = loadPixmapTextureAsset(meta, assetFile);
-                break;
-            case TERRA:
-                asset = loadTerraAsset(meta, assetFile);
-                break;
-            case MODEL:
-                asset = loadModelAsset(meta, assetFile);
-                break;
-            default:
-                Log.warn(TAG, "Assets of type {} can't be loaded right now" , meta.getType());
-                return;
-        }
-
-        // add to list
-        if(asset != null) {
-            assets.add(asset);
-            assetIndex.put(asset.getUUID(), asset);
-        }
-    }
-
-    private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {
-        TextureAsset asset = new TextureAsset(meta, assetFile);
-        asset.setTileable(true);
-        asset.generateMipmaps(true);
-        asset.load();
-        Log.debug(TAG, "Loaded texture asset: {}" , asset.getFile().path());
-
-        return asset;
-    }
-
-
-
-    private TerraAsset loadTerraAsset(MetaFile meta, FileHandle assetFile) {
-        TerraAsset asset = new TerraAsset(meta, assetFile);
-        asset.load();
-        Log.debug(TAG, "Loaded terra asset: {}" , asset.getFile().path());
-
-        return asset;
-    }
-
-    private PixmapTextureAsset loadPixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
-        PixmapTextureAsset asset = new PixmapTextureAsset(meta, assetFile);
-        asset.load();
-        Log.debug(TAG, "Loaded pixmap texture asset: {}" , asset.getFile().path());
-
-        return asset;
-    }
-
-    private ModelAsset loadModelAsset(MetaFile meta, FileHandle assetFile) {
-        ModelAsset asset = new ModelAsset(meta, assetFile);
-        asset.load();
-        Log.debug(TAG, "Loaded model asset: {}" , asset.getFile().path());
-
-        return asset;
     }
 
     /**

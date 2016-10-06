@@ -19,7 +19,7 @@ package com.mbrlabs.mundus.ui.modules.dialogs.assets;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.adapter.SimpleListAdapter;
 import com.kotcrab.vis.ui.widget.ListView;
-import com.mbrlabs.mundus.assets.AssetManager;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
@@ -28,7 +28,6 @@ import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
-import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -90,7 +89,7 @@ public class AssetSelectionDialog extends BaseDialog implements
     }
 
     private void reloadData() {
-        AssetManager assetManager = projectManager.current().assetManager;
+        EditorAssetManager assetManager = projectManager.current().assetManager;
         listAdapter.clear();
 
         // filter assets

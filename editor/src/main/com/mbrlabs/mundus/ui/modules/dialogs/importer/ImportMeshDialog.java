@@ -39,9 +39,8 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.AssetHelper;
-import com.mbrlabs.mundus.assets.AssetManager;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.assets.ModelImporter;
@@ -180,7 +179,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if(previewModel != null && previewInstance != null) {
-                        AssetManager assetManager = projectManager.current().assetManager;
+                        EditorAssetManager assetManager = projectManager.current().assetManager;
                         // create model
                         String assetRoot = FilenameUtils.concat(projectManager.current().path, ProjectManager.PROJECT_ASSETS_DIR);
                         try {
