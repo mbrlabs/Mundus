@@ -110,7 +110,7 @@ public abstract class BaseInspectorWidget extends VisTable {
 
     public void setDeletable(boolean deletable) {
         this.deletable = deletable;
-        if(deletable) {
+        if (deletable) {
             deleteBtn.setVisible(true);
             deletableBtnCell.width(20).height(20).padRight(5);
         } else {
@@ -125,7 +125,7 @@ public abstract class BaseInspectorWidget extends VisTable {
 
     public void collapse(boolean collapse) {
         collapsibleWidget.setCollapsed(collapse);
-        if(collapse) {
+        if (collapse) {
             collapseBtn.setText(COLLAPSE_BTN_DOWN);
         } else {
             collapseBtn.setText(COLLAPSE_BTN_UP);
@@ -146,6 +146,7 @@ public abstract class BaseInspectorWidget extends VisTable {
     }
 
     public abstract void onDelete();
+
     public abstract void setValues(GameObject go);
 
 }

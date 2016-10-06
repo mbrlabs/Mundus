@@ -83,8 +83,7 @@ public class FileFormatUtils {
     }
 
     public static boolean isJPG(String filename) {
-        return filename != null && (filename.endsWith(FORMAT_IMG_JPG)
-                || filename.endsWith(FORMAT_IMG_JPEG));
+        return filename != null && (filename.endsWith(FORMAT_IMG_JPG) || filename.endsWith(FORMAT_IMG_JPEG));
     }
 
     public static boolean isJPG(FileHandle file) {
@@ -92,10 +91,9 @@ public class FileFormatUtils {
     }
 
     public static boolean is3DFormat(String filename) {
-        return filename != null &&
-                (filename.endsWith(FORMAT_3D_WAVEFONT)  || filename.endsWith(FORMAT_3D_COLLADA) ||
-                        filename.endsWith(FORMAT_3D_G3DB) || filename.endsWith(FORMAT_3D_G3DJ) ||
-                        filename.endsWith(FORMAT_3D_FBX));
+        return filename != null && (filename.endsWith(FORMAT_3D_WAVEFONT) || filename.endsWith(FORMAT_3D_COLLADA)
+                || filename.endsWith(FORMAT_3D_G3DB) || filename.endsWith(FORMAT_3D_G3DJ)
+                || filename.endsWith(FORMAT_3D_FBX));
     }
 
     public static boolean is3DFormat(FileHandle file) {

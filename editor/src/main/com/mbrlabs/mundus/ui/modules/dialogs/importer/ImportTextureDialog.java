@@ -77,7 +77,6 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
         private VisTextButton importBtn = new VisTextButton("IMPORT");
         private ImageChooserField imageChooserField = new ImageChooserField(200);
 
-
         public ImportTextureTable() {
             super();
             this.setupUI();
@@ -108,7 +107,7 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     FileHandle texture = imageChooserField.getFile();
-                    if(texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
+                    if (texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
                         EditorAssetManager assetManager = projectManager.current().assetManager;
                         assetManager.importAsset(texture, TextureAsset.class);
                         close();
@@ -119,7 +118,6 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
                 }
             });
         }
-
 
         @Override
         public void dispose() {

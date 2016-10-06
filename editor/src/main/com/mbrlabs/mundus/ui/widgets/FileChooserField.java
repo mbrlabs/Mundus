@@ -78,7 +78,7 @@ public class FileChooserField extends VisTable {
     }
 
     public void setFileMode(boolean fileMode) {
-        if(fileMode) {
+        if (fileMode) {
             fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
         } else {
             fileChooser.setSelectionMode(FileChooser.SelectionMode.DIRECTORIES);
@@ -96,11 +96,11 @@ public class FileChooserField extends VisTable {
 
     private void setupUI() {
         pad(5);
-        if(width <= 0) {
+        if (width <= 0) {
             add(textField).expandX().fillX().padRight(5);
             add(fcBtn).expandX().fillX().row();
         } else {
-            add(textField).width(width*0.75f).padRight(5);
+            add(textField).width(width * 0.75f).padRight(5);
             add(fcBtn).expandX().fillX();
         }
     }
@@ -114,7 +114,7 @@ public class FileChooserField extends VisTable {
                 path = file.path();
 
                 textField.setText(file.path());
-                if(fileSelected != null) {
+                if (fileSelected != null) {
                     fileSelected.selected(file);
                 }
             }
@@ -130,6 +130,5 @@ public class FileChooserField extends VisTable {
         });
 
     }
-
 
 }

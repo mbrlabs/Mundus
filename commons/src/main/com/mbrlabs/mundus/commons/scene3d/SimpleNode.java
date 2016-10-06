@@ -23,8 +23,8 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Very simple and incredible inefficient implementation of a scene graph node.
  *
- * Inefficient, because each call to getTransform() multiplies all parent transformation matrices
- * without caching them.
+ * Inefficient, because each call to getTransform() multiplies all parent
+ * transformation matrices without caching them.
  *
  * @author Marcus Brummer
  * @version 09-06-2016
@@ -34,13 +34,12 @@ public class SimpleNode<T extends SimpleNode> extends BaseNode<T> {
     static boolean WORLD_SPACE_TRANSFORM = true;
     private static Matrix4 tempMat = new Matrix4();
 
-    private Vector3         localPosition;
-    private Quaternion      localRotation;
-    private Vector3         localScale;
+    private Vector3 localPosition;
+    private Quaternion localRotation;
+    private Vector3 localScale;
 
     // root * p0 * p1 * localMat = combined (absolute transfrom)
-    private Matrix4         combined;
-
+    private Matrix4 combined;
 
     public SimpleNode(int id) {
         super(id);
@@ -49,11 +48,12 @@ public class SimpleNode<T extends SimpleNode> extends BaseNode<T> {
         localScale = new Vector3(1, 1, 1);
         combined = new Matrix4();
     }
-    
+
     /**
      * Copy construction
+     * 
      * @param simpleNode
-     * @param id 
+     * @param id
      */
     public SimpleNode(SimpleNode simpleNode, int id) {
         super(id);
@@ -62,7 +62,7 @@ public class SimpleNode<T extends SimpleNode> extends BaseNode<T> {
         this.localScale = new Vector3(simpleNode.localScale);
         this.combined = new Matrix4(simpleNode.combined);
     }
-    
+
     @Override
     public Vector3 getLocalPosition(Vector3 out) {
         return out.set(localPosition);
@@ -95,7 +95,7 @@ public class SimpleNode<T extends SimpleNode> extends BaseNode<T> {
 
     @Override
     public Matrix4 getTransform() {
-        if(parent == null) {
+        if (parent == null) {
             return combined.set(localPosition, localRotation, localScale);
         }
 

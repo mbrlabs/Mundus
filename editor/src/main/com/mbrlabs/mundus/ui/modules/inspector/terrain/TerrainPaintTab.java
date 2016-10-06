@@ -145,7 +145,7 @@ public class TerrainPaintTab extends Tab {
                 MTexture mTexture = (MTexture) texture;
                 TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
 
-                if(rightClickMenu.channel != null) {
+                if (rightClickMenu.channel != null) {
                     terrainTexture.setSplatTexture(new SplatTexture(rightClickMenu.channel, mTexture));
                     setTexturesInUiGrid();
                 }
@@ -159,7 +159,7 @@ public class TerrainPaintTab extends Tab {
             @Override
             public void onTextureSelected(TextureProvider texture, boolean leftClick) {
                 SplatTexture tex = (SplatTexture) texture;
-                if(leftClick) {
+                if (leftClick) {
                     TerrainBrush.setPaintChannel(tex.channel);
                 } else {
                     System.out.println("Texture grid listener right clicked");
@@ -175,19 +175,19 @@ public class TerrainPaintTab extends Tab {
     private void setTexturesInUiGrid() {
         textureGrid.removeTextures();
         TerrainTexture terrainTexture = parent.component.getTerrain().getTerrainTexture();
-        if(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() > -1) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() > -1) {
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.BASE));
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.R));
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.G));
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.B));
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.A));
         }
     }
@@ -224,8 +224,8 @@ public class TerrainPaintTab extends Tab {
             removeTexture.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(channel != null) {
-                        if(channel == SplatTexture.Channel.BASE) {
+                    if (channel != null) {
+                        if (channel == SplatTexture.Channel.BASE) {
                             Dialogs.showErrorDialog(Ui.getInstance(), "Currently you can't remove the base texture");
                             return;
                         }
@@ -239,8 +239,8 @@ public class TerrainPaintTab extends Tab {
             changeTexture.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if(channel != null) {
-                       changeTextureBrowser.show(Ui.getInstance());
+                    if (channel != null) {
+                        changeTextureBrowser.show(Ui.getInstance());
                     }
                 }
             });

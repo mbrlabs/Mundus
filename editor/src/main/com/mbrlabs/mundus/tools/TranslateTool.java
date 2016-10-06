@@ -69,36 +69,30 @@ public class TranslateTool extends TransformTool {
 
     private TranslateCommand command;
 
-    public TranslateTool(ProjectManager projectManager,
-                         GameObjectPicker goPicker,
-                         ToolHandlePicker handlePicker,
-                         Shader shader, ModelBatch batch, CommandHistory history) {
+    public TranslateTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
+            Shader shader, ModelBatch batch, CommandHistory history) {
 
         super(projectManager, goPicker, handlePicker, shader, batch, history);
 
         ModelBuilder modelBuilder = new ModelBuilder();
 
-        Model xHandleModel =  modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
-                ARROW_DIVISIONS, GL20.GL_TRIANGLES,
-                new Material(ColorAttribute.createDiffuse(COLOR_X)),
+        Model xHandleModel = modelBuilder.createArrow(0, 0, 0, 1, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS,
+                GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(COLOR_X)),
                 VertexAttributes.Usage.Position);
-        Model yHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS,
-                ARROW_DIVISIONS, GL20.GL_TRIANGLES,
-                new Material(ColorAttribute.createDiffuse(COLOR_Y)),
+        Model yHandleModel = modelBuilder.createArrow(0, 0, 0, 0, 1, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS,
+                GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(COLOR_Y)),
                 VertexAttributes.Usage.Position);
-        Model zHandleModel =  modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS,
-                ARROW_DIVISIONS, GL20.GL_TRIANGLES,
-                new Material(ColorAttribute.createDiffuse(COLOR_Z)),
+        Model zHandleModel = modelBuilder.createArrow(0, 0, 0, 0, 0, 1, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS,
+                GL20.GL_TRIANGLES, new Material(ColorAttribute.createDiffuse(COLOR_Z)),
                 VertexAttributes.Usage.Position);
         Model xzPlaneHandleModel = modelBuilder.createSphere(1, 1, 1, 20, 20,
-                new Material(ColorAttribute.createDiffuse(COLOR_XZ)),
-                VertexAttributes.Usage.Position);
+                new Material(ColorAttribute.createDiffuse(COLOR_XZ)), VertexAttributes.Usage.Position);
 
         xHandle = new TranslateHandle(X_HANDLE_ID, xHandleModel);
         yHandle = new TranslateHandle(Y_HANDLE_ID, yHandleModel);
         zHandle = new TranslateHandle(Z_HANDLE_ID, zHandleModel);
         xzPlaneHandle = new TranslateHandle(XZ_HANDLE_ID, xzPlaneHandleModel);
-        handles = new TranslateHandle[]{xHandle, yHandle, zHandle, xzPlaneHandle};
+        handles = new TranslateHandle[] { xHandle, yHandle, zHandle, xzPlaneHandle };
 
         gameObjectModifiedEvent = new GameObjectModifiedEvent();
     }
@@ -140,7 +134,7 @@ public class TranslateTool extends TransformTool {
     @Override
     public void render() {
         super.render();
-        if(projectManager.current().currScene.currentSelection != null) {
+        if (projectManager.current().currScene.currentSelection != null) {
             batch.begin(projectManager.current().currScene.cam);
             GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
             xHandle.render(batch);
@@ -156,16 +150,16 @@ public class TranslateTool extends TransformTool {
     public void act() {
         super.act();
 
-        if(projectManager.current().currScene.currentSelection != null) {
+        if (projectManager.current().currScene.currentSelection != null) {
             translateHandles();
-            if(state == TransformState.IDLE) return;
+            if (state == TransformState.IDLE) return;
 
             Ray ray = projectManager.current().currScene.viewport.getPickRay(Gdx.input.getX(), Gdx.input.getY());
             Vector3 rayEnd = projectManager.current().currScene.currentSelection.getLocalPosition(temp0);
             float dst = projectManager.current().currScene.cam.position.dst(rayEnd);
             rayEnd = ray.getEndPoint(rayEnd, dst);
 
-            if(initTranslate) {
+            if (initTranslate) {
                 initTranslate = false;
                 lastPos.set(rayEnd);
             }
@@ -174,32 +168,29 @@ public class TranslateTool extends TransformTool {
 
             boolean modified = false;
             Vector3 vec = new Vector3();
-            if(state == TransformState.TRANSFORM_XZ) {
+            if (state == TransformState.TRANSFORM_XZ) {
                 vec.set(rayEnd.x - lastPos.x, 0, rayEnd.z - lastPos.z);
                 modified = true;
-            } else if(state == TransformState.TRANSFORM_X) {
-                vec.set(rayEnd.x - lastPos.x,
-                        0, 0);
+            } else if (state == TransformState.TRANSFORM_X) {
+                vec.set(rayEnd.x - lastPos.x, 0, 0);
                 modified = true;
-            } else if(state == TransformState.TRANSFORM_Y) {
-                vec.set(0,
-                        rayEnd.y - lastPos.y, 0);
+            } else if (state == TransformState.TRANSFORM_Y) {
+                vec.set(0, rayEnd.y - lastPos.y, 0);
                 modified = true;
-            } else if(state == TransformState.TRANSFORM_Z) {
-                vec.set(0, 0,
-                        rayEnd.z - lastPos.z);
+            } else if (state == TransformState.TRANSFORM_Z) {
+                vec.set(0, 0, rayEnd.z - lastPos.z);
                 modified = true;
             }
 
             // TODO translation in global sapce
-//            if(globalSpace) {
-//                System.out.println("Before: " + vec);
-//                System.out.println("After: " + vec);
-//            }
+            // if(globalSpace) {
+            // System.out.println("Before: " + vec);
+            // System.out.println("After: " + vec);
+            // }
 
             go.translate(vec);
 
-            if(modified) {
+            if (modified) {
                 gameObjectModifiedEvent.setGameObject(projectManager.current().currScene.currentSelection);
                 Mundus.postEvent(gameObjectModifiedEvent);
             }
@@ -221,7 +212,7 @@ public class TranslateTool extends TransformTool {
         zHandle.scale.set(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
         zHandle.applyTransform();
 
-        xzPlaneHandle.scale.set(scaleFactor*0.13f,scaleFactor*0.13f, scaleFactor*0.13f);
+        xzPlaneHandle.scale.set(scaleFactor * 0.13f, scaleFactor * 0.13f, scaleFactor * 0.13f);
         xzPlaneHandle.applyTransform();
     }
 
@@ -247,33 +238,34 @@ public class TranslateTool extends TransformTool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
 
-        if(button == Input.Buttons.LEFT && projectManager.current().currScene.currentSelection != null) {
-            TranslateHandle handle = (TranslateHandle) handlePicker.pick(handles, projectManager.current().currScene, screenX, screenY);
-            if(handle == null) {
+        if (button == Input.Buttons.LEFT && projectManager.current().currScene.currentSelection != null) {
+            TranslateHandle handle = (TranslateHandle) handlePicker.pick(handles, projectManager.current().currScene,
+                    screenX, screenY);
+            if (handle == null) {
                 state = TransformState.IDLE;
                 return false;
             }
 
-            if(handle.getId() == XZ_HANDLE_ID) {
+            if (handle.getId() == XZ_HANDLE_ID) {
                 state = TransformState.TRANSFORM_XZ;
                 initTranslate = true;
                 xzPlaneHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == X_HANDLE_ID) {
+            } else if (handle.getId() == X_HANDLE_ID) {
                 state = TransformState.TRANSFORM_X;
                 initTranslate = true;
                 xHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == Y_HANDLE_ID) {
+            } else if (handle.getId() == Y_HANDLE_ID) {
                 state = TransformState.TRANSFORM_Y;
                 initTranslate = true;
                 yHandle.changeColor(COLOR_SELECTED);
-            } else if(handle.getId() == Z_HANDLE_ID) {
+            } else if (handle.getId() == Z_HANDLE_ID) {
                 state = TransformState.TRANSFORM_Z;
                 initTranslate = true;
                 zHandle.changeColor(COLOR_SELECTED);
             }
         }
 
-        if(state != TransformState.IDLE) {
+        if (state != TransformState.IDLE) {
             command = new TranslateCommand(projectManager.current().currScene.currentSelection);
             command.setBefore(projectManager.current().currScene.currentSelection.getLocalPosition(temp0));
         }
@@ -284,13 +276,13 @@ public class TranslateTool extends TransformTool {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         super.touchUp(screenX, screenY, pointer, button);
-        if(state != TransformState.IDLE) {
+        if (state != TransformState.IDLE) {
             xHandle.changeColor(COLOR_X);
             yHandle.changeColor(COLOR_Y);
             zHandle.changeColor(COLOR_Z);
             xzPlaneHandle.changeColor(COLOR_XZ);
 
-            command.setAfter( projectManager.current().currScene.currentSelection.getLocalPosition(temp0));
+            command.setAfter(projectManager.current().currScene.currentSelection.getLocalPosition(temp0));
             history.add(command);
             command = null;
             state = TransformState.IDLE;

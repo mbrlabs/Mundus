@@ -58,7 +58,7 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
         initUi();
     }
 
-    public void initUi () {
+    public void initUi() {
         root = new VisTable();
         filesViewContextContainer = new VisTable(false);
         filesView = new GridGroup(60, 4);
@@ -83,15 +83,15 @@ public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChange
     private void reloadModels() {
         filesView.clearChildren();
         ProjectContext projectContext = projectManager.current();
-        for(Asset asset : projectContext.assetManager.getAssets()) {
-            if(asset instanceof ModelAsset) {
+        for (Asset asset : projectContext.assetManager.getAssets()) {
+            if (asset instanceof ModelAsset) {
                 AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(asset);
                 filesView.addActor(assetItem);
             }
         }
     }
 
-    private VisScrollPane createScrollPane (Actor actor, boolean disableX) {
+    private VisScrollPane createScrollPane(Actor actor, boolean disableX) {
         VisScrollPane scrollPane = new VisScrollPane(actor);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(disableX, false);

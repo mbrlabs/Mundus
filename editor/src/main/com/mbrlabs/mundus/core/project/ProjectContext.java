@@ -27,7 +27,8 @@ import com.mbrlabs.mundus.utils.Log;
 /**
  * A project context represents an loaded and opened project.
  *
- * A project context can have many scenes, nut only one scene at a time can be active.
+ * A project context can have many scenes, nut only one scene at a time can be
+ * active.
  *
  * @author Marcus Brummer
  * @version 28-11-2015
@@ -83,7 +84,7 @@ public class ProjectContext implements Disposable {
     @Override
     public void dispose() {
         Log.debug(TAG, "Disposing current project: {}", path);
-        if(assetManager != null) {
+        if (assetManager != null) {
             assetManager.dispose();
         }
     }

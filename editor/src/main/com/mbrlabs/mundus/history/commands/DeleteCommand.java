@@ -23,8 +23,7 @@ import com.mbrlabs.mundus.history.Command;
 import com.mbrlabs.mundus.utils.Log;
 
 /**
- * Delete command for game objects 
- * Deletion will update sceneGraph and outline
+ * Delete command for game objects Deletion will update sceneGraph and outline
  * 
  * @author codenigma
  * @version 28-09-2016
@@ -50,9 +49,9 @@ public class DeleteCommand implements Command {
     @Override
     public void execute() {
         Log.trace(TAG, "Remove game object [{}]", go);
-        //remove go from sceneGraph
+        // remove go from sceneGraph
         go.remove();
-        //remove from outline tree
+        // remove from outline tree
         tree.remove(node);
         Mundus.postEvent(new SceneGraphChangedEvent());
     }
@@ -60,13 +59,13 @@ public class DeleteCommand implements Command {
     @Override
     public void undo() {
         Log.trace(TAG, "Undo remove of game object [{}]", go);
-        //add to sceneGraph
+        // add to sceneGraph
         parentGO.addChild(go);
-        //add to outline
+        // add to outline
         if (parentNode == null)
             tree.add(node);
         else
-            parentNode.add(node);     
+            parentNode.add(node);
         node.expandTo();
         Mundus.postEvent(new SceneGraphChangedEvent());
     }

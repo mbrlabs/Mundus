@@ -29,17 +29,19 @@ public class ShaderUtils {
     /**
      * Compiles and links shader.
      *
-     * @param vertexShader      path to vertex shader
-     * @param fragmentShader    path to fragment shader
-     * @param classpath         true if shader in classpath
-     *                          false if shader in assets folder
+     * @param vertexShader
+     *            path to vertex shader
+     * @param fragmentShader
+     *            path to fragment shader
+     * @param classpath
+     *            true if shader in classpath false if shader in assets folder
      *
-     * @return                  compiled shader program
+     * @return compiled shader program
      */
     public static ShaderProgram compile(String vertexShader, String fragmentShader, boolean classpath) {
         String vert;
         String frag;
-        if(classpath) {
+        if (classpath) {
             vert = Gdx.files.classpath(vertexShader).readString();
             frag = Gdx.files.classpath(fragmentShader).readString();
         } else {

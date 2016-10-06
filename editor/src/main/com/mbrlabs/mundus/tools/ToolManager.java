@@ -52,10 +52,9 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     private ProjectManager projectManager;
 
-
     public ToolManager(InputManager inputManager, ProjectManager projectManager, GameObjectPicker goPicker,
-                       ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, Shaders shaders, ShapeRenderer shapeRenderer,
-                       CommandHistory history) {
+            ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, Shaders shaders, ShapeRenderer shapeRenderer,
+            CommandHistory history) {
         this.inputManager = inputManager;
         this.projectManager = projectManager;
         this.activeTool = null;
@@ -68,9 +67,12 @@ public class ToolManager extends InputAdapter implements Disposable {
 
         modelPlacementTool = new ModelPlacementTool(projectManager, shaders.entityShader, modelBatch, history);
         selectionTool = new SelectionTool(projectManager, goPicker, shaders.wireframeShader, modelBatch, history);
-        translateTool = new TranslateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
-        rotateTool = new RotateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer, modelBatch, history);
-        scaleTool = new ScaleTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch, history);
+        translateTool = new TranslateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader,
+                modelBatch, history);
+        rotateTool = new RotateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer,
+                modelBatch, history);
+        scaleTool = new ScaleTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch,
+                history);
     }
 
     public void activateTool(Tool tool) {
@@ -80,7 +82,7 @@ public class ToolManager extends InputAdapter implements Disposable {
     }
 
     public void deactivateTool() {
-        if(activeTool != null) {
+        if (activeTool != null) {
             activeTool.reset();
             inputManager.removeProcessor(activeTool);
             activeTool = null;
@@ -93,13 +95,13 @@ public class ToolManager extends InputAdapter implements Disposable {
     }
 
     public void render() {
-        if(activeTool != null) {
+        if (activeTool != null) {
             activeTool.render();
         }
     }
 
     public void act() {
-        if(activeTool != null) {
+        if (activeTool != null) {
             activeTool.act();
         }
     }
@@ -110,8 +112,8 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     @Override
     public boolean keyUp(int keycode) {
-        if(keycode == KEY_DEACTIVATE) {
-            if(activeTool != null) {
+        if (keycode == KEY_DEACTIVATE) {
+            if (activeTool != null) {
                 activeTool.reset();
             }
             setDefaultTool();
@@ -122,7 +124,7 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     @Override
     public void dispose() {
-        for(TerrainBrush brush : terrainBrushes) {
+        for (TerrainBrush brush : terrainBrushes) {
             brush.dispose();
         }
         translateTool.dispose();

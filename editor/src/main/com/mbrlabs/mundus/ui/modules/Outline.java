@@ -59,11 +59,9 @@ import com.mbrlabs.mundus.utils.TerrainUtils;
  * @author Marcus Brummer, codenigma
  * @version 01-10-2016
  */
-public class Outline extends VisTable implements
-        ProjectChangedEvent.ProjectChangedListener,
-        SceneChangedEvent.SceneChangedListener,
-        SceneGraphChangedEvent.SceneGraphChangedListener,
-        GameObjectSelectedEvent.GameObjectSelectedListener {
+public class Outline extends VisTable
+        implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener,
+        SceneGraphChangedEvent.SceneGraphChangedListener, GameObjectSelectedEvent.GameObjectSelectedListener {
 
     private static final String TITLE = "Outline";
     private static final String TAG = Outline.class.getSimpleName();
@@ -120,7 +118,7 @@ public class Outline extends VisTable implements
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
-        //update to new sceneGraph
+        // update to new sceneGraph
         sceneGraph = projectManager.current().currScene.sceneGraph;
         Log.trace(TAG, "Project changed. Building scene graph.");
         buildTree(sceneGraph);
@@ -128,7 +126,7 @@ public class Outline extends VisTable implements
 
     @Override
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
-        //update to new sceneGraph
+        // update to new sceneGraph
         sceneGraph = projectManager.current().currScene.sceneGraph;
         Log.trace(TAG, "Scene changed. Building scene graph.");
         buildTree(sceneGraph);
@@ -176,12 +174,13 @@ public class Outline extends VisTable implements
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 Tree.Node node = (Tree.Node) payload.getObject();
-                
+
                 if (node != null) {
                     GameObject draggedGo = (GameObject) node.getObject();
                     Tree.Node newParent = tree.getNodeAt(y);
 
-                    // check if a go is dragged in one of its' children or itself
+                    // check if a go is dragged in one of its' children or
+                    // itself
                     if (newParent != null) {
                         GameObject parentGo = (GameObject) newParent.getObject();
                         if (parentGo.isChildOf(draggedGo)) {
@@ -189,7 +188,7 @@ public class Outline extends VisTable implements
                         }
                     }
                     GameObject oldParent = draggedGo.getParent();
-                    
+
                     // remove child from old parent
                     draggedGo.remove();
 
@@ -199,8 +198,8 @@ public class Outline extends VisTable implements
                         Vector3 newPos;
                         Vector3 draggedPos = new Vector3();
                         draggedGo.getPosition(draggedPos);
-                        //if moved from old parent
-                        if(oldParent != null) {
+                        // if moved from old parent
+                        if (oldParent != null) {
                             // new position = oldParentPos + draggedPos
                             Vector3 parentPos = new Vector3();
                             oldParent.getPosition(parentPos);
@@ -210,7 +209,7 @@ public class Outline extends VisTable implements
                             newPos = draggedPos;
                         }
                         projectContext.currScene.sceneGraph.addGameObject(draggedGo);
-                        draggedGo.setLocalPosition(newPos.x,newPos.y,newPos.z);
+                        draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z);
                     } else {
                         GameObject parentGo = (GameObject) newParent.getObject();
                         // recalculate position
@@ -219,20 +218,20 @@ public class Outline extends VisTable implements
                         // World coorinates
                         draggedGo.getPosition(draggedPos);
                         parentGo.getPosition(parentPos);
-                        
+
                         // if gameObject came from old parent
-                        if(oldParent != null) {
+                        if (oldParent != null) {
                             // calculate oldParentPos + draggedPos
                             Vector3 oldParentPos = new Vector3();
                             oldParent.getPosition(oldParentPos);
                             draggedPos = oldParentPos.add(draggedPos);
                         }
-                        
+
                         // Local in releation to new parent
                         Vector3 newPos = draggedPos.sub(parentPos);
                         // add
                         parentGo.addChild(draggedGo);
-                        draggedGo.setLocalPosition(newPos.x,newPos.y,newPos.z);
+                        draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z);
                     }
 
                     // update tree
@@ -323,7 +322,7 @@ public class Outline extends VisTable implements
         } else {
             treeParentNode.add(leaf);
         }
-        //Always expand after adding new node
+        // Always expand after adding new node
         leaf.expandTo();
         if (gameObject.getChildren() != null) {
             for (GameObject goChild : gameObject.getChildren()) {
@@ -338,16 +337,19 @@ public class Outline extends VisTable implements
      * @param go
      */
     private void removeGo(GameObject go) {
-        //run delete command, updating sceneGraph and outline
+        // run delete command, updating sceneGraph and outline
         Command deleteCommand = new DeleteCommand(go, tree.findNode(go));
         history.add(deleteCommand);
-        deleteCommand.execute(); //run delete
+        deleteCommand.execute(); // run delete
     }
 
     /**
      * Deep copy of all game objects
-     * @param go        the game object for cloning, with children
-     * @param parent    game object on which clone will be added
+     * 
+     * @param go
+     *            the game object for cloning, with children
+     * @param parent
+     *            game object on which clone will be added
      */
     private void duplicateGO(GameObject go, GameObject parent) {
         Log.trace(TAG, "Duplicate [{}] with parent [{}]", go, parent);
@@ -419,20 +421,20 @@ public class Outline extends VisTable implements
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     int id = projectContext.obtainID();
-                    //the new game object
+                    // the new game object
                     GameObject go = new GameObject(sceneGraph, GameObject.DEFAULT_NAME, id);
-                    //update outline
+                    // update outline
                     if (selectedGO == null) {
-                        //update sceneGraph
+                        // update sceneGraph
                         Log.trace(TAG, "Add empty game object [{}] in root node.", go);
                         sceneGraph.addGameObject(go);
-                        //update outline
+                        // update outline
                         addGoToTree(null, go);
                     } else {
                         Log.trace(TAG, "Add empty game object [{}] child in node [{}].", go, selectedGO);
-                        //update sceneGraph
+                        // update sceneGraph
                         selectedGO.addChild(go);
-                        //update outline
+                        // update outline
                         Tree.Node n = tree.findNode(selectedGO);
                         addGoToTree(n, go);
                     }
@@ -444,16 +446,17 @@ public class Outline extends VisTable implements
             addTerrain.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    //To-DO: Terrain config popup: set width and height values, maybe heightmap import options
+                    // To-DO: Terrain config popup: set width and height values,
+                    // maybe heightmap import options
                     Log.trace(TAG, "Add terrain game object in root node.");
                     Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
                     projectContext.terrains.add(terrain);
-                    //projectContext.currScene.terrainGroup.add(terrain);
-                    GameObject terrainGO = TerrainUtils.createTerrainGO(
-                            sceneGraph, shaders.terrainShader, projectContext.obtainID(), "Terrain", terrain);
-                    //update sceneGraph
+                    // projectContext.currScene.terrainGroup.add(terrain);
+                    GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader,
+                            projectContext.obtainID(), "Terrain", terrain);
+                    // update sceneGraph
                     sceneGraph.addGameObject(terrainGO);
-                    //update outline
+                    // update outline
                     addGoToTree(null, terrainGO);
 
                     Mundus.postEvent(new SceneGraphChangedEvent());
@@ -479,7 +482,7 @@ public class Outline extends VisTable implements
                     }
                 }
             });
-            
+
             // delete game object
             delete.addListener(new ClickListener() {
                 @Override
@@ -512,7 +515,7 @@ public class Outline extends VisTable implements
 
             // check if game object is selected
             if (selectedGO != null) {
-                //Activate menu options for selected game objects
+                // Activate menu options for selected game objects
                 rename.setDisabled(false);
                 delete.setDisabled(false);
             } else {
@@ -520,7 +523,7 @@ public class Outline extends VisTable implements
                 rename.setDisabled(true);
                 delete.setDisabled(true);
             }
-            
+
             // terrain can not be duplicated
             if (selectedGO == null || selectedGO.findComponentByType(Component.Type.TERRAIN) != null) {
                 duplicate.setDisabled(true);
@@ -533,19 +536,20 @@ public class Outline extends VisTable implements
             final Tree.Node node = tree.findNode(selectedGO);
             final TreeNode goNode = (TreeNode) node.getActor();
 
-            InputDialog renameDialog = Dialogs.showInputDialog(Ui.getInstance(), "Rename", "", new InputDialogAdapter() {
-                @Override
-                public void finished(String input) {
-                    Log.trace(TAG, "Rename game object [{}] to [{}].", selectedGO, input);
-                    // update sceneGraph
-                    selectedGO.name = input;
-                    // update Outline
-                    goNode.name.setText(input + " [" + selectedGO.id + "]");
+            InputDialog renameDialog = Dialogs.showInputDialog(Ui.getInstance(), "Rename", "",
+                    new InputDialogAdapter() {
+                        @Override
+                        public void finished(String input) {
+                            Log.trace(TAG, "Rename game object [{}] to [{}].", selectedGO, input);
+                            // update sceneGraph
+                            selectedGO.name = input;
+                            // update Outline
+                            goNode.name.setText(input + " [" + selectedGO.id + "]");
 
-                    Mundus.postEvent(new SceneGraphChangedEvent());
-                }
-            });
-            //set position of dialog to menuItem position
+                            Mundus.postEvent(new SceneGraphChangedEvent());
+                        }
+                    });
+            // set position of dialog to menuItem position
             float nodePosX = node.getActor().getX();
             float nodePosY = node.getActor().getY();
             renameDialog.setPosition(nodePosX, nodePosY);

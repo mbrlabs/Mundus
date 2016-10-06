@@ -49,9 +49,10 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.utils.TerrainIO;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
+import com.mbrlabs.mundus.utils.TerrainIO;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -69,13 +70,13 @@ public class ProjectManager implements Disposable {
 
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
-    public static final String PROJECT_ASSETS_DIR           =    "assets/";
-    public static final String PROJECT_TERRAIN_DIR          =    PROJECT_ASSETS_DIR + "terrains/";
+    public static final String PROJECT_ASSETS_DIR = "assets/";
+    public static final String PROJECT_TERRAIN_DIR = PROJECT_ASSETS_DIR + "terrains/";
 
-    public static final String PROJECT_TEXTURE_DIR          =    PROJECT_ASSETS_DIR + "textures/";
-    public static final String PROJECT_SCENES_DIR           =    "scenes/";
+    public static final String PROJECT_TEXTURE_DIR = PROJECT_ASSETS_DIR + "textures/";
+    public static final String PROJECT_SCENES_DIR = "scenes/";
 
-    public static final String PROJECT_SCENE_EXTENSION      =    ".mundus";
+    public static final String PROJECT_SCENE_EXTENSION = ".mundus";
 
     private ProjectContext currentProject;
     private Registry registry;
@@ -93,7 +94,7 @@ public class ProjectManager implements Disposable {
     /**
      * Returns current project.
      *
-     * @return  current project
+     * @return current project
      */
     public ProjectContext current() {
         return currentProject;
@@ -115,9 +116,11 @@ public class ProjectManager implements Disposable {
      *
      * Creates a new project. However, it does not switch the current project.
      *
-     * @param name      project name
-     * @param folder    absolute path to project folder
-     * @return          new project context
+     * @param name
+     *            project name
+     * @param folder
+     *            absolute path to project folder
+     * @return new project context
      */
     public ProjectContext createProject(String name, String folder) {
         ProjectRef ref = registry.createProjectRef(name, folder);
@@ -131,7 +134,8 @@ public class ProjectManager implements Disposable {
         ProjectContext newProjectContext = new ProjectContext(-1);
         newProjectContext.path = path;
         newProjectContext.name = ref.getName();
-        newProjectContext.assetManager = new EditorAssetManager(new FileHandle(path + "/" + ProjectManager.PROJECT_ASSETS_DIR));
+        newProjectContext.assetManager = new EditorAssetManager(
+                new FileHandle(path + "/" + ProjectManager.PROJECT_ASSETS_DIR));
 
         // create default scene & save .mundus
         EditorScene scene = new EditorScene();
@@ -153,12 +157,16 @@ public class ProjectManager implements Disposable {
     /**
      * Imports (opens) a mundus project, that is not in the registry.
      *
-     * @param absolutePath                          path to project
-     * @return                                      project context of imported project
-     * @throws ProjectAlreadyImportedException      if project exists already in registry
-     * @throws ProjectOpenException                 project could not be opened
+     * @param absolutePath
+     *            path to project
+     * @return project context of imported project
+     * @throws ProjectAlreadyImportedException
+     *             if project exists already in registry
+     * @throws ProjectOpenException
+     *             project could not be opened
      */
-    public ProjectContext importProject(String absolutePath) throws ProjectAlreadyImportedException, ProjectOpenException {
+    public ProjectContext importProject(String absolutePath)
+            throws ProjectAlreadyImportedException, ProjectOpenException {
         // check if already imported
         for (ProjectRef ref : registry.getProjects()) {
             if (ref.getPath().equals(absolutePath)) {
@@ -185,16 +193,20 @@ public class ProjectManager implements Disposable {
      *
      * This does not open to that project, it only loads it.
      *
-     * @param ref                       project reference to the project
-     * @return                          loaded project context
-     * @throws FileNotFoundException    if project can't be found
+     * @param ref
+     *            project reference to the project
+     * @return loaded project context
+     * @throws FileNotFoundException
+     *             if project can't be found
      */
-    public ProjectContext loadProject(ProjectRef ref) throws FileNotFoundException, MetaFileParseException, AssetNotFoundException {
+    public ProjectContext loadProject(ProjectRef ref)
+            throws FileNotFoundException, MetaFileParseException, AssetNotFoundException {
         ProjectContext context = kryoManager.loadProjectContext(ref);
         context.path = ref.getPath();
 
         // load assets
-        context.assetManager = new EditorAssetManager(new FileHandle(ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR));
+        context.assetManager = new EditorAssetManager(
+                new FileHandle(ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR));
         context.assetManager.loadAssets(new AssetManager.AssetLoadingListener() {
             @Override
             public void onLoad(Asset asset, int progress, int assetCount) {
@@ -208,14 +220,14 @@ public class ProjectManager implements Disposable {
         });
 
         // load textures
-        for(MTexture tex : context.textures) {
-            tex.texture = TextureUtils.loadMipmapTexture(
-                    Gdx.files.absolute(FilenameUtils.concat(context.path, tex.getPath())), true);
+        for (MTexture tex : context.textures) {
+            tex.texture = TextureUtils
+                    .loadMipmapTexture(Gdx.files.absolute(FilenameUtils.concat(context.path, tex.getPath())), true);
             Log.debug(TAG, "Loaded texture: {}", tex.getPath());
         }
 
         // load terrain .terra files
-        for(Terrain terrain : context.terrains) {
+        for (Terrain terrain : context.terrains) {
             TerrainIO.importTerrain(context, terrain);
         }
 
@@ -227,11 +239,12 @@ public class ProjectManager implements Disposable {
     /**
      * Completely saves a project & all scenes.
      *
-     * @param projectContext    project context
+     * @param projectContext
+     *            project context
      */
     public void saveProject(ProjectContext projectContext) {
         // save .terra files & the splat map
-        for(Terrain terrain : projectContext.terrains) {
+        for (Terrain terrain : projectContext.terrains) {
             TerrainIO.exportTerrain(projectContext, terrain);
         }
 
@@ -240,7 +253,7 @@ public class ProjectManager implements Disposable {
         // save scene in .mundus file
         kryoManager.saveScene(projectContext, projectContext.currScene);
 
-        Log.debug(TAG, "Saving currentProject {}", projectContext.name+ " [" + projectContext.path + "]");
+        Log.debug(TAG, "Saving currentProject {}", projectContext.name + " [" + projectContext.path + "]");
     }
 
     /**
@@ -248,7 +261,7 @@ public class ProjectManager implements Disposable {
      *
      * Does not open open the project.
      *
-     * @return      project context of last project
+     * @return project context of last project
      */
     public ProjectContext loadLastProject() {
         ProjectRef lastOpenedProject = registry.getLastOpenedProject();
@@ -273,10 +286,12 @@ public class ProjectManager implements Disposable {
      * Opens a project.
      *
      * Opens a project. If a project is already open it will be disposed.
-     * @param context   project context to open
+     * 
+     * @param context
+     *            project context to open
      */
     public void changeProject(ProjectContext context) {
-        if(currentProject != null) {
+        if (currentProject != null) {
             currentProject.dispose();
         }
 
@@ -294,9 +309,11 @@ public class ProjectManager implements Disposable {
     /**
      * Creates a new scene for the given project.
      *
-     * @param project   project
-     * @param name      scene name
-     * @return          newly created scene
+     * @param project
+     *            project
+     * @param name
+     *            scene name
+     * @return newly created scene
      */
     public Scene createScene(ProjectContext project, String name) {
         Scene scene = new Scene();
@@ -315,30 +332,33 @@ public class ProjectManager implements Disposable {
      *
      * This does not open the scene.
      *
-     * @param context                   project context of the scene
-     * @param sceneName                 name of the scene
-     * @return                          loaded scene
-     * @throws FileNotFoundException    if scene file not found
+     * @param context
+     *            project context of the scene
+     * @param sceneName
+     *            name of the scene
+     * @return loaded scene
+     * @throws FileNotFoundException
+     *             if scene file not found
      */
     public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
-        Array<ModelAsset> models =  context.assetManager.getModelAssets();
+        Array<ModelAsset> models = context.assetManager.getModelAssets();
         EditorScene scene = DescriptorConverter.convert(descriptor, context.terrains, models);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
         sceneGraph.batch = Mundus.modelBatch;
-        for(GameObject go : sceneGraph.getGameObjects()) {
+        for (GameObject go : sceneGraph.getGameObjects()) {
             initGameObject(context, go);
         }
 
         // create TerrainGroup for active scene
         Array<Component> terrainComponents = new Array<>();
-        for(GameObject go : sceneGraph.getGameObjects()) {
+        for (GameObject go : sceneGraph.getGameObjects()) {
             go.findComponentsByType(terrainComponents, Component.Type.TERRAIN, true);
         }
-        for(Component c : terrainComponents) {
-            if(c instanceof TerrainComponent) {
+        for (Component c : terrainComponents) {
+            if (c instanceof TerrainComponent) {
                 scene.terrains.add(((TerrainComponent) c).getTerrain());
             }
         }
@@ -349,8 +369,10 @@ public class ProjectManager implements Disposable {
     /**
      * Loads and opens scene
      *
-     * @param projectContext    project context of scene
-     * @param sceneName         scene name
+     * @param projectContext
+     *            project context of scene
+     * @param sceneName
+     *            scene name
      */
     public void changeScene(ProjectContext projectContext, String sceneName) {
         try {
@@ -368,42 +390,43 @@ public class ProjectManager implements Disposable {
 
     private void initGameObject(ProjectContext context, GameObject root) {
         initComponents(context, root);
-        if(root.getChildren() != null) {
-            for(GameObject c : root.getChildren()) {
+        if (root.getChildren() != null) {
+            for (GameObject c : root.getChildren()) {
                 initGameObject(context, c);
             }
         }
     }
 
     private void initComponents(ProjectContext context, GameObject go) {
-        Array<ModelAsset> models =  context.assetManager.getModelAssets();
-        for(Component c : go.getComponents()) {
+        Array<ModelAsset> models = context.assetManager.getModelAssets();
+        for (Component c : go.getComponents()) {
             // Model component
-            if(c.getType() == Component.Type.MODEL) {
+            if (c.getType() == Component.Type.MODEL) {
                 ModelComponent modelComponent = (ModelComponent) c;
                 ModelAsset model = findModelById(models, modelComponent.getModelInstance().getModel().getUUID());
-                if(model != null) {
+                if (model != null) {
                     modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
-                    Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelInstance().getModel().getUUID());
+                    Log.fatal(TAG, "model for modelInstance not found: {}",
+                            modelComponent.getModelInstance().getModel().getUUID());
                 }
-            } else if(c.getType() == Component.Type.TERRAIN) {
-                ((TerrainComponent)c).setShader(shaders.terrainShader);
-                ((TerrainComponent)c).getTerrain().setTransform(go.getTransform());
+            } else if (c.getType() == Component.Type.TERRAIN) {
+                ((TerrainComponent) c).setShader(shaders.terrainShader);
+                ((TerrainComponent) c).getTerrain().setTransform(go.getTransform());
             }
 
             // encode id for picking
-            if(c instanceof PickableComponent) {
+            if (c instanceof PickableComponent) {
                 ((PickableComponent) c).encodeRaypickColorId();
             }
         }
     }
 
     private ModelAsset findModelById(Array<ModelAsset> models, String id) {
-        for(ModelAsset m : models) {
-            if(m.getUUID().equals(id)) {
+        for (ModelAsset m : models) {
+            if (m.getUUID().equals(id)) {
                 return m;
             }
         }
@@ -412,8 +435,8 @@ public class ProjectManager implements Disposable {
     }
 
     private String constructWindowTitle() {
-        return currentProject.name + " - " + currentProject.currScene.getName() +
-                " [" + currentProject.path +"]" + " - " + Main.TITLE;
+        return currentProject.name + " - " + currentProject.currScene.getName() + " [" + currentProject.path + "]"
+                + " - " + Main.TITLE;
     }
 
     @Override

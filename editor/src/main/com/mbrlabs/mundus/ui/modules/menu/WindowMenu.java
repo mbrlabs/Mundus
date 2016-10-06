@@ -54,5 +54,4 @@ public class WindowMenu extends Menu {
         return settings;
     }
 
-
 }

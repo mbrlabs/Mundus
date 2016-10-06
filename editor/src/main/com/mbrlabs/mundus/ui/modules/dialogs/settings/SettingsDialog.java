@@ -45,7 +45,7 @@ public class SettingsDialog extends BaseDialog {
         VisTable root = new VisTable();
         root.padTop(6).padRight(6).padBottom(22);
         add(root);
-        //root.debug();
+        // root.debug();
 
         settingsSelection = new VerticalGroup();
         settingsSelection.addActor(new VisLabel("General"));

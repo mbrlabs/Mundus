@@ -62,7 +62,6 @@ public class ImageChooserField extends VisTable {
         setupListeners();
     }
 
-
     public FileHandle getFile() {
         return this.fileHandle;
     }
@@ -72,13 +71,13 @@ public class ImageChooserField extends VisTable {
     }
 
     public void setImage(FileHandle fileHandle) {
-        if(texture != null) {
+        if (texture != null) {
             texture.dispose();
         }
 
         this.fileHandle = fileHandle;
 
-        if(fileHandle != null) {
+        if (fileHandle != null) {
             texture = new Texture(fileHandle);
             img.setDrawable(new TextureRegionDrawable(new TextureRegion(texture)));
         } else {
@@ -97,7 +96,7 @@ public class ImageChooserField extends VisTable {
         // file chooser
         fileChooser.setListener(new SingleFileChooserListener() {
             public void selected(FileHandle file) {
-                if(FileFormatUtils.isImage(file)) {
+                if (FileFormatUtils.isImage(file)) {
                     setImage(file);
                 } else {
                     Dialogs.showErrorDialog(Ui.getInstance(), "This is no image");

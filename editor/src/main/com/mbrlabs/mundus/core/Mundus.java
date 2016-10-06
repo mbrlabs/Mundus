@@ -84,7 +84,7 @@ public class Mundus {
      */
     public static void init() {
         File homeDir = new File(Registry.HOME_DIR);
-        if(!homeDir.exists()) {
+        if (!homeDir.exists()) {
             homeDir.mkdir();
         }
 
@@ -105,12 +105,14 @@ public class Mundus {
 
         modelImporter = new ModelImporter(registry);
         projectManager = new ProjectManager(kryoManager, registry, shaders);
-        toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer, commandHistory);
+        toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer,
+                commandHistory);
         shortcutController = new ShortcutController(registry, projectManager, commandHistory);
     }
 
     private static void initStyle() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/open-sans/OpenSans-Regular.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
+                Gdx.files.internal("fonts/open-sans/OpenSans-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.kerning = true;
         params.borderStraight = false;
@@ -138,29 +140,13 @@ public class Mundus {
 
     private static void initFontAwesome() {
         Fa faBuilder = new Fa(Gdx.files.internal("fonts/fa45.ttf"));
-        faBuilder.getGeneratorParameter().size = (int)(Gdx.graphics.getHeight() * 0.02f);
+        faBuilder.getGeneratorParameter().size = (int) (Gdx.graphics.getHeight() * 0.02f);
         faBuilder.getGeneratorParameter().kerning = true;
         faBuilder.getGeneratorParameter().borderStraight = false;
-        fa = faBuilder
-                .addIcon(Fa.SAVE)
-                .addIcon(Fa.DOWNLOAD)
-                .addIcon(Fa.GIFT)
-                .addIcon(Fa.PLAY)
-                .addIcon(Fa.MOUSE_POINTER)
-                .addIcon(Fa.ARROWS)
-                .addIcon(Fa.CIRCLE_O)
-                .addIcon(Fa.CIRCLE)
-                .addIcon(Fa.MINUS)
-                .addIcon(Fa.CARET_DOWN)
-                .addIcon(Fa.CARET_UP)
-                .addIcon(Fa.TIMES)
-                .addIcon(Fa.SORT)
-                .addIcon(Fa.HASHTAG)
-                .addIcon(Fa.PAINT_BRUSH)
-                .addIcon(Fa.STAR)
-                .addIcon(Fa.REFRESH)
-                .addIcon(Fa.EXPAND)
-                .build();
+        fa = faBuilder.addIcon(Fa.SAVE).addIcon(Fa.DOWNLOAD).addIcon(Fa.GIFT).addIcon(Fa.PLAY).addIcon(Fa.MOUSE_POINTER)
+                .addIcon(Fa.ARROWS).addIcon(Fa.CIRCLE_O).addIcon(Fa.CIRCLE).addIcon(Fa.MINUS).addIcon(Fa.CARET_DOWN)
+                .addIcon(Fa.CARET_UP).addIcon(Fa.TIMES).addIcon(Fa.SORT).addIcon(Fa.HASHTAG).addIcon(Fa.PAINT_BRUSH)
+                .addIcon(Fa.STAR).addIcon(Fa.REFRESH).addIcon(Fa.EXPAND).build();
     }
 
     public static void postEvent(Object event) {
@@ -180,16 +166,16 @@ public class Mundus {
         List<Field> injectableFields = new ArrayList<>();
         Class clazz = o.getClass();
         Field[] fields = clazz.getDeclaredFields();
-        for(Field f : fields) {
-            if(ReflectionUtils.hasFieldAnnotation(f, Inject.class)) {
+        for (Field f : fields) {
+            if (ReflectionUtils.hasFieldAnnotation(f, Inject.class)) {
                 injectableFields.add(f);
-                //Log.debug("DI: found injectable field: {}", f.getName());
+                // Log.debug("DI: found injectable field: {}", f.getName());
             }
         }
 
         // inject
         try {
-            for(Field f : injectableFields) {
+            for (Field f : injectableFields) {
                 injectField(o, f);
             }
         } catch (IllegalAccessException e) {
@@ -201,15 +187,17 @@ public class Mundus {
     /**
      * Looks at own static fields and injects value into object if found.
      *
-     * @param o     object, in which field should be injected
-     * @param field the injectable field
+     * @param o
+     *            object, in which field should be injected
+     * @param field
+     *            the injectable field
      *
      * @throws IllegalAccessException
      */
     private static void injectField(Object o, Field field) throws IllegalAccessException {
-        for(Field f : Mundus.class.getDeclaredFields()) {
-            if(Modifier.isStatic(f.getModifiers()) && Modifier.isPrivate(f.getModifiers())) {
-                if(f.getType().equals(field.getType())) {
+        for (Field f : Mundus.class.getDeclaredFields()) {
+            if (Modifier.isStatic(f.getModifiers()) && Modifier.isPrivate(f.getModifiers())) {
+                if (f.getType().equals(field.getType())) {
                     field.setAccessible(true);
                     field.set(o, f.get(null));
                 }

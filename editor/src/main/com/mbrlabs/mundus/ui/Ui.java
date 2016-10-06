@@ -76,7 +76,7 @@ public class Ui extends Stage {
     private static Ui INSTANCE;
 
     public static Ui getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new Ui();
         }
 
@@ -142,7 +142,6 @@ public class Ui extends Stage {
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
     }
-
 
     public void showDialog(VisDialog dialog) {
         dialog.show(this);
@@ -219,6 +218,5 @@ public class Ui extends Stage {
     public RenderWidget getWidget3D() {
         return widget3D;
     }
-
 
 }

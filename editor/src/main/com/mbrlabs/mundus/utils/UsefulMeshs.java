@@ -33,21 +33,21 @@ public class UsefulMeshs {
     private static final MeshPartBuilder.VertexInfo v0 = new MeshPartBuilder.VertexInfo();
     private static final MeshPartBuilder.VertexInfo v1 = new MeshPartBuilder.VertexInfo();
 
-    public static Model createAxes () {
+    public static Model createAxes() {
         final float GRID_MIN = -10f;
         final float GRID_MAX = 10f;
         final float GRID_STEP = 1f;
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
-        MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, new Material());
+        MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES,
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.ColorUnpacked, new Material());
         builder.setColor(Color.LIGHT_GRAY);
         for (float t = GRID_MIN; t <= GRID_MAX; t += GRID_STEP) {
             builder.line(t, 0, GRID_MIN, t, 0, GRID_MAX);
             builder.line(GRID_MIN, 0, t, GRID_MAX, 0, t);
         }
-        builder = modelBuilder.part("axes", GL20.GL_LINES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, new Material());
+        builder = modelBuilder.part("axes", GL20.GL_LINES,
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.ColorUnpacked, new Material());
         builder.setColor(Color.RED);
         builder.line(0, 0, 0, 100, 0, 0);
         builder.setColor(Color.GREEN);
@@ -62,10 +62,10 @@ public class UsefulMeshs {
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
         MeshPartBuilder builder = modelBuilder.part("torus", GL20.GL_TRIANGLES, VertexAttributes.Usage.Position, mat);
-        //builder.setColor(Color.LIGHT_GRAY);
+        // builder.setColor(Color.LIGHT_GRAY);
 
         MeshPartBuilder.VertexInfo curr1 = v0.set(null, null, null, null);
-        curr1.hasUV =  curr1.hasNormal = false;
+        curr1.hasUV = curr1.hasNormal = false;
         curr1.hasPosition = true;
 
         MeshPartBuilder.VertexInfo curr2 = v1.set(null, null, null, null);
@@ -84,16 +84,20 @@ public class UsefulMeshs {
                     t = j % divisionsU;
 
                     curr1.position.set(
-                            (float) ((width+height*Math.cos(s * twopi / divisionsV))*Math.cos(t * twopi / divisionsU)),
-                            (float) ((width+height*Math.cos(s*twopi/divisionsV))*Math.sin(t * twopi / divisionsU)),
+                            (float) ((width + height * Math.cos(s * twopi / divisionsV))
+                                    * Math.cos(t * twopi / divisionsU)),
+                            (float) ((width + height * Math.cos(s * twopi / divisionsV))
+                                    * Math.sin(t * twopi / divisionsU)),
                             (float) (height * Math.sin(s * twopi / divisionsV)));
                     k--;
                     s = (i + k) % divisionsV + 0.5;
                     curr2.position.set(
-                            (float) ((width+height*Math.cos(s * twopi / divisionsV))*Math.cos(t * twopi / divisionsU)),
-                            (float) ((width+height*Math.cos(s*twopi/divisionsV))*Math.sin(t * twopi / divisionsU)),
+                            (float) ((width + height * Math.cos(s * twopi / divisionsV))
+                                    * Math.cos(t * twopi / divisionsU)),
+                            (float) ((width + height * Math.cos(s * twopi / divisionsV))
+                                    * Math.sin(t * twopi / divisionsU)),
                             (float) (height * Math.sin(s * twopi / divisionsV)));
-                    //curr2.uv.set((float) s, 0);
+                    // curr2.uv.set((float) s, 0);
                     i1 = builder.vertex(curr1);
                     i2 = builder.vertex(curr2);
                     builder.rect(i4, i2, i1, i3);

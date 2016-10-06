@@ -35,9 +35,9 @@ public class IntFieldWithLabel extends TextFieldWithLabel {
     }
 
     public int getInt() {
-        if(textField.getText().isEmpty()
+        if (textField.getText().isEmpty()
                 || ((textField.getText().length() == 1 && (textField.getText().startsWith("-"))
-                || textField.getText().contains(".")))) {
+                        || textField.getText().contains(".")))) {
             return 0;
         }
         return Integer.parseInt(textField.getText());

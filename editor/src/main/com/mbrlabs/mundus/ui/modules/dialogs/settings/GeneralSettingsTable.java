@@ -64,9 +64,7 @@ public class GeneralSettingsTable extends VisTable {
         add(fbxBinary).left().row();
 
         keyboardLayouts = new VisSelectBox<>();
-        keyboardLayouts.setItems(
-                KeyboardLayout.QWERTY,
-                KeyboardLayout.QWERTZ);
+        keyboardLayouts.setItems(KeyboardLayout.QWERTY, KeyboardLayout.QWERTZ);
         keyboardLayouts.setSelected(registry.getSettings().getKeyboardLayout());
 
         add(new VisLabel("Keyboard Layout:")).left();

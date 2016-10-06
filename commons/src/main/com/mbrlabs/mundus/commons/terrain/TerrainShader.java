@@ -40,7 +40,8 @@ public class TerrainShader extends BaseShader {
     private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.vert.glsl";
     private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.frag.glsl";
 
-    // ============================ MATRICES & CAM POSITION ============================
+    // ============================ MATRICES & CAM POSITION
+    // ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
@@ -52,7 +53,8 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_DIRECTIONAL_LIGHT_DIR = register(new Uniform("u_directionalLight.direction"));
     protected final int UNIFORM_DIRECTIONAL_LIGHT_INTENSITY = register(new Uniform("u_directionalLight.intensity"));
 
-    // ============================ TEXTURE SPLATTING ============================
+    // ============================ TEXTURE SPLATTING
+    // ============================
     protected final int UNIFORM_TERRAIN_SIZE = register(new Uniform("u_terrainSize"));
     protected final int UNIFORM_TEXTURE_BASE = register(new Uniform("u_texture_base"));
     protected final int UNIFORM_TEXTURE_R = register(new Uniform("u_texture_r"));
@@ -115,7 +117,7 @@ public class TerrainShader extends BaseShader {
 
         // Fog
         final Fog fog = env.getFog();
-        if(fog == null) {
+        if (fog == null) {
             set(UNIFORM_FOG_DENSITY, 0f);
             set(UNIFORM_FOG_GRADIENT, 0f);
         } else {
@@ -135,12 +137,11 @@ public class TerrainShader extends BaseShader {
 
         // TODO light array for each light type
 
-
         // directional lights
-        final DirectionalLightsAttribute dirLightAttribs =
-                env.get(DirectionalLightsAttribute.class, DirectionalLightsAttribute.Type);
+        final DirectionalLightsAttribute dirLightAttribs = env.get(DirectionalLightsAttribute.class,
+                DirectionalLightsAttribute.Type);
         final Array<DirectionalLight> dirLights = dirLightAttribs == null ? null : dirLightAttribs.lights;
-        if(dirLights != null && dirLights.size > 0) {
+        if (dirLights != null && dirLights.size > 0) {
             final DirectionalLight light = dirLights.first();
             set(UNIFORM_DIRECTIONAL_LIGHT_COLOR, light.color);
             set(UNIFORM_DIRECTIONAL_LIGHT_DIR, light.direction);
@@ -151,21 +152,21 @@ public class TerrainShader extends BaseShader {
     }
 
     private void setTerrainSplatTextures(Renderable renderable) {
-        final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute)
-                renderable.material.get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
+        final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute) renderable.material
+                .get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
 
         set(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.texture);
-        if(terrainTexture.getSplatmap() != null) {
+        if (terrainTexture.getSplatmap() != null) {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 1);
             SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.R);
-            if(st != null) set(UNIFORM_TEXTURE_R, st.texture.texture);
+            if (st != null) set(UNIFORM_TEXTURE_R, st.texture.texture);
             st = terrainTexture.getTexture(SplatTexture.Channel.G);
-            if(st != null) set(UNIFORM_TEXTURE_G, st.texture.texture);
+            if (st != null) set(UNIFORM_TEXTURE_G, st.texture.texture);
             st = terrainTexture.getTexture(SplatTexture.Channel.B);
-            if(st != null) set(UNIFORM_TEXTURE_B, st.texture.texture);
+            if (st != null) set(UNIFORM_TEXTURE_B, st.texture.texture);
             st = terrainTexture.getTexture(SplatTexture.Channel.A);
-            if(st != null) set(UNIFORM_TEXTURE_A, st.texture.texture);
+            if (st != null) set(UNIFORM_TEXTURE_A, st.texture.texture);
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
         } else {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 0);

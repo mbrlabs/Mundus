@@ -36,14 +36,14 @@ public class TestUtils {
 
         Vector3 tv3 = new Vector3();
 
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             ModelInstance mi = new ModelInstance(model);
             terrain.transform.getTranslation(tv3);
             mi.transform.setTranslation(tv3);
             float x = terrain.terrainWidth * rand.nextFloat();
             float z = terrain.terrainDepth * rand.nextFloat();
             float y = terrain.getHeightAtWorldCoord(x, z);
-            mi.transform.translate(x,  y, z);
+            mi.transform.translate(x, y, z);
             boxInstances.add(mi);
         }
 

@@ -107,7 +107,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
+                if (go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 Vector3 pos = go.getLocalPosition(tempV3);
                 command.setBefore(pos);
@@ -120,7 +120,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
+                if (go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 Vector3 pos = go.getLocalPosition(tempV3);
                 command.setBefore(pos);
@@ -133,7 +133,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
+                if (go == null) return;
                 TranslateCommand command = new TranslateCommand(go);
                 Vector3 pos = go.getLocalPosition(tempV3);
                 command.setBefore(pos);
@@ -148,7 +148,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
+                if (go == null) return;
                 Quaternion rot = go.getLocalRotation(tempQuat);
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(rot);
@@ -162,7 +162,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
+                if (go == null) return;
                 Quaternion rot = go.getLocalRotation(tempQuat);
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(rot);
@@ -176,7 +176,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go == null) return;
+                if (go == null) return;
                 Quaternion rot = go.getLocalRotation(tempQuat);
                 RotateCommand rotateCommand = new RotateCommand(go);
                 rotateCommand.setBefore(rot);
@@ -192,7 +192,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go != null && scaleX.getFloat() > 0f) {
+                if (go != null && scaleX.getFloat() > 0f) {
                     ScaleCommand command = new ScaleCommand(go);
                     Vector3 scl = go.getLocalScale(tempV3);
                     command.setBefore(scl);
@@ -206,7 +206,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go != null && scaleY.getFloat() > 0f) {
+                if (go != null && scaleY.getFloat() > 0f) {
                     ScaleCommand command = new ScaleCommand(go);
                     Vector3 scl = go.getLocalScale(tempV3);
                     command.setBefore(scl);
@@ -220,7 +220,7 @@ public class TransformWidget extends BaseInspectorWidget {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameObject go = projectContext.currScene.currentSelection;
-                if(go != null && scaleZ.getFloat() > 0f) {
+                if (go != null && scaleZ.getFloat() > 0f) {
                     ScaleCommand command = new ScaleCommand(go);
                     Vector3 scl = go.getLocalScale(tempV3);
                     command.setBefore(scl);

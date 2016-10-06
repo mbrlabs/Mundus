@@ -23,8 +23,8 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.utils.StringUtils;
 
 /**
- * Can be used inside a scroll pane & has
- * the current value displayed on the right.
+ * Can be used inside a scroll pane & has the current value displayed on the
+ * right.
  *
  * @author Marcus Brummer
  * @version 04-02-2016
@@ -54,7 +54,7 @@ public class ImprovedSlider extends VisTable {
         return slider.getValue();
     }
 
-    public void setValue(float value)  {
+    public void setValue(float value) {
         slider.setValue(value);
         currentValue.setText(StringUtils.formatFloat(value, 2));
     }

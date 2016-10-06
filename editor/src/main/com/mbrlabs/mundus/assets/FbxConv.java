@@ -33,8 +33,8 @@ import java.util.List;
 /**
  * Wrapper around the command line program fbx-conv.
  *
- * Converts FBX & Collada (dae) 3D files into the g3db/g3dj format.
- * Supports Linux, Windows & Mac.
+ * Converts FBX & Collada (dae) 3D files into the g3db/g3dj format. Supports
+ * Linux, Windows & Mac.
  *
  * @author Marcus Brummer
  * @version 24-11-2015
@@ -59,11 +59,11 @@ public class FbxConv {
 
     public FbxConv(String fbxBinary) {
         this.fbxBinary = fbxBinary;
-        if(SystemUtils.IS_OS_MAC) {
+        if (SystemUtils.IS_OS_MAC) {
             os = Os.MAC;
-        } else if(SystemUtils.IS_OS_WINDOWS) {
+        } else if (SystemUtils.IS_OS_WINDOWS) {
             os = Os.WINDOWS;
-        } else if(SystemUtils.IS_OS_LINUX) {
+        } else if (SystemUtils.IS_OS_LINUX) {
             os = Os.LINUX;
         } else {
             throw new OsNotSupported();
@@ -112,14 +112,14 @@ public class FbxConv {
 
     public FbxConvResult execute() {
         FbxConvResult result = new FbxConvResult();
-        if(input == null || output == null) {
+        if (input == null || output == null) {
             result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_PARAM_ERROR);
             Log.error(TAG, "FbxCov input or output not defined");
             return result;
         }
 
-        if(!input.endsWith("fbx")) {
+        if (!input.endsWith("fbx")) {
             result.setSuccess(false);
             result.setResultCode(FbxConvResult.RESULT_CODE_WRONG_INPUT_FORMAT);
             Log.error(TAG, "FbxCov input format not supported");
@@ -128,9 +128,9 @@ public class FbxConv {
         // build arguments
         String outputFilename = FilenameUtils.getBaseName(input);
         List<String> args = new ArrayList<String>(6);
-        if(flipTexture) args.add("-f");
-        if(verbose) args.add("-v");
-        if(outputFormat == OUTPUT_FORMAT_G3DJ) {
+        if (flipTexture) args.add("-f");
+        if (verbose) args.add("-v");
+        if (outputFormat == OUTPUT_FORMAT_G3DJ) {
             args.add("-o");
             args.add("g3dj");
             outputFilename += ".g3dj";
@@ -150,7 +150,7 @@ public class FbxConv {
             int exitCode = process.waitFor();
             String log = IOUtils.toString(process.getInputStream());
 
-            if(exitCode == 0 && !log.contains("ERROR")) {
+            if (exitCode == 0 && !log.contains("ERROR")) {
                 result.setSuccess(true);
                 result.setOutputFile(path);
             }
@@ -183,7 +183,6 @@ public class FbxConv {
             }
         }.start();
     }
-
 
     /**
      * Process result

@@ -41,15 +41,15 @@ public abstract class BaseNode<T extends BaseNode> implements Node<T> {
 
     @Override
     public void addChild(T child) {
-        if(children == null) children = new Array<T>();
+        if (children == null) children = new Array<T>();
         children.add(child);
         child.setParent(this);
     }
 
     @Override
     public boolean isChildOf(GameObject other) {
-        for(GameObject go : other) {
-            if(go.id == this.id) return true;
+        for (GameObject go : other) {
+            if (go.id == this.id) return true;
         }
 
         return false;
@@ -72,7 +72,7 @@ public abstract class BaseNode<T extends BaseNode> implements Node<T> {
 
     @Override
     public void remove() {
-        if(parent != null) {
+        if (parent != null) {
             parent.getChildren().removeValue(this, true);
             this.parent = null;
         }

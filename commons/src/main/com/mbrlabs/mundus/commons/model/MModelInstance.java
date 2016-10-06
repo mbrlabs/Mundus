@@ -35,7 +35,7 @@ public class MModelInstance {
 
     public MModelInstance(ModelAsset model) {
         this.model = model;
-        if(model.getModel() != null) {
+        if (model.getModel() != null) {
             modelInstance = new ModelInstance(model.getModel());
         }
         applyModelMaterial();
@@ -44,7 +44,7 @@ public class MModelInstance {
     public void replaceModel(ModelAsset model) {
         this.model = model;
         ModelInstance mi = new ModelInstance(model.getModel());
-        mi.transform  = modelInstance.transform;
+        mi.transform = modelInstance.transform;
         modelInstance = mi;
         applyModelMaterial();
     }

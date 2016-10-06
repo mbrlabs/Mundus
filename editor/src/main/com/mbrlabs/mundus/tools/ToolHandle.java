@@ -24,9 +24,11 @@ import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
 
 /**
- * A tool handle is the visual part of a tool (e.g. x arrow handle of the translate tool).
+ * A tool handle is the visual part of a tool (e.g. x arrow handle of the
+ * translate tool).
  *
- * Handles, can be (much like game objects) picked, using the same (color coding technique).
+ * Handles, can be (much like game objects) picked, using the same (color coding
+ * technique).
  *
  * @author Marcus Brummer
  * @version 07-03-2016
@@ -51,9 +53,11 @@ public abstract class ToolHandle implements Disposable {
     }
 
     public abstract void render(ModelBatch batch);
+
     public abstract void renderPick(ModelBatch modelBatch);
 
     public abstract void act();
+
     public abstract void applyTransform();
 
     public int getId() {

@@ -70,16 +70,16 @@ public class SplatMap implements Disposable {
     }
 
     public void clearChannel(SplatTexture.Channel channel) {
-        for(int smX = 0; smX < pixmap.getWidth(); smX++) {
-            for(int smY = 0; smY < pixmap.getHeight(); smY++) {
+        for (int smX = 0; smX < pixmap.getWidth(); smX++) {
+            for (int smY = 0; smY < pixmap.getHeight(); smY++) {
                 c0.set(pixmap.getPixel(smX, smY));
-                if(channel == SplatTexture.Channel.R) {
+                if (channel == SplatTexture.Channel.R) {
                     c0.set(0, c0.g, c0.b, c0.a);
-                } else if(channel == SplatTexture.Channel.G) {
+                } else if (channel == SplatTexture.Channel.G) {
                     c0.set(c0.r, 0, c0.b, c0.a);
-                } else if(channel == SplatTexture.Channel.B) {
+                } else if (channel == SplatTexture.Channel.B) {
                     c0.set(c0.r, c0.g, 0, c0.a);
-                } else if(channel == SplatTexture.Channel.A) {
+                } else if (channel == SplatTexture.Channel.A) {
                     c0.set(c0.r, c0.g, c0.b, 0);
                 }
                 pixmap.drawPixel(smX, smY, Color.rgba8888(c0));
@@ -127,21 +127,21 @@ public class SplatMap implements Disposable {
 
     public int additiveBlend(int pixelColor, SplatTexture.Channel channel, float strength) {
         c0.set(pixelColor);
-        if(channel == SplatTexture.Channel.BASE) {
+        if (channel == SplatTexture.Channel.BASE) {
             c0.sub(strength, strength, strength, strength);
-        } else if(channel == SplatTexture.Channel.R) {
+        } else if (channel == SplatTexture.Channel.R) {
             c0.add(strength, 0, 0, 0);
-        } else if(channel == SplatTexture.Channel.G) {
+        } else if (channel == SplatTexture.Channel.G) {
             c0.add(0, strength, 0, 0);
-        } else if(channel == SplatTexture.Channel.B) {
+        } else if (channel == SplatTexture.Channel.B) {
             c0.add(0, 0, strength, 0);
-        } else if(channel == SplatTexture.Channel.A) {
+        } else if (channel == SplatTexture.Channel.A) {
             c0.add(0, 0, 0, strength);
         }
 
         // prevent the sum to be greater than 1
         final float sum = c0.r + c0.g + c0.b + c0.a;
-        if(sum > 1f) {
+        if (sum > 1f) {
             final float correction = 1f / sum;
             c0.r *= correction;
             c0.g *= correction;

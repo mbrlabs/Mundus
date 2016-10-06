@@ -58,8 +58,7 @@ public class ModelComponent extends PickableComponent {
 
     @Override
     public void renderPick() {
-        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
-                Shaders.pickerShader);
+        gameObject.sceneGraph.batch.render(modelInstance.modelInstance, Shaders.pickerShader);
     }
 
     public MModelInstance getModelInstance() {
@@ -69,8 +68,8 @@ public class ModelComponent extends PickableComponent {
     @Override
     public void render(float delta) {
         modelInstance.modelInstance.transform.set(gameObject.getTransform());
-        gameObject.sceneGraph.batch.render(modelInstance.modelInstance,
-                gameObject.sceneGraph.scene.environment, shader);
+        gameObject.sceneGraph.batch.render(modelInstance.modelInstance, gameObject.sceneGraph.scene.environment,
+                shader);
     }
 
     @Override
