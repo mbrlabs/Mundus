@@ -45,7 +45,7 @@ public abstract class TransformTool extends SelectionTool {
     protected static Color COLOR_Y = Color.GREEN;
     protected static Color COLOR_Z = Color.BLUE;
     protected static Color COLOR_XZ = Color.CYAN;
-    protected static Color COLOR_XYZ = Color.MAGENTA;
+    protected static Color COLOR_XYZ = Color.LIGHT_GRAY;
     protected static Color COLOR_SELECTED = Color.YELLOW;
 
     protected ToolHandlePicker handlePicker;
