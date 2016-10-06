@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.commons.model;
 
+import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -37,6 +38,7 @@ public class MModelInstance {
         if(model.getModel() != null) {
             modelInstance = new ModelInstance(model.getModel());
         }
+        applyModelMaterial();
     }
 
     public void replaceModel(ModelAsset model) {
@@ -44,6 +46,7 @@ public class MModelInstance {
         ModelInstance mi = new ModelInstance(model.getModel());
         mi.transform  = modelInstance.transform;
         modelInstance = mi;
+        applyModelMaterial();
     }
 
     public void applyModelMaterial() {
@@ -52,8 +55,17 @@ public class MModelInstance {
             Material modelMat = m.materials.get(i);
             Material instanceMat = modelInstance.materials.get(i);
 
-            instanceMat.set(modelMat.get(TextureAttribute.Diffuse));
-            instanceMat.set(modelMat.get(ColorAttribute.Diffuse));
+            // diffuse texture
+            Attribute diffuseTex = modelMat.get(TextureAttribute.Diffuse);
+            if(diffuseTex != null) {
+                instanceMat.set(diffuseTex);
+            }
+            // diffuse color
+            Attribute diffuseColor = modelMat.get(ColorAttribute.Diffuse);
+            if(diffuseColor != null) {
+                instanceMat.set(diffuseColor);
+            }
+
             // TODO other attributes
         }
     }

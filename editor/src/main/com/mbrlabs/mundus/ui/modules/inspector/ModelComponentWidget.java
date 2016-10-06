@@ -32,6 +32,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
@@ -80,6 +81,14 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         setupUI();
     }
 
+    private void updateModelInstaneceMaterials() {
+        EditorScene scene = projectManager.current().currScene;
+        for(GameObject go : scene.sceneGraph.getGameObjects()) {
+            ModelComponent c = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
+            if(c != null) c.getModelInstance().applyModelMaterial();
+        }
+    }
+
     private void setupUI() {
         // create Model select dropdown
         collapsibleContent.add(new VisLabel("Model")).left().row();
@@ -114,13 +123,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                             e.printStackTrace();
                         }
 
-                        // update existing models in scene graph
-                        EditorScene scene = projectManager.current().currScene;
-                        for(GameObject go : scene.sceneGraph.getGameObjects()) {
-                            ModelComponent c = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
-                            if(c != null) c.getModelInstance().applyModelMaterial();
-                        }
-
+                        updateModelInstaneceMaterials();
                         diffuseTextureField.setText(selectedTexture.toString());
                     }
                 }
@@ -152,36 +155,44 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                 @Override
                 public void selected(Color color) {
                     diffuse.color.set(color);
+                    MetaFile meta = component.getModelInstance().getModel().getMeta();
+                    meta.setDiffuseColor(color);
+                    try {
+                        meta.save();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    updateModelInstaneceMaterials();
                 }
             });
             collapsibleContent.add(diffusePicker).expandX().fillX().left().padBottom(5).row();
 
-            // ambient color
-            final ColorAttribute ambient = (ColorAttribute) mat.get(ColorAttribute.Ambient);
-            ColorPickerField ambientPicker = new ColorPickerField("Ambient: ");
-            ambientPicker.setColor(diffuse.color);
-            ambientPicker.setCallback(new ColorPickerField.ColorSelected() {
-                @Override
-                public void selected(Color color) {
-                    ambient.color.set(color);
-                }
-            });
-            collapsibleContent.add(ambientPicker).expandX().fillX().left().padBottom(5).row();
-
-            // specular color
-            final ColorAttribute specular = (ColorAttribute) mat.get(ColorAttribute.Specular);
-            ColorPickerField specularPicker = new ColorPickerField("Specular: ");
-            specularPicker.setColor(specular.color);
-            specularPicker.setCallback(new ColorPickerField.ColorSelected() {
-                @Override
-                public void selected(Color color) {
-                    specular.color.set(color);
-                }
-            });
-            collapsibleContent.add(specularPicker).expandX().fillX().left().row();
+//            // ambient color
+//            final ColorAttribute ambient = (ColorAttribute) mat.get(ColorAttribute.Ambient);
+//            ColorPickerField ambientPicker = new ColorPickerField("Ambient: ");
+//            ambientPicker.setColor(diffuse.color);
+//            ambientPicker.setCallback(new ColorPickerField.ColorSelected() {
+//                @Override
+//                public void selected(Color color) {
+//                    ambient.color.set(color);
+//                }
+//            });
+//            collapsibleContent.add(ambientPicker).expandX().fillX().left().padBottom(5).row();
+//
+//            // specular color
+//            final ColorAttribute specular = (ColorAttribute) mat.get(ColorAttribute.Specular);
+//            ColorPickerField specularPicker = new ColorPickerField("Specular: ");
+//            specularPicker.setColor(specular.color);
+//            specularPicker.setCallback(new ColorPickerField.ColorSelected() {
+//                @Override
+//                public void selected(Color color) {
+//                    specular.color.set(color);
+//                }
+//            });
+//            collapsibleContent.add(specularPicker).expandX().fillX().left().row();
 
             // shininess
-            FloatAttribute shininess = (FloatAttribute) mat.get(FloatAttribute.Shininess);
+//            FloatAttribute shininess = (FloatAttribute) mat.get(FloatAttribute.Shininess);
         }
 
     }
