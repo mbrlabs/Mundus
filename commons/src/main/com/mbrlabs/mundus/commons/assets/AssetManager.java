@@ -93,10 +93,11 @@ public class AssetManager implements Disposable {
     /**
      * Loads all assets in the project's asset folder.
      *
+     * @param listener                  informs about current loading progress
      * @throws AssetNotFoundException   if a meta file points to a non existing asset
      * @throws MetaFileParseException   if a meta file can't be parsed
      */
-    public void loadAssets() throws AssetNotFoundException, MetaFileParseException {
+    public void loadAssets(AssetLoadingListener listener) throws AssetNotFoundException, MetaFileParseException {
         // create meta file filter
         FileFilter metaFileFilter = new FileFilter() {
             @Override
@@ -106,8 +107,10 @@ public class AssetManager implements Disposable {
         };
 
         // load assets
-        for(FileHandle meta : rootFolder.list(metaFileFilter)) {
-            loadAsset(new MetaFile(meta));
+        FileHandle[] metaFiles = rootFolder.list(metaFileFilter);
+        for(FileHandle meta : metaFiles) {
+            Asset asset = loadAsset(new MetaFile(meta));
+            listener.onLoad(asset, assets.size, metaFiles.length);
         }
 
         // resolve dependencies
@@ -124,6 +127,8 @@ public class AssetManager implements Disposable {
                 }
             }
         }
+
+        listener.onFinish(assets.size);
     }
 
     /**
@@ -200,6 +205,25 @@ public class AssetManager implements Disposable {
         for(Asset asset : assets) {
             asset.dispose();
         }
+    }
+
+    /**
+     * Used to inform users about the current loading status.
+     */
+    public interface AssetLoadingListener {
+        /**
+         * Called if an asset loaded
+         * @param asset         loaded asset
+         * @param progress      number of already loaded assets
+         * @param assetCount    total number of assets
+         */
+        void onLoad(Asset asset, int progress, int assetCount);
+
+        /**
+         * Called if all assets loaded.
+         * @param assetCount  total number of loaded assets
+         */
+        void onFinish(int assetCount);
     }
 
 }

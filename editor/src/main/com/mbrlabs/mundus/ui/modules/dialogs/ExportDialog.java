@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,10 +32,8 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.kryo.KryoManager;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.utils.Toaster;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Marcus Brummer

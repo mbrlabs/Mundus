@@ -246,39 +246,6 @@ public class EditorAssetManager extends AssetManager {
 
 //    /**
 //     *
-//     * @param importedModel
-//     * @return
-//     */
-//    public ModelAsset importG3dbModel(ModelImporter.ImportedModel importedModel) {
-//        long id = projectManager.current().obtainID();
-//
-//        String relativeImportFolder = ProjectManager.PROJECT_MODEL_DIR + id + "/";
-//        String absoluteImportFolder = projectManager.current().path + "/" + relativeImportFolder;
-//
-//        String g3dbFilename = importedModel.name + ".g3db";
-//        FileHandle absoluteG3dbImportPath = Gdx.files.absolute(absoluteImportFolder + g3dbFilename);
-//        importedModel.g3dbFile.copyTo(absoluteG3dbImportPath);
-//
-//        // load model
-//        MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
-//        Model model = loader.loadModel(absoluteG3dbImportPath);
-//
-//        // create model
-//        MModel mModel = new MModel();
-//        mModel.setModel(model);
-//        mModel.name = importedModel.name;
-//        mModel.id = id;
-//        mModel.g3dbPath = relativeImportFolder + g3dbFilename;
-//        projectManager.current().models.add(mModel);
-//
-//        // save whole project
-//        projectManager.saveCurrentProject();
-//
-//        return null;
-//    }
-
-//    /**
-//     *
 //     * @param textureFile
 //     * @param mipMap
 //     * @return

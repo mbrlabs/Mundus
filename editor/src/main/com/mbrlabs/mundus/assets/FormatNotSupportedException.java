@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.exceptions;
+package com.mbrlabs.mundus.assets;
 
 /**
  * @author Marcus Brummer

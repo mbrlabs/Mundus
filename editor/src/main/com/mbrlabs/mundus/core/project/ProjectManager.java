@@ -24,6 +24,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.Main;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetNotFoundException;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
@@ -43,8 +45,6 @@ import com.mbrlabs.mundus.core.registry.ProjectRef;
 import com.mbrlabs.mundus.core.registry.Registry;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
-import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
-import com.mbrlabs.mundus.exceptions.ProjectOpenException;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
@@ -195,7 +195,17 @@ public class ProjectManager implements Disposable {
 
         // load assets
         context.assetManager = new EditorAssetManager(new FileHandle(ref.getPath() + "/" + ProjectManager.PROJECT_ASSETS_DIR));
-        context.assetManager.loadAssets();
+        context.assetManager.loadAssets(new AssetManager.AssetLoadingListener() {
+            @Override
+            public void onLoad(Asset asset, int progress, int assetCount) {
+                Log.debug(TAG, "Loaded {} asset ({}/{})", asset.getMeta().getType(), progress, assetCount);
+            }
+
+            @Override
+            public void onFinish(int assetCount) {
+                Log.debug(TAG, "Finished loading {} assets", assetCount);
+            }
+        });
 
         // load textures
         for(MTexture tex : context.textures) {

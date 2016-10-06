@@ -32,8 +32,8 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.ProjectRef;
 import com.mbrlabs.mundus.core.registry.Registry;
-import com.mbrlabs.mundus.exceptions.ProjectAlreadyImportedException;
-import com.mbrlabs.mundus.exceptions.ProjectOpenException;
+import com.mbrlabs.mundus.core.project.ProjectAlreadyImportedException;
+import com.mbrlabs.mundus.core.project.ProjectOpenException;
 import com.mbrlabs.mundus.ui.Ui;
 
 /**

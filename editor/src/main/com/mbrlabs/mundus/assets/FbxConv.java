@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.utils;
+package com.mbrlabs.mundus.assets;
 
 import com.badlogic.gdx.Gdx;
-import com.mbrlabs.mundus.exceptions.OsNotSupported;
+import com.mbrlabs.mundus.utils.Callback;
+import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.Os;
+import com.mbrlabs.mundus.utils.OsNotSupported;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
