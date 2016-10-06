@@ -30,6 +30,7 @@ import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 public class ModelAsset extends Asset {
 
     private Model model;
+    private TextureAsset diffuseTexture;
 
     public ModelAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
@@ -39,12 +40,18 @@ public class ModelAsset extends Asset {
         return model;
     }
 
-    public void setDiffuseTexture(Texture tex) {
+    public void setDiffuseTexture(TextureAsset tex) {
         if(model == null) return;
         for(Material mat : model.materials) {
-            TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, tex);
+            TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, tex.getTexture());
             mat.set(diffuse);
         }
+        getMeta().setDiffuseTexture(tex.getUUID());
+        diffuseTexture = tex;
+    }
+
+    public TextureAsset getDiffuseTexture() {
+        return diffuseTexture;
     }
 
     @Override

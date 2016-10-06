@@ -96,7 +96,7 @@ public class AssetManager implements Disposable {
                     TextureAsset tex = (TextureAsset) findAssetByID(diffuseTexture);
                     if(tex != null) {
                         Log.error(TAG, diffuseTexture);
-                        ((ModelAsset) asset).setDiffuseTexture(tex.getTexture());
+                        ((ModelAsset) asset).setDiffuseTexture(tex);
                     }
                 }
             }
