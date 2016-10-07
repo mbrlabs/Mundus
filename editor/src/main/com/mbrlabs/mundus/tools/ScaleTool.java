@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
@@ -38,6 +37,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
+import com.mbrlabs.mundus.history.commands.ScaleCommand;
 import com.mbrlabs.mundus.shader.Shaders;
 import static com.mbrlabs.mundus.tools.TransformTool.COLOR_XYZ;
 import static com.mbrlabs.mundus.tools.TransformTool.X_HANDLE_ID;
@@ -51,7 +51,7 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * @author codenigma
- * @version 03-10-2016
+ * @version 07-10-2016
  */
 public class ScaleTool extends TransformTool {
 
@@ -71,37 +71,36 @@ public class ScaleTool extends TransformTool {
     private final Vector3 tempScale = new Vector3();
     private final Vector3 tempScaleDst = new Vector3();
 
-
     private ShapeRenderer shapeRenderer;
     private ProjectContext projectContext;
 
     private TransformState state = TransformState.IDLE;
-    
+    private ScaleCommand command;
 
-       public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader, 
-               ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
+    public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader,
+            ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
         super(projectManager, goPicker, handlePicker, shader, batch, history);
-    
+
         this.shapeRenderer = shapeRenderer;
         this.projectContext = projectManager.current();
-        
+
         ModelBuilder modelBuilder = new ModelBuilder();
-        
+
         Model xPlaneHandleModel = UsefulMeshs.createArrowStub(new Material(ColorAttribute.createDiffuse(COLOR_X)),
-                Vector3.Zero, new Vector3(10, 0, 0));
+                Vector3.Zero, new Vector3(15, 0, 0));
         Model yPlaneHandleModel = UsefulMeshs.createArrowStub(new Material(ColorAttribute.createDiffuse(COLOR_Y)),
-                Vector3.Zero, new Vector3(0, 10, 0));
+                Vector3.Zero, new Vector3(0, 15, 0));
         Model zPlaneHandleModel = UsefulMeshs.createArrowStub(new Material(ColorAttribute.createDiffuse(COLOR_Z)),
-                Vector3.Zero, new Vector3(0, 0, 10));
+                Vector3.Zero, new Vector3(0, 0, 15));
         Model xyzPlaneHandleModel = modelBuilder.createBox(3, 3, 3,
                 new Material(ColorAttribute.createDiffuse(COLOR_XYZ)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        
+
         xHandle = new ScaleHandle(X_HANDLE_ID, xPlaneHandleModel);
         yHandle = new ScaleHandle(Y_HANDLE_ID, yPlaneHandleModel);
         zHandle = new ScaleHandle(Z_HANDLE_ID, zPlaneHandleModel);
         xyzHandle = new ScaleHandle(XYZ_HANDLE_ID, xyzPlaneHandleModel);
-        
+
         handles = new ScaleHandle[]{xHandle, yHandle, zHandle, xyzHandle};
     }
 
@@ -110,45 +109,46 @@ public class ScaleTool extends TransformTool {
         super.render();
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        if(projectContext.currScene.currentSelection != null) {
+        if (projectContext.currScene.currentSelection != null) {
             batch.begin(projectContext.currScene.cam);
             xHandle.render(batch);
             yHandle.render(batch);
             zHandle.render(batch);
             xyzHandle.render(batch);
             batch.end();
-            
+
             GameObject go = projectContext.currScene.currentSelection;
             go.getTransform().getTranslation(temp0);
-            if(viewport3d == null)
+            if (viewport3d == null) {
                 viewport3d = Ui.getInstance().getWidget3D().getViewport();
-            
+            }
+
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
 
             shapeRenderMat.setToOrtho2D(viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getScreenWidth(), viewport3d.getScreenHeight());
-            switch(state) {
-                case TRANSFORM_X : 
+            switch (state) {
+                case TRANSFORM_X:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(COLOR_X);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.end();
                     break;
-                case TRANSFORM_Y : 
+                case TRANSFORM_Y:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(COLOR_Y);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.end();
                     break;
-                case TRANSFORM_Z : 
+                case TRANSFORM_Z:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(COLOR_Z);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
                     shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
                     shapeRenderer.end();
                     break;
-                case TRANSFORM_XYZ : 
+                case TRANSFORM_XYZ:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(COLOR_XYZ);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
@@ -166,13 +166,16 @@ public class ScaleTool extends TransformTool {
     public void act() {
         super.act();
 
-        if(projectContext.currScene.currentSelection != null) {
+        if (projectContext.currScene.currentSelection != null) {
             translateHandles();
-            if(state == TransformState.IDLE) return;
+            if (state == TransformState.IDLE) {
+                return;
+            }
             float dst = getCurrentDst();
 
-                boolean modified = false;
-                if(null != state) { switch (state) { 
+            boolean modified = false;
+            if (null != state) {
+                switch (state) {
                     case TRANSFORM_X:
                         tempScale.x = (100 / tempScaleDst.x * dst) / 100;
                         projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
@@ -180,7 +183,7 @@ public class ScaleTool extends TransformTool {
                         break;
                     case TRANSFORM_Y:
                         tempScale.y = (100 / tempScaleDst.y * dst) / 100;
-                        projectContext.currScene.currentSelection.setLocalScale(tempScale.x , tempScale.y, tempScale.z);
+                        projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
                         modified = true;
                         break;
                     case TRANSFORM_Z:
@@ -198,37 +201,37 @@ public class ScaleTool extends TransformTool {
                     default:
                         break;
                 }
-                }
-                if(modified) {
-                    gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
-                    Mundus.postEvent(gameObjectModifiedEvent);
-                }
+            }
+            if (modified) {
+                gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
+                Mundus.postEvent(gameObjectModifiedEvent);
+            }
         }
     }
 
     private float getCurrentDst() {
-        if(projectContext.currScene.currentSelection != null) {
+        if (projectContext.currScene.currentSelection != null) {
             projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
-            Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() -  Gdx.input.getY(), 0);
+            Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0);
 
             return MathUtils.dst(pivot.x, pivot.y, mouse.x, mouse.y);
         }
         return 0;
     }
-    
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
-        if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
+        if (button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             ScaleHandle handle = (ScaleHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
-            if(handle == null) {
+            if (handle == null) {
                 state = TransformState.IDLE;
                 return false;
             }
             // current scale 
             projectContext.currScene.currentSelection.getScale(tempScale);
-            
+
             // set tempScaleDst
             tempScaleDst.x = getCurrentDst() / tempScale.x;
             tempScaleDst.y = getCurrentDst() / tempScale.y;
@@ -255,22 +258,31 @@ public class ScaleTool extends TransformTool {
                     break;
             }
         }
-        
-        // scale command here
 
+        // scale command before
+        if (state != TransformState.IDLE) {
+            command = new ScaleCommand(projectManager.current().currScene.currentSelection);
+            command.setBefore(tempScale);
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        state = TransformState.IDLE;
+        super.touchUp(screenX, screenY, pointer, button);
+        if (state != TransformState.IDLE) {
+            xHandle.changeColor(COLOR_X);
+            yHandle.changeColor(COLOR_Y);
+            zHandle.changeColor(COLOR_Z);
+            xyzHandle.changeColor(COLOR_XYZ);
 
-        xHandle.changeColor(COLOR_X);
-        yHandle.changeColor(COLOR_Y);
-        zHandle.changeColor(COLOR_Z);
-        xyzHandle.changeColor(COLOR_XYZ);
-            
-        // scale command here
+            // scale command after
+            projectContext.currScene.currentSelection.getScale(tempScale);
+            command.setAfter(tempScale);
+            history.add(command);
+            command = null;
+            state = TransformState.IDLE;
+        }
         return false;
     }
 
@@ -292,13 +304,10 @@ public class ScaleTool extends TransformTool {
     protected void translateHandles() {
         final Vector3 pos = projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
         xHandle.position.set(pos);
-        xHandle.position.x += 10;
         xHandle.applyTransform();
         yHandle.position.set(pos);
-        yHandle.position.y += 10;
         yHandle.applyTransform();
         zHandle.position.set(pos);
-        zHandle.position.z += 10;
         zHandle.applyTransform();
         xyzHandle.position.set(pos);
         xyzHandle.applyTransform();
@@ -306,18 +315,19 @@ public class ScaleTool extends TransformTool {
 
     @Override
     protected void scaleHandles() {
-    Vector3 pos = projectManager.current().currScene.currentSelection.getPosition(temp0);
-        float scaleFactor = projectManager.current().currScene.cam.position.dst(pos) * 0.25f;
-        xHandle.scale.set(scaleFactor * 0.7f, scaleFactor / 2, scaleFactor / 2);
+        Vector3 pos = projectManager.current().currScene.currentSelection.getPosition(temp0);
+        float scaleFactor = projectManager.current().currScene.cam.position.dst(pos) * 0.01f;
+        xHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
         xHandle.applyTransform();
 
-        yHandle.scale.set(scaleFactor / 2, scaleFactor * 0.7f, scaleFactor / 2);
+        yHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
         yHandle.applyTransform();
 
-        zHandle.scale.set(scaleFactor / 2, scaleFactor / 2, scaleFactor * 0.7f);
+        zHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
         zHandle.applyTransform();
 
-        xyzHandle.scale.set(scaleFactor*0.13f,scaleFactor*0.13f, scaleFactor*0.13f);
+        xyzHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
         xyzHandle.applyTransform();
     }
 
@@ -346,6 +356,7 @@ public class ScaleTool extends TransformTool {
     }
 
     private class ScaleHandle extends ToolHandle {
+
         private Model model;
         private ModelInstance modelInstance;
 
@@ -354,14 +365,14 @@ public class ScaleTool extends TransformTool {
             this.model = model;
             this.modelInstance = new ModelInstance(model);
             modelInstance.materials.first().set(idAttribute);
-            
+
         }
 
         public void changeColor(Color color) {
             ColorAttribute diffuse = (ColorAttribute) modelInstance.materials.get(0).get(ColorAttribute.Diffuse);
             diffuse.color.set(color);
         }
-        
+
         @Override
         public void render(ModelBatch batch) {
             batch.render(modelInstance);

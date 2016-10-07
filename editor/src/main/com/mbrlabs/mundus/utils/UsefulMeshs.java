@@ -65,13 +65,15 @@ public class UsefulMeshs {
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
         MeshPartBuilder meshBuilder;
+        // line
         meshBuilder = modelBuilder.part("line", GL20.GL_LINES, VertexAttributes.Usage.Position
                 | VertexAttributes.Usage.ColorUnpacked, mat);
-        meshBuilder.line(from.x, from.y, from.z, -to.x, -to.y, -to.z);
-        meshBuilder = modelBuilder.part("stub", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, mat);
-        BoxShapeBuilder.build(meshBuilder, 2, 2, 2);
+        meshBuilder.line(from.x, from.y, from.z, to.x, to.y, to.z);
+        // stub
         Node node = modelBuilder.node();
         node.translation.set(to.x, to.y, to.z);
+        meshBuilder = modelBuilder.part("stub", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, mat);
+        BoxShapeBuilder.build(meshBuilder, 2, 2, 2);
         return modelBuilder.end();
     }
 
