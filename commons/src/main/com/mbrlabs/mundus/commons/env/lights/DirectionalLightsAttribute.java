@@ -30,27 +30,27 @@ public class DirectionalLightsAttribute extends Attribute {
 
     public final static long Type = register(Alias);
 
-    public final static boolean is (final long mask) {
+    public final static boolean is(final long mask) {
         return (mask & Type) == mask;
     }
 
-    public DirectionalLightsAttribute () {
+    public DirectionalLightsAttribute() {
         super(Type);
         lights = new Array<DirectionalLight>(1);
     }
 
-    public DirectionalLightsAttribute (final DirectionalLightsAttribute copyFrom) {
+    public DirectionalLightsAttribute(final DirectionalLightsAttribute copyFrom) {
         this();
         lights.addAll(copyFrom.lights);
     }
 
     @Override
-    public DirectionalLightsAttribute copy () {
+    public DirectionalLightsAttribute copy() {
         return new DirectionalLightsAttribute(this);
     }
 
     @Override
-    public int hashCode () {
+    public int hashCode() {
         int result = super.hashCode();
         for (DirectionalLight light : lights)
             result = 1237 * result + (light == null ? 0 : light.hashCode());
@@ -58,10 +58,9 @@ public class DirectionalLightsAttribute extends Attribute {
     }
 
     @Override
-    public int compareTo (Attribute o) {
+    public int compareTo(Attribute o) {
         if (type != o.type) return type < o.type ? -1 : 1;
         return 0; // FIXME implement comparing
     }
-
 
 }

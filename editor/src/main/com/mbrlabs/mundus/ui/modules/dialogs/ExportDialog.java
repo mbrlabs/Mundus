@@ -102,12 +102,13 @@ public class ExportDialog extends BaseDialog {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 String folder = output.getText();
-                if(validateInput(folder)) {
+                if (validateInput(folder)) {
                     boolean compress = gzipCheckbox.isChecked();
                     boolean pretty = prettyPrintCheckbox.isChecked();
 
                     try {
-                        RuntimeExporter.export(kryoManager, projectManager.current(), Gdx.files.absolute(folder), pretty);
+                        RuntimeExporter.export(kryoManager, projectManager.current(), Gdx.files.absolute(folder),
+                                pretty);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -137,7 +138,7 @@ public class ExportDialog extends BaseDialog {
 
     private boolean validateInput(String folder) {
         File f = new File(folder);
-        if(!f.exists() || !f.isDirectory()) {
+        if (!f.exists() || !f.isDirectory()) {
             return false;
         }
 

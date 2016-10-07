@@ -54,19 +54,19 @@ public class Compass implements Disposable {
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
 
-        MeshPartBuilder builder = modelBuilder.part("compass", GL20.GL_TRIANGLES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, new Material());
+        MeshPartBuilder builder = modelBuilder.part("compass", GL20.GL_TRIANGLES,
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.ColorUnpacked, new Material());
         builder.setColor(Color.RED);
         builder.arrow(0, 0, 0, ARROW_LENGTH, 0, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS);
         builder.setColor(Color.GREEN);
         builder.arrow(0, 0, 0, 0, ARROW_LENGTH, 0, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS);
         builder.setColor(Color.BLUE);
         builder.arrow(0, 0, 0, 0, 0, ARROW_LENGTH, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS);
-        compassModel =  modelBuilder.end();
+        compassModel = modelBuilder.end();
         compassInstance = new ModelInstance(compassModel);
 
         // translate to top left corner
-        compassInstance.transform.translate(0.93f, 0.94f,0);
+        compassInstance.transform.translate(0.93f, 0.94f, 0);
     }
 
     public void setWorldCam(PerspectiveCamera cam) {

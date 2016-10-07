@@ -38,7 +38,8 @@ import com.mbrlabs.mundus.ui.widgets.ImprovedSlider;
  * @author Marcus Brummer
  * @version 30-01-2016
  */
-public class TerrainBrushGrid extends VisTable implements GlobalBrushSettingsChangedEvent.GlobalBrushSettingsChangedListener {
+public class TerrainBrushGrid extends VisTable
+        implements GlobalBrushSettingsChangedEvent.GlobalBrushSettingsChangedListener {
 
     private TerrainComponentWidget parent;
     private TerrainBrush.BrushMode brushMode;
@@ -62,7 +63,7 @@ public class TerrainBrushGrid extends VisTable implements GlobalBrushSettingsCha
 
         // grid
         grid = new GridGroup(40, 0);
-        for(TerrainBrush brush : toolManager.terrainBrushes) {
+        for (TerrainBrush brush : toolManager.terrainBrushes) {
             grid.addActor(new BrushItem(brush));
         }
         brushGridContainerTable.add(grid).expand().fill().row();

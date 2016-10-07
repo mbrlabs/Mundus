@@ -35,9 +35,8 @@ public class FloatFieldWithLabel extends TextFieldWithLabel {
     }
 
     public float getFloat() {
-        if(textField.getText().isEmpty()
-                || (textField.getText().length() == 1 &&
-                (textField.getText().startsWith("-") || textField.getText().startsWith(".")))) {
+        if (textField.getText().isEmpty() || (textField.getText().length() == 1
+                && (textField.getText().startsWith("-") || textField.getText().startsWith(".")))) {
             return 0;
         }
         return Float.parseFloat(textField.getText());

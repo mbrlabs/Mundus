@@ -41,11 +41,13 @@ import com.kotcrab.vis.ui.util.CursorManager;
 import com.kotcrab.vis.ui.widget.VisSplitPane;
 
 /**
- * This is a slightly modified version of kotcrab's MultiSplitPane and fixes an input issue and a split bug.
- * Changes are marked with @Changed
+ * This is a slightly modified version of kotcrab's MultiSplitPane and fixes an
+ * input issue and a split bug. Changes are marked with @Changed
  *
- * Similar to {@link VisSplitPane} but supports multiple widgets with multiple split bars at once. Use {@link #setWidgets(Actor...)}
- * after creating to set pane widgets.
+ * Similar to {@link VisSplitPane} but supports multiple widgets with multiple
+ * split bars at once. Use {@link #setWidgets(Actor...)} after creating to set
+ * pane widgets.
+ * 
  * @author Kotcrab, mbrlabs
  * @see VisSplitPane
  * @since 1.1.4
@@ -66,49 +68,50 @@ public class MundusMultiSplitPane extends WidgetGroup {
     private Rectangle handleOver;
     private int handleOverIndex;
 
-    //@Changed
+    // @Changed
     private boolean isDraggable = true;
 
-    public MundusMultiSplitPane (boolean vertical) {
+    public MundusMultiSplitPane(boolean vertical) {
         this(vertical, "default-" + (vertical ? "vertical" : "horizontal"));
     }
 
-    public MundusMultiSplitPane (boolean vertical, String styleName) {
-        this(vertical, VisUI.getSkin().get(styleName, com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle.class));
+    public MundusMultiSplitPane(boolean vertical, String styleName) {
+        this(vertical,
+                VisUI.getSkin().get(styleName, com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle.class));
     }
 
-    public MundusMultiSplitPane (boolean vertical, com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle style) {
+    public MundusMultiSplitPane(boolean vertical, com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle style) {
         this.vertical = vertical;
         setStyle(style);
         setSize(getPrefWidth(), getPrefHeight());
         initialize();
     }
 
-    //@Changed
+    // @Changed
     public void setDraggable(boolean draggable) {
         this.isDraggable = draggable;
     }
 
-    private void initialize () {
+    private void initialize() {
         addListener(new ClickListener() {
             Cursor.SystemCursor currentCursor;
             Cursor.SystemCursor targetCursor;
 
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // @Changed
                 // originally returned true
                 return false;
             }
 
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 CursorManager.restoreDefaultCursor();
                 currentCursor = null;
             }
 
             @Override
-            public boolean mouseMoved (InputEvent event, float x, float y) {
+            public boolean mouseMoved(InputEvent event, float x, float y) {
                 if (getHandleContaining(x, y) != null) {
                     if (vertical) {
                         targetCursor = Cursor.SystemCursor.VerticalResize;
@@ -135,7 +138,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
             int draggingPointer = -1;
 
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (isTouchable() == false) return false;
 
                 if (draggingPointer != -1) return false;
@@ -154,22 +157,22 @@ public class MundusMultiSplitPane extends WidgetGroup {
             }
 
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer == draggingPointer) draggingPointer = -1;
                 handleOver = getHandleContaining(x, y);
             }
 
             @Override
-            public boolean mouseMoved (InputEvent event, float x, float y) {
+            public boolean mouseMoved(InputEvent event, float x, float y) {
                 handleOver = getHandleContaining(x, y);
                 return false;
             }
 
             @Override
-            public void touchDragged (InputEvent event, float x, float y, int pointer) {
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 if (pointer != draggingPointer) return;
-                //@Changed
-                if(!isDraggable) return;
+                // @Changed
+                if (!isDraggable) return;
 
                 Drawable handle = style.handle;
                 if (!vertical) {
@@ -194,12 +197,12 @@ public class MundusMultiSplitPane extends WidgetGroup {
                     lastPoint.set(x, y);
                 }
                 invalidate();
-                //invalidateHierarchy();
+                // invalidateHierarchy();
             }
         });
     }
 
-    private Rectangle getHandleContaining (float x, float y) {
+    private Rectangle getHandleContaining(float x, float y) {
         for (Rectangle rect : handleBounds) {
             if (rect.contains(x, y)) {
                 return rect;
@@ -210,20 +213,22 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     /**
-     * Returns the split pane's style. Modifying the returned style may not have an effect until {@link #setStyle(com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle)}
+     * Returns the split pane's style. Modifying the returned style may not have
+     * an effect until
+     * {@link #setStyle(com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle)}
      * is called.
      */
-    public com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle getStyle () {
+    public com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle getStyle() {
         return style;
     }
 
-    public void setStyle (com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle style) {
+    public void setStyle(com.kotcrab.vis.ui.widget.MultiSplitPane.MultiSplitPaneStyle style) {
         this.style = style;
         invalidateHierarchy();
     }
 
     @Override
-    public void layout () {
+    public void layout() {
         if (!vertical)
             calculateHorizBoundsAndPositions();
         else
@@ -239,7 +244,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     @Override
-    public float getPrefWidth () {
+    public float getPrefWidth() {
         float width = 0;
         for (Actor actor : getChildren()) {
             width = actor instanceof Layout ? ((Layout) actor).getPrefWidth() : actor.getWidth();
@@ -249,7 +254,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     @Override
-    public float getPrefHeight () {
+    public float getPrefHeight() {
         float height = 0;
         for (Actor actor : getChildren()) {
             height = actor instanceof Layout ? ((Layout) actor).getPrefHeight() : actor.getHeight();
@@ -260,20 +265,20 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     @Override
-    public float getMinWidth () {
+    public float getMinWidth() {
         return 0;
     }
 
     @Override
-    public float getMinHeight () {
+    public float getMinHeight() {
         return 0;
     }
 
-    public void setVertical (boolean vertical) {
+    public void setVertical(boolean vertical) {
         this.vertical = vertical;
     }
 
-    private void calculateHorizBoundsAndPositions () {
+    private void calculateHorizBoundsAndPositions() {
         float height = getHeight();
         float width = getWidth();
         float handleWidth = style.handle.getMinWidth();
@@ -294,7 +299,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
         if (widgetBounds.size != 0) widgetBounds.peek().set(currentX, 0, availWidth - areaUsed, height);
     }
 
-    private void calculateVertBoundsAndPositions () {
+    private void calculateVertBoundsAndPositions() {
         float width = getWidth();
         float height = getHeight();
         float handleHeight = style.handle.getMinHeight();
@@ -316,7 +321,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         validate();
 
         Color color = getColor();
@@ -352,7 +357,7 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     @Override
-    public Actor hit (float x, float y, boolean touchable) {
+    public Actor hit(float x, float y, boolean touchable) {
         if (touchable && getTouchable() == Touchable.disabled) return null;
         if (getHandleContaining(x, y) != null) {
             return this;
@@ -361,8 +366,11 @@ public class MundusMultiSplitPane extends WidgetGroup {
         }
     }
 
-    /** Changes widgets of this split pane. You can pass any number of actors even 1 or 0. Actors can't be null. */
-    public void setWidgets (Actor... actors) {
+    /**
+     * Changes widgets of this split pane. You can pass any number of actors
+     * even 1 or 0. Actors can't be null.
+     */
+    public void setWidgets(Actor... actors) {
         clearChildren();
         widgetBounds.clear();
         scissors.clear();
@@ -385,54 +393,60 @@ public class MundusMultiSplitPane extends WidgetGroup {
     }
 
     /**
-     * @param handleBarIndex index of handle bar starting from zero, max index is number of widgets - 1
-     * @param split new value of split, must be greater than 0 and lesser than 1 and must be smaller and bigger than
-     * previous and next split value. Invalid values will be clamped to closest valid one.
+     * @param handleBarIndex
+     *            index of handle bar starting from zero, max index is number of
+     *            widgets - 1
+     * @param split
+     *            new value of split, must be greater than 0 and lesser than 1
+     *            and must be smaller and bigger than previous and next split
+     *            value. Invalid values will be clamped to closest valid one.
      */
-    public void setSplit (int handleBarIndex, float split) {
+    public void setSplit(int handleBarIndex, float split) {
         if (handleBarIndex < 0) throw new IllegalStateException("handleBarIndex can't be < 0");
         if (handleBarIndex >= splits.size) throw new IllegalStateException("handleBarIndex can't be >= splits size");
-        // float minSplit = handleOverIndex == 0 ? 0 : splits.get(handleOverIndex - 1);
+        // float minSplit = handleOverIndex == 0 ? 0 :
+        // splits.get(handleOverIndex - 1);
         // @Changed
-        // float maxSplit = handleOverIndex == splits.size - 1 ? 1 : splits.get(handleOverIndex + 1);
+        // float maxSplit = handleOverIndex == splits.size - 1 ? 1 :
+        // splits.get(handleOverIndex + 1);
         // split = MathUtils.clamp(split, minSplit, maxSplit);
         splits.set(handleBarIndex, split);
     }
 
     @Override
-    public void addActorAfter (Actor actorAfter, Actor actor) {
+    public void addActorAfter(Actor actorAfter, Actor actor) {
         throw new UnsupportedOperationException("Manual actor management not supported by MultiSplitPane");
     }
 
     @Override
-    public void addActor (Actor actor) {
+    public void addActor(Actor actor) {
         throw new UnsupportedOperationException("Manual actor management not supported by MultiSplitPane");
     }
 
     @Override
-    public void addActorAt (int index, Actor actor) {
+    public void addActorAt(int index, Actor actor) {
         throw new UnsupportedOperationException("Manual actor management not supported by MultiSplitPane");
     }
 
     @Override
-    public void addActorBefore (Actor actorBefore, Actor actor) {
+    public void addActorBefore(Actor actorBefore, Actor actor) {
         throw new UnsupportedOperationException("Manual actor management not supported by MultiSplitPane");
     }
 
     @Override
-    public boolean removeActor (Actor actor) {
+    public boolean removeActor(Actor actor) {
         throw new UnsupportedOperationException("Manual actor management not supported by MultiSplitPane");
     }
 
     public static class MultiSplitPaneStyle extends VisSplitPane.VisSplitPaneStyle {
-        public MultiSplitPaneStyle () {
+        public MultiSplitPaneStyle() {
         }
 
-        public MultiSplitPaneStyle (VisSplitPane.VisSplitPaneStyle style) {
+        public MultiSplitPaneStyle(VisSplitPane.VisSplitPaneStyle style) {
             super(style);
         }
 
-        public MultiSplitPaneStyle (Drawable handle, Drawable handleOver) {
+        public MultiSplitPaneStyle(Drawable handle, Drawable handleOver) {
             super(handle, handleOver);
         }
     }

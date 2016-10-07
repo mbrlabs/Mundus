@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
-
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**

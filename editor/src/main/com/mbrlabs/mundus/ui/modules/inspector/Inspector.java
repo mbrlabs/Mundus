@@ -92,6 +92,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 Ui.getInstance().setScrollFocus(scrollPane);
             }
+
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 Ui.getInstance().setScrollFocus(null);
@@ -104,7 +105,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     public void setupUi() {
         root.add(identifierWidget).expandX().fillX().pad(7).row();
         root.add(transformWidget).expandX().fillX().pad(7).row();
-        for(BaseInspectorWidget cw : componentWidgets) {
+        for (BaseInspectorWidget cw : componentWidgets) {
             componentTable.add(cw).row();
         }
         root.add(componentTable).fillX().expandX().pad(7).row();
@@ -114,15 +115,15 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
     private void buildComponentWidgets() {
         final ProjectContext projectContext = projectManager.current();
         componentWidgets.clear();
-        if(projectContext.currScene.currentSelection != null) {
-            for(Component component : projectContext.currScene.currentSelection.getComponents()) {
+        if (projectContext.currScene.currentSelection != null) {
+            for (Component component : projectContext.currScene.currentSelection.getComponents()) {
 
                 // model component widget
-                if(component.getType() == Component.Type.MODEL) {
-                    componentWidgets.add(new ModelComponentWidget((ModelComponent)component));
-                // terrain component widget
-                } else if(component.getType() == Component.Type.TERRAIN) {
-                    componentWidgets.add(new TerrainComponentWidget((TerrainComponent)component));
+                if (component.getType() == Component.Type.MODEL) {
+                    componentWidgets.add(new ModelComponentWidget((ModelComponent) component));
+                    // terrain component widget
+                } else if (component.getType() == Component.Type.TERRAIN) {
+                    componentWidgets.add(new TerrainComponentWidget((TerrainComponent) component));
                 }
 
             }
@@ -141,7 +142,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         buildComponentWidgets();
         componentTable.clearChildren();
 
-        for(ComponentWidget cw : componentWidgets) {
+        for (ComponentWidget cw : componentWidgets) {
             componentTable.add(cw).expand().fill().row();
             cw.setValues(projectContext.currScene.currentSelection);
         }

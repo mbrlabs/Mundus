@@ -63,7 +63,6 @@ public class FaTextButton extends VisTextButton {
         this(text, styleBg);
     }
 
-
     public FaTextButton(String text, TextButtonStyle style) {
         super(text);
         setStyle(style);

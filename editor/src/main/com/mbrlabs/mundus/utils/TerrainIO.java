@@ -33,8 +33,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Exports the terrain height.
- * Everything else (e.g. normals) can be calculated at runtime.
+ * Exports the terrain height. Everything else (e.g. normals) can be calculated
+ * at runtime.
  *
  * @author Marcus Brummer
  * @version 04-12-2015
@@ -61,10 +61,10 @@ public class TerrainIO {
         }
 
         // write .terra
-        try(DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(
-                new GZIPOutputStream(new FileOutputStream(file))))) {
+        try (DataOutputStream outputStream = new DataOutputStream(
+                new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(file))))) {
 
-            for(float f : data) {
+            for (float f : data) {
                 outputStream.writeFloat(f);
             }
             outputStream.flush();
@@ -75,29 +75,30 @@ public class TerrainIO {
 
         // write splatmap
         SplatMap splatmap = terrain.getTerrainTexture().getSplatmap();
-        if(splatmap != null) {
+        if (splatmap != null) {
             splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.path, splatmap.getPath())));
         }
 
-        //Log.debug("Terrain export execution time (" + data.length + " floats): "
-        //        + (System.currentTimeMillis() - start) + " ms");
+        // Log.debug("Terrain export execution time (" + data.length + "
+        // floats): "
+        // + (System.currentTimeMillis() - start) + " ms");
     }
 
     public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
         FloatArray floatArray = new FloatArray();
 
         String terraPath = FilenameUtils.concat(projectContext.path, terrain.terraPath);
-        try(DataInputStream is = new DataInputStream(new BufferedInputStream(
-                new GZIPInputStream(new FileInputStream(terraPath))))) {
+        try (DataInputStream is = new DataInputStream(
+                new BufferedInputStream(new GZIPInputStream(new FileInputStream(terraPath))))) {
             while (is.available() > 0) {
                 floatArray.add(is.readFloat());
             }
         } catch (EOFException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Log.debug("Terrain import. floats: {}", floatArray.size);
+        // Log.debug("Terrain import. floats: {}", floatArray.size);
 
         terrain.heightData = floatArray.toArray();
         terrain.init();
@@ -105,7 +106,7 @@ public class TerrainIO {
 
         // set default terrain base texture if none is present
         TerrainTexture terrainTexture = terrain.getTerrainTexture();
-        if(terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
             MTexture base = new MTexture();
             base.setId(-1);
             base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
@@ -114,11 +115,10 @@ public class TerrainIO {
 
         // load splat map if available
         SplatMap splatmap = terrainTexture.getSplatmap();
-        if(splatmap != null) {
+        if (splatmap != null) {
             String splatPath = FilenameUtils.concat(projectContext.path, splatmap.getPath());
             splatmap.loadPNG(Gdx.files.absolute(splatPath));
         }
-
 
         return terrain;
     }

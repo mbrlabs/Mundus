@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
@@ -37,7 +38,10 @@ import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
  */
 public class TerrainUtils {
 
-    public static GameObject createTerrainGO(SceneGraph sg, TerrainShader shader, int goID, String goName, Terrain terrain) {
+    public static VertexInfo tempVI = new VertexInfo();
+
+    public static GameObject createTerrainGO(SceneGraph sg, TerrainShader shader, int goID, String goName,
+            Terrain terrain) {
         GameObject terrainGO = new GameObject(sg, null, goID);
         terrainGO.name = goName;
 
@@ -71,13 +75,23 @@ public class TerrainUtils {
     }
 
     public static Vector3 getRayIntersection(Array<Terrain> terrains, Ray ray, Vector3 out) {
-        for(Terrain terrain : terrains) {
+        for (Terrain terrain : terrains) {
             terrain.getRayIntersection(out, ray);
-            if(terrain.isOnTerrain(out.x, out.z)) {
+            if (terrain.isOnTerrain(out.x, out.z)) {
                 return out;
             }
         }
         return null;
     }
 
+    public static VertexInfo getRayIntersectionAndUp(Array<Terrain> terrains, Ray ray) {
+        for (Terrain terrain : terrains) {
+            terrain.getRayIntersection(tempVI.position, ray);
+            if (terrain.isOnTerrain(tempVI.position.x, tempVI.position.z)) {
+                tempVI.normal.set(terrain.getNormalAtWordCoordinate(tempVI.position.x, tempVI.position.z));
+                return tempVI;
+            }
+        }
+        return null;
+    }
 }

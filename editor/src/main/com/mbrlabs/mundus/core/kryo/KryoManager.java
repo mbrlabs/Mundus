@@ -40,9 +40,9 @@ import java.util.Date;
 /**
  * Manages descriptor object <-> file io.
  *
- * This provides only method for loading the serialized data into POJOs.
- * It does not load or initialize any data (like for example it does not load meshes or textures).
- * This has to be done separately (ProjectManager).
+ * This provides only method for loading the serialized data into POJOs. It does
+ * not load or initialize any data (like for example it does not load meshes or
+ * textures). This has to be done separately (ProjectManager).
  *
  * @author Marcus Brummer
  * @version 12-12-2015
@@ -57,7 +57,8 @@ public class KryoManager {
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
         kryo.getTaggedFieldSerializerConfig().setOptimizedGenerics(true);
 
-        // !!!!! DO NOT CHANGE THIS, OTHERWISE ALREADY SERIALIZED OBJECTS WILL BE UNREADABLE !!!!
+        // !!!!! DO NOT CHANGE THIS, OTHERWISE ALREADY SERIALIZED OBJECTS WILL
+        // BE UNREADABLE !!!!
 
         // core stuff
         kryo.register(ArrayList.class, 0);
@@ -88,13 +89,13 @@ public class KryoManager {
      *
      * Save to use afterwards, nothing else needs to be loaded.
      *
-     * @return  mundus registry
+     * @return mundus registry
      */
     public Registry loadRegistry() {
         try {
             Input input = new Input(new FileInputStream(Registry.HOME_DATA_FILE));
             RegistryDescriptor registryDescriptor = kryo.readObjectOrNull(input, RegistryDescriptor.class);
-            if(registryDescriptor == null) {
+            if (registryDescriptor == null) {
                 registryDescriptor = new RegistryDescriptor();
             }
             return DescriptorConverter.convert(registryDescriptor);
@@ -108,7 +109,8 @@ public class KryoManager {
     /**
      * Saves the registry
      *
-     * @param registry  mundus registry
+     * @param registry
+     *            mundus registry
      */
     public void saveRegistry(Registry registry) {
         try {
@@ -127,7 +129,8 @@ public class KryoManager {
      *
      * Saves only the project's .pro file, not the individual scenes.
      *
-     * @param context      project context to save
+     * @param context
+     *            project context to save
      */
     public void saveProjectContext(ProjectContext context) {
         try {
@@ -149,21 +152,22 @@ public class KryoManager {
      * Does however not load the scenes (only the scene names as reference) or
      * meshes/textures (see ProjectManager).
      *
-     * @param ref       project to load
-     * @return          loaded project context without scenes
+     * @param ref
+     *            project to load
+     * @return loaded project context without scenes
      * @throws FileNotFoundException
      */
     public ProjectContext loadProjectContext(ProjectRef ref) throws FileNotFoundException {
         // find .pro file
         FileHandle projectFile = null;
-        for(FileHandle f : Gdx.files.absolute(ref.getPath()).list()) {
-            if(f.extension().equals("pro")) {
+        for (FileHandle f : Gdx.files.absolute(ref.getPath()).list()) {
+            if (f.extension().equals("pro")) {
                 projectFile = f;
                 break;
             }
         }
 
-        if(projectFile != null) {
+        if (projectFile != null) {
             Input input = new Input(new FileInputStream(projectFile.path()));
             ProjectDescriptor projectDescriptor = kryo.readObjectOrNull(input, ProjectDescriptor.class);
             ProjectContext context = DescriptorConverter.convert(projectDescriptor);
@@ -177,8 +181,10 @@ public class KryoManager {
     /**
      * Saves a scene.
      *
-     * @param context   project context of the scene
-     * @param scene     scene to save
+     * @param context
+     *            project context of the scene
+     * @param scene
+     *            scene to save
      */
     public void saveScene(ProjectContext context, Scene scene) {
         try {
@@ -200,12 +206,14 @@ public class KryoManager {
     /**
      * Loads a scene.
      *
-     * Does however not initialize ModelInstances, Terrains, ...
-     * -> ProjectManager
+     * Does however not initialize ModelInstances, Terrains, ... ->
+     * ProjectManager
      *
-     * @param context       project context of the scene
-     * @param sceneName     name of the scene to load
-     * @return              loaded scene
+     * @param context
+     *            project context of the scene
+     * @param sceneName
+     *            name of the scene to load
+     * @return loaded scene
      * @throws FileNotFoundException
      */
     public SceneDescriptor loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {

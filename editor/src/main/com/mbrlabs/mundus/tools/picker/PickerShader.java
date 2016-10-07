@@ -28,35 +28,26 @@ import com.badlogic.gdx.math.Vector3;
 /**
  * Used to render game objects in only one color.
  *
- * This color represents the encoded id of the game object.
- * By rendering with this shader on a framebuffer object one can implement raypicking.
- * The class GameObjectPicker does exactly that.
+ * This color represents the encoded id of the game object. By rendering with
+ * this shader on a framebuffer object one can implement raypicking. The class
+ * GameObjectPicker does exactly that.
  *
- * See also: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
+ * See also:
+ * http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
  *
  * @author Marcus Brummer
  * @version 20-02-2016
  */
 public class PickerShader extends BaseShader {
 
-    private static final String VERTEX_SHADER =
-            "attribute vec3 a_position;" +
-            "uniform mat4 u_transMatrix;" +
-            "uniform mat4 u_projViewMatrix;" +
-            "void main(void) {" +
-                "vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);" +
-                "gl_Position = u_projViewMatrix * worldPos;" +
-            "}";
+    private static final String VERTEX_SHADER = "attribute vec3 a_position;" + "uniform mat4 u_transMatrix;"
+            + "uniform mat4 u_projViewMatrix;" + "void main(void) {"
+            + "vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);" + "gl_Position = u_projViewMatrix * worldPos;"
+            + "}";
 
-
-    private static final String FRAGMENT_SHADER =
-            "#ifdef GL_ES\n" +
-            "precision mediump float;\n" +
-            "#endif \n" +
-            "uniform vec3 u_color;" +
-            "void main(void) {" +
-                "gl_FragColor = vec4(u_color.r/255.0, u_color.g/255.0, u_color.b/255.0, 1.0);" +
-            "}";
+    private static final String FRAGMENT_SHADER = "#ifdef GL_ES\n" + "precision mediump float;\n" + "#endif \n"
+            + "uniform vec3 u_color;" + "void main(void) {"
+            + "gl_FragColor = vec4(u_color.r/255.0, u_color.g/255.0, u_color.b/255.0, 1.0);" + "}";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
@@ -64,7 +55,6 @@ public class PickerShader extends BaseShader {
     protected final int UNIFORM_COLOR = register(new Uniform("u_color"));
 
     private static Vector3 vec3 = new Vector3();
-
 
     private ShaderProgram program;
 
@@ -105,7 +95,7 @@ public class PickerShader extends BaseShader {
         set(UNIFORM_TRANS_MATRIX, renderable.worldTransform);
 
         PickerIDAttribute goID = (PickerIDAttribute) renderable.material.get(PickerIDAttribute.Type);
-        if(goID != null) {
+        if (goID != null) {
             set(UNIFORM_COLOR, vec3.set(goID.r, goID.g, goID.b));
         }
 

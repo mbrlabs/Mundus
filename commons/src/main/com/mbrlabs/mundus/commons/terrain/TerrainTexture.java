@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class TerrainTexture {
     private Map<SplatTexture.Channel, SplatTexture> textures;
     private SplatMap splatmap;
     private Terrain terrain;
-    
+
     public TerrainTexture() {
         textures = new HashMap<SplatTexture.Channel, SplatTexture>(5, 1);
     }
@@ -51,19 +50,19 @@ public class TerrainTexture {
     public SplatTexture.Channel getNextFreeChannel() {
         // base
         SplatTexture st = textures.get(SplatTexture.Channel.BASE);
-        if(st == null || st.texture.getId() == -1) return SplatTexture.Channel.BASE;
+        if (st == null || st.texture.getId() == -1) return SplatTexture.Channel.BASE;
         // r
         st = textures.get(SplatTexture.Channel.R);
-        if(st == null) return SplatTexture.Channel.R;
+        if (st == null) return SplatTexture.Channel.R;
         // g
         st = textures.get(SplatTexture.Channel.G);
-        if(st == null) return SplatTexture.Channel.G;
+        if (st == null) return SplatTexture.Channel.G;
         // b
         st = textures.get(SplatTexture.Channel.B);
-        if(st == null) return SplatTexture.Channel.B;
+        if (st == null) return SplatTexture.Channel.B;
         // a
         st = textures.get(SplatTexture.Channel.A);
-        if(st == null) return SplatTexture.Channel.A;
+        if (st == null) return SplatTexture.Channel.A;
 
         return null;
     }
@@ -91,7 +90,5 @@ public class TerrainTexture {
     public void setTerrain(Terrain terrain) {
         this.terrain = terrain;
     }
-
-
 
 }

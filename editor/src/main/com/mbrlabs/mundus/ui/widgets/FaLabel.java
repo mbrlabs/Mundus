@@ -39,5 +39,4 @@ public class FaLabel extends VisLabel {
         setStyle(style);
     }
 
-
 }

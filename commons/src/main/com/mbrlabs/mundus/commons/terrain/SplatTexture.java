@@ -48,7 +48,7 @@ public class SplatTexture implements TextureProvider {
 
     @Override
     public Texture getTexture() {
-        if(texture != null) {
+        if (texture != null) {
             return texture.texture;
         }
         return null;

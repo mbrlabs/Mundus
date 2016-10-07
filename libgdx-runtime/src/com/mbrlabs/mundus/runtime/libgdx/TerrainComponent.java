@@ -68,5 +68,4 @@ public class TerrainComponent extends AbstractComponent {
         throw new UnsupportedOperationException("Terrain can not be cloned.");
     }
 
-
 }

@@ -3,8 +3,8 @@ apply plugin: "java"
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.resources.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = ["src/"]
+sourceSets.main.resources.srcDirs = ["src/"]
 
 /**
  * Collects all non gdx jars, that will be included in the final runtime jar.
@@ -14,8 +14,8 @@ sourceSets.main.resources.srcDirs = [ "src/" ]
 def buildJarTree() {
     FileTree tree = null;
     configurations.compile.collect {
-        if(!it.name.contains("gdx")) {
-            if(tree == null) {
+        if (!it.name.contains("gdx")) {
+            if (tree == null) {
                 tree = zipTree(it)
             } else {
                 tree.plus(zipTree(it))

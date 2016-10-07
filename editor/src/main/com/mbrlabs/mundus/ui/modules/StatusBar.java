@@ -41,7 +41,6 @@ public class StatusBar extends VisTable {
     private VisTable left;
     private VisTable right;
 
-
     private VisLabel fpsLabel;
     private VisLabel camPos;
 
@@ -125,9 +124,8 @@ public class StatusBar extends VisTable {
     }
 
     private void setCamPos(Vector3 pos) {
-        camPos.setText("camPos: " + StringUtils.formatFloat(pos.x, 2) + ", " +
-                StringUtils.formatFloat(pos.y, 2) + ", " +
-                StringUtils.formatFloat(pos.z, 2));
+        camPos.setText("camPos: " + StringUtils.formatFloat(pos.x, 2) + ", " + StringUtils.formatFloat(pos.y, 2) + ", "
+                + StringUtils.formatFloat(pos.z, 2));
     }
 
 }

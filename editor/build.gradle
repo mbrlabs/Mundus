@@ -1,11 +1,11 @@
 apply plugin: "java"
 
 sourceCompatibility = 1.7
-sourceSets.main.java.srcDirs = [ "src/main" ]
-sourceSets.main.resources.srcDirs = [ "src/main" ]
+sourceSets.main.java.srcDirs = ["src/main"]
+sourceSets.main.resources.srcDirs = ["src/main"]
 
-sourceSets.test.java.srcDirs = [ "src/test" ]
-sourceSets.test.resources.srcDirs = [ "src/test" ]
+sourceSets.test.java.srcDirs = ["src/test"]
+sourceSets.test.resources.srcDirs = ["src/test"]
 
 project.ext.mainClassName = "com.mbrlabs.mundus.Main"
 project.ext.assetsDir = new File("assets");
@@ -29,7 +29,7 @@ task distEditor(type: Jar) {
 
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
     from files(project.assetsDir);
     manifest {
         attributes 'Main-Class': project.mainClassName
@@ -46,7 +46,7 @@ eclipse {
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {
     doLast {
         def classpath = new XmlParser().parse(file(".classpath"))
-        new Node(classpath, "classpathentry", [ kind: 'src', path: 'assets' ]);
+        new Node(classpath, "classpathentry", [kind: 'src', path: 'assets']);
         def writer = new FileWriter(file(".classpath"))
         def printer = new XmlNodePrinter(new PrintWriter(writer))
         printer.setPreserveWhitespace(true)

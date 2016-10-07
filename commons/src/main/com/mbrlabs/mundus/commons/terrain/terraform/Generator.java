@@ -35,12 +35,12 @@ public abstract class Generator<T extends Generator<T>> {
 
     public T minHeight(float min) {
         this.minHeight = min;
-        return (T)this;
+        return (T) this;
     }
 
     public T maxHeight(float max) {
         this.maxHeight = max;
-        return (T)this;
+        return (T) this;
     }
 
     public abstract void terraform();

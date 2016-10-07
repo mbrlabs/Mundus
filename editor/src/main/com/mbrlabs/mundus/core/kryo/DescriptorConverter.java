@@ -47,8 +47,8 @@ import com.mbrlabs.mundus.utils.Log;
 import java.util.Locale;
 
 /**
- * Converts runtime formats into Kryo compatible formats for internal
- * project persistence.
+ * Converts runtime formats into Kryo compatible formats for internal project
+ * persistence.
  *
  * @author Marcus Brummer
  * @version 17-12-2015
@@ -61,14 +61,14 @@ public class DescriptorConverter {
     private static final Quaternion tempQuat = new Quaternion();
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     Registry
+    // Registry
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static RegistryDescriptor convert(Registry registry) {
         RegistryDescriptor descriptor = new RegistryDescriptor();
 
         descriptor.setLastProject(convert(registry.getLastOpenedProject()));
-        for(ProjectRef projectRef : registry.getProjects()) {
+        for (ProjectRef projectRef : registry.getProjects()) {
             descriptor.getProjects().add(convert(projectRef));
         }
         descriptor.setSettingsDescriptor(convert(registry.getSettings()));
@@ -80,7 +80,7 @@ public class DescriptorConverter {
         Registry registry = new Registry();
 
         registry.setLastProject(convert(descriptor.getLastProject()));
-        for(ProjectRefDescriptor projectRef : descriptor.getProjects()) {
+        for (ProjectRefDescriptor projectRef : descriptor.getProjects()) {
             registry.getProjects().add(convert(projectRef));
         }
         registry.setSettings(convert(descriptor.getSettingsDescriptor()));
@@ -109,8 +109,8 @@ public class DescriptorConverter {
         settings.setFbxConvBinary(descriptor.getFbxConvBinary());
         settings.setKeyboardLayout(descriptor.getKeyboardLayout());
 
-        if(settings.getKeyboardLayout() == null) {
-            if(Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
+        if (settings.getKeyboardLayout() == null) {
+            if (Locale.getDefault().equals(Locale.GERMAN) || Locale.getDefault().equals(Locale.GERMANY)) {
                 settings.setKeyboardLayout(KeyboardLayout.QWERTZ);
             } else {
                 settings.setKeyboardLayout(KeyboardLayout.QWERTY);
@@ -128,9 +128,8 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     Model
+    // Model
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static ModelDescriptor convert(MModel model) {
@@ -151,12 +150,12 @@ public class DescriptorConverter {
         return model;
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     Game Object
+    // Game Object
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models, Array<Terrain> terrains) {
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<MModel> models,
+            Array<Terrain> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
 
@@ -170,14 +169,14 @@ public class DescriptorConverter {
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // convert components
-        if(descriptor.getModelComponent() != null) {
+        if (descriptor.getModelComponent() != null) {
             go.getComponents().add(convert(descriptor.getModelComponent(), go, models));
-        } else if(descriptor.getTerrainComponent() != null) {
+        } else if (descriptor.getTerrainComponent() != null) {
             go.getComponents().add(convert(descriptor.getTerrainComponent(), go, terrains));
         }
 
         // recursively convert children
-        if(descriptor.getChilds() != null) {
+        if (descriptor.getChilds() != null) {
             for (GameObjectDescriptor c : descriptor.getChilds()) {
                 go.addChild(convert(c, sceneGraph, models, terrains));
             }
@@ -213,10 +212,10 @@ public class DescriptorConverter {
         descriptor.getScale()[2] = tempVec.z;
 
         // convert components
-        for(Component c : go.getComponents()) {
-            if(c.getType() == Component.Type.MODEL) {
+        for (Component c : go.getComponents()) {
+            if (c.getType() == Component.Type.MODEL) {
                 descriptor.setModelComponent(convert((ModelComponent) c));
-            } else if(c.getType() == Component.Type.TERRAIN) {
+            } else if (c.getType() == Component.Type.TERRAIN) {
                 descriptor.setTerrainComponent(convert((TerrainComponent) c));
             }
         }
@@ -224,8 +223,8 @@ public class DescriptorConverter {
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // recursively convert children
-        if(go.getChildren() != null) {
-            for(GameObject c : go.getChildren()) {
+        if (go.getChildren() != null) {
+            for (GameObject c : go.getChildren()) {
                 descriptor.getChilds().add(convert(c));
             }
         }
@@ -234,19 +233,19 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     ModelComponent
+    // ModelComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<MModel> models) {
         MModel model = null;
-        for(MModel m : models) {
-            if(descriptor.getModelID() == m.id) {
+        for (MModel m : models) {
+            if (descriptor.getModelID() == m.id) {
                 model = m;
                 break;
             }
         }
 
-        if(model == null) {
+        if (model == null) {
             Log.fatal(TAG, "MModel for MModelInstance not found: {}", descriptor.getModelID());
             return null;
         }
@@ -267,20 +266,21 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                     TerrainComponent
+    // TerrainComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go, Array<Terrain> terrains) {
+    public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go,
+            Array<Terrain> terrains) {
         // find terrain
         Terrain terrain = null;
-        for(Terrain t : terrains) {
-            if(descriptor.getTerrainID() == t.id) {
+        for (Terrain t : terrains) {
+            if (descriptor.getTerrainID() == t.id) {
                 terrain = t;
                 break;
             }
         }
 
-        if(terrain == null) {
+        if (terrain == null) {
             Log.fatal(TAG, "Terrain for TerrainInstance not found");
             return null;
         }
@@ -299,9 +299,8 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                      Terrain
+    // Terrain
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static TerrainDescriptor convert(Terrain terrain) {
@@ -329,28 +328,28 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                      TerrainTexture
+    // TerrainTexture
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
         TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
-        if(terrainTexture.getTexture(SplatTexture.Channel.BASE) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) != null) {
             descriptor.setBase(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId());
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
             descriptor.setTextureChanR(terrainTexture.getTexture(SplatTexture.Channel.R).texture.getId());
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
             descriptor.setTextureChanG(terrainTexture.getTexture(SplatTexture.Channel.G).texture.getId());
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
             descriptor.setTextureChanB(terrainTexture.getTexture(SplatTexture.Channel.B).texture.getId());
         }
-        if(terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
+        if (terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
             descriptor.setTextureChanA(terrainTexture.getTexture(SplatTexture.Channel.A).texture.getId());
         }
 
-        if(terrainTexture.getSplatmap() != null) {
+        if (terrainTexture.getSplatmap() != null) {
             descriptor.setSplatmapPath(terrainTexture.getSplatmap().getPath());
         }
 
@@ -361,8 +360,8 @@ public class DescriptorConverter {
         TerrainTexture tex = new TerrainTexture();
 
         Long base = terrainTextureDescriptor.getBase();
-        if(base != null) {
-            if(base > -1) {
+        if (base != null) {
+            if (base > -1) {
                 MTexture mt = findTextureById(textures, base);
                 if (mt != null) {
                     tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, mt));
@@ -371,39 +370,39 @@ public class DescriptorConverter {
                 }
             }
         }
-        if(terrainTextureDescriptor.getTextureChanR() != null) {
+        if (terrainTextureDescriptor.getTextureChanR() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
-            if(mt != null) {
+            if (mt != null) {
                 tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, mt));
             } else {
                 return null;
             }
         }
-        if(terrainTextureDescriptor.getTextureChanG() != null) {
+        if (terrainTextureDescriptor.getTextureChanG() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanG());
-            if(mt != null) {
+            if (mt != null) {
                 tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, mt));
             } else {
                 return null;
             }
         }
-        if(terrainTextureDescriptor.getTextureChanB() != null) {
+        if (terrainTextureDescriptor.getTextureChanB() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanB());
-            if(mt != null) {
+            if (mt != null) {
                 tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, mt));
             } else {
                 return null;
             }
         }
-        if(terrainTextureDescriptor.getTextureChanA() != null) {
+        if (terrainTextureDescriptor.getTextureChanA() != null) {
             MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanA());
-            if(mt != null) {
+            if (mt != null) {
                 tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, mt));
             } else {
                 return null;
             }
         }
-        if(terrainTextureDescriptor.getSplatmapPath() != null) {
+        if (terrainTextureDescriptor.getSplatmapPath() != null) {
             SplatMap splatMap = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
             splatMap.setPath(terrainTextureDescriptor.getSplatmapPath());
             tex.setSplatmap(splatMap);
@@ -413,8 +412,8 @@ public class DescriptorConverter {
     }
 
     public static MTexture findTextureById(Array<MTexture> textures, long id) {
-        for(MTexture t : textures) {
-            if(t.getId() == id) {
+        for (MTexture t : textures) {
+            if (t.getId() == id) {
                 return t;
             }
         }
@@ -423,7 +422,7 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                       Texture
+    // Texture
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static MTexture convert(TextureDescriptor textureDescriptor) {
@@ -444,11 +443,11 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                              Fog
+    // Fog
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static Fog convert(FogDescriptor fogDescriptor) {
-        if(fogDescriptor == null) return null;
+        if (fogDescriptor == null) return null;
         Fog fog = new Fog();
         fog.density = fogDescriptor.getDensity();
         fog.gradient = fogDescriptor.getGradient();
@@ -458,7 +457,7 @@ public class DescriptorConverter {
     }
 
     public static FogDescriptor convert(Fog fog) {
-        if(fog == null) return null;
+        if (fog == null) return null;
         FogDescriptor fogDescriptor = new FogDescriptor();
         fogDescriptor.setDensity(fog.density);
         fogDescriptor.setGradient(fog.gradient);
@@ -468,11 +467,11 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                              Base light
+    // Base light
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static BaseLight convert(BaseLightDescriptor lightDescriptor) {
-        if(lightDescriptor == null) return null;
+        if (lightDescriptor == null) return null;
         BaseLight light = new BaseLight();
         light.intensity = lightDescriptor.getIntensity();
         light.color.set(lightDescriptor.getColor());
@@ -481,7 +480,7 @@ public class DescriptorConverter {
     }
 
     public static BaseLightDescriptor convert(BaseLight light) {
-        if(light == null) return null;
+        if (light == null) return null;
         BaseLightDescriptor lightDescriptor = new BaseLightDescriptor();
         lightDescriptor.setIntensity(light.intensity);
         lightDescriptor.setColor(Color.rgba8888(light.color));
@@ -490,7 +489,7 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                          Scene
+    // Scene
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static SceneDescriptor convert(Scene scene) {
@@ -501,7 +500,7 @@ public class DescriptorConverter {
         descriptor.setId(scene.getId());
 
         // scene graph
-        for(GameObject go : scene.sceneGraph.getGameObjects()) {
+        for (GameObject go : scene.sceneGraph.getGameObjects()) {
             descriptor.getGameObjects().add(convert(go));
         }
 
@@ -529,13 +528,13 @@ public class DescriptorConverter {
         // environment stuff
         scene.environment.setFog(convert(sceneDescriptor.getFog()));
         BaseLight ambientLight = convert(sceneDescriptor.getAmbientLight());
-        if(ambientLight != null) {
+        if (ambientLight != null) {
             scene.environment.setAmbientLight(ambientLight);
         }
 
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
-        for(GameObjectDescriptor descriptor : sceneDescriptor.getGameObjects()) {
+        for (GameObjectDescriptor descriptor : sceneDescriptor.getGameObjects()) {
             scene.sceneGraph.addGameObject(convert(descriptor, scene.sceneGraph, models, terrains));
         }
 
@@ -551,7 +550,7 @@ public class DescriptorConverter {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                                          Project
+    // Project
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static ProjectDescriptor convert(ProjectContext project) {
@@ -561,19 +560,19 @@ public class DescriptorConverter {
         descriptor.setNextAvailableID(project.inspectCurrentID());
 
         // textures
-        for(MTexture texture : project.textures) {
+        for (MTexture texture : project.textures) {
             descriptor.getTextures().add(convert(texture));
         }
         // terrains
-        for(Terrain terrain : project.terrains) {
+        for (Terrain terrain : project.terrains) {
             descriptor.getTerrains().add(convert(terrain));
         }
         // models
-        for(MModel model : project.models) {
+        for (MModel model : project.models) {
             descriptor.getModels().add(convert(model));
         }
         // scenes
-        for(String sceneName : project.scenes) {
+        for (String sceneName : project.scenes) {
             descriptor.getSceneNames().add(sceneName);
         }
 
@@ -585,25 +584,24 @@ public class DescriptorConverter {
         context.name = projectDescriptor.getName();
 
         // textures
-        for(TextureDescriptor texture : projectDescriptor.getTextures()) {
+        for (TextureDescriptor texture : projectDescriptor.getTextures()) {
             context.textures.add(convert(texture));
         }
         // models
-        for(ModelDescriptor model : projectDescriptor.getModels()) {
+        for (ModelDescriptor model : projectDescriptor.getModels()) {
             context.models.add(convert(model));
         }
         // terrains
-        for(TerrainDescriptor terrain : projectDescriptor.getTerrains()) {
+        for (TerrainDescriptor terrain : projectDescriptor.getTerrains()) {
             context.terrains.add(convert(terrain, context.textures));
         }
 
         // scenes
-        for(String sceneName : projectDescriptor.getSceneNames()) {
+        for (String sceneName : projectDescriptor.getSceneNames()) {
             context.scenes.add(sceneName);
         }
 
         return context;
     }
-
 
 }

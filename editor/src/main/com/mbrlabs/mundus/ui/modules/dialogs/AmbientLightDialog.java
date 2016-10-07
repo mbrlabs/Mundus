@@ -35,7 +35,8 @@ import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
  * @author Marcus Brummer
  * @version 04-03-2016
  */
-public class AmbientLightDialog extends BaseDialog implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
+public class AmbientLightDialog extends BaseDialog
+        implements ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private VisTextField intensity = new VisTextField("0");
 
@@ -96,7 +97,7 @@ public class AmbientLightDialog extends BaseDialog implements ProjectChangedEven
 
     private Float convert(String input) {
         try {
-            if(input.length() == 0) return null;
+            if (input.length() == 0) return null;
             return Float.valueOf(input);
         } catch (Exception e) {
             return null;

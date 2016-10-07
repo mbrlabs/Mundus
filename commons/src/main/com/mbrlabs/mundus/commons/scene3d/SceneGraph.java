@@ -47,7 +47,7 @@ public class SceneGraph {
 
     public void render(float delta) {
         batch.begin(scene.cam);
-        for(GameObject go : root.getChildren()) {
+        for (GameObject go : root.getChildren()) {
             go.render(delta);
         }
         batch.end();
@@ -58,7 +58,7 @@ public class SceneGraph {
     }
 
     public void update(float delta) {
-        for(GameObject go : root.getChildren()) {
+        for (GameObject go : root.getChildren()) {
             go.update(delta);
         }
     }

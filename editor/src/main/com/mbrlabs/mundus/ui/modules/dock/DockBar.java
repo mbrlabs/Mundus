@@ -68,7 +68,7 @@ public class DockBar extends VisTable implements TabbedPaneListener {
 
     @Override
     public void switchedTab(Tab tab) {
-        if(tab != null) {
+        if (tab != null) {
             splitPane.setSecondWidget(tab.getContentTable());
             splitPane.setSplitAmount(0.8f);
         } else {

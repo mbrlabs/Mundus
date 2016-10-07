@@ -25,7 +25,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.Scene;
-import com.mbrlabs.mundus.commons.importer.*;
+import com.mbrlabs.mundus.commons.importer.GameObjectDTO;
+import com.mbrlabs.mundus.commons.importer.ModelComponentDTO;
+import com.mbrlabs.mundus.commons.importer.ModelDTO;
+import com.mbrlabs.mundus.commons.importer.ProjectDTO;
+import com.mbrlabs.mundus.commons.importer.SceneDTO;
+import com.mbrlabs.mundus.commons.importer.TerrainComponentDTO;
+import com.mbrlabs.mundus.commons.importer.TerrainDTO;
+import com.mbrlabs.mundus.commons.importer.TextureDTO;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -49,7 +56,7 @@ public class MundusImporter {
     private G3dModelLoader g3dModelLoader;
 
     public MundusImporter(String assetsFolder, Shader terrainShader, Shader entityShader) {
-        if(assetsFolder.endsWith("/")) {
+        if (assetsFolder.endsWith("/")) {
             this.assetsFolder = assetsFolder;
         } else {
             this.assetsFolder = assetsFolder + "/";
@@ -65,12 +72,12 @@ public class MundusImporter {
         Project project = new Project();
 
         // textures
-        for(TextureDTO texDto : dto.getTextures()) {
+        for (TextureDTO texDto : dto.getTextures()) {
             project.getTextures().add(convert(texDto));
         }
 
         // terrains
-        for(TerrainDTO ter : dto.getTerrains()) {
+        for (TerrainDTO ter : dto.getTerrains()) {
             // textures
             final TerrainTexture texture = new TerrainTexture();
 
@@ -78,19 +85,18 @@ public class MundusImporter {
             texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexR());
-            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, tex));
+            if (tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexG());
-            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, tex));
+            if (tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexB());
-            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, tex));
+            if (tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, tex));
 
             tex = Utils.findTextureById(project.getTextures(), ter.getTexA());
-            if(tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, tex));
+            if (tex != null) texture.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, tex));
 
-
-            if(ter.getSplatmapPath() != null) {
+            if (ter.getSplatmapPath() != null) {
                 SplatMap sm = new SplatMap(new Pixmap(Gdx.files.internal(assetsFolder + ter.getSplatmapPath())));
                 texture.setSplatmap(sm);
             }
@@ -103,12 +109,12 @@ public class MundusImporter {
         }
 
         // models
-        for(ModelDTO modelDTO : dto.getModels()) {
+        for (ModelDTO modelDTO : dto.getModels()) {
             project.getModels().add(convert(modelDTO));
         }
 
         // scenes
-        for(SceneDTO sceneDto : dto.getScenes()) {
+        for (SceneDTO sceneDto : dto.getScenes()) {
             project.getScenes().add(convert(sceneDto, project.getTerrains(), project.getModels()));
         }
 
@@ -124,7 +130,6 @@ public class MundusImporter {
         MTexture tex = new MTexture();
         tex.setId(dto.getId());
         tex.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal(assetsFolder + dto.getPath()), true);
-
 
         return tex;
     }
@@ -144,7 +149,7 @@ public class MundusImporter {
         scene.setName(dto.getName());
 
         scene.sceneGraph = new SceneGraph(scene);
-        for(GameObjectDTO go : dto.getSceneGraph()) {
+        for (GameObjectDTO go : dto.getSceneGraph()) {
             scene.sceneGraph.getGameObjects().add(convert(go, scene.sceneGraph, terrains, models));
         }
 
@@ -152,7 +157,7 @@ public class MundusImporter {
     }
 
     public GameObject convert(GameObjectDTO dto, SceneGraph sceneGraph, Array<Terrain> terrains, Array<MModel> models) {
-        final GameObject go = new GameObject(sceneGraph, dto.getName(), (int)dto.getId());
+        final GameObject go = new GameObject(sceneGraph, dto.getName(), (int) dto.getId());
         go.active = dto.isActive();
 
         final float[] trans = dto.getTrans();
@@ -161,15 +166,15 @@ public class MundusImporter {
         // go.rotate(trans[3], trans[4], trans[5]);
         go.scale(trans[6], trans[7], trans[8]);
 
-        if(dto.getTerrC() != null) {
+        if (dto.getTerrC() != null) {
             go.getComponents().add(convert(go, dto.getTerrC(), terrains));
         }
-        if(dto.getModelC() != null) {
+        if (dto.getModelC() != null) {
             go.getComponents().add(convert(go, dto.getModelC(), models));
         }
 
         // recursively convert children
-        if(dto.getChilds() != null) {
+        if (dto.getChilds() != null) {
             for (GameObjectDTO c : dto.getChilds()) {
                 go.addChild(convert(c, sceneGraph, terrains, models));
             }

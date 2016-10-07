@@ -31,7 +31,6 @@ public class FogDescriptor {
     @Tag(2)
     private int color;
 
-
     public float getDensity() {
         return density;
     }

@@ -49,7 +49,7 @@ public class TerrainPaintCommand implements Command {
     @Override
     public void execute() {
         SplatMap sm = terrain.getTerrainTexture().getSplatmap();
-        if(sm != null) {
+        if (sm != null) {
             sm.getPixmap().drawPixmap(after, 0, 0);
             sm.updateTexture();
         }
@@ -58,7 +58,7 @@ public class TerrainPaintCommand implements Command {
     @Override
     public void undo() {
         SplatMap sm = terrain.getTerrainTexture().getSplatmap();
-        if(sm != null) {
+        if (sm != null) {
             sm.getPixmap().drawPixmap(before, 0, 0);
             sm.updateTexture();
         }

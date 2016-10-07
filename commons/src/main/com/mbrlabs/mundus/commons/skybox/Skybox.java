@@ -46,8 +46,8 @@ public class Skybox implements Disposable {
     private FileHandle positiveZ;
     private FileHandle negativeZ;
 
-    public Skybox(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY,
-                  FileHandle negativeY, FileHandle positiveZ, FileHandle negativeZ) {
+    public Skybox(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
+            FileHandle positiveZ, FileHandle negativeZ) {
         set(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ);
 
         boxModel = createModel();
@@ -66,9 +66,9 @@ public class Skybox implements Disposable {
         return boxInstance;
     }
 
-    public void set(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY,
-                    FileHandle negativeY, FileHandle positiveZ, FileHandle negativeZ) {
-        if(cubemap != null) {
+    public void set(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
+            FileHandle positiveZ, FileHandle negativeZ) {
+        if (cubemap != null) {
             cubemap.dispose();
         }
         cubemap = new Cubemap(positiveX, negativeX, positiveY, negativeY, positiveZ, negativeZ);

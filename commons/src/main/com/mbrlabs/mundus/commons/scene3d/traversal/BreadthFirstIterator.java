@@ -42,8 +42,8 @@ public class BreadthFirstIterator implements Iterator<GameObject> {
     @Override
     public GameObject next() {
         GameObject first = queue.removeFirst();
-        if(first.getChildren() != null) {
-            for(GameObject go : first.getChildren()) {
+        if (first.getChildren() != null) {
+            for (GameObject go : first.getChildren()) {
                 queue.addLast(go);
             }
         }

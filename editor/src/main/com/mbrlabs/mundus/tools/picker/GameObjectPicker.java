@@ -25,10 +25,12 @@ import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 
 /**
- * Renders a scene graph to an offscreen FBO, encodes the game object's id in the game object's
- * render color (see GameObjectPickerShader) and does mouse picking by decoding the picked color.
+ * Renders a scene graph to an offscreen FBO, encodes the game object's id in
+ * the game object's render color (see GameObjectPickerShader) and does mouse
+ * picking by decoding the picked color.
  *
- * See also: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
+ * See also:
+ * http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/
  *
  * @author Marcus Brummer
  * @version 20-02-2016
@@ -50,10 +52,10 @@ public class GameObjectPicker extends BasePicker {
 
         int id = PickerColorEncoder.decode(pm.getPixel(x, y));
         System.out.println(id);
-        for(GameObject go : scene.sceneGraph.getGameObjects()) {
-            if(id == go.id) return go;
-            for(GameObject child : go) {
-                if(id == child.id) return child;
+        for (GameObject go : scene.sceneGraph.getGameObjects()) {
+            if (id == go.id) return go;
+            for (GameObject child : go) {
+                if (id == child.id) return child;
             }
         }
 
@@ -62,21 +64,21 @@ public class GameObjectPicker extends BasePicker {
 
     private void renderPickableScene(SceneGraph sceneGraph) {
         sceneGraph.batch.begin(sceneGraph.scene.cam);
-        for(GameObject go : sceneGraph.getGameObjects()) {
+        for (GameObject go : sceneGraph.getGameObjects()) {
             renderPickableGameObject(go);
         }
         sceneGraph.batch.end();
     }
 
     private void renderPickableGameObject(GameObject go) {
-        for(Component c : go.getComponents()) {
-            if(c instanceof PickableComponent) {
+        for (Component c : go.getComponents()) {
+            if (c instanceof PickableComponent) {
                 ((PickableComponent) c).renderPick();
             }
         }
 
-        if(go.getChildren() != null) {
-            for(GameObject goc : go.getChildren()) {
+        if (go.getChildren() != null) {
+            for (GameObject goc : go.getChildren()) {
                 renderPickableGameObject(goc);
             }
         }

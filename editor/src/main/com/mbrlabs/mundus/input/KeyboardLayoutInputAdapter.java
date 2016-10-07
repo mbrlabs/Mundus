@@ -37,10 +37,10 @@ public class KeyboardLayoutInputAdapter extends InputAdapter {
     }
 
     protected int convertKeycode(int code) {
-        if(registry.getSettings().getKeyboardLayout() == KeyboardLayout.QWERTZ) {
-            if(code == Input.Keys.Z) {
+        if (registry.getSettings().getKeyboardLayout() == KeyboardLayout.QWERTZ) {
+            if (code == Input.Keys.Z) {
                 return Input.Keys.Y;
-            } else if(code ==  Input.Keys.Y) {
+            } else if (code == Input.Keys.Y) {
                 return Input.Keys.Z;
             }
         }

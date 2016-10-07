@@ -56,12 +56,11 @@ public class ToolHandlePicker extends BasePicker {
 
     private void renderPickableScene(ToolHandle[] handles, ModelBatch batch, PerspectiveCamera cam) {
         batch.begin(cam);
-        for(ToolHandle handle : handles) {
+        for (ToolHandle handle : handles) {
             handle.renderPick(batch);
         }
         batch.end();
     }
-
 
     @Override
     public void dispose() {

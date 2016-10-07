@@ -52,37 +52,35 @@ public class RuntimeExporter {
     private static final Vector3 vec3 = new Vector3();
     private static final Quaternion quat = new Quaternion();
 
-    public static void export(KryoManager kryoManager,
-                              ProjectContext projectContext,
-                              FileHandle destFolder,
-                              boolean prettyPrint) throws IOException {
+    public static void export(KryoManager kryoManager, ProjectContext projectContext, FileHandle destFolder,
+            boolean prettyPrint) throws IOException {
         ProjectDTO dto = new ProjectDTO();
         dto.setName(projectContext.name);
 
         // models
         ModelDTO[] models = new ModelDTO[projectContext.models.size];
-        for(int i = 0; i < models.length; i++) {
+        for (int i = 0; i < models.length; i++) {
             models[i] = convert(projectContext.models.get(i));
         }
         dto.setModels(models);
 
         // terrains
         TerrainDTO[] terrains = new TerrainDTO[projectContext.terrains.size];
-        for(int i = 0; i < terrains.length; i++) {
+        for (int i = 0; i < terrains.length; i++) {
             terrains[i] = convert(projectContext.terrains.get(i));
         }
         dto.setTerrains(terrains);
 
         // textures
         TextureDTO[] textures = new TextureDTO[projectContext.textures.size];
-        for(int i = 0; i < textures.length; i++) {
+        for (int i = 0; i < textures.length; i++) {
             textures[i] = convert(projectContext.textures.get(i));
         }
         dto.setTextures(textures);
 
         // scenes
         SceneDTO[] scenes = new SceneDTO[projectContext.scenes.size];
-        for(int i = 0; i < scenes.length; i++) {
+        for (int i = 0; i < scenes.length; i++) {
             String name = projectContext.scenes.get(i);
             Scene scene = DescriptorConverter.convert(kryoManager.loadScene(projectContext, name),
                     projectContext.terrains, projectContext.models);
@@ -91,7 +89,7 @@ public class RuntimeExporter {
         dto.setScenes(scenes);
 
         // write JSON
-        if(!destFolder.exists()) {
+        if (!destFolder.exists()) {
             destFolder.mkdirs();
         }
         FileHandle jsonOutput = Gdx.files.absolute(FilenameUtils.concat(destFolder.path(), "mundus"));
@@ -116,25 +114,25 @@ public class RuntimeExporter {
         dto.setTerraPath(terrain.terraPath);
 
         TerrainTexture tex = terrain.getTerrainTexture();
-        if(tex.getSplatmap() != null) dto.setSplatmapPath(tex.getSplatmap().getPath());
+        if (tex.getSplatmap() != null) dto.setSplatmapPath(tex.getSplatmap().getPath());
         // Base
-        if(tex.getTexture(SplatTexture.Channel.BASE) != null) {
+        if (tex.getTexture(SplatTexture.Channel.BASE) != null) {
             dto.setTexBase(tex.getTexture(SplatTexture.Channel.BASE).texture.getId());
         }
         // R
-        if(tex.getTexture(SplatTexture.Channel.R) != null) {
+        if (tex.getTexture(SplatTexture.Channel.R) != null) {
             dto.setTexR(tex.getTexture(SplatTexture.Channel.R).texture.getId());
         }
         // G
-        if(tex.getTexture(SplatTexture.Channel.G) != null) {
+        if (tex.getTexture(SplatTexture.Channel.G) != null) {
             dto.setTexG(tex.getTexture(SplatTexture.Channel.G).texture.getId());
         }
         // B
-        if(tex.getTexture(SplatTexture.Channel.B) != null) {
+        if (tex.getTexture(SplatTexture.Channel.B) != null) {
             dto.setTexB(tex.getTexture(SplatTexture.Channel.B).texture.getId());
         }
         // A
-        if(tex.getTexture(SplatTexture.Channel.A) != null) {
+        if (tex.getTexture(SplatTexture.Channel.A) != null) {
             dto.setTexA(tex.getTexture(SplatTexture.Channel.A).texture.getId());
         }
 
@@ -159,7 +157,7 @@ public class RuntimeExporter {
         SceneDTO dto = new SceneDTO();
         dto.setId(scene.getId());
         dto.setName(scene.getName());
-        for(GameObject go : scene.sceneGraph.getGameObjects()) {
+        for (GameObject go : scene.sceneGraph.getGameObjects()) {
             dto.getSceneGraph().add(convert(go));
         }
 
@@ -195,35 +193,34 @@ public class RuntimeExporter {
         dto.getTrans()[0] = pos.x;
         dto.getTrans()[1] = pos.y;
         dto.getTrans()[2] = pos.z;
-//
-//        // rotation
-//        Quaternion rot = gameObject.getLocalPosition(quat);
-//
-//        dto.getTrans()[3] = gameObject.rotation.x;
-//        dto.getTrans()[4] = gameObject.rotation.y;
-//        dto.getTrans()[5] = gameObject.rotation.z;
-//
-//        // scale
-//        dto.getTrans()[6] = gameObject.scale.x;
-//        dto.getTrans()[7] = gameObject.scale.y;
-//        dto.getTrans()[8] = gameObject.scale.z;
+        //
+        // // rotation
+        // Quaternion rot = gameObject.getLocalPosition(quat);
+        //
+        // dto.getTrans()[3] = gameObject.rotation.x;
+        // dto.getTrans()[4] = gameObject.rotation.y;
+        // dto.getTrans()[5] = gameObject.rotation.z;
+        //
+        // // scale
+        // dto.getTrans()[6] = gameObject.scale.x;
+        // dto.getTrans()[7] = gameObject.scale.y;
+        // dto.getTrans()[8] = gameObject.scale.z;
 
         // components
-        for(Component c : gameObject.getComponents()) {
-            if(c.getType() == Component.Type.MODEL) {
-                dto.setModelC(convert((ModelComponent)c));
-            } else if(c.getType() == Component.Type.TERRAIN) {
+        for (Component c : gameObject.getComponents()) {
+            if (c.getType() == Component.Type.MODEL) {
+                dto.setModelC(convert((ModelComponent) c));
+            } else if (c.getType() == Component.Type.TERRAIN) {
                 dto.setTerrC(convert((TerrainComponent) c));
             }
         }
 
-
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // recursively convert children
-        if(gameObject.getChildren() != null) {
+        if (gameObject.getChildren() != null) {
             GameObjectDTO[] childs = new GameObjectDTO[gameObject.getChildren().size];
-            for(int i = 0; i < childs.length; i++) {
+            for (int i = 0; i < childs.length; i++) {
                 childs[i] = convert(gameObject.getChildren().get(i));
             }
             dto.setChilds(childs);
@@ -231,6 +228,5 @@ public class RuntimeExporter {
 
         return dto;
     }
-
 
 }

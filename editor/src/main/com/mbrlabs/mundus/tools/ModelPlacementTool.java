@@ -19,16 +19,16 @@ package com.mbrlabs.mundus.tools;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.mbrlabs.mundus.commons.model.MModel;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -45,8 +45,11 @@ import com.mbrlabs.mundus.utils.TerrainUtils;
 public class ModelPlacementTool extends Tool {
 
     public static final String NAME = "Placement Tool";
+    public static Vector3 DEFAULT_ORIENTATION = Vector3.Z.cpy();
 
     private Vector3 tempV3 = new Vector3();
+
+    private boolean shouldRespectTerrainSlope = true;
 
     // DO NOT DISPOSE THIS
     private MModel model;
@@ -80,6 +83,14 @@ public class ModelPlacementTool extends Tool {
         throw new UnsupportedOperationException();
     }
 
+    public boolean isShouldRespectTerrainSlope() {
+        return shouldRespectTerrainSlope;
+    }
+
+    public void setShouldRespectTerrainSlope(boolean shouldRespectTerrainSlope) {
+        this.shouldRespectTerrainSlope = shouldRespectTerrainSlope;
+    }
+
     @Override
     public void reset() {
         dispose();
@@ -87,7 +98,7 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public void render() {
-        if(curEntity != null) {
+        if (curEntity != null) {
             batch.begin(projectManager.current().currScene.cam);
             batch.render(curEntity.modelInstance, projectManager.current().currScene.environment, shader);
             batch.end();
@@ -102,13 +113,16 @@ public class ModelPlacementTool extends Tool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if(curEntity != null && button == Input.Buttons.LEFT) {
+        if (curEntity != null && button == Input.Buttons.LEFT) {
             int id = projectManager.current().obtainID();
             GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.name, id);
             projectManager.current().currScene.sceneGraph.addGameObject(modelGo);
 
             curEntity.modelInstance.transform.getTranslation(tempV3);
             modelGo.translate(tempV3);
+            Quaternion rot = new Quaternion();
+            rot = curEntity.modelInstance.transform.getRotation(rot);
+            modelGo.setLocalRotation(rot.x, rot.y, rot.z, rot.w);
             ModelComponent modelComponent = new ModelComponent(modelGo);
             modelComponent.setShader(shader);
             modelComponent.setModelInstance(curEntity);
@@ -131,18 +145,23 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if(this.model == null || curEntity == null) return false;
+        if (this.model == null || curEntity == null) return false;
 
         final ProjectContext context = projectManager.current();
 
         final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-        if(context.currScene.terrains.size > 0 && curEntity != null) {
-            TerrainUtils.getRayIntersection(context.currScene.terrains, ray, tempV3);
+        if (context.currScene.terrains.size > 0 && curEntity != null) {
+            VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
+            if (vi != null) {
+                if (shouldRespectTerrainSlope)
+                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
+                curEntity.modelInstance.transform.setTranslation(vi.position);
+            }
         } else {
             tempV3.set(projectManager.current().currScene.cam.position);
             tempV3.add(ray.direction.nor().scl(200));
+            curEntity.modelInstance.transform.setTranslation(tempV3);
         }
-        curEntity.modelInstance.transform.setTranslation(tempV3);
         return false;
     }
 

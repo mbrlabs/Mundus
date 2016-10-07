@@ -66,14 +66,15 @@ public abstract class TerrainBrush extends Tool {
     }
 
     /**
-     * Defines two actions (and it's key codes) every brush and every mode can have.
+     * Defines two actions (and it's key codes) every brush and every mode can
+     * have.
      *
-     * For instance the RAISE_LOWER mode has 'raise' has PRIMARY action and 'lower' as secondary.
-     * Pressing the keycode of the secondary & the primary key enables the secondary action.
+     * For instance the RAISE_LOWER mode has 'raise' has PRIMARY action and
+     * 'lower' as secondary. Pressing the keycode of the secondary & the primary
+     * key enables the secondary action.
      **/
     public static enum BrushAction {
-        PRIMARY(Input.Buttons.LEFT),
-        SECONDARY(Input.Keys.SHIFT_LEFT);
+        PRIMARY(Input.Buttons.LEFT), SECONDARY(Input.Keys.SHIFT_LEFT);
 
         public final int code;
 
@@ -84,7 +85,8 @@ public abstract class TerrainBrush extends Tool {
     }
 
     /**
-     * Thrown if a the brush is set to a mode, which it currently does not support.
+     * Thrown if a the brush is set to a mode, which it currently does not
+     * support.
      */
     public class ModeNotSupportedException extends Exception {
         public ModeNotSupportedException(String message) {
@@ -129,7 +131,8 @@ public abstract class TerrainBrush extends Tool {
     private boolean terrainHeightModified = false;
     private boolean splatmapModified = false;
 
-    public TerrainBrush(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history, FileHandle pixmapBrush) {
+    public TerrainBrush(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history,
+            FileHandle pixmapBrush) {
         super(projectManager, shader, batch, history);
 
         ModelBuilder modelBuilder = new ModelBuilder();
@@ -144,30 +147,30 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public void act() {
-        if(action == null) return;
-        if(terrain == null) return;
+        if (action == null) return;
+        if (terrain == null) return;
 
         // sample height
-        if(action == BrushAction.SECONDARY && mode == BrushMode.FLATTEN) {
+        if (action == BrushAction.SECONDARY && mode == BrushMode.FLATTEN) {
             heightSample = brushPos.y;
             return;
         }
 
         // only act if mouse has been moved
-        if(lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
+        if (lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
 
-        if(mode == BrushMode.PAINT) {
+        if (mode == BrushMode.PAINT) {
             paint();
-        } else if(mode == BrushMode.RAISE_LOWER) {
+        } else if (mode == BrushMode.RAISE_LOWER) {
             raiseLower(action);
-        } else if(mode == BrushMode.FLATTEN) {
+        } else if (mode == BrushMode.FLATTEN) {
             flatten();
         }
     }
 
     private void paint() {
         SplatMap sm = terrain.getTerrainTexture().getSplatmap();
-        if(sm == null) return;
+        if (sm == null) return;
 
         Vector3 terrainPos = terrain.getPosition(tVec1);
         final float splatX = ((brushPos.x - terrainPos.x) / (float) terrain.terrainWidth) * sm.getWidth();
@@ -175,10 +178,10 @@ public abstract class TerrainBrush extends Tool {
         final float splatRad = (radius / terrain.terrainWidth) * sm.getWidth();
         final Pixmap pixmap = sm.getPixmap();
 
-        for(int smX = 0; smX < pixmap.getWidth(); smX++) {
-            for(int smY = 0; smY < pixmap.getHeight(); smY++) {
+        for (int smX = 0; smX < pixmap.getWidth(); smX++) {
+            for (int smY = 0; smY < pixmap.getHeight(); smY++) {
                 final float dst = MathUtils.dst(splatX, splatY, smX, smY);
-                if(dst <= splatRad) {
+                if (dst <= splatRad) {
                     final float opacity = getValueOfBrushPixmap(splatX, splatY, smX, smY, splatRad) * 0.5f * strength;
                     int newPixelColor = sm.additiveBlend(pixmap.getPixel(smX, smY), paintChannel, opacity);
                     pixmap.drawPixel(smX, smY, newPixelColor);
@@ -193,21 +196,22 @@ public abstract class TerrainBrush extends Tool {
     private void flatten() {
         final Vector3 terPos = terrain.getPosition(tVec1);
         for (int x = 0; x < terrain.vertexResolution; x++) {
-            for (int z = 0; z <  terrain.vertexResolution; z++) {
+            for (int z = 0; z < terrain.vertexResolution; z++) {
                 final Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
                 vertexPos.x += terPos.x;
                 vertexPos.z += terPos.z;
                 float distance = vertexPos.dst(brushPos);
 
-                if(distance <= radius) {
+                if (distance <= radius) {
                     final int index = z * terrain.vertexResolution + x;
                     final float diff = Math.abs(terrain.heightData[index] - heightSample);
-                    if(diff <= 1f) {
+                    if (diff <= 1f) {
                         terrain.heightData[index] = heightSample;
-                    } else if(diff > 1f){
-                        final float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z, radius);
+                    } else if (diff > 1f) {
+                        final float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z,
+                                radius);
                         final float newHeight = heightSample * elevation;
-                        if(Math.abs(heightSample - newHeight) < Math.abs(heightSample - terrain.heightData[index])) {
+                        if (Math.abs(heightSample - newHeight) < Math.abs(heightSample - terrain.heightData[index])) {
                             terrain.heightData[index] = newHeight;
                         }
                     }
@@ -223,13 +227,13 @@ public abstract class TerrainBrush extends Tool {
         final Vector3 terPos = terrain.getPosition(tVec1);
         float dir = (action == BrushAction.PRIMARY) ? 1 : -1;
         for (int x = 0; x < terrain.vertexResolution; x++) {
-            for (int z = 0; z <  terrain.vertexResolution; z++) {
+            for (int z = 0; z < terrain.vertexResolution; z++) {
                 final Vector3 vertexPos = terrain.getVertexPosition(tVec0, x, z);
                 vertexPos.x += terPos.x;
                 vertexPos.z += terPos.z;
                 float distance = vertexPos.dst(brushPos);
 
-                if(distance <= radius) {
+                if (distance <= radius) {
                     float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z, radius);
                     terrain.heightData[z * terrain.vertexResolution + x] += dir * elevation * strength;
                 }
@@ -241,11 +245,13 @@ public abstract class TerrainBrush extends Tool {
     }
 
     /**
-     * Interpolates the brush texture in the range of centerX - radius to centerX + radius
-     * and centerZ - radius to centerZ + radius. PointZ & pointX lies between these ranges.
+     * Interpolates the brush texture in the range of centerX - radius to
+     * centerX + radius and centerZ - radius to centerZ + radius. PointZ &
+     * pointX lies between these ranges.
      *
-     * Interpolation is necessary, since the brush pixmap is fixed sized, whereas the input values can scale.
-     * (Input points can be vertices or splatmap texture coordinates)
+     * Interpolation is necessary, since the brush pixmap is fixed sized,
+     * whereas the input values can scale. (Input points can be vertices or
+     * splatmap texture coordinates)
      *
      * @param centerX
      * @param centerZ
@@ -253,8 +259,9 @@ public abstract class TerrainBrush extends Tool {
      * @param pointZ
      * @param radius
      *
-     * @return      the interpolated r-channel value of brush pixmap at pointX, pointZ,
-     *              which can be interpreted as terrain height (raise/lower) or opacity (paint)
+     * @return the interpolated r-channel value of brush pixmap at pointX,
+     *         pointZ, which can be interpreted as terrain height (raise/lower)
+     *         or opacity (paint)
      */
     private float getValueOfBrushPixmap(float centerX, float centerZ, float pointX, float pointZ, float radius) {
         c.set(centerX, centerZ);
@@ -273,7 +280,7 @@ public abstract class TerrainBrush extends Tool {
 
     public void scale(float amount) {
         sphereModelInstance.transform.scl(amount);
-        radius = (boundingBox.getWidth()*sphereModelInstance.transform.getScaleX()) / 2f;
+        radius = (boundingBox.getWidth() * sphereModelInstance.transform.getScaleX()) / 2f;
     }
 
     public static float getStrength() {
@@ -308,7 +315,7 @@ public abstract class TerrainBrush extends Tool {
     }
 
     public void setMode(BrushMode mode) throws ModeNotSupportedException {
-        if(!supportsMode(mode)) {
+        if (!supportsMode(mode)) {
             throw new ModeNotSupportedException(getName() + " does not support " + mode);
         }
         this.mode = mode;
@@ -324,9 +331,10 @@ public abstract class TerrainBrush extends Tool {
 
     public boolean supportsMode(BrushMode mode) {
         switch (mode) {
-            case RAISE_LOWER:
-            case FLATTEN:
-            case PAINT: return true;
+        case RAISE_LOWER:
+        case FLATTEN:
+        case PAINT:
+            return true;
         }
 
         return false;
@@ -334,7 +342,7 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public void render() {
-        if(terrain.isOnTerrain(brushPos.x, brushPos.z)) {
+        if (terrain.isOnTerrain(brushPos.x, brushPos.z)) {
             batch.begin(projectManager.current().currScene.cam);
             batch.render(sphereModelInstance, shader);
             batch.end();
@@ -348,11 +356,11 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(terrainHeightModified && heightCommand != null) {
+        if (terrainHeightModified && heightCommand != null) {
             heightCommand.setHeightDataAfter(terrain.heightData);
             history.add(heightCommand);
         }
-        if(splatmapModified && paintCommand != null) {
+        if (splatmapModified && paintCommand != null) {
             final SplatMap sm = terrain.getTerrainTexture().getSplatmap();
             paintCommand.setAfter(sm.getPixmap());
             history.add(paintCommand);
@@ -371,9 +379,9 @@ public abstract class TerrainBrush extends Tool {
         final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
         final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
 
-        if(primary && secondary) {
+        if (primary && secondary) {
             return BrushAction.SECONDARY;
-        } else if(primary) {
+        } else if (primary) {
             return BrushAction.PRIMARY;
         }
 
@@ -386,20 +394,20 @@ public abstract class TerrainBrush extends Tool {
         // get action
         final boolean primary = Gdx.input.isButtonPressed(BrushAction.PRIMARY.code);
         final boolean secondary = Gdx.input.isKeyPressed(BrushAction.SECONDARY.code);
-        if(primary && secondary) {
-            action =  BrushAction.SECONDARY;
-        } else if(primary) {
+        if (primary && secondary) {
+            action = BrushAction.SECONDARY;
+        } else if (primary) {
             action = BrushAction.PRIMARY;
         } else {
             action = null;
         }
 
-        if(mode == BrushMode.FLATTEN || mode == BrushMode.RAISE_LOWER || mode == BrushMode.SMOOTH) {
+        if (mode == BrushMode.FLATTEN || mode == BrushMode.RAISE_LOWER || mode == BrushMode.SMOOTH) {
             heightCommand = new TerrainHeightCommand(terrain);
             heightCommand.setHeightDataBefore(terrain.heightData);
-        } else if(mode == BrushMode.PAINT) {
+        } else if (mode == BrushMode.PAINT) {
             final SplatMap sm = terrain.getTerrainTexture().getSplatmap();
-            if(sm != null) {
+            if (sm != null) {
                 paintCommand = new TerrainPaintCommand(terrain);
                 paintCommand.setBefore(sm.getPixmap());
             }
@@ -410,7 +418,7 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if(terrain != null) {
+        if (terrain != null) {
             Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
             terrain.getRayIntersection(brushPos, ray);
         }
@@ -423,7 +431,7 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public boolean scrolled(int amount) {
-        if(amount < 0) {
+        if (amount < 0) {
             scale(0.9f);
         } else {
             scale(1.1f);

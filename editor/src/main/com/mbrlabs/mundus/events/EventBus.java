@@ -26,8 +26,8 @@ import java.util.List;
 /**
  * Simple Event bus via reflection.
  *
- * Subscribers need to provide a public method, annotated with @Subscribe and
- * 1 parameter as event type.
+ * Subscribers need to provide a public method, annotated with @Subscribe and 1
+ * parameter as event type.
  *
  * Inspired by the Otto Event Bus for Android.
  *
@@ -60,16 +60,16 @@ public class EventBus {
     public void post(Object event) {
         try {
             final Class eventType = event.getClass();
-            for(Object subscriber : subscribers.toArray()) {
-                for(Method method : subscriber.getClass().getDeclaredMethods()) {
-                    if(isSubscriber(method)) {
-                        if(method.getParameterTypes().length != 1) {
-                            throw new EventBusExcetion("Size of parameter list of method " + method.getName() +
-                                    " in " + subscriber.getClass().getName() + " must be 1");
+            for (Object subscriber : subscribers.toArray()) {
+                for (Method method : subscriber.getClass().getDeclaredMethods()) {
+                    if (isSubscriber(method)) {
+                        if (method.getParameterTypes().length != 1) {
+                            throw new EventBusExcetion("Size of parameter list of method " + method.getName() + " in "
+                                    + subscriber.getClass().getName() + " must be 1");
                         }
 
-                        if(method.getParameterTypes()[0].equals(eventType)) {
-                            //System.out.println(subscriber.getClass().getName());
+                        if (method.getParameterTypes()[0].equals(eventType)) {
+                            // System.out.println(subscriber.getClass().getName());
                             method.invoke(subscriber, eventType.cast(event));
                         }
                     }
@@ -80,24 +80,24 @@ public class EventBus {
         }
     }
 
-
-
     private boolean isSubscriber(Method method) {
         // check if @Subscribe is directly used in class
         boolean isSub = ReflectionUtils.hasMethodAnnotation(method, Subscribe.class);
-        if(isSub) return true;
+        if (isSub) return true;
 
-        // check if implemented interfaces of this class have a @Subscribe annotation
+        // check if implemented interfaces of this class have a @Subscribe
+        // annotation
         Class[] interfaces = method.getDeclaringClass().getInterfaces();
-        for(Class i : interfaces) {
+        for (Class i : interfaces) {
             try {
                 Method interfaceMethod = i.getMethod(method.getName(), method.getParameterTypes());
-                if(interfaceMethod != null) {
+                if (interfaceMethod != null) {
                     isSub = ReflectionUtils.hasMethodAnnotation(interfaceMethod, Subscribe.class);
-                    if(isSub) return true;
+                    if (isSub) return true;
                 }
             } catch (NoSuchMethodException e) {
-                // silently ignore -> this interface simply does not declare such a method
+                // silently ignore -> this interface simply does not declare
+                // such a method
             }
         }
 

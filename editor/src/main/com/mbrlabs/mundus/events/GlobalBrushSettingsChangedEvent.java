@@ -17,7 +17,8 @@
 package com.mbrlabs.mundus.events;
 
 /**
- * Indicates a change in the static settings each TerrainBrush shares (strength, radius, ...)
+ * Indicates a change in the static settings each TerrainBrush shares (strength,
+ * radius, ...)
  *
  * @author Marcus Brummer
  * @version 07-02-2016

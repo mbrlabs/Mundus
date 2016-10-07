@@ -53,12 +53,12 @@ public class Scene implements Disposable {
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);
-        cam.lookAt(0,1,-1);
+        cam.lookAt(0, 1, -1);
         cam.near = 0.2f;
         cam.far = 10000;
 
         DirectionalLight dirLight = new DirectionalLight();
-        dirLight.color.set(1,1,1,1);
+        dirLight.color.set(1, 1, 1, 1);
         dirLight.intensity = 0.8f;
         dirLight.direction.set(0, -1f, 0);
         dirLight.direction.nor();
@@ -86,7 +86,7 @@ public class Scene implements Disposable {
 
     @Override
     public void dispose() {
-        if(skybox != null) {
+        if (skybox != null) {
             skybox.dispose();
         }
     }

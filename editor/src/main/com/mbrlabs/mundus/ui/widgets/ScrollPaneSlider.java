@@ -31,7 +31,7 @@ public class ScrollPaneSlider extends VisSlider {
     public ScrollPaneSlider(float min, float max, float stepSize, boolean vertical) {
         super(min, max, stepSize, vertical);
         addListener(new InputListener() {
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 event.stop();
                 return true;
             }

@@ -22,7 +22,6 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.history.Command;
 
-
 /**
  * @author Marcus Brummer
  * @version 20-02-2016

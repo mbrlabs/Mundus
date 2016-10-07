@@ -22,6 +22,6 @@ package com.mbrlabs.mundus.core.registry;
 public enum KeyboardLayout {
     /** German layout. */
     QWERTZ,
-    /** English layout*/
+    /** English layout */
     QWERTY
 }

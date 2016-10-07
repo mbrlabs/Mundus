@@ -45,10 +45,10 @@ public class FreeCamController extends InputAdapter {
     private float degreesPerPixel = 0.5f;
     private final Vector3 tmp = new Vector3();
 
-    public FreeCamController () {
+    public FreeCamController() {
     }
 
-    public FreeCamController (Camera camera) {
+    public FreeCamController(Camera camera) {
         this.camera = camera;
     }
 
@@ -57,32 +57,40 @@ public class FreeCamController extends InputAdapter {
     }
 
     @Override
-    public boolean keyDown (int keycode) {
+    public boolean keyDown(int keycode) {
         keys.put(keycode, keycode);
         return false;
     }
 
     @Override
-    public boolean keyUp (int keycode) {
+    public boolean keyUp(int keycode) {
         keys.remove(keycode, 0);
         return false;
     }
 
-    /** Sets the velocity in units per second for moving forward, backward and strafing left/right.
-     * @param velocity the velocity in units per second */
-    public void setVelocity (float velocity) {
+    /**
+     * Sets the velocity in units per second for moving forward, backward and
+     * strafing left/right.
+     * 
+     * @param velocity
+     *            the velocity in units per second
+     */
+    public void setVelocity(float velocity) {
         this.velocity = velocity;
     }
 
-    /** Sets how many degrees to rotate per pixel the mouse moved.
-     * @param degreesPerPixel */
-    public void setDegreesPerPixel (float degreesPerPixel) {
+    /**
+     * Sets how many degrees to rotate per pixel the mouse moved.
+     * 
+     * @param degreesPerPixel
+     */
+    public void setDegreesPerPixel(float degreesPerPixel) {
         this.degreesPerPixel = degreesPerPixel;
     }
 
     @Override
-    public boolean touchDragged (int screenX, int screenY, int pointer) {
-        if(Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
             float deltaX = -Gdx.input.getDeltaX() * degreesPerPixel;
             float deltaY = -Gdx.input.getDeltaY() * degreesPerPixel;
             camera.direction.rotate(camera.up, deltaX);
@@ -92,11 +100,11 @@ public class FreeCamController extends InputAdapter {
         return false;
     }
 
-    public void update () {
+    public void update() {
         update(Gdx.graphics.getDeltaTime());
     }
 
-    public void update (float deltaTime) {
+    public void update(float deltaTime) {
         if (keys.containsKey(FORWARD)) {
             tmp.set(camera.direction).nor().scl(deltaTime * velocity);
             camera.position.add(tmp);

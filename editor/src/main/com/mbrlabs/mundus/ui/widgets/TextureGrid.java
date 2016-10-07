@@ -51,7 +51,7 @@ public class TextureGrid<T extends TextureProvider> extends VisTable {
 
     public void setTextures(Array<T> textures) {
         grid.clearChildren();
-        for(T tex : textures) {
+        for (T tex : textures) {
             grid.addActor(new TextureItem<>(tex));
         }
     }
@@ -90,8 +90,6 @@ public class TextureGrid<T extends TextureProvider> extends VisTable {
                     listener.onTextureSelected(tex, button == Input.Buttons.LEFT);
                 }
             });
-
-
 
         }
     }

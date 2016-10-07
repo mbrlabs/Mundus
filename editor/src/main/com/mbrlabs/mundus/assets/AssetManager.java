@@ -97,7 +97,7 @@ public class AssetManager {
         MTexture tex = new MTexture();
         tex.setId(id);
         tex.setPath(relativeImportPath);
-        if(mipMap) {
+        if (mipMap) {
             tex.texture = TextureUtils.loadMipmapTexture(absoluteImportFile, true);
         } else {
             tex.texture = new Texture(absoluteImportFile);

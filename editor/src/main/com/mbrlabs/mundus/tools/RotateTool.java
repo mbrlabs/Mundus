@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
@@ -41,7 +40,8 @@ import com.mbrlabs.mundus.utils.UsefulMeshs;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Rotate tool for game objects 
+ * Rotate tool for game objects
+ *
  * @author Marcus Brummer, codengima
  * @version 30-09-2016
  */
@@ -60,7 +60,6 @@ public class RotateTool extends TransformTool {
     private Vector3 temp1 = new Vector3();
     private Quaternion tempQuat = new Quaternion();
 
-
     private ShapeRenderer shapeRenderer;
     private ProjectContext projectContext;
 
@@ -68,7 +67,7 @@ public class RotateTool extends TransformTool {
     private float lastRot = 0;
 
     public RotateTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
-                      Shader shader, ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
+            Shader shader, ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
         super(projectManager, goPicker, handlePicker, shader, batch, history);
         this.shapeRenderer = shapeRenderer;
         this.projectContext = projectManager.current();
@@ -83,13 +82,13 @@ public class RotateTool extends TransformTool {
         super.render();
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        if(state == TransformState.IDLE && projectContext.currScene.currentSelection != null) {
+        if (state == TransformState.IDLE && projectContext.currScene.currentSelection != null) {
             batch.begin(projectContext.currScene.cam);
             xHandle.render(batch);
             yHandle.render(batch);
             zHandle.render(batch);
             batch.end();
-        } else if(projectContext.currScene.currentSelection != null) {
+        } else if (projectContext.currScene.currentSelection != null) {
             Viewport vp = projectContext.currScene.viewport;
 
             GameObject go = projectContext.currScene.currentSelection;
@@ -97,36 +96,39 @@ public class RotateTool extends TransformTool {
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
 
             shapeRenderMat.setToOrtho2D(vp.getScreenX(), vp.getScreenY(), vp.getScreenWidth(), vp.getScreenHeight());
-            switch(state) {
-                case TRANSFORM_X : 
+            switch (state) {
+                case TRANSFORM_X:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(Color.BLACK);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                            2);
                     shapeRenderer.setColor(COLOR_X);
                     shapeRenderer.circle(pivot.x, pivot.y, 7);
                     shapeRenderer.end();
                     break;
-                case TRANSFORM_Y : 
+                case TRANSFORM_Y:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(Color.BLACK);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                            2);
                     shapeRenderer.setColor(COLOR_Y);
                     shapeRenderer.circle(pivot.x, pivot.y, 7);
                     shapeRenderer.end();
                     break;
-                case TRANSFORM_Z : 
+                case TRANSFORM_Z:
                     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                     shapeRenderer.setColor(Color.BLACK);
                     shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
+                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                            2);
                     shapeRenderer.setColor(COLOR_Z);
                     shapeRenderer.circle(pivot.x, pivot.y, 7);
                     shapeRenderer.end();
                     break;
                 default:
-                                    break;
+                    break;
             }
         }
 
@@ -136,35 +138,39 @@ public class RotateTool extends TransformTool {
     public void act() {
         super.act();
 
-        if(projectContext.currScene.currentSelection != null) {
+        if (projectContext.currScene.currentSelection != null) {
             translateHandles();
-            if(state == TransformState.IDLE) return;
+            if (state == TransformState.IDLE) {
+                return;
+            }
 
             float angle = getCurrentAngle();
             float rot = angle - lastRot;
 
             boolean modified = false;
-            if(null != state) switch (state) {
-                case TRANSFORM_X:
-                    tempQuat.setEulerAngles(0, -rot, 0);
-                    projectContext.currScene.currentSelection.rotate(tempQuat);
-                    modified = true;
-                    break;
-                case TRANSFORM_Y:
-                    tempQuat.setEulerAngles(-rot, 0, 0);
-                    projectContext.currScene.currentSelection.rotate(tempQuat);
-                    modified = true;
-                    break;
-                case TRANSFORM_Z:
-                    tempQuat.setEulerAngles(0, 0, -rot);
-                    projectContext.currScene.currentSelection.rotate(tempQuat);
-                    modified = true;
-                    break;
-                default:
-                    break;
+            if (null != state) {
+                switch (state) {
+                    case TRANSFORM_X:
+                        tempQuat.setEulerAngles(0, -rot, 0);
+                        projectContext.currScene.currentSelection.rotate(tempQuat);
+                        modified = true;
+                        break;
+                    case TRANSFORM_Y:
+                        tempQuat.setEulerAngles(-rot, 0, 0);
+                        projectContext.currScene.currentSelection.rotate(tempQuat);
+                        modified = true;
+                        break;
+                    case TRANSFORM_Z:
+                        tempQuat.setEulerAngles(0, 0, -rot);
+                        projectContext.currScene.currentSelection.rotate(tempQuat);
+                        modified = true;
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            if(modified) {
+            if (modified) {
                 gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
                 Mundus.postEvent(gameObjectModifiedEvent);
             }
@@ -175,10 +181,10 @@ public class RotateTool extends TransformTool {
     }
 
     private float getCurrentAngle() {
-        if(projectContext.currScene.currentSelection != null) {
+        if (projectContext.currScene.currentSelection != null) {
             projectContext.currScene.currentSelection.getPosition(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0);
-            Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() -  Gdx.input.getY(), 0);
+            Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0);
 
             return MathUtils.angle(pivot.x, pivot.y, mouse.x, mouse.y);
         }
@@ -190,11 +196,11 @@ public class RotateTool extends TransformTool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         super.touchDown(screenX, screenY, pointer, button);
 
-        if(button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
+        if (button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             lastRot = getCurrentAngle();
 
             RotateHandle handle = (RotateHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
-            if(handle == null) {
+            if (handle == null) {
                 state = TransformState.IDLE;
                 return false;
             }
@@ -294,6 +300,7 @@ public class RotateTool extends TransformTool {
      *
      */
     private class RotateHandle extends ToolHandle {
+
         private Model model;
         private ModelInstance modelInstance;
 
@@ -302,22 +309,22 @@ public class RotateTool extends TransformTool {
             model = UsefulMeshs.torus(new Material(ColorAttribute.createDiffuse(color)), 20, 1f, 50, 50);
             modelInstance = new ModelInstance(model);
             modelInstance.materials.first().set(idAttribute);
-            switch(id) {
-                case X_HANDLE_ID : 
+            switch (id) {
+                case X_HANDLE_ID:
                     this.rotationEuler.y = 90;
                     this.scale.x = 0.9f;
                     this.scale.y = 0.9f;
                     this.scale.z = 0.9f;
                     break;
-                case Y_HANDLE_ID : 
+                case Y_HANDLE_ID:
                     this.rotationEuler.x = 90;
                     break;
-                case Z_HANDLE_ID : 
+                case Z_HANDLE_ID:
                     this.rotationEuler.z = 90;
                     this.scale.x = 1.1f;
                     this.scale.y = 1.1f;
                     this.scale.z = 1.1f;
-                    break;                 
+                    break;
             }
             // mi.transform.translate(0, 100, 0);
         }

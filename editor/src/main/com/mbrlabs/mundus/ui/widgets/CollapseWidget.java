@@ -31,8 +31,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
  *
  * In layout():
  *
- * table.setBounds(0, 0, table.getPrefWidth(), table.getPrefHeight());
- * ===>
+ * table.setBounds(0, 0, table.getPrefWidth(), table.getPrefHeight()); ===>
  * table.setBounds(0, 0, getWidth(), getHeight());
  */
 public class CollapseWidget extends WidgetGroup {
@@ -45,11 +44,11 @@ public class CollapseWidget extends WidgetGroup {
 
     private float currentHeight;
 
-    public CollapseWidget (Table table) {
+    public CollapseWidget(Table table) {
         this(table, false);
     }
 
-    public CollapseWidget (Table table, boolean collapsed) {
+    public CollapseWidget(Table table, boolean collapsed) {
         this.collapsed = collapsed;
         this.table = table;
 
@@ -58,7 +57,7 @@ public class CollapseWidget extends WidgetGroup {
         if (table != null) addActor(table);
     }
 
-    public void setCollapsed (boolean collapse, boolean withAnimation) {
+    public void setCollapsed(boolean collapse, boolean withAnimation) {
         this.collapsed = collapse;
         updateTouchable();
 
@@ -82,15 +81,15 @@ public class CollapseWidget extends WidgetGroup {
         }
     }
 
-    public void setCollapsed (boolean collapse) {
+    public void setCollapsed(boolean collapse) {
         setCollapsed(collapse, true);
     }
 
-    public boolean isCollapsed () {
+    public boolean isCollapsed() {
         return collapsed;
     }
 
-    private void updateTouchable () {
+    private void updateTouchable() {
         if (collapsed)
             setTouchable(Touchable.disabled);
         else
@@ -98,7 +97,7 @@ public class CollapseWidget extends WidgetGroup {
     }
 
     @Override
-    public void draw (Batch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         if (currentHeight > 1) {
             batch.flush();
             boolean clipEnabled = clipBegin(getX(), getY(), getWidth(), currentHeight);
@@ -111,7 +110,7 @@ public class CollapseWidget extends WidgetGroup {
     }
 
     @Override
-    public void layout () {
+    public void layout() {
         if (table == null) return;
 
         table.setBounds(0, 0, getWidth(), getHeight());
@@ -125,12 +124,12 @@ public class CollapseWidget extends WidgetGroup {
     }
 
     @Override
-    public float getPrefWidth () {
+    public float getPrefWidth() {
         return table == null ? 0 : table.getPrefWidth();
     }
 
     @Override
-    public float getPrefHeight () {
+    public float getPrefHeight() {
         if (table == null) return 0;
 
         if (actionRunning == false) {
@@ -143,21 +142,21 @@ public class CollapseWidget extends WidgetGroup {
         return currentHeight;
     }
 
-    public void setTable (Table table) {
+    public void setTable(Table table) {
         this.table = table;
         clearChildren();
         addActor(table);
     }
 
     @Override
-    protected void childrenChanged () {
+    protected void childrenChanged() {
         super.childrenChanged();
         if (getChildren().size > 1) throw new GdxRuntimeException("Only one actor can be added to CollapsibleWidget");
     }
 
     private class CollapseAction extends Action {
         @Override
-        public boolean act (float delta) {
+        public boolean act(float delta) {
             if (collapsed) {
                 currentHeight -= delta * 1000;
                 if (currentHeight <= 0) {

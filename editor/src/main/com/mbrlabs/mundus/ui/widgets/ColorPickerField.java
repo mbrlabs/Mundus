@@ -58,7 +58,6 @@ public class ColorPickerField extends VisTable {
         setupListeners();
     }
 
-
     public void setCallback(ColorSelected colorSelected) {
         this.callback = colorSelected;
     }
@@ -89,7 +88,7 @@ public class ColorPickerField extends VisTable {
 
     public void setDisabled(boolean disable) {
         cpBtn.setDisabled(disable);
-        if(disable) {
+        if (disable) {
             cpBtn.setTouchable(Touchable.disabled);
         } else {
             cpBtn.setTouchable(Touchable.enabled);
@@ -118,6 +117,5 @@ public class ColorPickerField extends VisTable {
         });
 
     }
-
 
 }

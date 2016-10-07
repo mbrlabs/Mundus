@@ -30,8 +30,8 @@ public class ReflectionUtils {
 
     public static boolean hasMethodAnnotation(Method method, Class annotationClass) {
         final Annotation[] annotations = method.getAnnotations();
-        for(Annotation a : annotations) {
-            if(a.annotationType().equals(annotationClass)) {
+        for (Annotation a : annotations) {
+            if (a.annotationType().equals(annotationClass)) {
                 return true;
             }
         }
@@ -41,8 +41,8 @@ public class ReflectionUtils {
 
     public static boolean hasFieldAnnotation(Field field, Class annotationClass) {
         Annotation[] annotations = field.getDeclaredAnnotations();
-        for(Annotation a : annotations) {
-            if(a instanceof Inject) {
+        for (Annotation a : annotations) {
+            if (a instanceof Inject) {
                 return true;
             }
         }

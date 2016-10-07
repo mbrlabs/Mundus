@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Gdx;
@@ -46,7 +45,8 @@ public class SelectionTool extends Tool {
 
     private GameObjectPicker goPicker;
 
-    public SelectionTool(ProjectManager projectManager, GameObjectPicker goPicker, Shader shader, ModelBatch batch, CommandHistory history) {
+    public SelectionTool(ProjectManager projectManager, GameObjectPicker goPicker, Shader shader, ModelBatch batch,
+            CommandHistory history) {
         super(projectManager, shader, batch, history);
         icon = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/selectionTool.png"))));
         this.goPicker = goPicker;
@@ -78,18 +78,18 @@ public class SelectionTool extends Tool {
 
     @Override
     public void render() {
-        if(projectManager.current().currScene.currentSelection != null) {
+        if (projectManager.current().currScene.currentSelection != null) {
             batch.begin(projectManager.current().currScene.cam);
-            for(GameObject go : projectManager.current().currScene.currentSelection) {
+            for (GameObject go : projectManager.current().currScene.currentSelection) {
                 // model component
                 ModelComponent mc = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
-                if(mc != null) {
+                if (mc != null) {
                     batch.render(mc.getModelInstance().modelInstance, shader);
                 }
 
                 // terrain component
                 TerrainComponent tc = (TerrainComponent) go.findComponentByType(Component.Type.TERRAIN);
-                if(tc != null) {
+                if (tc != null) {
                     batch.render(tc.getTerrain(), shader);
                 }
             }
@@ -104,9 +104,9 @@ public class SelectionTool extends Tool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.RIGHT) {
+        if (button == Input.Buttons.RIGHT) {
             GameObject selection = goPicker.pick(projectManager.current().currScene, screenX, screenY);
-            if(selection != null && !selection.equals(projectManager.current().currScene.currentSelection)) {
+            if (selection != null && !selection.equals(projectManager.current().currScene.currentSelection)) {
                 gameObjectSelected(selection);
                 Mundus.postEvent(new GameObjectSelectedEvent(selection));
             }

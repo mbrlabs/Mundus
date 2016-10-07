@@ -29,7 +29,8 @@ import com.mbrlabs.mundus.ui.widgets.TextureGrid;
  * @author Marcus Brummer
  * @version 28-01-2016
  */
-public class TextureBrowser extends BaseDialog implements TextureImportEvent.TextureImportListener, ProjectChangedEvent.ProjectChangedListener {
+public class TextureBrowser extends BaseDialog
+        implements TextureImportEvent.TextureImportListener, ProjectChangedEvent.ProjectChangedListener {
 
     private TextureGrid<MTexture> textureGrid;
     private VisScrollPane scrollPane;
