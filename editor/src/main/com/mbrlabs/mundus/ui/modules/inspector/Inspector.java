@@ -36,10 +36,8 @@ import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
-import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
-import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer

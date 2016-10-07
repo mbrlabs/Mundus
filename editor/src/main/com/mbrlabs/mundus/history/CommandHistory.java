@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.history;
 
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.minlog.Log;
 
 /**
  * Add commands to undo/redo a previously called process

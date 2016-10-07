@@ -65,8 +65,8 @@ public class UsefulMeshs {
         modelBuilder.begin();
         MeshPartBuilder meshBuilder;
         // line
-        meshBuilder = modelBuilder.part("line", GL20.GL_LINES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, mat);
+        meshBuilder = modelBuilder.part("line", GL20.GL_LINES,
+                VertexAttributes.Usage.Position | VertexAttributes.Usage.ColorUnpacked, mat);
         meshBuilder.line(from.x, from.y, from.z, to.x, to.y, to.z);
         // stub
         Node node = modelBuilder.node();
@@ -104,17 +104,17 @@ public class UsefulMeshs {
 
                     curr1.position.set(
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                            * Math.cos(t * twopi / divisionsU)),
+                                    * Math.cos(t * twopi / divisionsU)),
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                            * Math.sin(t * twopi / divisionsU)),
+                                    * Math.sin(t * twopi / divisionsU)),
                             (float) (height * Math.sin(s * twopi / divisionsV)));
                     k--;
                     s = (i + k) % divisionsV + 0.5;
                     curr2.position.set(
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                            * Math.cos(t * twopi / divisionsU)),
+                                    * Math.cos(t * twopi / divisionsU)),
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                            * Math.sin(t * twopi / divisionsU)),
+                                    * Math.sin(t * twopi / divisionsU)),
                             (float) (height * Math.sin(s * twopi / divisionsV)));
                     // curr2.uv.set((float) s, 0);
                     i1 = builder.vertex(curr1);

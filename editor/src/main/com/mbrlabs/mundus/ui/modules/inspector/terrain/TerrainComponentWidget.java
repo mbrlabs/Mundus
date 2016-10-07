@@ -16,8 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.terrain;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane;

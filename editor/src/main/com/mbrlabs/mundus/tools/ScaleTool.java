@@ -39,14 +39,12 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.ScaleCommand;
 import com.mbrlabs.mundus.shader.Shaders;
-import static com.mbrlabs.mundus.tools.TransformTool.COLOR_XYZ;
-import static com.mbrlabs.mundus.tools.TransformTool.X_HANDLE_ID;
 import com.mbrlabs.mundus.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Fa;
-import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.UsefulMeshs;
+
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -77,8 +75,8 @@ public class ScaleTool extends TransformTool {
     private TransformState state = TransformState.IDLE;
     private ScaleCommand command;
 
-    public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker, Shader shader,
-            ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
+    public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
+            Shader shader, ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
         super(projectManager, goPicker, handlePicker, shader, batch, history);
 
         this.shapeRenderer = shapeRenderer;
@@ -101,7 +99,7 @@ public class ScaleTool extends TransformTool {
         zHandle = new ScaleHandle(Z_HANDLE_ID, zPlaneHandleModel);
         xyzHandle = new ScaleHandle(XYZ_HANDLE_ID, xyzPlaneHandleModel);
 
-        handles = new ScaleHandle[]{xHandle, yHandle, zHandle, xyzHandle};
+        handles = new ScaleHandle[] { xHandle, yHandle, zHandle, xyzHandle };
     }
 
     @Override
@@ -123,40 +121,46 @@ public class ScaleTool extends TransformTool {
                 viewport3d = Ui.getInstance().getWidget3D().getViewport();
             }
 
-            Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
+            Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),
+                    viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
 
-            shapeRenderMat.setToOrtho2D(viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getScreenWidth(), viewport3d.getScreenHeight());
+            shapeRenderMat.setToOrtho2D(viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getScreenWidth(),
+                    viewport3d.getScreenHeight());
             switch (state) {
-                case TRANSFORM_X:
-                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.setColor(COLOR_X);
-                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                    shapeRenderer.end();
-                    break;
-                case TRANSFORM_Y:
-                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.setColor(COLOR_Y);
-                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                    shapeRenderer.end();
-                    break;
-                case TRANSFORM_Z:
-                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.setColor(COLOR_Z);
-                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                    shapeRenderer.end();
-                    break;
-                case TRANSFORM_XYZ:
-                    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                    shapeRenderer.setColor(COLOR_XYZ);
-                    shapeRenderer.setProjectionMatrix(shapeRenderMat);
-                    shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 2);
-                    shapeRenderer.end();
-                    break;
-                default:
-                    break;
+            case TRANSFORM_X:
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(COLOR_X);
+                shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                        2);
+                shapeRenderer.end();
+                break;
+            case TRANSFORM_Y:
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(COLOR_Y);
+                shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                        2);
+                shapeRenderer.end();
+                break;
+            case TRANSFORM_Z:
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(COLOR_Z);
+                shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                        2);
+                shapeRenderer.end();
+                break;
+            case TRANSFORM_XYZ:
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(COLOR_XYZ);
+                shapeRenderer.setProjectionMatrix(shapeRenderMat);
+                shapeRenderer.rectLine(pivot.x, pivot.y, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(),
+                        2);
+                shapeRenderer.end();
+                break;
+            default:
+                break;
             }
         }
 
@@ -176,30 +180,30 @@ public class ScaleTool extends TransformTool {
             boolean modified = false;
             if (null != state) {
                 switch (state) {
-                    case TRANSFORM_X:
-                        tempScale.x = (100 / tempScaleDst.x * dst) / 100;
-                        projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
-                        modified = true;
-                        break;
-                    case TRANSFORM_Y:
-                        tempScale.y = (100 / tempScaleDst.y * dst) / 100;
-                        projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
-                        modified = true;
-                        break;
-                    case TRANSFORM_Z:
-                        tempScale.z = (100 / tempScaleDst.z * dst) / 100;
-                        projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
-                        modified = true;
-                        break;
-                    case TRANSFORM_XYZ:
-                        tempScale.x = (100 / tempScaleDst.x * dst) / 100;
-                        tempScale.y = (100 / tempScaleDst.y * dst) / 100;
-                        tempScale.z = (100 / tempScaleDst.z * dst) / 100;
-                        projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
-                        modified = true;
-                        break;
-                    default:
-                        break;
+                case TRANSFORM_X:
+                    tempScale.x = (100 / tempScaleDst.x * dst) / 100;
+                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    modified = true;
+                    break;
+                case TRANSFORM_Y:
+                    tempScale.y = (100 / tempScaleDst.y * dst) / 100;
+                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    modified = true;
+                    break;
+                case TRANSFORM_Z:
+                    tempScale.z = (100 / tempScaleDst.z * dst) / 100;
+                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    modified = true;
+                    break;
+                case TRANSFORM_XYZ:
+                    tempScale.x = (100 / tempScaleDst.x * dst) / 100;
+                    tempScale.y = (100 / tempScaleDst.y * dst) / 100;
+                    tempScale.z = (100 / tempScaleDst.z * dst) / 100;
+                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    modified = true;
+                    break;
+                default:
+                    break;
                 }
             }
             if (modified) {
@@ -212,7 +216,8 @@ public class ScaleTool extends TransformTool {
     private float getCurrentDst() {
         if (projectContext.currScene.currentSelection != null) {
             projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
-            Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(), viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
+            Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),
+                    viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
             Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0);
 
             return MathUtils.dst(pivot.x, pivot.y, mouse.x, mouse.y);
@@ -229,7 +234,7 @@ public class ScaleTool extends TransformTool {
                 state = TransformState.IDLE;
                 return false;
             }
-            // current scale 
+            // current scale
             projectContext.currScene.currentSelection.getScale(tempScale);
 
             // set tempScaleDst
@@ -238,24 +243,24 @@ public class ScaleTool extends TransformTool {
             tempScaleDst.z = getCurrentDst() / tempScale.z;
 
             switch (handle.getId()) {
-                case X_HANDLE_ID:
-                    state = TransformState.TRANSFORM_X;
-                    xHandle.changeColor(COLOR_SELECTED);
-                    break;
-                case Y_HANDLE_ID:
-                    state = TransformState.TRANSFORM_Y;
-                    yHandle.changeColor(COLOR_SELECTED);
-                    break;
-                case Z_HANDLE_ID:
-                    state = TransformState.TRANSFORM_Z;
-                    zHandle.changeColor(COLOR_SELECTED);
-                    break;
-                case XYZ_HANDLE_ID:
-                    state = TransformState.TRANSFORM_XYZ;
-                    xyzHandle.changeColor(COLOR_SELECTED);
-                    break;
-                default:
-                    break;
+            case X_HANDLE_ID:
+                state = TransformState.TRANSFORM_X;
+                xHandle.changeColor(COLOR_SELECTED);
+                break;
+            case Y_HANDLE_ID:
+                state = TransformState.TRANSFORM_Y;
+                yHandle.changeColor(COLOR_SELECTED);
+                break;
+            case Z_HANDLE_ID:
+                state = TransformState.TRANSFORM_Z;
+                zHandle.changeColor(COLOR_SELECTED);
+                break;
+            case XYZ_HANDLE_ID:
+                state = TransformState.TRANSFORM_XYZ;
+                xyzHandle.changeColor(COLOR_SELECTED);
+                break;
+            default:
+                break;
             }
         }
 
@@ -297,7 +302,7 @@ public class ScaleTool extends TransformTool {
 
     @Override
     protected void rotateHandles() {
-        //not needed
+        // not needed
     }
 
     @Override

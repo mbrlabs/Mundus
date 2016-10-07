@@ -47,9 +47,10 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.PickableComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.utils.TerrainIO;
 import com.mbrlabs.mundus.utils.Log;
 import com.mbrlabs.mundus.utils.SkyboxBuilder;
+import com.mbrlabs.mundus.utils.TerrainIO;
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

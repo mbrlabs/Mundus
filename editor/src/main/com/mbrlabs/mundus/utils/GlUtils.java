@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+
 import org.lwjgl.opengl.GL11;
 
 /**

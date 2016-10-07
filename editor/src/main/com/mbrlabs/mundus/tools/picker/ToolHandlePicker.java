@@ -45,8 +45,8 @@ public class ToolHandlePicker extends BasePicker {
 
         int id = PickerColorEncoder.decode(pm.getPixel(x, y));
         Log.trace("ToolHandlePicker", "Picking handle with id {}", id);
-        for(ToolHandle handle : handles) {
-            if(handle.getId() == id) {
+        for (ToolHandle handle : handles) {
+            if (handle.getId() == id) {
                 return handle;
             }
         }
