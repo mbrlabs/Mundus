@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.tools.ToolHandle;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -43,10 +44,9 @@ public class ToolHandlePicker extends BasePicker {
         int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
 
         int id = PickerColorEncoder.decode(pm.getPixel(x, y));
-        System.out.println(id);
-
-        for (ToolHandle handle : handles) {
-            if (handle.getId() == id) {
+        Log.trace("ToolHandlePicker", "Picking handle with id {}", id);
+        for(ToolHandle handle : handles) {
+            if(handle.getId() == id) {
                 return handle;
             }
         }

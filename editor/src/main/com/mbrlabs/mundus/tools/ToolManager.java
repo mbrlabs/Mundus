@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Input;
@@ -71,7 +70,7 @@ public class ToolManager extends InputAdapter implements Disposable {
                 modelBatch, history);
         rotateTool = new RotateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer,
                 modelBatch, history);
-        scaleTool = new ScaleTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, modelBatch,
+        scaleTool = new ScaleTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer, modelBatch,
                 history);
     }
 

@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.BoxShapeBuilder;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * @author Marcus Brummer
@@ -57,6 +60,22 @@ public class UsefulMeshs {
         return modelBuilder.end();
     }
 
+    public static Model createArrowStub(Material mat, Vector3 from, Vector3 to) {
+        ModelBuilder modelBuilder = new ModelBuilder();
+        modelBuilder.begin();
+        MeshPartBuilder meshBuilder;
+        // line
+        meshBuilder = modelBuilder.part("line", GL20.GL_LINES, VertexAttributes.Usage.Position
+                | VertexAttributes.Usage.ColorUnpacked, mat);
+        meshBuilder.line(from.x, from.y, from.z, to.x, to.y, to.z);
+        // stub
+        Node node = modelBuilder.node();
+        node.translation.set(to.x, to.y, to.z);
+        meshBuilder = modelBuilder.part("stub", GL20.GL_TRIANGLES, Usage.Position | Usage.Normal, mat);
+        BoxShapeBuilder.build(meshBuilder, 2, 2, 2);
+        return modelBuilder.end();
+    }
+
     public static Model torus(Material mat, float width, float height, int divisionsU, int divisionsV) {
 
         ModelBuilder modelBuilder = new ModelBuilder();
@@ -85,17 +104,17 @@ public class UsefulMeshs {
 
                     curr1.position.set(
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                                    * Math.cos(t * twopi / divisionsU)),
+                            * Math.cos(t * twopi / divisionsU)),
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                                    * Math.sin(t * twopi / divisionsU)),
+                            * Math.sin(t * twopi / divisionsU)),
                             (float) (height * Math.sin(s * twopi / divisionsV)));
                     k--;
                     s = (i + k) % divisionsV + 0.5;
                     curr2.position.set(
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                                    * Math.cos(t * twopi / divisionsU)),
+                            * Math.cos(t * twopi / divisionsU)),
                             (float) ((width + height * Math.cos(s * twopi / divisionsV))
-                                    * Math.sin(t * twopi / divisionsU)),
+                            * Math.sin(t * twopi / divisionsU)),
                             (float) (height * Math.sin(s * twopi / divisionsV)));
                     // curr2.uv.set((float) s, 0);
                     i1 = builder.vertex(curr1);
