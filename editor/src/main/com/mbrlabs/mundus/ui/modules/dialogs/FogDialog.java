@@ -87,10 +87,12 @@ public class FogDialog extends BaseDialog implements ProjectChangedEvent.Project
                     }
                     density.setDisabled(false);
                     gradient.setDisabled(false);
+                    colorPickerField.setDisabled(false);
                 } else {
                     projectContext.currScene.environment.setFog(null);
                     density.setDisabled(true);
                     gradient.setDisabled(true);
+                    colorPickerField.setDisabled(true);
                 }
             }
         });
