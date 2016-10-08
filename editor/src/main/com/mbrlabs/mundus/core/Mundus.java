@@ -116,6 +116,8 @@ public class Mundus {
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.kerning = true;
         params.borderStraight = false;
+        params.genMipMaps = true;
+        params.hinting = FreeTypeFontGenerator.Hinting.Full;
 
         // font norm
         params.size = 13;

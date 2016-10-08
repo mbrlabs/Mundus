@@ -45,9 +45,8 @@ uniform DirectionalLight u_directionalLight;
 void main(void) {
 
     // blend textures
-    gl_FragColor = COLOR_BRIGHT;
+    gl_FragColor = texture2D(u_texture_base, v_texCoord0);
     if(u_texture_has_splatmap == 1) {
-        gl_FragColor = texture2D(u_texture_base, v_texCoord0);
         vec4 splat = texture2D(u_texture_splat, splatPosition);
         gl_FragColor = mix(gl_FragColor, texture2D(u_texture_r, v_texCoord0), splat.r);
         gl_FragColor = mix(gl_FragColor, texture2D(u_texture_g, v_texCoord0), splat.g);
