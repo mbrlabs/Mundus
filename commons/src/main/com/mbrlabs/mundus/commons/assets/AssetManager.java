@@ -224,6 +224,7 @@ public class AssetManager implements Disposable {
 
     private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {
         TextureAsset asset = new TextureAsset(meta, assetFile);
+        // TODO parse special texture instead of always setting them
         asset.setTileable(true);
         asset.generateMipmaps(true);
         asset.load();

@@ -264,7 +264,30 @@ public class TerrainPaintTab extends Tab {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (channel != null) {
-                        Ui.getInstance().getToaster().error("Not implemented yet");
+                        AssetSelectionDialog dialog = Ui.getInstance().getAssetSelectionDialog();
+                        dialog.show(new AssetTextureFilter(), new AssetSelectionDialog.AssetSelectionListener() {
+                            @Override
+                            public void onSelected(Array<Asset> assets) {
+                                if (assets.size == 0) return;
+                                if (channel != null) {
+                                    TerrainAsset terrain = parent.component.getTerrain();
+                                    TextureAsset texture = (TextureAsset) assets.first();
+                                    if (channel == SplatTexture.Channel.BASE) {
+                                        terrain.setSplatBase(texture);
+                                    } else if (channel == SplatTexture.Channel.R) {
+                                        terrain.setSplatR(texture);
+                                    } else if (channel == SplatTexture.Channel.G) {
+                                        terrain.setSplatG(texture);
+                                    } else if (channel == SplatTexture.Channel.B) {
+                                        terrain.setSplatB(texture);
+                                    } else if (channel == SplatTexture.Channel.A) {
+                                        terrain.setSplatA(texture);
+                                    }
+                                    terrain.applyDependencies();
+                                    setTexturesInUiGrid();
+                                }
+                            }
+                        });
                     }
                 }
             });

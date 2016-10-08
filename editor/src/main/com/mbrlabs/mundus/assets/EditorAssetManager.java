@@ -257,7 +257,9 @@ public class EditorAssetManager extends AssetManager {
         FileHandle importedAssetFile = copyToAssetFolder(assetFile);
 
         TextureAsset asset = new TextureAsset(meta, importedAssetFile);
-        // TODO parse special texture properties and apply
+        // TODO parse special texture instead of always setting them
+        asset.setTileable(true);
+        asset.generateMipmaps(true);
         asset.load();
 
         return asset;
