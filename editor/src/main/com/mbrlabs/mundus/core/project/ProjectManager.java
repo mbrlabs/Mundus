@@ -29,8 +29,8 @@ import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetNotFoundException;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
-import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -57,6 +57,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Manages Mundus projects and scenes.
@@ -71,9 +72,6 @@ public class ProjectManager implements Disposable {
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
 
     public static final String PROJECT_ASSETS_DIR = "assets/";
-    public static final String PROJECT_TERRAIN_DIR = PROJECT_ASSETS_DIR + "terrains/";
-
-    public static final String PROJECT_TEXTURE_DIR = PROJECT_ASSETS_DIR + "textures/";
     public static final String PROJECT_SCENES_DIR = "scenes/";
 
     public static final String PROJECT_SCENE_EXTENSION = ".mundus";
@@ -126,8 +124,7 @@ public class ProjectManager implements Disposable {
         ProjectRef ref = registry.createProjectRef(name, folder);
         String path = ref.getPath();
         new File(path).mkdirs();
-        new File(path, PROJECT_TERRAIN_DIR).mkdirs();
-        new File(path, PROJECT_TEXTURE_DIR).mkdirs();
+        new File(path, PROJECT_ASSETS_DIR).mkdirs();
         new File(path, PROJECT_SCENES_DIR).mkdirs();
 
         // create currentProject current
@@ -219,18 +216,6 @@ public class ProjectManager implements Disposable {
             }
         });
 
-        // load textures
-        for (MTexture tex : context.textures) {
-            tex.texture = TextureUtils
-                    .loadMipmapTexture(Gdx.files.absolute(FilenameUtils.concat(context.path, tex.getPath())), true);
-            Log.debug(TAG, "Loaded texture: {}", tex.getPath());
-        }
-
-        // load terrain .terra files
-        for (Terrain terrain : context.terrains) {
-            TerrainIO.importTerrain(context, terrain);
-        }
-
         context.currScene = loadScene(context, context.activeSceneName);
 
         return context;
@@ -243,11 +228,12 @@ public class ProjectManager implements Disposable {
      *            project context
      */
     public void saveProject(ProjectContext projectContext) {
-        // save .terra files & the splat map
-        for (Terrain terrain : projectContext.terrains) {
-            TerrainIO.exportTerrain(projectContext, terrain);
+        // save terra files
+        try {
+            projectContext.assetManager.saveTerrainAssets();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
         // save current in .pro file
         kryoManager.saveProjectContext(projectContext);
         // save scene in .mundus file
@@ -343,7 +329,8 @@ public class ProjectManager implements Disposable {
     public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
         Array<ModelAsset> models = context.assetManager.getModelAssets();
-        EditorScene scene = DescriptorConverter.convert(descriptor, context.terrains, models);
+        Array<TerrainAsset> terrains = context.assetManager.getTerrainAssets();
+        EditorScene scene = DescriptorConverter.convert(descriptor, terrains, models);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
@@ -414,7 +401,7 @@ public class ProjectManager implements Disposable {
                 }
             } else if (c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent) c).setShader(shaders.terrainShader);
-                ((TerrainComponent) c).getTerrain().setTransform(go.getTransform());
+                ((TerrainComponent) c).getTerrain().getTerrain().setTransform(go.getTransform());
             }
 
             // encode id for picking

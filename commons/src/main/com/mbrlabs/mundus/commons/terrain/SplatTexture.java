@@ -17,7 +17,7 @@
 package com.mbrlabs.mundus.commons.terrain;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.utils.TextureProvider;
 
 /**
@@ -31,17 +31,9 @@ public class SplatTexture implements TextureProvider {
     }
 
     public Channel channel;
-    public MTexture texture;
+    public TextureAsset texture;
 
-    public SplatTexture() {
-
-    }
-
-    public SplatTexture(Channel channel) {
-        this.channel = channel;
-    }
-
-    public SplatTexture(Channel channel, MTexture texture) {
+    public SplatTexture(Channel channel, TextureAsset texture) {
         this.channel = channel;
         this.texture = texture;
     }
@@ -49,7 +41,7 @@ public class SplatTexture implements TextureProvider {
     @Override
     public Texture getTexture() {
         if (texture != null) {
-            return texture.texture;
+            return texture.getTexture();
         }
         return null;
     }

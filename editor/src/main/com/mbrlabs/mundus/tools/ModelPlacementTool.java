@@ -150,18 +150,22 @@ public class ModelPlacementTool extends Tool {
         final ProjectContext context = projectManager.current();
 
         final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-        if (context.currScene.terrains.size > 0 && curEntity != null) {
-            VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
-            if (vi != null) {
-                if (shouldRespectTerrainSlope)
-                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
-                curEntity.modelInstance.transform.setTranslation(vi.position);
-            }
-        } else {
-            tempV3.set(projectManager.current().currScene.cam.position);
-            tempV3.add(ray.direction.nor().scl(200));
-            curEntity.modelInstance.transform.setTranslation(tempV3);
-        }
+//        if (context.currScene.terrains.size > 0 && curEntity != null) {
+//            VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
+//            if (vi != null) {
+//                if (shouldRespectTerrainSlope)
+//                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
+//                curEntity.modelInstance.transform.setTranslation(vi.position);
+//            }
+//        } else {
+//            tempV3.set(projectManager.current().currScene.cam.position);
+//            tempV3.add(ray.direction.nor().scl(200));
+//            curEntity.modelInstance.transform.setTranslation(tempV3);
+//        }
+
+        tempV3.set(projectManager.current().currScene.cam.position);
+        tempV3.add(ray.direction.nor().scl(200));
+        curEntity.modelInstance.transform.setTranslation(tempV3);
         return false;
     }
 

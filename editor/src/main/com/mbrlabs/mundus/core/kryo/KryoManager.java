@@ -33,9 +33,6 @@ import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.SettingsDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.TerrainComponentDescriptor;
-import com.mbrlabs.mundus.core.kryo.descriptors.TerrainDescriptor;
-import com.mbrlabs.mundus.core.kryo.descriptors.TerrainTextureDescriptor;
-import com.mbrlabs.mundus.core.kryo.descriptors.TextureDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.KeyboardLayout;
@@ -84,16 +81,13 @@ public class KryoManager {
         kryo.register(SceneDescriptor.class, 7);
 
         // basic building blocks
-        kryo.register(TerrainDescriptor.class, 8);
-        kryo.register(TextureDescriptor.class, 9);
-        kryo.register(FogDescriptor.class, 10);
-        kryo.register(GameObjectDescriptor.class, 11);
-        kryo.register(BaseLightDescriptor.class, 12);
+        kryo.register(FogDescriptor.class, 8);
+        kryo.register(GameObjectDescriptor.class, 9);
+        kryo.register(BaseLightDescriptor.class, 10);
 
         // components
-        kryo.register(ModelComponentDescriptor.class, 13);
-        kryo.register(TerrainComponentDescriptor.class, 14);
-        kryo.register(TerrainTextureDescriptor.class, 15);
+        kryo.register(ModelComponentDescriptor.class, 11);
+        kryo.register(TerrainComponentDescriptor.class, 12);
     }
 
     /**

@@ -49,13 +49,14 @@ public class MetaFile {
     private static final String PROP_MATERIAL_DIFFUSE_COLOR = "mat.diffuse.color";
     private static final String PROP_MATERIAL_DIFFUSE_TEXTURE = "mat.diffuse.texture";
 
-    // terrain material
-    private static final String PROP_MATERIAL_TERRAIN_SPLATMAP = "mat.terrain.splatmap";
-    private static final String PROP_MATERIAL_TERRAIN_SPLAT_BASE = "mat.terrain.splat.base";
-    private static final String PROP_MATERIAL_TERRAIN_SPLAT_R = "mat.terrain.splat.r";
-    private static final String PROP_MATERIAL_TERRAIN_SPLAT_G = "mat.terrain.splat.g";
-    private static final String PROP_MATERIAL_TERRAIN_SPLAT_B = "mat.terrain.splat.b";
-    private static final String PROP_MATERIAL_TERRAIN_SPLAT_A = "mat.terrain.splat.a";
+    // terrain
+    private static final String PROP_TERRAIN_SIZE = "terrain.size";
+    private static final String PROP_MATERIAL_TERRAIN_SPLATMAP = "terrain.mat.splatmap";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_BASE = "terrain.mat.splat.base";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_R = "terrain.mat.splat.r";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_G = "terrain.mat.splat.g";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_B = "terrain.mat.splat.b";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_A = "terrain.mat.splat.a";
 
     private FileHandle file;
     private Properties props;
@@ -77,6 +78,7 @@ public class MetaFile {
     private String terrainSplatG;
     private String terrainSplatB;
     private String terrainSplatA;
+    private int terrainSize;
 
     public MetaFile(FileHandle file) {
         this.file = file;
@@ -121,6 +123,7 @@ public class MetaFile {
             if (terrainSplatA != null) {
                 props.setProperty(PROP_MATERIAL_TERRAIN_SPLAT_A, terrainSplatA);
             }
+            props.setProperty(PROP_TERRAIN_SIZE, String.valueOf(terrainSize));
         }
 
         props.store(new FileOutputStream(file.file()), COMMENT);
@@ -147,13 +150,14 @@ public class MetaFile {
             }
 
             // terrain specific
-            if (type == AssetType.MODEL) {
+            if (type == AssetType.TERRAIN) {
                 this.terrainSplatmap = props.getProperty(PROP_MATERIAL_TERRAIN_SPLATMAP, null);
                 this.terrainSplatBase = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_BASE, null);
                 this.terrainSplatR = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_R, null);
                 this.terrainSplatG = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_G, null);
                 this.terrainSplatB = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_B, null);
                 this.terrainSplatA = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_A, null);
+                this.terrainSize = Integer.valueOf(props.getProperty(PROP_TERRAIN_SIZE, "1200"));
             }
 
         } catch (Exception e) {
@@ -256,6 +260,14 @@ public class MetaFile {
 
     public void setTerrainSplatmap(String terrainSplatmap) {
         this.terrainSplatmap = terrainSplatmap;
+    }
+
+    public int getTerrainSize() {
+        return terrainSize;
+    }
+
+    public void setTerrainSize(int terrainSize) {
+        this.terrainSize = terrainSize;
     }
 
     public Properties getProps() {

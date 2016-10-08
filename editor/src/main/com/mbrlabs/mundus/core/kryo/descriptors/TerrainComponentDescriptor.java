@@ -25,14 +25,14 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 public class TerrainComponentDescriptor {
 
     @Tag(0)
-    private long terrainID;
+    private String terrainID;
 
-    public long getTerrainID() {
+    public String getTerrainID() {
         return terrainID;
     }
 
-    public void setTerrainID(long terrainID) {
-        this.terrainID = terrainID;
+    public void setTerrainID(String id) {
+        this.terrainID = id;
     }
 
 }

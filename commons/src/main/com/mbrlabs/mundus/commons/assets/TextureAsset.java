@@ -18,13 +18,14 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
 /**
  * @author Marcus Brummer
  * @version 01-10-2016
  */
-public class TextureAsset extends Asset {
+public class TextureAsset extends Asset implements TextureProvider {
 
     private Texture texture;
     private boolean generateMipMaps;
@@ -44,6 +45,7 @@ public class TextureAsset extends Asset {
         return this;
     }
 
+    @Override
     public Texture getTexture() {
         return texture;
     }

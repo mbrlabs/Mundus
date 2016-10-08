@@ -37,6 +37,7 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTree;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -451,20 +452,27 @@ public class Outline extends VisTable
             addTerrain.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    // To-DO: Terrain config popup: set width and height values,
-                    // maybe heightmap import options
-                    Log.trace(TAG, "Add terrain game object in root node.");
-                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), "Terrain", 1200, 1200, 180);
-                    projectContext.terrains.add(terrain);
-                    // projectContext.currScene.terrainGroup.add(terrain);
-                    GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader,
-                            projectContext.obtainID(), "Terrain", terrain);
-                    // update sceneGraph
-                    sceneGraph.addGameObject(terrainGO);
-                    // update outline
-                    addGoToTree(null, terrainGO);
+                    try {
+                        Log.trace(TAG, "Add terrain game object in root node.");
+                        // create asset
+                        TerrainAsset asset = projectContext.assetManager
+                                .createTerrainAsset(Terrain.DEFAULT_VERTEX_RESOLUTION, Terrain.DEFAULT_SIZE);
+                        asset.load();
+                        asset.applyDependencies();
 
-                    Mundus.postEvent(new SceneGraphChangedEvent());
+                        projectContext.terrains.add(asset);
+                        // projectContext.currScene.terrainGroup.add(terrain);
+                        GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader,
+                                projectContext.obtainID(), "Terrain", asset);
+                        // update sceneGraph
+                        sceneGraph.addGameObject(terrainGO);
+                        // update outline
+                        addGoToTree(null, terrainGO);
+
+                        Mundus.postEvent(new SceneGraphChangedEvent());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 

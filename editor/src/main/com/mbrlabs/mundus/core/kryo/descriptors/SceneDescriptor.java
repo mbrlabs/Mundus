@@ -35,19 +35,19 @@ public class SceneDescriptor {
     private List<GameObjectDescriptor> gameObjects;
     @Tag(3)
     private FogDescriptor fog;
-    @Tag(10)
-    private BaseLightDescriptor ambientLight;
     @Tag(4)
-    private float camPosX;
+    private BaseLightDescriptor ambientLight;
     @Tag(5)
-    private float camPosY;
+    private float camPosX;
     @Tag(6)
-    private float camPosZ;
+    private float camPosY;
     @Tag(7)
-    private float camDirX = 0;
+    private float camPosZ;
     @Tag(8)
-    private float camDirY = 0;
+    private float camDirX = 0;
     @Tag(9)
+    private float camDirY = 0;
+    @Tag(10)
     private float camDirZ = 0;
 
     public SceneDescriptor() {

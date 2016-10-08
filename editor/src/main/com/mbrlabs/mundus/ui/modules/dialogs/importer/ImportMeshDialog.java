@@ -180,13 +180,8 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                     if (previewModel != null && previewInstance != null) {
                         EditorAssetManager assetManager = projectManager.current().assetManager;
 
-                        // create model
-                        String assetRoot = FilenameUtils.concat(projectManager.current().path,
-                                ProjectManager.PROJECT_ASSETS_DIR);
                         try {
-                            // TODO use assetManager.importAsset() if
-                            // implemented for models
-                            ModelAsset asset = assetManager.createModelAsset(new FileHandle(assetRoot), importedModel);
+                            ModelAsset asset = assetManager.createModelAsset(importedModel);
                             Mundus.postEvent(new AssetImportEvent(asset));
                             Ui.getInstance().getToaster().success("Mesh imported");
                         } catch (IOException e) {

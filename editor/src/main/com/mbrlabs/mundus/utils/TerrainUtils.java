@@ -16,20 +16,15 @@
 
 package com.mbrlabs.mundus.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
-import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
-import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainShader;
-import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
-import com.mbrlabs.mundus.commons.utils.TextureUtils;
-import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 
 /**
@@ -41,11 +36,11 @@ public class TerrainUtils {
     public static VertexInfo tempVI = new VertexInfo();
 
     public static GameObject createTerrainGO(SceneGraph sg, TerrainShader shader, int goID, String goName,
-            Terrain terrain) {
+            TerrainAsset terrain) {
         GameObject terrainGO = new GameObject(sg, null, goID);
         terrainGO.name = goName;
 
-        terrain.setTransform(terrainGO.getTransform());
+        terrain.getTerrain().setTransform(terrainGO.getTransform());
         TerrainComponent terrainComponent = new TerrainComponent(terrainGO);
         terrainComponent.setTerrain(terrain);
         terrainGO.getComponents().add(terrainComponent);
@@ -55,24 +50,25 @@ public class TerrainUtils {
         return terrainGO;
     }
 
-    public static Terrain createTerrain(int terrainID, String terrainName, int width, int depth, int vertexRes) {
-        Terrain terrain = new Terrain(vertexRes);
-        terrain.terrainWidth = width;
-        terrain.terrainDepth = depth;
-        terrain.id = terrainID;
-        terrain.name = terrainName;
-        terrain.init();
-        terrain.update();
-
-        TerrainTexture terrainTex = terrain.getTerrainTexture();
-        MTexture base = new MTexture();
-        base.setId(-1);
-        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
-        terrainTex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
-        terrain.terraPath = ProjectManager.PROJECT_TERRAIN_DIR + terrain.id + "." + TerrainIO.FILE_EXTENSION;
-
-        return terrain;
-    }
+    //    public static TerrainAsset createTerrain(EditorAssetManager assetManager, int width, int depth, int vertexRes) throws IOException {
+    ////        TerrainAsset asset = assetManager.createTerrainAsset(180, 1200, 1200);
+    ////        asset.load();
+    ////        asset.applyDependencies();
+    ////
+    ////        Terrain terrain = new Terrain(vertexRes);
+    ////        terrain.terrainWidth = width;
+    ////        terrain.terrainDepth = depth;
+    ////        terrain.init();
+    ////        terrain.update();
+    //
+    //       // TerrainTexture terrainTex = terrain.getTerrainTexture();
+    ////        MTexture base = new MTexture();
+    ////        base.setId(-1);
+    ////        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
+    //        // terrainTex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
+    //
+    //        return null;
+    //    }
 
     public static Vector3 getRayIntersection(Array<Terrain> terrains, Ray ray, Vector3 out) {
         for (Terrain terrain : terrains) {

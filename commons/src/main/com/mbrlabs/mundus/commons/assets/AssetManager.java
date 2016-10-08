@@ -15,6 +15,7 @@
  */
 package com.mbrlabs.mundus.commons.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -31,6 +32,8 @@ import java.util.Map;
  * @version 06-10-2016
  */
 public class AssetManager implements Disposable {
+
+    private static final String TAG = AssetManager.class.getSimpleName();
 
     protected FileHandle rootFolder;
 
@@ -57,6 +60,7 @@ public class AssetManager implements Disposable {
      * @return matching asset or null
      */
     public Asset findAssetByID(String id) {
+        if(id == null) return null;
         return assetIndex.get(id);
     }
 
@@ -94,6 +98,22 @@ public class AssetManager implements Disposable {
     }
 
     /**
+     * Returns all assets of type TERRAIN.
+     *
+     * @return all model assets
+     */
+    public Array<TerrainAsset> getTerrainAssets() {
+        Array<TerrainAsset> terrains = new Array<TerrainAsset>();
+        for (Asset asset : assets) {
+            if (asset instanceof TerrainAsset) {
+                terrains.add((TerrainAsset) asset);
+            }
+        }
+
+        return terrains;
+    }
+
+    /**
      * Loads all assets in the project's asset folder.
      *
      * @param listener
@@ -127,20 +147,32 @@ public class AssetManager implements Disposable {
 
     private void resolveAssetDependencies() {
         for (Asset asset : assets) {
+            MetaFile meta = asset.getMeta();
+
             // model asset
             if (asset instanceof ModelAsset) {
-                String diffuseTexture = asset.getMeta().getDiffuseTexture();
+                String diffuseTexture = meta.getDiffuseTexture();
                 if (diffuseTexture != null) {
                     TextureAsset tex = (TextureAsset) findAssetByID(diffuseTexture);
                     if (tex != null) {
                         // Log.error(TAG, diffuseTexture);
                         ((ModelAsset) asset).setDiffuseTexture(tex);
-                        asset.applyDependencies();
                     }
                 }
             }
 
-            // TODO terrain asset
+            // terrain asset
+            if(asset instanceof TerrainAsset) {
+                TerrainAsset terrain = (TerrainAsset) asset;
+                terrain.setSplatmap((PixmapTextureAsset) findAssetByID(meta.getTerrainSplatmap()));
+                terrain.setSplatBase((TextureAsset) findAssetByID(meta.getTerrainSplatBase()));
+                terrain.setSplatR((TextureAsset) findAssetByID(meta.getTerrainSplatR()));
+                terrain.setSplatG((TextureAsset) findAssetByID(meta.getTerrainSplatG()));
+                terrain.setSplatB((TextureAsset) findAssetByID(meta.getTerrainSplatB()));
+                terrain.setSplatA((TextureAsset) findAssetByID(meta.getTerrainSplatA()));
+            }
+
+            asset.applyDependencies();
         }
     }
 
@@ -220,6 +252,7 @@ public class AssetManager implements Disposable {
     public void dispose() {
         for (Asset asset : assets) {
             asset.dispose();
+            Gdx.app.log(TAG, "Disposing asset: " + asset.toString());
         }
         assets.clear();
         assetIndex.clear();

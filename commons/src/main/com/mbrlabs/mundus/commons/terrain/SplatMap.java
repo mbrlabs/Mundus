@@ -16,60 +16,45 @@
 
 package com.mbrlabs.mundus.commons.terrain;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Disposable;
+import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 
 /**
  * @author Marcus Brummer
  * @version 31-01-2016
  */
-public class SplatMap implements Disposable {
+public class SplatMap {
 
     public static final int DEFAULT_SIZE = 512;
 
     private int width;
     private int height;
 
-    private Pixmap pixmap;
-    private Texture texture;
-    private String path;
+    private PixmapTextureAsset pixmapAsset;
 
     private final Color c0 = new Color();
 
-    public SplatMap(int width, int height) {
+    public SplatMap(PixmapTextureAsset asset) {
         Pixmap.setBlending(Pixmap.Blending.None);
-        this.pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        this.pixmapAsset = asset;
+        //clear();
 
-        texture = new Texture(pixmap);
-        clear();
-
-        this.width = width;
-        this.height = height;
-    }
-
-    public SplatMap(Pixmap pixmap) {
-        Pixmap.setBlending(Pixmap.Blending.None);
-
-        this.pixmap = pixmap;
-        texture = new Texture(pixmap);
-
-        width = pixmap.getWidth();
-        height = pixmap.getHeight();
+        this.width = asset.getPixmap().getWidth();
+        this.height = asset.getPixmap().getHeight();
     }
 
     public Texture getTexture() {
-        return texture;
+        return pixmapAsset.getTexture();
     }
 
     public Pixmap getPixmap() {
-        return pixmap;
+        return pixmapAsset.getPixmap();
     }
 
     public void clearChannel(SplatTexture.Channel channel) {
+        Pixmap pixmap = getPixmap();
         for (int smX = 0; smX < pixmap.getWidth(); smX++) {
             for (int smY = 0; smY < pixmap.getHeight(); smY++) {
                 c0.set(pixmap.getPixel(smX, smY));
@@ -88,33 +73,14 @@ public class SplatMap implements Disposable {
     }
 
     public void clear() {
+        Pixmap pixmap = getPixmap();
         pixmap.setColor(0, 0, 0, 0);
         pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
         updateTexture();
     }
 
     public void updateTexture() {
-        texture.draw(pixmap, 0, 0);
-    }
-
-    public void savePNG(FileHandle fileHandle) {
-        PixmapIO.writePNG(fileHandle, pixmap);
-    }
-
-    public void loadPNG(FileHandle fileHandle) {
-        pixmap = new Pixmap(fileHandle);
-        updateTexture();
-
-        this.width = pixmap.getWidth();
-        this.height = pixmap.getHeight();
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
+        getTexture().draw(getPixmap(), 0, 0);
     }
 
     public int getHeight() {
@@ -152,8 +118,4 @@ public class SplatMap implements Disposable {
         return Color.rgba8888(c0);
     }
 
-    @Override
-    public void dispose() {
-        pixmap.dispose();
-    }
 }

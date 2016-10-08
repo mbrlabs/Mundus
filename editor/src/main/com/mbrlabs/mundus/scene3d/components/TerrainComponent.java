@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -33,7 +34,7 @@ public class TerrainComponent extends PickableComponent {
 
     private static final String TAG = TerrainComponent.class.getSimpleName();
 
-    private Terrain terrain;
+    private TerrainAsset terrain;
     private Shader shader;
 
     public TerrainComponent(GameObject go) {
@@ -44,19 +45,19 @@ public class TerrainComponent extends PickableComponent {
     @Override
     public void encodeRaypickColorId() {
         PickerIDAttribute goIDa = PickerColorEncoder.encodeRaypickColorId(gameObject);
-        terrain.modelInstance.materials.first().set(goIDa);
+        terrain.getTerrain().modelInstance.materials.first().set(goIDa);
     }
 
     @Override
     public void renderPick() {
-        gameObject.sceneGraph.batch.render(terrain, Shaders.pickerShader);
+        gameObject.sceneGraph.batch.render(terrain.getTerrain(), Shaders.pickerShader);
     }
 
-    public void setTerrain(Terrain terrain) {
+    public void setTerrain(TerrainAsset terrain) {
         this.terrain = terrain;
     }
 
-    public Terrain getTerrain() {
+    public TerrainAsset getTerrain() {
         return terrain;
     }
 
@@ -70,7 +71,7 @@ public class TerrainComponent extends PickableComponent {
 
     @Override
     public void render(float delta) {
-        gameObject.sceneGraph.batch.render(terrain, gameObject.sceneGraph.scene.environment, shader);
+        gameObject.sceneGraph.batch.render(terrain.getTerrain(), gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override

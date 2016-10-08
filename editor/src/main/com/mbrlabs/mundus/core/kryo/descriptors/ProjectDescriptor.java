@@ -32,22 +32,12 @@ public class ProjectDescriptor {
     @Tag(1)
     private int nextAvailableID;
     @Tag(2)
-    private List<TextureDescriptor> textures;
-    @Tag(3)
-    private List<TerrainDescriptor> terrains;
-    @Tag(4)
     private List<String> sceneNames;
-    @Tag(5)
+    @Tag(3)
     private String currentSceneName;
 
     public ProjectDescriptor() {
-        terrains = new ArrayList<>();
         sceneNames = new ArrayList<>();
-        textures = new ArrayList<>();
-    }
-
-    public List<TerrainDescriptor> getTerrains() {
-        return terrains;
     }
 
     public String getName() {
@@ -80,10 +70,6 @@ public class ProjectDescriptor {
 
     public void setCurrentSceneName(String currentSceneName) {
         this.currentSceneName = currentSceneName;
-    }
-
-    public List<TextureDescriptor> getTextures() {
-        return textures;
     }
 
 }

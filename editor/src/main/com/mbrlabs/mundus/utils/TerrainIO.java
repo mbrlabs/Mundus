@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.FloatArray;
-import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -52,84 +51,84 @@ public class TerrainIO {
 
     public static final String FILE_EXTENSION = "terra";
 
-    /**
-     * Binary gziped format.
-     *
-     * @param terrain
-     */
-    public static void exportTerrain(ProjectContext projectContext, Terrain terrain) {
-        float[] data = terrain.heightData;
-        long start = System.currentTimeMillis();
-
-        // create file
-        File file = new File(FilenameUtils.concat(projectContext.path, terrain.terraPath));
-        try {
-            FileUtils.touch(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // write .terra
-        try (DataOutputStream outputStream = new DataOutputStream(
-                new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(file))))) {
-
-            for (float f : data) {
-                outputStream.writeFloat(f);
-            }
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        // write splatmap
-        SplatMap splatmap = terrain.getTerrainTexture().getSplatmap();
-        if (splatmap != null) {
-            splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.path, splatmap.getPath())));
-        }
-
-        // Log.debug("Terrain export execution time (" + data.length + "
-        // floats): "
-        // + (System.currentTimeMillis() - start) + " ms");
-    }
-
-    public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
-        FloatArray floatArray = new FloatArray();
-
-        String terraPath = FilenameUtils.concat(projectContext.path, terrain.terraPath);
-        try (DataInputStream is = new DataInputStream(
-                new BufferedInputStream(new GZIPInputStream(new FileInputStream(terraPath))))) {
-            while (is.available() > 0) {
-                floatArray.add(is.readFloat());
-            }
-        } catch (EOFException e) {
-            // e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // Log.debug("Terrain import. floats: {}", floatArray.size);
-
-        terrain.heightData = floatArray.toArray();
-        terrain.init();
-        terrain.update();
-
-        // set default terrain base texture if none is present
-        TerrainTexture terrainTexture = terrain.getTerrainTexture();
-        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
-            MTexture base = new MTexture();
-            base.setId(-1);
-            base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
-            terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
-        }
-
-        // load splat map if available
-        SplatMap splatmap = terrainTexture.getSplatmap();
-        if (splatmap != null) {
-            String splatPath = FilenameUtils.concat(projectContext.path, splatmap.getPath());
-            splatmap.loadPNG(Gdx.files.absolute(splatPath));
-        }
-
-        return terrain;
-    }
+//    /**
+//     * Binary gziped format.
+//     *
+//     * @param terrain
+//     */
+//    public static void exportTerrain(ProjectContext projectContext, Terrain terrain) {
+//        float[] data = terrain.heightData;
+//        long start = System.currentTimeMillis();
+//
+//        // create file
+//        File file = new File(FilenameUtils.concat(projectContext.path, terrain.terraPath));
+//        try {
+//            FileUtils.touch(file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // write .terra
+//        try (DataOutputStream outputStream = new DataOutputStream(
+//                new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(file))))) {
+//
+//            for (float f : data) {
+//                outputStream.writeFloat(f);
+//            }
+//            outputStream.flush();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//
+//        // write splatmap
+//        SplatMap splatmap = terrain.getTerrainTexture().getSplatmap();
+//        if (splatmap != null) {
+//            splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.path, splatmap.getPath())));
+//        }
+//
+//        // Log.debug("Terrain export execution time (" + data.length + "
+//        // floats): "
+//        // + (System.currentTimeMillis() - start) + " ms");
+//    }
+//
+//    public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
+//        FloatArray floatArray = new FloatArray();
+//
+//        String terraPath = FilenameUtils.concat(projectContext.path, terrain.terraPath);
+//        try (DataInputStream is = new DataInputStream(
+//                new BufferedInputStream(new GZIPInputStream(new FileInputStream(terraPath))))) {
+//            while (is.available() > 0) {
+//                floatArray.add(is.readFloat());
+//            }
+//        } catch (EOFException e) {
+//            // e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        // Log.debug("Terrain import. floats: {}", floatArray.size);
+//
+//        terrain.heightData = floatArray.toArray();
+//        terrain.init();
+//        terrain.update();
+//
+//        // set default terrain base texture if none is present
+//        TerrainTexture terrainTexture = terrain.getTerrainTexture();
+//        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
+//            MTexture base = new MTexture();
+//            base.setId(-1);
+//            base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
+//            terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
+//        }
+//
+//        // load splat map if available
+//        SplatMap splatmap = terrainTexture.getSplatmap();
+//        if (splatmap != null) {
+//            String splatPath = FilenameUtils.concat(projectContext.path, splatmap.getPath());
+//            splatmap.loadPNG(Gdx.files.absolute(splatPath));
+//        }
+//
+//        return terrain;
+//    }
 
 }

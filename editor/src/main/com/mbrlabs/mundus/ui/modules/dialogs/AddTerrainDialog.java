@@ -95,36 +95,36 @@ public class AddTerrainDialog extends BaseDialog {
     private void setupListeners() {
 
         // terraform btn
-        generateBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                try {
-                    String nom = name.getText();
-
-                    int res = Integer.valueOf(vertexResolution.getText());
-                    int width = Integer.valueOf(terrainWidth.getText());
-                    int depth = Integer.valueOf(terrainDepth.getText());
-                    float posX = Float.valueOf(positionX.getText());
-                    float posZ = Float.valueOf(positionZ.getText());
-
-                    final ProjectContext projectContext = projectManager.current();
-                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
-                    terrain.transform.setTranslation(posX, 0, posZ);
-                    projectContext.terrains.add(terrain);
-                    projectContext.currScene.terrains.add(terrain);
-                    GameObject terrainGO = TerrainUtils.createTerrainGO(projectContext.currScene.sceneGraph,
-                            shaders.terrainShader, projectContext.obtainID(), nom, terrain);
-                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
-
-                    Mundus.postEvent(new SceneGraphChangedEvent());
-
-                } catch (NumberFormatException nfe) {
-                    Log.error(TAG, nfe.getMessage());
-                }
-
-            }
-        });
+//        generateBtn.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                super.clicked(event, x, y);
+//                try {
+//                    String nom = name.getText();
+//
+//                    int res = Integer.valueOf(vertexResolution.getText());
+//                    int width = Integer.valueOf(terrainWidth.getText());
+//                    int depth = Integer.valueOf(terrainDepth.getText());
+//                    float posX = Float.valueOf(positionX.getText());
+//                    float posZ = Float.valueOf(positionZ.getText());
+//
+//                    final ProjectContext projectContext = projectManager.current();
+//                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
+//                    terrain.transform.setTranslation(posX, 0, posZ);
+//                    projectContext.terrains.add(terrain);
+//                    projectContext.currScene.terrains.add(terrain);
+//                    GameObject terrainGO = TerrainUtils.createTerrainGO(projectContext.currScene.sceneGraph,
+//                            shaders.terrainShader, projectContext.obtainID(), nom, terrain);
+//                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
+//
+//                    Mundus.postEvent(new SceneGraphChangedEvent());
+//
+//                } catch (NumberFormatException nfe) {
+//                    Log.error(TAG, nfe.getMessage());
+//                }
+//
+//            }
+//        });
 
     }
 

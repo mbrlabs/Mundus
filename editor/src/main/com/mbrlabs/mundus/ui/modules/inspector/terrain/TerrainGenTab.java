@@ -114,7 +114,7 @@ public class TerrainGenTab extends Tab {
     }
 
     private void loadHeightMap(FileHandle heightMap) {
-        Terrain terrain = parent.component.getTerrain();
+        Terrain terrain = parent.component.getTerrain().getTerrain();
         TerrainHeightCommand command = new TerrainHeightCommand(terrain);
         command.setHeightDataBefore(terrain.heightData);
 
@@ -140,7 +140,7 @@ public class TerrainGenTab extends Tab {
     }
 
     private void generatePerlinNoise(int seed, float min, float max) {
-        Terrain terrain = parent.component.getTerrain();
+        Terrain terrain = parent.component.getTerrain().getTerrain();
         TerrainHeightCommand command = new TerrainHeightCommand(terrain);
         command.setHeightDataBefore(terrain.heightData);
 

@@ -38,9 +38,11 @@ public class TerrainTexture {
     }
 
     public void removeTexture(SplatTexture.Channel channel) {
-        textures.remove(channel);
-        splatmap.clearChannel(channel);
-        splatmap.updateTexture();
+        if(splatmap != null) {
+            textures.remove(channel);
+            splatmap.clearChannel(channel);
+            splatmap.updateTexture();
+        }
     }
 
     public void setSplatTexture(SplatTexture tex) {
@@ -50,7 +52,7 @@ public class TerrainTexture {
     public SplatTexture.Channel getNextFreeChannel() {
         // base
         SplatTexture st = textures.get(SplatTexture.Channel.BASE);
-        if (st == null || st.texture.getId() == -1) return SplatTexture.Channel.BASE;
+        if (st == null || st.texture.getUUID() == null) return SplatTexture.Channel.BASE;
         // r
         st = textures.get(SplatTexture.Channel.R);
         if (st == null) return SplatTexture.Channel.R;

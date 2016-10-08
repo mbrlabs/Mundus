@@ -40,8 +40,7 @@ public class TerrainShader extends BaseShader {
     private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.vert.glsl";
     private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.frag.glsl";
 
-    // ============================ MATRICES & CAM POSITION
-    // ============================
+    // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
@@ -53,8 +52,7 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_DIRECTIONAL_LIGHT_DIR = register(new Uniform("u_directionalLight.direction"));
     protected final int UNIFORM_DIRECTIONAL_LIGHT_INTENSITY = register(new Uniform("u_directionalLight.intensity"));
 
-    // ============================ TEXTURE SPLATTING
-    // ============================
+    // ============================ TEXTURE SPLATTING ============================
     protected final int UNIFORM_TERRAIN_SIZE = register(new Uniform("u_terrainSize"));
     protected final int UNIFORM_TEXTURE_BASE = register(new Uniform("u_texture_base"));
     protected final int UNIFORM_TEXTURE_R = register(new Uniform("u_texture_r"));
@@ -156,18 +154,20 @@ public class TerrainShader extends BaseShader {
                 .get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
 
-        set(UNIFORM_TEXTURE_BASE, terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.texture);
         if (terrainTexture.getSplatmap() != null) {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 1);
-            SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.R);
-            if (st != null) set(UNIFORM_TEXTURE_R, st.texture.texture);
-            st = terrainTexture.getTexture(SplatTexture.Channel.G);
-            if (st != null) set(UNIFORM_TEXTURE_G, st.texture.texture);
-            st = terrainTexture.getTexture(SplatTexture.Channel.B);
-            if (st != null) set(UNIFORM_TEXTURE_B, st.texture.texture);
-            st = terrainTexture.getTexture(SplatTexture.Channel.A);
-            if (st != null) set(UNIFORM_TEXTURE_A, st.texture.texture);
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
+
+            SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.BASE);
+            if (st != null) set(UNIFORM_TEXTURE_BASE, st.texture.getTexture());
+            st = terrainTexture.getTexture(SplatTexture.Channel.R);
+            if (st != null) set(UNIFORM_TEXTURE_R, st.texture.getTexture());
+            st = terrainTexture.getTexture(SplatTexture.Channel.G);
+            if (st != null) set(UNIFORM_TEXTURE_G, st.texture.getTexture());
+            st = terrainTexture.getTexture(SplatTexture.Channel.B);
+            if (st != null) set(UNIFORM_TEXTURE_B, st.texture.getTexture());
+            st = terrainTexture.getTexture(SplatTexture.Channel.A);
+            if (st != null) set(UNIFORM_TEXTURE_A, st.texture.getTexture());
         } else {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 0);
         }
@@ -188,4 +188,5 @@ public class TerrainShader extends BaseShader {
     public void dispose() {
         program.dispose();
     }
+
 }

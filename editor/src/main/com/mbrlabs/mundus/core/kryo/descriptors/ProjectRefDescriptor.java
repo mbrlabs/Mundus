@@ -16,7 +16,7 @@
 
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /***
  * @author Marcus Brummer
@@ -24,9 +24,9 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
  */
 public class ProjectRefDescriptor {
 
-    @TaggedFieldSerializer.Tag(0)
+    @Tag(0)
     private String name;
-    @TaggedFieldSerializer.Tag(1)
+    @Tag(1)
     private String path;
 
     public String getName() {

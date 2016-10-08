@@ -37,6 +37,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -121,16 +122,16 @@ public class EditorAssetManager extends AssetManager {
         return meta;
     }
 
-    public ModelAsset createModelAsset(FileHandle assetRoot, ModelImporter.ImportedModel model) throws IOException {
+    public ModelAsset createModelAsset(ModelImporter.ImportedModel model) throws IOException {
         String modelFilename = model.g3dbFile.name();
         String metaFilename = modelFilename + ".meta";
 
         // create meta file
-        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        String metaPath = FilenameUtils.concat(rootFolder.path(), metaFilename);
         MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.MODEL);
 
         // copy model file
-        FileHandle assetFile = new FileHandle(FilenameUtils.concat(assetRoot.path(), modelFilename));
+        FileHandle assetFile = new FileHandle(FilenameUtils.concat(rootFolder.path(), modelFilename));
         model.g3dbFile.copyTo(assetFile);
 
         // load & return asset
@@ -141,16 +142,18 @@ public class EditorAssetManager extends AssetManager {
         return asset;
     }
 
-    public TerrainAsset createTerrainAsset(FileHandle assetRoot, int vertexResolution) throws IOException {
+    public TerrainAsset createTerrainAsset(int vertexResolution, int size) throws IOException {
         String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
         String metaFilename = terraFilename + ".meta";
 
         // create meta file
-        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        String metaPath = FilenameUtils.concat(rootFolder.path(), metaFilename);
         MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.TERRAIN);
+        meta.setTerrainSize(size);
+        meta.save();
 
         // create terra file
-        String terraPath = FilenameUtils.concat(assetRoot.path(), terraFilename);
+        String terraPath = FilenameUtils.concat(rootFolder.path(), terraFilename);
         File terraFile = new File(terraPath);
         FileUtils.touch(terraFile);
 
@@ -177,16 +180,39 @@ public class EditorAssetManager extends AssetManager {
         return asset;
     }
 
-    public PixmapTextureAsset createPixmapTextureAsset(FileHandle assetRoot, int size) throws IOException {
+    public void saveTerrainAssets() throws IOException {
+        for(TerrainAsset terrain : getTerrainAssets()) {
+
+            // save .terra file
+            DataOutputStream outputStream = new DataOutputStream(
+                    new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terrain.getFile().file()))));
+            for (float f : terrain.getData()) {
+                outputStream.writeFloat(f);
+            }
+            outputStream.flush();
+            outputStream.close();
+
+            // save splatmap
+            PixmapTextureAsset splatmap = terrain.getSplatmap();
+            if(splatmap != null) {
+                PixmapIO.writePNG(splatmap.getFile(), splatmap.getPixmap());
+            }
+
+            // save meta file
+            terrain.getMeta().save();
+        }
+    }
+
+    public PixmapTextureAsset createPixmapTextureAsset(int size) throws IOException {
         String pixmapFilename = "pixmap_" + UUID.randomUUID().toString() + ".png";
         String metaFilename = pixmapFilename + ".meta";
 
         // create meta file
-        String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
+        String metaPath = FilenameUtils.concat(rootFolder.path(), metaFilename);
         MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.PIXMAP_TEXTURE);
 
         // create pixmap
-        String pixmapPath = FilenameUtils.concat(assetRoot.path(), pixmapFilename);
+        String pixmapPath = FilenameUtils.concat(rootFolder.path(), pixmapFilename);
         Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
         FileHandle pixmapAssetFile = new FileHandle(pixmapPath);
         PixmapIO.writePNG(pixmapAssetFile, pixmap);

@@ -102,12 +102,11 @@ public class TerrainBrushGrid extends VisTable
         try {
             brush.setMode(brushMode);
             toolManager.activateTool(brush);
-            brush.setTerrain(parent.component.getTerrain());
+            brush.setTerrain(parent.component.getTerrain().getTerrain());
         } catch (TerrainBrush.ModeNotSupportedException e) {
             e.printStackTrace();
             Dialogs.showErrorDialog(Ui.getInstance(), e.getMessage());
         }
-
     }
 
     @Override

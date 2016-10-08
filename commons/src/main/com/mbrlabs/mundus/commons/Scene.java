@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.env.lights.DirectionalLight;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -44,11 +45,11 @@ public class Scene implements Disposable {
 
     public PerspectiveCamera cam;
 
-    public Array<Terrain> terrains;
+    public Array<TerrainAsset> terrains;
 
     public Scene() {
         environment = new MundusEnvironment();
-        terrains = new Array<Terrain>();
+        terrains = new Array<TerrainAsset>();
         currentSelection = null;
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

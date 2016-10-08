@@ -90,7 +90,7 @@ public class SelectionTool extends Tool {
                 // terrain component
                 TerrainComponent tc = (TerrainComponent) go.findComponentByType(Component.Type.TERRAIN);
                 if (tc != null) {
-                    batch.render(tc.getTerrain(), shader);
+                    batch.render(tc.getTerrain().getTerrain(), shader);
                 }
             }
             batch.end();

@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.MenuItem;
@@ -29,7 +30,11 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
-import com.mbrlabs.mundus.commons.model.MTexture;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
+import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
@@ -40,8 +45,11 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.modules.dialogs.TextureBrowser;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
 import com.mbrlabs.mundus.ui.widgets.TextureGrid;
+
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -53,15 +61,14 @@ public class TerrainPaintTab extends Tab {
 
     private VisTable root;
     private VisTextButton addTextureBtn;
-    private TextureGrid<TextureProvider> textureGrid;
-
-    private TextureBrowser addTextureBrowser;
-    private TextureBrowser changeTextureBrowser;
+    private TextureGrid<SplatTexture> textureGrid;
 
     private TextureRightClickMenu rightClickMenu;
 
     @Inject
     private ToolManager toolManager;
+    @Inject
+    private ProjectManager projectManager;
 
     public TerrainPaintTab(final TerrainComponentWidget parent) {
         super(false, false);
@@ -82,80 +89,84 @@ public class TerrainPaintTab extends Tab {
         // add texture
         addTextureBtn = new VisTextButton("Add Texture");
         root.add(addTextureBtn).padRight(5).right().row();
-        addTextureBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Ui.getInstance().showDialog(addTextureBrowser);
-            }
-        });
 
         rightClickMenu = new TextureRightClickMenu();
 
         setupAddTextureBrowser();
-        setupChangeTextureBrowser();
         setupTextureGrid();
     }
 
     public void setupAddTextureBrowser() {
-        addTextureBrowser = new TextureBrowser();
-        addTextureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
+        addTextureBtn.addListener(new ClickListener() {
             @Override
-            public void onTextureSelected(TextureProvider texture, boolean leftClick) {
-                if (!leftClick) return;
-
-                MTexture mTexture = (MTexture) texture;
-                TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
-
-                // set base
-                if (terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() == -1) {
-                    SplatTexture st = new SplatTexture(SplatTexture.Channel.BASE, mTexture);
-                    terrainTexture.setSplatTexture(st);
-                    textureGrid.addTexture(st);
-                    addTextureBrowser.fadeOut();
-                    return;
-                }
-
-                // create empty splatmap
-                if (terrainTexture.getSplatmap() == null) {
-                    SplatMap sm = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
-                    sm.setPath(ProjectManager.PROJECT_TERRAIN_DIR + parent.component.getTerrain().id + "_splat.png");
-                    terrainTexture.setSplatmap(sm);
-                }
-
-                // add texture
-                SplatTexture.Channel freeChannel = terrainTexture.getNextFreeChannel();
-                if (freeChannel != null) {
-                    final SplatTexture st = new SplatTexture();
-                    st.texture = mTexture;
-                    st.channel = freeChannel;
-                    terrainTexture.setSplatTexture(st);
-                    textureGrid.addTexture(st);
-                    addTextureBrowser.fadeOut();
-                } else {
-                    Dialogs.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
-                    return;
-                }
-
+            public void clicked(InputEvent event, float x, float y) {
+                AssetSelectionDialog dialog = Ui.getInstance().getAssetSelectionDialog();
+                dialog.show(new AssetTextureFilter(), new AssetSelectionDialog.AssetSelectionListener() {
+                    @Override
+                    public void onSelected(Array<Asset> assets) {
+                        if (assets.size == 0) return;
+                        try {
+                            addTexture((TextureAsset) assets.first());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Ui.getInstance().getToaster().error("Error while creating the splatmap");
+                        }
+                    }
+                });
             }
         });
     }
 
-    private void setupChangeTextureBrowser() {
-        this.changeTextureBrowser = new TextureBrowser();
-        changeTextureBrowser.setTextureListener(new TextureGrid.OnTextureClickedListener() {
-            @Override
-            public void onTextureSelected(TextureProvider texture, boolean leftClick) {
-                if (!leftClick) return;
-                MTexture mTexture = (MTexture) texture;
-                TerrainTexture terrainTexture = TerrainPaintTab.this.parent.component.getTerrain().getTerrainTexture();
+    private void addTexture(TextureAsset textureAsset) throws IOException {
+        EditorAssetManager assetManager = projectManager.current().assetManager;
 
-                if (rightClickMenu.channel != null) {
-                    terrainTexture.setSplatTexture(new SplatTexture(rightClickMenu.channel, mTexture));
-                    setTexturesInUiGrid();
-                }
+        TerrainAsset terrainAsset = TerrainPaintTab.this.parent.component.getTerrain();
+        TerrainTexture terrainTexture = terrainAsset.getTerrain().getTerrainTexture();
 
-            }
-        });
+        // base & spaltmap
+        if (terrainAsset.getSplatBase() == null) {
+            PixmapTextureAsset splatmap = assetManager.createPixmapTextureAsset(SplatMap.DEFAULT_SIZE);
+            terrainAsset.setSplatmap(splatmap);
+            terrainAsset.setSplatBase(textureAsset);
+
+            terrainAsset.applyDependencies();
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.BASE));
+            return;
+        }
+
+        // channel r
+        if (terrainAsset.getSplatR() == null) {
+            terrainAsset.setSplatR(textureAsset);
+            terrainAsset.applyDependencies();
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.R));
+            return;
+        }
+
+        // channel g
+        if (terrainAsset.getSplatG() == null) {
+            terrainAsset.setSplatG(textureAsset);
+            terrainAsset.applyDependencies();
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.G));
+            return;
+        }
+
+        // channel b
+        if (terrainAsset.getSplatB() == null) {
+            terrainAsset.setSplatB(textureAsset);
+            terrainAsset.applyDependencies();
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.B));
+            return;
+        }
+
+        // channel a
+        if (terrainAsset.getSplatA() == null) {
+            terrainAsset.setSplatA(textureAsset);
+            terrainAsset.applyDependencies();
+            textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.A));
+            return;
+        }
+
+        Dialogs.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
     }
 
     private void setupTextureGrid() {
@@ -178,8 +189,8 @@ public class TerrainPaintTab extends Tab {
 
     private void setTexturesInUiGrid() {
         textureGrid.removeTextures();
-        TerrainTexture terrainTexture = parent.component.getTerrain().getTerrainTexture();
-        if (terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId() > -1) {
+        TerrainTexture terrainTexture = parent.component.getTerrain().getTerrain().getTerrainTexture();
+        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) != null) {
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.BASE));
         }
         if (terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
@@ -229,12 +240,21 @@ public class TerrainPaintTab extends Tab {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (channel != null) {
-                        if (channel == SplatTexture.Channel.BASE) {
-                            Dialogs.showErrorDialog(Ui.getInstance(), "Currently you can't remove the base texture");
+                        TerrainAsset terrain = parent.component.getTerrain();
+                        if (channel == SplatTexture.Channel.R) {
+                            terrain.setSplatR(null);
+                        } else if (channel == SplatTexture.Channel.G) {
+                            terrain.setSplatG(null);
+                        } else if (channel == SplatTexture.Channel.B) {
+                            terrain.setSplatB(null);
+                        } else if (channel == SplatTexture.Channel.A) {
+                            terrain.setSplatA(null);
+                        } else {
+                            Ui.getInstance().getToaster().error("Can't remove the base texture");
                             return;
                         }
-                        TerrainTexture tt = parent.component.getTerrain().getTerrainTexture();
-                        tt.removeTexture(channel);
+
+                        terrain.applyDependencies();
                         setTexturesInUiGrid();
                     }
                 }
@@ -244,10 +264,11 @@ public class TerrainPaintTab extends Tab {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (channel != null) {
-                        changeTextureBrowser.show(Ui.getInstance());
+                        Ui.getInstance().getToaster().error("Not implemented yet");
                     }
                 }
             });
+
         }
 
         public void setChannel(SplatTexture.Channel channel) {

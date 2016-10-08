@@ -43,13 +43,22 @@ import com.mbrlabs.mundus.commons.utils.MathUtils;
  */
 public class Terrain implements RenderableProvider, Disposable {
 
+    public static final int DEFAULT_SIZE = 800;
+    public static final int DEFAULT_VERTEX_RESOLUTION = 180;
+
     private static final MeshPartBuilder.VertexInfo tempVertexInfo = new MeshPartBuilder.VertexInfo();
     private static final Vector3 c00 = new Vector3();
     private static final Vector3 c01 = new Vector3();
     private static final Vector3 c10 = new Vector3();
     private static final Vector3 c11 = new Vector3();
 
-    public long id;
+    public Matrix4 transform;
+    public float[] heightData;
+    public int terrainWidth = 1200;
+    public int terrainDepth = 1200;
+    public int vertexResolution;
+
+    // used for building the mesh
     private VertexAttributes attribs;
     private final Vector2 uvScale = new Vector2(60, 60);
     private float vertices[];
@@ -58,24 +67,16 @@ public class Terrain implements RenderableProvider, Disposable {
     private int norPos;
     private int uvPos;
 
-    public Matrix4 transform;
-    public float[] heightData;
-    public int terrainWidth = 1200;
-    public int terrainDepth = 1200;
-    public int vertexResolution;
-
-    public String name;
-    public String terraPath;
-
     // Textures
     private TerrainTexture terrainTexture;
     private final Material material;
 
+    // Mesh
     private Model model;
     public ModelInstance modelInstance;
     private Mesh mesh;
 
-    public Terrain(int vertexResolution) {
+    private Terrain(int vertexResolution) {
         this.transform = new Matrix4();
         this.attribs = MeshBuilder.createAttributes(VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal
                 | VertexAttributes.Usage.TextureCoordinates);
@@ -91,18 +92,13 @@ public class Terrain implements RenderableProvider, Disposable {
         this.terrainTexture.setTerrain(this);
         material = new Material();
         material.set(new TerrainTextureAttribute(TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
-
     }
 
-    public Terrain(int vertexResolution, int width, int depth, float[] heightData, TerrainTexture texture) {
-        this(vertexResolution);
-        this.terrainWidth = width;
-        this.terrainDepth = depth;
+    public Terrain(int size, float[] heightData) {
+        this((int) Math.sqrt(heightData.length));
+        this.terrainWidth = size;
+        this.terrainDepth = size;
         this.heightData = heightData;
-        this.terrainTexture = texture;
-        this.terrainTexture.setTerrain(this);
-
-        material.set(new TerrainTextureAttribute(TerrainTextureAttribute.ATTRIBUTE_SPLAT0, terrainTexture));
     }
 
     public void setTransform(Matrix4 transform) {
@@ -223,16 +219,16 @@ public class Terrain implements RenderableProvider, Disposable {
     private void setVertex(int index, MeshPartBuilder.VertexInfo info) {
         index *= stride;
         if (posPos >= 0) {
-            vertices[index + posPos + 0] = info.position.x;
+            vertices[index + posPos] = info.position.x;
             vertices[index + posPos + 1] = info.position.y;
             vertices[index + posPos + 2] = info.position.z;
         }
         if (uvPos >= 0) {
-            vertices[index + uvPos + 0] = info.uv.x;
+            vertices[index + uvPos] = info.uv.x;
             vertices[index + uvPos + 1] = info.uv.y;
         }
         if (norPos >= 0) {
-            vertices[index + norPos + 0] = info.normal.x;
+            vertices[index + norPos] = info.normal.x;
             vertices[index + norPos + 1] = info.normal.y;
             vertices[index + norPos + 2] = info.normal.z;
         }
@@ -335,6 +331,8 @@ public class Terrain implements RenderableProvider, Disposable {
     }
 
     public void setTerrainTexture(TerrainTexture terrainTexture) {
+        if (terrainTexture == null) return;
+
         terrainTexture.setTerrain(this);
         this.terrainTexture = terrainTexture;
 

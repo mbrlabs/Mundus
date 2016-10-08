@@ -22,17 +22,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.lights.BaseLight;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
-import com.mbrlabs.mundus.commons.model.MTexture;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
-import com.mbrlabs.mundus.commons.terrain.SplatTexture;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
-import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.kryo.descriptors.BaseLightDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.FogDescriptor;
@@ -44,9 +40,6 @@ import com.mbrlabs.mundus.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.SettingsDescriptor;
 import com.mbrlabs.mundus.core.kryo.descriptors.TerrainComponentDescriptor;
-import com.mbrlabs.mundus.core.kryo.descriptors.TerrainDescriptor;
-import com.mbrlabs.mundus.core.kryo.descriptors.TerrainTextureDescriptor;
-import com.mbrlabs.mundus.core.kryo.descriptors.TextureDescriptor;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.core.registry.ProjectRef;
@@ -145,7 +138,7 @@ public class DescriptorConverter {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models,
-            Array<Terrain> terrains) {
+            Array<TerrainAsset> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
 
@@ -260,11 +253,11 @@ public class DescriptorConverter {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go,
-            Array<Terrain> terrains) {
+            Array<TerrainAsset> terrains) {
         // find terrain
-        Terrain terrain = null;
-        for (Terrain t : terrains) {
-            if (descriptor.getTerrainID() == t.id) {
+        TerrainAsset terrain = null;
+        for (TerrainAsset t : terrains) {
+            if (descriptor.getTerrainID().equals(t.getUUID())) {
                 terrain = t;
                 break;
             }
@@ -275,7 +268,7 @@ public class DescriptorConverter {
             return null;
         }
 
-        terrain.transform = go.getTransform();
+        terrain.getTerrain().transform = go.getTransform();
         TerrainComponent terrainComponent = new TerrainComponent(go);
         terrainComponent.setTerrain(terrain);
 
@@ -284,152 +277,9 @@ public class DescriptorConverter {
 
     public static TerrainComponentDescriptor convert(TerrainComponent terrainComponent) {
         TerrainComponentDescriptor descriptor = new TerrainComponentDescriptor();
-        descriptor.setTerrainID(terrainComponent.getTerrain().id);
+        descriptor.setTerrainID(terrainComponent.getTerrain().getUUID());
 
         return descriptor;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Terrain
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static TerrainDescriptor convert(Terrain terrain) {
-        TerrainDescriptor descriptor = new TerrainDescriptor();
-        descriptor.setId(terrain.id);
-        descriptor.setName(terrain.name);
-        descriptor.setTerraPath(terrain.terraPath);
-        descriptor.setWidth(terrain.terrainWidth);
-        descriptor.setDepth(terrain.terrainDepth);
-        descriptor.setVertexResolution(terrain.vertexResolution);
-        descriptor.setTerrainTexture(convert(terrain.getTerrainTexture()));
-        return descriptor;
-    }
-
-    public static Terrain convert(TerrainDescriptor terrainDescriptor, Array<MTexture> textures) {
-        Terrain terrain = new Terrain(terrainDescriptor.getVertexResolution());
-        terrain.terrainWidth = terrainDescriptor.getWidth();
-        terrain.terrainDepth = terrainDescriptor.getDepth();
-        terrain.terraPath = terrainDescriptor.getTerraPath();
-        terrain.id = terrainDescriptor.getId();
-        terrain.name = terrainDescriptor.getName();
-        terrain.setTerrainTexture(convert(terrainDescriptor.getTerrainTexture(), textures));
-
-        return terrain;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // TerrainTexture
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static TerrainTextureDescriptor convert(TerrainTexture terrainTexture) {
-        TerrainTextureDescriptor descriptor = new TerrainTextureDescriptor();
-        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) != null) {
-            descriptor.setBase(terrainTexture.getTexture(SplatTexture.Channel.BASE).texture.getId());
-        }
-        if (terrainTexture.getTexture(SplatTexture.Channel.R) != null) {
-            descriptor.setTextureChanR(terrainTexture.getTexture(SplatTexture.Channel.R).texture.getId());
-        }
-        if (terrainTexture.getTexture(SplatTexture.Channel.G) != null) {
-            descriptor.setTextureChanG(terrainTexture.getTexture(SplatTexture.Channel.G).texture.getId());
-        }
-        if (terrainTexture.getTexture(SplatTexture.Channel.B) != null) {
-            descriptor.setTextureChanB(terrainTexture.getTexture(SplatTexture.Channel.B).texture.getId());
-        }
-        if (terrainTexture.getTexture(SplatTexture.Channel.A) != null) {
-            descriptor.setTextureChanA(terrainTexture.getTexture(SplatTexture.Channel.A).texture.getId());
-        }
-
-        if (terrainTexture.getSplatmap() != null) {
-            descriptor.setSplatmapPath(terrainTexture.getSplatmap().getPath());
-        }
-
-        return descriptor;
-    }
-
-    public static TerrainTexture convert(TerrainTextureDescriptor terrainTextureDescriptor, Array<MTexture> textures) {
-        TerrainTexture tex = new TerrainTexture();
-
-        Long base = terrainTextureDescriptor.getBase();
-        if (base != null) {
-            if (base > -1) {
-                MTexture mt = findTextureById(textures, base);
-                if (mt != null) {
-                    tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, mt));
-                } else {
-                    return null;
-                }
-            }
-        }
-        if (terrainTextureDescriptor.getTextureChanR() != null) {
-            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanR());
-            if (mt != null) {
-                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, mt));
-            } else {
-                return null;
-            }
-        }
-        if (terrainTextureDescriptor.getTextureChanG() != null) {
-            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanG());
-            if (mt != null) {
-                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, mt));
-            } else {
-                return null;
-            }
-        }
-        if (terrainTextureDescriptor.getTextureChanB() != null) {
-            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanB());
-            if (mt != null) {
-                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, mt));
-            } else {
-                return null;
-            }
-        }
-        if (terrainTextureDescriptor.getTextureChanA() != null) {
-            MTexture mt = findTextureById(textures, terrainTextureDescriptor.getTextureChanA());
-            if (mt != null) {
-                tex.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, mt));
-            } else {
-                return null;
-            }
-        }
-        if (terrainTextureDescriptor.getSplatmapPath() != null) {
-            SplatMap splatMap = new SplatMap(SplatMap.DEFAULT_SIZE, SplatMap.DEFAULT_SIZE);
-            splatMap.setPath(terrainTextureDescriptor.getSplatmapPath());
-            tex.setSplatmap(splatMap);
-        }
-
-        return tex;
-    }
-
-    public static MTexture findTextureById(Array<MTexture> textures, long id) {
-        for (MTexture t : textures) {
-            if (t.getId() == id) {
-                return t;
-            }
-        }
-        Log.fatal(TAG, "MTexture (detail texture) for Terrain texture not found");
-        return null;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Texture
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static MTexture convert(TextureDescriptor textureDescriptor) {
-        MTexture tex = new MTexture();
-        tex.setPath(textureDescriptor.getPath());
-        tex.setId(textureDescriptor.getId());
-
-        return tex;
-    }
-
-    public static TextureDescriptor convert(MTexture tex) {
-        TextureDescriptor textureDescriptor = new TextureDescriptor();
-        textureDescriptor.setId(tex.getId());
-        textureDescriptor.setName(tex.getPath());
-        textureDescriptor.setPath(tex.getPath());
-
-        return textureDescriptor;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -508,7 +358,7 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<Terrain> terrains,
+    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<TerrainAsset> terrains,
             Array<ModelAsset> models) {
         EditorScene scene = new EditorScene();
 
@@ -550,14 +400,6 @@ public class DescriptorConverter {
         descriptor.setCurrentSceneName(project.currScene.getName());
         descriptor.setNextAvailableID(project.inspectCurrentID());
 
-        // textures
-        for (MTexture texture : project.textures) {
-            descriptor.getTextures().add(convert(texture));
-        }
-        // terrains
-        for (Terrain terrain : project.terrains) {
-            descriptor.getTerrains().add(convert(terrain));
-        }
         // scenes
         for (String sceneName : project.scenes) {
             descriptor.getSceneNames().add(sceneName);
@@ -569,15 +411,6 @@ public class DescriptorConverter {
     public static ProjectContext convert(ProjectDescriptor projectDescriptor) {
         ProjectContext context = new ProjectContext(projectDescriptor.getNextAvailableID());
         context.name = projectDescriptor.getName();
-
-        // textures
-        for (TextureDescriptor texture : projectDescriptor.getTextures()) {
-            context.textures.add(convert(texture));
-        }
-        // terrains
-        for (TerrainDescriptor terrain : projectDescriptor.getTerrains()) {
-            context.terrains.add(convert(terrain, context.textures));
-        }
 
         // scenes
         for (String sceneName : projectDescriptor.getSceneNames()) {
