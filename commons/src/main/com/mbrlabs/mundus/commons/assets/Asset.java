@@ -20,6 +20,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
+ * A generic asset type.
+ *
+ * Assets hold a file handle to the asset file. They also have a meta file,
+ * which contains meta information about the asset.
+ * 
  * @author Marcus Brummer
  * @version 01-10-2016
  */
@@ -28,6 +33,11 @@ public abstract class Asset implements Disposable {
     protected FileHandle file;
     private MetaFile meta;
 
+    /**
+     *
+     * @param meta
+     * @param assetFile
+     */
     public Asset(MetaFile meta, FileHandle assetFile) {
         this.meta = meta;
         this.file = assetFile;
@@ -54,6 +64,20 @@ public abstract class Asset implements Disposable {
         return "[" + meta.getType().toString() + "] " + file.name();
     }
 
+    /**
+     * Loads the asset.
+     *
+     * Loads the asset from disk and creates it.
+     */
     public abstract void load();
+
+    /**
+     * Applies dependent assets to this one.
+     *
+     * If dependencies have been set, this method applies them to the asset.
+     * Note, that the model and all it's set dependencies must have called
+     * load() before calling this method.
+     */
+    public abstract void applyDependencies();
 
 }

@@ -62,6 +62,11 @@ public class TextureAsset extends Asset {
     }
 
     @Override
+    public void applyDependencies() {
+        // no dependencies here
+    }
+
+    @Override
     public void dispose() {
         if (texture != null) {
             texture.dispose();

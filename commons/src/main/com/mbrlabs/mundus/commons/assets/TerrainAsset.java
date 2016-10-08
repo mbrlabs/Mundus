@@ -17,6 +17,7 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.FloatArray;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -39,6 +40,8 @@ public class TerrainAsset extends Asset {
     private TextureAsset detailG;
     private TextureAsset detailB;
     private TextureAsset detailA;
+
+    private Terrain terrain;
 
     public TerrainAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
@@ -96,8 +99,13 @@ public class TerrainAsset extends Asset {
         this.detailA = detailA;
     }
 
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
     @Override
     public void load() {
+        // TODO create terrain here
         final FloatArray floatArray = new FloatArray();
 
         DataInputStream is;
@@ -115,6 +123,11 @@ public class TerrainAsset extends Asset {
         }
 
         data = floatArray.toArray();
+    }
+
+    @Override
+    public void applyDependencies() {
+        // TODO apply texture assets to terrain
     }
 
     @Override

@@ -117,6 +117,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
                         // set texture id & save
                         Asset selectedTexture = assets.first();
                         asset.setDiffuseTexture((TextureAsset) selectedTexture);
+                        asset.applyDependencies();
                         try {
                             asset.getMeta().save();
                         } catch (IOException e) {

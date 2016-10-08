@@ -48,6 +48,11 @@ public class PixmapTextureAsset extends Asset {
     }
 
     @Override
+    public void applyDependencies() {
+        // no dependencies here
+    }
+
+    @Override
     public void dispose() {
         pixmap.dispose();
         texture.dispose();

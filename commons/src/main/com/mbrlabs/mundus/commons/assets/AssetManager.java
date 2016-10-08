@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Read-only asset manager.
  *
  * @author Marcus Brummer
  * @version 06-10-2016
@@ -119,6 +120,12 @@ public class AssetManager implements Disposable {
         }
 
         // resolve dependencies
+        resolveAssetDependencies();
+
+        listener.onFinish(assets.size);
+    }
+
+    private void resolveAssetDependencies() {
         for (Asset asset : assets) {
             // model asset
             if (asset instanceof ModelAsset) {
@@ -128,12 +135,13 @@ public class AssetManager implements Disposable {
                     if (tex != null) {
                         // Log.error(TAG, diffuseTexture);
                         ((ModelAsset) asset).setDiffuseTexture(tex);
+                        asset.applyDependencies();
                     }
                 }
             }
-        }
 
-        listener.onFinish(assets.size);
+            // TODO terrain asset
+        }
     }
 
     /**

@@ -41,12 +41,6 @@ public class ModelAsset extends Asset {
     }
 
     public void setDiffuseTexture(TextureAsset tex) {
-        if (model == null || tex == null) return;
-        for (Material mat : model.materials) {
-            TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, tex.getTexture());
-            mat.set(diffuse);
-        }
-        getMeta().setDiffuseTexture(tex.getUUID());
         diffuseTexture = tex;
     }
 
@@ -64,6 +58,16 @@ public class ModelAsset extends Asset {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, getMeta().getDiffuseColor()));
             }
         }
+    }
+
+    @Override
+    public void applyDependencies() {
+        if (model == null || diffuseTexture == null) return;
+        for (Material mat : model.materials) {
+            TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, diffuseTexture.getTexture());
+            mat.set(diffuse);
+        }
+        getMeta().setDiffuseTexture(diffuseTexture.getUUID());
     }
 
     @Override
