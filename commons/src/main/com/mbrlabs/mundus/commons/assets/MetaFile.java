@@ -45,8 +45,17 @@ public class MetaFile {
     private static final String PROP_LAST_MODIFIED = "last_modified";
     private static final String PROP_TYPE = "type";
 
+    // model material
     private static final String PROP_MATERIAL_DIFFUSE_COLOR = "mat.diffuse.color";
     private static final String PROP_MATERIAL_DIFFUSE_TEXTURE = "mat.diffuse.texture";
+
+    // terrain material
+    private static final String PROP_MATERIAL_TERRAIN_SPLATMAP = "mat.terrain.splatmap";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_BASE = "mat.terrain.splat.base";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_R = "mat.terrain.splat.r";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_G = "mat.terrain.splat.g";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_B = "mat.terrain.splat.b";
+    private static final String PROP_MATERIAL_TERRAIN_SPLAT_A = "mat.terrain.splat.a";
 
     private FileHandle file;
     private Properties props;
@@ -60,6 +69,14 @@ public class MetaFile {
     // model specific
     private Color diffuseColor = null;
     private String diffuseTexture = null;
+
+    // terrain specific
+    private String terrainSplatmap;
+    private String terrainSplatBase;
+    private String terrainSplatR;
+    private String terrainSplatG;
+    private String terrainSplatB;
+    private String terrainSplatA;
 
     public MetaFile(FileHandle file) {
         this.file = file;
@@ -84,6 +101,28 @@ public class MetaFile {
             }
         }
 
+        // terrain specific
+        if (type == AssetType.TERRAIN) {
+            if (terrainSplatmap != null) {
+                props.setProperty(PROP_MATERIAL_TERRAIN_SPLATMAP, terrainSplatmap);
+            }
+            if (terrainSplatBase != null) {
+                props.setProperty(PROP_MATERIAL_TERRAIN_SPLAT_BASE, terrainSplatBase);
+            }
+            if (terrainSplatR != null) {
+                props.setProperty(PROP_MATERIAL_TERRAIN_SPLAT_R, terrainSplatR);
+            }
+            if (terrainSplatG != null) {
+                props.setProperty(PROP_MATERIAL_TERRAIN_SPLAT_G, terrainSplatG);
+            }
+            if (terrainSplatB != null) {
+                props.setProperty(PROP_MATERIAL_TERRAIN_SPLAT_B, terrainSplatB);
+            }
+            if (terrainSplatA != null) {
+                props.setProperty(PROP_MATERIAL_TERRAIN_SPLAT_A, terrainSplatA);
+            }
+        }
+
         props.store(new FileOutputStream(file.file()), COMMENT);
     }
 
@@ -105,6 +144,16 @@ public class MetaFile {
                     this.diffuseColor = Color.valueOf(color);
                 }
                 this.diffuseTexture = props.getProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, null);
+            }
+
+            // terrain specific
+            if (type == AssetType.MODEL) {
+                this.terrainSplatmap = props.getProperty(PROP_MATERIAL_TERRAIN_SPLATMAP, null);
+                this.terrainSplatBase = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_BASE, null);
+                this.terrainSplatR = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_R, null);
+                this.terrainSplatG = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_G, null);
+                this.terrainSplatB = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_B, null);
+                this.terrainSplatA = props.getProperty(PROP_MATERIAL_TERRAIN_SPLAT_A, null);
             }
 
         } catch (Exception e) {
@@ -159,6 +208,54 @@ public class MetaFile {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public String getTerrainSplatA() {
+        return terrainSplatA;
+    }
+
+    public void setTerrainSplatA(String terrainSplatA) {
+        this.terrainSplatA = terrainSplatA;
+    }
+
+    public String getTerrainSplatB() {
+        return terrainSplatB;
+    }
+
+    public void setTerrainSplatB(String terrainSplatB) {
+        this.terrainSplatB = terrainSplatB;
+    }
+
+    public String getTerrainSplatG() {
+        return terrainSplatG;
+    }
+
+    public void setTerrainSplatG(String terrainSplatG) {
+        this.terrainSplatG = terrainSplatG;
+    }
+
+    public String getTerrainSplatR() {
+        return terrainSplatR;
+    }
+
+    public void setTerrainSplatR(String terrainSplatR) {
+        this.terrainSplatR = terrainSplatR;
+    }
+
+    public String getTerrainSplatBase() {
+        return terrainSplatBase;
+    }
+
+    public void setTerrainSplatBase(String terrainSplatBase) {
+        this.terrainSplatBase = terrainSplatBase;
+    }
+
+    public String getTerrainSplatmap() {
+        return terrainSplatmap;
+    }
+
+    public void setTerrainSplatmap(String terrainSplatmap) {
+        this.terrainSplatmap = terrainSplatmap;
     }
 
     public Properties getProps() {
