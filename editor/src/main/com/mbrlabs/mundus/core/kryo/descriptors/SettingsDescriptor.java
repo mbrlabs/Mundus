@@ -16,8 +16,8 @@
 
 package com.mbrlabs.mundus.core.kryo.descriptors;
 
-import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.mbrlabs.mundus.core.registry.KeyboardLayout;
 
 /**
  * Created by marcus on 07/06/16.

@@ -60,7 +60,7 @@ public class AssetManager implements Disposable {
      * @return matching asset or null
      */
     public Asset findAssetByID(String id) {
-        if(id == null) return null;
+        if (id == null) return null;
         return assetIndex.get(id);
     }
 
@@ -162,7 +162,7 @@ public class AssetManager implements Disposable {
             }
 
             // terrain asset
-            if(asset instanceof TerrainAsset) {
+            if (asset instanceof TerrainAsset) {
                 TerrainAsset terrain = (TerrainAsset) asset;
                 terrain.setSplatmap((PixmapTextureAsset) findAssetByID(meta.getTerrainSplatmap()));
                 terrain.setSplatBase((TextureAsset) findAssetByID(meta.getTerrainSplatBase()));

@@ -37,7 +37,6 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -181,7 +180,7 @@ public class EditorAssetManager extends AssetManager {
     }
 
     public void saveTerrainAssets() throws IOException {
-        for(TerrainAsset terrain : getTerrainAssets()) {
+        for (TerrainAsset terrain : getTerrainAssets()) {
 
             // save .terra file
             DataOutputStream outputStream = new DataOutputStream(
@@ -194,7 +193,7 @@ public class EditorAssetManager extends AssetManager {
 
             // save splatmap
             PixmapTextureAsset splatmap = terrain.getSplatmap();
-            if(splatmap != null) {
+            if (splatmap != null) {
                 PixmapIO.writePNG(splatmap.getFile(), splatmap.getPixmap());
             }
 

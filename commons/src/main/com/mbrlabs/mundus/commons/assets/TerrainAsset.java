@@ -60,7 +60,7 @@ public class TerrainAsset extends Asset {
 
     public void setSplatmap(PixmapTextureAsset splatmap) {
         this.splatmap = splatmap;
-        if(splatmap == null) {
+        if (splatmap == null) {
             getMeta().setTerrainSplatmap(null);
         } else {
             getMeta().setTerrainSplatmap(splatmap.getUUID());
@@ -73,7 +73,7 @@ public class TerrainAsset extends Asset {
 
     public void setSplatBase(TextureAsset splatBase) {
         this.splatBase = splatBase;
-        if(splatBase == null) {
+        if (splatBase == null) {
             getMeta().setTerrainSplatBase(null);
         } else {
             getMeta().setTerrainSplatBase(splatBase.getUUID());
@@ -86,7 +86,7 @@ public class TerrainAsset extends Asset {
 
     public void setSplatR(TextureAsset splatR) {
         this.splatR = splatR;
-        if(splatR == null) {
+        if (splatR == null) {
             getMeta().setTerrainSplatR(null);
         } else {
             getMeta().setTerrainSplatR(splatR.getUUID());
@@ -99,7 +99,7 @@ public class TerrainAsset extends Asset {
 
     public void setSplatG(TextureAsset splatG) {
         this.splatG = splatG;
-        if(splatG == null) {
+        if (splatG == null) {
             getMeta().setTerrainSplatG(null);
         } else {
             getMeta().setTerrainSplatG(splatG.getUUID());
@@ -112,7 +112,7 @@ public class TerrainAsset extends Asset {
 
     public void setSplatB(TextureAsset splatB) {
         this.splatB = splatB;
-        if(splatB == null) {
+        if (splatB == null) {
             getMeta().setTerrainSplatB(null);
         } else {
             getMeta().setTerrainSplatB(splatB.getUUID());
@@ -125,7 +125,7 @@ public class TerrainAsset extends Asset {
 
     public void setSplatA(TextureAsset splatA) {
         this.splatA = splatA;
-        if(splatA == null) {
+        if (splatA == null) {
             getMeta().setTerrainSplatA(null);
         } else {
             getMeta().setTerrainSplatA(splatA.getUUID());
@@ -165,32 +165,32 @@ public class TerrainAsset extends Asset {
     public void applyDependencies() {
         TerrainTexture terrainTexture = terrain.getTerrainTexture();
 
-        if(splatmap == null) {
+        if (splatmap == null) {
             terrainTexture.setSplatmap(null);
         } else {
             terrainTexture.setSplatmap(new SplatMap(splatmap));
         }
-        if(splatBase == null) {
+        if (splatBase == null) {
             terrainTexture.removeTexture(SplatTexture.Channel.BASE);
         } else {
             terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, splatBase));
         }
-        if(splatR == null) {
+        if (splatR == null) {
             terrainTexture.removeTexture(SplatTexture.Channel.R);
         } else {
             terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.R, splatR));
         }
-        if(splatG == null) {
+        if (splatG == null) {
             terrainTexture.removeTexture(SplatTexture.Channel.G);
         } else {
             terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.G, splatG));
         }
-        if(splatB == null) {
+        if (splatB == null) {
             terrainTexture.removeTexture(SplatTexture.Channel.B);
         } else {
             terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.B, splatB));
         }
-        if(splatA == null) {
+        if (splatA == null) {
             terrainTexture.removeTexture(SplatTexture.Channel.A);
         } else {
             terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.A, splatA));

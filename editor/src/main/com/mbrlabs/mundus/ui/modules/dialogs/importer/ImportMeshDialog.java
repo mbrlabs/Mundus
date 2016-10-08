@@ -54,8 +54,6 @@ import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.IOException;
 
 /**

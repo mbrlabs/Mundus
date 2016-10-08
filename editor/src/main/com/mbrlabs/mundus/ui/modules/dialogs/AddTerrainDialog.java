@@ -16,23 +16,15 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
-import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.shader.Shaders;
-import com.mbrlabs.mundus.utils.Log;
-import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer
@@ -95,36 +87,36 @@ public class AddTerrainDialog extends BaseDialog {
     private void setupListeners() {
 
         // terraform btn
-//        generateBtn.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                super.clicked(event, x, y);
-//                try {
-//                    String nom = name.getText();
-//
-//                    int res = Integer.valueOf(vertexResolution.getText());
-//                    int width = Integer.valueOf(terrainWidth.getText());
-//                    int depth = Integer.valueOf(terrainDepth.getText());
-//                    float posX = Float.valueOf(positionX.getText());
-//                    float posZ = Float.valueOf(positionZ.getText());
-//
-//                    final ProjectContext projectContext = projectManager.current();
-//                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
-//                    terrain.transform.setTranslation(posX, 0, posZ);
-//                    projectContext.terrains.add(terrain);
-//                    projectContext.currScene.terrains.add(terrain);
-//                    GameObject terrainGO = TerrainUtils.createTerrainGO(projectContext.currScene.sceneGraph,
-//                            shaders.terrainShader, projectContext.obtainID(), nom, terrain);
-//                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
-//
-//                    Mundus.postEvent(new SceneGraphChangedEvent());
-//
-//                } catch (NumberFormatException nfe) {
-//                    Log.error(TAG, nfe.getMessage());
-//                }
-//
-//            }
-//        });
+        //        generateBtn.addListener(new ClickListener() {
+        //            @Override
+        //            public void clicked(InputEvent event, float x, float y) {
+        //                super.clicked(event, x, y);
+        //                try {
+        //                    String nom = name.getText();
+        //
+        //                    int res = Integer.valueOf(vertexResolution.getText());
+        //                    int width = Integer.valueOf(terrainWidth.getText());
+        //                    int depth = Integer.valueOf(terrainDepth.getText());
+        //                    float posX = Float.valueOf(positionX.getText());
+        //                    float posZ = Float.valueOf(positionZ.getText());
+        //
+        //                    final ProjectContext projectContext = projectManager.current();
+        //                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
+        //                    terrain.transform.setTranslation(posX, 0, posZ);
+        //                    projectContext.terrains.add(terrain);
+        //                    projectContext.currScene.terrains.add(terrain);
+        //                    GameObject terrainGO = TerrainUtils.createTerrainGO(projectContext.currScene.sceneGraph,
+        //                            shaders.terrainShader, projectContext.obtainID(), nom, terrain);
+        //                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
+        //
+        //                    Mundus.postEvent(new SceneGraphChangedEvent());
+        //
+        //                } catch (NumberFormatException nfe) {
+        //                    Log.error(TAG, nfe.getMessage());
+        //                }
+        //
+        //            }
+        //        });
 
     }
 

@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.tools;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder.VertexInfo;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
@@ -36,7 +35,6 @@ import com.mbrlabs.mundus.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.utils.TerrainUtils;
 
 /**
  * @author Marcus Brummer
@@ -150,18 +148,18 @@ public class ModelPlacementTool extends Tool {
         final ProjectContext context = projectManager.current();
 
         final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-//        if (context.currScene.terrains.size > 0 && curEntity != null) {
-//            VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
-//            if (vi != null) {
-//                if (shouldRespectTerrainSlope)
-//                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
-//                curEntity.modelInstance.transform.setTranslation(vi.position);
-//            }
-//        } else {
-//            tempV3.set(projectManager.current().currScene.cam.position);
-//            tempV3.add(ray.direction.nor().scl(200));
-//            curEntity.modelInstance.transform.setTranslation(tempV3);
-//        }
+        //        if (context.currScene.terrains.size > 0 && curEntity != null) {
+        //            VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
+        //            if (vi != null) {
+        //                if (shouldRespectTerrainSlope)
+        //                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
+        //                curEntity.modelInstance.transform.setTranslation(vi.position);
+        //            }
+        //        } else {
+        //            tempV3.set(projectManager.current().currScene.cam.position);
+        //            tempV3.add(ray.direction.nor().scl(200));
+        //            curEntity.modelInstance.transform.setTranslation(tempV3);
+        //        }
 
         tempV3.set(projectManager.current().currScene.cam.position);
         tempV3.add(ray.direction.nor().scl(200));

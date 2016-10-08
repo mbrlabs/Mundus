@@ -38,7 +38,7 @@ public class TerrainTexture {
     }
 
     public void removeTexture(SplatTexture.Channel channel) {
-        if(splatmap != null) {
+        if (splatmap != null) {
             textures.remove(channel);
             splatmap.clearChannel(channel);
             splatmap.updateTexture();
