@@ -60,7 +60,7 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
         add(root).expand().fill();
         importTextureTable = new ImportTextureTable();
 
-        root.add(importTextureTable).minWidth(600).expand().fill().left().top();
+        root.add(importTextureTable).minWidth(300).expand().fill().left().top();
     }
 
     @Override
@@ -73,9 +73,8 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
      */
     private class ImportTextureTable extends VisTable implements Disposable {
         // UI elements
-        private VisTextField name = new VisTextField();
         private VisTextButton importBtn = new VisTextButton("IMPORT");
-        private ImageChooserField imageChooserField = new ImageChooserField(200);
+        private ImageChooserField imageChooserField = new ImageChooserField(300);
 
         public ImportTextureTable() {
             super();
@@ -87,19 +86,8 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
 
         private void setupUI() {
             padTop(6).padRight(6).padBottom(22);
-
-            VisTable left = new VisTable();
-            VisTable right = new VisTable();
-
-            left.add(new VisLabel("Name: ")).left().row();
-            left.add(name).expandX().fillX().row();
-            left.add(importBtn).fillX().expand().bottom();
-
-            right.add(imageChooserField);
-
-            add(left).width(300).top().left().expandY().fillY();
-            add(right).width(300);
-
+            add(imageChooserField).grow().row();
+            add(importBtn).grow().row();
         }
 
         private void setupListener() {

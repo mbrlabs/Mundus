@@ -93,7 +93,7 @@ public class ToolManager extends InputAdapter implements Disposable {
     }
 
     public void setDefaultTool() {
-        if (activeTool == null || activeTool == modelPlacementTool)
+        if (activeTool == null || activeTool == modelPlacementTool || activeTool instanceof TerrainBrush)
             activateTool(translateTool);
         else
             activeTool.reset();
