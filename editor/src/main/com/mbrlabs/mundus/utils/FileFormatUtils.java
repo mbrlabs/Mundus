@@ -33,6 +33,8 @@ public class FileFormatUtils {
     public static final String FORMAT_IMG_PNG = "png";
     public static final String FORMAT_IMG_JPG = "jpg";
     public static final String FORMAT_IMG_JPEG = "jpeg";
+    public static final String FORMAT_IMG_TGA = "tga";
+
 
     public static boolean isG3DB(String filename) {
         return filename != null && filename.endsWith(FORMAT_3D_G3DB);
@@ -90,6 +92,14 @@ public class FileFormatUtils {
         return file != null && isJPG(file.name());
     }
 
+    public static boolean isTGA(String filename) {
+        return filename != null && (filename.endsWith(FORMAT_IMG_TGA));
+    }
+
+    public static boolean isTGA(FileHandle file) {
+        return file != null && isTGA(file.name());
+    }
+
     public static boolean is3DFormat(String filename) {
         return filename != null && (filename.endsWith(FORMAT_3D_WAVEFONT) || filename.endsWith(FORMAT_3D_COLLADA)
                 || filename.endsWith(FORMAT_3D_G3DB) || filename.endsWith(FORMAT_3D_G3DJ)
@@ -101,7 +111,7 @@ public class FileFormatUtils {
     }
 
     public static boolean isImage(String filename) {
-        return filename != null && (isJPG(filename) || isPNG(filename));
+        return filename != null && (isJPG(filename) || isPNG(filename) || isTGA(filename));
     }
 
     public static boolean isImage(FileHandle file) {
