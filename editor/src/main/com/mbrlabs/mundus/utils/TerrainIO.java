@@ -93,7 +93,7 @@ public class TerrainIO {
     //        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
     //            MTexture base = new MTexture();
     //            base.setId(-1);
-    //            base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
+    //            base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chessboard.png"), true);
     //            terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
     //        }
     //

@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
@@ -50,6 +51,8 @@ import java.util.zip.GZIPOutputStream;
 public class EditorAssetManager extends AssetManager {
 
     private static final String TAG = EditorAssetManager.class.getSimpleName();
+
+    public static final String STANDARD_ASSET_TEXTURE_CHESSBOARD = "chessboard";
 
     /**
      * Editor asset manager constructor.
@@ -98,6 +101,18 @@ public class EditorAssetManager extends AssetManager {
         }
 
         return newAsset;
+    }
+
+    public void createStandardAssets() {
+        try {
+            // chessboard
+            TextureAsset chessboard = (TextureAsset) importAsset(Gdx.files.internal("standardAssets/chessboard.png"),
+                    TextureAsset.class);
+            chessboard.getMeta().setID(STANDARD_ASSET_TEXTURE_CHESSBOARD);
+            chessboard.getMeta().save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -190,8 +190,12 @@ public class MetaFile {
         this.lastModified = lastModified;
     }
 
-    public String getUuid() {
+    public String getID() {
         return uuid;
+    }
+
+    public void setID(String id) {
+        this.uuid = id;
     }
 
     public void setUuid(String uuid) {

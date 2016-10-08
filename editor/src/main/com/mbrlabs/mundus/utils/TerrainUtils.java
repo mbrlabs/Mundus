@@ -64,7 +64,7 @@ public class TerrainUtils {
     //       // TerrainTexture terrainTex = terrain.getTerrainTexture();
     ////        MTexture base = new MTexture();
     ////        base.setId(-1);
-    ////        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chess.png"), true);
+    ////        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chessboard.png"), true);
     //        // terrainTex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
     //
     //        return null;
