@@ -93,7 +93,7 @@ public class ToolManager extends InputAdapter implements Disposable {
     }
 
     public void setDefaultTool() {
-        if (activeTool == null)
+        if (activeTool == null || activeTool == modelPlacementTool)
             activateTool(translateTool);
         else
             activeTool.reset();
@@ -136,7 +136,6 @@ public class ToolManager extends InputAdapter implements Disposable {
         translateTool.dispose();
         modelPlacementTool.dispose();
         selectionTool.dispose();
-        translateTool.dispose();
         rotateTool.dispose();
         scaleTool.dispose();
     }
