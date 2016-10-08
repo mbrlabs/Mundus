@@ -93,8 +93,11 @@ public class ToolManager extends InputAdapter implements Disposable {
     }
 
     public void setDefaultTool() {
-        deactivateTool();
-        activateTool(translateTool);
+        if (activeTool == null)
+            activateTool(translateTool);
+        else
+            activeTool.reset();
+
     }
 
     public void render() {
@@ -131,6 +134,11 @@ public class ToolManager extends InputAdapter implements Disposable {
             brush.dispose();
         }
         translateTool.dispose();
+        modelPlacementTool.dispose();
+        selectionTool.dispose();
+        translateTool.dispose();
+        rotateTool.dispose();
+        scaleTool.dispose();
     }
 
 }
