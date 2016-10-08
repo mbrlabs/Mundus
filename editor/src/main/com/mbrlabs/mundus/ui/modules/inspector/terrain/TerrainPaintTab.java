@@ -123,12 +123,9 @@ public class TerrainPaintTab extends Tab {
         TerrainAsset terrainAsset = TerrainPaintTab.this.parent.component.getTerrain();
         TerrainTexture terrainTexture = terrainAsset.getTerrain().getTerrainTexture();
 
-        // base & spaltmap
+        // channel base
         if (terrainAsset.getSplatBase() == null) {
-            PixmapTextureAsset splatmap = assetManager.createPixmapTextureAsset(SplatMap.DEFAULT_SIZE);
-            terrainAsset.setSplatmap(splatmap);
             terrainAsset.setSplatBase(textureAsset);
-
             terrainAsset.applyDependencies();
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.BASE));
             return;

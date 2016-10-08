@@ -460,8 +460,6 @@ public class Outline extends VisTable
                         asset.load();
                         asset.applyDependencies();
 
-                        projectContext.terrains.add(asset);
-                        // projectContext.currScene.terrainGroup.add(terrain);
                         GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader,
                                 projectContext.obtainID(), "Terrain", asset);
                         // update sceneGraph
@@ -469,6 +467,7 @@ public class Outline extends VisTable
                         // update outline
                         addGoToTree(null, terrainGO);
 
+                        projectContext.currScene.terrains.add(asset);
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     } catch (Exception e) {
                         e.printStackTrace();

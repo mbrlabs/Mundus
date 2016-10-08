@@ -67,7 +67,7 @@ public class Ui extends Stage {
 
     private SettingsDialog settingsDialog;
     private NewProjectDialog newProjectDialog;
-    private AddTerrainDialog addTerrainDialog;
+    // private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
     private ExportDialog exportDialog;
     private ImportMeshDialog importMeshDialog;
@@ -135,7 +135,7 @@ public class Ui extends Stage {
         // dialogs
         settingsDialog = new SettingsDialog();
         newProjectDialog = new NewProjectDialog();
-        addTerrainDialog = new AddTerrainDialog();
+        // addTerrainDialog = new AddTerrainDialog();
         loadingProjectDialog = new LoadingProjectDialog();
         exportDialog = new ExportDialog();
         fogDialog = new FogDialog();
@@ -181,9 +181,9 @@ public class Ui extends Stage {
         return newProjectDialog;
     }
 
-    public AddTerrainDialog getAddTerrainDialog() {
-        return addTerrainDialog;
-    }
+//    public AddTerrainDialog getAddTerrainDialog() {
+//        return addTerrainDialog;
+//    }
 
     public LoadingProjectDialog getLoadingProjectDialog() {
         return loadingProjectDialog;

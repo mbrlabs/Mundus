@@ -44,8 +44,6 @@ public class ProjectContext implements Disposable {
 
     public EditorAssetManager assetManager;
 
-    public Array<TerrainAsset> terrains;
-
     private int idProvider;
 
     /** set by kryo when project is loaded. do not use this */
@@ -54,14 +52,12 @@ public class ProjectContext implements Disposable {
     public ProjectContext(int idProvider) {
         scenes = new Array<>();
         currScene = new EditorScene();
-        terrains = new Array<>();
         this.idProvider = idProvider;
     }
 
     public void copyFrom(ProjectContext other) {
         path = other.path;
         name = other.name;
-        terrains = other.terrains;
         currScene = other.currScene;
         scenes = other.scenes;
         idProvider = other.idProvider;

@@ -28,6 +28,7 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
+import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.utils.Log;
@@ -186,11 +187,20 @@ public class EditorAssetManager extends AssetManager {
         outputStream.flush();
         outputStream.close();
 
-        // load & return asset
+        // load & apply standard chessboard texture
         TerrainAsset asset = new TerrainAsset(meta, new FileHandle(terraFile));
         asset.load();
-        addAsset(asset);
 
+        TextureAsset chessboard = (TextureAsset) findAssetByID(STANDARD_ASSET_TEXTURE_CHESSBOARD);
+        if(chessboard != null) {
+            // create splatmap
+            PixmapTextureAsset splatmap = createPixmapTextureAsset(SplatMap.DEFAULT_SIZE);
+            asset.setSplatmap(splatmap);
+            asset.setSplatBase(chessboard);
+            asset.applyDependencies();
+        }
+
+        addAsset(asset);
         return asset;
     }
 

@@ -50,41 +50,23 @@ public class TerrainUtils {
         return terrainGO;
     }
 
-    //    public static TerrainAsset createTerrain(EditorAssetManager assetManager, int width, int depth, int vertexRes) throws IOException {
-    ////        TerrainAsset asset = assetManager.createTerrainAsset(180, 1200, 1200);
-    ////        asset.load();
-    ////        asset.applyDependencies();
-    ////
-    ////        Terrain terrain = new Terrain(vertexRes);
-    ////        terrain.terrainWidth = width;
-    ////        terrain.terrainDepth = depth;
-    ////        terrain.init();
-    ////        terrain.update();
-    //
-    //       // TerrainTexture terrainTex = terrain.getTerrainTexture();
-    ////        MTexture base = new MTexture();
-    ////        base.setId(-1);
-    ////        base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chessboard.png"), true);
-    //        // terrainTex.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
-    //
-    //        return null;
-    //    }
-
-    public static Vector3 getRayIntersection(Array<Terrain> terrains, Ray ray, Vector3 out) {
-        for (Terrain terrain : terrains) {
-            terrain.getRayIntersection(out, ray);
-            if (terrain.isOnTerrain(out.x, out.z)) {
+    public static Vector3 getRayIntersection(Array<TerrainAsset> terrains, Ray ray, Vector3 out) {
+        for (TerrainAsset terrain : terrains) {
+            Terrain terr = terrain.getTerrain();
+            terr.getRayIntersection(out, ray);
+            if (terr.isOnTerrain(out.x, out.z)) {
                 return out;
             }
         }
         return null;
     }
 
-    public static VertexInfo getRayIntersectionAndUp(Array<Terrain> terrains, Ray ray) {
-        for (Terrain terrain : terrains) {
-            terrain.getRayIntersection(tempVI.position, ray);
-            if (terrain.isOnTerrain(tempVI.position.x, tempVI.position.z)) {
-                tempVI.normal.set(terrain.getNormalAtWordCoordinate(tempVI.position.x, tempVI.position.z));
+    public static VertexInfo getRayIntersectionAndUp(Array<TerrainAsset> terrains, Ray ray) {
+        for (TerrainAsset terrain : terrains) {
+            Terrain terr = terrain.getTerrain();
+            terr.getRayIntersection(tempVI.position, ray);
+            if (terr.isOnTerrain(tempVI.position.x, tempVI.position.z)) {
+                tempVI.normal.set(terr.getNormalAtWordCoordinate(tempVI.position.x, tempVI.position.z));
                 return tempVI;
             }
         }

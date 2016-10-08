@@ -40,16 +40,15 @@ public class Scene implements Disposable {
     public MundusEnvironment environment;
     public Skybox skybox;
 
+    public Array<TerrainAsset> terrains;
     public GameObject currentSelection;
 
     public PerspectiveCamera cam;
 
-    public Array<TerrainAsset> terrains;
-
     public Scene() {
         environment = new MundusEnvironment();
-        terrains = new Array<TerrainAsset>();
         currentSelection = null;
+        terrains = new Array<TerrainAsset>();
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         cam.position.set(0, 1, -3);
