@@ -133,7 +133,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         // }
         //
         // try {
-        // AssetHelper.createTerraAsset(new
+        // AssetHelper.createTerrainAsset(new
         // FileHandle("/home/marcus/MundusProjects/Default Project/assets"),
         // 180);
         // } catch (IOException e) {

@@ -28,7 +28,7 @@ public enum AssetType {
     /** 3D file. Can be g3db, g3dbj, dae, obj, fbx. */
     MODEL,
     /** Terra file. Contains height data for terrains. */
-    TERRA,
+    TERRAIN,
     /** Material file. Mundus material file contains material information. */
     MATERIAL
 }

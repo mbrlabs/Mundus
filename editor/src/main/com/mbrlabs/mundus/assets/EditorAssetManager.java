@@ -25,7 +25,7 @@ import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
-import com.mbrlabs.mundus.commons.assets.TerraAsset;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.events.AssetImportEvent;
@@ -81,8 +81,8 @@ public class EditorAssetManager extends AssetManager {
                 newAsset = importTextureAsset(asset);
             } else if (clazz == PixmapTextureAsset.class) {
                 newAsset = importPixmapTextureAsset(asset);
-            } else if (clazz == TerraAsset.class) {
-                newAsset = importTerraAsset(asset);
+            } else if (clazz == TerrainAsset.class) {
+                newAsset = importTerrainAsset(asset);
             } else if (clazz == ModelAsset.class) {
                 newAsset = importModelAsset(asset);
             }
@@ -141,13 +141,13 @@ public class EditorAssetManager extends AssetManager {
         return asset;
     }
 
-    public TerraAsset createTerraAsset(FileHandle assetRoot, int vertexResolution) throws IOException {
+    public TerrainAsset createTerrainAsset(FileHandle assetRoot, int vertexResolution) throws IOException {
         String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
         String metaFilename = terraFilename + ".meta";
 
         // create meta file
         String metaPath = FilenameUtils.concat(assetRoot.path(), metaFilename);
-        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.TERRA);
+        MetaFile meta = createNewMetaFile(new FileHandle(metaPath), AssetType.TERRAIN);
 
         // create terra file
         String terraPath = FilenameUtils.concat(assetRoot.path(), terraFilename);
@@ -170,7 +170,7 @@ public class EditorAssetManager extends AssetManager {
         outputStream.close();
 
         // load & return asset
-        TerraAsset asset = new TerraAsset(meta, new FileHandle(terraFile));
+        TerrainAsset asset = new TerrainAsset(meta, new FileHandle(terraFile));
         asset.load();
         addAsset(asset);
 
@@ -229,8 +229,8 @@ public class EditorAssetManager extends AssetManager {
         return null;
     }
 
-    private TextureAsset importTerraAsset(FileHandle assetFile) throws IOException {
-        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.TERRA);
+    private TextureAsset importTerrainAsset(FileHandle assetFile) throws IOException {
+        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.TERRAIN);
         // TODO implement
         return null;
     }

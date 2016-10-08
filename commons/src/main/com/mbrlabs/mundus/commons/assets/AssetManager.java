@@ -168,8 +168,8 @@ public class AssetManager implements Disposable {
         case PIXMAP_TEXTURE:
             asset = loadPixmapTextureAsset(meta, assetFile);
             break;
-        case TERRA:
-            asset = loadTerraAsset(meta, assetFile);
+        case TERRAIN:
+            asset = loadTerrainAsset(meta, assetFile);
             break;
         case MODEL:
             asset = loadModelAsset(meta, assetFile);
@@ -190,8 +190,8 @@ public class AssetManager implements Disposable {
         return asset;
     }
 
-    private TerraAsset loadTerraAsset(MetaFile meta, FileHandle assetFile) {
-        TerraAsset asset = new TerraAsset(meta, assetFile);
+    private TerrainAsset loadTerrainAsset(MetaFile meta, FileHandle assetFile) {
+        TerrainAsset asset = new TerrainAsset(meta, assetFile);
         asset.load();
         return asset;
     }

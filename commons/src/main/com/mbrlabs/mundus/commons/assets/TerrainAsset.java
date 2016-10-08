@@ -28,16 +28,72 @@ import java.util.zip.GZIPInputStream;
  * @author Marcus Brummer
  * @version 01-10-2016
  */
-public class TerraAsset extends Asset {
+public class TerrainAsset extends Asset {
 
     private float[] data;
 
-    public TerraAsset(MetaFile meta, FileHandle assetFile) {
+    // dependencies
+    private PixmapTextureAsset splatmap;
+    private TextureAsset detailBase;
+    private TextureAsset detailR;
+    private TextureAsset detailG;
+    private TextureAsset detailB;
+    private TextureAsset detailA;
+
+    public TerrainAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
     }
 
     public float[] getData() {
         return data;
+    }
+
+    public PixmapTextureAsset getSplatmap() {
+        return splatmap;
+    }
+
+    public void setSplatmap(PixmapTextureAsset splatmap) {
+        this.splatmap = splatmap;
+    }
+
+    public TextureAsset getDetailBase() {
+        return detailBase;
+    }
+
+    public void setDetailBase(TextureAsset detailBase) {
+        this.detailBase = detailBase;
+    }
+
+    public TextureAsset getDetailR() {
+        return detailR;
+    }
+
+    public void setDetailR(TextureAsset detailR) {
+        this.detailR = detailR;
+    }
+
+    public TextureAsset getDetailG() {
+        return detailG;
+    }
+
+    public void setDetailG(TextureAsset detailG) {
+        this.detailG = detailG;
+    }
+
+    public TextureAsset getDetailB() {
+        return detailB;
+    }
+
+    public void setDetailB(TextureAsset detailB) {
+        this.detailB = detailB;
+    }
+
+    public TextureAsset getDetailA() {
+        return detailA;
+    }
+
+    public void setDetailA(TextureAsset detailA) {
+        this.detailA = detailA;
     }
 
     @Override
