@@ -28,6 +28,7 @@ import com.mbrlabs.mundus.ui.modules.Outline;
 import com.mbrlabs.mundus.ui.modules.StatusBar;
 import com.mbrlabs.mundus.ui.modules.dialogs.AddTerrainDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.AmbientLightDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.ExitDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.ExportDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.FogDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.LoadingProjectDialog;
@@ -76,6 +77,7 @@ public class Ui extends Stage {
     private SkyboxDialog skyboxDialog;
     private AmbientLightDialog ambientLightDialog;
     private AssetSelectionDialog assetSelectionDialog;
+    private ExitDialog exitDialog;
 
     private RenderWidget widget3D;
 
@@ -144,6 +146,7 @@ public class Ui extends Stage {
         importMeshDialog = new ImportMeshDialog();
         importTextureDialog = new ImportTextureDialog();
         assetSelectionDialog = new AssetSelectionDialog();
+        exitDialog = new ExitDialog();
 
         fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
@@ -219,6 +222,10 @@ public class Ui extends Stage {
 
     public AssetSelectionDialog getAssetSelectionDialog() {
         return assetSelectionDialog;
+    }
+
+    public ExitDialog getExitDialog() {
+        return exitDialog;
     }
 
     public RenderWidget getWidget3D() {

@@ -15,6 +15,7 @@
 - Implemented Scale Tool (with undo/redo)
 - Implemented a brand-new, super awesome asset management system based on meta files
 - Added standard assets to each new project
+- Added a "save and exit" option to the exit dialog
 
 [0.0.8] ~ 23/06/2016
 - Updated libGDX to 1.9.3
