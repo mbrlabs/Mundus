@@ -27,11 +27,13 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.core.registry.Registry;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
@@ -97,7 +99,8 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
                     FileHandle texture = imageChooserField.getFile();
                     if (texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
                         EditorAssetManager assetManager = projectManager.current().assetManager;
-                        assetManager.importAsset(texture, TextureAsset.class);
+                        Asset asset = assetManager.importAsset(texture, TextureAsset.class);
+                        Mundus.postEvent(new AssetImportEvent(asset));
                         close();
                         Ui.getInstance().getToaster().success("Texture imported");
                     } else {

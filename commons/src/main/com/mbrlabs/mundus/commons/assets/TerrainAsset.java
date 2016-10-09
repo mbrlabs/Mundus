@@ -63,7 +63,7 @@ public class TerrainAsset extends Asset {
         if (splatmap == null) {
             getMeta().setTerrainSplatmap(null);
         } else {
-            getMeta().setTerrainSplatmap(splatmap.getUUID());
+            getMeta().setTerrainSplatmap(splatmap.getID());
         }
     }
 
@@ -76,7 +76,7 @@ public class TerrainAsset extends Asset {
         if (splatBase == null) {
             getMeta().setTerrainSplatBase(null);
         } else {
-            getMeta().setTerrainSplatBase(splatBase.getUUID());
+            getMeta().setTerrainSplatBase(splatBase.getID());
         }
     }
 
@@ -89,7 +89,7 @@ public class TerrainAsset extends Asset {
         if (splatR == null) {
             getMeta().setTerrainSplatR(null);
         } else {
-            getMeta().setTerrainSplatR(splatR.getUUID());
+            getMeta().setTerrainSplatR(splatR.getID());
         }
     }
 
@@ -102,7 +102,7 @@ public class TerrainAsset extends Asset {
         if (splatG == null) {
             getMeta().setTerrainSplatG(null);
         } else {
-            getMeta().setTerrainSplatG(splatG.getUUID());
+            getMeta().setTerrainSplatG(splatG.getID());
         }
     }
 
@@ -115,7 +115,7 @@ public class TerrainAsset extends Asset {
         if (splatB == null) {
             getMeta().setTerrainSplatB(null);
         } else {
-            getMeta().setTerrainSplatB(splatB.getUUID());
+            getMeta().setTerrainSplatB(splatB.getID());
         }
     }
 
@@ -128,7 +128,7 @@ public class TerrainAsset extends Asset {
         if (splatA == null) {
             getMeta().setTerrainSplatA(null);
         } else {
-            getMeta().setTerrainSplatA(splatA.getUUID());
+            getMeta().setTerrainSplatA(splatA.getID());
         }
     }
 

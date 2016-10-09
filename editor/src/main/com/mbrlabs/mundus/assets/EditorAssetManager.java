@@ -98,7 +98,6 @@ public class EditorAssetManager extends AssetManager {
         // add to list
         if (newAsset != null) {
             addAsset(newAsset);
-            Mundus.postEvent(new AssetImportEvent(newAsset));
         }
 
         return newAsset;
@@ -109,8 +108,12 @@ public class EditorAssetManager extends AssetManager {
             // chessboard
             TextureAsset chessboard = (TextureAsset) importAsset(Gdx.files.internal("standardAssets/chessboard.png"),
                     TextureAsset.class);
+            assetIndex.remove(chessboard.getID());
             chessboard.getMeta().setID(STANDARD_ASSET_TEXTURE_CHESSBOARD);
+            assetIndex.put(chessboard.getID(), chessboard);
             chessboard.getMeta().save();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,6 +201,7 @@ public class EditorAssetManager extends AssetManager {
             asset.setSplatmap(splatmap);
             asset.setSplatBase(chessboard);
             asset.applyDependencies();
+            asset.getMeta().save();
         }
 
         addAsset(asset);

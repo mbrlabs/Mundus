@@ -66,9 +66,9 @@ public class AssetManager implements Disposable {
 
     public void addAsset(Asset asset) {
         if (asset == null) return;
-        if (assetIndex.get(asset.getUUID()) == null) {
+        if (assetIndex.get(asset.getID()) == null) {
             assets.add(asset);
-            assetIndex.put(asset.getUUID(), asset);
+            assetIndex.put(asset.getID(), asset);
         }
     }
 

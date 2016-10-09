@@ -67,7 +67,7 @@ public class ModelAsset extends Asset {
             TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, diffuseTexture.getTexture());
             mat.set(diffuse);
         }
-        getMeta().setDiffuseTexture(diffuseTexture.getUUID());
+        getMeta().setDiffuseTexture(diffuseTexture.getID());
     }
 
     @Override

@@ -52,7 +52,7 @@ public class TerrainTexture {
     public SplatTexture.Channel getNextFreeChannel() {
         // base
         SplatTexture st = textures.get(SplatTexture.Channel.BASE);
-        if (st == null || st.texture.getUUID() == null) return SplatTexture.Channel.BASE;
+        if (st == null || st.texture.getID() == null) return SplatTexture.Channel.BASE;
         // r
         st = textures.get(SplatTexture.Channel.R);
         if (st == null) return SplatTexture.Channel.R;

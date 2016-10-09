@@ -386,14 +386,14 @@ public class ProjectManager implements Disposable {
             // Model component
             if (c.getType() == Component.Type.MODEL) {
                 ModelComponent modelComponent = (ModelComponent) c;
-                ModelAsset model = findModelById(models, modelComponent.getModelInstance().getModel().getUUID());
+                ModelAsset model = findModelById(models, modelComponent.getModelInstance().getModel().getID());
                 if (model != null) {
                     modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
                     modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
                     modelComponent.setShader(shaders.entityShader);
                 } else {
                     Log.fatal(TAG, "model for modelInstance not found: {}",
-                            modelComponent.getModelInstance().getModel().getUUID());
+                            modelComponent.getModelInstance().getModel().getID());
                 }
             } else if (c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent) c).setShader(shaders.terrainShader);
@@ -409,7 +409,7 @@ public class ProjectManager implements Disposable {
 
     private ModelAsset findModelById(Array<ModelAsset> models, String id) {
         for (ModelAsset m : models) {
-            if (m.getUUID().equals(id)) {
+            if (m.getID().equals(id)) {
                 return m;
             }
         }

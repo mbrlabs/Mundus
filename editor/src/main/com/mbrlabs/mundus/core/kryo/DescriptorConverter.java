@@ -222,7 +222,7 @@ public class DescriptorConverter {
     public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<ModelAsset> models) {
         ModelAsset model = null;
         for (ModelAsset m : models) {
-            if (descriptor.getModelID().equals(m.getUUID())) {
+            if (descriptor.getModelID().equals(m.getID())) {
                 model = m;
                 break;
             }
@@ -243,7 +243,7 @@ public class DescriptorConverter {
 
     public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
         ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
-        descriptor.setModelID(modelComponent.getModelInstance().getModel().getUUID());
+        descriptor.setModelID(modelComponent.getModelInstance().getModel().getID());
 
         return descriptor;
     }
@@ -257,7 +257,7 @@ public class DescriptorConverter {
         // find terrain
         TerrainAsset terrain = null;
         for (TerrainAsset t : terrains) {
-            if (descriptor.getTerrainID().equals(t.getUUID())) {
+            if (descriptor.getTerrainID().equals(t.getID())) {
                 terrain = t;
                 break;
             }
@@ -277,7 +277,7 @@ public class DescriptorConverter {
 
     public static TerrainComponentDescriptor convert(TerrainComponent terrainComponent) {
         TerrainComponentDescriptor descriptor = new TerrainComponentDescriptor();
-        descriptor.setTerrainID(terrainComponent.getTerrain().getUUID());
+        descriptor.setTerrainID(terrainComponent.getTerrain().getID());
 
         return descriptor;
     }
