@@ -81,11 +81,12 @@ public class Log {
 
     private static void prepareLogFile() {
         File logDirectory = new File(Registry.LOGS_DIR);
-        logDirectory.mkdir();
+        System.out.println("INFO: Ensuring log directory(" + Registry.LOGS_DIR + ") exists...");
+        logDirectory.mkdirs();
 
         SimpleDateFormat fileDateFormat = new SimpleDateFormat("yy-MM-dd");
         String fileName = fileDateFormat.format(new Date());
-        fileName = "mundus " + fileName + ".log";
+        fileName = "mundus" + fileName + ".log";
 
         try {
             logFile = new File(logDirectory, fileName);
