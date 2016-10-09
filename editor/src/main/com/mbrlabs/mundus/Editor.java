@@ -153,18 +153,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         Main.closeListener = new Main.WindowCloseListener() {
             @Override
             public boolean onCloseRequested() {
-//                Dialogs.showOptionDialog(Ui.getInstance(), "Confirm exit", "Do you really want to close Mundus?",
-//                    Dialogs.OptionDialogType.YES_NO, new OptionDialogAdapter() {
-//                        @Override
-//                        public void yes() {
-//                            Gdx.app.exit();
-//                        }
-//
-//                        @Override
-//                        public void no() {
-//                            super.no();
-//                        }
-//                    });
                 Ui ui = Ui.getInstance();
                 ui.showDialog(ui.getExitDialog());
                 return true;
