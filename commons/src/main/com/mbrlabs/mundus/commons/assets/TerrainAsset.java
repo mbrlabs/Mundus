@@ -26,6 +26,7 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -159,6 +160,45 @@ public class TerrainAsset extends Asset {
         terrain = new Terrain(getMeta().getTerrainSize(), data);
         terrain.init();
         terrain.update();
+    }
+
+    @Override
+    public void resolveDependencies(Map<String, Asset> assets) {
+        // splatmap
+        String id = meta.getTerrainSplatmap();
+        if(id != null && assets.containsKey(id)) {
+            setSplatmap((PixmapTextureAsset) assets.get(id));
+        }
+
+        // splat channel base
+        id = meta.getTerrainSplatBase();
+        if(id != null && assets.containsKey(id)) {
+            setSplatBase((TextureAsset) assets.get(id));
+        }
+
+        // splat channel r
+        id = meta.getTerrainSplatR();
+        if(id != null && assets.containsKey(id)) {
+            setSplatR((TextureAsset) assets.get(id));
+        }
+
+        // splat channel g
+        id = meta.getTerrainSplatG();
+        if(id != null && assets.containsKey(id)) {
+            setSplatG((TextureAsset) assets.get(id));
+        }
+
+        // splat channel b
+        id = meta.getTerrainSplatB();
+        if(id != null && assets.containsKey(id)) {
+            setSplatB((TextureAsset) assets.get(id));
+        }
+
+        // splat channel a
+        id = meta.getTerrainSplatA();
+        if(id != null && assets.containsKey(id)) {
+            setSplatA((TextureAsset) assets.get(id));
+        }
     }
 
     @Override

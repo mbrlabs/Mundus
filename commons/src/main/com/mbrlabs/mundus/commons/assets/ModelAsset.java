@@ -23,6 +23,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
+import java.util.Map;
+
 /**
  * @author Marcus Brummer
  * @version 01-10-2016
@@ -57,6 +59,15 @@ public class ModelAsset extends Asset {
             if (getMeta().getDiffuseColor() != null) {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, getMeta().getDiffuseColor()));
             }
+        }
+    }
+
+    @Override
+    public void resolveDependencies(Map<String, Asset> assets) {
+        // diffuse texture
+        String id = meta.getDiffuseTexture();
+        if(id != null && assets.containsKey(id)) {
+            diffuseTexture = (TextureAsset) assets.get(id);
         }
     }
 

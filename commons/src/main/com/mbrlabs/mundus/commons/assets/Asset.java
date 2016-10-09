@@ -19,11 +19,15 @@ package com.mbrlabs.mundus.commons.assets;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
 
+import java.util.Map;
+
 /**
  * A generic asset type.
  *
  * Assets hold a file handle to the asset file. They also have a meta file,
- * which contains meta information about the asset.
+ * which contains meta information about the asset. Assets can have dependencies
+ * to other assets by specifying the asset id in the meta file or in the asset
+ * file.
  * 
  * @author Marcus Brummer
  * @version 01-10-2016
@@ -31,7 +35,7 @@ import com.badlogic.gdx.utils.Disposable;
 public abstract class Asset implements Disposable {
 
     protected FileHandle file;
-    private MetaFile meta;
+    protected MetaFile meta;
 
     /**
      *
@@ -72,10 +76,21 @@ public abstract class Asset implements Disposable {
     public abstract void load();
 
     /**
+     * Resolves all dependencies of this asset.
+     *
+     * Before calling this method all assets must have been loaded using the
+     * load() method.
+     * 
+     * @param assets
+     *            map of loaded assets with asset id as key
+     */
+    public abstract void resolveDependencies(Map<String, Asset> assets);
+
+    /**
      * Applies dependent assets to this one.
      *
      * If dependencies have been set, this method applies them to the asset.
-     * Note, that the model and all it's set dependencies must have called
+     * Note, that the asset and all it's set dependencies must have called
      * load() before calling this method.
      */
     public abstract void applyDependencies();

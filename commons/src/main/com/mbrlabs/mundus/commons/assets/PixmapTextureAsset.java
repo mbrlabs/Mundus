@@ -20,6 +20,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.util.Map;
+
 /**
  * @author Marcus Brummer
  * @version 02-10-2016
@@ -45,6 +47,11 @@ public class PixmapTextureAsset extends Asset {
     public void load() {
         pixmap = new Pixmap(file);
         texture = new Texture(pixmap);
+    }
+
+    @Override
+    public void resolveDependencies(Map<String, Asset> assets) {
+        // no dependencies here
     }
 
     @Override

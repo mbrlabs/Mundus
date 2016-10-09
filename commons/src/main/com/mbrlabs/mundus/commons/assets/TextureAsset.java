@@ -21,6 +21,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
+import java.util.Map;
+
 /**
  * @author Marcus Brummer
  * @version 01-10-2016
@@ -61,6 +63,11 @@ public class TextureAsset extends Asset implements TextureProvider {
         if (tileable) {
             texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         }
+    }
+
+    @Override
+    public void resolveDependencies(Map<String, Asset> assets) {
+        // no dependencies here
     }
 
     @Override

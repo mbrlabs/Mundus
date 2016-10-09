@@ -139,41 +139,13 @@ public class AssetManager implements Disposable {
             listener.onLoad(asset, assets.size, metaFiles.length);
         }
 
-        // resolve dependencies
-        resolveAssetDependencies();
-
-        listener.onFinish(assets.size);
-    }
-
-    private void resolveAssetDependencies() {
-        for (Asset asset : assets) {
-            MetaFile meta = asset.getMeta();
-
-            // model asset
-            if (asset instanceof ModelAsset) {
-                String diffuseTexture = meta.getDiffuseTexture();
-                if (diffuseTexture != null) {
-                    TextureAsset tex = (TextureAsset) findAssetByID(diffuseTexture);
-                    if (tex != null) {
-                        // Log.error(TAG, diffuseTexture);
-                        ((ModelAsset) asset).setDiffuseTexture(tex);
-                    }
-                }
-            }
-
-            // terrain asset
-            if (asset instanceof TerrainAsset) {
-                TerrainAsset terrain = (TerrainAsset) asset;
-                terrain.setSplatmap((PixmapTextureAsset) findAssetByID(meta.getTerrainSplatmap()));
-                terrain.setSplatBase((TextureAsset) findAssetByID(meta.getTerrainSplatBase()));
-                terrain.setSplatR((TextureAsset) findAssetByID(meta.getTerrainSplatR()));
-                terrain.setSplatG((TextureAsset) findAssetByID(meta.getTerrainSplatG()));
-                terrain.setSplatB((TextureAsset) findAssetByID(meta.getTerrainSplatB()));
-                terrain.setSplatA((TextureAsset) findAssetByID(meta.getTerrainSplatA()));
-            }
-
+        // resolve & apply dependencies
+        for(Asset asset : assets) {
+            asset.resolveDependencies(assetIndex);
             asset.applyDependencies();
         }
+
+        listener.onFinish(assets.size);
     }
 
     /**
@@ -214,6 +186,9 @@ public class AssetManager implements Disposable {
         case MODEL:
             asset = loadModelAsset(meta, assetFile);
             break;
+//        case MATERIAL:
+//            asset = loadMaterialAsset(meta, assetFile);
+//            break;
         default:
             return null;
         }
@@ -221,6 +196,10 @@ public class AssetManager implements Disposable {
         addAsset(asset);
         return asset;
     }
+
+//    private MaterialAsset loadMaterialAsset(MetaFile meta, FileHandle assetFile) {
+//        return null;
+//    }
 
     private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {
         TextureAsset asset = new TextureAsset(meta, assetFile);
