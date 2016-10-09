@@ -36,12 +36,18 @@ import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
+import com.mbrlabs.mundus.utils.Log;
+import com.mbrlabs.mundus.utils.Toaster;
+
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
  * @version 07-06-2016
  */
 public class ImportTextureDialog extends BaseDialog implements Disposable {
+
+    private static final String TAG = ImportTextureDialog.class.getSimpleName();
 
     private ImportTextureTable importTextureTable;
 
@@ -94,15 +100,20 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
             importBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    FileHandle texture = imageChooserField.getFile();
-                    if (texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
-                        EditorAssetManager assetManager = projectManager.current().assetManager;
-                        Asset asset = assetManager.importAsset(texture, TextureAsset.class);
-                        Mundus.postEvent(new AssetImportEvent(asset));
-                        close();
-                        Ui.getInstance().getToaster().success("Texture imported");
-                    } else {
-                        Ui.getInstance().getToaster().error("There is nothing to import");
+                    try {
+                        FileHandle texture = imageChooserField.getFile();
+                        if (texture != null && texture.exists() && FileFormatUtils.isImage(texture)) {
+                            EditorAssetManager assetManager = projectManager.current().assetManager;
+                            Asset asset = assetManager.createTextureAsset(texture);
+                            Mundus.postEvent(new AssetImportEvent(asset));
+                            close();
+                            Ui.getInstance().getToaster().success("Texture imported");
+                        } else {
+                            Ui.getInstance().getToaster().error("There is nothing to import");
+                        }
+                    } catch (IOException e) {
+                        Log.exception(TAG, e);
+                        Ui.getInstance().getToaster().error("IO error");
                     }
                 }
             });

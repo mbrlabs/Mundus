@@ -67,41 +67,6 @@ public class EditorAssetManager extends AssetManager {
     }
 
     /**
-     * Imports a new asset.
-     *
-     * @param asset
-     *            handle to asset file
-     * @param clazz
-     *            asset type
-     * @return asset or not if type not supported
-     */
-    public Asset importAsset(FileHandle asset, Class clazz) {
-        // import asset
-        Asset newAsset = null;
-        try {
-            if (clazz == TextureAsset.class) {
-                newAsset = importTextureAsset(asset);
-            } else if (clazz == PixmapTextureAsset.class) {
-                newAsset = importPixmapTextureAsset(asset);
-            } else if (clazz == TerrainAsset.class) {
-                newAsset = importTerrainAsset(asset);
-            } else if (clazz == ModelAsset.class) {
-                newAsset = importModelAsset(asset);
-            }
-        } catch (IOException ioe) {
-            Log.exception(TAG, ioe);
-            return null;
-        }
-
-        // add to list
-        if (newAsset != null) {
-            addAsset(newAsset);
-        }
-
-        return newAsset;
-    }
-
-    /**
      * Creates a couple of standard assets.
      *
      * Creates a couple of standard assets in the current project, that should
@@ -110,8 +75,7 @@ public class EditorAssetManager extends AssetManager {
     public void createStandardAssets() {
         try {
             // chessboard
-            TextureAsset chessboard = (TextureAsset) importAsset(Gdx.files.internal("standardAssets/chessboard.png"),
-                    TextureAsset.class);
+            TextureAsset chessboard = createTextureAsset(Gdx.files.internal("standardAssets/chessboard.png"));
             assetIndex.remove(chessboard.getID());
             chessboard.getMeta().setID(STANDARD_ASSET_TEXTURE_CHESSBOARD);
             assetIndex.put(chessboard.getID(), chessboard);
@@ -169,8 +133,8 @@ public class EditorAssetManager extends AssetManager {
         // load & return asset
         ModelAsset asset = new ModelAsset(meta, assetFile);
         asset.load();
-        addAsset(asset);
 
+        addAsset(asset);
         return asset;
     }
 
@@ -263,8 +227,29 @@ public class EditorAssetManager extends AssetManager {
         // load & return asset
         PixmapTextureAsset asset = new PixmapTextureAsset(meta, pixmapAssetFile);
         asset.load();
-        addAsset(asset);
 
+        addAsset(asset);
+        return asset;
+    }
+
+    /**
+     * Creates a new texture asset using the given texture file.
+     *
+     * @param texture
+     * @return
+     * @throws IOException
+     */
+    public TextureAsset createTextureAsset(FileHandle texture) throws IOException {
+        MetaFile meta = createMetaFileFromAsset(texture, AssetType.TEXTURE);
+        FileHandle importedAssetFile = copyToAssetFolder(texture);
+
+        TextureAsset asset = new TextureAsset(meta, importedAssetFile);
+        // TODO parse special texture instead of always setting them
+        asset.setTileable(true);
+        asset.generateMipmaps(true);
+        asset.load();
+
+        addAsset(asset);
         return asset;
     }
 
@@ -309,35 +294,4 @@ public class EditorAssetManager extends AssetManager {
         return copy;
     }
 
-    private TextureAsset importTextureAsset(FileHandle assetFile) throws IOException {
-        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.TEXTURE);
-        FileHandle importedAssetFile = copyToAssetFolder(assetFile);
-
-        TextureAsset asset = new TextureAsset(meta, importedAssetFile);
-        // TODO parse special texture instead of always setting them
-        asset.setTileable(true);
-        asset.generateMipmaps(true);
-        asset.load();
-
-        return asset;
-    }
-
-    private TextureAsset importPixmapTextureAsset(FileHandle assetFile) throws IOException {
-        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.PIXMAP_TEXTURE);
-        // TODO implement
-        return null;
-    }
-
-    private TextureAsset importTerrainAsset(FileHandle assetFile) throws IOException {
-        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.TERRAIN);
-        // TODO implement
-        return null;
-    }
-
-    private TextureAsset importModelAsset(FileHandle assetFile) throws IOException {
-        MetaFile meta = createMetaFileFromAsset(assetFile, AssetType.MODEL);
-        // TODO implement
-        return null;
-    }
-    
 }
