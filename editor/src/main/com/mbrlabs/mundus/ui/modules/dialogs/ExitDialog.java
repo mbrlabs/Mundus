@@ -34,7 +34,7 @@ public class ExitDialog extends BaseDialog {
 
     private void setupUI() {
         Table root = new Table();
-        root.padTop(6).padRight(6).padBottom(22);
+        root.padTop(6).padRight(6).padBottom(10);
         add(root);
 
         exit = new VisTextButton("Exit");
