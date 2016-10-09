@@ -14,12 +14,14 @@ import java.util.Properties;
  */
 public class MaterialAsset extends Asset {
 
+    public static final String EXTENSION = ".mat";
+
     // property keys
-    private static final String PROP_DIFFUSE_COLOR = "diffuse.color";
-    private static final String PROP_DIFFUSE_TEXTURE = "diffuse.texture";
-    private static final String PROP_MAP_NORMAL = "map.normal";
-    private static final String PROP_SHININESS = "shininess";
-    private static final String PROP_OPACITY = "opacity";
+    public static final String PROP_DIFFUSE_COLOR = "diffuse.color";
+    public static final String PROP_DIFFUSE_TEXTURE = "diffuse.texture";
+    public static final String PROP_MAP_NORMAL = "map.normal";
+    public static final String PROP_SHININESS = "shininess";
+    public static final String PROP_OPACITY = "opacity";
 
     // ids of dependent assets
     private String diffuseTextureID;
@@ -28,8 +30,8 @@ public class MaterialAsset extends Asset {
     private Color diffuseColor;
     private TextureAsset diffuseTexture;
     private TextureAsset normalMap;
-    private float shininess;
-    private float opacity;
+    private float shininess = 1f;
+    private float opacity = 1f;
 
     public MaterialAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
@@ -68,6 +70,48 @@ public class MaterialAsset extends Asset {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public float getShininess() {
+        return shininess;
+    }
+
+    public void setShininess(float shininess) {
+        this.shininess = shininess;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
+    public TextureAsset getNormalMap() {
+        return normalMap;
+    }
+
+    public void setNormalMap(TextureAsset normalMap) {
+        this.normalMap = normalMap;
+        normalMapID = normalMap.getID();
+    }
+
+    public TextureAsset getDiffuseTexture() {
+        return diffuseTexture;
+    }
+
+    public void setDiffuseTexture(TextureAsset diffuseTexture) {
+        this.diffuseTexture = diffuseTexture;
+        this.diffuseTextureID = diffuseTexture.getID();
+    }
+
+    public Color getDiffuseColor() {
+        return diffuseColor;
+    }
+
+    public void setDiffuseColor(Color diffuseColor) {
+        this.diffuseColor = diffuseColor;
     }
 
     @Override

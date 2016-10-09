@@ -198,7 +198,9 @@ public class AssetManager implements Disposable {
     }
 
     private MaterialAsset loadMaterialAsset(MetaFile meta, FileHandle assetFile) {
-        return null;
+        MaterialAsset asset = new MaterialAsset(meta, assetFile);
+        asset.load();
+        return asset;
     }
 
     private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {

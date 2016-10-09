@@ -22,6 +22,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
+import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -43,6 +46,8 @@ import com.mbrlabs.mundus.utils.UsefulMeshs;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -119,6 +124,18 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         setupInput();
 
         setupCloseListener();
+
+//        try {
+//            MaterialAsset asset = projectContext.assetManager.createMaterialAsset("testMaterial");
+//            asset.setDiffuseColor(Color.BROWN);
+//            asset.setDiffuseTexture((TextureAsset) projectContext.assetManager
+//                    .findAssetByID(EditorAssetManager.STANDARD_ASSET_TEXTURE_CHESSBOARD));
+//            asset.setOpacity(7);
+//            asset.setShininess(8);
+//            projectContext.assetManager.saveMaterialAsset(asset);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void setupCloseListener() {

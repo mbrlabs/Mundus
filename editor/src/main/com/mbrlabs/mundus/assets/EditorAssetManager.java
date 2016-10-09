@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetType;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
@@ -33,13 +34,16 @@ import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.omg.CORBA.MARSHAL;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.FileNameMap;
 import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.zip.GZIPOutputStream;
 
@@ -254,32 +258,83 @@ public class EditorAssetManager extends AssetManager {
     }
 
     /**
+     * Creates a new & empty material asset.
+     *
+     * @return new material asset
+     * @throws IOException
+     */
+    public MaterialAsset createMaterialAsset(String name) throws IOException {
+        // create empty material file
+        String path = FilenameUtils.concat(rootFolder.path(), name) + MaterialAsset.EXTENSION;
+        FileHandle matFile = Gdx.files.absolute(path);
+        FileUtils.touch(matFile.file());
+
+        MetaFile meta = createMetaFileFromAsset(matFile, AssetType.MATERIAL);
+        MaterialAsset asset = new MaterialAsset(meta, matFile);
+        asset.load();
+
+        addAsset(asset);
+        return asset;
+    }
+
+    /**
      * Saves all terrains (splatmap, height data + meta files)
      *
      * @throws IOException
      */
-    // TODO not very clean. move this somewhere else
     public void saveTerrainAssets() throws IOException {
         for (TerrainAsset terrain : getTerrainAssets()) {
-
-            // save .terra file
-            DataOutputStream outputStream = new DataOutputStream(
-                    new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terrain.getFile().file()))));
-            for (float f : terrain.getData()) {
-                outputStream.writeFloat(f);
-            }
-            outputStream.flush();
-            outputStream.close();
-
-            // save splatmap
-            PixmapTextureAsset splatmap = terrain.getSplatmap();
-            if (splatmap != null) {
-                PixmapIO.writePNG(splatmap.getFile(), splatmap.getPixmap());
-            }
-
-            // save meta file
-            terrain.getMeta().save();
+            saveTerrainAsset(terrain);
         }
+    }
+
+    /**
+     * Saves an existing terrain asset.
+     *
+     * This updates all modifiable assets and the meta file.
+     *
+     * @param terrain
+     *            terrain asset
+     * @throws IOException
+     */
+    public void saveTerrainAsset(TerrainAsset terrain) throws IOException {
+        // save .terra file
+        DataOutputStream outputStream = new DataOutputStream(
+                new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terrain.getFile().file()))));
+        for (float f : terrain.getData()) {
+            outputStream.writeFloat(f);
+        }
+        outputStream.flush();
+        outputStream.close();
+
+        // save splatmap
+        PixmapTextureAsset splatmap = terrain.getSplatmap();
+        if (splatmap != null) {
+            PixmapIO.writePNG(splatmap.getFile(), splatmap.getPixmap());
+        }
+
+        // save meta file
+        terrain.getMeta().save();
+    }
+
+    public void saveMaterialAsset(MaterialAsset mat) throws IOException {
+        // save .mat
+        Properties props = new Properties();
+        if (mat.getDiffuseColor() != null) {
+            props.setProperty(MaterialAsset.PROP_DIFFUSE_COLOR, mat.getDiffuseColor().toString());
+        }
+        if (mat.getDiffuseTexture() != null) {
+            props.setProperty(MaterialAsset.PROP_DIFFUSE_TEXTURE, mat.getDiffuseTexture().getID());
+        }
+        if (mat.getNormalMap() != null) {
+            props.setProperty(MaterialAsset.PROP_MAP_NORMAL, mat.getNormalMap().getID());
+        }
+        props.setProperty(MaterialAsset.PROP_OPACITY, String.valueOf(mat.getOpacity()));
+        props.setProperty(MaterialAsset.PROP_SHININESS, String.valueOf(mat.getShininess()));
+        props.store(new FileOutputStream(mat.getFile().file()), null);
+
+        // save meta file
+        mat.getMeta().save();
     }
 
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
