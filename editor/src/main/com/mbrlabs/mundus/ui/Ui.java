@@ -26,7 +26,6 @@ import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.mbrlabs.mundus.ui.modules.MundusToolbar;
 import com.mbrlabs.mundus.ui.modules.Outline;
 import com.mbrlabs.mundus.ui.modules.StatusBar;
-import com.mbrlabs.mundus.ui.modules.dialogs.AddTerrainDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.AmbientLightDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.ExitDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.ExportDialog;
@@ -184,9 +183,9 @@ public class Ui extends Stage {
         return newProjectDialog;
     }
 
-//    public AddTerrainDialog getAddTerrainDialog() {
-//        return addTerrainDialog;
-//    }
+    //    public AddTerrainDialog getAddTerrainDialog() {
+    //        return addTerrainDialog;
+    //    }
 
     public LoadingProjectDialog getLoadingProjectDialog() {
         return loadingProjectDialog;

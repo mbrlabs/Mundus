@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.core.project;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
-import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.utils.Log;
 

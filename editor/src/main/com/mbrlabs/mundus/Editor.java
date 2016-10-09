@@ -17,15 +17,11 @@
 package com.mbrlabs.mundus;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.kotcrab.vis.ui.util.dialog.Dialogs;
-import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -99,8 +95,8 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         widget3D.setRenderer(cam -> {
             if (projectContext.currScene.skybox != null) {
                 batch.begin(projectContext.currScene.cam);
-                batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
-                        projectContext.currScene.environment, shaders.skyboxShader);
+                batch.render(projectContext.currScene.skybox.getSkyboxInstance(), projectContext.currScene.environment,
+                        shaders.skyboxShader);
                 batch.end();
             }
 
@@ -123,37 +119,13 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         setupInput();
 
         setupCloseListener();
-
-        // for(FileHandle file : new
-        // FileHandle("/home/marcus/Desktop/testAssets/").list()) {
-        // context.assetManager.importAsset(file, TextureAsset.class);
-        // }
-        //
-        // try {
-        // AssetHelper.createTerrainAsset(new
-        // FileHandle("/home/marcus/MundusProjects/Default Project/assets"),
-        // 180);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        //
-        // try {
-        // AssetHelper.createPixmapTextureAsset(new
-        // FileHandle("/home/marcus/MundusProjects/Default Project/assets"),
-        // 512);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
     }
 
     private void setupCloseListener() {
-        Main.closeListener = new Main.WindowCloseListener() {
-            @Override
-            public boolean onCloseRequested() {
-                Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getExitDialog());
-                return true;
-            }
+        Main.closeListener = () -> {
+            Ui ui1 = Ui.getInstance();
+            ui1.showDialog(ui1.getExitDialog());
+            return true;
         };
     }
 

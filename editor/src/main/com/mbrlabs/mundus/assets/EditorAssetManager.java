@@ -29,8 +29,6 @@ import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
-import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FileUtils;
@@ -113,7 +111,6 @@ public class EditorAssetManager extends AssetManager {
             assetIndex.put(chessboard.getID(), chessboard);
             chessboard.getMeta().save();
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,7 +192,7 @@ public class EditorAssetManager extends AssetManager {
         asset.load();
 
         TextureAsset chessboard = (TextureAsset) findAssetByID(STANDARD_ASSET_TEXTURE_CHESSBOARD);
-        if(chessboard != null) {
+        if (chessboard != null) {
             // create splatmap
             PixmapTextureAsset splatmap = createPixmapTextureAsset(SplatMap.DEFAULT_SIZE);
             asset.setSplatmap(splatmap);

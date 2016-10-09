@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.ui.modules.dialogs.importer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -135,16 +134,13 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
 
             VisTable inputTable = new VisTable();
             renderWidget = new RenderWidget(cam);
-            renderWidget.setRenderer(new RenderWidget.Renderer() {
-                @Override
-                public void render(Camera cam) {
-                    if (previewInstance != null) {
-                        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
-                        previewInstance.transform.rotate(0, 0, 1, -1f);
-                        modelBatch.begin(cam);
-                        modelBatch.render(previewInstance, env);
-                        modelBatch.end();
-                    }
+            renderWidget.setRenderer(camera -> {
+                if (previewInstance != null) {
+                    Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+                    previewInstance.transform.rotate(0, 0, 1, -1f);
+                    modelBatch.begin(camera);
+                    modelBatch.render(previewInstance, env);
+                    modelBatch.end();
                 }
             });
 
@@ -162,12 +158,9 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
         private void setupListener() {
 
             // model chooser
-            modelInput.setCallback(new FileChooserField.FileSelected() {
-                @Override
-                public void selected(FileHandle fileHandle) {
-                    if (fileHandle.exists()) {
-                        loadAndShowPreview(modelInput.getFile());
-                    }
+            modelInput.setCallback(fileHandle -> {
+                if (fileHandle.exists()) {
+                    loadAndShowPreview(modelInput.getFile());
                 }
             });
 

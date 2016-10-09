@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -80,12 +79,7 @@ public class AmbientLightDialog extends BaseDialog
         });
 
         // color
-        colorPickerField.setCallback(new ColorPickerField.ColorSelected() {
-            @Override
-            public void selected(Color color) {
-                projectContext.currScene.environment.getAmbientLight().color.set(color);
-            }
-        });
+        colorPickerField.setCallback(color -> projectContext.currScene.environment.getAmbientLight().color.set(color));
 
     }
 

@@ -21,7 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.MenuItem;
@@ -31,14 +30,10 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
-import com.mbrlabs.mundus.commons.assets.Asset;
-import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
-import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -101,16 +96,13 @@ public class TerrainPaintTab extends Tab {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 AssetSelectionDialog dialog = Ui.getInstance().getAssetSelectionDialog();
-                dialog.show(new AssetTextureFilter(), new AssetSelectionDialog.AssetSelectionListener() {
-                    @Override
-                    public void onSelected(Array<Asset> assets) {
-                        if (assets.size == 0) return;
-                        try {
-                            addTexture((TextureAsset) assets.first());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Ui.getInstance().getToaster().error("Error while creating the splatmap");
-                        }
+                dialog.show(new AssetTextureFilter(), assets -> {
+                    if (assets.size == 0) return;
+                    try {
+                        addTexture((TextureAsset) assets.first());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Ui.getInstance().getToaster().error("Error while creating the splatmap");
                     }
                 });
             }
@@ -167,17 +159,14 @@ public class TerrainPaintTab extends Tab {
     }
 
     private void setupTextureGrid() {
-        textureGrid.setListener(new TextureGrid.OnTextureClickedListener() {
-            @Override
-            public void onTextureSelected(TextureProvider texture, boolean leftClick) {
-                SplatTexture tex = (SplatTexture) texture;
-                if (leftClick) {
-                    TerrainBrush.setPaintChannel(tex.channel);
-                } else {
-                    System.out.println("Texture grid listener right clicked");
-                    rightClickMenu.setChannel(tex.channel);
-                    rightClickMenu.show();
-                }
+        textureGrid.setListener((texture, leftClick) -> {
+            SplatTexture tex = (SplatTexture) texture;
+            if (leftClick) {
+                TerrainBrush.setPaintChannel(tex.channel);
+            } else {
+                System.out.println("Texture grid listener right clicked");
+                rightClickMenu.setChannel(tex.channel);
+                rightClickMenu.show();
             }
         });
 
@@ -262,27 +251,24 @@ public class TerrainPaintTab extends Tab {
                 public void clicked(InputEvent event, float x, float y) {
                     if (channel != null) {
                         AssetSelectionDialog dialog = Ui.getInstance().getAssetSelectionDialog();
-                        dialog.show(new AssetTextureFilter(), new AssetSelectionDialog.AssetSelectionListener() {
-                            @Override
-                            public void onSelected(Array<Asset> assets) {
-                                if (assets.size == 0) return;
-                                if (channel != null) {
-                                    TerrainAsset terrain = parent.component.getTerrain();
-                                    TextureAsset texture = (TextureAsset) assets.first();
-                                    if (channel == SplatTexture.Channel.BASE) {
-                                        terrain.setSplatBase(texture);
-                                    } else if (channel == SplatTexture.Channel.R) {
-                                        terrain.setSplatR(texture);
-                                    } else if (channel == SplatTexture.Channel.G) {
-                                        terrain.setSplatG(texture);
-                                    } else if (channel == SplatTexture.Channel.B) {
-                                        terrain.setSplatB(texture);
-                                    } else if (channel == SplatTexture.Channel.A) {
-                                        terrain.setSplatA(texture);
-                                    }
-                                    terrain.applyDependencies();
-                                    setTexturesInUiGrid();
+                        dialog.show(new AssetTextureFilter(), assets -> {
+                            if (assets.size == 0) return;
+                            if (channel != null) {
+                                TerrainAsset terrain = parent.component.getTerrain();
+                                TextureAsset texture = (TextureAsset) assets.first();
+                                if (channel == SplatTexture.Channel.BASE) {
+                                    terrain.setSplatBase(texture);
+                                } else if (channel == SplatTexture.Channel.R) {
+                                    terrain.setSplatR(texture);
+                                } else if (channel == SplatTexture.Channel.G) {
+                                    terrain.setSplatG(texture);
+                                } else if (channel == SplatTexture.Channel.B) {
+                                    terrain.setSplatB(texture);
+                                } else if (channel == SplatTexture.Channel.A) {
+                                    terrain.setSplatA(texture);
                                 }
+                                terrain.applyDependencies();
+                                setTexturesInUiGrid();
                             }
                         });
                     }

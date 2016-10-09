@@ -35,7 +35,6 @@ public class FileFormatUtils {
     public static final String FORMAT_IMG_JPEG = "jpeg";
     public static final String FORMAT_IMG_TGA = "tga";
 
-
     public static boolean isG3DB(String filename) {
         return filename != null && filename.endsWith(FORMAT_3D_G3DB);
     }

@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -25,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.kotcrab.vis.ui.widget.VisTextButton;
@@ -44,6 +42,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
 import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
 
 import java.io.IOException;
@@ -110,35 +109,26 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             // diffuse texture
             collapsibleContent.add(new VisLabel("Diffuse Texture (click to change)")).expandX().fillX().left().row();
             final VisTextField diffuseTextureField = new VisTextField();
-            final AssetSelectionDialog.AssetSelectionListener listener = new AssetSelectionDialog.AssetSelectionListener() {
-                @Override
-                public void onSelected(Array<Asset> assets) {
-                    if (assets.size > 0) {
-                        // set texture id & save
-                        Asset selectedTexture = assets.first();
-                        asset.setDiffuseTexture((TextureAsset) selectedTexture);
-                        asset.applyDependencies();
-                        try {
-                            asset.getMeta().save();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        updateModelInstaneceMaterials();
-                        diffuseTextureField.setText(selectedTexture.toString());
+            final AssetSelectionDialog.AssetSelectionListener listener = assets -> {
+                if (assets.size > 0) {
+                    // set texture id & save
+                    Asset selectedTexture = assets.first();
+                    asset.setDiffuseTexture((TextureAsset) selectedTexture);
+                    asset.applyDependencies();
+                    try {
+                        asset.getMeta().save();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }
-            };
-            final AssetSelectionDialog.AssetFilter filter = new AssetSelectionDialog.AssetFilter() {
-                @Override
-                public boolean ignore(Asset asset) {
-                    return !(asset instanceof TextureAsset);
+
+                    updateModelInstaneceMaterials();
+                    diffuseTextureField.setText(selectedTexture.toString());
                 }
             };
             diffuseTextureField.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Ui.getInstance().getAssetSelectionDialog().show(filter, listener);
+                    Ui.getInstance().getAssetSelectionDialog().show(new AssetTextureFilter(), listener);
                 }
             });
             TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
@@ -173,19 +163,16 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             final ColorAttribute diffuse = (ColorAttribute) mat.get(ColorAttribute.Diffuse);
             ColorPickerField diffusePicker = new ColorPickerField("Diffuse: ");
             diffusePicker.setColor(diffuse.color);
-            diffusePicker.setCallback(new ColorPickerField.ColorSelected() {
-                @Override
-                public void selected(Color color) {
-                    diffuse.color.set(color);
-                    MetaFile meta = component.getModelInstance().getModel().getMeta();
-                    meta.setDiffuseColor(color);
-                    try {
-                        meta.save();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    updateModelInstaneceMaterials();
+            diffusePicker.setCallback(color -> {
+                diffuse.color.set(color);
+                MetaFile meta = component.getModelInstance().getModel().getMeta();
+                meta.setDiffuseColor(color);
+                try {
+                    meta.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                updateModelInstaneceMaterials();
             });
             collapsibleContent.add(diffusePicker).expandX().fillX().left().padBottom(5).row();
         }

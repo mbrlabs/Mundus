@@ -64,15 +64,12 @@ public class AssetSelectionDialog extends BaseDialog
     }
 
     private void setupListeners() {
-        list.setItemClickListener(new ListView.ItemClickListener<Asset>() {
-            @Override
-            public void clicked(Asset item) {
-                if (listener != null) {
-                    Array<Asset> assets = new Array<>();
-                    assets.add(item);
-                    listener.onSelected(assets);
-                    close();
-                }
+        list.setItemClickListener(item -> {
+            if (listener != null) {
+                Array<Asset> assets = new Array<>();
+                assets.add(item);
+                listener.onSelected(assets);
+                close();
             }
         });
     }
