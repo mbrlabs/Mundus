@@ -140,7 +140,7 @@ public class AssetManager implements Disposable {
         }
 
         // resolve & apply dependencies
-        for(Asset asset : assets) {
+        for (Asset asset : assets) {
             asset.resolveDependencies(assetIndex);
             asset.applyDependencies();
         }
@@ -186,9 +186,9 @@ public class AssetManager implements Disposable {
         case MODEL:
             asset = loadModelAsset(meta, assetFile);
             break;
-//        case MATERIAL:
-//            asset = loadMaterialAsset(meta, assetFile);
-//            break;
+        case MATERIAL:
+            asset = loadMaterialAsset(meta, assetFile);
+            break;
         default:
             return null;
         }
@@ -197,9 +197,9 @@ public class AssetManager implements Disposable {
         return asset;
     }
 
-//    private MaterialAsset loadMaterialAsset(MetaFile meta, FileHandle assetFile) {
-//        return null;
-//    }
+    private MaterialAsset loadMaterialAsset(MetaFile meta, FileHandle assetFile) {
+        return null;
+    }
 
     private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {
         TextureAsset asset = new TextureAsset(meta, assetFile);

@@ -101,6 +101,12 @@ public class EditorAssetManager extends AssetManager {
         return newAsset;
     }
 
+    /**
+     * Creates a couple of standard assets.
+     *
+     * Creates a couple of standard assets in the current project, that should
+     * be included in every project.
+     */
     public void createStandardAssets() {
         try {
             // chessboard
@@ -137,6 +143,17 @@ public class EditorAssetManager extends AssetManager {
         return meta;
     }
 
+    /**
+     * Creates a new model asset.
+     *
+     * Creates a new model asset in the current project and adds it to this
+     * asset manager.
+     * 
+     * @param model
+     *            imported model
+     * @return model asset
+     * @throws IOException
+     */
     public ModelAsset createModelAsset(ModelImporter.ImportedModel model) throws IOException {
         String modelFilename = model.g3dbFile.name();
         String metaFilename = modelFilename + ".meta";
@@ -157,6 +174,19 @@ public class EditorAssetManager extends AssetManager {
         return asset;
     }
 
+    /**
+     * Creates a new terrain asset.
+     * 
+     * This creates a .terra file (height data) and a pixmap texture (splatmap).
+     * The asset will be added to this asset manager.
+     * 
+     * @param vertexResolution
+     *            vertex resolution of the terrain
+     * @param size
+     *            terrain size
+     * @return new terrain asset
+     * @throws IOException
+     */
     public TerrainAsset createTerrainAsset(int vertexResolution, int size) throws IOException {
         String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
         String metaFilename = terraFilename + ".meta";
@@ -205,29 +235,16 @@ public class EditorAssetManager extends AssetManager {
         return asset;
     }
 
-    public void saveTerrainAssets() throws IOException {
-        for (TerrainAsset terrain : getTerrainAssets()) {
-
-            // save .terra file
-            DataOutputStream outputStream = new DataOutputStream(
-                    new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terrain.getFile().file()))));
-            for (float f : terrain.getData()) {
-                outputStream.writeFloat(f);
-            }
-            outputStream.flush();
-            outputStream.close();
-
-            // save splatmap
-            PixmapTextureAsset splatmap = terrain.getSplatmap();
-            if (splatmap != null) {
-                PixmapIO.writePNG(splatmap.getFile(), splatmap.getPixmap());
-            }
-
-            // save meta file
-            terrain.getMeta().save();
-        }
-    }
-
+    /**
+     * Creates a new pixmap texture asset.
+     *
+     * This creates a new pixmap texture and adds it to this asset manager.
+     * 
+     * @param size
+     *            size of the pixmap in pixels
+     * @return new pixmap asset
+     * @throws IOException
+     */
     public PixmapTextureAsset createPixmapTextureAsset(int size) throws IOException {
         String pixmapFilename = "pixmap_" + UUID.randomUUID().toString() + ".png";
         String metaFilename = pixmapFilename + ".meta";
@@ -249,6 +266,35 @@ public class EditorAssetManager extends AssetManager {
         addAsset(asset);
 
         return asset;
+    }
+
+    /**
+     * Saves all terrains (splatmap, height data + meta files)
+     *
+     * @throws IOException
+     */
+    // TODO not very clean. move this somewhere else
+    public void saveTerrainAssets() throws IOException {
+        for (TerrainAsset terrain : getTerrainAssets()) {
+
+            // save .terra file
+            DataOutputStream outputStream = new DataOutputStream(
+                    new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(terrain.getFile().file()))));
+            for (float f : terrain.getData()) {
+                outputStream.writeFloat(f);
+            }
+            outputStream.flush();
+            outputStream.close();
+
+            // save splatmap
+            PixmapTextureAsset splatmap = terrain.getSplatmap();
+            if (splatmap != null) {
+                PixmapIO.writePNG(splatmap.getFile(), splatmap.getPixmap());
+            }
+
+            // save meta file
+            terrain.getMeta().save();
+        }
     }
 
     private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
@@ -293,41 +339,5 @@ public class EditorAssetManager extends AssetManager {
         // TODO implement
         return null;
     }
-
-    // /**
-    // *
-    // * @param textureFile
-    // * @param mipMap
-    // * @return
-    // */
-    // public MTexture importTexture(FileHandle textureFile, boolean mipMap) {
-    // long id = projectManager.current().obtainID();
-    //
-    // String relativeImportPath = ProjectManager.PROJECT_TEXTURE_DIR +
-    // textureFile.name();
-    // String absoluteImportPath =
-    // FilenameUtils.concat(projectManager.current().path, relativeImportPath);
-    // FileHandle absoluteImportFile = Gdx.files.absolute(absoluteImportPath);
-    //
-    // textureFile.copyTo(absoluteImportFile);
-    //
-    // MTexture tex = new MTexture();
-    // tex.setId(id);
-    // tex.setPath(relativeImportPath);
-    // if(mipMap) {
-    // tex.texture = TextureUtils.loadMipmapTexture(absoluteImportFile, true);
-    // } else {
-    // tex.texture = new Texture(absoluteImportFile);
-    // }
-    //
-    // projectManager.current().textures.add(tex);
-    //
-    // // save whole project
-    // projectManager.saveCurrentProject();
-    //
-    // return tex;
-    //
-    // return null;
-    // }
-
+    
 }
