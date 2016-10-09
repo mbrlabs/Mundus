@@ -96,22 +96,19 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
         widget3D = Ui.getInstance().getWidget3D();
         widget3D.setCam(projectContext.currScene.cam);
-        widget3D.setRenderer(new RenderWidget.Renderer() {
-            @Override
-            public void render(Camera cam) {
-                if (projectContext.currScene.skybox != null) {
-                    batch.begin(projectContext.currScene.cam);
-                    batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
-                            projectContext.currScene.environment, shaders.skyboxShader);
-                    batch.end();
-                }
-
-                projectContext.currScene.sceneGraph.update();
-                projectContext.currScene.sceneGraph.render();
-
-                toolManager.render();
-                compass.render(batch);
+        widget3D.setRenderer(cam -> {
+            if (projectContext.currScene.skybox != null) {
+                batch.begin(projectContext.currScene.cam);
+                batch.render(projectContext.currScene.skybox.getSkyboxInstance(),
+                        projectContext.currScene.environment, shaders.skyboxShader);
+                batch.end();
             }
+
+            projectContext.currScene.sceneGraph.update();
+            projectContext.currScene.sceneGraph.render();
+
+            toolManager.render();
+            compass.render(batch);
         });
 
         // open last edited project or create default project

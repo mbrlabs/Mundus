@@ -86,7 +86,7 @@ public class Log {
 
         SimpleDateFormat fileDateFormat = new SimpleDateFormat("yy-MM-dd");
         String fileName = fileDateFormat.format(new Date());
-        fileName = "mundus" + fileName + ".log";
+        fileName = "mundus_" + fileName + ".log";
 
         try {
             logFile = new File(logDirectory, fileName);

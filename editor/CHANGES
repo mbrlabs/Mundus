@@ -2,6 +2,7 @@
 - Updated libGDX to 1.9.4
 - Updated VisUI to 1.2.3
 - Updated Kryo to 4.0.0
+- Updated the editor module to Java 8
 - Fixed window size bug on mac: https://github.com/mbrlabs/Mundus/issues/11
 - Darker ui colors
 - Added the IntelliJ-like "docker bar" at the bottom
