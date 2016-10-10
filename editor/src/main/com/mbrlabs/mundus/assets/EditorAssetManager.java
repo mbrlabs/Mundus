@@ -20,7 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
@@ -34,14 +33,12 @@ import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.omg.CORBA.MARSHAL;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.FileNameMap;
 import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
@@ -56,6 +53,7 @@ public class EditorAssetManager extends AssetManager {
     private static final String TAG = EditorAssetManager.class.getSimpleName();
 
     public static final String STANDARD_ASSET_TEXTURE_CHESSBOARD = "chessboard";
+    private ModelImporter.ImportedModel model;
 
     /**
      * Editor asset manager constructor.
@@ -68,6 +66,29 @@ public class EditorAssetManager extends AssetManager {
         if (rootFolder != null && (!rootFolder.exists() || !rootFolder.isDirectory())) {
             Log.fatal(TAG, "Root asset folder is not a directory");
         }
+    }
+
+    /**
+     * Creates a new meta file and saves it at the given location.
+     *
+     * @param file
+     *            save location
+     * @param type
+     *            asset type
+     * @return saved meta file
+     * @throws IOException
+     */
+    public MetaFile createNewMetaFile(FileHandle file, AssetType type) throws IOException, AssetAlreadyExistsException {
+        if(file.exists()) throw new AssetAlreadyExistsException();
+
+        final MetaFile meta = new MetaFile(file);
+        meta.setUuid(UUID.randomUUID().toString());
+        meta.setVersion(MetaFile.CURRENT_VERSION);
+        meta.setLastModified(new Date());
+        meta.setType(type);
+        meta.save();
+
+        return meta;
     }
 
     /**
@@ -91,27 +112,6 @@ public class EditorAssetManager extends AssetManager {
     }
 
     /**
-     * Creates a new meta file and saves it at the given location.
-     *
-     * @param file
-     *            save location
-     * @param type
-     *            asset type
-     * @return saved meta file
-     * @throws IOException
-     */
-    public MetaFile createNewMetaFile(FileHandle file, AssetType type) throws IOException {
-        final MetaFile meta = new MetaFile(file);
-        meta.setUuid(UUID.randomUUID().toString());
-        meta.setVersion(MetaFile.CURRENT_VERSION);
-        meta.setLastModified(new Date());
-        meta.setType(type);
-        meta.save();
-
-        return meta;
-    }
-
-    /**
      * Creates a new model asset.
      *
      * Creates a new model asset in the current project and adds it to this
@@ -122,7 +122,8 @@ public class EditorAssetManager extends AssetManager {
      * @return model asset
      * @throws IOException
      */
-    public ModelAsset createModelAsset(ModelImporter.ImportedModel model) throws IOException {
+    public ModelAsset createModelAsset(ModelImporter.ImportedModel model) throws IOException, AssetAlreadyExistsException {
+        this.model = model;
         String modelFilename = model.g3dbFile.name();
         String metaFilename = modelFilename + ".meta";
 
@@ -155,7 +156,7 @@ public class EditorAssetManager extends AssetManager {
      * @return new terrain asset
      * @throws IOException
      */
-    public TerrainAsset createTerrainAsset(int vertexResolution, int size) throws IOException {
+    public TerrainAsset createTerrainAsset(int vertexResolution, int size) throws IOException, AssetAlreadyExistsException {
         String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
         String metaFilename = terraFilename + ".meta";
 
@@ -213,7 +214,7 @@ public class EditorAssetManager extends AssetManager {
      * @return new pixmap asset
      * @throws IOException
      */
-    public PixmapTextureAsset createPixmapTextureAsset(int size) throws IOException {
+    public PixmapTextureAsset createPixmapTextureAsset(int size) throws IOException, AssetAlreadyExistsException {
         String pixmapFilename = "pixmap_" + UUID.randomUUID().toString() + ".png";
         String metaFilename = pixmapFilename + ".meta";
 
@@ -243,7 +244,7 @@ public class EditorAssetManager extends AssetManager {
      * @return
      * @throws IOException
      */
-    public TextureAsset createTextureAsset(FileHandle texture) throws IOException {
+    public TextureAsset createTextureAsset(FileHandle texture) throws IOException, AssetAlreadyExistsException {
         MetaFile meta = createMetaFileFromAsset(texture, AssetType.TEXTURE);
         FileHandle importedAssetFile = copyToAssetFolder(texture);
 
@@ -263,7 +264,7 @@ public class EditorAssetManager extends AssetManager {
      * @return new material asset
      * @throws IOException
      */
-    public MaterialAsset createMaterialAsset(String name) throws IOException {
+    public MaterialAsset createMaterialAsset(String name) throws IOException, AssetAlreadyExistsException {
         // create empty material file
         String path = FilenameUtils.concat(rootFolder.path(), name) + MaterialAsset.EXTENSION;
         FileHandle matFile = Gdx.files.absolute(path);
@@ -337,7 +338,7 @@ public class EditorAssetManager extends AssetManager {
         mat.getMeta().save();
     }
 
-    private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException {
+    private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException, AssetAlreadyExistsException {
         String metaName = assetFile.name() + "." + MetaFile.META_EXTENSION;
         String metaPath = FilenameUtils.concat(rootFolder.path(), metaName);
         return createNewMetaFile(new FileHandle(metaPath), type);

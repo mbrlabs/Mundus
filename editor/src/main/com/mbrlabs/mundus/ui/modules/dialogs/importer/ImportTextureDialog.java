@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
@@ -74,6 +75,12 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
         importTextureTable.dispose();
     }
 
+    @Override
+    protected void close() {
+        super.close();
+        importTextureTable.removeTexture();
+    }
+
     /**
      *
      */
@@ -114,9 +121,16 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
                     } catch (IOException e) {
                         Log.exception(TAG, e);
                         Ui.getInstance().getToaster().error("IO error");
+                    } catch(AssetAlreadyExistsException ee) {
+                        Log.exception(TAG, ee);
+                        Ui.getInstance().getToaster().error("Error: There already exists a texture with the same name");
                     }
                 }
             });
+        }
+
+        public void removeTexture() {
+            imageChooserField.removeImage();
         }
 
         @Override

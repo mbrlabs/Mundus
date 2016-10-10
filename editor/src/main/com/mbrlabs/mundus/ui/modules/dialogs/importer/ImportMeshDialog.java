@@ -38,6 +38,7 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.assets.ModelImporter;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
@@ -52,6 +53,7 @@ import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.FileChooserField;
 import com.mbrlabs.mundus.ui.widgets.RenderWidget;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
+import com.mbrlabs.mundus.utils.Log;
 
 import java.io.IOException;
 
@@ -60,6 +62,8 @@ import java.io.IOException;
  * @version 07-06-2016
  */
 public class ImportMeshDialog extends BaseDialog implements Disposable {
+
+    private static final String TAG = ImportMeshDialog.class.getSimpleName();
 
     private ImportModelTable importMeshTable;
 
@@ -178,6 +182,9 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                         } catch (IOException e) {
                             e.printStackTrace();
                             Ui.getInstance().getToaster().error("Error while creating a ModelAsset");
+                        } catch(AssetAlreadyExistsException ee) {
+                            Log.exception(TAG, ee);
+                            Ui.getInstance().getToaster().error("Error: There already exists a model with the same name");
                         }
                         dispose();
                         close();
