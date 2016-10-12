@@ -29,7 +29,9 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
+import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
@@ -43,6 +45,7 @@ import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
 import com.mbrlabs.mundus.ui.widgets.TextureGrid;
+import com.mbrlabs.mundus.utils.Log;
 
 import java.io.IOException;
 
@@ -51,6 +54,8 @@ import java.io.IOException;
  * @version 30-01-2016
  */
 public class TerrainPaintTab extends Tab {
+
+    private static final String TAG = TerrainPaintTab.class.getSimpleName();
 
     private TerrainComponentWidget parent;
 
@@ -121,6 +126,19 @@ public class TerrainPaintTab extends Tab {
             terrainAsset.applyDependencies();
             textureGrid.addTexture(terrainTexture.getTexture(SplatTexture.Channel.BASE));
             return;
+        }
+
+        // create splatmap
+        if(terrainAsset.getSplatmap() == null) {
+            try {
+                PixmapTextureAsset splatmap = assetManager.createPixmapTextureAsset(512);
+                terrainAsset.setSplatmap(splatmap);
+                terrainAsset.applyDependencies();
+                terrainAsset.getMeta().save();
+            } catch (AssetAlreadyExistsException e) {
+                Log.exception(TAG, e);
+                return;
+            }
         }
 
         // channel r

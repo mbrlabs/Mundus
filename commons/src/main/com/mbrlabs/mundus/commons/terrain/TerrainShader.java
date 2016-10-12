@@ -61,6 +61,7 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_TEXTURE_A = register(new Uniform("u_texture_a"));
     protected final int UNIFORM_TEXTURE_SPLAT = register(new Uniform("u_texture_splat"));
     protected final int UNIFORM_TEXTURE_HAS_SPLATMAP = register(new Uniform("u_texture_has_splatmap"));
+    protected final int UNIFORM_TEXTURE_HAS_DIFFUSE = register(new Uniform("u_texture_has_diffuse"));
 
     // ============================ FOG ============================
     protected final int UNIFORM_FOG_DENSITY = register(new Uniform("u_fogDensity"));
@@ -154,12 +155,19 @@ public class TerrainShader extends BaseShader {
                 .get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;
 
+        // base texture
+        SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.BASE);
+        if (st != null) {
+            set(UNIFORM_TEXTURE_BASE, st.texture.getTexture());
+            set(UNIFORM_TEXTURE_HAS_DIFFUSE, 1);
+        } else {
+            set(UNIFORM_TEXTURE_HAS_DIFFUSE, 0);
+        }
+
+        // splat textures
         if (terrainTexture.getSplatmap() != null) {
             set(UNIFORM_TEXTURE_HAS_SPLATMAP, 1);
             set(UNIFORM_TEXTURE_SPLAT, terrainTexture.getSplatmap().getTexture());
-
-            SplatTexture st = terrainTexture.getTexture(SplatTexture.Channel.BASE);
-            if (st != null) set(UNIFORM_TEXTURE_BASE, st.texture.getTexture());
             st = terrainTexture.getTexture(SplatTexture.Channel.R);
             if (st != null) set(UNIFORM_TEXTURE_R, st.texture.getTexture());
             st = terrainTexture.getTexture(SplatTexture.Channel.G);

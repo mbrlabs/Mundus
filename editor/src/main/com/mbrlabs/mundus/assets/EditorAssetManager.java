@@ -190,11 +190,9 @@ public class EditorAssetManager extends AssetManager {
         TerrainAsset asset = new TerrainAsset(meta, new FileHandle(terraFile));
         asset.load();
 
+        // set base texture
         TextureAsset chessboard = (TextureAsset) findAssetByID(STANDARD_ASSET_TEXTURE_CHESSBOARD);
         if (chessboard != null) {
-            // create splatmap
-            PixmapTextureAsset splatmap = createPixmapTextureAsset(SplatMap.DEFAULT_SIZE);
-            asset.setSplatmap(splatmap);
             asset.setSplatBase(chessboard);
             asset.applyDependencies();
             asset.getMeta().save();
