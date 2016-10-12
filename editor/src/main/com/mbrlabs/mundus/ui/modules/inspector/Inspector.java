@@ -26,12 +26,14 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.AssetSelectedEvent;
 import com.mbrlabs.mundus.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
@@ -44,18 +46,25 @@ import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
  * @version 19-01-2016
  */
 public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener,
-        GameObjectModifiedEvent.GameObjectModifiedListener {
+        GameObjectModifiedEvent.GameObjectModifiedListener, AssetSelectedEvent.AssetSelectedListener {
 
+    public enum InspectorMode {
+        GAME_OBJECT, ASSET
+    }
+
+    private InspectorMode mode = InspectorMode.GAME_OBJECT;
     private VisTable root;
     private ScrollPane scrollPane;
 
+    // game object mode ui
     private IdentifierWidget identifierWidget;
     private TransformWidget transformWidget;
     private Array<ComponentWidget> componentWidgets;
-
     private VisTextButton addComponentBtn;
-
     private VisTable componentTable;
+
+    // asset mode ui
+    // TODO
 
     @Inject
     private ProjectManager projectManager;
@@ -71,8 +80,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         componentTable = new VisTable();
 
         init();
-        setupUi();
-        setupListeners();
+        setupGameObjectMode();
     }
 
     public void init() {
@@ -100,7 +108,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         add(scrollPane).expand().fill().top();
     }
 
-    public void setupUi() {
+    public void setupGameObjectMode() {
         root.add(identifierWidget).expandX().fillX().pad(7).row();
         root.add(transformWidget).expandX().fillX().pad(7).row();
         for (BaseInspectorWidget cw : componentWidgets) {
@@ -108,6 +116,10 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         }
         root.add(componentTable).fillX().expandX().pad(7).row();
         root.add(addComponentBtn).expandX().fill().top().center().pad(10).row();
+    }
+
+    public void setupAssetMode() {
+        // TODO
     }
 
     private void buildComponentWidgets() {
@@ -128,11 +140,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         }
     }
 
-    public void setupListeners() {
-
-    }
-
-    private void setValues(GameObject go) {
+    private void setGameObjectValues(GameObject go) {
         final ProjectContext projectContext = projectManager.current();
         identifierWidget.setValues(go);
         transformWidget.setValues(go);
@@ -146,9 +154,26 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         }
     }
 
+    private void setAssetValues(Asset asset) {
+        // TODO
+    }
+
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
-        setValues(projectManager.current().currScene.currentSelection);
+        if(mode != InspectorMode.GAME_OBJECT) {
+            mode = InspectorMode.GAME_OBJECT;
+            setupGameObjectMode();
+        }
+        setGameObjectValues(projectManager.current().currScene.currentSelection);
+    }
+
+    @Override
+    public void onAssetSelected(AssetSelectedEvent event) {
+        if(mode != InspectorMode.ASSET) {
+            mode = InspectorMode.ASSET;
+            setupAssetMode();
+        }
+        setAssetValues(event.getAsset());
     }
 
     @Override

@@ -28,7 +28,6 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
-import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FileUtils;
