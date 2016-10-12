@@ -18,18 +18,29 @@ package com.mbrlabs.mundus.ui.modules;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.Tooltip;
+import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.widgets.FaTextButton;
 import com.mbrlabs.mundus.ui.widgets.ToggleButton;
 import com.mbrlabs.mundus.ui.widgets.Toolbar;
 import com.mbrlabs.mundus.utils.Fa;
+import com.mbrlabs.mundus.utils.Log;
+
+import java.io.IOException;
+
+import static com.mbrlabs.mundus.utils.Fa.TAG;
 
 /**
  * @author Marcus Brummer
@@ -50,6 +61,7 @@ public class MundusToolbar extends Toolbar {
     private PopupMenu importMenu;
     private MenuItem importMesh;
     private MenuItem importTexture;
+    private MenuItem createMaterial;
 
     @Inject
     private ToolManager toolManager;
@@ -60,11 +72,13 @@ public class MundusToolbar extends Toolbar {
         super();
         Mundus.inject(this);
 
-        importMesh = new MenuItem("Import mesh");
+        importMesh = new MenuItem("Import 3D model");
         importTexture = new MenuItem("Import texture");
+        createMaterial = new MenuItem("Create material");
         importMenu = new PopupMenu();
         importMenu.addItem(importMesh);
         importMenu.addItem(importTexture);
+        importMenu.addItem(createMaterial);
 
         saveBtn = new FaTextButton(Fa.SAVE);
         saveBtn.padRight(7).padLeft(7);
@@ -148,6 +162,31 @@ public class MundusToolbar extends Toolbar {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui.getInstance().showDialog(Ui.getInstance().getImportTextureDialog());
+            }
+        });
+
+        // create material
+        createMaterial.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Dialogs.showInputDialog(Ui.getInstance(), "Create new material", "Material name", new InputDialogAdapter() {
+                    @Override
+                    public void finished(String input) {
+                        EditorAssetManager assetManager = projectManager.current().assetManager;
+                        try {
+                            MaterialAsset mat = assetManager.createMaterialAsset(input);
+                            Mundus.postEvent(new AssetImportEvent(mat));
+                        } catch (Exception e) {
+                            Log.exception(TAG, e);
+                            Ui.getInstance().getToaster().error(e.toString());
+                        }
+                    }
+
+                    @Override
+                    public void canceled() {
+                        super.canceled();
+                    }
+                });
             }
         });
 

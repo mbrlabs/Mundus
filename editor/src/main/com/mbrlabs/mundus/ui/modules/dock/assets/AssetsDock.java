@@ -16,13 +16,18 @@
 
 package com.mbrlabs.mundus.ui.modules.dock.assets;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
+import com.kotcrab.vis.ui.widget.MenuItem;
+import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.Separator;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
@@ -38,6 +43,7 @@ import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
+import com.mbrlabs.mundus.ui.Ui;
 
 /**
  * @author Marcus Brummer
@@ -49,6 +55,10 @@ public class AssetsDock extends Tab
     private VisTable root;
     private VisTable filesViewContextContainer;
     private GridGroup filesView;
+
+    private PopupMenu assetOpsMenu;
+    private MenuItem renameAsset;
+    private MenuItem deleteAsset;
 
     @Inject
     private ToolManager toolManager;
@@ -82,6 +92,13 @@ public class AssetsDock extends Tab
         root = new VisTable();
         root.setBackground("window-bg");
         root.add(splitPane).expand().fill();
+
+        // asset ops right click menu
+        assetOpsMenu = new PopupMenu();
+        renameAsset = new MenuItem("Rename Asset");
+        deleteAsset = new MenuItem("Delete Asset");
+        assetOpsMenu.addItem(renameAsset);
+        assetOpsMenu.addItem(deleteAsset);
     }
 
     private void reloadAssets() {
@@ -137,15 +154,24 @@ public class AssetsDock extends Tab
             nameLabel.setWrap(true);
             add(nameLabel).grow().top().row();
 
-            // active ModelPlacementTool when selecting this model
-            addListener(new ClickListener() {
+            addListener(new InputListener() {
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if (AssetItem.this.asset instanceof ModelAsset) {
-                        toolManager.modelPlacementTool.setModel((ModelAsset) AssetItem.this.asset);
-                        toolManager.activateTool(toolManager.modelPlacementTool);
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if(event.getButton() == Input.Buttons.RIGHT) {
+                        assetOpsMenu.showMenu(Ui.getInstance(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+                    } else if(event.getButton() == Input.Buttons.LEFT) {
+                        if (AssetItem.this.asset instanceof ModelAsset) {
+                            toolManager.modelPlacementTool.setModel((ModelAsset) AssetItem.this.asset);
+                            toolManager.activateTool(toolManager.modelPlacementTool);
+                        }
                     }
                 }
+
             });
         }
     }

@@ -17,12 +17,16 @@
 package com.mbrlabs.mundus.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Marcus Brummer
@@ -33,9 +37,12 @@ public class ModelComponent extends PickableComponent {
     private MModelInstance modelInstance;
     private Shader shader;
 
+    private Map<String, MaterialAsset> materials;
+
     public ModelComponent(GameObject go) {
         super(go);
         type = Type.MODEL;
+        materials = new HashMap<String, MaterialAsset>();
     }
 
     public Shader getShader() {
