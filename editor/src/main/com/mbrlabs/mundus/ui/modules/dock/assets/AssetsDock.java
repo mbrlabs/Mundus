@@ -65,7 +65,7 @@ public class AssetsDock extends Tab
     public void initUi() {
         root = new VisTable();
         filesViewContextContainer = new VisTable(false);
-        filesView = new GridGroup(60, 4);
+        filesView = new GridGroup(80, 4);
         filesView.setTouchable(Touchable.enabled);
 
         VisTable contentTable = new VisTable(false);
@@ -84,14 +84,12 @@ public class AssetsDock extends Tab
         root.add(splitPane).expand().fill();
     }
 
-    private void reloadModels() {
+    private void reloadAssets() {
         filesView.clearChildren();
         ProjectContext projectContext = projectManager.current();
         for (Asset asset : projectContext.assetManager.getAssets()) {
-            if (asset instanceof ModelAsset) {
-                AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(asset);
-                filesView.addActor(assetItem);
-            }
+            AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(asset);
+            filesView.addActor(assetItem);
         }
     }
 
@@ -114,12 +112,12 @@ public class AssetsDock extends Tab
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
-        reloadModels();
+        reloadAssets();
     }
 
     @Override
     public void onAssetImported(AssetImportEvent event) {
-        reloadModels();
+        reloadAssets();
     }
 
     /**
@@ -135,9 +133,9 @@ public class AssetsDock extends Tab
             setBackground("menu-bg");
             align(Align.center);
             this.asset = asset;
-            nameLabel = new VisLabel(asset.toString(), "small");
+            nameLabel = new VisLabel(asset.toString(), "tiny");
             nameLabel.setWrap(true);
-            add(nameLabel).fill().expand().row();
+            add(nameLabel).grow().top().row();
 
             // active ModelPlacementTool when selecting this model
             addListener(new ClickListener() {

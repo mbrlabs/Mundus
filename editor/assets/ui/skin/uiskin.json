@@ -63,6 +63,7 @@
   default: {font: font-norm, fontColor: white },
   link-label: {fontColor: link-label, font: font-norm },
   small: {font: font-norm, fontColor: white },
+  tiny: {font: font-tiny, fontColor: white },
   menuitem-shortcut: {font: font-norm, fontColor: menuitem }
 },
   com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

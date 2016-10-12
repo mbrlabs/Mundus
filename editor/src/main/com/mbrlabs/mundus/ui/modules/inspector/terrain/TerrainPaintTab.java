@@ -39,6 +39,7 @@ import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.tools.brushes.TerrainBrush;
 import com.mbrlabs.mundus.ui.Ui;
@@ -135,6 +136,7 @@ public class TerrainPaintTab extends Tab {
                 terrainAsset.setSplatmap(splatmap);
                 terrainAsset.applyDependencies();
                 terrainAsset.getMeta().save();
+                Mundus.postEvent(new AssetImportEvent(splatmap));
             } catch (AssetAlreadyExistsException e) {
                 Log.exception(TAG, e);
                 return;

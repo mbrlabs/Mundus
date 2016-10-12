@@ -65,7 +65,7 @@ public abstract class Asset implements Disposable {
 
     @Override
     public String toString() {
-        return "[" + meta.getType().toString() + "] " + file.name();
+        return "[" + getMeta().getType().toString() + "] " + file.name();
     }
 
     /**

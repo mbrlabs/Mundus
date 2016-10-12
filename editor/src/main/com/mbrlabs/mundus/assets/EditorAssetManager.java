@@ -156,7 +156,7 @@ public class EditorAssetManager extends AssetManager {
      * @throws IOException
      */
     public TerrainAsset createTerrainAsset(int vertexResolution, int size) throws IOException, AssetAlreadyExistsException {
-        String terraFilename = "terrain_" + UUID.randomUUID().toString() + ".terra";
+        String terraFilename = UUID.randomUUID().toString().replace("-", "").substring(0, 5) + ".terra";
         String metaFilename = terraFilename + ".meta";
 
         // create meta file
@@ -212,7 +212,7 @@ public class EditorAssetManager extends AssetManager {
      * @throws IOException
      */
     public PixmapTextureAsset createPixmapTextureAsset(int size) throws IOException, AssetAlreadyExistsException {
-        String pixmapFilename = "pixmap_" + UUID.randomUUID().toString() + ".png";
+        String pixmapFilename = UUID.randomUUID().toString().replace("-", "").substring(0, 5) + ".png";
         String metaFilename = pixmapFilename + ".meta";
 
         // create meta file

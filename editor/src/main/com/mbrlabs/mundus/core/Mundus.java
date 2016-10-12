@@ -126,12 +126,17 @@ public class Mundus {
         // font small
         params.size = 12;
         BitmapFont fontSmall = generator.generateFont(params);
+
+        // font small
+        params.size = 10;
+        BitmapFont fontTiny = generator.generateFont(params);
         generator.dispose();
 
         // skin
         Skin skin = new Skin();
         skin.add("font-norm", fontNorm, BitmapFont.class);
         skin.add("font-small", fontSmall, BitmapFont.class);
+        skin.add("font-tiny", fontTiny, BitmapFont.class);
 
         skin.addRegions(new TextureAtlas(Gdx.files.internal("ui/skin/uiskin.atlas")));
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"));

@@ -46,6 +46,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.events.SceneChangedEvent;
@@ -468,6 +469,7 @@ public class Outline extends VisTable
                         addGoToTree(null, terrainGO);
 
                         projectContext.currScene.terrains.add(asset);
+                        Mundus.postEvent(new AssetImportEvent(asset));
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     } catch (Exception e) {
                         e.printStackTrace();
