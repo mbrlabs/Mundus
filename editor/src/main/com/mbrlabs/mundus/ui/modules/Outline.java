@@ -397,7 +397,7 @@ public class Outline extends VisTable
             super();
             name = new VisLabel();
             add(name).expand().fill();
-            name.setText(go.name + " [" + go.id + "]");
+            name.setText(go.name);
         }
     }
 
@@ -455,14 +455,17 @@ public class Outline extends VisTable
                 public void clicked(InputEvent event, float x, float y) {
                     try {
                         Log.trace(TAG, "Add terrain game object in root node.");
+
+                        final int goID = projectContext.obtainID();
+                        final String name = "Terrain " + goID;
                         // create asset
-                        TerrainAsset asset = projectContext.assetManager
-                                .createTerrainAsset(Terrain.DEFAULT_VERTEX_RESOLUTION, Terrain.DEFAULT_SIZE);
+                        TerrainAsset asset = projectContext.assetManager.createTerraAsset(name,
+                                Terrain.DEFAULT_VERTEX_RESOLUTION, Terrain.DEFAULT_SIZE);
                         asset.load();
                         asset.applyDependencies();
 
-                        GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader,
-                                projectContext.obtainID(), "Terrain", asset);
+                        final GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader, goID,
+                                name, asset);
                         // update sceneGraph
                         sceneGraph.addGameObject(terrainGO);
                         // update outline
@@ -558,7 +561,8 @@ public class Outline extends VisTable
                             // update sceneGraph
                             selectedGO.name = input;
                             // update Outline
-                            goNode.name.setText(input + " [" + selectedGO.id + "]");
+                            //goNode.name.setText(input + " [" + selectedGO.id + "]");
+                            goNode.name.setText(input);
 
                             Mundus.postEvent(new SceneGraphChangedEvent());
                         }

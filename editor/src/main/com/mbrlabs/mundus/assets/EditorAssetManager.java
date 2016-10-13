@@ -155,8 +155,8 @@ public class EditorAssetManager extends AssetManager {
      * @return new terrain asset
      * @throws IOException
      */
-    public TerrainAsset createTerrainAsset(int vertexResolution, int size) throws IOException, AssetAlreadyExistsException {
-        String terraFilename = UUID.randomUUID().toString().replace("-", "").substring(0, 5) + ".terra";
+    public TerrainAsset createTerraAsset(String name, int vertexResolution, int size) throws IOException, AssetAlreadyExistsException {
+        String terraFilename = name + ".terra";
         String metaFilename = terraFilename + ".meta";
 
         // create meta file
