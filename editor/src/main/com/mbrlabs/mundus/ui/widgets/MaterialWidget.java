@@ -16,12 +16,23 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
+import com.mbrlabs.mundus.core.Inject;
+import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
+import com.mbrlabs.mundus.utils.Log;
+
+import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -29,21 +40,30 @@ import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
  */
 public class MaterialWidget extends VisTable {
 
+    private static final String TAG = MaterialWidget.class.getSimpleName();
+
     private ColorPickerField diffuseColorField;
     private AssetSelectionField diffuseAssetField;
+    private VisTextButton saveBtn;
 
     private MaterialAsset material;
 
+    @Inject
+    private ProjectManager projectManager;
+
     public MaterialWidget() {
         super();
+        Mundus.inject(this);
         align(Align.topLeft);
         diffuseAssetField = new AssetSelectionField();
         diffuseColorField = new ColorPickerField();
+        saveBtn = new VisTextButton("Save material");
 
         add(new VisLabel("Diffuse texture")).grow().row();
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
         add(diffuseColorField).growX().row();
+        add(saveBtn).growX().padTop(5).row();
 
         setupWidgets();
     }
@@ -55,6 +75,21 @@ public class MaterialWidget extends VisTable {
 
         // diffuse color
         diffuseColorField.setCallback(color -> material.setDiffuseColor(color));
+
+        // save material
+        saveBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                try {
+                    EditorAssetManager assetManager = projectManager.current().assetManager;
+                    assetManager.saveMaterialAsset(material);
+                    Ui.getInstance().getToaster().success("Material saved");
+                } catch (IOException e) {
+                    Log.exception(TAG, e);
+                    Ui.getInstance().getToaster().error("Error while saving the material");
+                }
+            }
+        });
     }
 
     public void setMaterial(MaterialAsset material) {

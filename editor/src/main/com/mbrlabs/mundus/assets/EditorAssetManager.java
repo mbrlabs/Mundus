@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
+import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetType;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
@@ -52,7 +53,6 @@ public class EditorAssetManager extends AssetManager {
     private static final String TAG = EditorAssetManager.class.getSimpleName();
 
     public static final String STANDARD_ASSET_TEXTURE_CHESSBOARD = "chessboard";
-    private ModelImporter.ImportedModel model;
 
     /**
      * Editor asset manager constructor.
@@ -123,7 +123,6 @@ public class EditorAssetManager extends AssetManager {
      */
     public ModelAsset createModelAsset(ModelImporter.ImportedModel model)
             throws IOException, AssetAlreadyExistsException {
-        this.model = model;
         String modelFilename = model.g3dbFile.name();
         String metaFilename = modelFilename + ".meta";
 
