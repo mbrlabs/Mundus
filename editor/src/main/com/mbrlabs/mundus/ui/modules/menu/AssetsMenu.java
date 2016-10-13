@@ -36,7 +36,7 @@ public class AssetsMenu extends Menu {
         super("Assets");
 
         importMesh = new MenuItem("Import Mesh");
-        assetBrowser = new MenuItem("Asset Browser");
+        assetBrowser = new MenuItem("Asset Browser [DEBUG]");
         addItem(importMesh);
         addItem(assetBrowser);
 
@@ -64,7 +64,6 @@ public class AssetsMenu extends Menu {
                         Log.trace("AssetMenu", "null");
                     }
                 });
-
             }
         });
     }

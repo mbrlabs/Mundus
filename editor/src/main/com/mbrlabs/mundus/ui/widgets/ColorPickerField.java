@@ -38,9 +38,9 @@ public class ColorPickerField extends VisTable {
         public void selected(Color color);
     }
 
-    private String label;
+    private String label = null;
 
-    private VisTextField textField;
+    private VisTextField textField = null;
     private VisTextButton cpBtn;
     private ColorPicker colorPicker;
 
@@ -56,6 +56,10 @@ public class ColorPickerField extends VisTable {
         setEditable(false);
         setupUI();
         setupListeners();
+    }
+
+    public ColorPickerField() {
+        this(null);
     }
 
     public void setCallback(ColorSelected colorSelected) {
@@ -81,9 +85,11 @@ public class ColorPickerField extends VisTable {
     }
 
     private void setupUI() {
-        add(new VisLabel(label)).fillX().expandX();
-        add(textField).padLeft(5).padRight(5).fillX().expandX();
-        add(cpBtn).fillX().expandX().row();
+        if (label != null) {
+            add(new VisLabel(label)).fillX().expandX();
+        }
+        add(textField).padRight(5).fillX().expandX();
+        add(cpBtn).row();
     }
 
     public void setDisabled(boolean disable) {

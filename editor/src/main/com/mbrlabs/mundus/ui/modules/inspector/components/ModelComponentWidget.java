@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.modules.inspector;
+package com.mbrlabs.mundus.ui.modules.inspector.components;
 
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -128,8 +128,9 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             collapsibleContent.add(assetField).grow().padBottom(5).row();
 
             // diffuse color
+            collapsibleContent.add(new VisLabel("Diffuse Color")).grow().row();
             final ColorAttribute diffuse = (ColorAttribute) mat.get(ColorAttribute.Diffuse);
-            ColorPickerField diffusePicker = new ColorPickerField("Diffuse: ");
+            ColorPickerField diffusePicker = new ColorPickerField();
             diffusePicker.setColor(diffuse.color);
             diffusePicker.setCallback(color -> {
                 diffuse.color.set(color);

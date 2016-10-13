@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.modules.inspector.terrain;
+package com.mbrlabs.mundus.ui.modules.inspector.components.terrain;
 
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
@@ -27,7 +27,7 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.tools.ToolManager;
-import com.mbrlabs.mundus.ui.modules.inspector.ComponentWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.components.ComponentWidget;
 
 /**
  * @author Marcus Brummer

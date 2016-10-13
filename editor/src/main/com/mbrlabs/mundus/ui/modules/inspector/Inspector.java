@@ -39,7 +39,13 @@ import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.ui.Ui;
-import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.components.ComponentWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.components.IdentifierWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.components.ModelComponentWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.components.TransformWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.components.terrain.TerrainComponentWidget;
+import com.mbrlabs.mundus.ui.widgets.MaterialWidget;
+import com.mbrlabs.mundus.utils.Log;
 
 /**
  * @author Marcus Brummer
@@ -48,23 +54,18 @@ import com.mbrlabs.mundus.ui.modules.inspector.terrain.TerrainComponentWidget;
 public class Inspector extends VisTable implements GameObjectSelectedEvent.GameObjectSelectedListener,
         GameObjectModifiedEvent.GameObjectModifiedListener, AssetSelectedEvent.AssetSelectedListener {
 
+    private static final String TAG = Inspector.class.getSimpleName();
+
     public enum InspectorMode {
-        GAME_OBJECT, ASSET
+        GAME_OBJECT, ASSET, EMPTY
     }
 
-    private InspectorMode mode = InspectorMode.GAME_OBJECT;
+    private InspectorMode mode = InspectorMode.EMPTY;
     private VisTable root;
     private ScrollPane scrollPane;
 
-    // game object mode ui
-    private IdentifierWidget identifierWidget;
-    private TransformWidget transformWidget;
-    private Array<ComponentWidget> componentWidgets;
-    private VisTextButton addComponentBtn;
-    private VisTable componentTable;
-
-    // asset mode ui
-    // TODO
+    private GameObjectInspector goInspector;
+    private AssetInspector assetInspector;
 
     @Inject
     private ProjectManager projectManager;
@@ -73,14 +74,11 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         super();
         Mundus.inject(this);
         Mundus.registerEventListener(this);
-        identifierWidget = new IdentifierWidget();
-        transformWidget = new TransformWidget();
-        componentWidgets = new Array<>();
-        addComponentBtn = new VisTextButton("Add Component");
-        componentTable = new VisTable();
+
+        goInspector = new GameObjectInspector();
+        assetInspector = new AssetInspector();
 
         init();
-        setupGameObjectMode();
     }
 
     public void init() {
@@ -108,79 +106,32 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         add(scrollPane).expand().fill().top();
     }
 
-    public void setupGameObjectMode() {
-        root.add(identifierWidget).expandX().fillX().pad(7).row();
-        root.add(transformWidget).expandX().fillX().pad(7).row();
-        for (BaseInspectorWidget cw : componentWidgets) {
-            componentTable.add(cw).row();
-        }
-        root.add(componentTable).fillX().expandX().pad(7).row();
-        root.add(addComponentBtn).expandX().fill().top().center().pad(10).row();
-    }
-
     public void setupAssetMode() {
-        // TODO
-    }
-
-    private void buildComponentWidgets() {
-        final ProjectContext projectContext = projectManager.current();
-        componentWidgets.clear();
-        if (projectContext.currScene.currentSelection != null) {
-            for (Component component : projectContext.currScene.currentSelection.getComponents()) {
-
-                // model component widget
-                if (component.getType() == Component.Type.MODEL) {
-                    componentWidgets.add(new ModelComponentWidget((ModelComponent) component));
-                    // terrain component widget
-                } else if (component.getType() == Component.Type.TERRAIN) {
-                    componentWidgets.add(new TerrainComponentWidget((TerrainComponent) component));
-                }
-
-            }
-        }
-    }
-
-    private void setGameObjectValues(GameObject go) {
-        final ProjectContext projectContext = projectManager.current();
-        identifierWidget.setValues(go);
-        transformWidget.setValues(go);
-
-        buildComponentWidgets();
-        componentTable.clearChildren();
-
-        for (ComponentWidget cw : componentWidgets) {
-            componentTable.add(cw).expand().fill().row();
-            cw.setValues(projectContext.currScene.currentSelection);
-        }
-    }
-
-    private void setAssetValues(Asset asset) {
-        // TODO
+        root.clearChildren();
     }
 
     @Override
-    public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
+    public void onGameObjectSelected(GameObjectSelectedEvent event) {
         if (mode != InspectorMode.GAME_OBJECT) {
             mode = InspectorMode.GAME_OBJECT;
-            setupGameObjectMode();
+            root.clear();
+            root.add(goInspector).grow().row();
         }
-        setGameObjectValues(projectManager.current().currScene.currentSelection);
+        goInspector.set(event.getGameObject());
     }
 
     @Override
     public void onAssetSelected(AssetSelectedEvent event) {
+        Log.debug(TAG, event.getAsset().toString());
         if (mode != InspectorMode.ASSET) {
             mode = InspectorMode.ASSET;
             setupAssetMode();
         }
-        setAssetValues(event.getAsset());
     }
 
     @Override
-    public void onGameObjectModified(GameObjectModifiedEvent gameObjectModifiedEvent) {
-        final ProjectContext projectContext = projectManager.current();
-        identifierWidget.setValues(projectContext.currScene.currentSelection);
-        transformWidget.setValues(projectContext.currScene.currentSelection);
+    public void onGameObjectModified(GameObjectModifiedEvent event) {
+        goInspector.updateGO();
     }
 
 }

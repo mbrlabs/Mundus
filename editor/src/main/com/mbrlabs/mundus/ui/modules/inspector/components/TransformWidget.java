@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.modules.inspector;
+package com.mbrlabs.mundus.ui.modules.inspector.components;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -30,6 +30,7 @@ import com.mbrlabs.mundus.history.CommandHistory;
 import com.mbrlabs.mundus.history.commands.RotateCommand;
 import com.mbrlabs.mundus.history.commands.ScaleCommand;
 import com.mbrlabs.mundus.history.commands.TranslateCommand;
+import com.mbrlabs.mundus.ui.modules.inspector.BaseInspectorWidget;
 import com.mbrlabs.mundus.ui.widgets.FloatFieldWithLabel;
 import com.mbrlabs.mundus.utils.StringUtils;
 

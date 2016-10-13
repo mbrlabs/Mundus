@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.ui.modules.inspector;
+package com.mbrlabs.mundus.ui.modules.inspector.components;
 
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.ui.modules.inspector.BaseInspectorWidget;
 
 /**
  * @author Marcus Brummer
