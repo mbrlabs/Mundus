@@ -78,7 +78,7 @@ public class EditorAssetManager extends AssetManager {
      * @throws IOException
      */
     public MetaFile createNewMetaFile(FileHandle file, AssetType type) throws IOException, AssetAlreadyExistsException {
-        if(file.exists()) throw new AssetAlreadyExistsException();
+        if (file.exists()) throw new AssetAlreadyExistsException();
 
         final MetaFile meta = new MetaFile(file);
         meta.setUuid(UUID.randomUUID().toString());
@@ -121,7 +121,8 @@ public class EditorAssetManager extends AssetManager {
      * @return model asset
      * @throws IOException
      */
-    public ModelAsset createModelAsset(ModelImporter.ImportedModel model) throws IOException, AssetAlreadyExistsException {
+    public ModelAsset createModelAsset(ModelImporter.ImportedModel model)
+            throws IOException, AssetAlreadyExistsException {
         this.model = model;
         String modelFilename = model.g3dbFile.name();
         String metaFilename = modelFilename + ".meta";
@@ -155,7 +156,8 @@ public class EditorAssetManager extends AssetManager {
      * @return new terrain asset
      * @throws IOException
      */
-    public TerrainAsset createTerraAsset(String name, int vertexResolution, int size) throws IOException, AssetAlreadyExistsException {
+    public TerrainAsset createTerraAsset(String name, int vertexResolution, int size)
+            throws IOException, AssetAlreadyExistsException {
         String terraFilename = name + ".terra";
         String metaFilename = terraFilename + ".meta";
 
@@ -335,7 +337,8 @@ public class EditorAssetManager extends AssetManager {
         mat.getMeta().save();
     }
 
-    private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type) throws IOException, AssetAlreadyExistsException {
+    private MetaFile createMetaFileFromAsset(FileHandle assetFile, AssetType type)
+            throws IOException, AssetAlreadyExistsException {
         String metaName = assetFile.name() + "." + MetaFile.META_EXTENSION;
         String metaPath = FilenameUtils.concat(rootFolder.path(), metaName);
         return createNewMetaFile(new FileHandle(metaPath), type);

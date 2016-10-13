@@ -23,7 +23,6 @@ import com.kotcrab.vis.ui.util.dialog.InputDialogAdapter;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 import com.kotcrab.vis.ui.widget.Tooltip;
-import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.core.Inject;
@@ -37,8 +36,6 @@ import com.mbrlabs.mundus.ui.widgets.ToggleButton;
 import com.mbrlabs.mundus.ui.widgets.Toolbar;
 import com.mbrlabs.mundus.utils.Fa;
 import com.mbrlabs.mundus.utils.Log;
-
-import java.io.IOException;
 
 import static com.mbrlabs.mundus.utils.Fa.TAG;
 
@@ -169,24 +166,25 @@ public class MundusToolbar extends Toolbar {
         createMaterial.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Dialogs.showInputDialog(Ui.getInstance(), "Create new material", "Material name", new InputDialogAdapter() {
-                    @Override
-                    public void finished(String input) {
-                        EditorAssetManager assetManager = projectManager.current().assetManager;
-                        try {
-                            MaterialAsset mat = assetManager.createMaterialAsset(input);
-                            Mundus.postEvent(new AssetImportEvent(mat));
-                        } catch (Exception e) {
-                            Log.exception(TAG, e);
-                            Ui.getInstance().getToaster().error(e.toString());
-                        }
-                    }
+                Dialogs.showInputDialog(Ui.getInstance(), "Create new material", "Material name",
+                        new InputDialogAdapter() {
+                            @Override
+                            public void finished(String input) {
+                                EditorAssetManager assetManager = projectManager.current().assetManager;
+                                try {
+                                    MaterialAsset mat = assetManager.createMaterialAsset(input);
+                                    Mundus.postEvent(new AssetImportEvent(mat));
+                                } catch (Exception e) {
+                                    Log.exception(TAG, e);
+                                    Ui.getInstance().getToaster().error(e.toString());
+                                }
+                            }
 
-                    @Override
-                    public void canceled() {
-                        super.canceled();
-                    }
-                });
+                            @Override
+                            public void canceled() {
+                                super.canceled();
+                            }
+                        });
             }
         });
 

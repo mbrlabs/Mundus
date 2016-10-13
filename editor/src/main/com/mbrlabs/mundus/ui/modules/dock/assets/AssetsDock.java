@@ -23,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.MenuItem;
@@ -162,9 +161,10 @@ public class AssetsDock extends Tab
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    if(event.getButton() == Input.Buttons.RIGHT) {
-                        assetOpsMenu.showMenu(Ui.getInstance(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-                    } else if(event.getButton() == Input.Buttons.LEFT) {
+                    if (event.getButton() == Input.Buttons.RIGHT) {
+                        assetOpsMenu.showMenu(Ui.getInstance(), Gdx.input.getX(),
+                                Gdx.graphics.getHeight() - Gdx.input.getY());
+                    } else if (event.getButton() == Input.Buttons.LEFT) {
                         if (AssetItem.this.asset instanceof ModelAsset) {
                             toolManager.modelPlacementTool.setModel((ModelAsset) AssetItem.this.asset);
                             toolManager.activateTool(toolManager.modelPlacementTool);

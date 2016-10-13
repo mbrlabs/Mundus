@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.Menu;
 import com.kotcrab.vis.ui.widget.MenuItem;
-import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -58,9 +57,11 @@ public class AssetsMenu extends Menu {
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
 
-                ui.getAssetSelectionDialog().show(asset -> false, assets -> {
-                    for (Asset asset : assets) {
+                ui.getAssetSelectionDialog().show(true, asset -> false, asset -> {
+                    if (asset != null) {
                         Log.trace("AssetMenu", asset.toString());
+                    } else {
+                        Log.trace("AssetMenu", "null");
                     }
                 });
 

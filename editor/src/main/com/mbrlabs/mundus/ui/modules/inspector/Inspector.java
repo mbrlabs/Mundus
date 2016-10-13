@@ -160,7 +160,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
-        if(mode != InspectorMode.GAME_OBJECT) {
+        if (mode != InspectorMode.GAME_OBJECT) {
             mode = InspectorMode.GAME_OBJECT;
             setupGameObjectMode();
         }
@@ -169,7 +169,7 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
 
     @Override
     public void onAssetSelected(AssetSelectedEvent event) {
-        if(mode != InspectorMode.ASSET) {
+        if (mode != InspectorMode.ASSET) {
             mode = InspectorMode.ASSET;
             setupAssetMode();
         }

@@ -27,7 +27,6 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.Asset;
-import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -38,7 +37,6 @@ import com.mbrlabs.mundus.ui.modules.dialogs.BaseDialog;
 import com.mbrlabs.mundus.ui.widgets.ImageChooserField;
 import com.mbrlabs.mundus.utils.FileFormatUtils;
 import com.mbrlabs.mundus.utils.Log;
-import com.mbrlabs.mundus.utils.Toaster;
 
 import java.io.IOException;
 
@@ -121,7 +119,7 @@ public class ImportTextureDialog extends BaseDialog implements Disposable {
                     } catch (IOException e) {
                         Log.exception(TAG, e);
                         Ui.getInstance().getToaster().error("IO error");
-                    } catch(AssetAlreadyExistsException ee) {
+                    } catch (AssetAlreadyExistsException ee) {
                         Log.exception(TAG, ee);
                         Ui.getInstance().getToaster().error("Error: There already exists a texture with the same name");
                     }

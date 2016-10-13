@@ -44,6 +44,7 @@ public class ModelAsset extends Asset {
 
     public void setDiffuseTexture(TextureAsset tex) {
         diffuseTexture = tex;
+        meta.setDiffuseTexture(null);
     }
 
     public TextureAsset getDiffuseTexture() {
@@ -66,7 +67,7 @@ public class ModelAsset extends Asset {
     public void resolveDependencies(Map<String, Asset> assets) {
         // diffuse texture
         String id = meta.getDiffuseTexture();
-        if(id != null && assets.containsKey(id)) {
+        if (id != null && assets.containsKey(id)) {
             diffuseTexture = (TextureAsset) assets.get(id);
         }
     }

@@ -21,14 +21,9 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
-import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.kotcrab.vis.ui.widget.VisTextField;
-import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
@@ -40,9 +35,9 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
-import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
+import com.mbrlabs.mundus.ui.widgets.AssetSelectionField;
 import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
 
 import java.io.IOException;
@@ -107,57 +102,30 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
             collapsibleContent.add(new VisLabel(mat.id)).expandX().fillX().left().row();
 
             // diffuse texture
-            collapsibleContent.add(new VisLabel("Diffuse Texture (click to change)")).expandX().fillX().left().row();
-            final VisTextField diffuseTextureField = new VisTextField();
-            final AssetSelectionDialog.AssetSelectionListener listener = assets -> {
-                if (assets.size > 0) {
-                    // set texture id & save
-                    Asset selectedTexture = assets.first();
-                    asset.setDiffuseTexture((TextureAsset) selectedTexture);
-                    asset.applyDependencies();
-                    try {
-                        asset.getMeta().save();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            collapsibleContent.add(new VisLabel("Diffuse Texture")).expandX().fillX().left().row();
+            AssetSelectionField assetField = new AssetSelectionField();
+            final AssetSelectionDialog.AssetSelectionListener listener = selection -> {
+                if (selection == null) {
+                    for (Material m : component.getModelInstance().getModel().getModel().materials) {
+                        m.remove(TextureAttribute.Diffuse);
                     }
-
-                    updateModelInstaneceMaterials();
-                    diffuseTextureField.setText(selectedTexture.toString());
                 }
+                // set texture id & save
+                asset.setDiffuseTexture((TextureAsset) selection);
+                asset.applyDependencies();
+                try {
+                    asset.getMeta().save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                updateModelInstaneceMaterials();
             };
-            diffuseTextureField.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Ui.getInstance().getAssetSelectionDialog().show(new AssetTextureFilter(), listener);
-                }
-            });
-            TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
-            if (texAsset != null) {
-                diffuseTextureField.setText(texAsset.toString());
-            }
-            diffuseTextureField.setDisabled(true);
-            collapsibleContent.add(diffuseTextureField).expandX().fillX().left().padBottom(5).row();
+            assetField.setListener(listener).setFilter(new AssetTextureFilter());
 
-            // delete texture btn
-            VisTextButton deletBtn = new VisTextButton("Remove texture");
-            deletBtn.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    MetaFile meta = component.getModelInstance().getModel().getMeta();
-                    meta.setDiffuseTexture(null);
-                    try {
-                        meta.save();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    for (Material mat : component.getModelInstance().getModel().getModel().materials) {
-                        mat.remove(TextureAttribute.Diffuse);
-                    }
-                    updateModelInstaneceMaterials();
-                    diffuseTextureField.setText("");
-                }
-            });
-            collapsibleContent.add(deletBtn).expandX().fillX().left().padBottom(5).row();
+            TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
+            assetField.setAsset(texAsset);
+
+            collapsibleContent.add(assetField).grow().padBottom(5).row();
 
             // diffuse color
             final ColorAttribute diffuse = (ColorAttribute) mat.get(ColorAttribute.Diffuse);

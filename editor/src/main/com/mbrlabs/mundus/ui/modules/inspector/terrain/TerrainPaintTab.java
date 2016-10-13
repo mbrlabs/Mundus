@@ -102,10 +102,9 @@ public class TerrainPaintTab extends Tab {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 AssetSelectionDialog dialog = Ui.getInstance().getAssetSelectionDialog();
-                dialog.show(new AssetTextureFilter(), assets -> {
-                    if (assets.size == 0) return;
+                dialog.show(false, new AssetTextureFilter(), asset -> {
                     try {
-                        addTexture((TextureAsset) assets.first());
+                        addTexture((TextureAsset) asset);
                     } catch (IOException e) {
                         e.printStackTrace();
                         Ui.getInstance().getToaster().error("Error while creating the splatmap");
@@ -130,7 +129,7 @@ public class TerrainPaintTab extends Tab {
         }
 
         // create splatmap
-        if(terrainAsset.getSplatmap() == null) {
+        if (terrainAsset.getSplatmap() == null) {
             try {
                 PixmapTextureAsset splatmap = assetManager.createPixmapTextureAsset(512);
                 terrainAsset.setSplatmap(splatmap);
@@ -271,11 +270,10 @@ public class TerrainPaintTab extends Tab {
                 public void clicked(InputEvent event, float x, float y) {
                     if (channel != null) {
                         AssetSelectionDialog dialog = Ui.getInstance().getAssetSelectionDialog();
-                        dialog.show(new AssetTextureFilter(), assets -> {
-                            if (assets.size == 0) return;
+                        dialog.show(false, new AssetTextureFilter(), asset -> {
                             if (channel != null) {
                                 TerrainAsset terrain = parent.component.getTerrain();
-                                TextureAsset texture = (TextureAsset) assets.first();
+                                TextureAsset texture = (TextureAsset) asset;
                                 if (channel == SplatTexture.Channel.BASE) {
                                     terrain.setSplatBase(texture);
                                 } else if (channel == SplatTexture.Channel.R) {

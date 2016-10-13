@@ -182,9 +182,10 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                         } catch (IOException e) {
                             e.printStackTrace();
                             Ui.getInstance().getToaster().error("Error while creating a ModelAsset");
-                        } catch(AssetAlreadyExistsException ee) {
+                        } catch (AssetAlreadyExistsException ee) {
                             Log.exception(TAG, ee);
-                            Ui.getInstance().getToaster().error("Error: There already exists a model with the same name");
+                            Ui.getInstance().getToaster()
+                                    .error("Error: There already exists a model with the same name");
                         }
                         dispose();
                         close();

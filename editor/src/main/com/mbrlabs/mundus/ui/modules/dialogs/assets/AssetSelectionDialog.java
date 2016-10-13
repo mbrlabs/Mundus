@@ -16,9 +16,14 @@
 
 package com.mbrlabs.mundus.ui.modules.dialogs.assets;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.adapter.SimpleListAdapter;
 import com.kotcrab.vis.ui.widget.ListView;
+import com.kotcrab.vis.ui.widget.VisTable;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.core.Inject;
@@ -42,8 +47,10 @@ public class AssetSelectionDialog extends BaseDialog
     @Inject
     private ProjectManager projectManager;
 
+    private VisTable root;
     private ListView<Asset> list;
     private SimpleListAdapter<Asset> listAdapter;
+    private VisTextButton noneBtn;
 
     private AssetFilter filter;
     private AssetSelectionListener listener;
@@ -58,18 +65,32 @@ public class AssetSelectionDialog extends BaseDialog
     }
 
     private void setupUI() {
+        root = new VisTable();
         listAdapter = new SimpleListAdapter<>(new Array<Asset>());
         list = new ListView<>(listAdapter);
-        add(list.getMainTable()).grow().size(300, 400);
+        root.add(list.getMainTable()).grow().size(300, 400).row();
+
+        noneBtn = new VisTextButton("None / Remove old asset");
+        root.add(noneBtn).grow().row();
+
+        add(root).padRight(5).padBottom(5).grow().row();
     }
 
     private void setupListeners() {
         list.setItemClickListener(item -> {
             if (listener != null) {
-                Array<Asset> assets = new Array<>();
-                assets.add(item);
-                listener.onSelected(assets);
+                listener.onSelected(item);
                 close();
+            }
+        });
+
+        noneBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (listener != null) {
+                    listener.onSelected(null);
+                    close();
+                }
             }
         });
     }
@@ -96,14 +117,16 @@ public class AssetSelectionDialog extends BaseDialog
                 }
             }
             listAdapter.add(asset);
+            Pixmap.setBlending(Pixmap.Blending.None);
         }
 
         listAdapter.itemsDataChanged();
     }
 
-    public void show(AssetFilter filter, AssetSelectionListener listener) {
+    public void show(boolean showNoneAsset, AssetFilter filter, AssetSelectionListener listener) {
         this.listener = listener;
         this.filter = filter;
+        this.noneBtn.setDisabled(!showNoneAsset);
         reloadData();
         Ui.getInstance().showDialog(this);
     }
@@ -112,7 +135,7 @@ public class AssetSelectionDialog extends BaseDialog
      *
      */
     public interface AssetSelectionListener {
-        void onSelected(Array<Asset> assets);
+        void onSelected(Asset asset);
     }
 
     /**
