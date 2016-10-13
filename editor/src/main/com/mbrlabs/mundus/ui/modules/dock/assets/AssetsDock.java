@@ -167,10 +167,7 @@ public class AssetsDock extends Tab
                         assetOpsMenu.showMenu(Ui.getInstance(), Gdx.input.getX(),
                                 Gdx.graphics.getHeight() - Gdx.input.getY());
                     } else if (event.getButton() == Input.Buttons.LEFT) {
-                        if (AssetItem.this.asset instanceof ModelAsset) {
-                            toolManager.modelPlacementTool.setModel((ModelAsset) AssetItem.this.asset);
-                            toolManager.activateTool(toolManager.modelPlacementTool);
-                        } else if(asset instanceof MaterialAsset) {
+                        if(asset instanceof MaterialAsset || asset instanceof ModelAsset) {
                             Mundus.postEvent(new AssetSelectedEvent(asset));
                         }
                     }

@@ -20,7 +20,9 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.ui.modules.inspector.assets.MaterialAssetInspectorWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.assets.ModelAssetInspectorWidget;
 
 /**
  * @author Marcus Brummer
@@ -29,6 +31,7 @@ import com.mbrlabs.mundus.ui.modules.inspector.assets.MaterialAssetInspectorWidg
 public class AssetInspector extends VisTable {
 
     private MaterialAssetInspectorWidget materialWidget;
+    private ModelAssetInspectorWidget modelWidget;
 
     private Asset asset;
 
@@ -38,15 +41,20 @@ public class AssetInspector extends VisTable {
         pad(7);
 
         materialWidget = new MaterialAssetInspectorWidget();
+        modelWidget = new ModelAssetInspectorWidget();
     }
 
     public void setAsset(Asset asset) {
         this.asset = asset;
+        clear();
         if (asset instanceof MaterialAsset) {
-            clear();
             add(materialWidget).growX().row();
             materialWidget.setMaterial((MaterialAsset) asset);
+        } else if(asset instanceof ModelAsset) {
+            add(modelWidget).growX().row();
+            modelWidget.setModel((ModelAsset) asset);
         }
+
         // TODO other assets
     }
 
