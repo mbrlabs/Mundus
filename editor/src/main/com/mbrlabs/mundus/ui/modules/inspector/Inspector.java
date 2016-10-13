@@ -106,10 +106,6 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         add(scrollPane).expand().fill().top();
     }
 
-    public void setupAssetMode() {
-        root.clearChildren();
-    }
-
     @Override
     public void onGameObjectSelected(GameObjectSelectedEvent event) {
         if (mode != InspectorMode.GAME_OBJECT) {
@@ -117,7 +113,12 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
             root.clear();
             root.add(goInspector).grow().row();
         }
-        goInspector.set(event.getGameObject());
+        goInspector.setGameObject(event.getGameObject());
+    }
+
+    @Override
+    public void onGameObjectModified(GameObjectModifiedEvent event) {
+        goInspector.updateGameObject();
     }
 
     @Override
@@ -125,13 +126,10 @@ public class Inspector extends VisTable implements GameObjectSelectedEvent.GameO
         Log.debug(TAG, event.getAsset().toString());
         if (mode != InspectorMode.ASSET) {
             mode = InspectorMode.ASSET;
-            setupAssetMode();
+            root.clear();
+            root.add(assetInspector).grow().row();
         }
-    }
-
-    @Override
-    public void onGameObjectModified(GameObjectModifiedEvent event) {
-        goInspector.updateGO();
+        assetInspector.setAsset(event.getAsset());
     }
 
 }

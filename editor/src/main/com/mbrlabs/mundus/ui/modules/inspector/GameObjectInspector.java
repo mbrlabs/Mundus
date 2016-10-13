@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -25,7 +24,6 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
-import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
@@ -63,25 +61,31 @@ public class GameObjectInspector extends VisTable {
         addComponentBtn = new VisTextButton("Add Component");
         componentTable = new VisTable();
 
-        setupUI();
+        add(identifierWidget).growX().pad(7).row();
+        add(transformWidget).growX().pad(7).row();
+        for (BaseInspectorWidget cw : componentWidgets) {
+            componentTable.add(cw).row();
+        }
+        add(componentTable).growX().pad(7).row();
+        add(addComponentBtn).expandX().fill().top().center().pad(10).row();
     }
 
-    public void set(GameObject gameObject) {
+    public void setGameObject(GameObject gameObject) {
         this.gameObject = gameObject;
 
         // build ui
         buildComponentWidgets();
         componentTable.clearChildren();
         for (ComponentWidget cw : componentWidgets) {
-            componentTable.add(cw).expand().fill().row();
+            componentTable.add(cw).grow().row();
         }
 
         // update
-        updateGO();
+        updateGameObject();
     }
 
-    public void updateGO() {
-        if(gameObject != null) {
+    public void updateGameObject() {
+        if (gameObject != null) {
             identifierWidget.setValues(gameObject);
             transformWidget.setValues(gameObject);
 
@@ -92,11 +96,9 @@ public class GameObjectInspector extends VisTable {
     }
 
     private void buildComponentWidgets() {
-        final ProjectContext projectContext = projectManager.current();
-        componentWidgets.clear();
-        if (projectContext.currScene.currentSelection != null) {
-            for (Component component : projectContext.currScene.currentSelection.getComponents()) {
-
+        if (gameObject != null) {
+            componentWidgets.clear();
+            for (Component component : gameObject.getComponents()) {
                 // model component widget
                 if (component.getType() == Component.Type.MODEL) {
                     componentWidgets.add(new ModelComponentWidget((ModelComponent) component));
@@ -104,19 +106,8 @@ public class GameObjectInspector extends VisTable {
                 } else if (component.getType() == Component.Type.TERRAIN) {
                     componentWidgets.add(new TerrainComponentWidget((TerrainComponent) component));
                 }
-
             }
         }
-    }
-
-    private void setupUI() {
-        add(identifierWidget).expandX().fillX().pad(7).row();
-        add(transformWidget).expandX().fillX().pad(7).row();
-        for (BaseInspectorWidget cw : componentWidgets) {
-            componentTable.add(cw).row();
-        }
-        add(componentTable).fillX().expandX().pad(7).row();
-        add(addComponentBtn).expandX().fill().top().center().pad(10).row();
     }
 
 }

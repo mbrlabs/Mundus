@@ -16,7 +16,11 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector;
 
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisTable;
+import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
+import com.mbrlabs.mundus.ui.modules.inspector.assets.MaterialAssetInspectorWidget;
 
 /**
  * @author Marcus Brummer
@@ -24,8 +28,26 @@ import com.kotcrab.vis.ui.widget.VisTable;
  */
 public class AssetInspector extends VisTable {
 
+    private MaterialAssetInspectorWidget materialWidget;
+
+    private Asset asset;
+
     public AssetInspector() {
         super();
+        align(Align.top);
+        pad(7);
+
+        materialWidget = new MaterialAssetInspectorWidget();
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
+        if (asset instanceof MaterialAsset) {
+            clear();
+            add(materialWidget).growX().row();
+            materialWidget.setMaterial((MaterialAsset) asset);
+        }
+        // TODO other assets
     }
 
 }

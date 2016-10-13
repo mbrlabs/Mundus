@@ -67,9 +67,11 @@ public class ColorPickerField extends VisTable {
     }
 
     public void setColor(Color color) {
-        textField.setText("#" + color.toString());
-        colorPicker.setColor(color);
-        this.color = color;
+        if(color != null) {
+            textField.setText("#" + color.toString());
+            colorPicker.setColor(color);
+            this.color = color;
+        }
     }
 
     public void setEditable(boolean editable) {

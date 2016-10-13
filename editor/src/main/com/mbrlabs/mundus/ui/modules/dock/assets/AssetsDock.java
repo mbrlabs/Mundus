@@ -34,12 +34,14 @@ import com.kotcrab.vis.ui.widget.VisSplitPane;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.AssetImportEvent;
+import com.mbrlabs.mundus.events.AssetSelectedEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
@@ -168,6 +170,8 @@ public class AssetsDock extends Tab
                         if (AssetItem.this.asset instanceof ModelAsset) {
                             toolManager.modelPlacementTool.setModel((ModelAsset) AssetItem.this.asset);
                             toolManager.activateTool(toolManager.modelPlacementTool);
+                        } else if(asset instanceof MaterialAsset) {
+                            Mundus.postEvent(new AssetSelectedEvent(asset));
                         }
                     }
                 }

@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
@@ -35,14 +36,14 @@ public class MaterialWidget extends VisTable {
 
     public MaterialWidget() {
         super();
-
+        align(Align.topLeft);
         diffuseAssetField = new AssetSelectionField();
         diffuseColorField = new ColorPickerField();
 
-        add(new VisLabel("Diffuse texture")).row();
-        add(diffuseAssetField).row();
-        add(new VisLabel("Diffuse texture")).row();
-        add(diffuseColorField).row();
+        add(new VisLabel("Diffuse texture")).grow().row();
+        add(diffuseAssetField).growX().row();
+        add(new VisLabel("Diffuse color")).grow().row();
+        add(diffuseColorField).growX().row();
 
         setupWidgets();
     }

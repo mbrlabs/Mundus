@@ -16,34 +16,27 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.assets;
 
-import com.mbrlabs.mundus.commons.assets.MaterialAsset;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.ui.modules.inspector.BaseInspectorWidget;
-import com.mbrlabs.mundus.ui.widgets.MaterialWidget;
 
 /**
  * @author Marcus Brummer
  * @version 13-10-2016
  */
-public class MaterialInspectorWidget extends BaseInspectorWidget {
+public class ModelAssetInspectorWidget extends BaseInspectorWidget {
 
-    private static final String TITLE = "Material Asset";
+    private static final String TITLE = "Model Asset";
 
-    private MaterialAsset material;
+    private ModelAsset model;
 
-    private MaterialWidget materialWidget;
-
-    public MaterialInspectorWidget() {
+    public ModelAssetInspectorWidget() {
         super(TITLE);
         setDeletable(false);
-
-        materialWidget = new MaterialWidget();
-        collapsibleContent.add(materialWidget).grow().row();
     }
 
-    public void setMaterial(MaterialAsset material) {
-        this.material = material;
-        materialWidget.setMaterial(this.material);
+    public void setModel(ModelAsset model) {
+        this.model = model;
     }
 
     @Override
