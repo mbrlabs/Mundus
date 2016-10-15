@@ -51,7 +51,6 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
 
     // materials
     private VisTable materialContainer;
-    private Array<MaterialWidget> materials;
 
     // actions
     private VisTextButton modelPlacement;
@@ -64,7 +63,6 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         Mundus.inject(this);
         setDeletable(false);
 
-        materials = new Array<>();
         materialContainer = new VisTable();
 
         name = new VisLabel();
@@ -118,7 +116,7 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         vertexCount.setText("Vertices: " + verts);
         indexCount.setText("Indices: " + indices);
 
-        materials.clear();
+        materialContainer.clear();
     }
 
     public void setModel(ModelAsset model) {

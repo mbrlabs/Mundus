@@ -19,10 +19,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,23 +34,16 @@ import java.util.Map;
 public class ModelAsset extends Asset {
 
     private Model model;
-    private TextureAsset diffuseTexture;
+
+    private Map<String, MaterialAsset> defaultMaterials;
 
     public ModelAsset(MetaFile meta, FileHandle assetFile) {
         super(meta, assetFile);
+        defaultMaterials = new HashMap<String, MaterialAsset>();
     }
 
     public Model getModel() {
         return model;
-    }
-
-    public void setDiffuseTexture(TextureAsset tex) {
-        diffuseTexture = tex;
-        meta.setDiffuseTexture(null);
-    }
-
-    public TextureAsset getDiffuseTexture() {
-        return diffuseTexture;
     }
 
     @Override
@@ -65,21 +60,30 @@ public class ModelAsset extends Asset {
 
     @Override
     public void resolveDependencies(Map<String, Asset> assets) {
-        // diffuse texture
-        String id = meta.getDiffuseTexture();
-        if (id != null && assets.containsKey(id)) {
-            diffuseTexture = (TextureAsset) assets.get(id);
+        // materials
+        for(String g3dbMatID : meta.getDefaultModelMaterials().keySet()) {
+            String uuid = meta.getDefaultModelMaterials().get(g3dbMatID);
+            System.out.println(uuid + ": " + assets.get(uuid));
+            defaultMaterials.put(g3dbMatID, (MaterialAsset) assets.get(uuid));
         }
     }
 
     @Override
     public void applyDependencies() {
-        if (model == null || diffuseTexture == null) return;
-        for (Material mat : model.materials) {
-            TextureAttribute diffuse = new TextureAttribute(TextureAttribute.Diffuse, diffuseTexture.getTexture());
-            mat.set(diffuse);
+        if (model == null) return;
+
+        // materials
+        for(Material mat : model.materials) {
+            MaterialAsset materialAsset = defaultMaterials.get(mat.id);
+            if(materialAsset.getDiffuseColor() != null) {
+                mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
+            }
+            if(materialAsset.getDiffuseTexture() != null) {
+                mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
+            }
+            mat.set(new FloatAttribute(FloatAttribute.Shininess, materialAsset.getShininess()));
+            // TODO opacity
         }
-        getMeta().setDiffuseTexture(diffuseTexture.getID());
     }
 
     @Override

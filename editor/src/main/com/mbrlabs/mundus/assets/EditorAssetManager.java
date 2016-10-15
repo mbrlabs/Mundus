@@ -81,13 +81,17 @@ public class EditorAssetManager extends AssetManager {
         if (file.exists()) throw new AssetAlreadyExistsException();
 
         final MetaFile meta = new MetaFile(file);
-        meta.setUuid(UUID.randomUUID().toString());
+        meta.setUuid(newUUID());
         meta.setVersion(MetaFile.CURRENT_VERSION);
         meta.setLastModified(new Date());
         meta.setType(type);
         meta.save();
 
         return meta;
+    }
+
+    private String newUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     /**
@@ -213,7 +217,7 @@ public class EditorAssetManager extends AssetManager {
      * @throws IOException
      */
     public PixmapTextureAsset createPixmapTextureAsset(int size) throws IOException, AssetAlreadyExistsException {
-        String pixmapFilename = UUID.randomUUID().toString().replace("-", "").substring(0, 5) + ".png";
+        String pixmapFilename = newUUID().substring(0, 5) + ".png";
         String metaFilename = pixmapFilename + ".meta";
 
         // create meta file

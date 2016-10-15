@@ -139,8 +139,17 @@ public class AssetManager implements Disposable {
             listener.onLoad(asset, assets.size, metaFiles.length);
         }
 
-        // resolve & apply dependencies
+        // resolve material assets
+        for(Asset asset : assets) {
+            if(asset instanceof MaterialAsset) {
+                asset.resolveDependencies(assetIndex);
+                asset.applyDependencies();
+            }
+        }
+
+        // resolve other assets
         for (Asset asset : assets) {
+            if(asset instanceof MaterialAsset) continue;
             asset.resolveDependencies(assetIndex);
             asset.applyDependencies();
         }

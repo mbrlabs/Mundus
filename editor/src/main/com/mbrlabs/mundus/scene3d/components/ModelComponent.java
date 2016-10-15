@@ -16,7 +16,11 @@
 
 package com.mbrlabs.mundus.scene3d.components;
 
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -37,7 +41,7 @@ public class ModelComponent extends PickableComponent {
     private MModelInstance modelInstance;
     private Shader shader;
 
-    private Map<String, MaterialAsset> materials;
+    private Map<String, MaterialAsset> materials;  // g3db material id to material asset uuid
 
     public ModelComponent(GameObject go) {
         super(go);
@@ -55,6 +59,24 @@ public class ModelComponent extends PickableComponent {
 
     public void setModelInstance(MModelInstance modelInstance) {
         this.modelInstance = modelInstance;
+    }
+
+    public Map<String, MaterialAsset> getMaterials() {
+        return materials;
+    }
+
+    public void applyMaterials() {
+        for(Material mat : modelInstance.modelInstance.materials) {
+            MaterialAsset materialAsset = materials.get(mat.id);
+            if(materialAsset.getDiffuseColor() != null) {
+                mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
+            }
+            if(materialAsset.getDiffuseTexture() != null) {
+                mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
+            }
+            mat.set(new FloatAttribute(FloatAttribute.Shininess, materialAsset.getShininess()));
+            // TODO opacity
+        }
     }
 
     @Override

@@ -112,7 +112,7 @@ public class MetaFile {
                 for(String g3dbMat : defaultModelMaterials.keySet()) {
                     mats += g3dbMat + "~>" + defaultModelMaterials.get(g3dbMat) + ",";
                 }
-                if(mats.endsWith(",")) mats = mats.substring(0, mats.length() - 2);
+                if(mats.endsWith(",")) mats = mats.substring(0, mats.length() - 1);
                 props.setProperty(PROP_DEFAULT_MODEL_MATERIALS, mats);
             }
         }
