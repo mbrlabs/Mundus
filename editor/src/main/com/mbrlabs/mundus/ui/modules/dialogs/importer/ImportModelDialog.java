@@ -21,6 +21,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -41,6 +42,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.mbrlabs.mundus.assets.AssetAlreadyExistsException;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.assets.ModelImporter;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 import com.mbrlabs.mundus.core.Inject;
@@ -61,9 +63,9 @@ import java.io.IOException;
  * @author Marcus Brummer
  * @version 07-06-2016
  */
-public class ImportMeshDialog extends BaseDialog implements Disposable {
+public class ImportModelDialog extends BaseDialog implements Disposable {
 
-    private static final String TAG = ImportMeshDialog.class.getSimpleName();
+    private static final String TAG = ImportModelDialog.class.getSimpleName();
 
     private ImportModelTable importMeshTable;
 
@@ -74,7 +76,7 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
     @Inject
     private ProjectManager projectManager;
 
-    public ImportMeshDialog() {
+    public ImportModelDialog() {
         super("Import Mesh");
         Mundus.inject(this);
         setModal(true);
@@ -173,11 +175,9 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     if (previewModel != null && previewInstance != null) {
-                        EditorAssetManager assetManager = projectManager.current().assetManager;
-
                         try {
-                            ModelAsset asset = assetManager.createModelAsset(importedModel);
-                            Mundus.postEvent(new AssetImportEvent(asset));
+                            ModelAsset modelAsset = importModel(importedModel);
+                            Mundus.postEvent(new AssetImportEvent(modelAsset));
                             Ui.getInstance().getToaster().success("Mesh imported");
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -194,6 +194,22 @@ public class ImportMeshDialog extends BaseDialog implements Disposable {
                     }
                 }
             });
+        }
+
+        private ModelAsset importModel(ModelImporter.ImportedModel model) throws IOException, AssetAlreadyExistsException {
+
+            // create model asset
+            EditorAssetManager assetManager = projectManager.current().assetManager;
+            ModelAsset modelAsset = assetManager.createModelAsset(importedModel);
+
+            // create materials
+            for(Material mat : modelAsset.getModel().materials) {
+                MaterialAsset materialAsset = assetManager.createMaterialAsset(mat.id);
+                modelAsset.getMeta().getDefaultModelMaterials().put(mat.id, materialAsset.getID());
+            }
+            modelAsset.getMeta().save();
+
+            return modelAsset;
         }
 
         private void loadAndShowPreview(FileHandle model) {

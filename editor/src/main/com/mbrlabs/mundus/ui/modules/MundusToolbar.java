@@ -150,7 +150,7 @@ public class MundusToolbar extends Toolbar {
         importMesh.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Ui.getInstance().showDialog(Ui.getInstance().getImportMeshDialog());
+                Ui.getInstance().showDialog(Ui.getInstance().getImportModelDialog());
             }
         });
 

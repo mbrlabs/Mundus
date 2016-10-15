@@ -48,7 +48,7 @@ public class AssetsMenu extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Ui ui = Ui.getInstance();
-                ui.showDialog(ui.getImportMeshDialog());
+                ui.showDialog(ui.getImportModelDialog());
             }
         });
 

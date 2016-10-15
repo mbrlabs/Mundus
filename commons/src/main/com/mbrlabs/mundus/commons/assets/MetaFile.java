@@ -17,11 +17,14 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.Material;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -48,6 +51,7 @@ public class MetaFile {
     // model material
     private static final String PROP_MATERIAL_DIFFUSE_COLOR = "mat.diffuse.color";
     private static final String PROP_MATERIAL_DIFFUSE_TEXTURE = "mat.diffuse.texture";
+    private static final String PROP_DEFAULT_MODEL_MATERIALS = "model.default.materials";
 
     // terrain
     private static final String PROP_TERRAIN_SIZE = "terrain.size";
@@ -70,6 +74,7 @@ public class MetaFile {
     // model specific
     private Color diffuseColor = null;
     private String diffuseTexture = null;
+    private Map<String, String> defaultModelMaterials; // libgdx g3db material name -> MaterialAsset uuid
 
     // terrain specific
     private String terrainSplatmap;
@@ -83,6 +88,7 @@ public class MetaFile {
     public MetaFile(FileHandle file) {
         this.file = file;
         this.props = new Properties();
+        this.defaultModelMaterials = new HashMap<String, String>();
     }
 
     // TODO move this out into a manager class
@@ -100,6 +106,14 @@ public class MetaFile {
             }
             if (diffuseTexture != null) {
                 props.setProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, diffuseTexture);
+            }
+            if(defaultModelMaterials.size() > 0) {
+                String mats = "";
+                for(String g3dbMat : defaultModelMaterials.keySet()) {
+                    mats += g3dbMat + "~>" + defaultModelMaterials.get(g3dbMat) + ",";
+                }
+                if(mats.endsWith(",")) mats = mats.substring(0, mats.length() - 2);
+                props.setProperty(PROP_DEFAULT_MODEL_MATERIALS, mats);
             }
         }
 
@@ -147,6 +161,16 @@ public class MetaFile {
                     this.diffuseColor = Color.valueOf(color);
                 }
                 this.diffuseTexture = props.getProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, null);
+
+                String mats = props.getProperty(PROP_DEFAULT_MODEL_MATERIALS, null);
+                if(mats != null) {
+                    for(String pair : mats.split(",")) {
+                        String[] split = pair.split("~>");
+                        String g3dbID = split[0];
+                        String materialAssetUUID = split[1];
+                        defaultModelMaterials.put(g3dbID, materialAssetUUID);
+                    }
+                }
             }
 
             // terrain specific
@@ -268,6 +292,10 @@ public class MetaFile {
 
     public int getTerrainSize() {
         return terrainSize;
+    }
+
+    public Map<String, String> getDefaultModelMaterials() {
+        return defaultModelMaterials;
     }
 
     public void setTerrainSize(int terrainSize) {

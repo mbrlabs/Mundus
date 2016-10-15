@@ -34,7 +34,7 @@ import com.mbrlabs.mundus.ui.modules.dialogs.LoadingProjectDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.NewProjectDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.SkyboxDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
-import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportMeshDialog;
+import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportModelDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.importer.ImportTextureDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.settings.SettingsDialog;
 import com.mbrlabs.mundus.ui.modules.dock.DockBar;
@@ -70,7 +70,7 @@ public class Ui extends Stage {
     // private AddTerrainDialog addTerrainDialog;
     private LoadingProjectDialog loadingProjectDialog;
     private ExportDialog exportDialog;
-    private ImportMeshDialog importMeshDialog;
+    private ImportModelDialog importModelDialog;
     private ImportTextureDialog importTextureDialog;
     private FogDialog fogDialog;
     private SkyboxDialog skyboxDialog;
@@ -142,7 +142,7 @@ public class Ui extends Stage {
         fogDialog = new FogDialog();
         skyboxDialog = new SkyboxDialog();
         ambientLightDialog = new AmbientLightDialog();
-        importMeshDialog = new ImportMeshDialog();
+        importModelDialog = new ImportModelDialog();
         importTextureDialog = new ImportTextureDialog();
         assetSelectionDialog = new AssetSelectionDialog();
         exitDialog = new ExitDialog();
@@ -195,8 +195,8 @@ public class Ui extends Stage {
         return exportDialog;
     }
 
-    public ImportMeshDialog getImportMeshDialog() {
-        return importMeshDialog;
+    public ImportModelDialog getImportModelDialog() {
+        return importModelDialog;
     }
 
     public ImportTextureDialog getImportTextureDialog() {
