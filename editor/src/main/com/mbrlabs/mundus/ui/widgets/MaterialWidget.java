@@ -16,12 +16,16 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.util.FloatDigitsOnlyFilter;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
@@ -44,6 +48,9 @@ public class MaterialWidget extends VisTable {
 
     private ColorPickerField diffuseColorField;
     private AssetSelectionField diffuseAssetField;
+    private VisTextField opacity;
+    private VisTextField shininess;
+
     private VisTextButton saveBtn;
 
     private MaterialAsset material;
@@ -57,12 +64,22 @@ public class MaterialWidget extends VisTable {
         align(Align.topLeft);
         diffuseAssetField = new AssetSelectionField();
         diffuseColorField = new ColorPickerField();
+        opacity = new VisTextField();
+        shininess = new VisTextField();
         saveBtn = new VisTextButton("Save material");
+
+        shininess.setTextFieldFilter(new FloatDigitsOnlyFilter(false));
+        opacity.setTextFieldFilter(new FloatDigitsOnlyFilter(false));
 
         add(new VisLabel("Diffuse texture")).grow().row();
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
         add(diffuseColorField).growX().row();
+        add(new VisLabel("Shininess")).growX().row();
+        add(shininess).growX().row();
+        add(new VisLabel("Opacity")).growX().row();
+        add(opacity).growX().row();
+
         add(saveBtn).growX().padTop(5).row();
 
         setupWidgets();
@@ -75,6 +92,28 @@ public class MaterialWidget extends VisTable {
 
         // diffuse color
         diffuseColorField.setCallback(color -> material.setDiffuseColor(color));
+
+        opacity.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    material.setOpacity(Float.valueOf(opacity.getText()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        shininess.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                try {
+                    material.setShininess(Float.valueOf(shininess.getText()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // save material
         saveBtn.addListener(new ClickListener() {
@@ -96,6 +135,8 @@ public class MaterialWidget extends VisTable {
         this.material = material;
         diffuseColorField.setColor(material.getDiffuseColor());
         diffuseAssetField.setAsset(material.getDiffuseTexture());
+        opacity.setText(String.valueOf(material.getOpacity()));
+        shininess.setText(String.valueOf(material.getShininess()));
     }
 
     public MaterialAsset getMaterial() {
