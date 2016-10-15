@@ -18,12 +18,15 @@ package com.mbrlabs.mundus.ui.modules.dock.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.layout.GridGroup;
 import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
@@ -44,6 +47,7 @@ import com.mbrlabs.mundus.core.project.ProjectContext;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.events.AssetImportEvent;
 import com.mbrlabs.mundus.events.AssetSelectedEvent;
+import com.mbrlabs.mundus.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.events.ProjectChangedEvent;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.Ui;
@@ -53,11 +57,15 @@ import com.mbrlabs.mundus.ui.Ui;
  * @version 08-12-2015
  */
 public class AssetsDock extends Tab
-        implements ProjectChangedEvent.ProjectChangedListener, AssetImportEvent.AssetImportListener {
+        implements ProjectChangedEvent.ProjectChangedListener, AssetImportEvent.AssetImportListener,
+        GameObjectSelectedEvent.GameObjectSelectedListener {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
     private GridGroup filesView;
+
+    private Array<AssetItem> assetItems;
+    private AssetItem currentSelection;
 
     private PopupMenu assetOpsMenu;
     private MenuItem renameAsset;
@@ -79,6 +87,7 @@ public class AssetsDock extends Tab
         root = new VisTable();
         filesViewContextContainer = new VisTable(false);
         filesView = new GridGroup(80, 4);
+        assetItems = new Array<>();
         filesView.setTouchable(Touchable.enabled);
 
         VisTable contentTable = new VisTable(false);
@@ -104,12 +113,24 @@ public class AssetsDock extends Tab
         assetOpsMenu.addItem(deleteAsset);
     }
 
+    private void setSelected(AssetItem assetItem) {
+        currentSelection = assetItem;
+        for(AssetItem item : assetItems) {
+            if(currentSelection != null && currentSelection.equals(item)) {
+                item.background(VisUI.getSkin().getDrawable("default-select-selection"));
+            } else {
+                item.background(VisUI.getSkin().getDrawable("menu-bg"));
+            }
+        }
+    }
+
     private void reloadAssets() {
         filesView.clearChildren();
         ProjectContext projectContext = projectManager.current();
         for (Asset asset : projectContext.assetManager.getAssets()) {
             AssetsDock.AssetItem assetItem = new AssetsDock.AssetItem(asset);
             filesView.addActor(assetItem);
+            assetItems.add(assetItem);
         }
     }
 
@@ -138,6 +159,11 @@ public class AssetsDock extends Tab
     @Override
     public void onAssetImported(AssetImportEvent event) {
         reloadAssets();
+    }
+
+    @Override
+    public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent) {
+        setSelected(null);
     }
 
     /**
@@ -171,6 +197,7 @@ public class AssetsDock extends Tab
                     } else if (event.getButton() == Input.Buttons.LEFT) {
                         if (asset instanceof MaterialAsset || asset instanceof ModelAsset
                                 || asset instanceof TextureAsset || asset instanceof TerrainAsset) {
+                            AssetsDock.this.setSelected(AssetItem.this);
                             Mundus.postEvent(new AssetSelectedEvent(asset));
                         }
                     }
