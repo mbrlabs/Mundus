@@ -98,53 +98,53 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         final Model model = asset.getModel();
 
         // iterate over materials
-        for (Material mat : model.materials) {
-            collapsibleContent.add(new VisLabel(mat.id)).expandX().fillX().left().row();
-
-            // diffuse texture
-            collapsibleContent.add(new VisLabel("Diffuse Texture")).expandX().fillX().left().row();
-            AssetSelectionField assetField = new AssetSelectionField();
-            final AssetSelectionDialog.AssetSelectionListener listener = selection -> {
-                if (selection == null) {
-                    for (Material m : component.getModelInstance().getModel().getModel().materials) {
-                        m.remove(TextureAttribute.Diffuse);
-                    }
-                }
-                // set texture id & save
-                asset.setDiffuseTexture((TextureAsset) selection);
-                asset.applyDependencies();
-                try {
-                    asset.getMeta().save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                updateModelInstaneceMaterials();
-            };
-            assetField.setListener(listener).setFilter(new AssetTextureFilter());
-
-            TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
-            assetField.setAsset(texAsset);
-
-            collapsibleContent.add(assetField).grow().padBottom(5).row();
-
-            // diffuse color
-            collapsibleContent.add(new VisLabel("Diffuse Color")).grow().row();
-            final ColorAttribute diffuse = (ColorAttribute) mat.get(ColorAttribute.Diffuse);
-            ColorPickerField diffusePicker = new ColorPickerField();
-            diffusePicker.setColor(diffuse.color);
-            diffusePicker.setCallback(color -> {
-                diffuse.color.set(color);
-                MetaFile meta = component.getModelInstance().getModel().getMeta();
-                meta.setDiffuseColor(color);
-                try {
-                    meta.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                updateModelInstaneceMaterials();
-            });
-            collapsibleContent.add(diffusePicker).expandX().fillX().left().padBottom(5).row();
-        }
+//        for (Material mat : model.materials) {
+//            collapsibleContent.add(new VisLabel(mat.id)).expandX().fillX().left().row();
+//
+//            // diffuse texture
+//            collapsibleContent.add(new VisLabel("Diffuse Texture")).expandX().fillX().left().row();
+//            AssetSelectionField assetField = new AssetSelectionField();
+//            final AssetSelectionDialog.AssetSelectionListener listener = selection -> {
+//                if (selection == null) {
+//                    for (Material m : component.getModelInstance().getModel().getModel().materials) {
+//                        m.remove(TextureAttribute.Diffuse);
+//                    }
+//                }
+//                // set texture id & save
+//                asset.setDiffuseTexture((TextureAsset) selection);
+//                asset.applyDependencies();
+//                try {
+//                    asset.getMeta().save();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                updateModelInstaneceMaterials();
+//            };
+//            assetField.setListener(listener).setFilter(new AssetTextureFilter());
+//
+//            TextureAsset texAsset = component.getModelInstance().getModel().getDiffuseTexture();
+//            assetField.setAsset(texAsset);
+//
+//            collapsibleContent.add(assetField).grow().padBottom(5).row();
+//
+//            // diffuse color
+//            collapsibleContent.add(new VisLabel("Diffuse Color")).grow().row();
+//            final ColorAttribute diffuse = (ColorAttribute) mat.get(ColorAttribute.Diffuse);
+//            ColorPickerField diffusePicker = new ColorPickerField();
+//            diffusePicker.setColor(diffuse.color);
+//            diffusePicker.setCallback(color -> {
+//                diffuse.color.set(color);
+//                MetaFile meta = component.getModelInstance().getModel().getMeta();
+//                meta.setDiffuseColor(color);
+//                try {
+//                    meta.save();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                updateModelInstaneceMaterials();
+//            });
+//            collapsibleContent.add(diffusePicker).expandX().fillX().left().padBottom(5).row();
+//        }
 
     }
 

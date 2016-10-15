@@ -36,6 +36,7 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
+import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectContext;
@@ -167,7 +168,8 @@ public class AssetsDock extends Tab
                         assetOpsMenu.showMenu(Ui.getInstance(), Gdx.input.getX(),
                                 Gdx.graphics.getHeight() - Gdx.input.getY());
                     } else if (event.getButton() == Input.Buttons.LEFT) {
-                        if(asset instanceof MaterialAsset || asset instanceof ModelAsset) {
+                        if (asset instanceof MaterialAsset || asset instanceof ModelAsset
+                                || asset instanceof TextureAsset) {
                             Mundus.postEvent(new AssetSelectedEvent(asset));
                         }
                     }

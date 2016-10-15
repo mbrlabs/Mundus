@@ -21,8 +21,10 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
+import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.ui.modules.inspector.assets.MaterialAssetInspectorWidget;
 import com.mbrlabs.mundus.ui.modules.inspector.assets.ModelAssetInspectorWidget;
+import com.mbrlabs.mundus.ui.modules.inspector.assets.TextureAssetInspectorWidget;
 
 /**
  * @author Marcus Brummer
@@ -32,6 +34,7 @@ public class AssetInspector extends VisTable {
 
     private MaterialAssetInspectorWidget materialWidget;
     private ModelAssetInspectorWidget modelWidget;
+    private TextureAssetInspectorWidget textureWidget;
 
     private Asset asset;
 
@@ -42,6 +45,7 @@ public class AssetInspector extends VisTable {
 
         materialWidget = new MaterialAssetInspectorWidget();
         modelWidget = new ModelAssetInspectorWidget();
+        textureWidget = new TextureAssetInspectorWidget();
     }
 
     public void setAsset(Asset asset) {
@@ -53,6 +57,9 @@ public class AssetInspector extends VisTable {
         } else if(asset instanceof ModelAsset) {
             add(modelWidget).growX().row();
             modelWidget.setModel((ModelAsset) asset);
+        } else if(asset instanceof TextureAsset) {
+            add(textureWidget).growX().row();
+            textureWidget.setTextureAsset((TextureAsset)asset);
         }
 
         // TODO other assets
