@@ -120,11 +120,11 @@ public class Mundus {
         params.hinting = FreeTypeFontGenerator.Hinting.Full;
 
         // font norm
-        params.size = 13;
+        params.size = 12;
         BitmapFont fontNorm = generator.generateFont(params);
 
         // font small
-        params.size = 12;
+        params.size = 11;
         BitmapFont fontSmall = generator.generateFont(params);
 
         // font small
