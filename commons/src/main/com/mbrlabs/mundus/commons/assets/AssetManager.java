@@ -114,6 +114,22 @@ public class AssetManager implements Disposable {
     }
 
     /**
+     * Returns all assets of type MATERIAL.
+     *
+     * @return all model assets
+     */
+    public Array<MaterialAsset> getMaterialAssets() {
+        Array<MaterialAsset> materials = new Array<MaterialAsset>();
+        for (Asset asset : assets) {
+            if (asset instanceof MaterialAsset) {
+                materials.add((MaterialAsset) asset);
+            }
+        }
+
+        return materials;
+    }
+
+    /**
      * Loads all assets in the project's asset folder.
      *
      * @param listener

@@ -18,6 +18,8 @@ package com.mbrlabs.mundus.core.kryo.descriptors;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
+import java.util.HashMap;
+
 /**
  * @author Marcus Brummer
  * @version 18-01-2016
@@ -26,6 +28,16 @@ public class ModelComponentDescriptor {
 
     @Tag(0)
     private String modelID;
+    @Tag(1)
+    private HashMap<String, String> materials; // g3db material id to material asset uuid
+
+    public ModelComponentDescriptor() {
+        this.materials = new HashMap<>();
+    }
+
+    public HashMap<String, String> getMaterials() {
+        return materials;
+    }
 
     public String getModelID() {
         return modelID;

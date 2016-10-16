@@ -27,6 +27,7 @@ import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetNotFoundException;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
@@ -329,9 +330,12 @@ public class ProjectManager implements Disposable {
      */
     public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
+
         Array<ModelAsset> models = context.assetManager.getModelAssets();
         Array<TerrainAsset> terrains = context.assetManager.getTerrainAssets();
-        EditorScene scene = DescriptorConverter.convert(descriptor, terrains, models);
+        Array<MaterialAsset> materials = context.assetManager.getMaterialAssets();
+
+        EditorScene scene = DescriptorConverter.convert(descriptor, terrains, materials, models);
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;

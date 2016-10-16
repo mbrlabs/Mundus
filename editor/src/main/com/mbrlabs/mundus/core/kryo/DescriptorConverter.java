@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
@@ -137,7 +138,7 @@ public class DescriptorConverter {
     // Game Object
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models,
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models, Array<MaterialAsset> materials,
             Array<TerrainAsset> terrains) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
@@ -153,7 +154,7 @@ public class DescriptorConverter {
 
         // convert components
         if (descriptor.getModelComponent() != null) {
-            go.getComponents().add(convert(descriptor.getModelComponent(), go, models));
+            go.getComponents().add(convert(descriptor.getModelComponent(), go, models, materials));
         } else if (descriptor.getTerrainComponent() != null) {
             go.getComponents().add(convert(descriptor.getTerrainComponent(), go, terrains));
         }
@@ -161,7 +162,7 @@ public class DescriptorConverter {
         // recursively convert children
         if (descriptor.getChilds() != null) {
             for (GameObjectDescriptor c : descriptor.getChilds()) {
-                go.addChild(convert(c, sceneGraph, models, terrains));
+                go.addChild(convert(c, sceneGraph, models, materials, terrains));
             }
         }
 
@@ -219,7 +220,7 @@ public class DescriptorConverter {
     // ModelComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<ModelAsset> models) {
+    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<ModelAsset> models, Array<MaterialAsset> materials) {
         ModelAsset model = null;
         for (ModelAsset m : models) {
             if (descriptor.getModelID().equals(m.getID())) {
@@ -359,7 +360,7 @@ public class DescriptorConverter {
     }
 
     public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<TerrainAsset> terrains,
-            Array<ModelAsset> models) {
+            Array<MaterialAsset> materials, Array<ModelAsset> models) {
         EditorScene scene = new EditorScene();
 
         // meta
@@ -376,7 +377,7 @@ public class DescriptorConverter {
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
         for (GameObjectDescriptor descriptor : sceneDescriptor.getGameObjects()) {
-            scene.sceneGraph.addGameObject(convert(descriptor, scene.sceneGraph, models, terrains));
+            scene.sceneGraph.addGameObject(convert(descriptor, scene.sceneGraph, models, materials, terrains));
         }
 
         // camera

@@ -40,7 +40,7 @@ public class ModelComponent extends PickableComponent {
     private MModelInstance modelInstance;
     private Shader shader;
 
-    //  private Map<String, MaterialAsset> materials;  // g3db material id to material asset uuid
+    private Map<String, MaterialAsset> materials;  // g3db material id to material asset uuid
 
     public ModelComponent(GameObject go) {
         super(go);
@@ -60,9 +60,9 @@ public class ModelComponent extends PickableComponent {
         this.modelInstance = modelInstance;
     }
 
-    //    public Map<String, MaterialAsset> getMaterials() {
-    //        return materials;
-    //    }
+        public Map<String, MaterialAsset> getMaterials() {
+            return materials;
+        }
 
     public void applyMaterials() {
         // TODO model instances currently can't have their own materials. They inherit it from the model

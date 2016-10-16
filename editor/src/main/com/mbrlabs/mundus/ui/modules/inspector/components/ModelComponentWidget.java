@@ -16,18 +16,12 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.components;
 
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
-import com.mbrlabs.mundus.commons.assets.MetaFile;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
-import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -36,12 +30,6 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
-import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
-import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
-import com.mbrlabs.mundus.ui.widgets.AssetSelectionField;
-import com.mbrlabs.mundus.ui.widgets.ColorPickerField;
-
-import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -98,10 +86,10 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         final ModelAsset asset = mi.getModel();
         final Model model = asset.getModel();
 
-
-        VisLabel label = new VisLabel("Currently you can can not change the material of a model component individually. " +
-                "You can however change the default material of the underlying model asset. " +
-                "To do that sleect the model in the asset browser.");
+        VisLabel label = new VisLabel(
+                "Currently you can can not change the material of a model component individually. "
+                        + "You can however change the default material of the underlying model asset. "
+                        + "To do that sleect the model in the asset browser.");
         label.setWrap(true);
         collapsibleContent.add(label).grow().row();
     }
