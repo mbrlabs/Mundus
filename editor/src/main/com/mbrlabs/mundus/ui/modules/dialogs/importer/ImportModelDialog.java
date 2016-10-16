@@ -204,7 +204,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
 
             // create materials
             for(Material mat : modelAsset.getModel().materials) {
-                MaterialAsset materialAsset = assetManager.createMaterialAsset(mat.id);
+                MaterialAsset materialAsset = assetManager.createMaterialAsset(modelAsset.getID().substring(0, 4) + "_" + mat.id);
                 modelAsset.getMeta().getDefaultModelMaterials().put(mat.id, materialAsset.getID());
                 modelAsset.getDefaultMaterials().put(mat.id, materialAsset);
             }
