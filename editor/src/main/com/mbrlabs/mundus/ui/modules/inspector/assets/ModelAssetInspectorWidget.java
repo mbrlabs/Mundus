@@ -88,8 +88,13 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         collapsibleContent.add(modelPlacement).growX().padBottom(15).row();
 
         // materials
-        collapsibleContent.add(new VisLabel("Materials")).growX().row();
+        VisLabel label = new VisLabel();
+        label.setText("Default model materials will be applied to all model components, " +
+                "that use this model asset. Later you will also be able to change the materials of model components individually.");
+        label.setWrap(true);
+        collapsibleContent.add(new VisLabel("Default model materials")).growX().row();
         collapsibleContent.addSeparator().padBottom(5).row();
+        collapsibleContent.add(label).padTop(4).padBottom(15).grow().row();
         collapsibleContent.add(materialContainer).growX().padBottom(15).row();
 
 

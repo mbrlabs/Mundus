@@ -79,6 +79,7 @@ public class ModelAsset extends Asset {
         // materials
         for(Material mat : model.materials) {
             MaterialAsset materialAsset = defaultMaterials.get(mat.id);
+            if(materialAsset == null) continue;
             if(materialAsset.getDiffuseColor() != null) {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
             }
