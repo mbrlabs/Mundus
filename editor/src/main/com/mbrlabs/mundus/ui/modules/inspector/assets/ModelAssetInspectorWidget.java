@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Inject;
@@ -81,15 +82,16 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         collapsibleContent.add(vertexCount).growX().row();
         collapsibleContent.add(indexCount).growX().padBottom(15).row();
 
+        // actions
+        collapsibleContent.add(new VisLabel("Actions")).growX().row();
+        collapsibleContent.addSeparator().padBottom(5).row();
+        collapsibleContent.add(modelPlacement).growX().padBottom(15).row();
+
         // materials
         collapsibleContent.add(new VisLabel("Materials")).growX().row();
         collapsibleContent.addSeparator().padBottom(5).row();
         collapsibleContent.add(materialContainer).growX().padBottom(15).row();
 
-        // actions
-        collapsibleContent.add(new VisLabel("Actions")).growX().row();
-        collapsibleContent.addSeparator().padBottom(5).row();
-        collapsibleContent.add(modelPlacement).growX().row();
 
         // model placement action
         modelPlacement.addListener(new ClickListener() {
@@ -117,6 +119,11 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         indexCount.setText("Indices: " + indices);
 
         materialContainer.clear();
+        for(MaterialAsset ma : modelAsset.getDefaultMaterials().values()) {
+            MaterialWidget mw = new MaterialWidget();
+            mw.setMaterial(ma);
+            materialContainer.add(mw).grow().padBottom(20).row();
+        }
     }
 
     public void setModel(ModelAsset model) {

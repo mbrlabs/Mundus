@@ -46,6 +46,10 @@ public class ModelAsset extends Asset {
         return model;
     }
 
+    public Map<String, MaterialAsset> getDefaultMaterials() {
+        return defaultMaterials;
+    }
+
     @Override
     public void load() {
         // TODO don't create a new loader each time

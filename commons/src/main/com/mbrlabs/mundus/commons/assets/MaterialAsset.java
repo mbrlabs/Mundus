@@ -103,7 +103,11 @@ public class MaterialAsset extends Asset {
 
     public void setDiffuseTexture(TextureAsset diffuseTexture) {
         this.diffuseTexture = diffuseTexture;
-        this.diffuseTextureID = diffuseTexture.getID();
+        if(diffuseTexture != null) {
+            this.diffuseTextureID = diffuseTexture.getID();
+        } else {
+            this.diffuseTextureID = null;
+        }
     }
 
     public Color getDiffuseColor() {

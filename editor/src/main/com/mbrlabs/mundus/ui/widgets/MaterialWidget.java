@@ -46,6 +46,7 @@ public class MaterialWidget extends VisTable {
 
     private static final String TAG = MaterialWidget.class.getSimpleName();
 
+    private VisLabel label;
     private ColorPickerField diffuseColorField;
     private AssetSelectionField diffuseAssetField;
     private VisTextField opacity;
@@ -62,6 +63,7 @@ public class MaterialWidget extends VisTable {
         super();
         Mundus.inject(this);
         align(Align.topLeft);
+        label = new VisLabel();
         diffuseAssetField = new AssetSelectionField();
         diffuseColorField = new ColorPickerField();
         opacity = new VisTextField();
@@ -71,6 +73,10 @@ public class MaterialWidget extends VisTable {
         shininess.setTextFieldFilter(new FloatDigitsOnlyFilter(false));
         opacity.setTextFieldFilter(new FloatDigitsOnlyFilter(false));
 
+        label.setWrap(true);
+
+        add(label).grow().row();
+        addSeparator().growX().row();
         add(new VisLabel("Diffuse texture")).grow().row();
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
@@ -137,6 +143,7 @@ public class MaterialWidget extends VisTable {
         diffuseAssetField.setAsset(material.getDiffuseTexture());
         opacity.setText(String.valueOf(material.getOpacity()));
         shininess.setText(String.valueOf(material.getShininess()));
+        label.setText(material.getName());
     }
 
     public MaterialAsset getMaterial() {
