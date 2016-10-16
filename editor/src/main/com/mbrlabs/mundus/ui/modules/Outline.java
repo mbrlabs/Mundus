@@ -449,7 +449,7 @@ public class Outline extends VisTable
                 }
             });
 
-            // add terrain
+            // add terrainAsset
             addTerrain.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -472,6 +472,7 @@ public class Outline extends VisTable
                         addGoToTree(null, terrainGO);
 
                         projectContext.currScene.terrains.add(asset);
+                        projectManager.saveProject(projectContext);
                         Mundus.postEvent(new AssetImportEvent(asset));
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     } catch (Exception e) {
@@ -541,7 +542,7 @@ public class Outline extends VisTable
                 delete.setDisabled(true);
             }
 
-            // terrain can not be duplicated
+            // terrainAsset can not be duplicated
             if (selectedGO == null || selectedGO.findComponentByType(Component.Type.TERRAIN) != null) {
                 duplicate.setDisabled(true);
             } else {

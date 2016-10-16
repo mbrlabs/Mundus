@@ -224,12 +224,17 @@ public class ProjectManager implements Disposable {
      *            project context
      */
     public void saveProject(ProjectContext projectContext) {
-        // save terra files
-        try {
-            projectContext.assetManager.saveTerrainAssets();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // save modified assets
+        EditorAssetManager assetManager = projectContext.assetManager;
+        for(Asset asset : assetManager.getDirtyAssets()) {
+            try {
+                Log.debug(TAG, "Saving dirty asset: {}", asset);
+                assetManager.saveAsset(asset);
+            } catch (IOException e) {
+                Log.exception(TAG, e);
+            }
         }
+
         // save current in .pro file
         kryoManager.saveProjectContext(projectContext);
         // save scene in .mundus file

@@ -102,7 +102,7 @@ public class GameObjectInspector extends VisTable {
                 // model component widget
                 if (component.getType() == Component.Type.MODEL) {
                     componentWidgets.add(new ModelComponentWidget((ModelComponent) component));
-                    // terrain component widget
+                    // terrainAsset component widget
                 } else if (component.getType() == Component.Type.TERRAIN) {
                     componentWidgets.add(new TerrainComponentWidget((TerrainComponent) component));
                 }

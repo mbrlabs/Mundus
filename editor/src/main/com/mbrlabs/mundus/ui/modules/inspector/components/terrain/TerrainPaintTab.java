@@ -120,6 +120,8 @@ public class TerrainPaintTab extends Tab {
         TerrainAsset terrainAsset = TerrainPaintTab.this.parent.component.getTerrain();
         TerrainTexture terrainTexture = terrainAsset.getTerrain().getTerrainTexture();
 
+        assetManager.addDirtyAsset(terrainAsset);
+
         // channel base
         if (terrainAsset.getSplatBase() == null) {
             terrainAsset.setSplatBase(textureAsset);
@@ -174,7 +176,7 @@ public class TerrainPaintTab extends Tab {
             return;
         }
 
-        Dialogs.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrain please :)");
+        Dialogs.showErrorDialog(Ui.getInstance(), "Not more than 5 textures per terrainAsset please :)");
     }
 
     private void setupTextureGrid() {
@@ -261,6 +263,7 @@ public class TerrainPaintTab extends Tab {
 
                         terrain.applyDependencies();
                         setTexturesInUiGrid();
+                        projectManager.current().assetManager.addDirtyAsset(terrain);
                     }
                 }
             });
@@ -287,6 +290,7 @@ public class TerrainPaintTab extends Tab {
                                 }
                                 terrain.applyDependencies();
                                 setTexturesInUiGrid();
+                                projectManager.current().assetManager.addDirtyAsset(terrain);
                             }
                         });
                     }

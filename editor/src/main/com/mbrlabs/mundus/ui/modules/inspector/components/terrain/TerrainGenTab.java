@@ -120,7 +120,7 @@ public class TerrainGenTab extends Tab {
 
         Pixmap originalMap = new Pixmap(heightMap);
 
-        // scale pixmap if it doesn't fit the terrain
+        // scale pixmap if it doesn't fit the terrainAsset
         if (originalMap.getWidth() != terrain.vertexResolution || originalMap.getHeight() != terrain.vertexResolution) {
             Pixmap scaledPixmap = new Pixmap(terrain.vertexResolution, terrain.vertexResolution,
                     originalMap.getFormat());

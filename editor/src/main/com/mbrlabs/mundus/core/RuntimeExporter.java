@@ -148,7 +148,7 @@
 // public static TerrainComponentDTO convert(TerrainComponent terrainComponent)
 /// {
 // TerrainComponentDTO dto = new TerrainComponentDTO();
-// dto.setTerrainID(terrainComponent.getTerrain().id);
+// dto.setTerrainID(terrainComponent.getTerrainAsset().id);
 //
 // return dto;
 // }

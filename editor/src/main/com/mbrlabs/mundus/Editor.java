@@ -198,9 +198,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
             String path = FileUtils.getUserDirectoryPath();
             path = FilenameUtils.concat(path, "MundusProjects");
 
-            ProjectContext project = projectManager.createProject(name, path);
-            projectManager.saveProject(project);
-            return project;
+            return projectManager.createProject(name, path);
         }
 
         return null;

@@ -254,7 +254,7 @@ public class DescriptorConverter {
 
     public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go,
             Array<TerrainAsset> terrains) {
-        // find terrain
+        // find terrainAsset
         TerrainAsset terrain = null;
         for (TerrainAsset t : terrains) {
             if (descriptor.getTerrainID().equals(t.getID())) {

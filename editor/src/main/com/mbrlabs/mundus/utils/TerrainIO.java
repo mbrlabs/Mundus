@@ -17,7 +17,7 @@
 package com.mbrlabs.mundus.utils;
 
 /**
- * Exports the terrain height. Everything else (e.g. normals) can be calculated
+ * Exports the terrainAsset height. Everything else (e.g. normals) can be calculated
  * at runtime.
  *
  * @author Marcus Brummer
@@ -30,14 +30,14 @@ public class TerrainIO {
     //    /**
     //     * Binary gziped format.
     //     *
-    //     * @param terrain
+    //     * @param terrainAsset
     //     */
-    //    public static void exportTerrain(ProjectContext projectContext, Terrain terrain) {
-    //        float[] data = terrain.heightData;
+    //    public static void exportTerrain(ProjectContext projectContext, Terrain terrainAsset) {
+    //        float[] data = terrainAsset.heightData;
     //        long start = System.currentTimeMillis();
     //
     //        // create file
-    //        File file = new File(FilenameUtils.concat(projectContext.path, terrain.terraPath));
+    //        File file = new File(FilenameUtils.concat(projectContext.path, terrainAsset.terraPath));
     //        try {
     //            FileUtils.touch(file);
     //        } catch (IOException e) {
@@ -58,7 +58,7 @@ public class TerrainIO {
     //        }
     //
     //        // write splatmap
-    //        SplatMap splatmap = terrain.getTerrainTexture().getSplatmap();
+    //        SplatMap splatmap = terrainAsset.getTerrainTexture().getSplatmap();
     //        if (splatmap != null) {
     //            splatmap.savePNG(Gdx.files.absolute(FilenameUtils.concat(projectContext.path, splatmap.getPath())));
     //        }
@@ -68,10 +68,10 @@ public class TerrainIO {
     //        // + (System.currentTimeMillis() - start) + " ms");
     //    }
     //
-    //    public static Terrain importTerrain(ProjectContext projectContext, Terrain terrain) {
+    //    public static Terrain importTerrain(ProjectContext projectContext, Terrain terrainAsset) {
     //        FloatArray floatArray = new FloatArray();
     //
-    //        String terraPath = FilenameUtils.concat(projectContext.path, terrain.terraPath);
+    //        String terraPath = FilenameUtils.concat(projectContext.path, terrainAsset.terraPath);
     //        try (DataInputStream is = new DataInputStream(
     //                new BufferedInputStream(new GZIPInputStream(new FileInputStream(terraPath))))) {
     //            while (is.available() > 0) {
@@ -84,16 +84,16 @@ public class TerrainIO {
     //        }
     //        // Log.debug("Terrain import. floats: {}", floatArray.size);
     //
-    //        terrain.heightData = floatArray.toArray();
-    //        terrain.init();
-    //        terrain.update();
+    //        terrainAsset.heightData = floatArray.toArray();
+    //        terrainAsset.init();
+    //        terrainAsset.update();
     //
-    //        // set default terrain base texture if none is present
-    //        TerrainTexture terrainTexture = terrain.getTerrainTexture();
+    //        // set default terrainAsset base texture if none is present
+    //        TerrainTexture terrainTexture = terrainAsset.getTerrainTexture();
     //        if (terrainTexture.getTexture(SplatTexture.Channel.BASE) == null) {
     //            MTexture base = new MTexture();
     //            base.setId(-1);
-    //            base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrain/chessboard.png"), true);
+    //            base.texture = TextureUtils.loadMipmapTexture(Gdx.files.internal("textures/terrainAsset/chessboard.png"), true);
     //            terrainTexture.setSplatTexture(new SplatTexture(SplatTexture.Channel.BASE, base));
     //        }
     //
@@ -104,7 +104,7 @@ public class TerrainIO {
     //            splatmap.loadPNG(Gdx.files.absolute(splatPath));
     //        }
     //
-    //        return terrain;
+    //        return terrainAsset;
     //    }
 
 }

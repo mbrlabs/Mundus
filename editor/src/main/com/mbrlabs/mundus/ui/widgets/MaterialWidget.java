@@ -56,8 +56,6 @@ public class MaterialWidget extends VisTable {
     private VisTextField opacity;
     private VisTextField shininess;
 
-    private VisTextButton saveBtn;
-
     private MaterialAsset material;
 
     @Inject
@@ -72,7 +70,6 @@ public class MaterialWidget extends VisTable {
         diffuseColorField = new ColorPickerField();
         opacity = new VisTextField();
         shininess = new VisTextField();
-        saveBtn = new VisTextButton("Save material");
 
         shininess.setTextFieldFilter(new FloatDigitsOnlyFilter(false));
         opacity.setTextFieldFilter(new FloatDigitsOnlyFilter(false));
@@ -85,12 +82,10 @@ public class MaterialWidget extends VisTable {
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
         add(diffuseColorField).growX().row();
-        add(new VisLabel("Shininess")).growX().row();
-        add(shininess).growX().row();
-        add(new VisLabel("Opacity")).growX().row();
-        add(opacity).growX().row();
-
-        add(saveBtn).growX().padTop(5).row();
+//        add(new VisLabel("Shininess")).growX().row();
+//        add(shininess).growX().row();
+//        add(new VisLabel("Opacity")).growX().row();
+//        add(opacity).growX().row();
 
         setupWidgets();
     }
@@ -101,12 +96,14 @@ public class MaterialWidget extends VisTable {
         diffuseAssetField.setListener(asset -> {
             material.setDiffuseTexture((TextureAsset) asset);
             applyMaterialToModelComponents();
+            projectManager.current().assetManager.addDirtyAsset(material);
         });
 
         // diffuse color
         diffuseColorField.setCallback(color -> {
             material.setDiffuseColor(color);
             applyMaterialToModelComponents();
+            projectManager.current().assetManager.addDirtyAsset(material);
         });
 
         // TODO apply materials to model components
@@ -129,21 +126,6 @@ public class MaterialWidget extends VisTable {
                     material.setShininess(Float.valueOf(shininess.getText()));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                }
-            }
-        });
-
-        // save material
-        saveBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                try {
-                    EditorAssetManager assetManager = projectManager.current().assetManager;
-                    assetManager.saveMaterialAsset(material);
-                    Ui.getInstance().getToaster().success("Material saved");
-                } catch (IOException e) {
-                    Log.exception(TAG, e);
-                    Ui.getInstance().getToaster().error("Error while saving the material");
                 }
             }
         });

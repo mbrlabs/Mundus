@@ -10,7 +10,7 @@
 - Improved logging
 - Fixed expanding of the game object tree in the outline if the scene graph has been modified (https://github.com/mbrlabs/Mundus/issues/8)
 - Implemented game object renaming in the outline
-- Implemented duplicate game object (deep copy), terrain can not be duplicated
+- Implemented duplicate game object (deep copy), terrainAsset can not be duplicated
 - Implemented delete game object undo/redo command
 - Fixed parenting in outline. Now local position is correctly calculated
 - Implemented Scale Tool (with undo/redo)
@@ -22,7 +22,7 @@
 - Updated libGDX to 1.9.3
 - Updated VisUI to 1.1.1
 - Added an option to the settings dialog to change the keyboard layout
-- Added a height map loader to the terrain component widget in the inspector
+- Added a height map loader to the terrainAsset component widget in the inspector
 - Implemented a Blender-like rotation tool
 - Toast messages at top right corner of the screen
 - Huge internal refactoring
@@ -37,7 +37,7 @@
 - Implemented a shortcut system
 - The 3D viewport is now a UI widget and scales correctly with the window size
 - The inspector now spans the whole right side as sidebar
-- New lighting system for the terrain & entity shader
+- New lighting system for the terrainAsset & entity shader
 - Child objects of a selected parent object will be highlighted now as well
 - Changed internal save file format to allow a better precision for game object transformation
 - Improved the translate tool
@@ -50,17 +50,17 @@
 
 [0.0.6] ~ 07/02/2016
 - Updated libGDX to 1.9.2
-- Implemented texture splatting for terrain textures
-- Implemented terrain painting with up to 5 textures per terrain
+- Implemented texture splatting for terrainAsset textures
+- Implemented terrainAsset painting with up to 5 textures per terrainAsset
 - Moved SelectionTool & TranslateTool to the toolbar
-- Moved the terrain tools to the component widget in the inspector
+- Moved the terrainAsset tools to the component widget in the inspector
 - Removed the tools tab in the left sidebar
-- Changed input handling for terrain brushes: the mouse has to be moved constantly in order to draw
+- Changed input handling for terrainAsset brushes: the mouse has to be moved constantly in order to draw
 - Added camera speed control buttons to the status bar
-- Added a terrain component widget for the inspector
-- Arbitrary images can now internally be used as terrain brushes (like Gimp & Blender do). The r channel determines the strength of the brush.
+- Added a terrainAsset component widget for the inspector
+- Arbitrary images can now internally be used as terrainAsset brushes (like Gimp & Blender do). The r channel determines the strength of the brush.
 - Added 4 brushes (circle, smooth circle, star, confetti)
-- Implemented height sampling for the flatten mode of the terrain brush
+- Implemented height sampling for the flatten mode of the terrainAsset brush
 
 [0.0.5] ~ 26/01/2016
 - Implemented a basic component based 3D scene graph
@@ -71,7 +71,7 @@
 - Added a TerrainComponent
 - Added a flexible component inspector widget for game objects
 - Added some basic component-widgets to the inspector
-- Fixed rendering of terrain texture tiles
+- Fixed rendering of terrainAsset texture tiles
 - Improved UI
 - Added import of projects
 - Updated LibGDX to 1.9.0
@@ -82,7 +82,7 @@
 - Added Font Awesome as icon font
 - Implemented adding & switching between scenes
 - Improved Translate tool
-- Added new terrain brush: Flatten
+- Added new terrainAsset brush: Flatten
 - Added Customizable Fog
 - Added a basic skybox (editable, but not savable/exportable)
 
@@ -98,7 +98,7 @@
 - Added a generic Tool system
 - Added support for scenes in one project
 - Added support for placement of models inside the world
-- Added terrain brush support for multiple terrains
+- Added terrainAsset brush support for multiple terrains
 - Updated LibGDX to version 1.7.2
 
 [0.0.1] 22/11/2015

@@ -101,12 +101,12 @@ public class AddTerrainDialog extends BaseDialog {
         //                    float posZ = Float.valueOf(positionZ.getText());
         //
         //                    final ProjectContext projectContext = projectManager.current();
-        //                    Terrain terrain = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
-        //                    terrain.transform.setTranslation(posX, 0, posZ);
-        //                    projectContext.terrains.add(terrain);
-        //                    projectContext.currScene.terrains.add(terrain);
+        //                    Terrain terrainAsset = TerrainUtils.createTerrain(projectContext.obtainID(), nom, width, depth, res);
+        //                    terrainAsset.transform.setTranslation(posX, 0, posZ);
+        //                    projectContext.terrains.add(terrainAsset);
+        //                    projectContext.currScene.terrains.add(terrainAsset);
         //                    GameObject terrainGO = TerrainUtils.createTerrainGO(projectContext.currScene.sceneGraph,
-        //                            shaders.terrainShader, projectContext.obtainID(), nom, terrain);
+        //                            shaders.terrainShader, projectContext.obtainID(), nom, terrainAsset);
         //                    projectContext.currScene.sceneGraph.addGameObject(terrainGO);
         //
         //                    Mundus.postEvent(new SceneGraphChangedEvent());

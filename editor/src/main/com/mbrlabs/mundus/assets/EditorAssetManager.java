@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetType;
@@ -29,6 +30,7 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
+import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FileUtils;
@@ -40,7 +42,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.GZIPOutputStream;
 
@@ -54,6 +58,9 @@ public class EditorAssetManager extends AssetManager {
 
     public static final String STANDARD_ASSET_TEXTURE_CHESSBOARD = "chessboard";
 
+    /** Modified assets that need to be saved. */
+    private Set<Asset> dirtyAssets;
+
     /**
      * Editor asset manager constructor.
      *
@@ -65,6 +72,15 @@ public class EditorAssetManager extends AssetManager {
         if (rootFolder != null && (!rootFolder.exists() || !rootFolder.isDirectory())) {
             Log.fatal(TAG, "Root asset folder is not a directory");
         }
+        dirtyAssets = new HashSet<>();
+    }
+
+    public void addDirtyAsset(Asset asset) {
+        dirtyAssets.add(asset);
+    }
+
+    public Set<Asset> getDirtyAssets() {
+        return dirtyAssets;
     }
 
     /**
@@ -147,16 +163,16 @@ public class EditorAssetManager extends AssetManager {
     }
 
     /**
-     * Creates a new terrain asset.
+     * Creates a new terrainAsset asset.
      * 
      * This creates a .terra file (height data) and a pixmap texture (splatmap).
      * The asset will be added to this asset manager.
      * 
      * @param vertexResolution
-     *            vertex resolution of the terrain
+     *            vertex resolution of the terrainAsset
      * @param size
-     *            terrain size
-     * @return new terrain asset
+     *            terrainAsset size
+     * @return new terrainAsset asset
      * @throws IOException
      */
     public TerrainAsset createTerraAsset(String name, int vertexResolution, int size)
@@ -281,23 +297,25 @@ public class EditorAssetManager extends AssetManager {
     }
 
     /**
-     * Saves all terrains (splatmap, height data + meta files)
-     *
+     * @param asset
      * @throws IOException
      */
-    public void saveTerrainAssets() throws IOException {
-        for (TerrainAsset terrain : getTerrainAssets()) {
-            saveTerrainAsset(terrain);
+    public void saveAsset(Asset asset) throws IOException {
+        if(asset instanceof MaterialAsset) {
+            saveMaterialAsset((MaterialAsset) asset);
+        } else if(asset instanceof TerrainAsset) {
+            saveTerrainAsset((TerrainAsset) asset);
         }
+        // TODO other assets ?
     }
 
     /**
-     * Saves an existing terrain asset.
+     * Saves an existing terrainAsset asset.
      *
      * This updates all modifiable assets and the meta file.
      *
      * @param terrain
-     *            terrain asset
+     *            terrainAsset asset
      * @throws IOException
      */
     public void saveTerrainAsset(TerrainAsset terrain) throws IOException {
