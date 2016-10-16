@@ -67,7 +67,6 @@ public class ModelAsset extends Asset {
         // materials
         for(String g3dbMatID : meta.getDefaultModelMaterials().keySet()) {
             String uuid = meta.getDefaultModelMaterials().get(g3dbMatID);
-            System.out.println(uuid + ": " + assets.get(uuid));
             defaultMaterials.put(g3dbMatID, (MaterialAsset) assets.get(uuid));
         }
     }

@@ -185,7 +185,6 @@ public class TerrainPaintTab extends Tab {
             if (leftClick) {
                 TerrainBrush.setPaintChannel(tex.channel);
             } else {
-                System.out.println("Texture grid listener right clicked");
                 rightClickMenu.setChannel(tex.channel);
                 rightClickMenu.show();
             }

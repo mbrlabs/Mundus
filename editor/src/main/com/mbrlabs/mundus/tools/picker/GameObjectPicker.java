@@ -51,7 +51,6 @@ public class GameObjectPicker extends BasePicker {
         int y = screenY - (Gdx.graphics.getHeight() - (scene.viewport.getScreenY() + scene.viewport.getScreenHeight()));
 
         int id = PickerColorEncoder.decode(pm.getPixel(x, y));
-        System.out.println(id);
         for (GameObject go : scene.sceneGraph.getGameObjects()) {
             if (id == go.id) return go;
             for (GameObject child : go) {

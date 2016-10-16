@@ -36,7 +36,7 @@ public class AssetsMenu extends Menu {
         super("Assets");
 
         importMesh = new MenuItem("Import Mesh");
-        assetBrowser = new MenuItem("Asset Browser [DEBUG]");
+        assetBrowser = new MenuItem("Asset Selection [DEBUG]");
         addItem(importMesh);
         addItem(assetBrowser);
 
