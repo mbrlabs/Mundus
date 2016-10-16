@@ -208,6 +208,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
                 modelAsset.getMeta().getDefaultModelMaterials().put(mat.id, materialAsset.getID());
             }
             modelAsset.getMeta().save();
+            modelAsset.applyDependencies();
 
             return modelAsset;
         }

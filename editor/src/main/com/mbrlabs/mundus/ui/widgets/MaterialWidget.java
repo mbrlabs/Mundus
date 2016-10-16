@@ -29,9 +29,13 @@ import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
+import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
+import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
 import com.mbrlabs.mundus.utils.Log;
@@ -94,11 +98,18 @@ public class MaterialWidget extends VisTable {
     private void setupWidgets() {
         // diffuse texture
         diffuseAssetField.setFilter(new AssetTextureFilter());
-        diffuseAssetField.setListener(asset -> material.setDiffuseTexture((TextureAsset) asset));
+        diffuseAssetField.setListener(asset -> {
+            material.setDiffuseTexture((TextureAsset) asset);
+            applyMaterialToModelComponents();
+        });
 
         // diffuse color
-        diffuseColorField.setCallback(color -> material.setDiffuseColor(color));
+        diffuseColorField.setCallback(color -> {
+            material.setDiffuseColor(color);
+            applyMaterialToModelComponents();
+        });
 
+        // TODO apply materials to model components
         opacity.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -110,6 +121,7 @@ public class MaterialWidget extends VisTable {
             }
         });
 
+        // TODO apply materials to model components
         shininess.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -135,6 +147,17 @@ public class MaterialWidget extends VisTable {
                 }
             }
         });
+    }
+
+    // TODO find better solution than iterating through all components
+    private void applyMaterialToModelComponents() {
+        SceneGraph sceneGraph = projectManager.current().currScene.sceneGraph;
+        for(GameObject go : sceneGraph.getGameObjects()) {
+            ModelComponent mc = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
+            if(mc != null) {
+                mc.applyMaterials();
+            }
+        }
     }
 
     public void setMaterial(MaterialAsset material) {

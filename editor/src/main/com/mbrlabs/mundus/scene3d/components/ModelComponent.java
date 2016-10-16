@@ -29,7 +29,6 @@ import com.mbrlabs.mundus.shader.Shaders;
 import com.mbrlabs.mundus.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.tools.picker.PickerIDAttribute;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,12 +40,12 @@ public class ModelComponent extends PickableComponent {
     private MModelInstance modelInstance;
     private Shader shader;
 
-    private Map<String, MaterialAsset> materials;  // g3db material id to material asset uuid
+    //  private Map<String, MaterialAsset> materials;  // g3db material id to material asset uuid
 
     public ModelComponent(GameObject go) {
         super(go);
         type = Type.MODEL;
-        materials = new HashMap<String, MaterialAsset>();
+        // materials = new HashMap<String, MaterialAsset>();
     }
 
     public Shader getShader() {
@@ -61,18 +60,23 @@ public class ModelComponent extends PickableComponent {
         this.modelInstance = modelInstance;
     }
 
-    public Map<String, MaterialAsset> getMaterials() {
-        return materials;
-    }
+    //    public Map<String, MaterialAsset> getMaterials() {
+    //        return materials;
+    //    }
 
     public void applyMaterials() {
-        for(Material mat : modelInstance.modelInstance.materials) {
+        // TODO model instances currently can't have their own materials. They inherit it from the model
+        // This has to be changed
+        Map<String, MaterialAsset> materials = modelInstance.getModel().getDefaultMaterials();
+        for (Material mat : modelInstance.modelInstance.materials) {
             MaterialAsset materialAsset = materials.get(mat.id);
-            if(materialAsset.getDiffuseColor() != null) {
+            if (materialAsset.getDiffuseColor() != null) {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
             }
-            if(materialAsset.getDiffuseTexture() != null) {
+            if (materialAsset.getDiffuseTexture() != null) {
                 mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
+            } else {
+                mat.remove(TextureAttribute.Diffuse);
             }
             mat.set(new FloatAttribute(FloatAttribute.Shininess, materialAsset.getShininess()));
             // TODO opacity
