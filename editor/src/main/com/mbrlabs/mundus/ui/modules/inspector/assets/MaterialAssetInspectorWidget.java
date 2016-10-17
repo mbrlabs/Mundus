@@ -37,7 +37,7 @@ public class MaterialAssetInspectorWidget extends BaseInspectorWidget {
         super(TITLE);
         setDeletable(false);
 
-        materialWidget = new MaterialWidget();
+        materialWidget = new MaterialWidget(null);
         collapsibleContent.add(materialWidget).grow().row();
     }
 

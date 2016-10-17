@@ -24,11 +24,15 @@ import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
+import com.mbrlabs.mundus.Editor;
+import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
+import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.tools.ToolManager;
 import com.mbrlabs.mundus.ui.modules.inspector.BaseInspectorWidget;
 import com.mbrlabs.mundus.ui.widgets.MaterialWidget;
@@ -58,6 +62,8 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
 
     @Inject
     private ToolManager toolManager;
+    @Inject
+    private ProjectManager projectManager;
 
     public ModelAssetInspectorWidget() {
         super(TITLE);
@@ -89,8 +95,9 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
 
         // materials
         VisLabel label = new VisLabel();
-        label.setText("Default model materials will be applied to all model components, " +
-                "that use this model asset. Later you will also be able to change the materials of model components individually.");
+        label.setText("Default model materials determine the initial materials a new model will get, if " +
+                "you use the model placement tool. You change the materials of model components individually " +
+                "by selecting the game object and aply the changes in the inspector.");
         label.setWrap(true);
         collapsibleContent.add(new VisLabel("Default model materials")).growX().row();
         collapsibleContent.addSeparator().padBottom(5).row();
@@ -124,9 +131,16 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         indexCount.setText("Indices: " + indices);
 
         materialContainer.clear();
-        for(MaterialAsset ma : modelAsset.getDefaultMaterials().values()) {
-            MaterialWidget mw = new MaterialWidget();
-            mw.setMaterial(ma);
+        for(String g3dbMatID : modelAsset.getDefaultMaterials().keySet()) {
+            MaterialAsset mat = modelAsset.getDefaultMaterials().get(g3dbMatID);
+            MaterialWidget mw = new MaterialWidget(materialAsset -> {
+                EditorAssetManager assetManager = projectManager.current().assetManager;
+                modelAsset.getDefaultMaterials().put(g3dbMatID, materialAsset);
+                modelAsset.applyDependencies();
+                toolManager.modelPlacementTool.setModel(modelAsset);
+                assetManager.addDirtyAsset(modelAsset);
+            });
+            mw.setMaterial(mat);
             materialContainer.add(mw).grow().padBottom(20).row();
         }
     }

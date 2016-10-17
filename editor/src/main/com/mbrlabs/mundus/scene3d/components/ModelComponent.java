@@ -70,9 +70,8 @@ public class ModelComponent extends PickableComponent {
             for(String g3dbMatID : model.getDefaultMaterials().keySet()) {
                 materials.put(g3dbMatID, model.getDefaultMaterials().get(g3dbMatID));
             }
-
-            applyMaterials();
         }
+        applyMaterials();
     }
 
     public Map<String, MaterialAsset> getMaterials() {

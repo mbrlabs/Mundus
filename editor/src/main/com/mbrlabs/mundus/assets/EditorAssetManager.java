@@ -305,8 +305,21 @@ public class EditorAssetManager extends AssetManager {
             saveMaterialAsset((MaterialAsset) asset);
         } else if(asset instanceof TerrainAsset) {
             saveTerrainAsset((TerrainAsset) asset);
+        } else if(asset instanceof ModelAsset) {
+            saveModelAsset((ModelAsset) asset);
         }
         // TODO other assets ?
+    }
+
+    /**
+     *
+     * @param asset
+     */
+    public void saveModelAsset(ModelAsset asset) throws IOException {
+        for(String g3dbMatID : asset.getDefaultMaterials().keySet()) {
+            asset.getMeta().getDefaultModelMaterials().put(g3dbMatID, asset.getDefaultMaterials().get(g3dbMatID).getID());
+        }
+        asset.getMeta().save();
     }
 
     /**

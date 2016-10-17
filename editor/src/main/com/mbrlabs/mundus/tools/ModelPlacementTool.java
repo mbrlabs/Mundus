@@ -63,6 +63,7 @@ public class ModelPlacementTool extends Tool {
 
     public void setModel(ModelAsset model) {
         this.model = model;
+        modelInstance = null;
         this.modelInstance = new ModelInstance(model.getModel());
     }
 

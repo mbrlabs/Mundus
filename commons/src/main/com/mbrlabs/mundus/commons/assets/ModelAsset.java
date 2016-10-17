@@ -15,6 +15,7 @@
  */
 package com.mbrlabs.mundus.commons.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -84,6 +85,8 @@ public class ModelAsset extends Asset {
             }
             if(materialAsset.getDiffuseTexture() != null) {
                 mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
+            } else {
+                mat.remove(TextureAttribute.Diffuse);
             }
             mat.set(new FloatAttribute(FloatAttribute.Shininess, materialAsset.getShininess()));
             // TODO opacity

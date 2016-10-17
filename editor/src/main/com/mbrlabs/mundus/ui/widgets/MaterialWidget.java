@@ -27,6 +27,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
+import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -37,6 +38,8 @@ import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.ui.Ui;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetMaterialFilter;
+import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
 import com.mbrlabs.mundus.utils.Log;
 
@@ -51,6 +54,7 @@ public class MaterialWidget extends VisTable {
     private static final String TAG = MaterialWidget.class.getSimpleName();
 
     private VisLabel label;
+    private AssetSelectionField assetSelectionField;
     private ColorPickerField diffuseColorField;
     private AssetSelectionField diffuseAssetField;
     private VisTextField opacity;
@@ -58,14 +62,21 @@ public class MaterialWidget extends VisTable {
 
     private MaterialAsset material;
 
+    private MaterialChangedListener changedListener;
+
     @Inject
     private ProjectManager projectManager;
 
-    public MaterialWidget() {
+    public MaterialWidget(MaterialChangedListener listener) {
         super();
         Mundus.inject(this);
         align(Align.topLeft);
         label = new VisLabel();
+        this.changedListener = listener;
+        if(listener != null) {
+            assetSelectionField = new AssetSelectionField();
+            assetSelectionField.setFilter(new AssetMaterialFilter());
+        }
         diffuseAssetField = new AssetSelectionField();
         diffuseColorField = new ColorPickerField();
         opacity = new VisTextField();
@@ -78,6 +89,10 @@ public class MaterialWidget extends VisTable {
 
         add(label).grow().row();
         addSeparator().growX().row();
+        if(changedListener != null) {
+            add(new VisLabel("Change material")).growX().row();
+            add(assetSelectionField).growX().padBottom(10).row();
+        }
         add(new VisLabel("Diffuse texture")).grow().row();
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
@@ -91,6 +106,14 @@ public class MaterialWidget extends VisTable {
     }
 
     private void setupWidgets() {
+        // material changing
+        if(changedListener != null) {
+            assetSelectionField.setListener(asset -> {
+                changedListener.materialChanged((MaterialAsset) asset);
+                setMaterial((MaterialAsset) asset);
+            });
+        }
+
         // diffuse texture
         diffuseAssetField.setFilter(new AssetTextureFilter());
         diffuseAssetField.setListener(asset -> {
@@ -145,6 +168,10 @@ public class MaterialWidget extends VisTable {
     public void setMaterial(MaterialAsset material) {
         this.material = material;
         diffuseColorField.setColor(material.getDiffuseColor());
+        if(assetSelectionField != null) {
+
+            assetSelectionField.setAsset(material);
+        }
         diffuseAssetField.setAsset(material.getDiffuseTexture());
         opacity.setText(String.valueOf(material.getOpacity()));
         shininess.setText(String.valueOf(material.getShininess()));
@@ -153,6 +180,13 @@ public class MaterialWidget extends VisTable {
 
     public MaterialAsset getMaterial() {
         return material;
+    }
+
+    /**
+     *
+     */
+    public static interface MaterialChangedListener {
+        public void materialChanged(MaterialAsset materialAsset);
     }
 
 }
