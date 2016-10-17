@@ -16,16 +16,11 @@
 
 package com.mbrlabs.mundus.ui.modules.inspector.components;
 
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
-import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
-import com.mbrlabs.mundus.core.EditorScene;
 import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
@@ -50,27 +45,27 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
         // selection box
         selectBox.setItems(projectManager.current().assetManager.getModelAssets());
-        selectBox.setSelected(modelComponent.getModelInstance().getModel());
-        selectBox.addListener(new ChangeListener() {
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                ModelAsset model = selectBox.getSelected();
-                if (model != null) {
-                    component.getModelInstance().replaceModel(model);
-                    component.encodeRaypickColorId();
-                }
-            }
-        });
+        selectBox.setSelected(modelComponent.getModelAsset());
+        //        selectBox.addListener(new ChangeListener() {
+        //            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+        //                ModelAsset model = selectBox.getSelected();
+        //                if (model != null) {
+        //                    component.getModelInstance().replaceModel(model);
+        //                    component.encodeRaypickColorId();
+        //                }
+        //            }
+        //        });
 
         setupUI();
     }
 
-    private void updateModelInstaneceMaterials() {
-        EditorScene scene = projectManager.current().currScene;
-        for (GameObject go : scene.sceneGraph.getGameObjects()) {
-            ModelComponent c = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
-            if (c != null) c.getModelInstance().applyModelMaterial();
-        }
-    }
+    //    private void updateModelInstaneceMaterials() {
+    //        EditorScene scene = projectManager.current().currScene;
+    //        for (GameObject go : scene.sceneGraph.getGameObjects()) {
+    //            ModelComponent c = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
+    //            if (c != null) c.getModelInstance().applyModelMaterial();
+    //        }
+    //    }
 
     private void setupUI() {
         // create Model select dropdown
@@ -79,12 +74,8 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         collapsibleContent.add(selectBox).expandX().fillX().row();
 
         // create materials for all model nodes
-        MModelInstance mi = component.getModelInstance();
         collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(3).padTop(3).row();
         collapsibleContent.addSeparator().row();
-
-        final ModelAsset asset = mi.getModel();
-        final Model model = asset.getModel();
 
         VisLabel label = new VisLabel(
                 "Currently you can can not change the material of a model component individually. "

@@ -395,14 +395,12 @@ public class ProjectManager implements Disposable {
             // Model component
             if (c.getType() == Component.Type.MODEL) {
                 ModelComponent modelComponent = (ModelComponent) c;
-                ModelAsset model = findModelById(models, modelComponent.getModelInstance().getModel().getID());
+                ModelAsset model = findModelById(models, modelComponent.getModelAsset().getID());
                 if (model != null) {
-                    modelComponent.getModelInstance().modelInstance = new ModelInstance(model.getModel());
-                    modelComponent.getModelInstance().modelInstance.transform = go.getTransform();
+                    modelComponent.setModel(model);
                     modelComponent.setShader(shaders.entityShader);
                 } else {
-                    Log.fatal(TAG, "model for modelInstance not found: {}",
-                            modelComponent.getModelInstance().getModel().getID());
+                    Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelAsset().getID());
                 }
             } else if (c.getType() == Component.Type.TERRAIN) {
                 ((TerrainComponent) c).setShader(shaders.terrainShader);

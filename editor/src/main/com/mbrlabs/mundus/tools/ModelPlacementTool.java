@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.tools;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.math.Quaternion;
@@ -26,7 +27,6 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
-import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
 import com.mbrlabs.mundus.core.Mundus;
@@ -53,17 +53,17 @@ public class ModelPlacementTool extends Tool {
 
     // DO NOT DISPOSE THIS
     private ModelAsset model;
-    private MModelInstance curEntity;
+    private ModelInstance modelInstance;
 
     public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
         super(projectManager, shader, batch, history);
         this.model = null;
-        this.curEntity = null;
+        this.modelInstance = null;
     }
 
     public void setModel(ModelAsset model) {
         this.model = model;
-        this.curEntity = new MModelInstance(model);
+        this.modelInstance = new ModelInstance(model.getModel());
     }
 
     @Override
@@ -96,9 +96,9 @@ public class ModelPlacementTool extends Tool {
 
     @Override
     public void render() {
-        if (curEntity != null) {
+        if (modelInstance != null) {
             batch.begin(projectManager.current().currScene.cam);
-            batch.render(curEntity.modelInstance, projectManager.current().currScene.environment, shader);
+            batch.render(modelInstance, projectManager.current().currScene.environment, shader);
             batch.end();
         }
     }
@@ -111,19 +111,19 @@ public class ModelPlacementTool extends Tool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if (curEntity != null && button == Input.Buttons.LEFT) {
+        if (modelInstance != null && button == Input.Buttons.LEFT) {
             int id = projectManager.current().obtainID();
             GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.getName(), id);
             projectManager.current().currScene.sceneGraph.addGameObject(modelGo);
 
-            curEntity.modelInstance.transform.getTranslation(tempV3);
+            modelInstance.transform.getTranslation(tempV3);
             modelGo.translate(tempV3);
             Quaternion rot = new Quaternion();
-            rot = curEntity.modelInstance.transform.getRotation(rot);
+            rot = modelInstance.transform.getRotation(rot);
             modelGo.setLocalRotation(rot.x, rot.y, rot.z, rot.w);
             ModelComponent modelComponent = new ModelComponent(modelGo);
             modelComponent.setShader(shader);
-            modelComponent.setModelInstance(curEntity);
+            modelComponent.setModel(model);
             modelComponent.encodeRaypickColorId();
 
             try {
@@ -135,31 +135,31 @@ public class ModelPlacementTool extends Tool {
 
             Mundus.postEvent(new SceneGraphChangedEvent());
 
-            curEntity = new MModelInstance(model);
             mouseMoved(screenX, screenY);
         }
         return false;
     }
 
+
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (this.model == null || curEntity == null) return false;
+        if (this.model == null || modelInstance == null) return false;
 
         final ProjectContext context = projectManager.current();
 
         final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
-        if (context.currScene.terrains.size > 0 && curEntity != null) {
+        if (context.currScene.terrains.size > 0 && modelInstance != null) {
             MeshPartBuilder.VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
             if (vi != null) {
                 if (shouldRespectTerrainSlope) {
-                    curEntity.modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
+                    modelInstance.transform.setToLookAt(DEFAULT_ORIENTATION, vi.normal);
                 }
-                curEntity.modelInstance.transform.setTranslation(vi.position);
+                modelInstance.transform.setTranslation(vi.position);
             }
         } else {
             tempV3.set(projectManager.current().currScene.cam.position);
             tempV3.add(ray.direction.nor().scl(200));
-            curEntity.modelInstance.transform.setTranslation(tempV3);
+            modelInstance.transform.setTranslation(tempV3);
         }
 
         return false;
@@ -168,7 +168,7 @@ public class ModelPlacementTool extends Tool {
     @Override
     public void dispose() {
         this.model = null;
-        this.curEntity = null;
+        this.modelInstance = null;
     }
 
 }

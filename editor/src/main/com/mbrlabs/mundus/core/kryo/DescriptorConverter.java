@@ -26,7 +26,6 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.lights.BaseLight;
-import com.mbrlabs.mundus.commons.model.MModelInstance;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -234,17 +233,15 @@ public class DescriptorConverter {
             return null;
         }
 
-        MModelInstance modelInstance = new MModelInstance(model);
-
         ModelComponent component = new ModelComponent(go);
-        component.setModelInstance(modelInstance);
+        component.setModel(model);
 
         return component;
     }
 
     public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
         ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
-        descriptor.setModelID(modelComponent.getModelInstance().getModel().getID());
+        descriptor.setModelID(modelComponent.getModelAsset().getID());
 
         return descriptor;
     }
