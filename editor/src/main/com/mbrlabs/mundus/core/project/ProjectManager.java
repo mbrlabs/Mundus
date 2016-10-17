@@ -331,11 +331,7 @@ public class ProjectManager implements Disposable {
     public EditorScene loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         SceneDescriptor descriptor = kryoManager.loadScene(context, sceneName);
 
-        Array<ModelAsset> models = context.assetManager.getModelAssets();
-        Array<TerrainAsset> terrains = context.assetManager.getTerrainAssets();
-        Array<MaterialAsset> materials = context.assetManager.getMaterialAssets();
-
-        EditorScene scene = DescriptorConverter.convert(descriptor, terrains, materials, models);
+        EditorScene scene = DescriptorConverter.convert(descriptor, context.assetManager.getAssetMap());
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
@@ -397,7 +393,7 @@ public class ProjectManager implements Disposable {
                 ModelComponent modelComponent = (ModelComponent) c;
                 ModelAsset model = findModelById(models, modelComponent.getModelAsset().getID());
                 if (model != null) {
-                    modelComponent.setModel(model);
+                    modelComponent.setModel(model, false);
                     modelComponent.setShader(shaders.entityShader);
                 } else {
                     Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelAsset().getID());

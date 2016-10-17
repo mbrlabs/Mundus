@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.scene3d.components;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
@@ -59,18 +60,19 @@ public class ModelComponent extends PickableComponent {
         this.shader = shader;
     }
 
-    public void setModel(ModelAsset model) {
+    public void setModel(ModelAsset model, boolean inheritMaterials) {
         this.modelAsset = model;
         modelInstance = new ModelInstance(model.getModel());
         modelInstance.transform = gameObject.getTransform();
 
-        // add default materials of the model
-//        Map<String, MaterialAsset> defaultMats = modelInstance.getModel().getDefaultMaterials();
-//        for(String g3dbMatID : defaultMats.keySet()) {
-//            materials.put(g3dbMatID, defaultMats.get(g3dbMatID));
-//        }
+        // apply default materials of model
+        if(inheritMaterials) {
+            for(String g3dbMatID : model.getDefaultMaterials().keySet()) {
+                materials.put(g3dbMatID, model.getDefaultMaterials().get(g3dbMatID));
+            }
 
-         applyMaterials();
+            applyMaterials();
+        }
     }
 
     public Map<String, MaterialAsset> getMaterials() {
@@ -82,11 +84,14 @@ public class ModelComponent extends PickableComponent {
     }
 
     public void applyMaterials() {
-        // TODO model instances currently can't have their own materials. They inherit it from the model
-        // This has to be changed
         for (Material mat : modelInstance.materials) {
+
             MaterialAsset materialAsset = materials.get(mat.id);
-            if(materialAsset == null) continue;
+            if(materialAsset == null) {
+                Gdx.app.log("ModelComponent", "Material asset == null");
+                continue;
+            }
+
             if (materialAsset.getDiffuseColor() != null) {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
             }

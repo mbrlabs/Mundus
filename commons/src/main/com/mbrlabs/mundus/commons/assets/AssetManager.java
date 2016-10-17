@@ -64,6 +64,10 @@ public class AssetManager implements Disposable {
         return assetIndex.get(id);
     }
 
+    public Map<String, Asset> getAssetMap() {
+        return assetIndex;
+    }
+
     public void addAsset(Asset asset) {
         if (asset == null) return;
         if (assetIndex.get(asset.getID()) == null) {

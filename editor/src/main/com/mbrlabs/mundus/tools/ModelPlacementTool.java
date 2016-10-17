@@ -118,12 +118,10 @@ public class ModelPlacementTool extends Tool {
 
             modelInstance.transform.getTranslation(tempV3);
             modelGo.translate(tempV3);
-            Quaternion rot = new Quaternion();
-            rot = modelInstance.transform.getRotation(rot);
-            modelGo.setLocalRotation(rot.x, rot.y, rot.z, rot.w);
+
             ModelComponent modelComponent = new ModelComponent(modelGo);
             modelComponent.setShader(shader);
-            modelComponent.setModel(model);
+            modelComponent.setModel(model, true);
             modelComponent.encodeRaypickColorId();
 
             try {

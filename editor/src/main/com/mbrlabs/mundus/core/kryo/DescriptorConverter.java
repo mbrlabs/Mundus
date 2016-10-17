@@ -19,8 +19,8 @@ package com.mbrlabs.mundus.core.kryo;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
@@ -50,6 +50,7 @@ import com.mbrlabs.mundus.scene3d.components.TerrainComponent;
 import com.mbrlabs.mundus.utils.Log;
 
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Converts runtime formats into Kryo compatible formats for internal project
@@ -137,8 +138,8 @@ public class DescriptorConverter {
     // Game Object
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph, Array<ModelAsset> models, Array<MaterialAsset> materials,
-            Array<TerrainAsset> terrains) {
+    public static GameObject convert(GameObjectDescriptor descriptor, SceneGraph sceneGraph,
+            Map<String, Asset> assets) {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
 
@@ -153,15 +154,15 @@ public class DescriptorConverter {
 
         // convert components
         if (descriptor.getModelComponent() != null) {
-            go.getComponents().add(convert(descriptor.getModelComponent(), go, models, materials));
+            go.getComponents().add(convert(descriptor.getModelComponent(), go, assets));
         } else if (descriptor.getTerrainComponent() != null) {
-            go.getComponents().add(convert(descriptor.getTerrainComponent(), go, terrains));
+            go.getComponents().add(convert(descriptor.getTerrainComponent(), go, assets));
         }
 
         // recursively convert children
         if (descriptor.getChilds() != null) {
             for (GameObjectDescriptor c : descriptor.getChilds()) {
-                go.addChild(convert(c, sceneGraph, models, materials, terrains));
+                go.addChild(convert(c, sceneGraph, assets));
             }
         }
 
@@ -219,14 +220,9 @@ public class DescriptorConverter {
     // ModelComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go, Array<ModelAsset> models, Array<MaterialAsset> materials) {
-        ModelAsset model = null;
-        for (ModelAsset m : models) {
-            if (descriptor.getModelID().equals(m.getID())) {
-                model = m;
-                break;
-            }
-        }
+    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go,
+            Map<String, Asset> assets) {
+        ModelAsset model = (ModelAsset) assets.get(descriptor.getModelID());
 
         if (model == null) {
             Log.fatal(TAG, "MModel for MModelInstance not found: {}", descriptor.getModelID());
@@ -234,7 +230,13 @@ public class DescriptorConverter {
         }
 
         ModelComponent component = new ModelComponent(go);
-        component.setModel(model);
+        component.setModel(model, false);
+
+        for (String g3dbMatID : descriptor.getMaterials().keySet()) {
+            String uuid = descriptor.getMaterials().get(g3dbMatID);
+            MaterialAsset matAsset = (MaterialAsset) assets.get(uuid);
+            component.getMaterials().put(g3dbMatID, matAsset);
+        }
 
         return component;
     }
@@ -242,6 +244,11 @@ public class DescriptorConverter {
     public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
         ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
         descriptor.setModelID(modelComponent.getModelAsset().getID());
+
+        // materials
+        for (String g3dbMatID : modelComponent.getMaterials().keySet()) {
+            descriptor.getMaterials().put(g3dbMatID, modelComponent.getMaterials().get(g3dbMatID).getID());
+        }
 
         return descriptor;
     }
@@ -251,15 +258,9 @@ public class DescriptorConverter {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go,
-            Array<TerrainAsset> terrains) {
+            Map<String, Asset> assets) {
         // find terrainAsset
-        TerrainAsset terrain = null;
-        for (TerrainAsset t : terrains) {
-            if (descriptor.getTerrainID().equals(t.getID())) {
-                terrain = t;
-                break;
-            }
-        }
+        TerrainAsset terrain = (TerrainAsset) assets.get(descriptor.getTerrainID());
 
         if (terrain == null) {
             Log.fatal(TAG, "Terrain for TerrainInstance not found");
@@ -356,8 +357,7 @@ public class DescriptorConverter {
         return descriptor;
     }
 
-    public static EditorScene convert(SceneDescriptor sceneDescriptor, Array<TerrainAsset> terrains,
-            Array<MaterialAsset> materials, Array<ModelAsset> models) {
+    public static EditorScene convert(SceneDescriptor sceneDescriptor, Map<String, Asset> assets) {
         EditorScene scene = new EditorScene();
 
         // meta
@@ -374,7 +374,7 @@ public class DescriptorConverter {
         // scene graph
         scene.sceneGraph = new SceneGraph(scene);
         for (GameObjectDescriptor descriptor : sceneDescriptor.getGameObjects()) {
-            scene.sceneGraph.addGameObject(convert(descriptor, scene.sceneGraph, models, materials, terrains));
+            scene.sceneGraph.addGameObject(convert(descriptor, scene.sceneGraph, assets));
         }
 
         // camera
