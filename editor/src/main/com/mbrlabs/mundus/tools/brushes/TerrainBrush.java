@@ -271,8 +271,8 @@ public abstract class TerrainBrush extends Tool {
      * @param radius
      *
      * @return the interpolated r-channel value of brush pixmap at pointX,
-     *         pointZ, which can be interpreted as terrainAsset height (raise/lower)
-     *         or opacity (paint)
+     *         pointZ, which can be interpreted as terrainAsset height
+     *         (raise/lower) or opacity (paint)
      */
     private float getValueOfBrushPixmap(float centerX, float centerZ, float pointX, float pointZ, float radius) {
         c.set(centerX, centerZ);

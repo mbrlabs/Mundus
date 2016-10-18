@@ -127,7 +127,7 @@ public class AssetSelectionDialog extends BaseDialog
     public void show(boolean showNoneAsset, AssetFilter filter, AssetSelectionListener listener) {
         this.listener = listener;
         this.filter = filter;
-        if(showNoneAsset) {
+        if (showNoneAsset) {
             noneBtn.setDisabled(false);
             noneBtn.setTouchable(Touchable.enabled);
         } else {

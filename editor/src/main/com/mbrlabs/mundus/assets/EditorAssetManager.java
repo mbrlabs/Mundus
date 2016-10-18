@@ -20,7 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetType;
@@ -30,7 +29,6 @@ import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.PixmapTextureAsset;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
-import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.utils.Log;
 
 import org.apache.commons.io.FileUtils;
@@ -301,11 +299,11 @@ public class EditorAssetManager extends AssetManager {
      * @throws IOException
      */
     public void saveAsset(Asset asset) throws IOException {
-        if(asset instanceof MaterialAsset) {
+        if (asset instanceof MaterialAsset) {
             saveMaterialAsset((MaterialAsset) asset);
-        } else if(asset instanceof TerrainAsset) {
+        } else if (asset instanceof TerrainAsset) {
             saveTerrainAsset((TerrainAsset) asset);
-        } else if(asset instanceof ModelAsset) {
+        } else if (asset instanceof ModelAsset) {
             saveModelAsset((ModelAsset) asset);
         }
         // TODO other assets ?
@@ -316,8 +314,9 @@ public class EditorAssetManager extends AssetManager {
      * @param asset
      */
     public void saveModelAsset(ModelAsset asset) throws IOException {
-        for(String g3dbMatID : asset.getDefaultMaterials().keySet()) {
-            asset.getMeta().getDefaultModelMaterials().put(g3dbMatID, asset.getDefaultMaterials().get(g3dbMatID).getID());
+        for (String g3dbMatID : asset.getDefaultMaterials().keySet()) {
+            asset.getMeta().getDefaultModelMaterials().put(g3dbMatID,
+                    asset.getDefaultMaterials().get(g3dbMatID).getID());
         }
         asset.getMeta().save();
     }

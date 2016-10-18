@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.core.project;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.Main;
@@ -27,10 +26,8 @@ import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.AssetNotFoundException;
-import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.MetaFileParseException;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
-import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
@@ -227,7 +224,7 @@ public class ProjectManager implements Disposable {
     public void saveProject(ProjectContext projectContext) {
         // save modified assets
         EditorAssetManager assetManager = projectContext.assetManager;
-        for(Asset asset : assetManager.getDirtyAssets()) {
+        for (Asset asset : assetManager.getDirtyAssets()) {
             try {
                 Log.debug(TAG, "Saving dirty asset: {}", asset);
                 assetManager.saveAsset(asset);

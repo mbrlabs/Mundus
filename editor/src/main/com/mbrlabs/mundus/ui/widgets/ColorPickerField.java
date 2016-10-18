@@ -67,7 +67,7 @@ public class ColorPickerField extends VisTable {
     }
 
     public void setColor(Color color) {
-        if(color != null) {
+        if (color != null) {
             textField.setText("#" + color.toString());
             colorPicker.setColor(color);
             this.color = color;

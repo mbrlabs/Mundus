@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.ui.modules.dock.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g3d.particles.ResourceData;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -56,9 +55,8 @@ import com.mbrlabs.mundus.ui.Ui;
  * @author Marcus Brummer
  * @version 08-12-2015
  */
-public class AssetsDock extends Tab
-        implements ProjectChangedEvent.ProjectChangedListener, AssetImportEvent.AssetImportListener,
-        GameObjectSelectedEvent.GameObjectSelectedListener {
+public class AssetsDock extends Tab implements ProjectChangedEvent.ProjectChangedListener,
+        AssetImportEvent.AssetImportListener, GameObjectSelectedEvent.GameObjectSelectedListener {
 
     private VisTable root;
     private VisTable filesViewContextContainer;
@@ -115,8 +113,8 @@ public class AssetsDock extends Tab
 
     private void setSelected(AssetItem assetItem) {
         currentSelection = assetItem;
-        for(AssetItem item : assetItems) {
-            if(currentSelection != null && currentSelection.equals(item)) {
+        for (AssetItem item : assetItems) {
+            if (currentSelection != null && currentSelection.equals(item)) {
                 item.background(VisUI.getSkin().getDrawable("default-select-selection"));
             } else {
                 item.background(VisUI.getSkin().getDrawable("menu-bg"));

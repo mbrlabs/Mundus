@@ -58,15 +58,15 @@ public class AssetInspector extends VisTable {
         if (asset instanceof MaterialAsset) {
             add(materialWidget).growX().row();
             materialWidget.setMaterial((MaterialAsset) asset);
-        } else if(asset instanceof ModelAsset) {
+        } else if (asset instanceof ModelAsset) {
             add(modelWidget).growX().row();
             modelWidget.setModel((ModelAsset) asset);
-        } else if(asset instanceof TextureAsset) {
+        } else if (asset instanceof TextureAsset) {
             add(textureWidget).growX().row();
-            textureWidget.setTextureAsset((TextureAsset)asset);
-        } else if(asset instanceof TerrainAsset) {
+            textureWidget.setTextureAsset((TextureAsset) asset);
+        } else if (asset instanceof TerrainAsset) {
             add(terrainWidget).growX().row();
-            terrainWidget.setTerrainAsset((TerrainAsset)asset);
+            terrainWidget.setTerrainAsset((TerrainAsset) asset);
         }
 
         // TODO other assets

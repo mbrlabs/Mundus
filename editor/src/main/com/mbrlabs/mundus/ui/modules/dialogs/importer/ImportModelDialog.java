@@ -196,15 +196,17 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             });
         }
 
-        private ModelAsset importModel(ModelImporter.ImportedModel model) throws IOException, AssetAlreadyExistsException {
+        private ModelAsset importModel(ModelImporter.ImportedModel model)
+                throws IOException, AssetAlreadyExistsException {
 
             // create model asset
             EditorAssetManager assetManager = projectManager.current().assetManager;
             ModelAsset modelAsset = assetManager.createModelAsset(importedModel);
 
             // create materials
-            for(Material mat : modelAsset.getModel().materials) {
-                MaterialAsset materialAsset = assetManager.createMaterialAsset(modelAsset.getID().substring(0, 4) + "_" + mat.id);
+            for (Material mat : modelAsset.getModel().materials) {
+                MaterialAsset materialAsset = assetManager
+                        .createMaterialAsset(modelAsset.getID().substring(0, 4) + "_" + mat.id);
                 modelAsset.getMeta().getDefaultModelMaterials().put(mat.id, materialAsset.getID());
                 modelAsset.getDefaultMaterials().put(mat.id, materialAsset);
             }

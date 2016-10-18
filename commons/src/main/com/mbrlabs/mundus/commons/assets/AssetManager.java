@@ -160,8 +160,8 @@ public class AssetManager implements Disposable {
         }
 
         // resolve material assets
-        for(Asset asset : assets) {
-            if(asset instanceof MaterialAsset) {
+        for (Asset asset : assets) {
+            if (asset instanceof MaterialAsset) {
                 asset.resolveDependencies(assetIndex);
                 asset.applyDependencies();
             }
@@ -169,7 +169,7 @@ public class AssetManager implements Disposable {
 
         // resolve other assets
         for (Asset asset : assets) {
-            if(asset instanceof MaterialAsset) continue;
+            if (asset instanceof MaterialAsset) continue;
             asset.resolveDependencies(assetIndex);
             asset.applyDependencies();
         }

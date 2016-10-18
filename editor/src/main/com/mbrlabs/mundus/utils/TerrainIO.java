@@ -17,8 +17,8 @@
 package com.mbrlabs.mundus.utils;
 
 /**
- * Exports the terrainAsset height. Everything else (e.g. normals) can be calculated
- * at runtime.
+ * Exports the terrainAsset height. Everything else (e.g. normals) can be
+ * calculated at runtime.
  *
  * @author Marcus Brummer
  * @version 04-12-2015

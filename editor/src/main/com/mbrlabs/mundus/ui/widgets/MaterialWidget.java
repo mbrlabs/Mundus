@@ -16,9 +16,7 @@
 
 package com.mbrlabs.mundus.ui.widgets;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.util.FloatDigitsOnlyFilter;
@@ -27,7 +25,6 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
-import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
@@ -38,13 +35,9 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
-import com.mbrlabs.mundus.ui.Ui;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetMaterialFilter;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetSelectionDialog;
 import com.mbrlabs.mundus.ui.modules.dialogs.assets.AssetTextureFilter;
-import com.mbrlabs.mundus.utils.Log;
-
-import java.io.IOException;
 
 /**
  * @author Marcus Brummer
@@ -78,7 +71,7 @@ public class MaterialWidget extends VisTable {
         align(Align.topLeft);
         label = new VisLabel();
         this.changedListener = listener;
-        if(listener != null) {
+        if (listener != null) {
             assetSelectionDialog = new AssetSelectionDialog();
             materialFilter = new AssetMaterialFilter();
             materialChangeBtn = new VisTextButton("change");
@@ -97,7 +90,7 @@ public class MaterialWidget extends VisTable {
 
         label.setWrap(true);
 
-        if(listener != null) {
+        if (listener != null) {
             VisTable table = new VisTable();
             table.add(label).grow();
             table.add(materialChangeBtn).right().row();
@@ -110,16 +103,16 @@ public class MaterialWidget extends VisTable {
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
         add(diffuseColorField).growX().row();
-//        add(new VisLabel("Shininess")).growX().row();
-//        add(shininess).growX().row();
-//        add(new VisLabel("Opacity")).growX().row();
-//        add(opacity).growX().row();
+        //        add(new VisLabel("Shininess")).growX().row();
+        //        add(shininess).growX().row();
+        //        add(new VisLabel("Opacity")).growX().row();
+        //        add(opacity).growX().row();
 
         setupWidgets();
     }
 
     private void setupWidgets() {
-        if(materialChangeBtn != null) {
+        if (materialChangeBtn != null) {
             materialChangeBtn.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -145,35 +138,35 @@ public class MaterialWidget extends VisTable {
             projectManager.current().assetManager.addDirtyAsset(material);
         });
 
-//        opacity.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                try {
-//                    material.setOpacity(Float.valueOf(opacity.getText()));
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//        shininess.addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ChangeEvent event, Actor actor) {
-//                try {
-//                    material.setShininess(Float.valueOf(shininess.getText()));
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        //        opacity.addListener(new ChangeListener() {
+        //            @Override
+        //            public void changed(ChangeEvent event, Actor actor) {
+        //                try {
+        //                    material.setOpacity(Float.valueOf(opacity.getText()));
+        //                } catch (NumberFormatException e) {
+        //                    e.printStackTrace();
+        //                }
+        //            }
+        //        });
+        //
+        //        shininess.addListener(new ChangeListener() {
+        //            @Override
+        //            public void changed(ChangeEvent event, Actor actor) {
+        //                try {
+        //                    material.setShininess(Float.valueOf(shininess.getText()));
+        //                } catch (NumberFormatException e) {
+        //                    e.printStackTrace();
+        //                }
+        //            }
+        //        });
     }
 
     // TODO find better solution than iterating through all components
     private void applyMaterialToModelComponents() {
         SceneGraph sceneGraph = projectManager.current().currScene.sceneGraph;
-        for(GameObject go : sceneGraph.getGameObjects()) {
+        for (GameObject go : sceneGraph.getGameObjects()) {
             ModelComponent mc = (ModelComponent) go.findComponentByType(Component.Type.MODEL);
-            if(mc != null) {
+            if (mc != null) {
                 mc.applyMaterials();
             }
         }
@@ -182,7 +175,7 @@ public class MaterialWidget extends VisTable {
     // TODO find better solution than iterating through all assets
     private void applyMaterialToModelAssets() {
         EditorAssetManager assetManager = projectManager.current().assetManager;
-        for(ModelAsset modelAsset  : assetManager.getModelAssets()) {
+        for (ModelAsset modelAsset : assetManager.getModelAssets()) {
             modelAsset.applyDependencies();
         }
     }
@@ -203,7 +196,7 @@ public class MaterialWidget extends VisTable {
     /**
      *
      */
-    public static interface MaterialChangedListener {
+    public interface MaterialChangedListener {
         public void materialChanged(MaterialAsset materialAsset);
     }
 

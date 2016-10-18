@@ -44,17 +44,17 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         this.component = modelComponent;
 
         // selection box
-//        selectBox.setItems(projectManager.current().assetManager.getModelAssets());
-//        selectBox.setSelected(modelComponent.getModelAsset());
-//                selectBox.addListener(new ChangeListener() {
-//                    public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-//                        ModelAsset model = selectBox.getSelected();
-//                        if (model != null) {
-//                            component.getModelInstance().replaceModel(model);
-//                            component.encodeRaypickColorId();
-//                        }
-//                    }
-//                });
+        //        selectBox.setItems(projectManager.current().assetManager.getModelAssets());
+        //        selectBox.setSelected(modelComponent.getModelAsset());
+        //                selectBox.addListener(new ChangeListener() {
+        //                    public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+        //                        ModelAsset model = selectBox.getSelected();
+        //                        if (model != null) {
+        //                            component.getModelInstance().replaceModel(model);
+        //                            component.encodeRaypickColorId();
+        //                        }
+        //                    }
+        //                });
 
         setupUI();
     }

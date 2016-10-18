@@ -17,7 +17,6 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.Material;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -107,12 +106,12 @@ public class MetaFile {
             if (diffuseTexture != null) {
                 props.setProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, diffuseTexture);
             }
-            if(defaultModelMaterials.size() > 0) {
+            if (defaultModelMaterials.size() > 0) {
                 String mats = "";
-                for(String g3dbMat : defaultModelMaterials.keySet()) {
+                for (String g3dbMat : defaultModelMaterials.keySet()) {
                     mats += g3dbMat + "~>" + defaultModelMaterials.get(g3dbMat) + ",";
                 }
-                if(mats.endsWith(",")) mats = mats.substring(0, mats.length() - 1);
+                if (mats.endsWith(",")) mats = mats.substring(0, mats.length() - 1);
                 props.setProperty(PROP_DEFAULT_MODEL_MATERIALS, mats);
             }
         }
@@ -163,8 +162,8 @@ public class MetaFile {
                 this.diffuseTexture = props.getProperty(PROP_MATERIAL_DIFFUSE_TEXTURE, null);
 
                 String mats = props.getProperty(PROP_DEFAULT_MODEL_MATERIALS, null);
-                if(mats != null) {
-                    for(String pair : mats.split(",")) {
+                if (mats != null) {
+                    for (String pair : mats.split(",")) {
                         String[] split = pair.split("~>");
                         String g3dbID = split[0];
                         String materialAssetUUID = split[1];

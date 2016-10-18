@@ -20,13 +20,10 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.mbrlabs.mundus.Editor;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
-import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -95,14 +92,13 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
 
         // materials
         VisLabel label = new VisLabel();
-        label.setText("Default model materials determine the initial materials a new model will get, if " +
-                "you use the model placement tool.");
+        label.setText("Default model materials determine the initial materials a new model will get, if "
+                + "you use the model placement tool.");
         label.setWrap(true);
         collapsibleContent.add(new VisLabel("Default model materials")).growX().row();
         collapsibleContent.addSeparator().padBottom(5).row();
         collapsibleContent.add(label).padTop(4).padBottom(15).grow().row();
         collapsibleContent.add(materialContainer).growX().padBottom(15).row();
-
 
         // model placement action
         modelPlacement.addListener(new ClickListener() {
@@ -130,7 +126,7 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         indexCount.setText("Indices: " + indices);
 
         materialContainer.clear();
-        for(String g3dbMatID : modelAsset.getDefaultMaterials().keySet()) {
+        for (String g3dbMatID : modelAsset.getDefaultMaterials().keySet()) {
             MaterialAsset mat = modelAsset.getDefaultMaterials().get(g3dbMatID);
             MaterialWidget mw = new MaterialWidget(materialAsset -> {
                 EditorAssetManager assetManager = projectManager.current().assetManager;

@@ -66,8 +66,8 @@ public class ModelComponent extends PickableComponent {
         modelInstance.transform = gameObject.getTransform();
 
         // apply default materials of model
-        if(inheritMaterials) {
-            for(String g3dbMatID : model.getDefaultMaterials().keySet()) {
+        if (inheritMaterials) {
+            for (String g3dbMatID : model.getDefaultMaterials().keySet()) {
                 materials.put(g3dbMatID, model.getDefaultMaterials().get(g3dbMatID));
             }
         }
@@ -86,7 +86,7 @@ public class ModelComponent extends PickableComponent {
         for (Material mat : modelInstance.materials) {
 
             MaterialAsset materialAsset = materials.get(mat.id);
-            if(materialAsset == null) {
+            if (materialAsset == null) {
                 Gdx.app.log("ModelComponent", "Material asset == null");
                 continue;
             }
@@ -122,8 +122,7 @@ public class ModelComponent extends PickableComponent {
     @Override
     public void render(float delta) {
         modelInstance.transform.set(gameObject.getTransform());
-        gameObject.sceneGraph.batch.render(modelInstance, gameObject.sceneGraph.scene.environment,
-                shader);
+        gameObject.sceneGraph.batch.render(modelInstance, gameObject.sceneGraph.scene.environment, shader);
     }
 
     @Override
