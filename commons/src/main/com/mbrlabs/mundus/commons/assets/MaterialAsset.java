@@ -2,6 +2,10 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,6 +74,26 @@ public class MaterialAsset extends Asset {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Applies this model asset to the libGDX material.
+     *
+     * @param material
+     * @return
+     */
+    public Material applyToMaterial(Material material) {
+        if (diffuseColor != null) {
+            material.set(new ColorAttribute(ColorAttribute.Diffuse, diffuseColor));
+        }
+        if (diffuseTexture != null) {
+            material.set(new TextureAttribute(TextureAttribute.Diffuse, diffuseTexture.getTexture()));
+        } else {
+            material.remove(TextureAttribute.Diffuse);
+        }
+        material.set(new FloatAttribute(FloatAttribute.Shininess, shininess));
+
+        return material;
     }
 
     public float getShininess() {

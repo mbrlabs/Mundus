@@ -119,18 +119,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         setupInput();
 
         setupCloseListener();
-
-        //        try {
-        //            MaterialAsset asset = projectContext.assetManager.createMaterialAsset("testMaterial");
-        //            asset.setDiffuseColor(Color.BROWN);
-        //            asset.setDiffuseTexture((TextureAsset) projectContext.assetManager
-        //                    .findAssetByID(EditorAssetManager.STANDARD_ASSET_TEXTURE_CHESSBOARD));
-        //            asset.setOpacity(7);
-        //            asset.setShininess(8);
-        //            projectContext.assetManager.saveMaterialAsset(asset);
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
     }
 
     private void setupCloseListener() {

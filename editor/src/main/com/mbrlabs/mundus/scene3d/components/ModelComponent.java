@@ -20,9 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
@@ -84,23 +81,10 @@ public class ModelComponent extends PickableComponent {
 
     public void applyMaterials() {
         for (Material mat : modelInstance.materials) {
-
             MaterialAsset materialAsset = materials.get(mat.id);
-            if (materialAsset == null) {
-                Gdx.app.log("ModelComponent", "Material asset == null");
-                continue;
-            }
+            if (materialAsset == null) continue;
 
-            if (materialAsset.getDiffuseColor() != null) {
-                mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
-            }
-            if (materialAsset.getDiffuseTexture() != null) {
-                mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
-            } else {
-                mat.remove(TextureAttribute.Diffuse);
-            }
-            mat.set(new FloatAttribute(FloatAttribute.Shininess, materialAsset.getShininess()));
-            // TODO opacity
+            materialAsset.applyToMaterial(mat);
         }
     }
 

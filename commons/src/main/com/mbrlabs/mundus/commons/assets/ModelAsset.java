@@ -19,8 +19,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
@@ -79,16 +77,7 @@ public class ModelAsset extends Asset {
         for (Material mat : model.materials) {
             MaterialAsset materialAsset = defaultMaterials.get(mat.id);
             if (materialAsset == null) continue;
-            if (materialAsset.getDiffuseColor() != null) {
-                mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
-            }
-            if (materialAsset.getDiffuseTexture() != null) {
-                mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
-            } else {
-                mat.remove(TextureAttribute.Diffuse);
-            }
-            mat.set(new FloatAttribute(FloatAttribute.Shininess, materialAsset.getShininess()));
-            // TODO opacity
+            materialAsset.applyToMaterial(mat);
         }
     }
 
