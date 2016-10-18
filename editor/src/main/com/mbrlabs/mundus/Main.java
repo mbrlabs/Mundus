@@ -28,7 +28,7 @@ import com.mbrlabs.mundus.utils.Log;
 public class Main {
 
     private static final String TAG = Main.class.getSimpleName();
-    public static final String TITLE = "Mundus v0.0.9";
+    public static final String TITLE = "Mundus v0.1.0";
 
     public static WindowCloseListener closeListener = null;
 
