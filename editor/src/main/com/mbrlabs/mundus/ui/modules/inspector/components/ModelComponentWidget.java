@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.ui.modules.inspector.components;
 
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSelectBox;
+import com.kotcrab.vis.ui.widget.VisTable;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
@@ -25,6 +26,7 @@ import com.mbrlabs.mundus.core.Inject;
 import com.mbrlabs.mundus.core.Mundus;
 import com.mbrlabs.mundus.core.project.ProjectManager;
 import com.mbrlabs.mundus.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.ui.widgets.MaterialWidget;
 
 /**
  * @author Marcus Brummer
@@ -34,6 +36,7 @@ import com.mbrlabs.mundus.scene3d.components.ModelComponent;
 public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
 
     private VisSelectBox<ModelAsset> selectBox = new VisSelectBox<>();
+    private VisTable materialContainer;
 
     @Inject
     private ProjectManager projectManager;
@@ -42,6 +45,7 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         super("Model Component", modelComponent);
         Mundus.inject(this);
         this.component = modelComponent;
+        materialContainer = new VisTable();
 
         // selection box
         //        selectBox.setItems(projectManager.current().assetManager.getModelAssets());
@@ -64,17 +68,34 @@ public class ModelComponentWidget extends ComponentWidget<ModelComponent> {
         collapsibleContent.add(new VisLabel("Model")).left().row();
         collapsibleContent.addSeparator().padBottom(5).row();
         //collapsibleContent.add(selectBox).expandX().fillX().row();
+        collapsibleContent.add(new VisLabel("Model asset: " + component.getModelAsset().getName())).grow().padBottom(15)
+                .row();
 
         // create materials for all model nodes
         collapsibleContent.add(new VisLabel("Materials")).expandX().fillX().left().padBottom(3).padTop(3).row();
         collapsibleContent.addSeparator().row();
 
-        VisLabel label = new VisLabel(
-                "Currently you can can not change the material of a model component individually. "
-                        + "You can however change the default material of the underlying model asset. "
-                        + "To do that sleect the model in the asset browser.");
+        VisLabel label = new VisLabel();
         label.setWrap(true);
-        collapsibleContent.add(label).grow().row();
+        label.setText("Here you change the materials of model components individually.\n"
+                + "Modifing the material will update all components, that use that material.");
+        collapsibleContent.add(label).grow().padBottom(10).row();
+
+        collapsibleContent.add(materialContainer).grow().row();
+        buildMaterials();
+    }
+
+    private void buildMaterials() {
+        materialContainer.clear();
+        for (String g3dbMatID : component.getMaterials().keySet()) {
+
+            MaterialWidget mw = new MaterialWidget(materialAsset -> {
+                component.getMaterials().put(g3dbMatID, materialAsset);
+                component.applyMaterials();
+            });
+            mw.setMaterial(component.getMaterials().get(g3dbMatID));
+            materialContainer.add(mw).grow().padBottom(20).row();
+        }
     }
 
     @Override

@@ -123,7 +123,7 @@ public abstract class BaseInspectorWidget extends VisTable {
     }
 
     public void collapse(boolean collapse) {
-        collapsibleWidget.setCollapsed(collapse);
+        collapsibleWidget.setCollapsed(collapse, false);
         if (collapse) {
             collapseBtn.setText(COLLAPSE_BTN_DOWN);
         } else {
