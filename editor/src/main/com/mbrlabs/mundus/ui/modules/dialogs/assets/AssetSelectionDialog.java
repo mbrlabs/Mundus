@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.ui.modules.dialogs.assets;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.adapter.SimpleListAdapter;
@@ -126,7 +127,13 @@ public class AssetSelectionDialog extends BaseDialog
     public void show(boolean showNoneAsset, AssetFilter filter, AssetSelectionListener listener) {
         this.listener = listener;
         this.filter = filter;
-        this.noneBtn.setDisabled(!showNoneAsset);
+        if(showNoneAsset) {
+            noneBtn.setDisabled(false);
+            noneBtn.setTouchable(Touchable.enabled);
+        } else {
+            noneBtn.setDisabled(true);
+            noneBtn.setTouchable(Touchable.disabled);
+        }
         reloadData();
         Ui.getInstance().showDialog(this);
     }

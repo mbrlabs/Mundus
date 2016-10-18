@@ -53,8 +53,12 @@ public class MaterialWidget extends VisTable {
 
     private static final String TAG = MaterialWidget.class.getSimpleName();
 
+    private AssetSelectionDialog assetSelectionDialog;
+    private AssetMaterialFilter materialFilter;
+    private VisTextButton materialChangeBtn;
+    private AssetSelectionDialog.AssetSelectionListener assetSelectionListener;
+
     private VisLabel label;
-    private AssetSelectionField assetSelectionField;
     private ColorPickerField diffuseColorField;
     private AssetSelectionField diffuseAssetField;
     private VisTextField opacity;
@@ -74,8 +78,13 @@ public class MaterialWidget extends VisTable {
         label = new VisLabel();
         this.changedListener = listener;
         if(listener != null) {
-            assetSelectionField = new AssetSelectionField();
-            assetSelectionField.setFilter(new AssetMaterialFilter());
+            assetSelectionDialog = new AssetSelectionDialog();
+            materialFilter = new AssetMaterialFilter();
+            materialChangeBtn = new VisTextButton("change");
+            assetSelectionListener = asset -> {
+                setMaterial((MaterialAsset) asset);
+                listener.materialChanged((MaterialAsset) asset);
+            };
         }
         diffuseAssetField = new AssetSelectionField();
         diffuseColorField = new ColorPickerField();
@@ -87,12 +96,15 @@ public class MaterialWidget extends VisTable {
 
         label.setWrap(true);
 
-        add(label).grow().row();
-        addSeparator().growX().row();
-        if(changedListener != null) {
-            add(new VisLabel("Change material")).growX().row();
-            add(assetSelectionField).growX().padBottom(10).row();
+        if(listener != null) {
+            VisTable table = new VisTable();
+            table.add(label).grow();
+            table.add(materialChangeBtn).right().row();
+            add(table).grow().row();
+        } else {
+            add(label).grow().row();
         }
+        addSeparator().growX().row();
         add(new VisLabel("Diffuse texture")).grow().row();
         add(diffuseAssetField).growX().row();
         add(new VisLabel("Diffuse color")).grow().row();
@@ -106,11 +118,12 @@ public class MaterialWidget extends VisTable {
     }
 
     private void setupWidgets() {
-        // material changing
-        if(changedListener != null) {
-            assetSelectionField.setListener(asset -> {
-                changedListener.materialChanged((MaterialAsset) asset);
-                setMaterial((MaterialAsset) asset);
+        if(materialChangeBtn != null) {
+            materialChangeBtn.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    assetSelectionDialog.show(false, materialFilter, assetSelectionListener);
+                }
             });
         }
 
@@ -168,10 +181,6 @@ public class MaterialWidget extends VisTable {
     public void setMaterial(MaterialAsset material) {
         this.material = material;
         diffuseColorField.setColor(material.getDiffuseColor());
-        if(assetSelectionField != null) {
-
-            assetSelectionField.setAsset(material);
-        }
         diffuseAssetField.setAsset(material.getDiffuseTexture());
         opacity.setText(String.valueOf(material.getOpacity()));
         shininess.setText(String.valueOf(material.getShininess()));

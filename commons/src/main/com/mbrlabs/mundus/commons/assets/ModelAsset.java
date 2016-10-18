@@ -15,7 +15,6 @@
  */
 package com.mbrlabs.mundus.commons.assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -66,7 +65,7 @@ public class ModelAsset extends Asset {
     @Override
     public void resolveDependencies(Map<String, Asset> assets) {
         // materials
-        for(String g3dbMatID : meta.getDefaultModelMaterials().keySet()) {
+        for (String g3dbMatID : meta.getDefaultModelMaterials().keySet()) {
             String uuid = meta.getDefaultModelMaterials().get(g3dbMatID);
             defaultMaterials.put(g3dbMatID, (MaterialAsset) assets.get(uuid));
         }
@@ -77,13 +76,13 @@ public class ModelAsset extends Asset {
         if (model == null) return;
 
         // materials
-        for(Material mat : model.materials) {
+        for (Material mat : model.materials) {
             MaterialAsset materialAsset = defaultMaterials.get(mat.id);
-            if(materialAsset == null) continue;
-            if(materialAsset.getDiffuseColor() != null) {
+            if (materialAsset == null) continue;
+            if (materialAsset.getDiffuseColor() != null) {
                 mat.set(new ColorAttribute(ColorAttribute.Diffuse, materialAsset.getDiffuseColor()));
             }
-            if(materialAsset.getDiffuseTexture() != null) {
+            if (materialAsset.getDiffuseTexture() != null) {
                 mat.set(new TextureAttribute(TextureAttribute.Diffuse, materialAsset.getDiffuseTexture().getTexture()));
             } else {
                 mat.remove(TextureAttribute.Diffuse);
