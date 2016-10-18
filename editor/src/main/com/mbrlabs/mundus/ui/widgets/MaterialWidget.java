@@ -29,6 +29,7 @@ import com.kotcrab.vis.ui.widget.VisTextField;
 import com.mbrlabs.mundus.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
+import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.assets.TextureAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
@@ -131,6 +132,7 @@ public class MaterialWidget extends VisTable {
         diffuseAssetField.setFilter(new AssetTextureFilter());
         diffuseAssetField.setListener(asset -> {
             material.setDiffuseTexture((TextureAsset) asset);
+            applyMaterialToModelAssets();
             applyMaterialToModelComponents();
             projectManager.current().assetManager.addDirtyAsset(material);
         });
@@ -138,33 +140,32 @@ public class MaterialWidget extends VisTable {
         // diffuse color
         diffuseColorField.setCallback(color -> {
             material.setDiffuseColor(color);
+            applyMaterialToModelAssets();
             applyMaterialToModelComponents();
             projectManager.current().assetManager.addDirtyAsset(material);
         });
 
-        // TODO apply materials to model components
-        opacity.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                try {
-                    material.setOpacity(Float.valueOf(opacity.getText()));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        // TODO apply materials to model components
-        shininess.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                try {
-                    material.setShininess(Float.valueOf(shininess.getText()));
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        opacity.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                try {
+//                    material.setOpacity(Float.valueOf(opacity.getText()));
+//                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        shininess.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                try {
+//                    material.setShininess(Float.valueOf(shininess.getText()));
+//                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     // TODO find better solution than iterating through all components
@@ -175,6 +176,14 @@ public class MaterialWidget extends VisTable {
             if(mc != null) {
                 mc.applyMaterials();
             }
+        }
+    }
+
+    // TODO find better solution than iterating through all assets
+    private void applyMaterialToModelAssets() {
+        EditorAssetManager assetManager = projectManager.current().assetManager;
+        for(ModelAsset modelAsset  : assetManager.getModelAssets()) {
+            modelAsset.applyDependencies();
         }
     }
 

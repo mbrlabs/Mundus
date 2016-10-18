@@ -96,8 +96,7 @@ public class ModelAssetInspectorWidget extends BaseInspectorWidget {
         // materials
         VisLabel label = new VisLabel();
         label.setText("Default model materials determine the initial materials a new model will get, if " +
-                "you use the model placement tool. You change the materials of model components individually " +
-                "by selecting the game object and aply the changes in the inspector.");
+                "you use the model placement tool.");
         label.setWrap(true);
         collapsibleContent.add(new VisLabel("Default model materials")).growX().row();
         collapsibleContent.addSeparator().padBottom(5).row();
