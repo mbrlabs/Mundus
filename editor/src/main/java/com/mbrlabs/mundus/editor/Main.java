@@ -63,7 +63,6 @@ public class Main {
     }
 
     public interface WindowCloseListener {
-
         boolean onCloseRequested();
     }
 

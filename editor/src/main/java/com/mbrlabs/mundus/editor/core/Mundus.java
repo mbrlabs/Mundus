@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.editor.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -40,7 +41,10 @@ import com.mbrlabs.mundus.editor.tools.ToolManager;
 import com.mbrlabs.mundus.editor.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.editor.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.editor.utils.Fa;
+import com.mbrlabs.mundus.editor.utils.GLFWIconSetter;
 import com.mbrlabs.mundus.editor.utils.ReflectionUtils;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -85,8 +89,16 @@ public class Mundus {
     public static void init() {
         File homeDir = new File(Registry.HOME_DIR);
         if (!homeDir.exists()) {
-            homeDir.mkdir();
+            homeDir.mkdirs();
         }
+
+        // set application icon
+        File iconCache = new File(FilenameUtils.concat(Registry.HOME_DIR, "cache/"));
+        if (!iconCache.exists()) {
+            iconCache.mkdirs();
+        }
+        GLFWIconSetter.newInstance().setIcon(new FileHandle(iconCache), Gdx.files.internal("icon.ico"),
+                Gdx.files.internal("icon.png"));
 
         initStyle();
         initFontAwesome();

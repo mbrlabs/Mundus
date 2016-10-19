@@ -20,6 +20,8 @@ allprojects {
         junitVersion = '4.12'
         commonsIoVersion = '2.5'
         commonsLangVersion = '3.4'
+        jnaVersion = '4.1.0'
+        jnaPlatformVersion = '3.5.2'
     }
 
     repositories {
@@ -45,19 +47,32 @@ project(":editor") {
     dependencies {
         compile project(":commons")
 
-        compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-
+        // libGDX
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
+
+        // gdx-freetype
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
+        // gdx-bullet
+        // compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
+        // compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
+
+        // gdx-ai
+        // compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+
+        // other
         compile "com.kotcrab.vis:vis-ui:$visuiVersion"
         compile "com.esotericsoftware:kryo:$kryoVersion"
+
+        // commons
         compile "org.apache.commons:commons-lang3:$commonsLangVersion"
         compile "commons-io:commons-io:$commonsIoVersion"
+
+        // jna
+        compile "net.java.dev.jna:jna:$jnaVersion"
+        compile "net.java.dev.jna:platform:$jnaPlatformVersion"
 
         testCompile "junit:junit:$junitVersion"
     }
