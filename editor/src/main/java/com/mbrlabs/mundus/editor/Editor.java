@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.editor;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -48,8 +49,8 @@ import org.apache.commons.io.FilenameUtils;
  * @author Marcus Brummer
  * @version 07-06-2016
  */
-public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectChangedListener,
-        SceneChangedEvent.SceneChangedListener {
+public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
+        ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private ModelInstance axesInstance;
 
@@ -78,6 +79,7 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
 
     @Override
     public void create() {
+        Mundus.setAppIcon();
         Mundus.init();
         Mundus.registerEventListener(this);
         Mundus.inject(this);
@@ -117,16 +119,6 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         compass = new Compass(projectContext.currScene.cam);
         camController.setCamera(projectContext.currScene.cam);
         setupInput();
-
-        setupCloseListener();
-    }
-
-    private void setupCloseListener() {
-        Main.closeListener = () -> {
-            Ui ui1 = Ui.getInstance();
-            ui1.showDialog(ui1.getExitDialog());
-            return true;
-        };
     }
 
     private void setupInput() {
@@ -190,6 +182,13 @@ public class Editor implements ApplicationListener, ProjectChangedEvent.ProjectC
         }
 
         return null;
+    }
+
+    @Override
+    public boolean closeRequested() {
+        Ui ui = Ui.getInstance();
+        ui.showDialog(ui.getExitDialog());
+        return false;
     }
 
     @Override

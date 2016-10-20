@@ -18,8 +18,8 @@ package com.mbrlabs.mundus.editor;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter;
 import com.mbrlabs.mundus.editor.utils.Log;
+import com.sun.jna.Platform;
 
 /**
  * @author Marcus Brummer
@@ -30,40 +30,31 @@ public class Main {
     private static final String TAG = Main.class.getSimpleName();
     public static final String TITLE = "Mundus v0.1.0";
 
-    public static WindowCloseListener closeListener = null;
-
     public static void main(String[] arg) {
-        // Start Log instance
         Log.init();
+        launchEditor();
+    }
+
+    private static void launchEditor() {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setTitle(TITLE);
-        Log.info(TAG, "Starting [{}]", TITLE);
+        Editor editor = new Editor();
+        config.setWindowListener(editor);
 
         // Set initial window size. See issue #11
         DisplayMode dm = Lwjgl3ApplicationConfiguration.getDisplayMode();
-        if (System.getProperties().getProperty("os.name").toLowerCase().contains("mac")) {
+        if (Platform.isMac()) {
             config.setWindowedMode((int) (dm.width * 0.80f), (int) (dm.height * 0.80f));
         } else {
             config.setWindowedMode((int) (dm.width * 0.95f), (int) (dm.height * 0.95f));
         }
+
+        config.setTitle(TITLE);
+        config.setWindowSizeLimits(1350, 1, 9999, 9999);
         config.setWindowPosition(-1, -1);
+        config.useVsync(true);
 
-        config.setWindowListener(new Lwjgl3WindowAdapter() {
-            @Override
-            public boolean closeRequested() {
-                if (closeListener != null) {
-                    closeListener.onCloseRequested();
-                    return false;
-                }
-                return true;
-            }
-        });
-        new Lwjgl3Application(new Editor(), config);
+        new Lwjgl3Application(editor, config);
         Log.info(TAG, "Shutting down [{}]", TITLE);
-    }
-
-    public interface WindowCloseListener {
-        boolean onCloseRequested();
     }
 
 }

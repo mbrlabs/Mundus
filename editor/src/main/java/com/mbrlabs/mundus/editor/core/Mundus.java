@@ -92,14 +92,6 @@ public class Mundus {
             homeDir.mkdirs();
         }
 
-        // set application icon
-        File iconCache = new File(FilenameUtils.concat(Registry.HOME_DIR, "cache/"));
-        if (!iconCache.exists()) {
-            iconCache.mkdirs();
-        }
-        GLFWIconSetter.newInstance().setIcon(new FileHandle(iconCache), Gdx.files.internal("icon.ico"),
-                Gdx.files.internal("icon.png"));
-
         initStyle();
         initFontAwesome();
 
@@ -120,6 +112,21 @@ public class Mundus {
         toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer,
                 commandHistory);
         shortcutController = new ShortcutController(registry, projectManager, commandHistory);
+    }
+
+    /**
+     * Sets the application icon.
+     */
+    public static void setAppIcon() {
+        File iconCache = new File(FilenameUtils.concat(Registry.HOME_DIR, "cache/"));
+        if (!iconCache.exists()) {
+            iconCache.mkdirs();
+        }
+
+        FileHandle cache = new FileHandle(iconCache);
+        FileHandle iconIco = Gdx.files.internal("icon.ico");
+        FileHandle iconPng = Gdx.files.internal("icon.png");
+        GLFWIconSetter.newInstance().setIcon(cache, iconIco, iconPng);
     }
 
     private static void initStyle() {
