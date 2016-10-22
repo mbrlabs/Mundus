@@ -24,29 +24,29 @@ import java.io.File;
 
 /** @author Kotcrab */
 public class PlatformUtils {
-	private static boolean x11 = false;
+    private static boolean x11 = false;
 
-	static {
-		try {
-			Native.loadLibrary("X11", X11.class);
-			x11 = true;
-		} catch (UnsatisfiedLinkError e) {
-			x11 = false;
-		}
-	}
+    static {
+        try {
+            Native.loadLibrary("X11", X11.class);
+            x11 = true;
+        } catch (UnsatisfiedLinkError e) {
+            x11 = false;
+        }
+    }
 
-	public static boolean isX11 () {
-		return x11;
-	}
+    public static boolean isX11() {
+        return x11;
+    }
 
-	public static String getJavaBinPath () {
-		if (OsUtils.isWindows()) {
-			File javaBin = new File(System.getProperty("java.home") + "/bin/java.exe");
-			if (javaBin.exists()) {
-				return "\"" + javaBin.getAbsolutePath() + "\"";
-			}
-		}
+    public static String getJavaBinPath() {
+        if (OsUtils.isWindows()) {
+            File javaBin = new File(System.getProperty("java.home") + "/bin/java.exe");
+            if (javaBin.exists()) {
+                return "\"" + javaBin.getAbsolutePath() + "\"";
+            }
+        }
 
-		return "java";
-	}
+        return "java";
+    }
 }

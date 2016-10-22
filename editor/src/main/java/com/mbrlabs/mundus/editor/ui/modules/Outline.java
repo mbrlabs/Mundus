@@ -82,8 +82,6 @@ public class Outline extends VisTable
     private RightClickMenu rightClickMenu;
 
     @Inject
-    private Shaders shaders;
-    @Inject
     private ToolManager toolManager;
     @Inject
     private ProjectManager projectManager;
@@ -458,8 +456,8 @@ public class Outline extends VisTable
                         asset.load();
                         asset.applyDependencies();
 
-                        final GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph, shaders.terrainShader,
-                                goID, name, asset);
+                        final GameObject terrainGO = TerrainUtils.createTerrainGO(sceneGraph,
+                                Shaders.INSTANCE.getTerrainShader(), goID, name, asset);
                         // update sceneGraph
                         sceneGraph.addGameObject(terrainGO);
                         // update outline

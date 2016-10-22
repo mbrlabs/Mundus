@@ -26,7 +26,6 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -136,9 +135,9 @@ public abstract class TerrainBrush extends Tool {
     private boolean terrainHeightModified = false;
     private boolean splatmapModified = false;
 
-    public TerrainBrush(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history,
+    public TerrainBrush(ProjectManager projectManager, ModelBatch batch, CommandHistory history,
             FileHandle pixmapBrush) {
-        super(projectManager, shader, batch, history);
+        super(projectManager, batch, history);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         sphereModel = modelBuilder.createSphere(1, 1, 1, 30, 30, new Material(), VertexAttributes.Usage.Position);
@@ -197,7 +196,7 @@ public abstract class TerrainBrush extends Tool {
 
         sm.updateTexture();
         splatmapModified = true;
-        projectManager.current().assetManager.addDirtyAsset(terrainAsset);
+        getProjectManager().current().assetManager.addDirtyAsset(terrainAsset);
     }
 
     private void flatten() {
@@ -229,7 +228,7 @@ public abstract class TerrainBrush extends Tool {
 
         terrain.update();
         terrainHeightModified = true;
-        projectManager.current().assetManager.addDirtyAsset(terrainAsset);
+        getProjectManager().current().assetManager.addDirtyAsset(terrainAsset);
     }
 
     private void raiseLower(BrushAction action) {
@@ -252,7 +251,7 @@ public abstract class TerrainBrush extends Tool {
 
         terrain.update();
         terrainHeightModified = true;
-        projectManager.current().assetManager.addDirtyAsset(terrainAsset);
+        getProjectManager().current().assetManager.addDirtyAsset(terrainAsset);
     }
 
     /**
@@ -354,9 +353,9 @@ public abstract class TerrainBrush extends Tool {
     @Override
     public void render() {
         if (terrainAsset.getTerrain().isOnTerrain(brushPos.x, brushPos.z)) {
-            batch.begin(projectManager.current().currScene.cam);
-            batch.render(sphereModelInstance, shader);
-            batch.end();
+            getBatch().begin(getProjectManager().current().currScene.cam);
+            getBatch().render(sphereModelInstance, getShader());
+            getBatch().end();
         }
     }
 
@@ -369,12 +368,12 @@ public abstract class TerrainBrush extends Tool {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (terrainHeightModified && heightCommand != null) {
             heightCommand.setHeightDataAfter(terrainAsset.getTerrain().heightData);
-            history.add(heightCommand);
+            getHistory().add(heightCommand);
         }
         if (splatmapModified && paintCommand != null) {
             final SplatMap sm = terrainAsset.getTerrain().getTerrainTexture().getSplatmap();
             paintCommand.setAfter(sm.getPixmap());
-            history.add(paintCommand);
+            getHistory().add(paintCommand);
         }
         splatmapModified = false;
         terrainHeightModified = false;
@@ -430,7 +429,7 @@ public abstract class TerrainBrush extends Tool {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if (terrainAsset != null) {
-            Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
+            Ray ray = getProjectManager().current().currScene.viewport.getPickRay(screenX, screenY);
             terrainAsset.getTerrain().getRayIntersection(brushPos, ray);
         }
 

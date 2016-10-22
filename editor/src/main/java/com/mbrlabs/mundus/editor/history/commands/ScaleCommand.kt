@@ -29,7 +29,7 @@ import com.mbrlabs.mundus.editor.history.Command
 class ScaleCommand(private var go: GameObject?) : Command {
 
     companion object {
-        private val modEvent = GameObjectModifiedEvent()
+        private val modEvent = GameObjectModifiedEvent(null)
     }
 
     private var before: Vector3

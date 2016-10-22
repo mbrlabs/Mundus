@@ -14,33 +14,19 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.input
 
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 
 /**
  * @author Marcus Brummer
- * @version 21-01-2016
+ * @version 07-12-2015
  */
-public class GameObjectSelectedEvent {
+class InputManager : InputMultiplexer() {
 
-    private GameObject gameObject;
-
-    public GameObjectSelectedEvent(GameObject gameObject) {
-        this.gameObject = gameObject;
-    }
-
-    public GameObject getGameObject() {
-        return gameObject;
-    }
-
-    public void setGameObject(GameObject gameObject) {
-        this.gameObject = gameObject;
-    }
-
-    public static interface GameObjectSelectedListener {
-        @Subscribe
-        public void onGameObjectSelected(GameObjectSelectedEvent gameObjectSelectedEvent);
+    init {
+        Gdx.input.inputProcessor = this
     }
 
 }

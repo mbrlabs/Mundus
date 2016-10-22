@@ -14,29 +14,19 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
-import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.scene3d.GameObject
 
 /**
  * @author Marcus Brummer
- * @version 02-10-2016
+ * @version 21-01-2016
  */
-public class AssetImportEvent {
+class GameObjectSelectedEvent(var gameObject: GameObject?) {
 
-    private Asset asset;
-
-    public AssetImportEvent(Asset asset) {
-        this.asset = asset;
-    }
-
-    public Asset getAsset() {
-        return asset;
-    }
-
-    public static interface AssetImportListener {
+    interface GameObjectSelectedListener {
         @Subscribe
-        public void onAssetImported(AssetImportEvent event);
+        fun onGameObjectSelected(gameObjectSelectedEvent: GameObjectSelectedEvent)
     }
 
 }

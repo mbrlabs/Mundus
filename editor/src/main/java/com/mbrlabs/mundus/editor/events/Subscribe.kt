@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
 /**
- * Indicates a change in the static settings each TerrainBrush shares (strength,
- * radius, ...)
- *
  * @author Marcus Brummer
- * @version 07-02-2016
+ * @version 12-12-2015
  */
-public class GlobalBrushSettingsChangedEvent {
-
-    public static interface GlobalBrushSettingsChangedListener {
-        @Subscribe
-        public void onSettingsChanged(GlobalBrushSettingsChangedEvent event);
-    }
-
-}
+@Retention(AnnotationRetention.RUNTIME)
+annotation class Subscribe

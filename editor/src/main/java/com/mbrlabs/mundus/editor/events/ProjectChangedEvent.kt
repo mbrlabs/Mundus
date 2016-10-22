@@ -14,29 +14,19 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
-import com.mbrlabs.mundus.editor.core.project.ProjectContext;
+import com.mbrlabs.mundus.editor.core.project.ProjectContext
 
 /**
  * @author Marcus Brummer
  * @version 24-12-2015
  */
-public class ProjectChangedEvent {
+class ProjectChangedEvent(val projectContext: ProjectContext) {
 
-    private ProjectContext projectContext;
-
-    public ProjectChangedEvent(ProjectContext projectContext) {
-        this.projectContext = projectContext;
-    }
-
-    public ProjectContext getProjectContext() {
-        return projectContext;
-    }
-
-    public static interface ProjectChangedListener {
+    interface ProjectChangedListener {
         @Subscribe
-        public void onProjectChanged(ProjectChangedEvent projectChangedEvent);
+        fun onProjectChanged(projectChangedEvent: ProjectChangedEvent)
     }
 
 }

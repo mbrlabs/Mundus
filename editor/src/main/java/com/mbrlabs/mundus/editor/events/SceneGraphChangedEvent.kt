@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
 /**
  * @author Marcus Brummer
  * @version 17-01-2016
  */
-public class SceneGraphChangedEvent {
+class SceneGraphChangedEvent {
 
-    public static interface SceneGraphChangedListener {
+    interface SceneGraphChangedListener {
         @Subscribe
-        public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent);
+        fun onSceneGraphChanged(sceneGraphChangedEvent: SceneGraphChangedEvent)
     }
 
 }

@@ -15,9 +15,10 @@
  */
 
 @file:JvmName("StringUtils")
+
 package com.mbrlabs.mundus.editor.utils
 
-import java.util.Locale
+import java.util.*
 
 
 fun formatFloat(f: Float, digits: Int): String {

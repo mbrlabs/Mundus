@@ -46,6 +46,7 @@ public class ModelComponent extends PickableComponent {
         super(go);
         type = Type.MODEL;
         materials = new HashMap<String, MaterialAsset>();
+        shader = Shaders.INSTANCE.getEntityShader();
     }
 
     public Shader getShader() {
@@ -95,7 +96,7 @@ public class ModelComponent extends PickableComponent {
 
     @Override
     public void renderPick() {
-        gameObject.sceneGraph.batch.render(modelInstance, Shaders.pickerShader);
+        gameObject.sceneGraph.batch.render(modelInstance, Shaders.INSTANCE.getPickerShader());
     }
 
     public ModelInstance getModelInstance() {

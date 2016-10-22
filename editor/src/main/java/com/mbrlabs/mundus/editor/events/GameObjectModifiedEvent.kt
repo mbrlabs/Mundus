@@ -14,33 +14,19 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
-import com.mbrlabs.mundus.commons.Scene;
+import com.mbrlabs.mundus.commons.scene3d.GameObject
 
 /**
  * @author Marcus Brummer
- * @version 21-01-2016
+ * @version 23-01-2016
  */
-public class SceneAddedEvent {
+class GameObjectModifiedEvent(var gameObject: GameObject?) {
 
-    private Scene scene;
-
-    public SceneAddedEvent(Scene scene) {
-        this.scene = scene;
-    }
-
-    public Scene getScene() {
-        return scene;
-    }
-
-    public void setScene(Scene scene) {
-        this.scene = scene;
-    }
-
-    public static interface SceneAddedListener {
+    interface GameObjectModifiedListener {
         @Subscribe
-        public void onSceneAdded(SceneAddedEvent sceneAddedEvent);
+        fun onGameObjectModified(gameObjectModifiedEvent: GameObjectModifiedEvent)
     }
 
 }

@@ -14,32 +14,18 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
-import com.mbrlabs.mundus.commons.assets.Asset;
+import com.mbrlabs.mundus.commons.assets.Asset
 
 /**
  * @author Marcus Brummer
  * @version 12-10-2016
  */
-public class AssetSelectedEvent {
+class AssetSelectedEvent(val asset: Asset) {
 
-    private Asset asset;
-
-    public AssetSelectedEvent(Asset asset) {
-        this.asset = asset;
-    }
-
-    public Asset getAsset() {
-        return asset;
-    }
-
-    public void setAsset(Asset asset) {
-        this.asset = asset;
-    }
-
-    public static interface AssetSelectedListener {
+    interface AssetSelectedListener {
         @Subscribe
-        public void onAssetSelected(AssetSelectedEvent assetSelectedEvent);
+        fun onAssetSelected(assetSelectedEvent: AssetSelectedEvent)
     }
 }

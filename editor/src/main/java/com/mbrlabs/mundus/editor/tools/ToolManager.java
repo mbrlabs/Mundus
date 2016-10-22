@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
 import com.mbrlabs.mundus.editor.input.InputManager;
-import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.tools.brushes.CircleBrush;
 import com.mbrlabs.mundus.editor.tools.brushes.ConfettiBrush;
 import com.mbrlabs.mundus.editor.tools.brushes.SmoothCircleBrush;
@@ -56,26 +55,23 @@ public class ToolManager extends InputAdapter implements Disposable {
     private ProjectManager projectManager;
 
     public ToolManager(InputManager inputManager, ProjectManager projectManager, GameObjectPicker goPicker,
-            ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, Shaders shaders, ShapeRenderer shapeRenderer,
+            ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, ShapeRenderer shapeRenderer,
             CommandHistory history) {
         this.inputManager = inputManager;
         this.projectManager = projectManager;
         this.activeTool = null;
 
         terrainBrushes = new Array<>();
-        terrainBrushes.add(new SmoothCircleBrush(projectManager, shaders.wireframeShader, modelBatch, history));
-        terrainBrushes.add(new CircleBrush(projectManager, shaders.wireframeShader, modelBatch, history));
-        terrainBrushes.add(new StarBrush(projectManager, shaders.wireframeShader, modelBatch, history));
-        terrainBrushes.add(new ConfettiBrush(projectManager, shaders.wireframeShader, modelBatch, history));
+        terrainBrushes.add(new SmoothCircleBrush(projectManager, modelBatch, history));
+        terrainBrushes.add(new CircleBrush(projectManager, modelBatch, history));
+        terrainBrushes.add(new StarBrush(projectManager, modelBatch, history));
+        terrainBrushes.add(new ConfettiBrush(projectManager, modelBatch, history));
 
-        modelPlacementTool = new ModelPlacementTool(projectManager, shaders.entityShader, modelBatch, history);
-        selectionTool = new SelectionTool(projectManager, goPicker, shaders.wireframeShader, modelBatch, history);
-        translateTool = new TranslateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader,
-                modelBatch, history);
-        rotateTool = new RotateTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer,
-                modelBatch, history);
-        scaleTool = new ScaleTool(projectManager, goPicker, toolHandlePicker, shaders.wireframeShader, shapeRenderer,
-                modelBatch, history);
+        modelPlacementTool = new ModelPlacementTool(projectManager, modelBatch, history);
+        selectionTool = new SelectionTool(projectManager, goPicker, modelBatch, history);
+        translateTool = new TranslateTool(projectManager, goPicker, toolHandlePicker, modelBatch, history);
+        rotateTool = new RotateTool(projectManager, goPicker, toolHandlePicker, shapeRenderer, modelBatch, history);
+        scaleTool = new ScaleTool(projectManager, goPicker, toolHandlePicker, shapeRenderer, modelBatch, history);
     }
 
     public void activateTool(Tool tool) {

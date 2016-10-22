@@ -49,7 +49,7 @@ public class TerrainComponent extends PickableComponent {
 
     @Override
     public void renderPick() {
-        gameObject.sceneGraph.batch.render(terrain.getTerrain(), Shaders.pickerShader);
+        gameObject.sceneGraph.batch.render(terrain.getTerrain(), Shaders.INSTANCE.getPickerShader());
     }
 
     public void setTerrain(TerrainAsset terrain) {

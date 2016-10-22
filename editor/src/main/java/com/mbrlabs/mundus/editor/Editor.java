@@ -67,8 +67,6 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
     @Inject
     private InputManager inputManager;
     @Inject
-    private Shaders shaders;
-    @Inject
     private ProjectManager projectManager;
     @Inject
     private Registry registry;
@@ -132,7 +130,7 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
             if (context.currScene.skybox != null) {
                 batch.begin(context.currScene.cam);
                 batch.render(context.currScene.skybox.getSkyboxInstance(), context.currScene.environment,
-                        shaders.skyboxShader);
+                        Shaders.INSTANCE.getSkyboxShader());
                 batch.end();
             }
 
@@ -157,7 +155,6 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
         toolManager.act();
         ui.draw();
     }
-
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {

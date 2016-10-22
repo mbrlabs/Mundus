@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
+
+import com.mbrlabs.mundus.editor.core.registry.Settings
 
 /**
  * @author Marcus Brummer
- * @version 21-01-2016
+ * @version 01-10-2016
  */
-public class SceneChangedEvent {
+class SettingsChangedEvent(val settings: Settings) {
 
-    public static interface SceneChangedListener {
+    interface SettingsChangedListener {
         @Subscribe
-        public void onSceneChanged(SceneChangedEvent sceneChangedEvent);
+        fun onSettingsChanged(settingsChangedEvent: SettingsChangedEvent)
     }
 
 }

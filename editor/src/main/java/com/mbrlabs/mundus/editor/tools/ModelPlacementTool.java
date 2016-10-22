@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.editor.tools;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
@@ -34,6 +33,7 @@ import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
 import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.ui.Ui;
 import com.mbrlabs.mundus.editor.utils.TerrainUtils;
 
@@ -54,8 +54,9 @@ public class ModelPlacementTool extends Tool {
     private ModelAsset model;
     private ModelInstance modelInstance;
 
-    public ModelPlacementTool(ProjectManager projectManager, Shader shader, ModelBatch batch, CommandHistory history) {
-        super(projectManager, shader, batch, history);
+    public ModelPlacementTool(ProjectManager projectManager, ModelBatch batch, CommandHistory history) {
+        super(projectManager, batch, history);
+        setShader(Shaders.INSTANCE.getEntityShader());
         this.model = null;
         this.modelInstance = null;
     }
@@ -97,9 +98,9 @@ public class ModelPlacementTool extends Tool {
     @Override
     public void render() {
         if (modelInstance != null) {
-            batch.begin(projectManager.current().currScene.cam);
-            batch.render(modelInstance, projectManager.current().currScene.environment, shader);
-            batch.end();
+            getBatch().begin(getProjectManager().current().currScene.cam);
+            getBatch().render(modelInstance, getProjectManager().current().currScene.environment, getShader());
+            getBatch().end();
         }
     }
 
@@ -112,15 +113,16 @@ public class ModelPlacementTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if (modelInstance != null && button == Input.Buttons.LEFT) {
-            int id = projectManager.current().obtainID();
-            GameObject modelGo = new GameObject(projectManager.current().currScene.sceneGraph, model.getName(), id);
-            projectManager.current().currScene.sceneGraph.addGameObject(modelGo);
+            int id = getProjectManager().current().obtainID();
+            GameObject modelGo = new GameObject(getProjectManager().current().currScene.sceneGraph, model.getName(),
+                    id);
+            getProjectManager().current().currScene.sceneGraph.addGameObject(modelGo);
 
             modelInstance.transform.getTranslation(tempV3);
             modelGo.translate(tempV3);
 
             ModelComponent modelComponent = new ModelComponent(modelGo);
-            modelComponent.setShader(shader);
+            modelComponent.setShader(getShader());
             modelComponent.setModel(model, true);
             modelComponent.encodeRaypickColorId();
 
@@ -142,9 +144,9 @@ public class ModelPlacementTool extends Tool {
     public boolean mouseMoved(int screenX, int screenY) {
         if (this.model == null || modelInstance == null) return false;
 
-        final ProjectContext context = projectManager.current();
+        final ProjectContext context = getProjectManager().current();
 
-        final Ray ray = projectManager.current().currScene.viewport.getPickRay(screenX, screenY);
+        final Ray ray = getProjectManager().current().currScene.viewport.getPickRay(screenX, screenY);
         if (context.currScene.terrains.size > 0 && modelInstance != null) {
             MeshPartBuilder.VertexInfo vi = TerrainUtils.getRayIntersectionAndUp(context.currScene.terrains, ray);
             if (vi != null) {
@@ -154,7 +156,7 @@ public class ModelPlacementTool extends Tool {
                 modelInstance.transform.setTranslation(vi.position);
             }
         } else {
-            tempV3.set(projectManager.current().currScene.cam.position);
+            tempV3.set(getProjectManager().current().currScene.cam.position);
             tempV3.add(ray.direction.nor().scl(200));
             modelInstance.transform.setTranslation(tempV3);
         }

@@ -15,6 +15,7 @@
  */
 
 @file:JvmName("SkyboxBuilder")
+
 package com.mbrlabs.mundus.editor.utils
 
 import com.badlogic.gdx.Gdx

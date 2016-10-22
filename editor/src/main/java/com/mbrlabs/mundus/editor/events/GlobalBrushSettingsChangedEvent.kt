@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+package com.mbrlabs.mundus.editor.events
 
 /**
+ * Indicates a change in the static settings each TerrainBrush shares (strength,
+ * radius, ...)
+
  * @author Marcus Brummer
- * @version 12-12-2015
+ * @version 07-02-2016
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Subscribe {
+class GlobalBrushSettingsChangedEvent {
+
+    interface GlobalBrushSettingsChangedListener {
+        @Subscribe
+        fun onSettingsChanged(event: GlobalBrushSettingsChangedEvent)
+    }
+
 }

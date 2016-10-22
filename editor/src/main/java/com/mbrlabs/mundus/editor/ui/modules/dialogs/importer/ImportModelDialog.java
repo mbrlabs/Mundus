@@ -39,12 +39,12 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.mbrlabs.mundus.editor.assets.AssetAlreadyExistsException;
-import com.mbrlabs.mundus.editor.assets.EditorAssetManager;
-import com.mbrlabs.mundus.editor.assets.ModelImporter;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
+import com.mbrlabs.mundus.editor.assets.AssetAlreadyExistsException;
+import com.mbrlabs.mundus.editor.assets.EditorAssetManager;
+import com.mbrlabs.mundus.editor.assets.ModelImporter;
 import com.mbrlabs.mundus.editor.core.Inject;
 import com.mbrlabs.mundus.editor.core.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
@@ -232,7 +232,7 @@ public class ImportModelDialog extends BaseDialog implements Disposable {
             // load and show preview
             if (importedModel != null) {
                 try {
-                    previewModel = new MG3dModelLoader(new UBJsonReader()).loadModel(importedModel.g3dbFile);
+                    previewModel = new MG3dModelLoader(new UBJsonReader()).loadModel(importedModel.getG3dbFile());
                     previewInstance = new ModelInstance(previewModel);
                     showPreview();
                 } catch (GdxRuntimeException e) {

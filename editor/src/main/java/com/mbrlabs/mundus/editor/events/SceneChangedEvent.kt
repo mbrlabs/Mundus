@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.input;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
+package com.mbrlabs.mundus.editor.events
 
 /**
  * @author Marcus Brummer
- * @version 07-12-2015
+ * @version 21-01-2016
  */
-public class InputManager extends InputMultiplexer {
+class SceneChangedEvent {
 
-    public InputManager() {
-        Gdx.input.setInputProcessor(this);
+    interface SceneChangedListener {
+        @Subscribe
+        fun onSceneChanged(sceneChangedEvent: SceneChangedEvent)
     }
 
 }

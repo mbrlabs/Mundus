@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.input;
+package com.mbrlabs.mundus.editor.input
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.mbrlabs.mundus.editor.core.registry.KeyboardLayout;
-import com.mbrlabs.mundus.editor.core.registry.Registry;
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputAdapter
+import com.mbrlabs.mundus.editor.core.registry.KeyboardLayout
+import com.mbrlabs.mundus.editor.core.registry.Registry
 
 /**
  * Workaround for LWJGL3's (or GLFW's) key codes and different keyboard layouts.
@@ -27,26 +27,19 @@ import com.mbrlabs.mundus.editor.core.registry.Registry;
  * @author Marcus Brummer
  * @version 07-02-2016
  */
-public class KeyboardLayoutInputAdapter extends InputAdapter {
+open class KeyboardLayoutInputAdapter(private val registry: Registry) : InputAdapter() {
 
-    private Registry registry;
-
-    public KeyboardLayoutInputAdapter(Registry registry) {
-        super();
-        this.registry = registry;
-    }
-
-    protected int convertKeycode(int code) {
-        if (registry.getSettings().getKeyboardLayout() == KeyboardLayout.QWERTZ) {
+    protected fun convertKeycode(code: Int): Int {
+        if (registry.settings.keyboardLayout == KeyboardLayout.QWERTZ) {
             if (code == Input.Keys.Z) {
-                return Input.Keys.Y;
+                return Input.Keys.Y
             } else if (code == Input.Keys.Y) {
-                return Input.Keys.Z;
+                return Input.Keys.Z
             }
         }
 
         // return default QWERTY
-        return code;
+        return code
     }
 
 }

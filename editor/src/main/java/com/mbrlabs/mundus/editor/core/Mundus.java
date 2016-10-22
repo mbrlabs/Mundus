@@ -64,7 +64,6 @@ public class Mundus {
     private static InputManager input;
     private static FreeCamController freeCamController;
     private static ShortcutController shortcutController;
-    private static Shaders shaders;
     private static ShapeRenderer shapeRenderer;
     private static KryoManager kryoManager;
     private static ProjectManager projectManager;
@@ -97,7 +96,6 @@ public class Mundus {
 
         shapeRenderer = new ShapeRenderer();
         modelBatch = new ModelBatch();
-        shaders = new Shaders();
         input = new InputManager();
         goPicker = new GameObjectPicker();
         handlePicker = new ToolHandlePicker();
@@ -108,8 +106,8 @@ public class Mundus {
         commandHistory = new CommandHistory(CommandHistory.Companion.getDEFAULT_LIMIT());
 
         modelImporter = new ModelImporter(registry);
-        projectManager = new ProjectManager(kryoManager, registry, shaders);
-        toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shaders, shapeRenderer,
+        projectManager = new ProjectManager(kryoManager, registry);
+        toolManager = new ToolManager(input, projectManager, goPicker, handlePicker, modelBatch, shapeRenderer,
                 commandHistory);
         shortcutController = new ShortcutController(registry, projectManager, commandHistory);
     }
@@ -240,10 +238,10 @@ public class Mundus {
      */
     public static void dispose() {
         VisUI.dispose();
+        Shaders.INSTANCE.dispose();
         if (shapeRenderer != null) shapeRenderer.dispose();
         if (goPicker != null) goPicker.dispose();
         if (modelBatch != null) modelBatch.dispose();
-        if (shaders != null) shaders.dispose();
         if (toolManager != null) toolManager.dispose();
         if (commandHistory != null) commandHistory.clear();
         if (fa != null) fa.dispose();

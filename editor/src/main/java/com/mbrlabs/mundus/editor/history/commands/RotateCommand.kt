@@ -26,10 +26,10 @@ import com.mbrlabs.mundus.editor.history.Command
  * @author Marcus Brummer
  * @version 16-02-2016
  */
-class RotateCommand(private var go: GameObject?) : Command {
+class RotateCommand(private val go: GameObject) : Command {
 
     companion object {
-        private val modEvent = GameObjectModifiedEvent()
+        private val modEvent = GameObjectModifiedEvent(null)
     }
 
     private var before: Quaternion
@@ -48,18 +48,14 @@ class RotateCommand(private var go: GameObject?) : Command {
         this.after.set(after)
     }
 
-    fun setGo(go: GameObject) {
-        this.go = go
-    }
-
     override fun execute() {
-        go!!.setLocalRotation(after.x, after.y, after.z, after.w)
+        go.setLocalRotation(after.x, after.y, after.z, after.w)
         modEvent.gameObject = go
         Mundus.postEvent(modEvent)
     }
 
     override fun undo() {
-        go!!.setLocalRotation(before.x, before.y, before.z, before.w)
+        go.setLocalRotation(before.x, before.y, before.z, before.w)
         modEvent.gameObject = go
         Mundus.postEvent(modEvent)
     }

@@ -17,9 +17,7 @@
 package com.mbrlabs.mundus.editor.history.commands
 
 import com.badlogic.gdx.graphics.Pixmap
-import com.mbrlabs.mundus.commons.terrain.SplatMap
 import com.mbrlabs.mundus.commons.terrain.Terrain
-import com.mbrlabs.mundus.editor.history.Command
 import com.mbrlabs.mundus.editor.history.DisposableCommand
 
 /**

@@ -93,21 +93,21 @@ public class StatusBar extends VisTable {
         speed01.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                freeCamController.setVelocity(FreeCamController.SPEED_01);
+                freeCamController.setVelocity(freeCamController.getSPEED_01());
             }
         });
 
         speed1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                freeCamController.setVelocity(FreeCamController.SPEED_1);
+                freeCamController.setVelocity(freeCamController.getSPEED_1());
             }
         });
 
         speed10.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                freeCamController.setVelocity(FreeCamController.SPEED_10);
+                freeCamController.setVelocity(freeCamController.getSPEED_10());
             }
         });
     }

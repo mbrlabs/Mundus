@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 @file:JvmName("Main")
+
 package com.mbrlabs.mundus.editor
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application

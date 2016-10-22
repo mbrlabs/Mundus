@@ -14,29 +14,19 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.events;
+package com.mbrlabs.mundus.editor.events
 
-import com.mbrlabs.mundus.editor.core.registry.Settings;
+import com.mbrlabs.mundus.commons.Scene
 
 /**
  * @author Marcus Brummer
- * @version 01-10-2016
+ * @version 21-01-2016
  */
-public class SettingsChangedEvent {
+class SceneAddedEvent(var scene: Scene?) {
 
-    private Settings settings;
-
-    public SettingsChangedEvent(Settings settings) {
-        this.settings = settings;
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public static interface SettingsChangedListener {
+    interface SceneAddedListener {
         @Subscribe
-        public void onSettingsChanged(SettingsChangedEvent settingsChangedEvent);
+        fun onSceneAdded(sceneAddedEvent: SceneAddedEvent)
     }
 
 }

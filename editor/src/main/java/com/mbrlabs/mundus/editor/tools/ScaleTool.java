@@ -23,7 +23,6 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -75,8 +74,8 @@ public class ScaleTool extends TransformTool {
     private ScaleCommand command;
 
     public ScaleTool(ProjectManager projectManager, GameObjectPicker goPicker, ToolHandlePicker handlePicker,
-            Shader shader, ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
-        super(projectManager, goPicker, handlePicker, shader, batch, history);
+            ShapeRenderer shapeRenderer, ModelBatch batch, CommandHistory history) {
+        super(projectManager, goPicker, handlePicker, batch, history);
 
         this.shapeRenderer = shapeRenderer;
 
@@ -105,14 +104,14 @@ public class ScaleTool extends TransformTool {
         super.render();
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        ProjectContext projectContext = projectManager.current();
+        ProjectContext projectContext = getProjectManager().current();
         if (projectContext.currScene.currentSelection != null) {
-            batch.begin(projectContext.currScene.cam);
-            xHandle.render(batch);
-            yHandle.render(batch);
-            zHandle.render(batch);
-            xyzHandle.render(batch);
-            batch.end();
+            getBatch().begin(projectContext.currScene.cam);
+            xHandle.render(getBatch());
+            yHandle.render(getBatch());
+            zHandle.render(getBatch());
+            xyzHandle.render(getBatch());
+            getBatch().end();
 
             GameObject go = projectContext.currScene.currentSelection;
             go.getTransform().getTranslation(temp0);
@@ -168,7 +167,7 @@ public class ScaleTool extends TransformTool {
     @Override
     public void act() {
         super.act();
-        ProjectContext projectContext = projectManager.current();
+        ProjectContext projectContext = getProjectManager().current();
         if (projectContext.currScene.currentSelection != null) {
             translateHandles();
             if (state == TransformState.IDLE) {
@@ -213,7 +212,7 @@ public class ScaleTool extends TransformTool {
     }
 
     private float getCurrentDst() {
-        ProjectContext projectContext = projectManager.current();
+        ProjectContext projectContext = getProjectManager().current();
         if (projectContext.currScene.currentSelection != null) {
             projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),
@@ -227,7 +226,7 @@ public class ScaleTool extends TransformTool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        ProjectContext projectContext = projectManager.current();
+        ProjectContext projectContext = getProjectManager().current();
         super.touchDown(screenX, screenY, pointer, button);
         if (button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             ScaleHandle handle = (ScaleHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
@@ -267,7 +266,7 @@ public class ScaleTool extends TransformTool {
 
         // scale command before
         if (state != TransformState.IDLE) {
-            command = new ScaleCommand(projectManager.current().currScene.currentSelection);
+            command = new ScaleCommand(getProjectManager().current().currScene.currentSelection);
             command.setBefore(tempScale);
         }
         return false;
@@ -276,7 +275,7 @@ public class ScaleTool extends TransformTool {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         super.touchUp(screenX, screenY, pointer, button);
-        ProjectContext projectContext = projectManager.current();
+        ProjectContext projectContext = getProjectManager().current();
         if (state != TransformState.IDLE) {
             xHandle.changeColor(COLOR_X);
             yHandle.changeColor(COLOR_Y);
@@ -286,7 +285,7 @@ public class ScaleTool extends TransformTool {
             // scale command after
             projectContext.currScene.currentSelection.getScale(tempScale);
             command.setAfter(tempScale);
-            history.add(command);
+            getHistory().add(command);
             command = null;
             state = TransformState.IDLE;
         }
@@ -309,33 +308,33 @@ public class ScaleTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
-        ProjectContext projectContext = projectManager.current();
+        ProjectContext projectContext = getProjectManager().current();
         final Vector3 pos = projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
-        xHandle.position.set(pos);
+        xHandle.getPosition().set(pos);
         xHandle.applyTransform();
-        yHandle.position.set(pos);
+        yHandle.getPosition().set(pos);
         yHandle.applyTransform();
-        zHandle.position.set(pos);
+        zHandle.getPosition().set(pos);
         zHandle.applyTransform();
-        xyzHandle.position.set(pos);
+        xyzHandle.getPosition().set(pos);
         xyzHandle.applyTransform();
     }
 
     @Override
     protected void scaleHandles() {
-        Vector3 pos = projectManager.current().currScene.currentSelection.getPosition(temp0);
-        float scaleFactor = projectManager.current().currScene.cam.position.dst(pos) * 0.01f;
-        xHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        Vector3 pos = getProjectManager().current().currScene.currentSelection.getPosition(temp0);
+        float scaleFactor = getProjectManager().current().currScene.cam.position.dst(pos) * 0.01f;
+        xHandle.getScale().set(scaleFactor, scaleFactor, scaleFactor);
 
         xHandle.applyTransform();
 
-        yHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        yHandle.getScale().set(scaleFactor, scaleFactor, scaleFactor);
         yHandle.applyTransform();
 
-        zHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        zHandle.getScale().set(scaleFactor, scaleFactor, scaleFactor);
         zHandle.applyTransform();
 
-        xyzHandle.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        xyzHandle.getScale().set(scaleFactor, scaleFactor, scaleFactor);
         xyzHandle.applyTransform();
     }
 
@@ -372,7 +371,7 @@ public class ScaleTool extends TransformTool {
             super(id);
             this.model = model;
             this.modelInstance = new ModelInstance(model);
-            modelInstance.materials.first().set(idAttribute);
+            modelInstance.materials.first().set(getIdAttribute());
 
         }
 
@@ -388,7 +387,7 @@ public class ScaleTool extends TransformTool {
 
         @Override
         public void renderPick(ModelBatch modelBatch) {
-            batch.render(modelInstance, Shaders.pickerShader);
+            getBatch().render(modelInstance, Shaders.INSTANCE.getPickerShader());
         }
 
         @Override
@@ -397,7 +396,7 @@ public class ScaleTool extends TransformTool {
 
         @Override
         public void applyTransform() {
-            modelInstance.transform.set(position, rotation, scale);
+            modelInstance.transform.set(getPosition(), getRotation(), getScale());
         }
 
         @Override

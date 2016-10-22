@@ -20,8 +20,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.editor.Main;
-import com.mbrlabs.mundus.editor.assets.EditorAssetManager;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
@@ -32,6 +30,8 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.editor.Main;
+import com.mbrlabs.mundus.editor.assets.EditorAssetManager;
 import com.mbrlabs.mundus.editor.core.EditorScene;
 import com.mbrlabs.mundus.editor.core.Mundus;
 import com.mbrlabs.mundus.editor.core.kryo.DescriptorConverter;
@@ -71,12 +71,9 @@ public class ProjectManager implements Disposable {
     private Registry registry;
     private KryoManager kryoManager;
 
-    private Shaders shaders;
-
-    public ProjectManager(KryoManager kryoManager, Registry registry, Shaders shaders) {
+    public ProjectManager(KryoManager kryoManager, Registry registry) {
         this.registry = registry;
         this.kryoManager = kryoManager;
-        this.shaders = shaders;
         currentProject = new ProjectContext(-1);
     }
 
@@ -281,7 +278,7 @@ public class ProjectManager implements Disposable {
         }
 
         currentProject = context;
-       // currentProject.copyFrom(context);
+        // currentProject.copyFrom(context);
         registry.setLastProject(new ProjectRef());
         registry.getLastOpenedProject().setName(context.name);
         registry.getLastOpenedProject().setPath(context.path);
@@ -392,12 +389,11 @@ public class ProjectManager implements Disposable {
                 ModelAsset model = findModelById(models, modelComponent.getModelAsset().getID());
                 if (model != null) {
                     modelComponent.setModel(model, false);
-                    modelComponent.setShader(shaders.entityShader);
                 } else {
                     Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelAsset().getID());
                 }
             } else if (c.getType() == Component.Type.TERRAIN) {
-                ((TerrainComponent) c).setShader(shaders.terrainShader);
+                ((TerrainComponent) c).setShader(Shaders.INSTANCE.getTerrainShader());
                 ((TerrainComponent) c).getTerrain().getTerrain().setTransform(go.getTransform());
             }
 

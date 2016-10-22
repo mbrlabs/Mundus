@@ -60,7 +60,7 @@ class CommandHistory(private val limit: Int) {
 
     private fun removeCommand(index: Int) {
         val cmd = commands.get(index)
-        if(cmd is DisposableCommand) {
+        if (cmd is DisposableCommand) {
             cmd.dispose()
         }
         commands.removeIndex(index)
@@ -69,7 +69,7 @@ class CommandHistory(private val limit: Int) {
     private fun removeCommands(from: Int, to: Int) {
         for (i in from..to) {
             val cmd = commands.get(i)
-            if(cmd is DisposableCommand) {
+            if (cmd is DisposableCommand) {
                 cmd.dispose()
             }
         }
@@ -97,7 +97,7 @@ class CommandHistory(private val limit: Int) {
 
     fun clear() {
         for (c in commands) {
-            if(c is DisposableCommand) {
+            if (c is DisposableCommand) {
                 c.dispose()
             }
         }
