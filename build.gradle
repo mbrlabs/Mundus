@@ -1,9 +1,11 @@
 buildscript {
+    ext.kotlinVersion = '1.0.4'
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -47,24 +49,17 @@ project(":editor") {
     dependencies {
         compile project(":commons")
 
-        // libGDX
+        // Kotlin libs
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        // compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+        // LibGDX
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 
         // gdx-freetype
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-
-        // gdx-bullet
-        // compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        // compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-
-        // gdx-ai
-        // compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-
-        // other
-        compile "com.kotcrab.vis:vis-ui:$visuiVersion"
-        compile "com.esotericsoftware:kryo:$kryoVersion"
 
         // commons
         compile "org.apache.commons:commons-lang3:$commonsLangVersion"
@@ -73,6 +68,10 @@ project(":editor") {
         // jna
         compile "net.java.dev.jna:jna:$jnaVersion"
         compile "net.java.dev.jna:platform:$jnaPlatformVersion"
+
+        // other
+        compile "com.kotcrab.vis:vis-ui:$visuiVersion"
+        compile "com.esotericsoftware:kryo:$kryoVersion"
 
         testCompile "junit:junit:$junitVersion"
     }

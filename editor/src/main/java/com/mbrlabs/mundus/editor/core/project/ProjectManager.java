@@ -420,7 +420,7 @@ public class ProjectManager implements Disposable {
 
     private String constructWindowTitle() {
         return currentProject.name + " - " + currentProject.currScene.getName() + " [" + currentProject.path + "]"
-                + " - " + Main.TITLE;
+                + " - Mundus";
     }
 
     @Override
