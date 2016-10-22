@@ -64,7 +64,7 @@ public class MundusMenuBar extends MenuBar {
         root.add(icon).center().left().pad(5);
         root.add(menuTable).expand().fill().left().center().row();
         Container sep = new Container();
-        sep.setBackground(VisUI.getSkin().getDrawable("separator-green"));
+        sep.setBackground(VisUI.getSkin().getDrawable("mundus-separator-green"));
         root.add(sep).expandX().fillX().height(1).colspan(2).row();
 
         return root;

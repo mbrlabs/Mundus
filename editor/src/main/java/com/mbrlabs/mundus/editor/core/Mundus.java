@@ -131,7 +131,7 @@ public class Mundus {
 
     private static void initStyle() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
-                Gdx.files.internal("fonts/open-sans/OpenSans-Regular.ttf"));
+                Gdx.files.internal("fonts/OpenSans/OpenSans-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.kerning = true;
         params.borderStraight = false;

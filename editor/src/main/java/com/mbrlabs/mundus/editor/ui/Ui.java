@@ -94,7 +94,7 @@ public class Ui extends Stage {
         super(new ScreenViewport());
 
         // init custom styles
-        greenSeperator = new Separator.SeparatorStyle(VisUI.getSkin().getDrawable("separator-green"), 1);
+        greenSeperator = new Separator.SeparatorStyle(VisUI.getSkin().getDrawable("mundus-separator-green"), 1);
 
         toaster = new Toaster(this);
         root = new VisTable();
