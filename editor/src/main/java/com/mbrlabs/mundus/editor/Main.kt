@@ -21,8 +21,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.mbrlabs.mundus.editor.utils.Log
 import com.sun.jna.Platform
 
-private val TAG = "Main"
-val TITLE = "Mundus v0.1.0"
+const private val TAG = "Main"
+const val TITLE = "Mundus v0.1.0"
 
 fun main(arg: Array<String>) {
     Log.init()
