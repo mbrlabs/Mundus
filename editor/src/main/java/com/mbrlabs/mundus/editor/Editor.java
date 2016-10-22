@@ -83,31 +83,14 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
         Mundus.init();
         Mundus.registerEventListener(this);
         Mundus.inject(this);
+
         batch = Mundus.modelBatch;
         ui = Ui.getInstance();
+        setupInput();
 
         // TODO dispose this
         Model axesModel = UsefulMeshs.createAxes();
         axesInstance = new ModelInstance(axesModel);
-
-        final ProjectContext projectContext = projectManager.current();
-
-        widget3D = Ui.getInstance().getWidget3D();
-        widget3D.setCam(projectContext.currScene.cam);
-        widget3D.setRenderer(cam -> {
-            if (projectContext.currScene.skybox != null) {
-                batch.begin(projectContext.currScene.cam);
-                batch.render(projectContext.currScene.skybox.getSkyboxInstance(), projectContext.currScene.environment,
-                        shaders.skyboxShader);
-                batch.end();
-            }
-
-            projectContext.currScene.sceneGraph.update();
-            projectContext.currScene.sceneGraph.render();
-
-            toolManager.render();
-            compass.render(batch);
-        });
 
         // open last edited project or create default project
         ProjectContext context = projectManager.loadLastProject();
@@ -115,10 +98,13 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
             context = createDefaultProject();
         }
 
+        // setup render widget
+        widget3D = Ui.getInstance().getWidget3D();
+        compass = new Compass(context.currScene.cam);
+
+        // change project; this will fire a ProjectChangedEvent
         projectManager.changeProject(context);
-        compass = new Compass(projectContext.currScene.cam);
-        camController.setCamera(projectContext.currScene.cam);
-        setupInput();
+
     }
 
     private void setupInput() {
@@ -139,6 +125,30 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
         toolManager.setDefaultTool();
     }
 
+    private void setupSceneWidget() {
+        final ProjectContext context = projectManager.current();
+        widget3D.setCam(context.currScene.cam);
+        widget3D.setRenderer(cam -> {
+            if (context.currScene.skybox != null) {
+                batch.begin(context.currScene.cam);
+                batch.render(context.currScene.skybox.getSkyboxInstance(), context.currScene.environment,
+                        shaders.skyboxShader);
+                batch.end();
+            }
+
+            context.currScene.sceneGraph.update();
+            context.currScene.sceneGraph.render();
+
+            toolManager.render();
+            compass.render(batch);
+        });
+
+        compass.setWorldCam(context.currScene.cam);
+        camController.setCamera(context.currScene.cam);
+        widget3D.setCam(context.currScene.cam);
+        context.currScene.viewport = widget3D.getViewport();
+    }
+
     @Override
     public void render() {
         GlUtils.clearScreen(Color.WHITE);
@@ -148,28 +158,15 @@ public class Editor extends Lwjgl3WindowAdapter implements ApplicationListener,
         ui.draw();
     }
 
-    private void resetCam() {
-        final ProjectContext projectContext = projectManager.current();
-        if (compass != null) {
-            compass.setWorldCam(projectContext.currScene.cam);
-        }
-        if (camController != null) {
-            camController.setCamera(projectContext.currScene.cam);
-        }
-        if (widget3D != null) {
-            widget3D.setCam(projectContext.currScene.cam);
-            projectContext.currScene.viewport = widget3D.getViewport();
-        }
-    }
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
-        resetCam();
+        setupSceneWidget();
     }
 
     @Override
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
-        resetCam();
+        setupSceneWidget();
     }
 
     private ProjectContext createDefaultProject() {

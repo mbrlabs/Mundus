@@ -54,15 +54,6 @@ public class ProjectContext implements Disposable {
         this.idProvider = idProvider;
     }
 
-    public void copyFrom(ProjectContext other) {
-        path = other.path;
-        name = other.name;
-        currScene = other.currScene;
-        scenes = other.scenes;
-        idProvider = other.idProvider;
-        assetManager = other.assetManager;
-    }
-
     public synchronized int obtainID() {
         idProvider += 1;
         return idProvider;

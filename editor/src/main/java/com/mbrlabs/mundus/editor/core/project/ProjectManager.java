@@ -280,7 +280,8 @@ public class ProjectManager implements Disposable {
             currentProject.dispose();
         }
 
-        currentProject.copyFrom(context);
+        currentProject = context;
+       // currentProject.copyFrom(context);
         registry.setLastProject(new ProjectRef());
         registry.getLastOpenedProject().setName(context.name);
         registry.getLastOpenedProject().setPath(context.path);

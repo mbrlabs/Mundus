@@ -81,8 +81,6 @@ public class Outline extends VisTable
 
     private RightClickMenu rightClickMenu;
 
-    private SceneGraph sceneGraph;
-
     @Inject
     private Shaders shaders;
     @Inject
@@ -91,8 +89,6 @@ public class Outline extends VisTable
     private ProjectManager projectManager;
     @Inject
     private CommandHistory history;
-
-    private final ProjectContext projectContext;
 
     public Outline() {
         super();
@@ -118,31 +114,26 @@ public class Outline extends VisTable
 
         setupDragAndDrop();
         setupListeners();
-
-        sceneGraph = projectManager.current().currScene.sceneGraph;
-        projectContext = projectManager.current();
     }
 
     @Override
     public void onProjectChanged(ProjectChangedEvent projectChangedEvent) {
         // update to new sceneGraph
-        sceneGraph = projectManager.current().currScene.sceneGraph;
         Log.trace(TAG, "Project changed. Building scene graph.");
-        buildTree(sceneGraph);
+        buildTree(projectManager.current().currScene.sceneGraph);
     }
 
     @Override
     public void onSceneChanged(SceneChangedEvent sceneChangedEvent) {
         // update to new sceneGraph
-        sceneGraph = projectManager.current().currScene.sceneGraph;
         Log.trace(TAG, "Scene changed. Building scene graph.");
-        buildTree(sceneGraph);
+        buildTree(projectManager.current().currScene.sceneGraph);
     }
 
     @Override
     public void onSceneGraphChanged(SceneGraphChangedEvent sceneGraphChangedEvent) {
         Log.trace(TAG, "SceneGraph changed. Building scene graph.");
-        buildTree(sceneGraph);
+        buildTree(projectManager.current().currScene.sceneGraph);
     }
 
     private void setupDragAndDrop() {
@@ -181,6 +172,7 @@ public class Outline extends VisTable
             @Override
             public void drop(DragAndDrop.Source source, DragAndDrop.Payload payload, float x, float y, int pointer) {
                 Tree.Node node = (Tree.Node) payload.getObject();
+                ProjectContext context = projectManager.current();
 
                 if (node != null) {
                     GameObject draggedGo = (GameObject) node.getObject();
@@ -215,7 +207,7 @@ public class Outline extends VisTable
                             // new local position = World position
                             newPos = draggedPos;
                         }
-                        projectContext.currScene.sceneGraph.addGameObject(draggedGo);
+                        context.currScene.sceneGraph.addGameObject(draggedGo);
                         draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z);
                     } else {
                         GameObject parentGo = (GameObject) newParent.getObject();
@@ -242,7 +234,7 @@ public class Outline extends VisTable
                     }
 
                     // update tree
-                    buildTree(sceneGraph);
+                    buildTree(projectManager.current().currScene.sceneGraph);
                 }
             }
         });
@@ -360,7 +352,7 @@ public class Outline extends VisTable
      */
     private void duplicateGO(GameObject go, GameObject parent) {
         Log.trace(TAG, "Duplicate [{}] with parent [{}]", go, parent);
-        GameObject goCopy = new GameObject(go, projectContext.obtainID());
+        GameObject goCopy = new GameObject(go, projectManager.current().obtainID());
 
         // add copy to tree
         Tree.Node n = tree.findNode(parent);
@@ -427,7 +419,8 @@ public class Outline extends VisTable
             addEmpty.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    int id = projectContext.obtainID();
+                    SceneGraph sceneGraph = projectManager.current().currScene.sceneGraph;
+                    int id = projectManager.current().obtainID();
                     // the new game object
                     GameObject go = new GameObject(sceneGraph, GameObject.DEFAULT_NAME, id);
                     // update outline
@@ -455,11 +448,12 @@ public class Outline extends VisTable
                 public void clicked(InputEvent event, float x, float y) {
                     try {
                         Log.trace(TAG, "Add terrain game object in root node.");
-
-                        final int goID = projectContext.obtainID();
+                        ProjectContext context = projectManager.current();
+                        SceneGraph sceneGraph = context.currScene.sceneGraph;
+                        final int goID = projectManager.current().obtainID();
                         final String name = "Terrain " + goID;
                         // create asset
-                        TerrainAsset asset = projectContext.assetManager.createTerraAsset(name,
+                        TerrainAsset asset = context.assetManager.createTerraAsset(name,
                                 Terrain.DEFAULT_VERTEX_RESOLUTION, Terrain.DEFAULT_SIZE);
                         asset.load();
                         asset.applyDependencies();
@@ -471,8 +465,8 @@ public class Outline extends VisTable
                         // update outline
                         addGoToTree(null, terrainGO);
 
-                        projectContext.currScene.terrains.add(asset);
-                        projectManager.saveProject(projectContext);
+                        context.currScene.terrains.add(asset);
+                        projectManager.saveProject(context);
                         Mundus.postEvent(new AssetImportEvent(asset));
                         Mundus.postEvent(new SceneGraphChangedEvent());
                     } catch (Exception e) {

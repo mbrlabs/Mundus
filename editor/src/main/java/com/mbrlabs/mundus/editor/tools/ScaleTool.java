@@ -70,7 +70,6 @@ public class ScaleTool extends TransformTool {
     private final Vector3 tempScaleDst = new Vector3();
 
     private ShapeRenderer shapeRenderer;
-    private ProjectContext projectContext;
 
     private TransformState state = TransformState.IDLE;
     private ScaleCommand command;
@@ -80,7 +79,6 @@ public class ScaleTool extends TransformTool {
         super(projectManager, goPicker, handlePicker, shader, batch, history);
 
         this.shapeRenderer = shapeRenderer;
-        this.projectContext = projectManager.current();
 
         ModelBuilder modelBuilder = new ModelBuilder();
 
@@ -107,6 +105,7 @@ public class ScaleTool extends TransformTool {
         super.render();
 
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        ProjectContext projectContext = projectManager.current();
         if (projectContext.currScene.currentSelection != null) {
             batch.begin(projectContext.currScene.cam);
             xHandle.render(batch);
@@ -169,7 +168,7 @@ public class ScaleTool extends TransformTool {
     @Override
     public void act() {
         super.act();
-
+        ProjectContext projectContext = projectManager.current();
         if (projectContext.currScene.currentSelection != null) {
             translateHandles();
             if (state == TransformState.IDLE) {
@@ -214,6 +213,7 @@ public class ScaleTool extends TransformTool {
     }
 
     private float getCurrentDst() {
+        ProjectContext projectContext = projectManager.current();
         if (projectContext.currScene.currentSelection != null) {
             projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),
@@ -227,6 +227,7 @@ public class ScaleTool extends TransformTool {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        ProjectContext projectContext = projectManager.current();
         super.touchDown(screenX, screenY, pointer, button);
         if (button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             ScaleHandle handle = (ScaleHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
@@ -275,6 +276,7 @@ public class ScaleTool extends TransformTool {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         super.touchUp(screenX, screenY, pointer, button);
+        ProjectContext projectContext = projectManager.current();
         if (state != TransformState.IDLE) {
             xHandle.changeColor(COLOR_X);
             yHandle.changeColor(COLOR_Y);
@@ -307,6 +309,7 @@ public class ScaleTool extends TransformTool {
 
     @Override
     protected void translateHandles() {
+        ProjectContext projectContext = projectManager.current();
         final Vector3 pos = projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
         xHandle.position.set(pos);
         xHandle.applyTransform();
