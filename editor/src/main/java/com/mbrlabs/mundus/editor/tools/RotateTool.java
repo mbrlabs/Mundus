@@ -294,7 +294,7 @@ public class RotateTool extends TransformTool {
 
     @Override
     public String getIconFont() {
-        return Fa.REFRESH;
+        return Fa.Companion.getREFRESH();
     }
 
     @Override

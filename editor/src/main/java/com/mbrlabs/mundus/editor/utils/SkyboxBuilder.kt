@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.assets;
+@file:JvmName("SkyboxBuilder")
+package com.mbrlabs.mundus.editor.utils
 
-/**
- * @author Marcus Brummer
- * @version 10-10-2016
- */
-public class AssetAlreadyExistsException extends Exception {
+import com.badlogic.gdx.Gdx
+import com.mbrlabs.mundus.commons.skybox.Skybox
+
+fun createDefaultSkybox(): Skybox {
+    val texture = Gdx.files.internal("textures/skybox/default/skybox_default.png")
+    return Skybox(texture, texture, texture, texture, texture, texture)
 }
+
+fun createNightSkybox(): Skybox {
+    val texture = Gdx.files.internal("textures/skybox/star_night.png")
+    return Skybox(texture, texture, texture, texture, texture, texture)
+}
+
+

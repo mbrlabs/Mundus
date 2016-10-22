@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.assets;
+package com.mbrlabs.mundus.editor.assets
 
 /**
  * @author Marcus Brummer
- * @version 24-11-2015
+ * *
+ * @version 10-10-2016
  */
-public class FormatNotSupportedException extends RuntimeException {
-}
+class AssetAlreadyExistsException : Exception()

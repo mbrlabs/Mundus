@@ -36,7 +36,7 @@ public class FaTextButton extends VisTextButton {
         styleNoBg.pressedOffsetX = 1;
         styleNoBg.unpressedOffsetX = 0;
         styleNoBg.pressedOffsetY = -1;
-        styleNoBg.fontColor = Colors.TEAL;
+        styleNoBg.fontColor = Colors.INSTANCE.getTEAL();
     }
 
     public final static TextButton.TextButtonStyle styleBg = new TextButton.TextButtonStyle();
@@ -45,7 +45,7 @@ public class FaTextButton extends VisTextButton {
         styleBg.pressedOffsetX = 1;
         styleBg.unpressedOffsetX = 0;
         styleBg.pressedOffsetY = -1;
-        styleBg.fontColor = Colors.TEAL;
+        styleBg.fontColor = Colors.INSTANCE.getTEAL();
         styleBg.up = VisUI.getSkin().getDrawable("menu-bg");
         styleBg.down = VisUI.getSkin().getDrawable("menu-bg");
     }

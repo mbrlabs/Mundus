@@ -351,7 +351,7 @@ public class ScaleTool extends TransformTool {
 
     @Override
     public String getIconFont() {
-        return Fa.EXPAND;
+        return Fa.Companion.getEXPAND();
     }
 
     @Override

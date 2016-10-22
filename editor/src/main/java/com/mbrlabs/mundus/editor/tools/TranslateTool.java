@@ -112,7 +112,7 @@ public class TranslateTool extends TransformTool {
 
     @Override
     public String getIconFont() {
-        return Fa.ARROWS;
+        return Fa.Companion.getARROWS();
     }
 
     @Override

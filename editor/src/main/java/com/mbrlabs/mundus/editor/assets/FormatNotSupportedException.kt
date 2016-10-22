@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.history;
-
-import com.badlogic.gdx.utils.Disposable;
+package com.mbrlabs.mundus.editor.assets
 
 /**
  * @author Marcus Brummer
- * @version 07-02-2016
+ * @version 24-11-2015
  */
-public interface Command extends Disposable {
-
-    public void execute();
-
-    public void undo();
-
-}
+class FormatNotSupportedException : RuntimeException()

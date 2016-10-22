@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.utils;
+package com.mbrlabs.mundus.editor.history
+
+import com.badlogic.gdx.utils.Disposable
 
 /**
  * @author Marcus Brummer
- * @version 24-11-2015
+ * @version 07-02-2016
  */
-public class OsNotSupported extends RuntimeException {
+interface Command : Disposable {
+
+    fun execute()
+
+    fun undo()
+
 }

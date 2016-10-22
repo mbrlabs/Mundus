@@ -46,7 +46,7 @@ public class SmoothCircleBrush extends TerrainBrush {
 
     @Override
     public String getIconFont() {
-        return Fa.CIRCLE_O;
+        return Fa.Companion.getCIRCLE_O();
     }
 
     @Override

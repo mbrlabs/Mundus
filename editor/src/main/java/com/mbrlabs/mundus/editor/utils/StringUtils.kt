@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.utils;
+@file:JvmName("StringUtils")
+package com.mbrlabs.mundus.editor.utils
 
-import java.util.Locale;
+import java.util.Locale
 
-/**
- * @author Marcus Brummer
- * @version 02-01-2016
- */
-public class StringUtils {
 
-    public static String formatFloat(float f, int digits) {
-        return String.format(Locale.US, "%." + digits + "f", f);
-    }
-
+fun formatFloat(f: Float, digits: Int): String {
+    return String.format(Locale.US, "%." + digits + "f", f)
 }
+
+

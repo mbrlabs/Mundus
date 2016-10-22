@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.utils;
+package com.mbrlabs.mundus.editor.utils
 
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
  */
-public enum Os {
-    MAC, WINDOWS, LINUX
-}
+class OsNotSupported : RuntimeException()

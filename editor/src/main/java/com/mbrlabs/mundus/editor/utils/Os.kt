@@ -14,29 +14,12 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.ui.widgets;
-
-import com.badlogic.gdx.graphics.Color;
-import com.kotcrab.vis.ui.widget.VisLabel;
-import com.mbrlabs.mundus.editor.core.Mundus;
-import com.mbrlabs.mundus.editor.utils.Colors;
+package com.mbrlabs.mundus.editor.utils
 
 /**
  * @author Marcus Brummer
- * @version 19-01-2016
+ * @version 24-11-2015
  */
-public class FaLabel extends VisLabel {
-
-    private final static LabelStyle style = new LabelStyle();
-    static {
-        style.font = Mundus.fa;
-        style.fontColor = Color.WHITE;
-        style.fontColor = Colors.INSTANCE.getTEAL();
-    }
-
-    public FaLabel(String text) {
-        super(text);
-        setStyle(style);
-    }
-
+enum class Os {
+    MAC, WINDOWS, LINUX
 }

@@ -62,7 +62,7 @@ public class SelectionTool extends Tool {
 
     @Override
     public String getIconFont() {
-        return Fa.MOUSE_POINTER;
+        return Fa.Companion.getMOUSE_POINTER();
     }
 
     @Override

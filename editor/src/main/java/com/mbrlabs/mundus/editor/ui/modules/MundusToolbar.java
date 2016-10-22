@@ -37,13 +37,13 @@ import com.mbrlabs.mundus.editor.ui.widgets.Toolbar;
 import com.mbrlabs.mundus.editor.utils.Fa;
 import com.mbrlabs.mundus.editor.utils.Log;
 
-import static com.mbrlabs.mundus.editor.utils.Fa.TAG;
-
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
  */
 public class MundusToolbar extends Toolbar {
+
+    private static final String TAG = MundusToolbar.class.getSimpleName();
 
     private FaTextButton saveBtn;
     private FaTextButton importBtn;
@@ -77,15 +77,15 @@ public class MundusToolbar extends Toolbar {
         importMenu.addItem(importTexture);
         importMenu.addItem(createMaterial);
 
-        saveBtn = new FaTextButton(Fa.SAVE);
+        saveBtn = new FaTextButton(Fa.Companion.getSAVE());
         saveBtn.padRight(7).padLeft(7);
         new Tooltip.Builder("Save project").target(saveBtn).build();
 
-        importBtn = new FaTextButton(Fa.DOWNLOAD);
+        importBtn = new FaTextButton(Fa.Companion.getDOWNLOAD());
         importBtn.padRight(7).padLeft(7);
         new Tooltip.Builder("Import model").target(importBtn).build();
 
-        exportBtn = new FaTextButton(Fa.GIFT);
+        exportBtn = new FaTextButton(Fa.Companion.getGIFT());
         exportBtn.padRight(12).padLeft(7);
         new Tooltip.Builder("Export project").target(exportBtn).build();
 

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.utils;
+package com.mbrlabs.mundus.editor.utils
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Color
 
 /**
  * @author Marcus Brummer
  * @version 22-11-2015
  */
-public class Colors {
+object Colors {
 
-    public static final Color GRAY_888 = new Color(0x888888ff);
-    public static final Color GRAY_333 = new Color(0x333333ff);
-    public static final Color GRAY_222 = new Color(0x222222ff);
-    public static final Color GRAY_111 = new Color(0x111111ff);
+    val GRAY_888 = Color(0x888888ff.toInt())
+    val GRAY_333 = Color(0x333333ff)
+    val GRAY_222 = Color(0x222222ff)
+    val GRAY_111 = Color(0x111111ff)
 
-    public static final Color TEAL = new Color(0x00b695ff);
+    val TEAL = Color(0x00b695ff)
 
 }

@@ -46,7 +46,7 @@ public class ConfettiBrush extends TerrainBrush {
 
     @Override
     public String getIconFont() {
-        return Fa.HASHTAG;
+        return Fa.Companion.getHASHTAG();
     }
 
     @Override

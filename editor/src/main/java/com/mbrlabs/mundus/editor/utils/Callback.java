@@ -22,8 +22,8 @@ package com.mbrlabs.mundus.editor.utils;
  */
 public interface Callback<T> {
 
-    public void done(T result);
+    void done(T result);
 
-    public void error(String msg);
+    void error(String msg);
 
 }

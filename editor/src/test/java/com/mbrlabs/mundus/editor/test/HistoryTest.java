@@ -31,7 +31,7 @@ public class HistoryTest {
 
     @Test
     public void addThenGoBackAndAdd() {
-        CommandHistory history = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
+        CommandHistory history = new CommandHistory(CommandHistory.Companion.getDEFAULT_LIMIT());
         int ptr;
 
         ptr = history.add(new MockCommand());
@@ -57,7 +57,7 @@ public class HistoryTest {
 
     @Test
     public void addThenGoBackThenGoForwardOneThenAdd() {
-        CommandHistory history = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
+        CommandHistory history = new CommandHistory(CommandHistory.Companion.getDEFAULT_LIMIT());
         int ptr;
 
         ptr = history.add(new MockCommand());

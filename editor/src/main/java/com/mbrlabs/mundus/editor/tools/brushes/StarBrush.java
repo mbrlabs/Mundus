@@ -46,7 +46,7 @@ public class StarBrush extends TerrainBrush {
 
     @Override
     public String getIconFont() {
-        return Fa.STAR;
+        return Fa.Companion.getSTAR();
     }
 
     @Override

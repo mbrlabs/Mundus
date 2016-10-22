@@ -105,7 +105,7 @@ public class Mundus {
         kryoManager = new KryoManager();
         registry = kryoManager.loadRegistry();
         freeCamController = new FreeCamController();
-        commandHistory = new CommandHistory(CommandHistory.DEFAULT_LIMIT);
+        commandHistory = new CommandHistory(CommandHistory.Companion.getDEFAULT_LIMIT());
 
         modelImporter = new ModelImporter(registry);
         projectManager = new ProjectManager(kryoManager, registry, shaders);
@@ -169,10 +169,14 @@ public class Mundus {
         faBuilder.getGeneratorParameter().size = (int) (Gdx.graphics.getHeight() * 0.02f);
         faBuilder.getGeneratorParameter().kerning = true;
         faBuilder.getGeneratorParameter().borderStraight = false;
-        fa = faBuilder.addIcon(Fa.SAVE).addIcon(Fa.DOWNLOAD).addIcon(Fa.GIFT).addIcon(Fa.PLAY).addIcon(Fa.MOUSE_POINTER)
-                .addIcon(Fa.ARROWS).addIcon(Fa.CIRCLE_O).addIcon(Fa.CIRCLE).addIcon(Fa.MINUS).addIcon(Fa.CARET_DOWN)
-                .addIcon(Fa.CARET_UP).addIcon(Fa.TIMES).addIcon(Fa.SORT).addIcon(Fa.HASHTAG).addIcon(Fa.PAINT_BRUSH)
-                .addIcon(Fa.STAR).addIcon(Fa.REFRESH).addIcon(Fa.EXPAND).build();
+        fa = faBuilder.addIcon(Fa.Companion.getSAVE()).addIcon(Fa.Companion.getDOWNLOAD())
+                .addIcon(Fa.Companion.getGIFT()).addIcon(Fa.Companion.getPLAY())
+                .addIcon(Fa.Companion.getMOUSE_POINTER()).addIcon(Fa.Companion.getARROWS())
+                .addIcon(Fa.Companion.getCIRCLE_O()).addIcon(Fa.Companion.getCIRCLE()).addIcon(Fa.Companion.getMINUS())
+                .addIcon(Fa.Companion.getCARET_DOWN()).addIcon(Fa.Companion.getCARET_UP())
+                .addIcon(Fa.Companion.getTIMES()).addIcon(Fa.Companion.getSORT()).addIcon(Fa.Companion.getHASHTAG())
+                .addIcon(Fa.Companion.getPAINT_BRUSH()).addIcon(Fa.Companion.getSTAR())
+                .addIcon(Fa.Companion.getREFRESH()).addIcon(Fa.Companion.getEXPAND()).build();
     }
 
     public static void postEvent(Object event) {

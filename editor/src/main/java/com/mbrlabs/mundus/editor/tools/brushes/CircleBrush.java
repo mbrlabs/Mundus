@@ -46,7 +46,7 @@ public class CircleBrush extends TerrainBrush {
 
     @Override
     public String getIconFont() {
-        return Fa.CIRCLE;
+        return Fa.Companion.getCIRCLE();
     }
 
     @Override
