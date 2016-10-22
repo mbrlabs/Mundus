@@ -64,8 +64,4 @@ class RotateCommand(private var go: GameObject?) : Command {
         Mundus.postEvent(modEvent)
     }
 
-    override fun dispose() {
-
-    }
-
 }

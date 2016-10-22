@@ -92,10 +92,6 @@ public class HistoryTest {
         @Override
         public void undo() {
         }
-
-        @Override
-        public void dispose() {
-        }
     }
 
 }

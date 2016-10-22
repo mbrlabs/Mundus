@@ -48,10 +48,4 @@ class TerrainHeightCommand(private var terrain: Terrain?) : Command {
         terrain!!.update()
     }
 
-    override fun dispose() {
-        heightDataAfter = null
-        heightDataBefore = null
-        terrain = null
-    }
-
 }

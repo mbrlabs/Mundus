@@ -59,13 +59,19 @@ class CommandHistory(private val limit: Int) {
     }
 
     private fun removeCommand(index: Int) {
-        commands.get(index).dispose()
+        val cmd = commands.get(index)
+        if(cmd is DisposableCommand) {
+            cmd.dispose()
+        }
         commands.removeIndex(index)
     }
 
     private fun removeCommands(from: Int, to: Int) {
         for (i in from..to) {
-            commands.get(i).dispose()
+            val cmd = commands.get(i)
+            if(cmd is DisposableCommand) {
+                cmd.dispose()
+            }
         }
 
         commands.removeRange(from, to)
@@ -91,7 +97,9 @@ class CommandHistory(private val limit: Int) {
 
     fun clear() {
         for (c in commands) {
-            c.dispose()
+            if(c is DisposableCommand) {
+                c.dispose()
+            }
         }
         commands.clear()
         pointer = -1

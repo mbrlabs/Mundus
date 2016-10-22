@@ -20,12 +20,13 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.mbrlabs.mundus.commons.terrain.SplatMap
 import com.mbrlabs.mundus.commons.terrain.Terrain
 import com.mbrlabs.mundus.editor.history.Command
+import com.mbrlabs.mundus.editor.history.DisposableCommand
 
 /**
  * @author Marcus Brummer
  * @version 07-02-2016
  */
-class TerrainPaintCommand(private var terrain: Terrain?) : Command {
+class TerrainPaintCommand(private var terrain: Terrain?) : DisposableCommand {
 
     private var after: Pixmap? = null
     private var before: Pixmap? = null
@@ -59,9 +60,6 @@ class TerrainPaintCommand(private var terrain: Terrain?) : Command {
     override fun dispose() {
         after!!.dispose()
         before!!.dispose()
-        after = null
-        before = null
-        terrain = null
     }
 
 }

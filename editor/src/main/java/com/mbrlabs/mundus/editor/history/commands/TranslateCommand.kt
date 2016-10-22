@@ -28,6 +28,10 @@ import com.mbrlabs.mundus.editor.history.Command
  */
 class TranslateCommand(private var go: GameObject?) : Command {
 
+    companion object {
+        private val modEvent = GameObjectModifiedEvent()
+    }
+
     private var before: Vector3
     private var after: Vector3
 
@@ -58,15 +62,6 @@ class TranslateCommand(private var go: GameObject?) : Command {
         go!!.setLocalPosition(before.x, before.y, before.z)
         modEvent.gameObject = go
         Mundus.postEvent(modEvent)
-    }
-
-    override fun dispose() {
-        go = null
-    }
-
-    companion object {
-
-        private val modEvent = GameObjectModifiedEvent()
     }
 
 }

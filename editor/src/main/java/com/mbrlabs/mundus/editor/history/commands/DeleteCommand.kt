@@ -66,12 +66,4 @@ class DeleteCommand(private var go: GameObject?, private var node: Tree.Node?) :
         Mundus.postEvent(SceneGraphChangedEvent())
     }
 
-    override fun dispose() {
-        go = null
-        parentGO = null
-        parentNode = null
-        node = null
-        tree = null
-    }
-
 }
