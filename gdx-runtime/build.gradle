@@ -27,7 +27,7 @@ def buildJarTree() {
 }
 
 task distRuntime(type: Jar) {
-    baseName = 'mundus-libgdx-runtime'
+    baseName = 'mundus-gdx-runtime'
     version = '0.1.0'
 
     from files(sourceSets.main.output.classesDir)

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.runtime.libgdx;
+package com.mbrlabs.mundus.runtime;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.FloatArray;

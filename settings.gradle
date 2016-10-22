@@ -1,4 +1,4 @@
 include 'editor'
 include 'commons'
-include 'libgdx-runtime'
+include 'gdx-runtime'
 
