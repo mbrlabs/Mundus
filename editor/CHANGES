@@ -1,6 +1,7 @@
 [0.1.0]
 - Updated VisUI to 1.2.4
 - Added application icon
+- Parts of the editor are now written in Kotlin
 
 [0.0.9] ~ 18/10/2016
 - Updated libGDX to 1.9.4
