@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs
 
-import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -25,8 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.kotcrab.vis.ui.widget.VisCheckBox
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisTextField
-import com.kotcrab.vis.ui.widget.file.FileChooser
-import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener
 import com.mbrlabs.mundus.editor.ui.UI
 import java.io.File
 
@@ -37,7 +34,6 @@ import java.io.File
 class ExportDialog : BaseDialog("Export") {
 
     // UI elements
-    private val fileChooser: FileChooser
     private val output = VisTextField()
     private val exportBtn = VisTextButton("EXPORT")
     private val fileChooserBtn = VisTextButton("Select")
@@ -48,9 +44,6 @@ class ExportDialog : BaseDialog("Export") {
     init {
         isModal = true
         isMovable = false
-
-        fileChooser = FileChooser(FileChooser.Mode.OPEN)
-        fileChooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
 
         setupUI()
         setupListener()
@@ -92,19 +85,20 @@ class ExportDialog : BaseDialog("Export") {
         })
 
         // button launches file chooser
-        fileChooserBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                super.clicked(event, x, y)
-                UI.addActor(fileChooser.fadeIn())
-            }
-        })
-
-        // file chooser
-        fileChooser.setListener(object : SingleFileChooserListener() {
-            public override fun selected(file: FileHandle) {
-                output.text = file.path()
-            }
-        })
+//        fileChooserBtn.addListener(object : ClickListener() {
+//            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+//                super.clicked(event, x, y)
+//
+//                UI.addActor(fileChooser.fadeIn())
+//            }
+//        })
+//
+//        // file chooser
+//        fileChooser.setListener(object : SingleFileChooserListener() {
+//            public override fun selected(file: FileHandle) {
+//                output.text = file.path()
+//            }
+//        })
 
     }
 

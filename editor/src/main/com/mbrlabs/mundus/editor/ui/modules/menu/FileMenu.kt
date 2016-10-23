@@ -46,15 +46,10 @@ class FileMenu : Menu("File") {
     private val saveProject: MenuItem
     private val exit: MenuItem
 
-    private val fileChooser: FileChooser
-
     private val registry: Registry = Mundus.inject()
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
-        fileChooser = FileChooser(FileChooser.Mode.OPEN)
-        fileChooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
-
         newProject = MenuItem("New Project")
         newProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.N)
         importProject = MenuItem("Import Project")
@@ -103,14 +98,13 @@ class FileMenu : Menu("File") {
 
         importProject.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                UI.addActor(fileChooser.fadeIn())
-            }
-        })
-
-        // file chooser
-        fileChooser.setListener(object : SingleFileChooserListener() {
-            public override fun selected(file: FileHandle) {
-                importNewProject(file)
+                UI.fileChooser.setListener(object: SingleFileChooserListener() {
+                    override fun selected(file: FileHandle) {
+                        importNewProject(file)
+                    }
+                })
+                UI.fileChooser.selectionMode = FileChooser.SelectionMode.DIRECTORIES
+                UI.addActor(UI.fileChooser.fadeIn())
             }
         })
     }

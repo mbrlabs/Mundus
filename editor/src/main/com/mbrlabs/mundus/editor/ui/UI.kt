@@ -22,6 +22,7 @@ import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.Separator
 import com.kotcrab.vis.ui.widget.VisDialog
 import com.kotcrab.vis.ui.widget.VisTable
+import com.kotcrab.vis.ui.widget.color.ColorPicker
 import com.kotcrab.vis.ui.widget.file.FileChooser
 import com.mbrlabs.mundus.editor.ui.modules.MundusToolbar
 import com.mbrlabs.mundus.editor.ui.modules.Outline
@@ -45,39 +46,41 @@ import com.mbrlabs.mundus.editor.utils.Toaster
  */
 object UI : Stage(ScreenViewport()) {
 
+    // reusable ui elements
+    val toaster: Toaster = Toaster(this)
+    val fileChooser: FileChooser = FileChooser(FileChooser.Mode.OPEN)
+    val assetSelectionDialog: AssetSelectionDialog = AssetSelectionDialog()
+    val colorPicker: ColorPicker = ColorPicker()
+
+    // base elements
     private val root: VisTable
     private val splitPane: MundusSplitPane
-    val toaster: Toaster
     val menuBar: MundusMenuBar
     val toolbar: MundusToolbar
-    val fileChooser: FileChooser
     val statusBar: StatusBar
     private val inspector: Inspector
     val outline: Outline
-
     private val docker: DockBar
-
-    val settingsDialog: SettingsDialog
-    val newProjectDialog: NewProjectDialog
-
-    val loadingProjectDialog: LoadingProjectDialog
-    val exportDialog: ExportDialog
-    val importModelDialog: ImportModelDialog
-    val importTextureDialog: ImportTextureDialog
-    val fogDialog: FogDialog
-    val skyboxDialog: SkyboxDialog
-    val ambientLightDialog: AmbientLightDialog
-    val assetSelectionDialog: AssetSelectionDialog
-    val exitDialog: ExitDialog
-
-    val greenSeperatorStyle: Separator.SeparatorStyle
-
     val widget3D: RenderWidget
+
+    // dialogs
+    val settingsDialog: SettingsDialog = SettingsDialog()
+    val newProjectDialog: NewProjectDialog = NewProjectDialog()
+    val loadingProjectDialog: LoadingProjectDialog = LoadingProjectDialog()
+    val exportDialog: ExportDialog = ExportDialog()
+    val importModelDialog: ImportModelDialog = ImportModelDialog()
+    val importTextureDialog: ImportTextureDialog = ImportTextureDialog()
+    val fogDialog: FogDialog = FogDialog()
+    val skyboxDialog: SkyboxDialog = SkyboxDialog()
+    val ambientLightDialog: AmbientLightDialog = AmbientLightDialog()
+    val exitDialog: ExitDialog = ExitDialog()
+
+    // styles
+    val greenSeperatorStyle: Separator.SeparatorStyle
 
     init {
         greenSeperatorStyle = Separator.SeparatorStyle(VisUI.getSkin().getDrawable("mundus-separator-green"), 1)
 
-        toaster = Toaster(this)
         root = VisTable()
         addActor(root)
         root.setFillParent(true)
@@ -113,23 +116,6 @@ object UI : Stage(ScreenViewport()) {
         // row 5: status bar
         statusBar = StatusBar()
         root.add(statusBar).expandX().fillX().height(25f).row()
-
-        // dialogs
-        settingsDialog = SettingsDialog()
-        newProjectDialog = NewProjectDialog()
-        // addTerrainDialog = new AddTerrainDialog();
-        loadingProjectDialog = LoadingProjectDialog()
-        exportDialog = ExportDialog()
-        fogDialog = FogDialog()
-        skyboxDialog = SkyboxDialog()
-        ambientLightDialog = AmbientLightDialog()
-        importModelDialog = ImportModelDialog()
-        importTextureDialog = ImportTextureDialog()
-        assetSelectionDialog = AssetSelectionDialog()
-        exitDialog = ExitDialog()
-
-        fileChooser = FileChooser(FileChooser.Mode.OPEN)
-        fileChooser.selectionMode = FileChooser.SelectionMode.FILES
     }
 
     fun showDialog(dialog: VisDialog) {

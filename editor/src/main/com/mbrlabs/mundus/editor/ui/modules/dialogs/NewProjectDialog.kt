@@ -22,6 +22,7 @@ import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisTextField
+import com.kotcrab.vis.ui.widget.file.FileChooser
 import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.ui.UI
@@ -52,7 +53,7 @@ class NewProjectDialog : BaseDialog("Create New Project") {
         root.row().padTop(10f)
         root.add(VisLabel("Location:")).right().padRight(5f)
         locationPath = FileChooserField(300)
-        locationPath.setFileMode(false)
+        locationPath.setFileMode(FileChooser.SelectionMode.DIRECTORIES)
         root.add(locationPath).row()
 
         createBtn = VisTextButton("Create")

@@ -34,15 +34,14 @@ import com.mbrlabs.mundus.editor.ui.UI;
  */
 public class ColorPickerField extends VisTable {
 
-    public static interface ColorSelected {
-        public void selected(Color color);
+    public interface ColorSelected {
+        void selected(Color color);
     }
 
     private String label = null;
 
     private VisTextField textField = null;
     private VisTextButton cpBtn;
-    private ColorPicker colorPicker;
 
     private Color color;
     private ColorSelected callback;
@@ -52,7 +51,6 @@ public class ColorPickerField extends VisTable {
         this.label = label;
         textField = new VisTextField();
         cpBtn = new VisTextButton("Select");
-        colorPicker = new ColorPicker();
         setEditable(false);
         setupUI();
         setupListeners();
@@ -69,7 +67,6 @@ public class ColorPickerField extends VisTable {
     public void setColor(Color color) {
         if (color != null) {
             textField.setText("#" + color.toString());
-            colorPicker.setColor(color);
             this.color = color;
         }
     }
@@ -104,22 +101,21 @@ public class ColorPickerField extends VisTable {
     }
 
     private void setupListeners() {
-
-        // color chooser
-        colorPicker.setListener(new ColorPickerAdapter() {
-            @Override
-            public void finished(Color newColor) {
-                textField.setText("#" + newColor.toString());
-                color = newColor;
-                callback.selected(color);
-            }
-        });
-
         // color chooser button
         cpBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                ColorPicker colorPicker = UI.INSTANCE.getColorPicker();
+                colorPicker.setColor(color);
+                colorPicker.setListener(new ColorPickerAdapter() {
+                    @Override
+                    public void finished(Color newColor) {
+                        textField.setText("#" + newColor.toString());
+                        color = newColor;
+                        callback.selected(color);
+                    }
+                });
                 UI.INSTANCE.addActor(colorPicker.fadeIn());
             }
         });

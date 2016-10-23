@@ -45,7 +45,6 @@ public class ImageChooserField extends VisTable {
     private int width;
 
     private VisTextButton fcBtn;
-    private FileChooser fileChooser;
 
     private Image img;
     private Texture texture;
@@ -55,7 +54,6 @@ public class ImageChooserField extends VisTable {
         super();
         this.width = width;
         fcBtn = new VisTextButton("Select");
-        fileChooser = new FileChooser(FileChooser.Mode.OPEN);
         img = new Image(PLACEHOLDER_IMG);
 
         setupUI();
@@ -96,27 +94,24 @@ public class ImageChooserField extends VisTable {
     }
 
     private void setupListeners() {
-
-        // file chooser
-        fileChooser.setListener(new SingleFileChooserListener() {
-            public void selected(FileHandle file) {
-                if (FileFormatUtils.isImage(file)) {
-                    setImage(file);
-                } else {
-                    Dialogs.showErrorDialog(UI.INSTANCE, "This is no image");
-                }
-            }
-        });
-
-        // file chooser button
         fcBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                FileChooser fileChooser = UI.INSTANCE.getFileChooser();
+                fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
+                fileChooser.setListener(new SingleFileChooserListener() {
+                    public void selected(FileHandle file) {
+                        if (FileFormatUtils.isImage(file)) {
+                            setImage(file);
+                        } else {
+                            Dialogs.showErrorDialog(UI.INSTANCE, "This is no image");
+                        }
+                    }
+                });
                 UI.INSTANCE.addActor(fileChooser.fadeIn());
             }
         });
-
     }
 
 }

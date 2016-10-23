@@ -32,16 +32,16 @@ import com.mbrlabs.mundus.editor.ui.UI;
  */
 public class FileChooserField extends VisTable {
 
-    public static interface FileSelected {
-        public void selected(FileHandle fileHandle);
+    public interface FileSelected {
+        void selected(FileHandle fileHandle);
     }
 
     private int width = -1;
 
+    private FileChooser.SelectionMode mode = FileChooser.SelectionMode.FILES;
     private FileSelected fileSelected;
     private VisTextField textField;
     private VisTextButton fcBtn;
-    private FileChooser fileChooser;
 
     private String path;
     private FileHandle fileHandle;
@@ -51,7 +51,6 @@ public class FileChooserField extends VisTable {
         this.width = width;
         textField = new VisTextField();
         fcBtn = new VisTextButton("Select");
-        fileChooser = new FileChooser(FileChooser.Mode.OPEN);
 
         setupUI();
         setupListeners();
@@ -77,12 +76,8 @@ public class FileChooserField extends VisTable {
         this.fileSelected = fileSelected;
     }
 
-    public void setFileMode(boolean fileMode) {
-        if (fileMode) {
-            fileChooser.setSelectionMode(FileChooser.SelectionMode.FILES);
-        } else {
-            fileChooser.setSelectionMode(FileChooser.SelectionMode.DIRECTORIES);
-        }
+    public void setFileMode(FileChooser.SelectionMode mode) {
+        this.mode = mode;
     }
 
     public void clear() {
@@ -107,24 +102,24 @@ public class FileChooserField extends VisTable {
 
     private void setupListeners() {
 
-        // file chooser
-        fileChooser.setListener(new SingleFileChooserListener() {
-            public void selected(FileHandle file) {
-                fileHandle = file;
-                path = file.path();
-
-                textField.setText(file.path());
-                if (fileSelected != null) {
-                    fileSelected.selected(file);
-                }
-            }
-        });
-
-        // file chooser button
         fcBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                FileChooser fileChooser = UI.INSTANCE.getFileChooser();
+                fileChooser.setSelectionMode(mode);
+                fileChooser.setListener(new SingleFileChooserListener() {
+                    @Override
+                    protected void selected(FileHandle file) {
+                        fileHandle = file;
+                        path = file.path();
+
+                        textField.setText(file.path());
+                        if (fileSelected != null) {
+                            fileSelected.selected(file);
+                        }
+                    }
+                });
                 UI.INSTANCE.addActor(fileChooser.fadeIn());
             }
         });
