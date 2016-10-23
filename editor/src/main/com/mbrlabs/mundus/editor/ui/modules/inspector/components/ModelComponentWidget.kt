@@ -32,25 +32,11 @@ import com.mbrlabs.mundus.editor.ui.widgets.MaterialWidget
  */
 class ModelComponentWidget(modelComponent: ModelComponent) : ComponentWidget<ModelComponent>("Model Component", modelComponent) {
 
-    private val selectBox = VisSelectBox<ModelAsset>()
     private val materialContainer: VisTable
 
     init {
         this.component = modelComponent
         materialContainer = VisTable()
-
-        // selection box
-        //        selectBox.setItems(projectManager.current().assetManager.getModelAssets());
-        //        selectBox.setSelected(modelComponent.getModelAsset());
-        //                selectBox.addListener(new ChangeListener() {
-        //                    public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-        //                        ModelAsset model = selectBox.getSelected();
-        //                        if (model != null) {
-        //                            component.getModelInstance().replaceModel(model);
-        //                            component.encodeRaypickColorId();
-        //                        }
-        //                    }
-        //                });
 
         setupUI()
     }
@@ -80,12 +66,13 @@ class ModelComponentWidget(modelComponent: ModelComponent) : ComponentWidget<Mod
         materialContainer.clear()
         for (g3dbMatID in component.materials.keys) {
 
-            val mw = MaterialWidget(object: MaterialWidget.MaterialChangedListener {
+            val mw = MaterialWidget()
+            mw.matChangedListener = object: MaterialWidget.MaterialChangedListener {
                 override fun materialChanged(materialAsset: MaterialAsset) {
                     component.materials.put(g3dbMatID, materialAsset)
                     component.applyMaterials()
                 }
-            })
+            }
 
             mw.material = component.materials[g3dbMatID]
             materialContainer.add(mw).grow().padBottom(20f).row()

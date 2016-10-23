@@ -17,6 +17,7 @@
 package com.mbrlabs.mundus.editor.ui.widgets
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.kotcrab.vis.ui.widget.VisLabel
@@ -31,31 +32,40 @@ import com.mbrlabs.mundus.editor.assets.AssetMaterialFilter
 import com.mbrlabs.mundus.editor.assets.AssetTextureFilter
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent
+import com.mbrlabs.mundus.editor.ui.UI
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetSelectionDialog
 
 /**
  * @author Marcus Brummer
- * *
  * @version 13-10-2016
  */
-class MaterialWidget(private val changedListener: MaterialWidget.MaterialChangedListener?) : VisTable() {
+class MaterialWidget : VisTable() {
 
-    private var assetSelectionDialog: AssetSelectionDialog? = null
-    private var materialFilter: AssetMaterialFilter? = null
-    private var materialChangeBtn: VisTextButton? = null
-    private var assetSelectionListener: AssetSelectionDialog.AssetSelectionListener? = null
+    private val matFilter: AssetMaterialFilter = AssetMaterialFilter()
+    private val matChangedBtn: VisTextButton = VisTextButton("change")
+    private val matSelectionListener: AssetSelectionDialog.AssetSelectionListener
 
-    private val label: VisLabel
-    private val diffuseColorField: ColorPickerField
-    private val diffuseAssetField: AssetSelectionField
+    private val matNameLabel: VisLabel = VisLabel()
+    private val diffuseColorField: ColorPickerField = ColorPickerField()
+    private val diffuseAssetField: AssetSelectionField = AssetSelectionField()
 
     var material: MaterialAsset? = null
-        set(material) {
-            if (material != null) {
-                field = material
-                diffuseColorField.color = material.diffuseColor
-                diffuseAssetField.setAsset(material.diffuseTexture)
-                label.setText(material.name)
+        set(value) {
+            if (value != null) {
+                field = value
+                diffuseColorField.color = value.diffuseColor
+                diffuseAssetField.setAsset(value.diffuseTexture)
+                matNameLabel.setText(value.name)
+            }
+        }
+
+    var matChangedListener: MaterialWidget.MaterialChangedListener? = null
+        set(value) {
+            field = value
+            if(value == null) {
+                matChangedBtn.touchable = Touchable.disabled
+            } else {
+                matChangedBtn.touchable = Touchable.enabled
             }
         }
 
@@ -63,55 +73,42 @@ class MaterialWidget(private val changedListener: MaterialWidget.MaterialChanged
 
     init {
         align(Align.topLeft)
-        label = VisLabel()
-        if (changedListener != null) {
-            assetSelectionDialog = AssetSelectionDialog()
-            materialFilter = AssetMaterialFilter()
-            materialChangeBtn = VisTextButton("change")
+        matNameLabel.setWrap(true)
 
-            assetSelectionListener = object: AssetSelectionDialog.AssetSelectionListener {
-                override fun onSelected(asset: Asset?) {
-                    material = asset as MaterialAsset
-                    changedListener.materialChanged(asset)
-                }
+        matSelectionListener = object: AssetSelectionDialog.AssetSelectionListener {
+            override fun onSelected(asset: Asset?) {
+                material = asset as? MaterialAsset
+                matChangedListener?.materialChanged(material!!)
             }
         }
-        diffuseAssetField = AssetSelectionField()
-        diffuseColorField = ColorPickerField()
-
-        label.setWrap(true)
-
-        if (changedListener != null) {
-            val table = VisTable()
-            table.add(label).grow()
-            table.add<VisTextButton>(materialChangeBtn).right().row()
-            add(table).grow().row()
-        } else {
-            add(label).grow().row()
-        }
-        addSeparator().growX().row()
-        add(VisLabel("Diffuse texture")).grow().row()
-        add(diffuseAssetField).growX().row()
-        add(VisLabel("Diffuse color")).grow().row()
-        add(diffuseColorField).growX().row()
 
         setupWidgets()
     }
 
     private fun setupWidgets() {
-        if (materialChangeBtn != null) {
-            materialChangeBtn!!.addListener(object : ClickListener() {
-                override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    assetSelectionDialog!!.show(false, materialFilter!!, assetSelectionListener!!)
-                }
-            })
-        }
+        val table = VisTable()
+        table.add(matNameLabel).grow()
+        table.add<VisTextButton>(matChangedBtn).padLeft(4f).right().row()
+        add(table).grow().row()
+
+        addSeparator().growX().row()
+
+        add(VisLabel("Diffuse texture")).grow().row()
+        add(diffuseAssetField).growX().row()
+        add(VisLabel("Diffuse color")).grow().row()
+        add(diffuseColorField).growX().row()
+
+        matChangedBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                UI.assetSelectionDialog.show(false, matFilter, matSelectionListener)
+            }
+        })
 
         // diffuse texture
         diffuseAssetField.setFilter(AssetTextureFilter())
         diffuseAssetField.setListener(object: AssetSelectionDialog.AssetSelectionListener {
             override fun onSelected(asset: Asset?) {
-                material!!.diffuseTexture = asset as TextureAsset
+                material?.diffuseTexture = asset as? TextureAsset
                 applyMaterialToModelAssets()
                 applyMaterialToModelComponents()
                 projectManager.current().assetManager.addDirtyAsset(material!!)
@@ -148,7 +145,7 @@ class MaterialWidget(private val changedListener: MaterialWidget.MaterialChanged
     }
 
     /**
-
+     *
      */
     interface MaterialChangedListener {
         fun materialChanged(materialAsset: MaterialAsset)

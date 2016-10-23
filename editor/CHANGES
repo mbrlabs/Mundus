@@ -44,13 +44,13 @@
 - The 3D viewport is now a UI widget and scales correctly with the window size
 - The inspector now spans the whole right side as sidebar
 - New lighting system for the terrainAsset & entity shader
-- Child objects of a selected parentWidget object will be highlighted now as well
+- Child objects of a selected parent object will be highlighted now as well
 - Changed internal save file format to allow a better precision for game object transformation
 - Improved the translate tool
 - Implemented game object rotation & scaling
 - Implemented a highly accurate game object picking system (see: http://www.opengl-tutorial.org/miscellaneous/clicking-on-objects/picking-with-an-opengl-hack/)
 - Drag'n Drop for game objects in the outline
-- In the inspector, all transformations are now displayed as relative transformations with the parentWidget object as origin
+- In the inspector, all transformations are now displayed as relative transformations with the parent object as origin
 - Improved game object parenting
 - Updated VisUI to version 1.0.1
 

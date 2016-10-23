@@ -36,7 +36,7 @@ class MaterialAssetInspectorWidget : BaseInspectorWidget(MaterialAssetInspectorW
 
     init {
         isDeletable = false
-        materialWidget = MaterialWidget(null)
+        materialWidget = MaterialWidget()
         collapsibleContent.add(materialWidget).grow().row()
     }
 

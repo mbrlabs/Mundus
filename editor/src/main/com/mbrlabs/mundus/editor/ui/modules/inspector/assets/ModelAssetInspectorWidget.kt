@@ -117,7 +117,8 @@ class ModelAssetInspectorWidget : BaseInspectorWidget(ModelAssetInspectorWidget.
         materialContainer.clear()
         for (g3dbMatID in modelAsset!!.defaultMaterials.keys) {
             val mat = modelAsset!!.defaultMaterials[g3dbMatID]
-            val mw = MaterialWidget(object: MaterialWidget.MaterialChangedListener {
+            val mw = MaterialWidget()
+            mw.matChangedListener = object: MaterialWidget.MaterialChangedListener {
                 override fun materialChanged(materialAsset: MaterialAsset) {
                     val assetManager = projectManager.current().assetManager
                     modelAsset!!.defaultMaterials.put(g3dbMatID, materialAsset)
@@ -125,7 +126,7 @@ class ModelAssetInspectorWidget : BaseInspectorWidget(ModelAssetInspectorWidget.
                     toolManager.modelPlacementTool.setModel(modelAsset)
                     assetManager.addDirtyAsset(modelAsset!!)
                 }
-            })
+            }
             mw.material = mat
             materialContainer.add(mw).grow().padBottom(20f).row()
         }

@@ -71,8 +71,8 @@ class AssetSelectionDialog : BaseDialog(AssetSelectionDialog.TITLE),
     }
 
     private fun setupUI() {
-        root.add(list.mainTable).grow().size(300f, 400f).row()
-        root.add<VisTextButton>(noneBtn).grow().row()
+        root.add(list.mainTable).grow().size(350f, 450f).row()
+        root.add<VisTextButton>(noneBtn).padTop(10f).grow().row()
         add<VisTable>(root).padRight(5f).padBottom(5f).grow().row()
     }
 
