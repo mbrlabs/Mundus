@@ -52,13 +52,10 @@ public class ToolManager extends InputAdapter implements Disposable {
 
     private InputManager inputManager;
 
-    private ProjectManager projectManager;
-
     public ToolManager(InputManager inputManager, ProjectManager projectManager, GameObjectPicker goPicker,
             ToolHandlePicker toolHandlePicker, ModelBatch modelBatch, ShapeRenderer shapeRenderer,
             CommandHistory history) {
         this.inputManager = inputManager;
-        this.projectManager = projectManager;
         this.activeTool = null;
 
         terrainBrushes = new Array<>();
