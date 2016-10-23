@@ -51,7 +51,6 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
 
     private fun setupUI() {
         val root = Table()
-        // root.debugAll();
         root.padTop(6f).padRight(6f).padBottom(22f)
         add(root)
 
@@ -65,11 +64,11 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
     }
 
     private fun setupListeners() {
-        val projectContext = projectManager.current()
 
         // use fog checkbox
         useFog.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
+                val projectContext = projectManager.current()
                 if (useFog.isChecked) {
                     if (projectContext.currScene.environment.fog == null) {
                         val fog = Fog()
@@ -92,6 +91,7 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
         // gradient
         gradient.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
+                val projectContext = projectManager.current()
                 val g = convert(gradient.text)
                 if (g != null) {
                     projectContext.currScene.environment.fog.gradient = g
@@ -102,6 +102,7 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
         // density
         density.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
+                val projectContext = projectManager.current()
                 val d = convert(density.text)
                 if (d != null) {
                     projectContext.currScene.environment.fog.density = d
@@ -110,7 +111,11 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
         })
 
         // color
-        colorPickerField.setCallback { color -> projectContext.currScene.environment.fog.color.set(color) }
+        colorPickerField.setCallback { color ->
+            val projectContext = projectManager.current()
+            projectContext.currScene.environment.fog.color.set(color)
+            println(color)
+        }
     }
 
     private fun resetValues() {
