@@ -18,7 +18,7 @@ package com.mbrlabs.mundus.editor.assets
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
-import com.mbrlabs.mundus.editor.core.Mundus
+import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.core.registry.Registry
 import com.mbrlabs.mundus.editor.events.SettingsChangedEvent
 import com.mbrlabs.mundus.editor.utils.isCollada
@@ -46,8 +46,8 @@ class ModelImporter(private val registry: Registry) : SettingsChangedEvent.Setti
         this.fbxConv = FbxConv(registry.settings.fbxConvBinary)
     }
 
-    override fun onSettingsChanged(settingsChangedEvent: SettingsChangedEvent) {
-        fbxConv.setFbxBinary(settingsChangedEvent.settings.fbxConvBinary)
+    override fun onSettingsChanged(event: SettingsChangedEvent) {
+        fbxConv.setFbxBinary(event.settings.fbxConvBinary)
     }
 
     fun importToTempFolder(modelFile: FileHandle?): ImportedModel? {

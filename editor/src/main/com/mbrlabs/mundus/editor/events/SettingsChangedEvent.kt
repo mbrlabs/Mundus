@@ -26,7 +26,7 @@ class SettingsChangedEvent(val settings: Settings) {
 
     interface SettingsChangedListener {
         @Subscribe
-        fun onSettingsChanged(settingsChangedEvent: SettingsChangedEvent)
+        fun onSettingsChanged(event: SettingsChangedEvent)
     }
 
 }

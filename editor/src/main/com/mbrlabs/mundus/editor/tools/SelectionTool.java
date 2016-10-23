@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.GameObjectSelectedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
@@ -101,7 +101,7 @@ public class SelectionTool extends Tool {
             GameObject selection = goPicker.pick(getProjectManager().current().currScene, screenX, screenY);
             if (selection != null && !selection.equals(getProjectManager().current().currScene.currentSelection)) {
                 gameObjectSelected(selection);
-                Mundus.postEvent(new GameObjectSelectedEvent(selection));
+                Mundus.INSTANCE.postEvent(new GameObjectSelectedEvent(selection));
             }
         }
 

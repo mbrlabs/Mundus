@@ -26,6 +26,6 @@ class AssetSelectedEvent(val asset: Asset) {
 
     interface AssetSelectedListener {
         @Subscribe
-        fun onAssetSelected(assetSelectedEvent: AssetSelectedEvent)
+        fun onAssetSelected(event: AssetSelectedEvent)
     }
 }

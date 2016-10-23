@@ -24,6 +24,8 @@ allprojects {
         commonsLangVersion = '3.4'
         jnaVersion = '4.1.0'
         jnaPlatformVersion = '3.5.2'
+
+        ktxVersion = '1.9.4-b1'
     }
 
     repositories {
@@ -52,6 +54,7 @@ project(":editor") {
         // Kotlin libs
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         // compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        compile "com.github.czyzby:ktx-inject:$ktxVersion"
 
         // LibGDX
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"

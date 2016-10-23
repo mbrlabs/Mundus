@@ -36,7 +36,7 @@ import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
@@ -299,7 +299,7 @@ public abstract class TerrainBrush extends Tool {
 
     public static void setStrength(float strength) {
         TerrainBrush.strength = strength;
-        Mundus.postEvent(brushSettingsChangedEvent);
+        Mundus.INSTANCE.postEvent(brushSettingsChangedEvent);
     }
 
     public static float getHeightSample() {
@@ -308,7 +308,7 @@ public abstract class TerrainBrush extends Tool {
 
     public static void setHeightSample(float heightSample) {
         TerrainBrush.heightSample = heightSample;
-        Mundus.postEvent(brushSettingsChangedEvent);
+        Mundus.INSTANCE.postEvent(brushSettingsChangedEvent);
     }
 
     public static SplatTexture.Channel getPaintChannel() {
@@ -317,7 +317,7 @@ public abstract class TerrainBrush extends Tool {
 
     public static void setPaintChannel(SplatTexture.Channel paintChannel) {
         TerrainBrush.paintChannel = paintChannel;
-        Mundus.postEvent(brushSettingsChangedEvent);
+        Mundus.INSTANCE.postEvent(brushSettingsChangedEvent);
     }
 
     public BrushMode getMode() {

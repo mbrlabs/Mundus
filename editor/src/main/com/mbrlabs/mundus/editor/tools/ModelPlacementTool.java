@@ -27,14 +27,14 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
 import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.editor.shader.Shaders;
-import com.mbrlabs.mundus.editor.ui.Ui;
+import com.mbrlabs.mundus.editor.ui.UI;
 import com.mbrlabs.mundus.editor.utils.TerrainUtils;
 
 /**
@@ -129,11 +129,11 @@ public class ModelPlacementTool extends Tool {
             try {
                 modelGo.addComponent(modelComponent);
             } catch (InvalidComponentException e) {
-                Dialogs.showErrorDialog(Ui.getInstance(), e.getMessage());
+                Dialogs.showErrorDialog(UI.INSTANCE, e.getMessage());
                 return false;
             }
 
-            Mundus.postEvent(new SceneGraphChangedEvent());
+            Mundus.INSTANCE.postEvent(new SceneGraphChangedEvent());
 
             mouseMoved(screenX, screenY);
         }

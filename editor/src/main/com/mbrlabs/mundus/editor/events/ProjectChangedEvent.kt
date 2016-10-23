@@ -26,7 +26,7 @@ class ProjectChangedEvent(val projectContext: ProjectContext) {
 
     interface ProjectChangedListener {
         @Subscribe
-        fun onProjectChanged(projectChangedEvent: ProjectChangedEvent)
+        fun onProjectChanged(event: ProjectChangedEvent)
     }
 
 }

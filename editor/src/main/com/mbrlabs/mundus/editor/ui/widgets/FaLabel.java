@@ -18,7 +18,7 @@ package com.mbrlabs.mundus.editor.ui.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.kotcrab.vis.ui.widget.VisLabel;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.utils.Colors;
 
 /**
@@ -29,7 +29,7 @@ public class FaLabel extends VisLabel {
 
     private final static LabelStyle style = new LabelStyle();
     static {
-        style.font = Mundus.fa;
+        style.font = Mundus.INSTANCE.getFa();
         style.fontColor = Color.WHITE;
         style.fontColor = Colors.INSTANCE.getTEAL();
     }

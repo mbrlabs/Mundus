@@ -24,7 +24,7 @@ class SceneChangedEvent {
 
     interface SceneChangedListener {
         @Subscribe
-        fun onSceneChanged(sceneChangedEvent: SceneChangedEvent)
+        fun onSceneChanged(event: SceneChangedEvent)
     }
 
 }

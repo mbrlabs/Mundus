@@ -17,7 +17,7 @@ package com.mbrlabs.mundus.editor.history.commands
 
 import com.badlogic.gdx.scenes.scene2d.ui.Tree
 import com.mbrlabs.mundus.commons.scene3d.GameObject
-import com.mbrlabs.mundus.editor.core.Mundus
+import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.events.SceneGraphChangedEvent
 import com.mbrlabs.mundus.editor.history.Command
 import com.mbrlabs.mundus.editor.utils.Log

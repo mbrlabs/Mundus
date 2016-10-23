@@ -30,7 +30,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
-import com.mbrlabs.mundus.editor.ui.Ui;
+import com.mbrlabs.mundus.editor.ui.UI;
 import com.mbrlabs.mundus.editor.utils.FileFormatUtils;
 
 /**
@@ -103,7 +103,7 @@ public class ImageChooserField extends VisTable {
                 if (FileFormatUtils.isImage(file)) {
                     setImage(file);
                 } else {
-                    Dialogs.showErrorDialog(Ui.getInstance(), "This is no image");
+                    Dialogs.showErrorDialog(UI.INSTANCE, "This is no image");
                 }
             }
         });
@@ -113,7 +113,7 @@ public class ImageChooserField extends VisTable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                Ui.getInstance().addActor(fileChooser.fadeIn());
+                UI.INSTANCE.addActor(fileChooser.fadeIn());
             }
         });
 

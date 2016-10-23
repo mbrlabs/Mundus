@@ -24,7 +24,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.file.FileChooser;
 import com.kotcrab.vis.ui.widget.file.SingleFileChooserListener;
-import com.mbrlabs.mundus.editor.ui.Ui;
+import com.mbrlabs.mundus.editor.ui.UI;
 
 /**
  * @author Marcus Brummer
@@ -125,7 +125,7 @@ public class FileChooserField extends VisTable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                Ui.getInstance().addActor(fileChooser.fadeIn());
+                UI.INSTANCE.addActor(fileChooser.fadeIn());
             }
         });
 

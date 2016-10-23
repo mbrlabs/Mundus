@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTextButton;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.utils.Colors;
 
 /**
@@ -31,7 +31,7 @@ public class FaTextButton extends VisTextButton {
 
     public final static TextButton.TextButtonStyle styleNoBg = new TextButton.TextButtonStyle();
     static {
-        styleNoBg.font = Mundus.fa;
+        styleNoBg.font = Mundus.INSTANCE.getFa();
         styleNoBg.fontColor = Color.WHITE;
         styleNoBg.pressedOffsetX = 1;
         styleNoBg.unpressedOffsetX = 0;
@@ -41,7 +41,7 @@ public class FaTextButton extends VisTextButton {
 
     public final static TextButton.TextButtonStyle styleBg = new TextButton.TextButtonStyle();
     static {
-        styleBg.font = Mundus.fa;
+        styleBg.font = Mundus.INSTANCE.getFa();
         styleBg.pressedOffsetX = 1;
         styleBg.unpressedOffsetX = 0;
         styleBg.pressedOffsetY = -1;
@@ -52,7 +52,7 @@ public class FaTextButton extends VisTextButton {
 
     public final static TextButton.TextButtonStyle styleActive = new TextButton.TextButtonStyle();
     static {
-        styleActive.font = Mundus.fa;
+        styleActive.font = Mundus.INSTANCE.getFa();
         styleActive.pressedOffsetX = 1;
         styleActive.unpressedOffsetX = 0;
         styleActive.pressedOffsetY = -1;

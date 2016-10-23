@@ -20,14 +20,14 @@ import com.badlogic.gdx.Input
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.core.registry.Registry
 import com.mbrlabs.mundus.editor.history.CommandHistory
-import com.mbrlabs.mundus.editor.ui.Ui
+import com.mbrlabs.mundus.editor.ui.UI
 
 /**
  * @author Marcus Brummer
  * @version 07-02-2016
  */
 class ShortcutController(registry: Registry, private val projectManager: ProjectManager, private val history: CommandHistory)
-: KeyboardLayoutInputAdapter(registry) {
+    : KeyboardLayoutInputAdapter(registry) {
 
     private var isCtrlPressed = false
 
@@ -47,7 +47,7 @@ class ShortcutController(registry: Registry, private val projectManager: Project
             return true
         } else if (keycode == Input.Keys.S) {
             projectManager.saveCurrentProject()
-            Ui.getInstance().toaster.success("Project saved")
+            UI.toaster.success("Project saved")
             return true
         }
 

@@ -23,7 +23,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mbrlabs.mundus.editor.ui.Ui;
+import com.mbrlabs.mundus.editor.ui.UI;
 
 /**
  * @author Marcus Brummer
@@ -82,7 +82,7 @@ public class RenderWidget extends Widget {
         renderer.render(cam);
 
         // re-apply stage viewport
-        Ui.getInstance().getViewport().apply();
+        UI.INSTANCE.getViewport().apply();
 
         // proceed ui rendering
         batch.begin();

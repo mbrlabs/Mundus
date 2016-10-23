@@ -26,7 +26,7 @@ class SceneAddedEvent(var scene: Scene?) {
 
     interface SceneAddedListener {
         @Subscribe
-        fun onSceneAdded(sceneAddedEvent: SceneAddedEvent)
+        fun onSceneAdded(event: SceneAddedEvent)
     }
 
 }

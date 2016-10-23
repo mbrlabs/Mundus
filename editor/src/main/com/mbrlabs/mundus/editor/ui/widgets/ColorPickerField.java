@@ -26,7 +26,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisTextField;
 import com.kotcrab.vis.ui.widget.color.ColorPicker;
 import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter;
-import com.mbrlabs.mundus.editor.ui.Ui;
+import com.mbrlabs.mundus.editor.ui.UI;
 
 /**
  * @author Marcus Brummer
@@ -120,7 +120,7 @@ public class ColorPickerField extends VisTable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                Ui.getInstance().addActor(colorPicker.fadeIn());
+                UI.INSTANCE.addActor(colorPicker.fadeIn());
             }
         });
 

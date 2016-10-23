@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.editor.core.project;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.commons.Scene;
@@ -31,9 +32,9 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.editor.Main;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.assets.EditorAssetManager;
 import com.mbrlabs.mundus.editor.core.EditorScene;
-import com.mbrlabs.mundus.editor.core.Mundus;
 import com.mbrlabs.mundus.editor.core.kryo.DescriptorConverter;
 import com.mbrlabs.mundus.editor.core.kryo.KryoManager;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor;
@@ -70,10 +71,12 @@ public class ProjectManager implements Disposable {
     private ProjectContext currentProject;
     private Registry registry;
     private KryoManager kryoManager;
+    private ModelBatch modelBatch;
 
-    public ProjectManager(KryoManager kryoManager, Registry registry) {
+    public ProjectManager(KryoManager kryoManager, Registry registry, ModelBatch modelBatch) {
         this.registry = registry;
         this.kryoManager = kryoManager;
+        this.modelBatch = modelBatch;
         currentProject = new ProjectContext(-1);
     }
 
@@ -129,7 +132,7 @@ public class ProjectManager implements Disposable {
         scene.environment.setFog(new Fog());
         scene.setId(newProjectContext.obtainID());
         kryoManager.saveScene(newProjectContext, scene);
-        scene.sceneGraph.batch = Mundus.modelBatch;
+        scene.sceneGraph.batch = modelBatch;
 
         // save .pro file
         newProjectContext.scenes.add(scene.getName());
@@ -286,7 +289,7 @@ public class ProjectManager implements Disposable {
         kryoManager.saveRegistry(registry);
 
         Gdx.graphics.setTitle(constructWindowTitle());
-        Mundus.postEvent(new ProjectChangedEvent(context));
+        Mundus.INSTANCE.postEvent(new ProjectChangedEvent(context));
     }
 
     /**
@@ -330,7 +333,7 @@ public class ProjectManager implements Disposable {
         scene.skybox = SkyboxBuilder.createDefaultSkybox();
 
         SceneGraph sceneGraph = scene.sceneGraph;
-        sceneGraph.batch = Mundus.modelBatch;
+        sceneGraph.batch = modelBatch;
         for (GameObject go : sceneGraph.getGameObjects()) {
             initGameObject(context, go);
         }
@@ -364,7 +367,7 @@ public class ProjectManager implements Disposable {
             projectContext.currScene = newScene;
 
             Gdx.graphics.setTitle(constructWindowTitle());
-            Mundus.postEvent(new SceneChangedEvent());
+            Mundus.INSTANCE.postEvent(new SceneChangedEvent());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Log.error(TAG, e.getMessage());

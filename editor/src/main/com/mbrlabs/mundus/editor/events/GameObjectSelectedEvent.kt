@@ -26,7 +26,7 @@ class GameObjectSelectedEvent(var gameObject: GameObject?) {
 
     interface GameObjectSelectedListener {
         @Subscribe
-        fun onGameObjectSelected(gameObjectSelectedEvent: GameObjectSelectedEvent)
+        fun onGameObjectSelected(event: GameObjectSelectedEvent)
     }
 
 }

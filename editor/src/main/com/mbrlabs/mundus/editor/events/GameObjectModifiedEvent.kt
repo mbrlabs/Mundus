@@ -26,7 +26,7 @@ class GameObjectModifiedEvent(var gameObject: GameObject?) {
 
     interface GameObjectModifiedListener {
         @Subscribe
-        fun onGameObjectModified(gameObjectModifiedEvent: GameObjectModifiedEvent)
+        fun onGameObjectModified(event: GameObjectModifiedEvent)
     }
 
 }

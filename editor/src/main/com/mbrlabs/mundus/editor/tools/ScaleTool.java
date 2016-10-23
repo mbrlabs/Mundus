@@ -32,7 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
@@ -40,7 +40,7 @@ import com.mbrlabs.mundus.editor.history.commands.ScaleCommand;
 import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.editor.tools.picker.ToolHandlePicker;
-import com.mbrlabs.mundus.editor.ui.Ui;
+import com.mbrlabs.mundus.editor.ui.UI;
 import com.mbrlabs.mundus.editor.utils.Fa;
 import com.mbrlabs.mundus.editor.utils.UsefulMeshs;
 
@@ -116,7 +116,7 @@ public class ScaleTool extends TransformTool {
             GameObject go = projectContext.currScene.currentSelection;
             go.getTransform().getTranslation(temp0);
             if (viewport3d == null) {
-                viewport3d = Ui.getInstance().getWidget3D().getViewport();
+                viewport3d = UI.INSTANCE.getWidget3D().getViewport();
             }
 
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),
@@ -206,7 +206,7 @@ public class ScaleTool extends TransformTool {
             }
             if (modified) {
                 gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
-                Mundus.postEvent(gameObjectModifiedEvent);
+                Mundus.INSTANCE.postEvent(gameObjectModifiedEvent);
             }
         }
     }

@@ -16,10 +16,7 @@
 
 package com.mbrlabs.mundus.editor.utils;
 
-import com.mbrlabs.mundus.editor.core.Inject;
-
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -27,7 +24,6 @@ import java.lang.reflect.Method;
  * @version 21-01-2016
  */
 public class ReflectionUtils {
-
     public static boolean hasMethodAnnotation(Method method, Class annotationClass) {
         final Annotation[] annotations = method.getAnnotations();
         for (Annotation a : annotations) {
@@ -38,16 +34,4 @@ public class ReflectionUtils {
 
         return false;
     }
-
-    public static boolean hasFieldAnnotation(Field field, Class annotationClass) {
-        Annotation[] annotations = field.getDeclaredAnnotations();
-        for (Annotation a : annotations) {
-            if (a instanceof Inject) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 }

@@ -31,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
@@ -176,7 +176,7 @@ public class RotateTool extends TransformTool {
 
             if (modified) {
                 gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
-                Mundus.postEvent(gameObjectModifiedEvent);
+                Mundus.INSTANCE.postEvent(gameObjectModifiedEvent);
             }
 
             lastRot = angle;

@@ -31,7 +31,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.editor.core.Mundus;
+import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.GameObjectModifiedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
@@ -194,7 +194,7 @@ public class TranslateTool extends TransformTool {
 
             if (modified) {
                 gameObjectModifiedEvent.setGameObject(getProjectManager().current().currScene.currentSelection);
-                Mundus.postEvent(gameObjectModifiedEvent);
+                Mundus.INSTANCE.postEvent(gameObjectModifiedEvent);
             }
 
             lastPos.set(rayEnd);
