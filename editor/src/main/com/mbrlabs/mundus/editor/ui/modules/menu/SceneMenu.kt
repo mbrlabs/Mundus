@@ -51,15 +51,14 @@ class SceneMenu : Menu("Scenes"),
     init {
         Mundus.registerEventListener(this)
 
-        val projectContext = projectManager.current()
-
         addScene = MenuItem("Add scene")
         addScene.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Dialogs.showInputDialog(UI, "Add Scene", "Name:", object : InputDialogAdapter() {
                     override fun finished(input: String?) {
-                        val scene = projectManager.createScene(projectContext, input)
-                        projectManager.changeScene(projectContext, scene.name)
+                        val project = projectManager.current()
+                        val scene = projectManager.createScene(project, input)
+                        projectManager.changeScene(project, scene.name)
                         Mundus.postEvent(SceneAddedEvent(scene))
                     }
                 })
