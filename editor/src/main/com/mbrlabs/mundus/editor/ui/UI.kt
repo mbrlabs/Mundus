@@ -79,6 +79,7 @@ object UI : Stage(ScreenViewport()) {
     val greenSeperatorStyle: Separator.SeparatorStyle
 
     init {
+        FileChooser.setDefaultPrefsName("com.mbrlabs.mundus.editor")
         greenSeperatorStyle = Separator.SeparatorStyle(VisUI.getSkin().getDrawable("mundus-separator-green"), 1)
 
         root = VisTable()

@@ -51,6 +51,7 @@ project(":commons") {
 
 project(":editor") {
     apply plugin: "java"
+    apply plugin: "kotlin"
 
     dependencies {
         compile project(":commons")

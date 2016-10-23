@@ -165,8 +165,6 @@ object Mundus {
         skin.addRegions(TextureAtlas(Gdx.files.internal("ui/skin/uiskin.atlas")))
         skin.load(Gdx.files.internal("ui/skin/uiskin.json"))
         VisUI.load(skin)
-
-        FileChooser.setFavoritesPrefsName("com.mbrlabs.mundus.editor")
     }
 
     /**
