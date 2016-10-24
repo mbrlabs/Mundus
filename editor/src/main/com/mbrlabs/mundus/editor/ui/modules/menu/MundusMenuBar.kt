@@ -26,25 +26,18 @@ import com.kotcrab.vis.ui.widget.VisTable
 
 /**
  * @author Marcus Brummer
- * *
  * @version 22-11-2015
  */
 class MundusMenuBar : MenuBar() {
 
-    val fileMenu: FileMenu
-    val editMenu: EditMenu
-    val windowMenu: WindowMenu
-    val assetsMenu: AssetsMenu
-    val environmentMenu: EnvironmentMenu
-    private val sceneMenu: SceneMenu
+    val fileMenu = FileMenu()
+    val editMenu = EditMenu()
+    val windowMenu = WindowMenu()
+    val assetsMenu = AssetsMenu()
+    val environmentMenu = EnvironmentMenu()
+    private val sceneMenu = SceneMenu()
 
     init {
-        fileMenu = FileMenu()
-        editMenu = EditMenu()
-        assetsMenu = AssetsMenu()
-        windowMenu = WindowMenu()
-        environmentMenu = EnvironmentMenu()
-        sceneMenu = SceneMenu()
         addMenu(fileMenu)
         addMenu(editMenu)
         addMenu(assetsMenu)

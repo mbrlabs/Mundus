@@ -39,32 +39,23 @@ class ModelAssetInspectorWidget : BaseInspectorWidget(ModelAssetInspectorWidget.
     private var modelAsset: ModelAsset? = null
 
     // info
-    private val name: VisLabel
-    private val nodeCount: VisLabel
-    private val materialCount: VisLabel
-    private val vertexCount: VisLabel
-    private val indexCount: VisLabel
+    private val name = VisLabel()
+    private val nodeCount = VisLabel()
+    private val materialCount = VisLabel()
+    private val vertexCount = VisLabel()
+    private val indexCount = VisLabel()
 
     // materials
-    private val materialContainer: VisTable
+    private val materialContainer = VisTable()
 
     // actions
-    private val modelPlacement: VisTextButton
+    private val modelPlacement = VisTextButton("Activate model placement tool")
 
     private val toolManager: ToolManager = Mundus.inject()
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         isDeletable = false
-
-        materialContainer = VisTable()
-
-        name = VisLabel()
-        nodeCount = VisLabel()
-        materialCount = VisLabel()
-        vertexCount = VisLabel()
-        indexCount = VisLabel()
-        modelPlacement = VisTextButton("Activate model placement tool")
 
         // info
         collapsibleContent.add(VisLabel("Info")).growX().row()

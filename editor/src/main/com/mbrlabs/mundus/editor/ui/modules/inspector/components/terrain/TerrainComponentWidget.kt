@@ -29,37 +29,30 @@ import com.mbrlabs.mundus.editor.ui.modules.inspector.components.ComponentWidget
  * @author Marcus Brummer
  * @version 29-01-2016
  */
-class TerrainComponentWidget(terrainComponent: TerrainComponent) : ComponentWidget<TerrainComponent>("Terrain Component", terrainComponent),
-        TabbedPaneListener {
+class TerrainComponentWidget(terrainComponent: TerrainComponent) :
+        ComponentWidget<TerrainComponent>("Terrain Component", terrainComponent), TabbedPaneListener {
 
-    private var tabbedPane: TabbedPane? = null
+    private val tabbedPane = TabbedPane()
     private val tabContainer = VisTable()
 
-    private var raiseLowerTab: TerrainUpDownTab? = null
-    private var flattenTab: TerrainFlattenTab? = null
-    private var paintTab: TerrainPaintTab? = null
-    private var genTab: TerrainGenTab? = null
-    private var settingsTab: TerrainSettingsTab? = null
+    private val raiseLowerTab = TerrainUpDownTab(this)
+    private val flattenTab = TerrainFlattenTab(this)
+    private val paintTab = TerrainPaintTab(this)
+    private val genTab = TerrainGenTab(this)
+    private val settingsTab = TerrainSettingsTab()
 
     init {
-        tabbedPane = TabbedPane()
-        tabbedPane!!.addListener(this)
+        tabbedPane.addListener(this)
 
-        raiseLowerTab = TerrainUpDownTab(this)
-        flattenTab = TerrainFlattenTab(this)
-        paintTab = TerrainPaintTab(this)
-        genTab = TerrainGenTab(this)
-        settingsTab = TerrainSettingsTab()
+        tabbedPane.add(raiseLowerTab)
+        tabbedPane.add(flattenTab)
+        tabbedPane.add(paintTab)
+        tabbedPane.add(genTab)
+        tabbedPane.add(settingsTab)
 
-        tabbedPane!!.add(raiseLowerTab!!)
-        tabbedPane!!.add(flattenTab!!)
-        tabbedPane!!.add(paintTab!!)
-        tabbedPane!!.add(genTab!!)
-        tabbedPane!!.add(settingsTab!!)
-
-        collapsibleContent.add(tabbedPane!!.table).growX().row()
+        collapsibleContent.add(tabbedPane.table).growX().row()
         collapsibleContent.add(tabContainer).expand().fill().row()
-        tabbedPane!!.switchTab(0)
+        tabbedPane.switchTab(0)
     }
 
     override fun setValues(go: GameObject) {

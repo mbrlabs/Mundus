@@ -47,17 +47,17 @@ class AssetsDock : Tab(false, false),
         AssetImportEvent.AssetImportListener,
         GameObjectSelectedEvent.GameObjectSelectedListener {
 
-    private lateinit var root: VisTable
-    private lateinit var filesViewContextContainer: VisTable
-    private lateinit var filesView: GridGroup
+    private val root = VisTable()
+    private val filesViewContextContainer = VisTable(false)
+    private val filesView = GridGroup(80f, 4f)
 
-    private lateinit var assetItems: Array<AssetItem>
+    private val assetItems = Array<AssetItem>()
+
+    private val assetOpsMenu = PopupMenu()
+    private val renameAsset = MenuItem("Rename Asset")
+    private val deleteAsset = MenuItem("Delete Asset")
+
     private var currentSelection: AssetItem? = null
-
-    private lateinit var assetOpsMenu: PopupMenu
-    private lateinit var renameAsset: MenuItem
-    private lateinit var deleteAsset: MenuItem
-
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
@@ -66,10 +66,6 @@ class AssetsDock : Tab(false, false),
     }
 
     fun initUi() {
-        root = VisTable()
-        filesViewContextContainer = VisTable(false)
-        filesView = GridGroup(80f, 4f)
-        assetItems = Array<AssetItem>()
         filesView.touchable = Touchable.enabled
 
         val contentTable = VisTable(false)
@@ -83,14 +79,10 @@ class AssetsDock : Tab(false, false),
         val splitPane = VisSplitPane(VisLabel("file tree here"), contentTable, false)
         splitPane.setSplitAmount(0.2f)
 
-        root = VisTable()
         root.setBackground("window-bg")
         root.add(splitPane).expand().fill()
 
         // asset ops right click menu
-        assetOpsMenu = PopupMenu()
-        renameAsset = MenuItem("Rename Asset")
-        deleteAsset = MenuItem("Delete Asset")
         assetOpsMenu.addItem(renameAsset)
         assetOpsMenu.addItem(deleteAsset)
     }

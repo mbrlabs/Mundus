@@ -32,11 +32,10 @@ class MaterialAssetInspectorWidget : BaseInspectorWidget(MaterialAssetInspectorW
     }
 
     private var material: MaterialAsset? = null
-    private val materialWidget: MaterialWidget
+    private val materialWidget = MaterialWidget()
 
     init {
         isDeletable = false
-        materialWidget = MaterialWidget()
         collapsibleContent.add(materialWidget).grow().row()
     }
 

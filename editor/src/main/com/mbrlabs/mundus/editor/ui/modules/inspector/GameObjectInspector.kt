@@ -36,22 +36,16 @@ import com.mbrlabs.mundus.editor.ui.modules.inspector.components.terrain.Terrain
  */
 class GameObjectInspector : VisTable() {
 
-    private val identifierWidget: IdentifierWidget
-    private val transformWidget: TransformWidget
-    private val componentWidgets: Array<ComponentWidget<*>>
-    private val addComponentBtn: VisTextButton
-    private val componentTable: VisTable
+    private val identifierWidget = IdentifierWidget()
+    private val transformWidget = TransformWidget()
+    private val componentWidgets: Array<ComponentWidget<*>> = Array()
+    private val addComponentBtn = VisTextButton("Add Component")
+    private val componentTable = VisTable()
 
     private var gameObject: GameObject? = null
 
     init {
         align(Align.top)
-        identifierWidget = IdentifierWidget()
-        transformWidget = TransformWidget()
-        componentWidgets = Array()
-        addComponentBtn = VisTextButton("Add Component")
-        componentTable = VisTable()
-
         add(identifierWidget).growX().pad(7f).row()
         add(transformWidget).growX().pad(7f).row()
         for (cw in componentWidgets) {

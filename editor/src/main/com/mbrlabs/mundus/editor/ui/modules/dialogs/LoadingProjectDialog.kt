@@ -32,15 +32,12 @@ import java.io.File
  */
 class LoadingProjectDialog : VisDialog("Loading Project") {
 
-    private val projectName: VisLabel
-
+    private val projectName = VisLabel("Project Folder:")
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         isModal = true
         isMovable = false
-
-        projectName = VisLabel("Project Folder:")
 
         val root = VisTable()
         root.padTop(6f).padRight(6f).padBottom(22f)

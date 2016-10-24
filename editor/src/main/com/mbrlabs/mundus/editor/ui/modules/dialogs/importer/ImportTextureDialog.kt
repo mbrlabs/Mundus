@@ -36,7 +36,6 @@ import java.io.IOException
 
 /**
  * @author Marcus Brummer
- * *
  * @version 07-06-2016
  */
 class ImportTextureDialog : BaseDialog("Import Texture"), Disposable {

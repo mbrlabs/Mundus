@@ -40,24 +40,19 @@ import com.mbrlabs.mundus.editor.ui.UI
  */
 class FileMenu : Menu("File") {
 
-    private val newProject: MenuItem
-    private val importProject: MenuItem
-    private val recentProjects: MenuItem
-    private val saveProject: MenuItem
-    private val exit: MenuItem
+    private val newProject = MenuItem("New Project")
+    private val importProject = MenuItem("Import Project")
+    private val recentProjects = MenuItem("Recent Projects")
+    private val saveProject = MenuItem("Save Project")
+    private val exit = MenuItem("Exit")
 
     private val registry: Registry = Mundus.inject()
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
-        newProject = MenuItem("New Project")
         newProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.N)
-        importProject = MenuItem("Import Project")
         importProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.O)
-        recentProjects = MenuItem("Recent Projects")
-        saveProject = MenuItem("Save Project")
         saveProject.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.S)
-        exit = MenuItem("Exit")
 
         // setup recent projects
         val recentPrjectsPopup = PopupMenu()

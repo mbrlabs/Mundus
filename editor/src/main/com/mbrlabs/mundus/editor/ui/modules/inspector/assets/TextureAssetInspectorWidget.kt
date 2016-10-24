@@ -33,19 +33,14 @@ class TextureAssetInspectorWidget : BaseInspectorWidget(TextureAssetInspectorWid
         private val TITLE = "Texture Asset"
     }
 
-    private val name: VisLabel
-    private val width: VisLabel
-    private val height: VisLabel
-    private val fileSize: VisLabel
+    private val name = VisLabel()
+    private val width = VisLabel()
+    private val height = VisLabel()
+    private val fileSize = VisLabel()
 
     private var textureAsset: TextureAsset? = null
 
     init {
-        name = VisLabel()
-        width = VisLabel()
-        height = VisLabel()
-        fileSize = VisLabel()
-
         collapsibleContent.add(name).growX().row()
         collapsibleContent.add(width).growX().row()
         collapsibleContent.add(height).growX().row()
@@ -57,11 +52,11 @@ class TextureAssetInspectorWidget : BaseInspectorWidget(TextureAssetInspectorWid
     }
 
     private fun updateUI() {
-        name.setText("Name: " + textureAsset!!.name)
-        width.setText("Width: " + textureAsset!!.texture.width + " px")
-        height.setText("Height: " + textureAsset!!.texture.height + " px")
+        name.setText("Name: " + textureAsset?.name)
+        width.setText("Width: " + textureAsset?.texture?.width + " px")
+        height.setText("Height: " + textureAsset?.texture?.height + " px")
 
-        val mb = FileUtils.sizeOf(textureAsset!!.file.file()) / 1000000f
+        val mb = FileUtils.sizeOf(textureAsset?.file?.file()) / 1000000f
         fileSize.setText("Size: $mb mb")
     }
 

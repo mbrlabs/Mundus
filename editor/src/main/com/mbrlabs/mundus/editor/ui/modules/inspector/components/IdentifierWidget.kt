@@ -32,18 +32,14 @@ import com.mbrlabs.mundus.editor.core.project.ProjectManager
  */
 class IdentifierWidget : VisTable() {
 
-    private val active: VisCheckBox
-    private val name: VisTextField
-    private val tag: VisTextField
+    private val active = VisCheckBox("", true)
+    private val name = VisTextField("Name")
+    private val tag = VisTextField("Untagged")
 
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
-        active = VisCheckBox("", true)
-        name = VisTextField("Name")
-        tag = VisTextField("Untagged")
         setupUI()
-
         setupListeners()
     }
 

@@ -31,11 +31,10 @@ class TerrainAssetInspectorWidget : BaseInspectorWidget(TerrainAssetInspectorWid
         private val TITLE = "Terrain Asset"
     }
 
-    private val name: VisLabel
+    private val name = VisLabel()
     private var terrain: TerrainAsset? = null
 
     init {
-        name = VisLabel()
         collapsibleContent.add(name).growX().row()
     }
 

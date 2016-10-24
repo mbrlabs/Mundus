@@ -50,16 +50,14 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
         private val TAG = TerrainPaintTab::class.java.simpleName
     }
 
-    private val root: VisTable
-    private val addTextureBtn: VisTextButton
-    private val textureGrid: TextureGrid<SplatTexture>
-
-    private val rightClickMenu: TextureRightClickMenu
+    private val root = VisTable()
+    private val addTextureBtn = VisTextButton("Add Texture")
+    private val textureGrid = TextureGrid<SplatTexture>(40, 5)
+    private val rightClickMenu = TextureRightClickMenu()
 
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
-        root = VisTable()
         root.align(Align.left)
 
         // brushes
@@ -67,15 +65,11 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
 
         // textures
         root.add(VisLabel("Textures:")).padLeft(5f).left().row()
-        textureGrid = TextureGrid<SplatTexture>(40, 5)
         textureGrid.background = VisUI.getSkin().getDrawable("menu-bg")
         root.add(textureGrid).expand().fill().pad(5f).row()
 
         // add texture
-        addTextureBtn = VisTextButton("Add Texture")
         root.add(addTextureBtn).padRight(5f).right().row()
-
-        rightClickMenu = TextureRightClickMenu()
 
         setupAddTextureBrowser()
         setupTextureGrid()
@@ -213,15 +207,12 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
      */
     private inner class TextureRightClickMenu : PopupMenu() {
 
-        private val removeTexture: MenuItem
-        private val changeTexture: MenuItem
+        private val removeTexture = MenuItem("Remove texture")
+        private val changeTexture = MenuItem("Change texture")
 
         private var channel: SplatTexture.Channel? = null
 
         init {
-            removeTexture = MenuItem("Remove texture")
-            changeTexture = MenuItem("Change texture")
-
             addItem(removeTexture)
             addItem(changeTexture)
 

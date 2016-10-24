@@ -116,7 +116,7 @@ public class ScaleTool extends TransformTool {
             GameObject go = projectContext.currScene.currentSelection;
             go.getTransform().getTranslation(temp0);
             if (viewport3d == null) {
-                viewport3d = UI.INSTANCE.getWidget3D().getViewport();
+                viewport3d = UI.INSTANCE.getSceneWidget().getViewport();
             }
 
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),

@@ -34,7 +34,7 @@ import com.mbrlabs.mundus.editor.history.commands.TerrainHeightCommand
 import com.mbrlabs.mundus.editor.ui.UI
 import com.mbrlabs.mundus.editor.ui.widgets.FileChooserField
 import com.mbrlabs.mundus.editor.ui.widgets.FloatFieldWithLabel
-import com.mbrlabs.mundus.editor.ui.widgets.IntFieldWithLabel
+import com.mbrlabs.mundus.editor.ui.widgets.IntegerFieldWithLabel
 import com.mbrlabs.mundus.editor.utils.isImage
 
 /**
@@ -42,28 +42,20 @@ import com.mbrlabs.mundus.editor.utils.isImage
  * @version 04-03-2016
  */
 class TerrainGenTab(private val parent: TerrainComponentWidget) : Tab(false, false) {
-    private val root: VisTable
+    private val root = VisTable()
 
-    private val hmInput: FileChooserField
-    private val loadHeightMapBtn: VisTextButton
+    private val hmInput = FileChooserField()
+    private val loadHeightMapBtn = VisTextButton("Load heightmap")
 
-    private val perlinNoiseBtn: VisTextButton
-    private val perlinNoiseSeed: IntFieldWithLabel
-    private val perlinNoiseMinHeight: FloatFieldWithLabel
-    private val perlinNoiseMaxHeight: FloatFieldWithLabel
+    private val perlinNoiseBtn = VisTextButton("Generate Perlin noise")
+    private val perlinNoiseSeed = IntegerFieldWithLabel("Seed", -1, false)
+    private val perlinNoiseMinHeight = FloatFieldWithLabel("Min height", -1, true)
+    private val perlinNoiseMaxHeight = FloatFieldWithLabel("Max height", -1, true)
 
     private val history: CommandHistory = Mundus.inject()
 
     init {
-        root = VisTable()
         root.align(Align.left)
-
-        hmInput = FileChooserField()
-        loadHeightMapBtn = VisTextButton("Load heightmap")
-        perlinNoiseBtn = VisTextButton("Generate Perlin noise")
-        perlinNoiseSeed = IntFieldWithLabel("Seed", -1, false)
-        perlinNoiseMinHeight = FloatFieldWithLabel("Min height", -1, true)
-        perlinNoiseMaxHeight = FloatFieldWithLabel("Max height", -1, true)
 
         root.add(VisLabel("Load Heightmap")).pad(5f).left().row()
         root.add(hmInput).left().expandX().fillX().row()

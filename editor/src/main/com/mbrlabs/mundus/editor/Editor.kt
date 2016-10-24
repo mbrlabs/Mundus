@@ -22,6 +22,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
+import com.badlogic.gdx.utils.GdxRuntimeException
 import com.mbrlabs.mundus.editor.core.project.ProjectContext
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.core.registry.Registry
@@ -33,7 +34,6 @@ import com.mbrlabs.mundus.editor.input.ShortcutController
 import com.mbrlabs.mundus.editor.shader.Shaders
 import com.mbrlabs.mundus.editor.tools.ToolManager
 import com.mbrlabs.mundus.editor.ui.UI
-import com.mbrlabs.mundus.editor.ui.widgets.RenderWidget
 import com.mbrlabs.mundus.editor.utils.Compass
 import com.mbrlabs.mundus.editor.utils.GlUtils
 import com.mbrlabs.mundus.editor.utils.UsefulMeshs
@@ -48,10 +48,8 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
         ProjectChangedEvent.ProjectChangedListener,
         SceneChangedEvent.SceneChangedListener {
 
-    private var axesInstance: ModelInstance? = null
-    private var compass: Compass? = null
-    private var batch: ModelBatch? = null
-    private var widget3D: RenderWidget? = null
+    private lateinit var axesInstance: ModelInstance
+    private lateinit var compass: Compass
 
     private lateinit var camController: FreeCamController
     private lateinit var shortcutController: ShortcutController
@@ -70,7 +68,6 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
         projectManager = Mundus.inject()
         registry = Mundus.inject()
         toolManager = Mundus.inject()
-        batch = Mundus.inject()
         setupInput()
 
         // TODO dispose this
@@ -83,13 +80,14 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
             context = createDefaultProject()
         }
 
-        // setup render widget
-        widget3D = UI.widget3D
-        compass = Compass(context!!.currScene.cam)
+        if(context == null) {
+            throw GdxRuntimeException("Couldn't open a project")
+        }
+
+        compass = Compass(context.currScene.cam)
 
         // change project; this will fire a ProjectChangedEvent
         projectManager.changeProject(context)
-
     }
 
     private fun setupInput() {
@@ -110,27 +108,30 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
     }
 
     private fun setupSceneWidget() {
+        val batch = Mundus.inject<ModelBatch>()
         val context = projectManager.current()
-        widget3D!!.setCam(context.currScene.cam)
-        widget3D!!.setRenderer { cam ->
-            if (context.currScene.skybox != null) {
-                batch!!.begin(context.currScene.cam)
-                batch!!.render(context.currScene.skybox.skyboxInstance, context.currScene.environment,
-                        Shaders.skyboxShader)
-                batch!!.end()
+        val scene = context.currScene
+        val sg = scene.sceneGraph
+
+        UI.sceneWidget.setCam(context.currScene.cam)
+        UI.sceneWidget.setRenderer { cam ->
+            if (scene.skybox != null) {
+                batch.begin(scene.cam)
+                batch.render(scene.skybox.skyboxInstance, scene.environment, Shaders.skyboxShader)
+                batch.end()
             }
 
-            context.currScene.sceneGraph.update()
-            context.currScene.sceneGraph.render()
+            sg.update()
+            sg.render()
 
             toolManager.render()
-            compass!!.render(batch!!)
+            compass.render(batch)
         }
 
-        compass!!.setWorldCam(context.currScene.cam)
+        compass.setWorldCam(context.currScene.cam)
         camController.setCamera(context.currScene.cam)
-        widget3D!!.setCam(context.currScene.cam)
-        context.currScene.viewport = widget3D!!.viewport
+        UI.sceneWidget.setCam(context.currScene.cam)
+        context.currScene.viewport = UI.sceneWidget.viewport
     }
 
     override fun render() {
@@ -166,17 +167,12 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
         return false
     }
 
-    override fun pause() {
-
-    }
-
-    override fun resume() {
-
-    }
-
     override fun resize(width: Int, height: Int) {
         UI.viewport.update(width, height, true)
     }
+
+    override fun pause() {}
+    override fun resume() {}
 
     override fun dispose() {
         Mundus.dispose()

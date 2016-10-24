@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.ui.widgets;
+package com.mbrlabs.mundus.editor.ui.widgets
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.kotcrab.vis.ui.widget.VisSlider;
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.kotcrab.vis.ui.widget.VisSlider
 
 /**
  * Makes it possible to use a slider inside a scroll pane.
@@ -26,16 +26,14 @@ import com.kotcrab.vis.ui.widget.VisSlider;
  * @author Marcus Brummer
  * @version 04-02-2016
  */
-public class ScrollPaneSlider extends VisSlider {
+class ScrollPaneSlider(min: Float, max: Float, stepSize: Float, vertical: Boolean) : VisSlider(min, max, stepSize, vertical) {
 
-    public ScrollPaneSlider(float min, float max, float stepSize, boolean vertical) {
-        super(min, max, stepSize, vertical);
-        addListener(new InputListener() {
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                event.stop();
-                return true;
+    init {
+        addListener(object : InputListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                event?.stop()
+                return true
             }
-
-        });
+        })
     }
 }

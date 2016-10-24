@@ -43,33 +43,23 @@ class TransformWidget : BaseInspectorWidget("Transformation") {
         private val tempQuat = Quaternion()
     }
 
-    private val posX: FloatFieldWithLabel
-    private val posY: FloatFieldWithLabel
-    private val posZ: FloatFieldWithLabel
+    private val FIELD_SIZE = 65
+    private val posX = FloatFieldWithLabel("x", FIELD_SIZE)
+    private val posY = FloatFieldWithLabel("y", FIELD_SIZE)
+    private val posZ = FloatFieldWithLabel("z", FIELD_SIZE)
 
-    private val rotX: FloatFieldWithLabel
-    private val rotY: FloatFieldWithLabel
-    private val rotZ: FloatFieldWithLabel
+    private val rotX = FloatFieldWithLabel("x", FIELD_SIZE)
+    private val rotY = FloatFieldWithLabel("y", FIELD_SIZE)
+    private val rotZ = FloatFieldWithLabel("z", FIELD_SIZE)
 
-    private val scaleX: FloatFieldWithLabel
-    private val scaleY: FloatFieldWithLabel
-    private val scaleZ: FloatFieldWithLabel
+    private val scaleX = FloatFieldWithLabel("x", FIELD_SIZE)
+    private val scaleY = FloatFieldWithLabel("y", FIELD_SIZE)
+    private val scaleZ = FloatFieldWithLabel("z", FIELD_SIZE)
 
     private val history: CommandHistory = Mundus.inject()
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
-        val size = 65
-        posX = FloatFieldWithLabel("x", size)
-        posY = FloatFieldWithLabel("y", size)
-        posZ = FloatFieldWithLabel("z", size)
-        rotX = FloatFieldWithLabel("x", size)
-        rotY = FloatFieldWithLabel("y", size)
-        rotZ = FloatFieldWithLabel("z", size)
-        scaleX = FloatFieldWithLabel("x", size)
-        scaleY = FloatFieldWithLabel("y", size)
-        scaleZ = FloatFieldWithLabel("z", size)
-
         isDeletable = false
         setupUI()
         setupListeners()

@@ -35,8 +35,8 @@ class AssetSelectionField : VisTable() {
     private val textField: VisTextField
     private val btn: VisTextButton
 
-    private var listener: AssetPickerDialog.AssetPickerListener? = null
-    private var filter: AssetFilter? = null
+    var pickerListener: AssetPickerDialog.AssetPickerListener? = null
+    var assetFilter: AssetFilter? = null
 
     private val internalListener: AssetPickerDialog.AssetPickerListener
 
@@ -51,27 +51,15 @@ class AssetSelectionField : VisTable() {
         internalListener = object: AssetPickerDialog.AssetPickerListener {
             override fun onSelected(asset: Asset?) {
                 setAsset(asset)
-                if (listener != null) {
-                    listener!!.onSelected(asset)
-                }
+                pickerListener?.onSelected(asset)
             }
         }
 
         btn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                UI.assetSelectionDialog.show(true, filter!!, internalListener)
+                UI.assetSelectionDialog.show(true, assetFilter, internalListener)
             }
         })
-    }
-
-    fun setListener(listener: AssetPickerDialog.AssetPickerListener): AssetSelectionField {
-        this.listener = listener
-        return this
-    }
-
-    fun setFilter(filter: AssetFilter): AssetSelectionField {
-        this.filter = filter
-        return this
     }
 
     fun setAsset(asset: Asset?) {

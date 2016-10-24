@@ -31,7 +31,7 @@ import com.mbrlabs.mundus.editor.ui.widgets.MundusSplitPane
  */
 class DockBar(private val splitPane: MundusSplitPane) : VisTable(), TabbedPaneListener {
 
-    private val assetsDock: AssetsDock
+    private val assetsDock = AssetsDock()
     private val tabbedPane: TabbedPane
 
 
@@ -45,7 +45,6 @@ class DockBar(private val splitPane: MundusSplitPane) : VisTable(), TabbedPaneLi
         tabbedPane.isAllowTabDeselect = true
         tabbedPane.addListener(this)
 
-        assetsDock = AssetsDock()
         tabbedPane.add(assetsDock)
         add(tabbedPane.table).expandX().fillX().left().bottom().height(30f).row()
     }

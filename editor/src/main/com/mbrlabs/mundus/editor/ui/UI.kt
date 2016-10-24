@@ -61,7 +61,7 @@ object UI : Stage(ScreenViewport()) {
     private val inspector: Inspector
     val outline: Outline
     private val docker: DockBar
-    val widget3D: RenderWidget
+    val sceneWidget: RenderWidget
 
     // dialogs
     val settingsDialog: SettingsDialog = SettingsDialog()
@@ -100,10 +100,10 @@ object UI : Stage(ScreenViewport()) {
         // row 3: sidebar & 3d viewport & inspector
         outline = Outline()
         inspector = Inspector()
-        widget3D = RenderWidget()
+        sceneWidget = RenderWidget()
         val multiSplit = MundusMultiSplitPane(false)
         multiSplit.setDraggable(false)
-        multiSplit.setWidgets(outline, widget3D, inspector)
+        multiSplit.setWidgets(outline, sceneWidget, inspector)
         multiSplit.setSplit(0, 0.2f)
         multiSplit.setSplit(1, 0.8f)
         mainContainer.add(multiSplit).grow().row()

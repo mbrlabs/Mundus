@@ -28,10 +28,9 @@ import com.kotcrab.vis.ui.widget.tabbedpane.Tab
  */
 class TerrainSettingsTab : Tab(false, false) {
 
-    private val table: VisTable
+    private val table = VisTable()
 
     init {
-        table = VisTable()
         table.align(Align.left)
         table.add(VisLabel("Settings"))
     }

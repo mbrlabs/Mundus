@@ -33,7 +33,6 @@ import com.mbrlabs.mundus.editor.utils.Log
 
 /**
  * @author Marcus Brummer
- * *
  * @version 19-01-2016
  */
 class Inspector : VisTable(),
@@ -50,17 +49,14 @@ class Inspector : VisTable(),
     }
 
     private var mode = InspectorMode.EMPTY
-    private val root: VisTable
-    private val scrollPane: ScrollPane
+    private val root = VisTable()
+    private val scrollPane = VisScrollPane(root)
 
     private val goInspector: GameObjectInspector
     private val assetInspector: AssetInspector
 
     init {
         Mundus.registerEventListener(this)
-
-        root = VisTable()
-        scrollPane = VisScrollPane(root)
 
         goInspector = GameObjectInspector()
         assetInspector = AssetInspector()
@@ -109,7 +105,7 @@ class Inspector : VisTable(),
             root.clear()
             root.add(assetInspector).grow().row()
         }
-        assetInspector.setAsset(event.asset)
+        assetInspector.asset = event.asset
     }
 
 }

@@ -29,15 +29,11 @@ import com.mbrlabs.mundus.editor.ui.UI
  */
 class EnvironmentMenu : Menu("Environment") {
 
-    val ambientLight: MenuItem
-    val skybox: MenuItem
-    val fog: MenuItem
+    val ambientLight = MenuItem("Ambient Light")
+    val skybox = MenuItem("Skybox")
+    val fog = MenuItem("Fog")
 
     init {
-        ambientLight = MenuItem("Ambient Light")
-        fog = MenuItem("Fog")
-        skybox = MenuItem("Skybox")
-
         addItem(ambientLight)
         addItem(skybox)
         addItem(fog)

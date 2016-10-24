@@ -32,12 +32,10 @@ import com.mbrlabs.mundus.editor.ui.widgets.MaterialWidget
  */
 class ModelComponentWidget(modelComponent: ModelComponent) : ComponentWidget<ModelComponent>("Model Component", modelComponent) {
 
-    private val materialContainer: VisTable
+    private val materialContainer = VisTable()
 
     init {
         this.component = modelComponent
-        materialContainer = VisTable()
-
         setupUI()
     }
 

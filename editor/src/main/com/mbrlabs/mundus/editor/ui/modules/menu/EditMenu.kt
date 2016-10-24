@@ -31,21 +31,17 @@ import com.mbrlabs.mundus.editor.history.CommandHistory
  */
 class EditMenu : Menu("Edit") {
 
-    private val copy: MenuItem
-    private val paste: MenuItem
-    private val undo: MenuItem
-    private val redo: MenuItem
+    private val copy = MenuItem("Copy")
+    private val paste = MenuItem("Paste")
+    private val undo = MenuItem("Undo")
+    private val redo = MenuItem("Redo")
 
     private val history: CommandHistory = Mundus.inject()
 
     init {
-        copy = MenuItem("Copy")
         copy.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.C)
-        paste = MenuItem("Paste")
         paste.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.P)
-        undo = MenuItem("Undo")
         undo.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.Z)
-        redo = MenuItem("Redo")
         redo.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.Y)
 
         addItem(copy)

@@ -32,7 +32,6 @@ import com.mbrlabs.mundus.editor.utils.Log
 
 /**
  * @author Marcus Brummer
- * *
  * @version 23-12-2015
  */
 class SceneMenu : Menu("Scenes"),
@@ -44,14 +43,13 @@ class SceneMenu : Menu("Scenes"),
     }
 
     private val sceneItems = Array<MenuItem>()
-    private val addScene: MenuItem
+    private val addScene = MenuItem("Add scene")
 
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         Mundus.registerEventListener(this)
 
-        addScene = MenuItem("Add scene")
         addScene.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 Dialogs.showInputDialog(UI, "Add Scene", "Name:", object : InputDialogAdapter() {

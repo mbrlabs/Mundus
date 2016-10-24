@@ -32,35 +32,31 @@ import com.mbrlabs.mundus.editor.utils.formatFloat
 
 /**
  * @author Marcus Brummer
- * *
  * @version 24-11-2015
  */
 class StatusBar : VisTable() {
 
-    private val root: VisTable
-    private val left: VisTable
-    private val right: VisTable
+    private val root = VisTable()
+    private val left = VisTable()
+    private val right = VisTable()
 
-    private val fpsLabel: VisLabel
-    private val camPos: VisLabel
+    private val fpsLabel = VisLabel()
+    private val camPos = VisLabel()
 
-    private val speed01: VisTextButton
-    private val speed1: VisTextButton
-    private val speed10: VisTextButton
+    private val speed01 = VisTextButton(".1")
+    private val speed1 = VisTextButton("1")
+    private val speed10 = VisTextButton("10")
 
     private val freeCamController: FreeCamController = Mundus.inject()
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         background = VisUI.getSkin().getDrawable("menu-bg")
-        root = VisTable()
         root.align(Align.left or Align.center)
         add(root).expand().fill()
 
-        left = VisTable()
         left.align(Align.left)
         left.padLeft(10f)
-        right = VisTable()
         right.align(Align.right)
         right.padRight(10f)
         root.add(left).left().expand().fill()
@@ -68,16 +64,11 @@ class StatusBar : VisTable() {
 
         // left
         left.add(VisLabel("camSpeed: ")).left()
-        speed01 = VisTextButton(".1")
-        speed1 = VisTextButton("1")
-        speed10 = VisTextButton("10")
         left.add(speed01)
         left.add(speed1)
         left.add(speed10)
 
         // right
-        fpsLabel = VisLabel()
-        camPos = VisLabel()
         right.add(camPos).right()
         right.addSeparator(true).padLeft(5f).padRight(5f)
         right.add(fpsLabel).right()

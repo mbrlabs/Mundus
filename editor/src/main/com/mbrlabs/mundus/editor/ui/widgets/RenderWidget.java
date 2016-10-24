@@ -96,8 +96,8 @@ public class RenderWidget extends Widget {
     /**
      * Used to render the 3d scene within this widget.
      */
-    public static interface Renderer {
-        public void render(Camera cam);
+    public interface Renderer {
+        void render(Camera cam);
     }
 
 }

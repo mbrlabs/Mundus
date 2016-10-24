@@ -28,12 +28,10 @@ import com.mbrlabs.mundus.editor.ui.UI
  */
 class AssetsMenu : Menu("Assets") {
 
-    private val importMesh: MenuItem
+    private val importMesh = MenuItem("Import Mesh")
 
     init {
-        importMesh = MenuItem("Import Mesh")
         addItem(importMesh)
-
         addListeners()
     }
 

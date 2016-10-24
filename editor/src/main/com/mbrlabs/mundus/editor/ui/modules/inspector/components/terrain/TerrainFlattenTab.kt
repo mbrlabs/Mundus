@@ -27,13 +27,12 @@ import com.mbrlabs.mundus.editor.tools.brushes.TerrainBrush
  * @author Marcus Brummer
  * @version 30-01-2016
  */
-class TerrainFlattenTab(private val parent: TerrainComponentWidget) : Tab(false, false) {
-    private val table: VisTable
+class TerrainFlattenTab(parent: TerrainComponentWidget) : Tab(false, false) {
 
+    private val table = VisTable()
     private val brushGrid: TerrainBrushGrid
 
     init {
-        table = VisTable()
         table.align(Align.left)
         table.add(VisLabel("Hold shift to sample a height")).center().row()
 

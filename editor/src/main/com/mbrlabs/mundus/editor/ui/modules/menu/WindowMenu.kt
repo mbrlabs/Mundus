@@ -25,17 +25,14 @@ import com.mbrlabs.mundus.editor.ui.UI
 
 /**
  * @author Marcus Brummer
- * *
  * @version 22-11-2015
  */
 class WindowMenu : Menu("Window") {
 
-    val settings: MenuItem
+    val settings = MenuItem("Settings")
 
     init {
-        settings = MenuItem("Settings")
         settings.setShortcut(Input.Keys.CONTROL_LEFT, Input.Keys.ALT_LEFT, Input.Keys.S)
-
         addItem(settings)
 
         settings.addListener(object : ClickListener() {

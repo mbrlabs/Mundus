@@ -42,8 +42,8 @@ class TerrainBrushGrid(private val parent: TerrainComponentWidget) : VisTable(),
 
     var brushMode: TerrainBrush.BrushMode? = null
 
-    private val grid: GridGroup
-    private val strengthSlider: ImprovedSlider
+    private val grid = GridGroup(40f, 0f)
+    private val strengthSlider = ImprovedSlider(0f, 1f, 0.1f)
 
     private val toolManager: ToolManager = Mundus.inject()
 
@@ -56,7 +56,6 @@ class TerrainBrushGrid(private val parent: TerrainComponentWidget) : VisTable(),
         brushGridContainerTable.setBackground("menu-bg")
 
         // grid
-        grid = GridGroup(40f, 0f)
         for (brush in toolManager.terrainBrushes) {
             grid.addActor(BrushItem(brush))
         }
@@ -65,7 +64,6 @@ class TerrainBrushGrid(private val parent: TerrainComponentWidget) : VisTable(),
         // brush settings
         val settingsTable = VisTable()
         settingsTable.add(VisLabel("Strength")).left().row()
-        strengthSlider = ImprovedSlider(0f, 1f, 0.1f)
         strengthSlider.value = TerrainBrush.getStrength()
         settingsTable.add(strengthSlider).expandX().fillX().row()
         strengthSlider.addListener(object : ChangeListener() {

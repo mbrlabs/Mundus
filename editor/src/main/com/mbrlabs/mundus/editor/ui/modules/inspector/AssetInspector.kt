@@ -30,41 +30,33 @@ import com.mbrlabs.mundus.editor.ui.modules.inspector.assets.TextureAssetInspect
  */
 class AssetInspector : VisTable() {
 
-    private val materialWidget: MaterialAssetInspectorWidget
-    private val modelWidget: ModelAssetInspectorWidget
-    private val textureWidget: TextureAssetInspectorWidget
-    private val terrainWidget: TerrainAssetInspectorWidget
+    private val materialWidget = MaterialAssetInspectorWidget()
+    private val modelWidget = ModelAssetInspectorWidget()
+    private val textureWidget = TextureAssetInspectorWidget()
+    private val terrainWidget = TerrainAssetInspectorWidget()
 
-    private var asset: Asset? = null
+    var asset: Asset? = null
+        set(value) {
+            field = value
+            clear()
+            if (value is MaterialAsset) {
+                add(materialWidget).growX().row()
+                materialWidget.setMaterial(value)
+            } else if (value is ModelAsset) {
+                add(modelWidget).growX().row()
+                modelWidget.setModel(value)
+            } else if (value is TextureAsset) {
+                add(textureWidget).growX().row()
+                textureWidget.setTextureAsset(value)
+            } else if (value is TerrainAsset) {
+                add(terrainWidget).growX().row()
+                terrainWidget.setTerrainAsset(value)
+            }
+        }
 
     init {
         align(Align.top)
         pad(7f)
-
-        materialWidget = MaterialAssetInspectorWidget()
-        modelWidget = ModelAssetInspectorWidget()
-        textureWidget = TextureAssetInspectorWidget()
-        terrainWidget = TerrainAssetInspectorWidget()
-    }
-
-    fun setAsset(asset: Asset) {
-        this.asset = asset
-        clear()
-        if (asset is MaterialAsset) {
-            add(materialWidget).growX().row()
-            materialWidget.setMaterial(asset)
-        } else if (asset is ModelAsset) {
-            add(modelWidget).growX().row()
-            modelWidget.setModel(asset)
-        } else if (asset is TextureAsset) {
-            add(textureWidget).growX().row()
-            textureWidget.setTextureAsset(asset)
-        } else if (asset is TerrainAsset) {
-            add(terrainWidget).growX().row()
-            terrainWidget.setTerrainAsset(asset)
-        }
-
-        // TODO other assets
     }
 
 }

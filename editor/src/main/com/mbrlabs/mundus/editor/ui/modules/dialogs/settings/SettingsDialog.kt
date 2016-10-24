@@ -31,8 +31,7 @@ import com.mbrlabs.mundus.editor.ui.modules.dialogs.BaseDialog
 class SettingsDialog : BaseDialog("Settings") {
 
     private val splitPane: VisSplitPane
-    private val settingsSelection: VerticalGroup
-
+    private val settingsSelection = VerticalGroup()
     private val generalSettings: GeneralSettingsTable
 
     private val registry: Registry = Mundus.inject()
@@ -42,7 +41,6 @@ class SettingsDialog : BaseDialog("Settings") {
         root.padTop(6f).padRight(6f).padBottom(22f)
         add(root)
 
-        settingsSelection = VerticalGroup()
         settingsSelection.addActor(VisLabel("General"))
         settingsSelection.addActor(VisLabel("Appearance"))
         settingsSelection.addActor(VisLabel("Export"))

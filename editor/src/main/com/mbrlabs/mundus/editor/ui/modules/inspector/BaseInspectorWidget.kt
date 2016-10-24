@@ -45,27 +45,18 @@ abstract class BaseInspectorWidget(title: String) : VisTable() {
             titleLabel.setText(title)
         }
 
-    private val collapseBtn: FaTextButton
-    private val deleteBtn: FaTextButton
+    private val collapseBtn = FaTextButton(COLLAPSE_BTN_UP)
+    private val deleteBtn = FaTextButton(Fa.TIMES)
     private var deletableBtnCell: Cell<*>? = null
 
-    var collapsibleContent: VisTable
-        protected set
-
-    private val collapsibleWidget: CollapseWidget
-    private val titleLabel: VisLabel
+    protected val collapsibleContent = VisTable()
+    private val collapsibleWidget = CollapseWidget(collapsibleContent)
+    private val titleLabel = VisLabel()
 
     private var deletable: Boolean = false
 
     init {
-        collapsibleContent = VisTable()
-        titleLabel = VisLabel()
-        collapsibleWidget = CollapseWidget(collapsibleContent)
-
-        collapseBtn = FaTextButton(COLLAPSE_BTN_UP)
         collapseBtn.label.setFontScale(0.7f)
-
-        deleteBtn = FaTextButton(Fa.TIMES)
         deleteBtn.label.setFontScale(0.7f)
         deleteBtn.style.up = null
 

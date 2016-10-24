@@ -114,15 +114,15 @@ class MaterialWidget : VisTable() {
         })
 
         // diffuse texture
-        diffuseAssetField.setFilter(AssetTextureFilter())
-        diffuseAssetField.setListener(object: AssetPickerDialog.AssetPickerListener {
+        diffuseAssetField.assetFilter = AssetTextureFilter()
+        diffuseAssetField.pickerListener = object: AssetPickerDialog.AssetPickerListener {
             override fun onSelected(asset: Asset?) {
                 material?.diffuseTexture = asset as? TextureAsset
                 applyMaterialToModelAssets()
                 applyMaterialToModelComponents()
                 projectManager.current().assetManager.addDirtyAsset(material!!)
             }
-        })
+        }
 
         // diffuse color
         diffuseColorField.colorAdapter = object: ColorPickerAdapter() {

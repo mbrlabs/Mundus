@@ -52,10 +52,10 @@ class AssetPickerDialog : BaseDialog(AssetPickerDialog.TITLE),
         private val TITLE = "Select an asset"
     }
 
-    private val root: VisTable
-    private val list: ListView<Asset>
-    private val listAdapter: SimpleListAdapter<Asset>
-    private val noneBtn: VisTextButton
+    private val root = VisTable()
+    private val listAdapter = SimpleListAdapter(Array<Asset>())
+    private val list = ListView(listAdapter)
+    private val noneBtn = VisTextButton("None / Remove old asset")
 
     private var filter: AssetFilter? = null
     private var listener: AssetPickerListener? = null
@@ -64,11 +64,6 @@ class AssetPickerDialog : BaseDialog(AssetPickerDialog.TITLE),
 
     init {
         Mundus.registerEventListener(this)
-
-        root = VisTable()
-        listAdapter = SimpleListAdapter(Array<Asset>())
-        list = ListView(listAdapter)
-        noneBtn = VisTextButton("None / Remove old asset")
 
         setupUI()
         setupListeners()

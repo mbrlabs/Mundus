@@ -31,17 +31,17 @@ import com.mbrlabs.mundus.editor.core.project.ProjectManager
  */
 class ExitDialog : BaseDialog(ExitDialog.TITLE) {
 
+    companion object {
+        private val TITLE = "Confirm exit"
+    }
+
+    private val exit = VisTextButton("Exit")
+    private val saveExit = VisTextButton("Save and Exit")
+    private val cancel = VisTextButton("Cancel")
+
     private val projectManager: ProjectManager = Mundus.inject()
 
-    private val exit: VisTextButton
-    private val saveExit: VisTextButton
-    private val cancel: VisTextButton
-
     init {
-        exit = VisTextButton("Exit")
-        saveExit = VisTextButton("Save and Exit")
-        cancel = VisTextButton("Cancel")
-
         setupUI()
         setupListeners()
     }
@@ -79,11 +79,6 @@ class ExitDialog : BaseDialog(ExitDialog.TITLE) {
                 Gdx.app.exit()
             }
         })
-    }
-
-    companion object {
-
-        private val TITLE = "Confirm exit"
     }
 
 }

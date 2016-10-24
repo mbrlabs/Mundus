@@ -18,7 +18,6 @@ package com.mbrlabs.mundus.editor.assets
 
 /**
  * @author Marcus Brummer
- * *
  * @version 10-10-2016
  */
 class AssetAlreadyExistsException : Exception()

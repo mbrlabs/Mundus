@@ -45,42 +45,35 @@ class MundusToolbar : Toolbar() {
         private val TAG = MundusToolbar::class.java.simpleName
     }
 
-    private val saveBtn: FaTextButton
-    private val importBtn: FaTextButton
-    private val exportBtn: FaTextButton
+    private val saveBtn = FaTextButton(Fa.SAVE)
+    private val importBtn = FaTextButton(Fa.DOWNLOAD)
+    private val exportBtn = FaTextButton(Fa.GIFT)
 
     private val selectBtn: FaTextButton
     private val translateBtn: FaTextButton
     private val rotateBtn: FaTextButton
     private val scaleBtn: FaTextButton
-    private val globalLocalSwitch: ToggleButton
+    private val globalLocalSwitch = ToggleButton("Global space", "Local space")
 
-    private val importMenu: PopupMenu
-    private val importMesh: MenuItem
-    private val importTexture: MenuItem
-    private val createMaterial: MenuItem
+    private val importMenu = PopupMenu()
+    private val importMesh = MenuItem("Import 3D model")
+    private val importTexture = MenuItem("Import texture")
+    private val createMaterial = MenuItem("Create material")
 
     private val toolManager: ToolManager = Mundus.inject()
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
-        importMesh = MenuItem("Import 3D model")
-        importTexture = MenuItem("Import texture")
-        createMaterial = MenuItem("Create material")
-        importMenu = PopupMenu()
         importMenu.addItem(importMesh)
         importMenu.addItem(importTexture)
         importMenu.addItem(createMaterial)
 
-        saveBtn = FaTextButton(Fa.SAVE)
         saveBtn.padRight(7f).padLeft(7f)
         Tooltip.Builder("Save project").target(saveBtn).build()
 
-        importBtn = FaTextButton(Fa.DOWNLOAD)
         importBtn.padRight(7f).padLeft(7f)
         Tooltip.Builder("Import model").target(importBtn).build()
 
-        exportBtn = FaTextButton(Fa.GIFT)
         exportBtn.padRight(12f).padLeft(7f)
         Tooltip.Builder("Export project").target(exportBtn).build()
 
@@ -99,8 +92,6 @@ class MundusToolbar : Toolbar() {
         scaleBtn = FaTextButton(toolManager.scaleTool.iconFont)
         scaleBtn.padRight(7f).padLeft(7f)
         Tooltip.Builder(toolManager.scaleTool.iconFont).target(scaleBtn).build()
-
-        globalLocalSwitch = ToggleButton("Global space", "Local space")
 
         addItem(saveBtn, true)
         addItem(importBtn, true)

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.utils;
+package com.mbrlabs.mundus.editor.utils
 
 /**
  * @author Marcus Brummer
  * @version 24-11-2015
  */
-public interface Callback<T> {
+interface Callback<T> {
 
-    void done(T result);
+    fun done(result: T)
 
-    void error(String msg);
+    fun error(msg: String)
 
 }
