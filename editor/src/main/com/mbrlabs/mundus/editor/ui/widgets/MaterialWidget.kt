@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.editor.ui.widgets
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -23,6 +24,7 @@ import com.badlogic.gdx.utils.Align
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter
 import com.mbrlabs.mundus.commons.assets.Asset
 import com.mbrlabs.mundus.commons.assets.MaterialAsset
 import com.mbrlabs.mundus.commons.assets.TextureAsset
@@ -49,16 +51,24 @@ class MaterialWidget : VisTable() {
     private val diffuseColorField: ColorPickerField = ColorPickerField()
     private val diffuseAssetField: AssetSelectionField = AssetSelectionField()
 
+    private val projectManager: ProjectManager = Mundus.inject()
+
+    /**
+     *
+     */
     var material: MaterialAsset? = null
         set(value) {
             if (value != null) {
                 field = value
-                diffuseColorField.color = value.diffuseColor
+                diffuseColorField.selectedColor = value.diffuseColor
                 diffuseAssetField.setAsset(value.diffuseTexture)
                 matNameLabel.setText(value.name)
             }
         }
 
+    /**
+     *
+     */
     var matChangedListener: MaterialWidget.MaterialChangedListener? = null
         set(value) {
             field = value
@@ -68,8 +78,6 @@ class MaterialWidget : VisTable() {
                 matChangedBtn.touchable = Touchable.enabled
             }
         }
-
-    private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         align(Align.topLeft)
@@ -116,11 +124,13 @@ class MaterialWidget : VisTable() {
         })
 
         // diffuse color
-        diffuseColorField.setCallback { color ->
-            this.material!!.diffuseColor = color
-            applyMaterialToModelAssets()
-            applyMaterialToModelComponents()
-            projectManager.current().assetManager.addDirtyAsset(this.material!!)
+        diffuseColorField.colorAdapter = object: ColorPickerAdapter() {
+            override fun finished(newColor: Color) {
+                material?.diffuseColor?.set(newColor)
+                applyMaterialToModelAssets()
+                applyMaterialToModelComponents()
+                projectManager.current().assetManager.addDirtyAsset(material!!)
+            }
         }
 
     }

@@ -42,7 +42,6 @@ import org.apache.commons.io.FilenameUtils
 
 /**
  * @author Marcus Brummer
- * *
  * @version 07-06-2016
  */
 class Editor : Lwjgl3WindowAdapter(), ApplicationListener,

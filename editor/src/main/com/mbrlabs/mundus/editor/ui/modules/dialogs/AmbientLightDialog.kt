@@ -16,11 +16,14 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTextField
+import com.kotcrab.vis.ui.widget.color.ColorPicker
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter
 import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.events.ProjectChangedEvent
@@ -35,7 +38,7 @@ import com.mbrlabs.mundus.editor.ui.widgets.ColorPickerField
 class AmbientLightDialog : BaseDialog("Ambient Light"), ProjectChangedEvent.ProjectChangedListener, SceneChangedEvent.SceneChangedListener {
 
     private val intensity = VisTextField("0")
-    private val colorPickerField = ColorPickerField("Color: ")
+    private val colorPickerField = ColorPickerField()
 
     private val projectManager: ProjectManager = Mundus.inject()
 
@@ -71,7 +74,11 @@ class AmbientLightDialog : BaseDialog("Ambient Light"), ProjectChangedEvent.Proj
         })
 
         // color
-        colorPickerField.setCallback { color -> projectContext.currScene.environment.ambientLight.color.set(color) }
+        colorPickerField.colorAdapter = object: ColorPickerAdapter() {
+            override fun finished(newColor: Color) {
+                projectContext.currScene.environment.ambientLight.color.set(color)
+            }
+        }
 
     }
 

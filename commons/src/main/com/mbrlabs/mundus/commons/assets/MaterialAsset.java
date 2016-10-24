@@ -47,7 +47,7 @@ public class MaterialAsset extends Asset {
     private String diffuseTextureID;
     private String normalMapID;
 
-    private Color diffuseColor;
+    private Color diffuseColor = Color.WHITE.cpy();
     private TextureAsset diffuseTexture;
     private TextureAsset normalMap;
     private float shininess = 1f;
@@ -152,10 +152,6 @@ public class MaterialAsset extends Asset {
 
     public Color getDiffuseColor() {
         return diffuseColor;
-    }
-
-    public void setDiffuseColor(Color diffuseColor) {
-        this.diffuseColor = diffuseColor;
     }
 
     @Override

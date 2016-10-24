@@ -16,12 +16,14 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.kotcrab.vis.ui.widget.VisCheckBox
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTextField
+import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter
 import com.mbrlabs.mundus.commons.env.Fog
 import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
@@ -38,7 +40,7 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
     private val useFog = VisCheckBox("Use fog")
     private val density = VisTextField("0")
     private val gradient = VisTextField("0")
-    private val colorPickerField = ColorPickerField("Color: ")
+    private val colorPickerField = ColorPickerField()
 
     private val projectManager: ProjectManager = Mundus.inject()
 
@@ -111,11 +113,13 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
         })
 
         // color
-        colorPickerField.setCallback { color ->
-            val projectContext = projectManager.current()
-            projectContext.currScene.environment.fog.color.set(color)
-            println(color)
+        colorPickerField.colorAdapter = object: ColorPickerAdapter() {
+            override fun finished(newColor: Color) {
+                val projectContext = projectManager.current()
+                projectContext.currScene.environment.fog.color.set(color)
+            }
         }
+
     }
 
     private fun resetValues() {
