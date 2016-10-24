@@ -28,6 +28,7 @@ import com.kotcrab.vis.ui.widget.color.ColorPickerListener
 import com.mbrlabs.mundus.editor.ui.UI
 
 /**
+ *
  * @author Marcus Brummer
  * @version 08-01-2016
  */
@@ -38,7 +39,7 @@ class ColorPickerField() : VisTable() {
      */
     var selectedColor: Color = Color.WHITE.cpy()
         set(value) {
-            field = value
+            field.set(value)
             textField.text = "#" + value.toString()
         }
 

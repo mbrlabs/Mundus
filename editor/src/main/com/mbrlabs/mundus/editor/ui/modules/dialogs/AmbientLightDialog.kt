@@ -56,6 +56,7 @@ class AmbientLightDialog : BaseDialog("Ambient Light"), ProjectChangedEvent.Proj
 
         root.add(VisLabel("Intensity: ")).left().padBottom(10f)
         root.add(intensity).fillX().expandX().padBottom(10f).row()
+        root.add(VisLabel("Color")).growX().row()
         root.add(colorPickerField).left().fillX().expandX().colspan(2).row()
         resetValues()
     }

@@ -58,10 +58,11 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
 
         root.add(useFog).left().padBottom(10f).colspan(2).row()
         root.add(VisLabel("Density: ")).left().padBottom(10f)
-        root.add(density).fillX().expandX().padBottom(10f).row()
+        root.add(density).growX().padBottom(10f).row()
         root.add(VisLabel("Gradient: ")).left().padBottom(10f)
-        root.add(gradient).fillX().expandX().padBottom(10f).row()
-        root.add(colorPickerField).left().fillX().expandX().colspan(2).row()
+        root.add(gradient).growX().padBottom(10f).row()
+        root.add(VisLabel("Color")).growX().row()
+        root.add(colorPickerField).left().growX().colspan(2).row()
         resetValues()
     }
 
@@ -105,9 +106,9 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
         density.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 val projectContext = projectManager.current()
-                val d = convert(density.text)
-                if (d != null) {
-                    projectContext.currScene.environment.fog.density = d
+                val value = convert(density.text)
+                if (value != null) {
+                    projectContext.currScene.environment.fog.density = value
                 }
             }
         })
@@ -116,7 +117,7 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
         colorPickerField.colorAdapter = object: ColorPickerAdapter() {
             override fun finished(newColor: Color) {
                 val projectContext = projectManager.current()
-                projectContext.currScene.environment.fog.color.set(color)
+                projectContext.currScene.environment.fog.color.set(newColor)
             }
         }
 
@@ -131,7 +132,7 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
             useFog.isChecked = true
             density.text = fog.density.toString()
             gradient.text = fog.gradient.toString()
-            colorPickerField.color = fog.color
+            colorPickerField.selectedColor = fog.color
         }
     }
 
