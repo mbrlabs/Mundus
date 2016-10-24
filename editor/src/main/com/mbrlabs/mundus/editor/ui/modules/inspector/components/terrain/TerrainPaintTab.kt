@@ -35,7 +35,7 @@ import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.events.AssetImportEvent
 import com.mbrlabs.mundus.editor.tools.brushes.TerrainBrush
 import com.mbrlabs.mundus.editor.ui.UI
-import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetSelectionDialog
+import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetPickerDialog
 import com.mbrlabs.mundus.editor.ui.widgets.TextureGrid
 import com.mbrlabs.mundus.editor.utils.Log
 import java.io.IOException
@@ -84,7 +84,7 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
     fun setupAddTextureBrowser() {
         addTextureBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                UI.assetSelectionDialog.show(false, AssetTextureFilter(), object: AssetSelectionDialog.AssetSelectionListener {
+                UI.assetSelectionDialog.show(false, AssetTextureFilter(), object: AssetPickerDialog.AssetPickerListener {
                     override fun onSelected(asset: Asset?) {
                         try {
                             addTexture(asset as TextureAsset)
@@ -253,7 +253,7 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     if (channel != null) {
 
-                        UI.assetSelectionDialog.show(false, AssetTextureFilter(), object: AssetSelectionDialog.AssetSelectionListener {
+                        UI.assetSelectionDialog.show(false, AssetTextureFilter(), object: AssetPickerDialog.AssetPickerListener {
                             override fun onSelected(asset: Asset?) {
                                 if (channel != null) {
                                     val terrain = parentWidget.component.getTerrain()

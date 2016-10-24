@@ -51,6 +51,7 @@ import com.mbrlabs.mundus.editor.utils.createTerrainGO
  * @author Marcus Brummer, codenigma
  * @version 01-10-2016
  */
+// TODO refactor...kind of messy spaghetti code!
 class Outline : VisTable(),
         ProjectChangedEvent.ProjectChangedListener,
         SceneChangedEvent.SceneChangedListener,
@@ -138,72 +139,72 @@ class Outline : VisTable(),
             }
 
             override fun drop(source: DragAndDrop.Source, payload: DragAndDrop.Payload, x: Float, y: Float, pointer: Int) {
-                val node = payload.`object` as Tree.Node
                 val context = projectManager.current()
+                val newParent = tree.getNodeAt(y)
 
-                if (node != null) {
-                    val draggedGo = node.`object` as GameObject
-                    val newParent = tree.getNodeAt(y)
+                val node: Tree.Node = (payload.`object` as? Tree.Node) ?: return
+                val draggedGo: GameObject = (node.`object` as? GameObject) ?: return
 
-                    // check if a go is dragged in one of its' children or
-                    // itself
-                    if (newParent != null) {
-                        val parentGo = newParent.`object` as GameObject
-                        if (parentGo.isChildOf(draggedGo)) {
-                            return
-                        }
+
+                // check if a go is dragged in one of its' children or
+                // itself
+                if (newParent != null) {
+                    val parentGo = newParent.`object` as GameObject
+                    if (parentGo.isChildOf(draggedGo)) {
+                        return
                     }
-                    val oldParent = draggedGo.parent
-
-                    // remove child from old parent
-                    draggedGo.remove()
-
-                    // add to new parent
-                    if (newParent == null) {
-                        // recalculate position for root layer
-                        val newPos: Vector3
-                        val draggedPos = Vector3()
-                        draggedGo.getPosition(draggedPos)
-                        // if moved from old parent
-                        if (oldParent != null) {
-                            // new position = oldParentPos + draggedPos
-                            val parentPos = Vector3()
-                            oldParent.getPosition(parentPos)
-                            newPos = parentPos.add(draggedPos)
-                        } else {
-                            // new local position = World position
-                            newPos = draggedPos
-                        }
-                        context.currScene.sceneGraph.addGameObject(draggedGo)
-                        draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z)
-                    } else {
-                        val parentGo = newParent.`object` as GameObject
-                        // recalculate position
-                        val parentPos = Vector3()
-                        var draggedPos = Vector3()
-                        // World coorinates
-                        draggedGo.getPosition(draggedPos)
-                        parentGo.getPosition(parentPos)
-
-                        // if gameObject came from old parent
-                        if (oldParent != null) {
-                            // calculate oldParentPos + draggedPos
-                            val oldParentPos = Vector3()
-                            oldParent.getPosition(oldParentPos)
-                            draggedPos = oldParentPos.add(draggedPos)
-                        }
-
-                        // Local in releation to new parent
-                        val newPos = draggedPos.sub(parentPos)
-                        // add
-                        parentGo.addChild(draggedGo)
-                        draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z)
-                    }
-
-                    // update tree
-                    buildTree(projectManager.current().currScene.sceneGraph)
                 }
+                val oldParent = draggedGo.parent
+
+                // remove child from old parent
+                draggedGo.remove()
+
+                // add to new parent
+                if (newParent == null) {
+                    // recalculate position for root layer
+                    val newPos: Vector3
+                    val draggedPos = Vector3()
+                    draggedGo.getPosition(draggedPos)
+                    // if moved from old parent
+                    if (oldParent != null) {
+                        // new position = oldParentPos + draggedPos
+                        val parentPos = Vector3()
+                        oldParent.getPosition(parentPos)
+                        newPos = parentPos.add(draggedPos)
+                    } else {
+                        // new local position = World position
+                        newPos = draggedPos
+                    }
+                    context.currScene.sceneGraph.addGameObject(draggedGo)
+                    draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z)
+                } else {
+                    val parentGo = newParent.`object` as GameObject
+                    // recalculate position
+                    val parentPos = Vector3()
+                    var draggedPos = Vector3()
+                    // World coorinates
+                    draggedGo.getPosition(draggedPos)
+                    parentGo.getPosition(parentPos)
+
+                    // if gameObject came from old parent
+                    if (oldParent != null) {
+                        // calculate oldParentPos + draggedPos
+                        val oldParentPos = Vector3()
+                        oldParent.getPosition(oldParentPos)
+                        draggedPos = oldParentPos.add(draggedPos)
+                    }
+
+                    // Local in releation to new parent
+                    val newPos = draggedPos.sub(parentPos)
+                    // add
+                    parentGo.addChild(draggedGo)
+                    draggedGo.setLocalPosition(newPos.x, newPos.y, newPos.z)
+                }
+
+                // update tree
+                buildTree(projectManager.current().currScene.sceneGraph)
             }
+
         })
     }
 

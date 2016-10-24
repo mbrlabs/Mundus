@@ -28,6 +28,9 @@ import com.kotcrab.vis.ui.widget.color.ColorPickerListener
 import com.mbrlabs.mundus.editor.ui.UI
 
 /**
+ * An un-editable text field with a color picker.
+ *
+ * The text field shows the color hex value, the button launches a color picker dialog.
  *
  * @author Marcus Brummer
  * @version 08-01-2016
@@ -35,7 +38,7 @@ import com.mbrlabs.mundus.editor.ui.UI
 class ColorPickerField() : VisTable() {
 
     /**
-     *
+     * The currently selected color.
      */
     var selectedColor: Color = Color.WHITE.cpy()
         set(value) {
@@ -44,7 +47,8 @@ class ColorPickerField() : VisTable() {
         }
 
     /**
-     *
+     * An optional color picker listener.
+     * Will be called if user changed color.
      */
     var colorAdapter: ColorPickerAdapter? = null
 
@@ -70,22 +74,15 @@ class ColorPickerField() : VisTable() {
             }
         }
 
-        setEditable(false)
+        textField.isDisabled = true
         setupUI()
         setupListeners()
     }
 
     /**
-     *
+     * Disables the button for the color picker.
      */
-    fun setEditable(editable: Boolean) {
-        textField.isDisabled = !editable
-    }
-
-    /**
-     *
-     */
-    fun setDisabled(disable: Boolean) {
+    fun disable(disable: Boolean) {
         cpBtn.isDisabled = disable
         if (disable) {
             cpBtn.touchable = Touchable.disabled

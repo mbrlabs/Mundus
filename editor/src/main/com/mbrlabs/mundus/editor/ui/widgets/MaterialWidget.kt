@@ -35,9 +35,13 @@ import com.mbrlabs.mundus.editor.assets.AssetTextureFilter
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent
 import com.mbrlabs.mundus.editor.ui.UI
-import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetSelectionDialog
+import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetPickerDialog
 
 /**
+ * Displays all properties of a material.
+ *
+ * You can also edit materials and replace them with another materials by.
+ *
  * @author Marcus Brummer
  * @version 13-10-2016
  */
@@ -45,7 +49,7 @@ class MaterialWidget : VisTable() {
 
     private val matFilter: AssetMaterialFilter = AssetMaterialFilter()
     private val matChangedBtn: VisTextButton = VisTextButton("change")
-    private val matSelectionListener: AssetSelectionDialog.AssetSelectionListener
+    private val matPickerListener: AssetPickerDialog.AssetPickerListener
 
     private val matNameLabel: VisLabel = VisLabel()
     private val diffuseColorField: ColorPickerField = ColorPickerField()
@@ -54,7 +58,7 @@ class MaterialWidget : VisTable() {
     private val projectManager: ProjectManager = Mundus.inject()
 
     /**
-     *
+     * The currently active material of the widget.
      */
     var material: MaterialAsset? = null
         set(value) {
@@ -67,23 +71,20 @@ class MaterialWidget : VisTable() {
         }
 
     /**
-     *
+     * An optional listener for changing the material. If the property is null
+     * the user will not be able to change the material.
      */
     var matChangedListener: MaterialWidget.MaterialChangedListener? = null
         set(value) {
             field = value
-            if(value == null) {
-                matChangedBtn.touchable = Touchable.disabled
-            } else {
-                matChangedBtn.touchable = Touchable.enabled
-            }
+            matChangedBtn.touchable = if(value == null) Touchable.disabled else Touchable.enabled
         }
 
     init {
         align(Align.topLeft)
         matNameLabel.setWrap(true)
 
-        matSelectionListener = object: AssetSelectionDialog.AssetSelectionListener {
+        matPickerListener = object: AssetPickerDialog.AssetPickerListener {
             override fun onSelected(asset: Asset?) {
                 material = asset as? MaterialAsset
                 matChangedListener?.materialChanged(material!!)
@@ -108,13 +109,13 @@ class MaterialWidget : VisTable() {
 
         matChangedBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                UI.assetSelectionDialog.show(false, matFilter, matSelectionListener)
+                UI.assetSelectionDialog.show(false, matFilter, matPickerListener)
             }
         })
 
         // diffuse texture
         diffuseAssetField.setFilter(AssetTextureFilter())
-        diffuseAssetField.setListener(object: AssetSelectionDialog.AssetSelectionListener {
+        diffuseAssetField.setListener(object: AssetPickerDialog.AssetPickerListener {
             override fun onSelected(asset: Asset?) {
                 material?.diffuseTexture = asset as? TextureAsset
                 applyMaterialToModelAssets()

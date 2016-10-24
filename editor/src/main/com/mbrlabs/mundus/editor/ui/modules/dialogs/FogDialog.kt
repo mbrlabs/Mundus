@@ -46,7 +46,6 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
 
     init {
         Mundus.registerEventListener(this)
-
         setupUI()
         setupListeners()
     }
@@ -81,12 +80,12 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
                     }
                     density.isDisabled = false
                     gradient.isDisabled = false
-                    colorPickerField.setDisabled(false)
+                    colorPickerField.disable(false)
                 } else {
                     projectContext.currScene.environment.fog = null
                     density.isDisabled = true
                     gradient.isDisabled = true
-                    colorPickerField.setDisabled(true)
+                    colorPickerField.disable(true)
                 }
             }
         })

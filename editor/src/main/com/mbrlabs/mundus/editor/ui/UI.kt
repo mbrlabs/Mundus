@@ -28,7 +28,7 @@ import com.mbrlabs.mundus.editor.ui.modules.MundusToolbar
 import com.mbrlabs.mundus.editor.ui.modules.Outline
 import com.mbrlabs.mundus.editor.ui.modules.StatusBar
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.*
-import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetSelectionDialog
+import com.mbrlabs.mundus.editor.ui.modules.dialogs.assets.AssetPickerDialog
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.importer.ImportModelDialog
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.importer.ImportTextureDialog
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.settings.SettingsDialog
@@ -49,7 +49,7 @@ object UI : Stage(ScreenViewport()) {
     // reusable ui elements
     val toaster: Toaster = Toaster(this)
     val fileChooser: FileChooser = FileChooser(FileChooser.Mode.OPEN)
-    val assetSelectionDialog: AssetSelectionDialog = AssetSelectionDialog()
+    val assetSelectionDialog: AssetPickerDialog = AssetPickerDialog()
     val colorPicker: ColorPicker = ColorPicker()
 
     // base elements

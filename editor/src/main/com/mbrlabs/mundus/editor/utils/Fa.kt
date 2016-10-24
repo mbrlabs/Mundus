@@ -32,12 +32,11 @@ import com.badlogic.gdx.utils.GdxRuntimeException
 class Fa {
 
     private val glyphBuilder = StringBuilder()
-    private var fontGenerator: FreeTypeFontGenerator? = null
+    private val fontGenerator: FreeTypeFontGenerator
 
-    var generatorParameter: FreeTypeFontGenerator.FreeTypeFontParameter? = null
-        private set
+    val generatorParameter: FreeTypeFontGenerator.FreeTypeFontParameter
 
-    var font: BitmapFont? = null
+    lateinit var font: BitmapFont
         private set
 
     constructor(font: FileHandle) {
@@ -55,13 +54,10 @@ class Fa {
         return this
     }
 
-    fun build(): BitmapFont? {
-        if (fontGenerator == null) throw GdxRuntimeException("Font Awesome already created")
-
-        generatorParameter!!.characters = glyphBuilder.toString()
-        font = fontGenerator!!.generateFont(generatorParameter)
-        fontGenerator!!.dispose()
-        fontGenerator = null
+    fun build(): BitmapFont {
+        generatorParameter.characters = glyphBuilder.toString()
+        font = fontGenerator.generateFont(generatorParameter)
+        fontGenerator.dispose()
         return font
     }
 

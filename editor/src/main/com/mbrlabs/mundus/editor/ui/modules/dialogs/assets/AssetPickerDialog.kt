@@ -35,16 +35,20 @@ import com.mbrlabs.mundus.editor.ui.UI
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.BaseDialog
 
 /**
+ * A filterable list of materials.
+ *
+ * The user can pick one or no asset. The list of materials can be filtered by type before
+ * showing it to the user.
+ *
  * @author Marcus Brummer
- * *
  * @version 02-10-2016
  */
-class AssetSelectionDialog : BaseDialog(AssetSelectionDialog.TITLE),
+class AssetPickerDialog : BaseDialog(AssetPickerDialog.TITLE),
         AssetImportEvent.AssetImportListener,
         ProjectChangedEvent.ProjectChangedListener {
 
-    companion object {
-        private val TAG = AssetSelectionDialog::class.java.simpleName
+    private companion object {
+        private val TAG = AssetPickerDialog::class.java.simpleName
         private val TITLE = "Select an asset"
     }
 
@@ -54,7 +58,7 @@ class AssetSelectionDialog : BaseDialog(AssetSelectionDialog.TITLE),
     private val noneBtn: VisTextButton
 
     private var filter: AssetFilter? = null
-    private var listener: AssetSelectionListener? = null
+    private var listener: AssetPickerListener? = null
 
     private val projectManager: ProjectManager = Mundus.inject()
 
@@ -120,7 +124,14 @@ class AssetSelectionDialog : BaseDialog(AssetSelectionDialog.TITLE),
         listAdapter.itemsDataChanged()
     }
 
-    fun show(showNoneAsset: Boolean, filter: AssetFilter, listener: AssetSelectionListener) {
+    /**
+     * Shows the dialog.
+     *
+     * @param showNoneAsset if true the user will be able to select a NONE asset
+     * @param filter optional asset type filter
+     * @listener picker listener
+     */
+    fun show(showNoneAsset: Boolean, filter: AssetFilter?, listener: AssetPickerListener) {
         this.listener = listener
         this.filter = filter
         if (showNoneAsset) {
@@ -136,7 +147,7 @@ class AssetSelectionDialog : BaseDialog(AssetSelectionDialog.TITLE),
 
     /**
      */
-    interface AssetSelectionListener {
+    interface AssetPickerListener {
         fun onSelected(asset: Asset?)
     }
 

@@ -48,6 +48,8 @@ import java.io.File
 /**
  * Core class.
  *
+ * Used for dependency injection of core components and as event bus.
+ *
  * @author Marcus Brummer
  * @version 08-12-2015
  */
@@ -55,7 +57,7 @@ object Mundus {
 
     val eventBus: EventBus
 
-    var fa: BitmapFont? = null
+    lateinit var fa: BitmapFont
 
     private val modelBatch: ModelBatch
     private val toolManager: ToolManager
@@ -99,6 +101,7 @@ object Mundus {
                 commandHistory)
         shortcutController = ShortcutController(registry, projectManager, commandHistory)
 
+        // add to DI container
         register {
             bindSingleton(shapeRenderer)
             bindSingleton(modelBatch)
@@ -167,14 +170,11 @@ object Mundus {
         VisUI.load(skin)
     }
 
-    /**
-     *
-     */
     private fun initFontAwesome() {
         val faBuilder = Fa(Gdx.files.internal("fonts/fa45.ttf"))
-        faBuilder.generatorParameter!!.size = (Gdx.graphics.height * 0.02f).toInt()
-        faBuilder.generatorParameter!!.kerning = true
-        faBuilder.generatorParameter!!.borderStraight = false
+        faBuilder.generatorParameter.size = (Gdx.graphics.height * 0.02f).toInt()
+        faBuilder.generatorParameter.kerning = true
+        faBuilder.generatorParameter.borderStraight = false
         fa = faBuilder.addIcon(Fa.SAVE).addIcon(Fa.DOWNLOAD).addIcon(Fa.GIFT).
                 addIcon(Fa.PLAY).addIcon(Fa.MOUSE_POINTER).addIcon(Fa.ARROWS).
                 addIcon(Fa.CIRCLE_O).addIcon(Fa.CIRCLE).addIcon(Fa.MINUS).addIcon(Fa.CARET_DOWN).
@@ -188,21 +188,21 @@ object Mundus {
     inline fun <reified Type : Any> inject(): Type = ktx.inject.inject()
 
     /**
-     *
+     * Posts an event.
      */
     fun postEvent(event: Any) {
         eventBus.post(event)
     }
 
     /**
-     *
+     * Registers a class as event listener.
      */
     fun registerEventListener(listener: Any) {
         eventBus.register(listener)
     }
 
     /**
-     *
+     * Removes a class from the list of event listeners.
      */
     fun unregisterEventListener(listener: Any) {
         eventBus.unregister(listener)
@@ -214,7 +214,7 @@ object Mundus {
     fun dispose() {
         VisUI.dispose()
         Shaders.dispose()
-        fa!!.dispose()
+        fa.dispose()
         shapeRenderer.dispose()
         modelBatch.dispose()
         goPicker.dispose()
