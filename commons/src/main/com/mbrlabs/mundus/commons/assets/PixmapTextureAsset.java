@@ -19,7 +19,7 @@ package com.mbrlabs.mundus.commons.assets;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
+import com.mbrlabs.mundus.commons.assets.meta.Meta;
 
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class PixmapTextureAsset extends Asset {
     private Pixmap pixmap;
     private Texture texture;
 
-    public PixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
+    public PixmapTextureAsset(Meta meta, FileHandle assetFile) {
         super(meta, assetFile);
     }
 

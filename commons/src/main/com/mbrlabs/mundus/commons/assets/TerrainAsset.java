@@ -17,7 +17,7 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.FloatArray;
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
+import com.mbrlabs.mundus.commons.assets.meta.Meta;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
 import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
@@ -48,7 +48,7 @@ public class TerrainAsset extends Asset {
 
     private Terrain terrain;
 
-    public TerrainAsset(MetaFile meta, FileHandle assetFile) {
+    public TerrainAsset(Meta meta, FileHandle assetFile) {
         super(meta, assetFile);
     }
 
@@ -63,9 +63,9 @@ public class TerrainAsset extends Asset {
     public void setSplatmap(PixmapTextureAsset splatmap) {
         this.splatmap = splatmap;
         if (splatmap == null) {
-            getMeta().setTerrainSplatmap(null);
+            meta.getTerrain().setSplatmap(null);
         } else {
-            getMeta().setTerrainSplatmap(splatmap.getID());
+            meta.getTerrain().setSplatmap(splatmap.getID());
         }
     }
 
@@ -76,9 +76,10 @@ public class TerrainAsset extends Asset {
     public void setSplatBase(TextureAsset splatBase) {
         this.splatBase = splatBase;
         if (splatBase == null) {
-            getMeta().setTerrainSplatBase(null);
+            meta.getTerrain().setSplatBase(null);
         } else {
-            getMeta().setTerrainSplatBase(splatBase.getID());
+            meta.getTerrain().setSplatBase(splatBase.getID());
+
         }
     }
 
@@ -89,9 +90,10 @@ public class TerrainAsset extends Asset {
     public void setSplatR(TextureAsset splatR) {
         this.splatR = splatR;
         if (splatR == null) {
-            getMeta().setTerrainSplatR(null);
+            getMeta().getTerrain().setSplatR(null);
         } else {
-            getMeta().setTerrainSplatR(splatR.getID());
+            meta.getTerrain().setSplatR(splatR.getID());
+
         }
     }
 
@@ -102,9 +104,9 @@ public class TerrainAsset extends Asset {
     public void setSplatG(TextureAsset splatG) {
         this.splatG = splatG;
         if (splatG == null) {
-            getMeta().setTerrainSplatG(null);
+            meta.getTerrain().setSplatG(null);
         } else {
-            getMeta().setTerrainSplatG(splatG.getID());
+            meta.getTerrain().setSplatG(splatG.getID());
         }
     }
 
@@ -115,9 +117,9 @@ public class TerrainAsset extends Asset {
     public void setSplatB(TextureAsset splatB) {
         this.splatB = splatB;
         if (splatB == null) {
-            getMeta().setTerrainSplatB(null);
+            meta.getTerrain().setSplatB(null);
         } else {
-            getMeta().setTerrainSplatB(splatB.getID());
+            meta.getTerrain().setSplatB(splatB.getID());
         }
     }
 
@@ -128,9 +130,9 @@ public class TerrainAsset extends Asset {
     public void setSplatA(TextureAsset splatA) {
         this.splatA = splatA;
         if (splatA == null) {
-            getMeta().setTerrainSplatA(null);
+            meta.getTerrain().setSplatA(null);
         } else {
-            getMeta().setTerrainSplatA(splatA.getID());
+            meta.getTerrain().setSplatA(splatA.getID());
         }
     }
 
@@ -158,7 +160,7 @@ public class TerrainAsset extends Asset {
         }
         data = floatArray.toArray();
 
-        terrain = new Terrain(getMeta().getTerrainSize(), data);
+        terrain = new Terrain(meta.getTerrain().getSize(), data);
         terrain.init();
         terrain.update();
     }
@@ -166,37 +168,37 @@ public class TerrainAsset extends Asset {
     @Override
     public void resolveDependencies(Map<String, Asset> assets) {
         // splatmap
-        String id = meta.getTerrainSplatmap();
+        String id = meta.getTerrain().getSplatmap();
         if (id != null && assets.containsKey(id)) {
             setSplatmap((PixmapTextureAsset) assets.get(id));
         }
 
         // splat channel base
-        id = meta.getTerrainSplatBase();
+        id = meta.getTerrain().getSplatBase();
         if (id != null && assets.containsKey(id)) {
             setSplatBase((TextureAsset) assets.get(id));
         }
 
         // splat channel r
-        id = meta.getTerrainSplatR();
+        id = meta.getTerrain().getSplatR();
         if (id != null && assets.containsKey(id)) {
             setSplatR((TextureAsset) assets.get(id));
         }
 
         // splat channel g
-        id = meta.getTerrainSplatG();
+        id = meta.getTerrain().getSplatG();
         if (id != null && assets.containsKey(id)) {
             setSplatG((TextureAsset) assets.get(id));
         }
 
         // splat channel b
-        id = meta.getTerrainSplatB();
+        id = meta.getTerrain().getSplatB();
         if (id != null && assets.containsKey(id)) {
             setSplatB((TextureAsset) assets.get(id));
         }
 
         // splat channel a
-        id = meta.getTerrainSplatA();
+        id = meta.getTerrain().getSplatA();
         if (id != null && assets.containsKey(id)) {
             setSplatA((TextureAsset) assets.get(id));
         }

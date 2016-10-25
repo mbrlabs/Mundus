@@ -31,6 +31,7 @@ import com.mbrlabs.mundus.commons.terrain.SplatTexture
 import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.assets.AssetAlreadyExistsException
 import com.mbrlabs.mundus.editor.assets.AssetTextureFilter
+import com.mbrlabs.mundus.editor.assets.MetaSaver
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.events.AssetImportEvent
 import com.mbrlabs.mundus.editor.tools.brushes.TerrainBrush
@@ -56,6 +57,7 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
     private val rightClickMenu = TextureRightClickMenu()
 
     private val projectManager: ProjectManager = Mundus.inject()
+    private val metaSaver: MetaSaver = Mundus.inject()
 
     init {
         root.align(Align.left)
@@ -116,7 +118,7 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
                 val splatmap = assetManager.createPixmapTextureAsset(512)
                 terrainAsset.splatmap = splatmap
                 terrainAsset.applyDependencies()
-                terrainAsset.meta.save()
+                metaSaver.save(terrainAsset.meta)
                 Mundus.postEvent(AssetImportEvent(splatmap))
             } catch (e: AssetAlreadyExistsException) {
                 Log.exception(TAG, e)

@@ -22,7 +22,8 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.PixmapIO
 import com.badlogic.gdx.utils.ObjectSet
 import com.mbrlabs.mundus.commons.assets.*
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile
+import com.mbrlabs.mundus.commons.assets.meta.Meta
+import com.mbrlabs.mundus.commons.assets.meta.MetaTerrain
 import com.mbrlabs.mundus.editor.utils.Log
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
@@ -42,13 +43,13 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
     }
 
     /** Modified assets that need to be saved.  */
-    private val dirtyAssets: ObjectSet<Asset>
+    private val dirtyAssets = ObjectSet<Asset>()
+    private val metaSaver = MetaSaver()
 
     init {
         if (rootFolder != null && (!rootFolder.exists() || !rootFolder.isDirectory)) {
             Log.fatal(TAG, "Root asset folder is not a directory")
         }
-        dirtyAssets = ObjectSet<Asset>()
     }
 
     fun addDirtyAsset(asset: Asset) {
@@ -71,15 +72,15 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
      * @throws IOException
      */
     @Throws(IOException::class, AssetAlreadyExistsException::class)
-    fun createNewMetaFile(file: FileHandle, type: AssetType): MetaFile {
+    fun createNewMetaFile(file: FileHandle, type: AssetType): Meta {
         if (file.exists()) throw AssetAlreadyExistsException()
 
-        val meta = MetaFile(file)
-        meta.setUuid(newUUID())
-        meta.version = MetaFile.CURRENT_VERSION
-        meta.lastModified = Date()
+        val meta = Meta(file)
+        meta.uuid = newUUID()
+        meta.version = Meta.CURRENT_VERSION
+        meta.lastModified = System.currentTimeMillis()
         meta.type = type
-        meta.save()
+        metaSaver.save(meta)
 
         return meta
     }
@@ -99,9 +100,9 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
             // chessboard
             val chessboard = createTextureAsset(Gdx.files.internal("standardAssets/chessboard.png"))
             assetIndex.remove(chessboard.id)
-            chessboard.meta.id = STANDARD_ASSET_TEXTURE_CHESSBOARD
+            chessboard.meta.uuid = STANDARD_ASSET_TEXTURE_CHESSBOARD
             assetIndex.put(chessboard.id, chessboard)
-            chessboard.meta.save()
+            metaSaver.save(chessboard.meta)
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -162,8 +163,9 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
         // create meta file
         val metaPath = FilenameUtils.concat(rootFolder.path(), metaFilename)
         val meta = createNewMetaFile(FileHandle(metaPath), AssetType.TERRAIN)
-        meta.terrainSize = size
-        meta.save()
+        meta.terrain = MetaTerrain()
+        meta.terrain.size = size
+        metaSaver.save(meta)
 
         // create terra file
         val terraPath = FilenameUtils.concat(rootFolder.path(), terraFilename)
@@ -194,7 +196,7 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
         if (chessboard != null) {
             asset.splatBase = chessboard as TextureAsset
             asset.applyDependencies()
-            asset.meta.save()
+            metaSaver.save(asset.meta)
         }
 
         addAsset(asset)
@@ -300,9 +302,9 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
     @Throws(IOException::class)
     fun saveModelAsset(asset: ModelAsset) {
         for (g3dbMatID in asset.defaultMaterials.keys) {
-            asset.meta.defaultModelMaterials.put(g3dbMatID, asset.defaultMaterials[g3dbMatID]!!.id)
+            asset.meta.model.defaultMaterials.put(g3dbMatID, asset.defaultMaterials[g3dbMatID]!!.id)
         }
-        asset.meta.save()
+        metaSaver.save(asset.meta)
     }
 
     /**
@@ -332,7 +334,7 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
         }
 
         // save meta file
-        terrain.meta.save()
+        metaSaver.save(terrain.meta)
     }
 
     @Throws(IOException::class)
@@ -353,12 +355,12 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
         props.store(FileOutputStream(mat.file.file()), null)
 
         // save meta file
-        mat.meta.save()
+        metaSaver.save(mat.meta)
     }
 
     @Throws(IOException::class, AssetAlreadyExistsException::class)
-    private fun createMetaFileFromAsset(assetFile: FileHandle, type: AssetType): MetaFile {
-        val metaName = assetFile.name() + "." + MetaFile.META_EXTENSION
+    private fun createMetaFileFromAsset(assetFile: FileHandle, type: AssetType): Meta {
+        val metaName = assetFile.name() + "." + Meta.META_EXTENSION
         val metaPath = FilenameUtils.concat(rootFolder.path(), metaName)
         return createNewMetaFile(FileHandle(metaPath), type)
     }

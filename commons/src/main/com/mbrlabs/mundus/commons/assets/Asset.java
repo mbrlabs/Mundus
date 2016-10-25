@@ -18,7 +18,7 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
+import com.mbrlabs.mundus.commons.assets.meta.Meta;
 
 import java.util.Map;
 
@@ -36,19 +36,19 @@ import java.util.Map;
 public abstract class Asset implements Disposable {
 
     protected FileHandle file;
-    protected MetaFile meta;
+    protected Meta meta;
 
     /**
      *
      * @param meta
      * @param assetFile
      */
-    public Asset(MetaFile meta, FileHandle assetFile) {
+    public Asset(Meta meta, FileHandle assetFile) {
         this.meta = meta;
         this.file = assetFile;
     }
 
-    public MetaFile getMeta() {
+    public Meta getMeta() {
         return meta;
     }
 
@@ -61,7 +61,7 @@ public abstract class Asset implements Disposable {
     }
 
     public String getID() {
-        return meta.getID();
+        return meta.getUuid();
     }
 
     @Override

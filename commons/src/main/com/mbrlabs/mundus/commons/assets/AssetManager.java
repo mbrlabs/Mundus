@@ -19,8 +19,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
+import com.mbrlabs.mundus.commons.assets.meta.Meta;
 import com.mbrlabs.mundus.commons.assets.meta.MetaFileParseException;
+import com.mbrlabs.mundus.commons.assets.meta.MetaLoader;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -150,14 +151,16 @@ public class AssetManager implements Disposable {
         FileFilter metaFileFilter = new FileFilter() {
             @Override
             public boolean accept(File file) {
-                return file.getName().endsWith(MetaFile.META_EXTENSION);
+                return file.getName().endsWith(Meta.META_EXTENSION);
             }
         };
+
+        final MetaLoader metaLoader = new MetaLoader();
 
         // load assets
         FileHandle[] metaFiles = rootFolder.list(metaFileFilter);
         for (FileHandle meta : metaFiles) {
-            Asset asset = loadAsset(new MetaFile(meta));
+            Asset asset = loadAsset(metaLoader.load(meta));
             listener.onLoad(asset, assets.size, metaFiles.length);
         }
 
@@ -190,7 +193,7 @@ public class AssetManager implements Disposable {
      * @throws MetaFileParseException
      *             if a meta file can't be parsed
      */
-    public Asset loadAsset(MetaFile meta) throws MetaFileParseException, AssetNotFoundException {
+    public Asset loadAsset(Meta meta) throws MetaFileParseException, AssetNotFoundException {
         // get handle to asset
         String assetPath = meta.getFile().pathWithoutExtension();
         FileHandle assetFile = new FileHandle(assetPath);
@@ -199,8 +202,6 @@ public class AssetManager implements Disposable {
         if (!assetFile.exists()) {
             throw new AssetNotFoundException("Meta file found, but asset does not exist: " + meta.getFile().path());
         }
-
-        meta.load();
 
         // load actual asset
         Asset asset = null;
@@ -228,13 +229,13 @@ public class AssetManager implements Disposable {
         return asset;
     }
 
-    private MaterialAsset loadMaterialAsset(MetaFile meta, FileHandle assetFile) {
+    private MaterialAsset loadMaterialAsset(Meta meta, FileHandle assetFile) {
         MaterialAsset asset = new MaterialAsset(meta, assetFile);
         asset.load();
         return asset;
     }
 
-    private TextureAsset loadTextureAsset(MetaFile meta, FileHandle assetFile) {
+    private TextureAsset loadTextureAsset(Meta meta, FileHandle assetFile) {
         TextureAsset asset = new TextureAsset(meta, assetFile);
         // TODO parse special texture instead of always setting them
         asset.setTileable(true);
@@ -243,19 +244,19 @@ public class AssetManager implements Disposable {
         return asset;
     }
 
-    private TerrainAsset loadTerrainAsset(MetaFile meta, FileHandle assetFile) {
+    private TerrainAsset loadTerrainAsset(Meta meta, FileHandle assetFile) {
         TerrainAsset asset = new TerrainAsset(meta, assetFile);
         asset.load();
         return asset;
     }
 
-    private PixmapTextureAsset loadPixmapTextureAsset(MetaFile meta, FileHandle assetFile) {
+    private PixmapTextureAsset loadPixmapTextureAsset(Meta meta, FileHandle assetFile) {
         PixmapTextureAsset asset = new PixmapTextureAsset(meta, assetFile);
         asset.load();
         return asset;
     }
 
-    private ModelAsset loadModelAsset(MetaFile meta, FileHandle assetFile) {
+    private ModelAsset loadModelAsset(Meta meta, FileHandle assetFile) {
         ModelAsset asset = new ModelAsset(meta, assetFile);
         asset.load();
         return asset;

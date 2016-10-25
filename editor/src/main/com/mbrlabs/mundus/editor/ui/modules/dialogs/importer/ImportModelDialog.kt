@@ -39,9 +39,11 @@ import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.mbrlabs.mundus.commons.assets.ModelAsset
+import com.mbrlabs.mundus.commons.assets.meta.MetaModel
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader
 import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.assets.AssetAlreadyExistsException
+import com.mbrlabs.mundus.editor.assets.MetaSaver
 import com.mbrlabs.mundus.editor.assets.ModelImporter
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.events.AssetImportEvent
@@ -192,12 +194,17 @@ class ImportModelDialog : BaseDialog("Import Mesh"), Disposable {
             val modelAsset = assetManager.createModelAsset(importedModel!!)
 
             // create materials
+            modelAsset.meta.model = MetaModel()
             for (mat in modelAsset.model.materials) {
                 val materialAsset = assetManager.createMaterialAsset(modelAsset.id.substring(0, 4) + "_" + mat.id)
-                modelAsset.meta.defaultModelMaterials.put(mat.id, materialAsset.id)
+                modelAsset.meta.model.defaultMaterials.put(mat.id, materialAsset.id)
                 modelAsset.defaultMaterials.put(mat.id, materialAsset)
             }
-            modelAsset.meta.save()
+
+            // save meta file
+            val saver = MetaSaver()
+            saver.save(modelAsset.meta)
+
             modelAsset.applyDependencies()
 
             return modelAsset

@@ -25,6 +25,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.kotcrab.vis.ui.VisUI
+import com.mbrlabs.mundus.commons.assets.meta.MetaLoader
+import com.mbrlabs.mundus.editor.assets.MetaSaver
 import com.mbrlabs.mundus.editor.assets.ModelImporter
 import com.mbrlabs.mundus.editor.core.kryo.KryoManager
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
@@ -115,6 +117,9 @@ object Mundus {
             bindSingleton(toolManager)
             bindSingleton(shortcutController)
             bindSingleton(freeCamController)
+
+            bindSingleton(MetaSaver())
+            bindSingleton(MetaLoader())
         }
     }
 

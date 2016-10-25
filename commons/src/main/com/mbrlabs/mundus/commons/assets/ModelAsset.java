@@ -18,9 +18,9 @@ package com.mbrlabs.mundus.commons.assets;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.utils.UBJsonReader;
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
+import com.mbrlabs.mundus.commons.assets.meta.Meta;
+import com.mbrlabs.mundus.commons.assets.meta.MetaModel;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class ModelAsset extends Asset {
 
     private Map<String, MaterialAsset> defaultMaterials;
 
-    public ModelAsset(MetaFile meta, FileHandle assetFile) {
+    public ModelAsset(Meta meta, FileHandle assetFile) {
         super(meta, assetFile);
         defaultMaterials = new HashMap<String, MaterialAsset>();
     }
@@ -54,18 +54,14 @@ public class ModelAsset extends Asset {
         // TODO don't create a new loader each time
         MG3dModelLoader loader = new MG3dModelLoader(new UBJsonReader());
         model = loader.loadModel(file);
-        for (Material mat : model.materials) {
-            if (getMeta().getDiffuseColor() != null) {
-                mat.set(new ColorAttribute(ColorAttribute.Diffuse, getMeta().getDiffuseColor()));
-            }
-        }
     }
 
     @Override
     public void resolveDependencies(Map<String, Asset> assets) {
         // materials
-        for (String g3dbMatID : meta.getDefaultModelMaterials().keySet()) {
-            String uuid = meta.getDefaultModelMaterials().get(g3dbMatID);
+        MetaModel metaModel = meta.getModel();
+        for (String g3dbMatID : metaModel.getDefaultMaterials().keys()) {
+            String uuid = metaModel.getDefaultMaterials().get(g3dbMatID);
             defaultMaterials.put(g3dbMatID, (MaterialAsset) assets.get(uuid));
         }
     }

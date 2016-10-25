@@ -18,7 +18,7 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
+import com.mbrlabs.mundus.commons.assets.meta.Meta;
 import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 
@@ -34,7 +34,7 @@ public class TextureAsset extends Asset implements TextureProvider {
     private boolean generateMipMaps;
     private boolean tileable;
 
-    public TextureAsset(MetaFile meta, FileHandle assetFile) {
+    public TextureAsset(Meta meta, FileHandle assetFile) {
         super(meta, assetFile);
     }
 
