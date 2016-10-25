@@ -16,12 +16,11 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs.settings
 
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
-import com.kotcrab.vis.ui.widget.VisLabel
-import com.kotcrab.vis.ui.widget.VisSplitPane
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.kotcrab.vis.ui.widget.VisTable
-import com.mbrlabs.mundus.editor.Mundus
-import com.mbrlabs.mundus.editor.core.registry.Registry
+import com.kotcrab.vis.ui.widget.VisTextButton
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.BaseDialog
 
 /**
@@ -30,26 +29,61 @@ import com.mbrlabs.mundus.editor.ui.modules.dialogs.BaseDialog
  */
 class SettingsDialog : BaseDialog("Settings") {
 
-    private val splitPane: VisSplitPane
-    private val settingsSelection = VerticalGroup()
-    private val generalSettings: GeneralSettingsTable
+    private val settingsSelection = VisTable()
+    private val content = VisTable()
+    private val saveBtn = VisTextButton("Save")
 
-    private val registry: Registry = Mundus.inject()
+    private val generalBtn = VisTextButton("General")
+    private val exportBtn = VisTextButton("Export")
+    private val appearenceBtn = VisTextButton("Appearance")
+
+    private val generalSettings = GeneralSettingsTable()
+    private val exportSettings = ExportSettingsTable()
+    private val appearenceSettings = AppearanceSettingsTable()
 
     init {
+        val width = 700f
+        val height = 400f
         val root = VisTable()
-        root.padTop(6f).padRight(6f).padBottom(22f)
-        add(root)
+        add(root).width(width).height(height).row()
 
-        settingsSelection.addActor(VisLabel("General"))
-        settingsSelection.addActor(VisLabel("Appearance"))
-        settingsSelection.addActor(VisLabel("Export"))
+        root.add(settingsSelection).width(width*0.3f).grow().grow()
+        root.addSeparator(true).padLeft(5f).padRight(5f)
+        root.add(content).width(width*0.7f).grow().row()
 
-        generalSettings = GeneralSettingsTable(registry)
+        settingsSelection.align(Align.topLeft)
+        settingsSelection.add(generalBtn).growX().pad(5f).row()
+        settingsSelection.add(exportBtn).growX().pad(5f).row()
+        settingsSelection.add(appearenceBtn).growX().pad(5f).row()
 
-        splitPane = VisSplitPane(settingsSelection, generalSettings, false)
-        splitPane.setSplitAmount(0.3f)
-        root.add(splitPane).width(700f).minHeight(400f).fill().expand()
+        setupListeners()
+        replaceContent(generalSettings)
+    }
+
+    private fun setupListeners() {
+        generalBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                replaceContent(generalSettings)
+            }
+        })
+
+        appearenceBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                replaceContent(appearenceSettings)
+            }
+        })
+
+        exportBtn.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                replaceContent(exportSettings)
+            }
+        })
+    }
+
+    private fun replaceContent(table: VisTable) {
+        content.clear()
+        content.add(table).grow().row()
+        content.add(saveBtn).growX().bottom().pad(5f).row()
     }
 
 }
