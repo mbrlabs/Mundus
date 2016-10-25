@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mbrlabs.mundus.commons.assets;
+package com.mbrlabs.mundus.commons.assets.meta;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.mbrlabs.mundus.commons.assets.AssetType;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

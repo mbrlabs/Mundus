@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.assets;
+package com.mbrlabs.mundus.commons.assets.meta;
 
 /**
  * @author Marcus Brummer

@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Disposable;
+import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
 
 import java.util.Map;
 

@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.PixmapIO
 import com.badlogic.gdx.utils.ObjectSet
 import com.mbrlabs.mundus.commons.assets.*
+import com.mbrlabs.mundus.commons.assets.meta.MetaFile
 import com.mbrlabs.mundus.editor.utils.Log
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils

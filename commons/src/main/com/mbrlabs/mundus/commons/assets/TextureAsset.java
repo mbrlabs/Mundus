@@ -18,6 +18,7 @@ package com.mbrlabs.mundus.commons.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
 import com.mbrlabs.mundus.commons.utils.TextureProvider;
 import com.mbrlabs.mundus.commons.utils.TextureUtils;
 

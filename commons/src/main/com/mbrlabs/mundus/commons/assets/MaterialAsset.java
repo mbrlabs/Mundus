@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
+import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;

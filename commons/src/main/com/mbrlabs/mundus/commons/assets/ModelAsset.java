@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.utils.UBJsonReader;
+import com.mbrlabs.mundus.commons.assets.meta.MetaFile;
 import com.mbrlabs.mundus.commons.g3d.MG3dModelLoader;
 
 import java.util.HashMap;
