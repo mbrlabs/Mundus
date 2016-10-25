@@ -140,7 +140,8 @@ public class KryoManager {
      */
     public void saveProjectContext(ProjectContext context) {
         try {
-            Output output = new Output(new FileOutputStream(context.path + "/" + context.name + ".pro"));
+            Output output = new Output(new FileOutputStream(context.path + "/" +
+                    context.name + "." + ProjectManager.PROJECT_EXTENSION));
 
             ProjectDescriptor descriptor = DescriptorConverter.convert(context);
             kryo.writeObject(output, descriptor);
@@ -167,7 +168,7 @@ public class KryoManager {
         // find .pro file
         FileHandle projectFile = null;
         for (FileHandle f : Gdx.files.absolute(ref.getPath()).list()) {
-            if (f.extension().equals("pro")) {
+            if (f.extension().equals(ProjectManager.PROJECT_EXTENSION)) {
                 projectFile = f;
                 break;
             }
@@ -195,7 +196,7 @@ public class KryoManager {
     public void saveScene(ProjectContext context, Scene scene) {
         try {
             String sceneDir = FilenameUtils.concat(context.path + "/" + ProjectManager.PROJECT_SCENES_DIR,
-                    scene.getName() + ProjectManager.PROJECT_SCENE_EXTENSION);
+                    scene.getName() + "." + ProjectManager.PROJECT_SCENE_EXTENSION);
 
             Output output = new Output(new FileOutputStream(sceneDir));
 
@@ -224,7 +225,7 @@ public class KryoManager {
      */
     public SceneDescriptor loadScene(ProjectContext context, String sceneName) throws FileNotFoundException {
         String sceneDir = FilenameUtils.concat(context.path + "/" + ProjectManager.PROJECT_SCENES_DIR,
-                sceneName + ProjectManager.PROJECT_SCENE_EXTENSION);
+                sceneName + "." + ProjectManager.PROJECT_SCENE_EXTENSION);
 
         Input input = new Input(new FileInputStream(sceneDir));
         SceneDescriptor sceneDescriptor = kryo.readObjectOrNull(input, SceneDescriptor.class);

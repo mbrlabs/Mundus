@@ -66,7 +66,8 @@ public class ProjectManager implements Disposable {
     private static final String DEFAULT_SCENE_NAME = "Main Scene";
     public static final String PROJECT_ASSETS_DIR = "assets/";
     public static final String PROJECT_SCENES_DIR = "scenes/";
-    public static final String PROJECT_SCENE_EXTENSION = ".mundus";
+    public static final String PROJECT_SCENE_EXTENSION = "mundus";
+    public static final String PROJECT_EXTENSION = "pro";
 
     private ProjectContext currentProject;
     private Registry registry;
