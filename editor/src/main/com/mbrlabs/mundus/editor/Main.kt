@@ -27,8 +27,6 @@ const private val TAG = "Main"
 const val TITLE = "Mundus v0.1.0"
 
 fun main(arg: Array<String>) {
-    // metaTest()
-
     Log.init()
     launchEditor()
 }
@@ -49,7 +47,7 @@ private fun launchEditor() {
     config.setTitle(TITLE)
     config.setWindowSizeLimits(1350, 1, 9999, 9999)
     config.setWindowPosition(-1, -1)
-    config.useVsync(true)
+
 
     Lwjgl3Application(editor, config)
     Log.info(TAG, "Shutting down [{}]", TITLE)

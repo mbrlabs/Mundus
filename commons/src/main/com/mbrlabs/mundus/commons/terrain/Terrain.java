@@ -43,8 +43,8 @@ import com.mbrlabs.mundus.commons.utils.MathUtils;
  */
 public class Terrain implements RenderableProvider, Disposable {
 
-    public static final int DEFAULT_SIZE = 800;
-    public static final int DEFAULT_VERTEX_RESOLUTION = 180;
+    public static final int DEFAULT_SIZE = 1600;
+    public static final int DEFAULT_VERTEX_RESOLUTION = 100;
 
     private static final MeshPartBuilder.VertexInfo tempVertexInfo = new MeshPartBuilder.VertexInfo();
     private static final Vector3 c00 = new Vector3();
