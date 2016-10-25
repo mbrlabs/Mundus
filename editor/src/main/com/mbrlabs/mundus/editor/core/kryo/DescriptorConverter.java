@@ -143,13 +143,12 @@ public class DescriptorConverter {
         final GameObject go = new GameObject(sceneGraph, descriptor.getName(), descriptor.getId());
         go.active = descriptor.isActive();
 
-        final float[] pos = descriptor.getPosition();
-        final float[] rot = descriptor.getRotation();
-        final float[] scl = descriptor.getScale();
+        // transformation
+        final float[] transform = descriptor.getTransform();
+        go.translate(transform[0], transform[1], transform[2]);
+        go.rotate(transform[3], transform[4], transform[5], transform[6]);
+        go.scale(transform[7], transform[8], transform[9]);
 
-        go.translate(pos[0], pos[1], pos[2]);
-        go.rotate(rot[0], rot[1], rot[2], rot[3]);
-        go.scale(scl[0], scl[1], scl[2]);
         // TODO TAGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // convert components
@@ -178,22 +177,23 @@ public class DescriptorConverter {
 
         // translation
         go.getLocalPosition(tempVec);
-        descriptor.getPosition()[0] = tempVec.x;
-        descriptor.getPosition()[1] = tempVec.y;
-        descriptor.getPosition()[2] = tempVec.z;
+        final float[] transform = descriptor.getTransform();
+        transform[0] = tempVec.x;
+        transform[1] = tempVec.y;
+        transform[2] = tempVec.z;
 
         // rotation
         go.getLocalRotation(tempQuat);
-        descriptor.getRotation()[0] = tempQuat.x;
-        descriptor.getRotation()[1] = tempQuat.y;
-        descriptor.getRotation()[2] = tempQuat.z;
-        descriptor.getRotation()[3] = tempQuat.w;
+        transform[3] = tempQuat.x;
+        transform[4] = tempQuat.y;
+        transform[5] = tempQuat.z;
+        transform[6] = tempQuat.w;
 
         // scaling
         go.getLocalScale(tempVec);
-        descriptor.getScale()[0] = tempVec.x;
-        descriptor.getScale()[1] = tempVec.y;
-        descriptor.getScale()[2] = tempVec.z;
+        transform[7] = tempVec.x;
+        transform[8] = tempVec.y;
+        transform[9] = tempVec.z;
 
         // convert components
         for (Component c : go.getComponents()) {

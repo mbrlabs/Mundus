@@ -35,20 +35,16 @@ public class GameObjectDescriptor {
     private boolean active;
 
     @Tag(3)
-    private float[] position = new float[3];
-    @Tag(4)
-    private float[] rotation = new float[4];
-    @Tag(5)
-    private float[] scale = new float[3];
+    private float[] transform = new float[10];
 
-    @Tag(6)
+    @Tag(4)
     private List<String> tags;
-    @Tag(7)
+    @Tag(5)
     private List<GameObjectDescriptor> childs;
 
-    @Tag(8)
+    @Tag(6)
     private ModelComponentDescriptor modelComponent;
-    @Tag(9)
+    @Tag(7)
     private TerrainComponentDescriptor terrainComponent;
 
     public GameObjectDescriptor() {
@@ -80,28 +76,8 @@ public class GameObjectDescriptor {
         this.active = active;
     }
 
-    public float[] getPosition() {
-        return position;
-    }
-
-    public void setPosition(float[] position) {
-        this.position = position;
-    }
-
-    public float[] getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(float[] rotation) {
-        this.rotation = rotation;
-    }
-
-    public float[] getScale() {
-        return scale;
-    }
-
-    public void setScale(float[] scale) {
-        this.scale = scale;
+    public float[] getTransform() {
+        return transform;
     }
 
     public List<String> getTags() {
