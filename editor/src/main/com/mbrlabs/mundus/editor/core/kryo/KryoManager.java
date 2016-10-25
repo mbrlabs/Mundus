@@ -29,6 +29,7 @@ import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ModelComponentDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectRefDescriptor;
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectSettingsDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SettingsDescriptor;
@@ -76,18 +77,19 @@ public class KryoManager {
         kryo.register(RegistryDescriptor.class, 2);
         kryo.register(ProjectRefDescriptor.class, 3);
         kryo.register(SettingsDescriptor.class, 4);
-        kryo.register(KeyboardLayout.class, 5);
-        kryo.register(ProjectDescriptor.class, 6);
-        kryo.register(SceneDescriptor.class, 7);
+        kryo.register(ProjectSettingsDescriptor.class, 5);
+        kryo.register(KeyboardLayout.class, 6);
+        kryo.register(ProjectDescriptor.class, 7);
+        kryo.register(SceneDescriptor.class, 8);
 
         // basic building blocks
-        kryo.register(FogDescriptor.class, 8);
-        kryo.register(GameObjectDescriptor.class, 9);
-        kryo.register(BaseLightDescriptor.class, 10);
+        kryo.register(FogDescriptor.class, 9);
+        kryo.register(GameObjectDescriptor.class, 10);
+        kryo.register(BaseLightDescriptor.class, 11);
 
         // components
-        kryo.register(ModelComponentDescriptor.class, 11);
-        kryo.register(TerrainComponentDescriptor.class, 12);
+        kryo.register(ModelComponentDescriptor.class, 12);
+        kryo.register(TerrainComponentDescriptor.class, 13);
     }
 
     /**

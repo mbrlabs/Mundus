@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.editor.core.kryo;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.assets.Asset;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
@@ -36,11 +37,13 @@ import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ModelComponentDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectRefDescriptor;
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectSettingsDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.RegistryDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SettingsDescriptor;
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.TerrainComponentDescriptor;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
+import com.mbrlabs.mundus.editor.core.project.ProjectSettings;
 import com.mbrlabs.mundus.editor.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.editor.core.registry.ProjectRef;
 import com.mbrlabs.mundus.editor.core.registry.Registry;
@@ -416,6 +419,34 @@ public class DescriptorConverter {
         }
 
         return context;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Project Settings
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static ProjectSettingsDescriptor convert(ProjectSettings settings) {
+        ProjectSettingsDescriptor descriptor = new ProjectSettingsDescriptor();
+
+        // export settings
+        descriptor.setExportAllAssets(settings.getExport().allAssets);
+        descriptor.setExportCompressScenes(settings.getExport().compressScenes);
+        descriptor.setExportOutputFolder(settings.getExport().outputFolder);
+        descriptor.setJsonType(settings.getExport().jsonType.toString());
+
+        return descriptor;
+    }
+
+    public static ProjectSettings convert(ProjectSettingsDescriptor descriptor) {
+        ProjectSettings settings = new ProjectSettings();
+
+        // export settings
+        settings.getExport().allAssets = descriptor.isExportAllAssets();
+        settings.getExport().compressScenes = descriptor.isExportCompressScenes();
+        settings.getExport().outputFolder = descriptor.getExportOutputFolder();
+        settings.getExport().jsonType = JsonWriter.OutputType.valueOf(descriptor.getJsonType());
+
+        return settings;
     }
 
 }

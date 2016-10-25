@@ -35,6 +35,8 @@ public class ProjectDescriptor {
     private List<String> sceneNames;
     @Tag(3)
     private String currentSceneName;
+    @Tag(4)
+    private ProjectSettingsDescriptor settings;
 
     public ProjectDescriptor() {
         sceneNames = new ArrayList<>();
@@ -70,6 +72,14 @@ public class ProjectDescriptor {
 
     public void setCurrentSceneName(String currentSceneName) {
         this.currentSceneName = currentSceneName;
+    }
+
+    public ProjectSettingsDescriptor getSettings() {
+        return settings;
+    }
+
+    public void setSettings(ProjectSettingsDescriptor settings) {
+        this.settings = settings;
     }
 
 }

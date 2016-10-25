@@ -35,6 +35,7 @@ public class ProjectContext implements Disposable {
 
     private static final String TAG = ProjectContext.class.getSimpleName();
 
+    public ProjectSettings settings;
     public String path;
     public String name;
 
