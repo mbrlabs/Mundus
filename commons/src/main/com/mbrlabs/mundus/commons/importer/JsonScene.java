@@ -41,4 +41,8 @@ public class JsonScene {
     public static final String MODEL_COMPONENT_MODEL_ID = "i";
     public static final String MODEL_COMPONENT_MATERIALS = "m";
 
+    // TerrainComponent
+    public static final String TERRAIN_COMPONENT_TERRAIN_ID = "i";
+
+
 }

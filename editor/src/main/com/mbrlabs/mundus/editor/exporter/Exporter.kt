@@ -25,7 +25,9 @@ import com.mbrlabs.mundus.commons.assets.Asset
 import com.mbrlabs.mundus.commons.importer.JsonScene
 import com.mbrlabs.mundus.editor.core.kryo.KryoManager
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.ModelComponentDescriptor
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.TerrainComponentDescriptor
 import com.mbrlabs.mundus.editor.core.project.ProjectContext
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import org.apache.commons.io.FilenameUtils
@@ -123,8 +125,15 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
         json.writeValue(JsonScene.GO_NAME, go.name)
         json.writeValue(JsonScene.GO_ACTIVE, go.isActive)
         json.writeValue(JsonScene.GO_TAGS, go.tags)
-        convertTransform(go, json)
-        // TODO components
+        json.writeValue(JsonScene.GO_TRANSFORM, arrayOf(
+                go.position[0], go.position[1], go.position[2],                 // position
+                go.rotation[0], go.rotation[1], go.rotation[2], go.rotation[3], // rotation
+                go.scale[0], go.scale[1], go.scale[2]                           // scale
+        ))
+
+        // components
+        if(go.modelComponent != null) convertModelComponent(go.modelComponent, json)
+        if(go.terrainComponent != null) convertTerrainComponent(go.terrainComponent, json)
 
         // children
         for(child in go.childs) {
@@ -136,12 +145,27 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
         json.writeObjectEnd()
     }
 
-    private fun convertTransform(go: GameObjectDescriptor, json: Json) {
-        json.writeValue(JsonScene.GO_TRANSFORM, arrayOf(
-            go.position[0], go.position[1], go.position[2],                 // position
-            go.rotation[0], go.rotation[1], go.rotation[2], go.rotation[3], // rotation
-            go.scale[0], go.scale[1], go.scale[2]                           // scale
-        ))
+    private fun convertModelComponent(comp: ModelComponentDescriptor, json: Json) {
+        json.writeObjectStart(JsonScene.GO_MODEL_COMPONENT)
+        json.writeValue(JsonScene.MODEL_COMPONENT_MODEL_ID, comp.modelID)
+
+        // materials
+        json.writeArrayStart(JsonScene.MODEL_COMPONENT_MATERIALS)
+        for((key, value) in comp.materials) {
+            json.writeObjectStart()
+            json.writeValue(key, value)
+            json.writeObjectEnd()
+        }
+        json.writeArrayEnd()
+
+        json.writeObjectEnd()
     }
+
+    private fun convertTerrainComponent(comp: TerrainComponentDescriptor, json: Json) {
+        json.writeObjectStart(JsonScene.GO_TERRAIN_COMPONENT)
+        json.writeValue(JsonScene.TERRAIN_COMPONENT_TERRAIN_ID, comp.terrainID)
+        json.writeObjectEnd()
+    }
+
 
 }
