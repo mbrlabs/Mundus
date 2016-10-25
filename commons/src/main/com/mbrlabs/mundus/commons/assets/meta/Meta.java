@@ -32,7 +32,7 @@ public class Meta {
     public static final String JSON_UUID = "id";
     public static final String JSON_TYPE = "t";
     public static final String JSON_TERRAIN = "ter";
-    public static final String JSON_MODEL = "3d";
+    public static final String JSON_MODEL = "mdl";
 
     private int version;
     private long lastModified;
@@ -100,4 +100,33 @@ public class Meta {
         this.terrain = terrain;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Meta meta = (Meta) o;
+
+        return uuid.equals(meta.uuid) && file.equals(meta.file);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uuid.hashCode();
+        result = 31 * result + file.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Meta{" +
+                "version=" + version +
+                ", lastModified=" + lastModified +
+                ", uuid='" + uuid + '\'' +
+                ", type=" + type +
+                ", model=" + model +
+                ", terrain=" + terrain +
+                ", file=" + file +
+                '}';
+    }
 }

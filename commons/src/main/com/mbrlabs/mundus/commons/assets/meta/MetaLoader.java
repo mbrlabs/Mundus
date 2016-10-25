@@ -53,19 +53,23 @@ public class MetaLoader {
     }
 
     private void parseTerrain(Meta meta, JsonValue jsonTerrain) {
+        if(jsonTerrain == null) return;
+
         final MetaTerrain terrain = new MetaTerrain();
         terrain.setSize(jsonTerrain.getInt(MetaTerrain.JSON_SIZE));
-        terrain.setSplatmap(jsonTerrain.getString(MetaTerrain.JSON_SPLATMAP));
-        terrain.setSplatBase(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_BASE));
-        terrain.setSplatR(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_R));
-        terrain.setSplatG(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_G));
-        terrain.setSplatB(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_B));
-        terrain.setSplatA(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_A));
+        terrain.setSplatmap(jsonTerrain.getString(MetaTerrain.JSON_SPLATMAP, null));
+        terrain.setSplatBase(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_BASE, null));
+        terrain.setSplatR(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_R, null));
+        terrain.setSplatG(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_G, null));
+        terrain.setSplatB(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_B, null));
+        terrain.setSplatA(jsonTerrain.getString(MetaTerrain.JSON_SPLAT_A, null));
 
         meta.setTerrain(terrain);
     }
 
     private void parseModel(Meta meta, JsonValue jsonModel) {
+        if(jsonModel == null) return;
+
         final MetaModel model = new MetaModel();
         final JsonValue materials = jsonModel.get(MetaModel.JSON_DEFAULT_MATERIALS);
 

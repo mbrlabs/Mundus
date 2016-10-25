@@ -27,6 +27,8 @@ const private val TAG = "Main"
 const val TITLE = "Mundus v0.1.0"
 
 fun main(arg: Array<String>) {
+    // metaTest()
+
     Log.init()
     launchEditor()
 }

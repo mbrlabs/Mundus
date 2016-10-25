@@ -95,4 +95,16 @@ public class MetaTerrain {
         this.size = size;
     }
 
+    @Override
+    public String toString() {
+        return "MetaTerrain{" +
+                "size=" + size +
+                ", splatmap='" + splatmap + '\'' +
+                ", splatBase='" + splatBase + '\'' +
+                ", splatR='" + splatR + '\'' +
+                ", splatG='" + splatG + '\'' +
+                ", splatB='" + splatB + '\'' +
+                ", splatA='" + splatA + '\'' +
+                '}';
+    }
 }

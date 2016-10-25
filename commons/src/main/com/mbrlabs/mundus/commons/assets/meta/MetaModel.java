@@ -27,9 +27,17 @@ public class MetaModel {
 
     public static final String JSON_DEFAULT_MATERIALS = "mats";
 
+    // g3db material id -> material asset uuid
     private ObjectMap<String, String> defaultMaterials = new ObjectMap<String, String>();
 
     public ObjectMap<String, String> getDefaultMaterials() {
         return defaultMaterials;
+    }
+
+    @Override
+    public String toString() {
+        return "MetaModel{" +
+                "defaultMaterials=" + defaultMaterials +
+                '}';
     }
 }
