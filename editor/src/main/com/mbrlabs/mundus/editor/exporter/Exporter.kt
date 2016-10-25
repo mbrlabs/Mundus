@@ -18,12 +18,16 @@ package com.mbrlabs.mundus.editor.exporter
 
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonWriter
 import com.kotcrab.vis.ui.util.async.AsyncTask
 import com.kotcrab.vis.ui.util.async.AsyncTaskListener
 import com.mbrlabs.mundus.commons.assets.Asset
+import com.mbrlabs.mundus.commons.importer.JsonScene
 import com.mbrlabs.mundus.editor.core.kryo.KryoManager
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor
 import com.mbrlabs.mundus.editor.core.project.ProjectContext
+import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import org.apache.commons.io.FilenameUtils
 import java.io.File
 
@@ -48,6 +52,8 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
 
                 // copy assets
                 val assetFolder = FileHandle(FilenameUtils.concat(outputFolder.path(), "assets/"))
+                val scenesFolder = FileHandle(FilenameUtils.concat(outputFolder.path(), "scenes/"))
+
                 for(asset in assetManager.assets) {
                     exportAsset(asset, assetFolder)
                     progress += step
@@ -56,8 +62,10 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
 
                 // load, convert & copy scenes
                 for(sceneName in project.scenes) {
+                    val file = FileHandle(FilenameUtils.concat(scenesFolder.path(),
+                            sceneName + "." + ProjectManager.PROJECT_SCENE_EXTENSION))
                     val scene = kryo.loadScene(project, sceneName)
-                    exportScene(scene)
+                    exportScene(scene, file)
                     progress += step
                     setProgressPercent(progress.toInt())
                 }
@@ -69,11 +77,11 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
     }
 
     private fun createFolders(exportRootFolder: FileHandle) {
-        // root/assets
+        // ROOT/assets
         val assets = File(FilenameUtils.concat(exportRootFolder.path(), "assets/"))
         assets.mkdirs()
 
-        // root/scenes
+        // ROOT/scenes
         val scenes = File(FilenameUtils.concat(exportRootFolder.path(), "scenes/"))
         scenes.mkdirs()
     }
@@ -83,9 +91,57 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
         asset.meta.file.copyTo(folder)
     }
 
-    private fun exportScene(scene: SceneDescriptor) {
+    private fun exportScene(scene: SceneDescriptor, file: FileHandle) {
         val json = Json()
-        // TODO implement
+        json.setOutputType(JsonWriter.OutputType.json)
+        json.setWriter(file.writer(false))
+
+        json.writeObjectStart()
+
+        // START basics
+        json.writeValue(JsonScene.ID, scene.id)
+        json.writeValue(JsonScene.NAME, scene.name)
+        // END basics
+
+        // START game objects
+        json.writeArrayStart(JsonScene.GAME_OBJECTS)
+        for(go in scene.gameObjects) {
+            convertGameObject(go, json)
+        }
+        json.writeArrayEnd()
+        // END game objects
+
+        json.writeObjectEnd()
+
+        json.writer.flush()
+    }
+
+    private fun convertGameObject(go: GameObjectDescriptor, json: Json) {
+        // convert game object
+        json.writeObjectStart()
+        json.writeValue(JsonScene.GO_ID, go.id)
+        json.writeValue(JsonScene.GO_NAME, go.name)
+        json.writeValue(JsonScene.GO_ACTIVE, go.isActive)
+        json.writeValue(JsonScene.GO_TAGS, go.tags)
+        convertTransform(go, json)
+        // TODO components
+
+        // children
+        for(child in go.childs) {
+            json.writeArrayStart(JsonScene.GO_CHILDREN)
+            convertGameObject(child, json)
+            json.writeArrayEnd()
+        }
+
+        json.writeObjectEnd()
+    }
+
+    private fun convertTransform(go: GameObjectDescriptor, json: Json) {
+        json.writeValue(JsonScene.GO_TRANSFORM, arrayOf(
+            go.position[0], go.position[1], go.position[2],                 // position
+            go.rotation[0], go.rotation[1], go.rotation[2], go.rotation[3], // rotation
+            go.scale[0], go.scale[1], go.scale[2]                           // scale
+        ))
     }
 
 }
