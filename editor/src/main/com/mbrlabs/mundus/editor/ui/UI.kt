@@ -47,7 +47,10 @@ import com.mbrlabs.mundus.editor.utils.Toaster
 object UI : Stage(ScreenViewport()) {
 
     const val PAD_BOTTOM: Float = 2f
+    const val PAD_BOTTOM_X2: Float = PAD_BOTTOM * 2
+
     const val PAD_SIDE: Float = 5f
+    const val PAD_SIDE_X2: Float = PAD_SIDE * 2
 
 
     // reusable ui elements

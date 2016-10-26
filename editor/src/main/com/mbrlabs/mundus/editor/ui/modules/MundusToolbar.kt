@@ -117,7 +117,7 @@ class MundusToolbar : Toolbar() {
         // export btn
         exportBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                UI.showDialog(UI.exportDialog)
+                UI.exportDialog.export()
             }
         })
 

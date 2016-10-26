@@ -19,6 +19,7 @@ package com.mbrlabs.mundus.editor.exporter
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter
+import com.kotcrab.vis.ui.FocusManager
 import com.kotcrab.vis.ui.util.async.AsyncTask
 import com.kotcrab.vis.ui.util.async.AsyncTaskListener
 import com.mbrlabs.mundus.commons.assets.Asset
@@ -30,6 +31,7 @@ import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.TerrainComponentDescriptor
 import com.mbrlabs.mundus.editor.core.project.ProjectContext
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
+import com.mbrlabs.mundus.editor.ui.UI
 import org.apache.commons.io.FilenameUtils
 import java.io.File
 
@@ -56,10 +58,15 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
                 val assetFolder = FileHandle(FilenameUtils.concat(outputFolder.path(), "assets/"))
                 val scenesFolder = FileHandle(FilenameUtils.concat(outputFolder.path(), "scenes/"))
 
+                // sleep a bit to open the progress dialog
+                Thread.sleep(250)
+
                 for(asset in assetManager.assets) {
                     exportAsset(asset, assetFolder)
                     progress += step
                     setProgressPercent(progress.toInt())
+                    setMessage(asset.id)
+                    Thread.sleep(50)
                 }
 
                 // load, convert & copy scenes
@@ -70,6 +77,8 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
                     exportScene(scene, file)
                     progress += step
                     setProgressPercent(progress.toInt())
+                    setMessage(scene.name)
+                    Thread.sleep(50)
                 }
             }
         }
