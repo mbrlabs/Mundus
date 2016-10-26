@@ -436,7 +436,9 @@ public class DescriptorConverter {
         // export settings
         descriptor.setExportAllAssets(settings.getExport().allAssets);
         descriptor.setExportCompressScenes(settings.getExport().compressScenes);
-        descriptor.setExportOutputFolder(settings.getExport().outputFolder.path());
+        if(settings.getExport().outputFolder != null) {
+            descriptor.setExportOutputFolder(settings.getExport().outputFolder.path());
+        }
         descriptor.setJsonType(settings.getExport().jsonType.toString());
 
         return descriptor;

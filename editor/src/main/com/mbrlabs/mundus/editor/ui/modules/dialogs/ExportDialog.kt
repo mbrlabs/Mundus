@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs
 
-import com.kotcrab.vis.ui.FocusManager
 import com.kotcrab.vis.ui.util.async.AsyncTaskListener
 import com.kotcrab.vis.ui.widget.VisDialog
 import com.kotcrab.vis.ui.widget.VisLabel
@@ -34,6 +33,8 @@ import com.mbrlabs.mundus.editor.utils.Toaster
  * @version 26-12-2015
  */
 class ExportDialog : VisDialog("Exporting") {
+
+    private var lastExport: Long = 0
 
     private val label = VisLabel()
     private val progressBar = VisProgressBar(0f, 100f, 1f, false)
@@ -58,6 +59,12 @@ class ExportDialog : VisDialog("Exporting") {
             return
         }
 
+        // prevent from exporting to fast which sometimes results in the export dialog not closing correctly
+        if(System.currentTimeMillis() - lastExport < 1000f) {
+            UI.toaster.error("Export pending")
+            return
+        }
+
         show(UI)
 
         Exporter(kryoManager, projectManager.current()).exportAsync(export.outputFolder, object: AsyncTaskListener {
@@ -74,6 +81,7 @@ class ExportDialog : VisDialog("Exporting") {
                 }
                 resetValues()
                 close()
+                lastExport = System.currentTimeMillis()
             }
 
             override fun messageChanged(message: String?) {

@@ -17,10 +17,13 @@
 package com.mbrlabs.mundus.editor.ui.modules.dialogs.settings
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.ui.Tree
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Align
+import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
+import com.kotcrab.vis.ui.widget.VisTree
+import com.mbrlabs.mundus.editor.ui.UI
 import com.mbrlabs.mundus.editor.ui.modules.dialogs.BaseDialog
 
 /**
@@ -29,14 +32,10 @@ import com.mbrlabs.mundus.editor.ui.modules.dialogs.BaseDialog
  */
 class SettingsDialog : BaseDialog("Settings") {
 
-    private val settingsSelection = VisTable()
+    private val settingsTree = VisTree()
     private val content = VisTable()
     private val saveBtn = VisTextButton("Save")
     private var listener: ClickListener? = null
-
-    private val generalBtn = VisTextButton("General")
-    private val exportBtn = VisTextButton("Export")
-    private val appearenceBtn = VisTextButton("Appearance")
 
     private val generalSettings = GeneralSettingsTable()
     private val exportSettings = ExportSettingsTable()
@@ -46,42 +45,43 @@ class SettingsDialog : BaseDialog("Settings") {
         val width = 700f
         val height = 400f
         val root = VisTable()
+        content.padRight(UI.PAD_SIDE)
         add(root).width(width).height(height).row()
 
-        root.add(settingsSelection).width(width*0.3f).grow().grow()
+        root.add(settingsTree).width(width*0.3f).padRight(UI.PAD_SIDE).grow()
         root.addSeparator(true).padLeft(5f).padRight(5f)
         root.add(content).width(width*0.7f).grow().row()
 
-        settingsSelection.align(Align.topLeft)
-        settingsSelection.add(generalBtn).growX().pad(5f).row()
-        settingsSelection.add(exportBtn).growX().pad(5f).row()
-        settingsSelection.add(appearenceBtn).growX().pad(5f).row()
+        // general
+        val generalSettingsNode = Tree.Node(VisLabel("General"))
+        generalSettingsNode.`object` = generalSettings
+        settingsTree.add(generalSettingsNode)
 
-        setupListeners()
+        // export
+        val exportSettingsNode = Tree.Node(VisLabel("Export"))
+        exportSettingsNode.`object` = exportSettings
+        settingsTree.add(exportSettingsNode)
+
+        // appearance
+        val appearenceNode = Tree.Node(VisLabel("Appearance"))
+        appearenceNode.`object` = appearenceSettings
+        settingsTree.add(appearenceNode)
+
+        // listener
+        settingsTree.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                val node = settingsTree.getNodeAt(y)
+                replaceContent(node?.`object` as? BaseSettingsTable)
+            }
+        })
+
+        // set initial content
+        settingsTree.selection.add(generalSettingsNode)
         replaceContent(generalSettings)
     }
 
-    private fun setupListeners() {
-        generalBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                replaceContent(generalSettings)
-            }
-        })
-
-        appearenceBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                replaceContent(appearenceSettings)
-            }
-        })
-
-        exportBtn.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                replaceContent(exportSettings)
-            }
-        })
-    }
-
-    private fun replaceContent(table: BaseSettingsTable) {
+    private fun replaceContent(table: BaseSettingsTable?) {
+        if(table == null) return
         content.clear()
         content.add(table).grow().row()
         content.add(saveBtn).growX().bottom().pad(10f).row()

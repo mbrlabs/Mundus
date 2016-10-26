@@ -51,6 +51,7 @@ public class ProjectContext implements Disposable {
 
     public ProjectContext(int idProvider) {
         scenes = new Array<>();
+        settings = new ProjectSettings();
         currScene = new EditorScene();
         this.idProvider = idProvider;
     }

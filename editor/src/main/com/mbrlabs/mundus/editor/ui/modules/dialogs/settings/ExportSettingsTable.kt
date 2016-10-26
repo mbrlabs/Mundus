@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs.settings
 
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.JsonWriter
 import com.kotcrab.vis.ui.widget.VisCheckBox
 import com.kotcrab.vis.ui.widget.VisLabel
@@ -87,7 +88,7 @@ class ExportSettingsTable : BaseSettingsTable(), ProjectChangedEvent.ProjectChan
         exportSettings.allAssets = allAssets.isChecked
         exportSettings.compressScenes = compression.isChecked
         exportSettings.jsonType = jsonType.selected
-        exportSettings.outputFolder = fileChooserField.file
+        exportSettings.outputFolder = FileHandle(fileChooserField.path)
 
         kryoManager.saveProjectContext(projectManager.current())
         UI.toaster.success("Settings saved")

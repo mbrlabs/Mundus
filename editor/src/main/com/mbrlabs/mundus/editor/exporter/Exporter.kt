@@ -24,6 +24,7 @@ import com.kotcrab.vis.ui.util.async.AsyncTask
 import com.kotcrab.vis.ui.util.async.AsyncTaskListener
 import com.mbrlabs.mundus.commons.assets.Asset
 import com.mbrlabs.mundus.commons.importer.JsonScene
+import com.mbrlabs.mundus.editor.core.kryo.DescriptorConverter
 import com.mbrlabs.mundus.editor.core.kryo.KryoManager
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.ModelComponentDescriptor
@@ -41,10 +42,18 @@ import java.io.File
  */
 class Exporter(val kryo: KryoManager, val project: ProjectContext) {
 
+
+
     /**
      *
      */
     fun exportAsync(outputFolder: FileHandle, listener: AsyncTaskListener) {
+
+        // convert current project on the main thread to avoid nested array iterators
+        // because it would iterate over the scene graph arrays while rendering (on the main thread)
+        // and while converting (on the other thread)
+        val currentSceneDescriptor = DescriptorConverter.convert(project.currScene)
+
         val task = object: AsyncTask("export_${project.name}") {
             override fun doInBackground() {
                 val assetManager = project.assetManager
@@ -73,7 +82,16 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
                 for(sceneName in project.scenes) {
                     val file = FileHandle(FilenameUtils.concat(scenesFolder.path(),
                             sceneName + "." + ProjectManager.PROJECT_SCENE_EXTENSION))
-                    val scene = kryo.loadScene(project, sceneName)
+
+                    // load from disk or convert current scene
+                    var scene: SceneDescriptor?
+                    if(project.currScene.name == sceneName) {
+                        scene = currentSceneDescriptor
+                    } else {
+                        scene = kryo.loadScene(project, sceneName)
+                    }
+
+                    // convert & export
                     exportScene(scene, file)
                     progress += step
                     setProgressPercent(progress.toInt())

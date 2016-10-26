@@ -113,24 +113,26 @@ public class ModelPlacementTool extends Tool {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
         if (modelInstance != null && button == Input.Buttons.LEFT) {
-            int id = getProjectManager().current().obtainID();
-            GameObject modelGo = new GameObject(getProjectManager().current().currScene.sceneGraph, model.getName(),
-                    id);
-            getProjectManager().current().currScene.sceneGraph.addGameObject(modelGo);
+            for(int i = 0; i < 1000; i++) {
+                int id = getProjectManager().current().obtainID();
+                GameObject modelGo = new GameObject(getProjectManager().current().currScene.sceneGraph, model.getName(),
+                        id);
+                getProjectManager().current().currScene.sceneGraph.addGameObject(modelGo);
 
-            modelInstance.transform.getTranslation(tempV3);
-            modelGo.translate(tempV3);
+                modelInstance.transform.getTranslation(tempV3);
+                modelGo.translate(tempV3);
 
-            ModelComponent modelComponent = new ModelComponent(modelGo);
-            modelComponent.setShader(getShader());
-            modelComponent.setModel(model, true);
-            modelComponent.encodeRaypickColorId();
+                ModelComponent modelComponent = new ModelComponent(modelGo);
+                modelComponent.setShader(getShader());
+                modelComponent.setModel(model, true);
+                modelComponent.encodeRaypickColorId();
 
-            try {
-                modelGo.addComponent(modelComponent);
-            } catch (InvalidComponentException e) {
-                Dialogs.showErrorDialog(UI.INSTANCE, e.getMessage());
-                return false;
+                try {
+                    modelGo.addComponent(modelComponent);
+                } catch (InvalidComponentException e) {
+                    Dialogs.showErrorDialog(UI.INSTANCE, e.getMessage());
+                    return false;
+                }
             }
 
             Mundus.INSTANCE.postEvent(new SceneGraphChangedEvent());
