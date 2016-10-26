@@ -33,10 +33,18 @@ class ShortcutController(registry: Registry, private val projectManager: Project
 
     override fun keyDown(keycode: Int): Boolean {
         var keycode = convertKeycode(keycode)
+
+        // export
+        if(keycode == Input.Keys.F1) {
+            UI.exportDialog.export()
+            return true
+        }
+
+        // CTR + xyz shortcuts
+
         if (keycode == Input.Keys.CONTROL_LEFT) {
             isCtrlPressed = true
         }
-
         if (!isCtrlPressed) return false
 
         if (keycode == Input.Keys.Z) {

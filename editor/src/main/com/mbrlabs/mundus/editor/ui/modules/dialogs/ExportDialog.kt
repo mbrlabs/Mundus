@@ -76,7 +76,7 @@ class ExportDialog : VisDialog("Exporting") {
 
             override fun finished() {
                 if(!error) {
-                    UI.toaster.success("Export finished")
+                    UI.toaster.success("Project exported")
                 }
                 resetValues()
                 close()

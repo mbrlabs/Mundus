@@ -69,13 +69,13 @@ class MundusToolbar : Toolbar() {
         importMenu.addItem(createMaterial)
 
         saveBtn.padRight(7f).padLeft(7f)
-        Tooltip.Builder("Save project").target(saveBtn).build()
+        Tooltip.Builder("Save project (Ctrl+S)").target(saveBtn).build()
 
         importBtn.padRight(7f).padLeft(7f)
         Tooltip.Builder("Import model").target(importBtn).build()
 
         exportBtn.padRight(12f).padLeft(7f)
-        Tooltip.Builder("Export project").target(exportBtn).build()
+        Tooltip.Builder("Export project (F1)").target(exportBtn).build()
 
         selectBtn = FaTextButton(toolManager.selectionTool.iconFont)
         selectBtn.padRight(7f).padLeft(12f)
