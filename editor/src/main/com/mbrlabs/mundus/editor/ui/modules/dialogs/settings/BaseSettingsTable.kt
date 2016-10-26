@@ -14,31 +14,21 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.core.project;
+package com.mbrlabs.mundus.editor.ui.modules.dialogs.settings
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.JsonWriter;
+import com.kotcrab.vis.ui.widget.VisTable
 
 /**
  * @author Marcus Brummer
  * @version 26-10-2016
  */
-public class ProjectSettings {
+abstract class BaseSettingsTable : VisTable() {
 
-    private ExportSettings export = new ExportSettings();
-
-    public ExportSettings getExport() {
-        return export;
+    init {
+        top().left()
+        padRight(5f).padLeft(6f)
     }
 
-    /**
-     *
-     */
-    public class ExportSettings {
-        public JsonWriter.OutputType jsonType = JsonWriter.OutputType.json;
-        public boolean compressScenes = false;
-        public boolean allAssets = true;
-        public FileHandle outputFolder;
-    }
+    abstract fun onSave()
 
 }

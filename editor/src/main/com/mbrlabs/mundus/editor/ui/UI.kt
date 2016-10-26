@@ -46,6 +46,10 @@ import com.mbrlabs.mundus.editor.utils.Toaster
  */
 object UI : Stage(ScreenViewport()) {
 
+    const val PAD_BOTTOM: Float = 2f
+    const val PAD_SIDE: Float = 5f
+
+
     // reusable ui elements
     val toaster: Toaster = Toaster(this)
     val fileChooser: FileChooser = FileChooser(FileChooser.Mode.OPEN)

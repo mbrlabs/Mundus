@@ -37,57 +37,54 @@ import com.mbrlabs.mundus.editor.ui.widgets.FileChooserField
  * @author Marcus Brummer
  * @version 29-02-2016
  */
-class GeneralSettingsTable() : VisTable() {
+class GeneralSettingsTable : BaseSettingsTable() {
 
-    private val fbxBinary: FileChooserField
-    private val keyboardLayouts: VisSelectBox<KeyboardLayout>
+    private val fbxBinary = FileChooserField(500)
+    private val keyboardLayouts = VisSelectBox<KeyboardLayout>()
 
     private val kryoManager: KryoManager = Mundus.inject()
     private val registry: Registry = Mundus.inject()
 
     init {
         top().left()
-        padRight(5f).padLeft(6f)
+        padRight(UI.PAD_SIDE).padLeft(UI.PAD_SIDE)
 
-        add(VisLabel("General Settings")).left().colspan(2).row()
-        addSeparator().colspan(2).padBottom(10f)
-        add(VisLabel("fbx-conv:")).left()
-        fbxBinary = FileChooserField(300)
-        add(fbxBinary).left().row()
+        add(VisLabel("General Settings")).left().row()
+        addSeparator().padBottom(UI.PAD_SIDE*2)
+        add(VisLabel("fbx-conv binary")).left().row()
+        add(fbxBinary).growX().padBottom(UI.PAD_BOTTOM).row()
 
-        keyboardLayouts = VisSelectBox<KeyboardLayout>()
         keyboardLayouts.setItems(KeyboardLayout.QWERTY, KeyboardLayout.QWERTZ)
         keyboardLayouts.selected = registry.settings.keyboardLayout
 
-        add(VisLabel("Keyboard Layout:")).left()
-        add(keyboardLayouts).left().row()
+        add(VisLabel("Keyboard Layout")).growX().row()
+        add(keyboardLayouts).growX().row()
 
         addHandlers()
         reloadSettings()
     }
+
+
 
     fun reloadSettings() {
         fbxBinary.setText(registry.settings.fbxConvBinary)
     }
 
     private fun addHandlers() {
-//        save.addListener(object : ClickListener() {
-//            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-//                super.clicked(event, x, y)
-//                val fbxPath = fbxBinary.path
-//                registry.settings.fbxConvBinary = fbxPath
-//                kryoManager.saveRegistry(registry)
-//                Mundus.postEvent(SettingsChangedEvent(registry.settings))
-//                UI.toaster.success("Settings saved")
-//            }
-//        })
-
         keyboardLayouts.addListener(object : ChangeListener() {
             override fun changed(event: ChangeListener.ChangeEvent, actor: Actor) {
                 val selection = keyboardLayouts.selected
                 registry.settings.keyboardLayout = selection
             }
         })
+    }
+
+    override fun onSave() {
+        val fbxPath = fbxBinary.path
+        registry.settings.fbxConvBinary = fbxPath
+        kryoManager.saveRegistry(registry)
+        Mundus.postEvent(SettingsChangedEvent(registry.settings))
+        UI.toaster.success("Settings saved")
     }
 
 }

@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.editor.core.kryo;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -400,6 +401,7 @@ public class DescriptorConverter {
         descriptor.setName(project.name);
         descriptor.setCurrentSceneName(project.currScene.getName());
         descriptor.setNextAvailableID(project.inspectCurrentID());
+        descriptor.setSettings(convert(project.settings));
 
         // scenes
         for (String sceneName : project.scenes) {
@@ -412,6 +414,9 @@ public class DescriptorConverter {
     public static ProjectContext convert(ProjectDescriptor projectDescriptor) {
         ProjectContext context = new ProjectContext(projectDescriptor.getNextAvailableID());
         context.name = projectDescriptor.getName();
+
+        // project settings
+        context.settings = convert(projectDescriptor.getSettings());
 
         // scenes
         for (String sceneName : projectDescriptor.getSceneNames()) {
@@ -431,7 +436,7 @@ public class DescriptorConverter {
         // export settings
         descriptor.setExportAllAssets(settings.getExport().allAssets);
         descriptor.setExportCompressScenes(settings.getExport().compressScenes);
-        descriptor.setExportOutputFolder(settings.getExport().outputFolder);
+        descriptor.setExportOutputFolder(settings.getExport().outputFolder.path());
         descriptor.setJsonType(settings.getExport().jsonType.toString());
 
         return descriptor;
@@ -439,11 +444,14 @@ public class DescriptorConverter {
 
     public static ProjectSettings convert(ProjectSettingsDescriptor descriptor) {
         ProjectSettings settings = new ProjectSettings();
+        if(descriptor == null) return settings;
 
         // export settings
         settings.getExport().allAssets = descriptor.isExportAllAssets();
         settings.getExport().compressScenes = descriptor.isExportCompressScenes();
-        settings.getExport().outputFolder = descriptor.getExportOutputFolder();
+        if(descriptor.getExportOutputFolder() != null && descriptor.getExportOutputFolder().length() > 0) {
+            settings.getExport().outputFolder = new FileHandle(descriptor.getExportOutputFolder());
+        }
         settings.getExport().jsonType = JsonWriter.OutputType.valueOf(descriptor.getJsonType());
 
         return settings;

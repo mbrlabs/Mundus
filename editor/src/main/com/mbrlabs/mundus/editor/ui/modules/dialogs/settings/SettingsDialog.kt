@@ -32,6 +32,7 @@ class SettingsDialog : BaseDialog("Settings") {
     private val settingsSelection = VisTable()
     private val content = VisTable()
     private val saveBtn = VisTextButton("Save")
+    private var listener: ClickListener? = null
 
     private val generalBtn = VisTextButton("General")
     private val exportBtn = VisTextButton("Export")
@@ -80,10 +81,20 @@ class SettingsDialog : BaseDialog("Settings") {
         })
     }
 
-    private fun replaceContent(table: VisTable) {
+    private fun replaceContent(table: BaseSettingsTable) {
         content.clear()
         content.add(table).grow().row()
-        content.add(saveBtn).growX().bottom().pad(5f).row()
+        content.add(saveBtn).growX().bottom().pad(10f).row()
+
+        if(listener != null) {
+            saveBtn.removeListener(listener!!)
+        }
+        listener = object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                table.onSave()
+            }
+        }
+        saveBtn.addListener(listener)
     }
 
 }

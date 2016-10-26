@@ -90,7 +90,6 @@ public class FileChooserField extends VisTable {
     }
 
     private void setupUI() {
-        pad(5);
         if (width <= 0) {
             add(textField).expandX().fillX().padRight(5);
             add(fcBtn).expandX().fillX().row();

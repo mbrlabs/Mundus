@@ -17,19 +17,23 @@
 package com.mbrlabs.mundus.editor.ui.modules.dialogs.settings
 
 import com.kotcrab.vis.ui.widget.VisLabel
-import com.kotcrab.vis.ui.widget.VisTable
 
 /**
  * @author Marcus Brummer
  * @version 26-10-2016
  */
-class AppearanceSettingsTable : VisTable() {
+class AppearanceSettingsTable : BaseSettingsTable() {
 
     init {
         top().left()
         padRight(5f).padLeft(6f)
 
         add(VisLabel("Appearance Settings")).left().row()
+        addSeparator().padBottom(10f)
+    }
+
+    override fun onSave() {
+
     }
 
 }
