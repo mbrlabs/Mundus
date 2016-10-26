@@ -35,26 +35,21 @@ import com.mbrlabs.mundus.editor.ui.widgets.FileChooserField
 class NewProjectDialog : BaseDialog("Create New Project") {
 
     private val projectName = VisTextField()
-    private val createBtn = VisTextButton("Create")
+    private val createBtn = VisTextButton("Create project")
     private val locationPath = FileChooserField(300)
 
     private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         isModal = true
-
-        val root = VisTable()
-        root.padTop(6f).padRight(6f).padBottom(22f)
-        add(root)
-
-        root.add(VisLabel("Project Name:")).right().padRight(5f)
-        root.add(this.projectName).height(21f).width(300f).fillX()
-        root.row().padTop(10f)
-        root.add(VisLabel("Location:")).right().padRight(5f)
         locationPath.setFileMode(FileChooser.SelectionMode.DIRECTORIES)
-        root.add(locationPath).row()
 
-        root.add(createBtn).width(93f).height(25f).colspan(2)
+
+        contentTable.add(VisLabel("Project Name")).left().row()
+        contentTable.add(this.projectName).padBottom(UI.PAD_BOTTOM).width(300f).fillX().row()
+        contentTable.add(VisLabel("Location")).left().row()
+        contentTable.add(locationPath).padBottom(UI.PAD_BOTTOM_X2).growX().row()
+        contentTable.add(createBtn).growX().row()
 
         setupListeners()
 

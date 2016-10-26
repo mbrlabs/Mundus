@@ -68,7 +68,6 @@ class ExportDialog : VisDialog("Exporting") {
         show(UI)
 
         Exporter(kryoManager, projectManager.current()).exportAsync(export.outputFolder, object: AsyncTaskListener {
-
             private var error = false
 
             override fun progressChanged(newProgressPercent: Int) {

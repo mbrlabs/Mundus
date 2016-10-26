@@ -32,7 +32,6 @@ import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor
 import com.mbrlabs.mundus.editor.core.kryo.descriptors.TerrainComponentDescriptor
 import com.mbrlabs.mundus.editor.core.project.ProjectContext
 import com.mbrlabs.mundus.editor.core.project.ProjectManager
-import com.mbrlabs.mundus.editor.ui.UI
 import org.apache.commons.io.FilenameUtils
 import java.io.File
 
@@ -41,8 +40,6 @@ import java.io.File
  * @version 26-10-2016
  */
 class Exporter(val kryo: KryoManager, val project: ProjectContext) {
-
-
 
     /**
      *
@@ -53,6 +50,7 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
         // because it would iterate over the scene graph arrays while rendering (on the main thread)
         // and while converting (on the other thread)
         val currentSceneDescriptor = DescriptorConverter.convert(project.currScene)
+        val jsonType = project.settings.export.jsonType
 
         val task = object: AsyncTask("export_${project.name}") {
             override fun doInBackground() {
@@ -92,7 +90,7 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
                     }
 
                     // convert & export
-                    exportScene(scene, file)
+                    exportScene(scene, file, jsonType)
                     progress += step
                     setProgressPercent(progress.toInt())
                     setMessage(scene.name)
@@ -120,9 +118,9 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
         asset.meta.file.copyTo(folder)
     }
 
-    private fun exportScene(scene: SceneDescriptor, file: FileHandle) {
+    private fun exportScene(scene: SceneDescriptor, file: FileHandle, jsonType: JsonWriter.OutputType) {
         val json = Json()
-        json.setOutputType(JsonWriter.OutputType.json)
+        json.setOutputType(jsonType)
         json.setWriter(file.writer(false))
 
         json.writeObjectStart()

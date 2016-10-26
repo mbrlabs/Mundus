@@ -38,8 +38,8 @@ class ExportSettingsTable : BaseSettingsTable(), ProjectChangedEvent.ProjectChan
     private val fileChooserField = FileChooserField(500)
 
     private val jsonType = VisSelectBox<JsonWriter.OutputType>()
-    private val allAssets = VisCheckBox("Export unused assets")
-    private val compression = VisCheckBox("Compress scenes")
+    private val allAssets = VisCheckBox("Export unused assets [will be ignored for now]")
+    private val compression = VisCheckBox("Compress scenes [will be ignored for now]")
 
     private val projectManager: ProjectManager = Mundus.inject()
     private val kryoManager: KryoManager = Mundus.inject()
