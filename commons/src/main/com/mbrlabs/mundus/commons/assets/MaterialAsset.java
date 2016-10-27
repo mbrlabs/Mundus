@@ -22,6 +22,8 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.PropertiesUtils;
 import com.mbrlabs.mundus.commons.assets.meta.Meta;
 
 import java.io.IOException;
@@ -32,6 +34,8 @@ import java.util.Map;
  * @version 09-10-2016
  */
 public class MaterialAsset extends Asset {
+
+    private static final ObjectMap<String, String> MAP = new ObjectMap<String, String>();
 
     public static final String EXTENSION = ".mat";
 
@@ -58,37 +62,35 @@ public class MaterialAsset extends Asset {
 
     @Override
     public void load() {
-//        Properties props = new Properties();
-//        try {
-//            props.load(file.read());
-//
-//            // shininess & opacity
-//            try {
-//                String value = props.getProperty(PROP_SHININESS, null);
-//                if (value != null) {
-//                    shininess = Float.valueOf(value);
-//                }
-//                value = props.getProperty(PROP_OPACITY, null);
-//                if (value != null) {
-//                    opacity = Float.valueOf(value);
-//                }
-//            } catch (NumberFormatException nfe) {
-//                nfe.printStackTrace();
-//            }
-//
-//            // diffuse color
-//            String diffuseHex = props.getProperty(PROP_DIFFUSE_COLOR);
-//            if (diffuseHex != null) {
-//                diffuseColor = Color.valueOf(diffuseHex);
-//            }
-//
-//            // asset dependencies
-//            diffuseTextureID = props.getProperty(PROP_DIFFUSE_TEXTURE, null);
-//            normalMapID = props.getProperty(PROP_MAP_NORMAL, null);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        MAP.clear();
+        try {
+            PropertiesUtils.load(MAP, file.reader());
+            // shininess & opacity
+            try {
+                String value = MAP.get(PROP_SHININESS, null);
+                if (value != null) {
+                    shininess = Float.valueOf(value);
+                }
+                value = MAP.get(PROP_OPACITY, null);
+                if (value != null) {
+                    opacity = Float.valueOf(value);
+                }
+            } catch (NumberFormatException nfe) {
+                nfe.printStackTrace();
+            }
+
+            // diffuse color
+            String diffuseHex = MAP.get(PROP_DIFFUSE_COLOR);
+            if (diffuseHex != null) {
+                diffuseColor = Color.valueOf(diffuseHex);
+            }
+
+            // asset dependencies
+            diffuseTextureID = MAP.get(PROP_DIFFUSE_TEXTURE, null);
+            normalMapID = MAP.get(PROP_MAP_NORMAL, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
