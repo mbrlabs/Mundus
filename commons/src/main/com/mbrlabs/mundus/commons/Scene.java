@@ -40,7 +40,9 @@ public class Scene implements Disposable {
     public MundusEnvironment environment;
     public Skybox skybox;
 
+    @Deprecated // TODO not here
     public Array<TerrainAsset> terrains;
+    @Deprecated // TODO not here
     public GameObject currentSelection;
 
     public PerspectiveCamera cam;

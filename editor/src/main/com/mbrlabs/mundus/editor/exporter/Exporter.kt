@@ -171,13 +171,11 @@ class Exporter(val kryo: KryoManager, val project: ProjectContext) {
         json.writeValue(JsonScene.MODEL_COMPONENT_MODEL_ID, comp.modelID)
 
         // materials
-        json.writeArrayStart(JsonScene.MODEL_COMPONENT_MATERIALS)
+        json.writeObjectStart(JsonScene.MODEL_COMPONENT_MATERIALS)
         for((key, value) in comp.materials) {
-            json.writeObjectStart()
             json.writeValue(key, value)
-            json.writeObjectEnd()
         }
-        json.writeArrayEnd()
+        json.writeObjectEnd()
 
         json.writeObjectEnd()
     }
