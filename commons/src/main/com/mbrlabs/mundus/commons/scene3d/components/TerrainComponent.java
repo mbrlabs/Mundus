@@ -31,8 +31,9 @@ public class TerrainComponent extends AbstractComponent {
     protected TerrainAsset terrain;
     protected Shader shader;
 
-    public TerrainComponent(GameObject go) {
+    public TerrainComponent(GameObject go, Shader shader) {
         super(go);
+        this.shader = shader;
         type = Component.Type.TERRAIN;
     }
 

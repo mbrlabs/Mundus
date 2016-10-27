@@ -397,7 +397,6 @@ public class ProjectManager implements Disposable {
                     Log.fatal(TAG, "model for modelInstance not found: {}", modelComponent.getModelAsset().getID());
                 }
             } else if (c.getType() == Component.Type.TERRAIN) {
-                ((TerrainComponent) c).setShader(Shaders.INSTANCE.getTerrainShader());
                 ((TerrainComponent) c).getTerrain().getTerrain().setTransform(go.getTransform());
             }
 

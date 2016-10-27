@@ -23,11 +23,13 @@ import com.mbrlabs.mundus.commons.Scene;
 import com.mbrlabs.mundus.commons.assets.AssetManager;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
+import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.importer.JsonScene;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent;
 
 /**
  * @author Marcus Brummer
@@ -88,6 +90,17 @@ public class SceneLoader {
         }
 
         // TODO terrain component
+        JsonValue terrainComp = jsonGo.get(JsonScene.GO_TERRAIN_COMPONENT);
+        if(terrainComp != null) {
+            TerrainComponent tc = new TerrainComponent(go, mundus.getShaders().getTerrainShader());
+            tc.setTerrain((TerrainAsset)
+                    assetManager.findAssetByID(terrainComp.getString(JsonScene.TERRAIN_COMPONENT_TERRAIN_ID)));
+            try {
+                go.addComponent(tc);
+            } catch (InvalidComponentException e) {
+                e.printStackTrace();
+            }
+        }
 
         // transformation
         final float[] transform = jsonGo.get(JsonScene.GO_TRANSFORM).asFloatArray();

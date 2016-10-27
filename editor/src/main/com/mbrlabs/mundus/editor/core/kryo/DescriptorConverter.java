@@ -273,7 +273,7 @@ public class DescriptorConverter {
         }
 
         terrain.getTerrain().transform = go.getTransform();
-        PickableTerrainComponent terrainComponent = new PickableTerrainComponent(go);
+        PickableTerrainComponent terrainComponent = new PickableTerrainComponent(go, Shaders.INSTANCE.getTerrainShader());
         terrainComponent.setTerrain(terrain);
 
         return terrainComponent;
