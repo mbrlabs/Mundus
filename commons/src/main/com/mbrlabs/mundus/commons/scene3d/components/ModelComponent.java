@@ -14,39 +14,33 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.editor.scene3d.components;
+package com.mbrlabs.mundus.commons.scene3d.components;
 
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.components.Component;
-import com.mbrlabs.mundus.editor.shader.Shaders;
-import com.mbrlabs.mundus.editor.tools.picker.PickerColorEncoder;
-import com.mbrlabs.mundus.editor.tools.picker.PickerIDAttribute;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Marcus Brummer
  * @version 17-01-2016
  */
-public class ModelComponent extends PickableComponent {
+public class ModelComponent extends AbstractComponent {
 
-    private ModelAsset modelAsset;
-    private ModelInstance modelInstance;
-    private Shader shader;
+    protected ModelAsset modelAsset;
+    protected ModelInstance modelInstance;
+    protected Shader shader;
 
-    private Map<String, MaterialAsset> materials;  // g3db material id to material asset uuid
+    protected ObjectMap<String, MaterialAsset> materials;  // g3db material id to material asset uuid
 
-    public ModelComponent(GameObject go) {
+    public ModelComponent(GameObject go, Shader shader) {
         super(go);
         type = Type.MODEL;
-        materials = new HashMap<String, MaterialAsset>();
-        shader = Shaders.INSTANCE.getEntityShader();
+        materials = new ObjectMap<String, MaterialAsset>();
+        this.shader = shader;
     }
 
     public Shader getShader() {
@@ -71,7 +65,7 @@ public class ModelComponent extends PickableComponent {
         applyMaterials();
     }
 
-    public Map<String, MaterialAsset> getMaterials() {
+    public ObjectMap<String, MaterialAsset> getMaterials() {
         return materials;
     }
 
@@ -86,17 +80,6 @@ public class ModelComponent extends PickableComponent {
 
             materialAsset.applyToMaterial(mat);
         }
-    }
-
-    @Override
-    public void encodeRaypickColorId() {
-        PickerIDAttribute goIDa = PickerColorEncoder.encodeRaypickColorId(gameObject);
-        this.modelInstance.materials.first().set(goIDa);
-    }
-
-    @Override
-    public void renderPick() {
-        gameObject.sceneGraph.batch.render(modelInstance, Shaders.INSTANCE.getPickerShader());
     }
 
     public ModelInstance getModelInstance() {
@@ -116,11 +99,10 @@ public class ModelComponent extends PickableComponent {
 
     @Override
     public Component clone(GameObject go) {
-        ModelComponent mc = new ModelComponent(go);
+        ModelComponent mc = new ModelComponent(go, shader);
         mc.modelAsset = this.modelAsset;
         mc.modelInstance = new ModelInstance(modelAsset.getModel());
         mc.shader = this.shader;
-        mc.encodeRaypickColorId();
         return mc;
     }
 

@@ -32,7 +32,8 @@ import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
-import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
+import com.mbrlabs.mundus.editor.scene3d.components.PickableModelComponent;
 import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.ui.UI;
 import com.mbrlabs.mundus.editor.utils.TerrainUtils;
@@ -56,7 +57,7 @@ public class ModelPlacementTool extends Tool {
 
     public ModelPlacementTool(ProjectManager projectManager, ModelBatch batch, CommandHistory history) {
         super(projectManager, batch, history);
-        setShader(Shaders.INSTANCE.getEntityShader());
+        setShader(Shaders.INSTANCE.getMODEL_SHADER());
         this.model = null;
         this.modelInstance = null;
     }
@@ -122,7 +123,7 @@ public class ModelPlacementTool extends Tool {
                 modelInstance.transform.getTranslation(tempV3);
                 modelGo.translate(tempV3);
 
-                ModelComponent modelComponent = new ModelComponent(modelGo);
+                PickableModelComponent modelComponent = new PickableModelComponent(modelGo, Shaders.INSTANCE.getMODEL_SHADER());
                 modelComponent.setShader(getShader());
                 modelComponent.setModel(model, true);
                 modelComponent.encodeRaypickColorId();

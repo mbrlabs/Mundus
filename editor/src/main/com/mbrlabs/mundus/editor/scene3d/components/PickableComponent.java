@@ -16,23 +16,15 @@
 
 package com.mbrlabs.mundus.editor.scene3d.components;
 
-import com.mbrlabs.mundus.commons.scene3d.GameObject;
-import com.mbrlabs.mundus.commons.scene3d.components.AbstractComponent;
-
 /**
  * Mouse pickable by color code picking system.
  *
  * @author Marcus Brummer
  * @version 24-02-2016
  */
-public abstract class PickableComponent extends AbstractComponent {
+public interface PickableComponent {
 
-    public PickableComponent(GameObject go) {
-        super(go);
-    }
-
-    public abstract void encodeRaypickColorId();
-
-    public abstract void renderPick();
+    void encodeRaypickColorId();
+    void renderPick();
 
 }

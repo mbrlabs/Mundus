@@ -24,21 +24,21 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
  */
 public interface Component {
 
-    public static enum Type {
+    enum Type {
         MODEL, TERRAIN, LIGHT, PARTICLE_SYSTEM
     }
 
-    public GameObject getGameObject();
+    GameObject getGameObject();
 
-    public void render(float delta);
+    void render(float delta);
 
-    public void update(float delta);
+    void update(float delta);
 
-    public Type getType();
+    Type getType();
 
-    public void setType(Type type);
+    void setType(Type type);
 
-    public void remove();
+    void remove();
 
-    public Component clone(GameObject go);
+    Component clone(GameObject go);
 }

@@ -23,7 +23,7 @@ import com.mbrlabs.mundus.commons.assets.MaterialAsset
 import com.mbrlabs.mundus.commons.assets.ModelAsset
 import com.mbrlabs.mundus.commons.scene3d.GameObject
 import com.mbrlabs.mundus.commons.scene3d.components.Component
-import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent
+import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent
 import com.mbrlabs.mundus.editor.ui.widgets.MaterialWidget
 
 /**
@@ -62,7 +62,7 @@ class ModelComponentWidget(modelComponent: ModelComponent) : ComponentWidget<Mod
 
     private fun buildMaterials() {
         materialContainer.clear()
-        for (g3dbMatID in component.materials.keys) {
+        for (g3dbMatID in component.materials.keys()) {
 
             val mw = MaterialWidget()
             mw.matChangedListener = object: MaterialWidget.MaterialChangedListener {

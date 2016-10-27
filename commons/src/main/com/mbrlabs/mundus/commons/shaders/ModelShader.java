@@ -36,10 +36,10 @@ import com.mbrlabs.mundus.commons.utils.ShaderUtils;
  * @author Marcus Brummer
  * @version 22-11-2015
  */
-public class EntityShader extends BaseShader {
+public class ModelShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/entity.vert.glsl";
-    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/entity.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/model.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/model.frag.glsl";
 
     // ============================ MATERIALS ============================
     protected final int UNIFORM_MATERIAL_DIFFUSE_TEXTURE = register(new Uniform("u_diffuseTexture"));
@@ -66,7 +66,7 @@ public class EntityShader extends BaseShader {
 
     private ShaderProgram program;
 
-    public EntityShader() {
+    public ModelShader() {
         super();
         program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
     }

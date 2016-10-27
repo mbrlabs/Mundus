@@ -16,72 +16,43 @@
 
 package com.mbrlabs.mundus.editor.scene3d.components;
 
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Shader;
-import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
+import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.tools.picker.PickerColorEncoder;
 import com.mbrlabs.mundus.editor.tools.picker.PickerIDAttribute;
-import com.mbrlabs.mundus.editor.utils.Log;
 
 /**
  * @author Marcus Brummer
- * @version 18-01-2016
+ * @version 27-10-2016
  */
-public class TerrainComponent extends PickableComponent {
+public class PickableModelComponent extends ModelComponent implements PickableComponent {
 
-    private static final String TAG = TerrainComponent.class.getSimpleName();
-
-    private TerrainAsset terrain;
-    private Shader shader;
-
-    public TerrainComponent(GameObject go) {
-        super(go);
-        type = Type.TERRAIN;
+    public PickableModelComponent(GameObject go, Shader shader) {
+        super(go, shader);
     }
 
     @Override
     public void encodeRaypickColorId() {
         PickerIDAttribute goIDa = PickerColorEncoder.encodeRaypickColorId(gameObject);
-        terrain.getTerrain().modelInstance.materials.first().set(goIDa);
+        this.modelInstance.materials.first().set(goIDa);
     }
 
     @Override
     public void renderPick() {
-        gameObject.sceneGraph.batch.render(terrain.getTerrain(), Shaders.INSTANCE.getPickerShader());
-    }
-
-    public void setTerrain(TerrainAsset terrain) {
-        this.terrain = terrain;
-    }
-
-    public TerrainAsset getTerrain() {
-        return terrain;
-    }
-
-    public Shader getShader() {
-        return shader;
-    }
-
-    public void setShader(Shader shader) {
-        this.shader = shader;
-    }
-
-    @Override
-    public void render(float delta) {
-        gameObject.sceneGraph.batch.render(terrain.getTerrain(), gameObject.sceneGraph.scene.environment, shader);
-    }
-
-    @Override
-    public void update(float delta) {
-
+        gameObject.sceneGraph.batch.render(modelInstance, Shaders.INSTANCE.getPickerShader());
     }
 
     @Override
     public Component clone(GameObject go) {
-        Log.fatal(TAG, "Terrain can not be cloned!");
-        return null;
+        PickableModelComponent mc = new PickableModelComponent(go, shader);
+        mc.modelAsset = this.modelAsset;
+        mc.modelInstance = new ModelInstance(modelAsset.getModel());
+        mc.shader = this.shader;
+        mc.encodeRaypickColorId();
+        return mc;
     }
-
 }

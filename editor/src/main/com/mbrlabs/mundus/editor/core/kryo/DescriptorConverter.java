@@ -49,8 +49,9 @@ import com.mbrlabs.mundus.editor.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.editor.core.registry.ProjectRef;
 import com.mbrlabs.mundus.editor.core.registry.Registry;
 import com.mbrlabs.mundus.editor.core.registry.Settings;
-import com.mbrlabs.mundus.editor.scene3d.components.ModelComponent;
-import com.mbrlabs.mundus.editor.scene3d.components.TerrainComponent;
+import com.mbrlabs.mundus.editor.scene3d.components.PickableModelComponent;
+import com.mbrlabs.mundus.editor.scene3d.components.PickableTerrainComponent;
+import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.utils.Log;
 
 import java.util.Locale;
@@ -202,9 +203,9 @@ public class DescriptorConverter {
         // convert components
         for (Component c : go.getComponents()) {
             if (c.getType() == Component.Type.MODEL) {
-                descriptor.setModelComponent(convert((ModelComponent) c));
+                descriptor.setModelComponent(convert((PickableModelComponent) c));
             } else if (c.getType() == Component.Type.TERRAIN) {
-                descriptor.setTerrainComponent(convert((TerrainComponent) c));
+                descriptor.setTerrainComponent(convert((PickableTerrainComponent) c));
             }
         }
 
@@ -224,7 +225,7 @@ public class DescriptorConverter {
     // ModelComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static ModelComponent convert(ModelComponentDescriptor descriptor, GameObject go,
+    public static PickableModelComponent convert(ModelComponentDescriptor descriptor, GameObject go,
             Map<String, Asset> assets) {
         ModelAsset model = (ModelAsset) assets.get(descriptor.getModelID());
 
@@ -233,7 +234,7 @@ public class DescriptorConverter {
             return null;
         }
 
-        ModelComponent component = new ModelComponent(go);
+        PickableModelComponent component = new PickableModelComponent(go, Shaders.INSTANCE.getMODEL_SHADER());
         component.setModel(model, false);
 
         for (String g3dbMatID : descriptor.getMaterials().keySet()) {
@@ -245,12 +246,12 @@ public class DescriptorConverter {
         return component;
     }
 
-    public static ModelComponentDescriptor convert(ModelComponent modelComponent) {
+    public static ModelComponentDescriptor convert(PickableModelComponent modelComponent) {
         ModelComponentDescriptor descriptor = new ModelComponentDescriptor();
         descriptor.setModelID(modelComponent.getModelAsset().getID());
 
         // materials
-        for (String g3dbMatID : modelComponent.getMaterials().keySet()) {
+        for (String g3dbMatID : modelComponent.getMaterials().keys()) {
             descriptor.getMaterials().put(g3dbMatID, modelComponent.getMaterials().get(g3dbMatID).getID());
         }
 
@@ -261,7 +262,7 @@ public class DescriptorConverter {
     // TerrainComponent
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static TerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go,
+    public static PickableTerrainComponent convert(TerrainComponentDescriptor descriptor, GameObject go,
             Map<String, Asset> assets) {
         // find terrainAsset
         TerrainAsset terrain = (TerrainAsset) assets.get(descriptor.getTerrainID());
@@ -272,13 +273,13 @@ public class DescriptorConverter {
         }
 
         terrain.getTerrain().transform = go.getTransform();
-        TerrainComponent terrainComponent = new TerrainComponent(go);
+        PickableTerrainComponent terrainComponent = new PickableTerrainComponent(go);
         terrainComponent.setTerrain(terrain);
 
         return terrainComponent;
     }
 
-    public static TerrainComponentDescriptor convert(TerrainComponent terrainComponent) {
+    public static TerrainComponentDescriptor convert(PickableTerrainComponent terrainComponent) {
         TerrainComponentDescriptor descriptor = new TerrainComponentDescriptor();
         descriptor.setTerrainID(terrainComponent.getTerrain().getID());
 

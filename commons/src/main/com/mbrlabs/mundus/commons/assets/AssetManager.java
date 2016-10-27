@@ -161,7 +161,9 @@ public class AssetManager implements Disposable {
         FileHandle[] metaFiles = rootFolder.list(metaFileFilter);
         for (FileHandle meta : metaFiles) {
             Asset asset = loadAsset(metaLoader.load(meta));
-            listener.onLoad(asset, assets.size, metaFiles.length);
+            if(listener != null) {
+                listener.onLoad(asset, assets.size, metaFiles.length);
+            }
         }
 
         // resolve material assets
@@ -179,7 +181,9 @@ public class AssetManager implements Disposable {
             asset.applyDependencies();
         }
 
-        listener.onFinish(assets.size);
+        if(listener != null) {
+            listener.onFinish(assets.size);
+        }
     }
 
     /**

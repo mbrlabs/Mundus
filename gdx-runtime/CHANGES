@@ -1,5 +1,2 @@
-[0.0.8]
-
-[0.0.7] ~ 28/02/2016
-- Added loading of exported projects
-- Added rendering of terrain & models
+[0.1.0]
+- First working implementation compatible with the v0.1.0 Mundus editor

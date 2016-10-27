@@ -26,7 +26,8 @@ import com.mbrlabs.mundus.commons.assets.TerrainAsset
 import com.mbrlabs.mundus.commons.scene3d.GameObject
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph
 import com.mbrlabs.mundus.commons.shaders.TerrainShader
-import com.mbrlabs.mundus.editor.scene3d.components.TerrainComponent
+import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent
+import com.mbrlabs.mundus.editor.scene3d.components.PickableTerrainComponent
 
 private var tempVI = VertexInfo()
 
@@ -36,7 +37,7 @@ fun createTerrainGO(sg: SceneGraph, shader: TerrainShader, goID: Int, goName: St
     terrainGO.name = goName
 
     terrain.terrain.setTransform(terrainGO.transform)
-    val terrainComponent = TerrainComponent(terrainGO)
+    val terrainComponent = PickableTerrainComponent(terrainGO)
     terrainComponent.terrain = terrain
     terrainGO.components.add(terrainComponent)
     terrainComponent.shader = shader
