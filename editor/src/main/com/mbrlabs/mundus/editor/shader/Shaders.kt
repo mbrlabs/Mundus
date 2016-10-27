@@ -19,8 +19,8 @@ package com.mbrlabs.mundus.editor.shader
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.utils.Disposable
 import com.mbrlabs.mundus.commons.shaders.EntityShader
-import com.mbrlabs.mundus.commons.skybox.SkyboxShader
-import com.mbrlabs.mundus.commons.terrain.TerrainShader
+import com.mbrlabs.mundus.commons.shaders.SkyboxShader
+import com.mbrlabs.mundus.commons.shaders.TerrainShader
 import com.mbrlabs.mundus.editor.tools.picker.PickerShader
 
 /**

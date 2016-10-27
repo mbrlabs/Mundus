@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.terrain;
+package com.mbrlabs.mundus.commons.shaders;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,6 +29,9 @@ import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.MundusEnvironment;
 import com.mbrlabs.mundus.commons.env.lights.DirectionalLight;
 import com.mbrlabs.mundus.commons.env.lights.DirectionalLightsAttribute;
+import com.mbrlabs.mundus.commons.terrain.SplatTexture;
+import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
+import com.mbrlabs.mundus.commons.terrain.TerrainTextureAttribute;
 import com.mbrlabs.mundus.commons.utils.ShaderUtils;
 
 /**
@@ -37,8 +40,8 @@ import com.mbrlabs.mundus.commons.utils.ShaderUtils;
  */
 public class TerrainShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.vert.glsl";
-    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/terrain/terrain.frag.glsl";
+    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.vert.glsl";
+    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.frag.glsl";
 
     // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
@@ -73,7 +76,7 @@ public class TerrainShader extends BaseShader {
     private final ShaderProgram program;
 
     public TerrainShader() {
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, true);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
     @Override

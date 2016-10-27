@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.Array
 import com.mbrlabs.mundus.commons.assets.TerrainAsset
 import com.mbrlabs.mundus.commons.scene3d.GameObject
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph
-import com.mbrlabs.mundus.commons.terrain.TerrainShader
+import com.mbrlabs.mundus.commons.shaders.TerrainShader
 import com.mbrlabs.mundus.editor.scene3d.components.TerrainComponent
 
 private var tempVI = VertexInfo()

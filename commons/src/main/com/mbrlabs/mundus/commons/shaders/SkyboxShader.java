@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.skybox;
+package com.mbrlabs.mundus.commons.shaders;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.Renderable;
@@ -34,8 +34,8 @@ import com.mbrlabs.mundus.commons.utils.ShaderUtils;
  */
 public class SkyboxShader extends BaseShader {
 
-    private final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/skybox/skybox.vert.glsl";
-    private final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/skybox/skybox.frag.glsl";
+    private final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/skybox.vert.glsl";
+    private final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/skybox.frag.glsl";
 
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
@@ -50,7 +50,7 @@ public class SkyboxShader extends BaseShader {
 
     public SkyboxShader() {
         super();
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, true);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
     @Override

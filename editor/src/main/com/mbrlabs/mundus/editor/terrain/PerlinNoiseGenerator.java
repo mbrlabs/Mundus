@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.terrain.terraform;
+package com.mbrlabs.mundus.editor.terrain;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.mbrlabs.mundus.commons.terrain.Terrain;

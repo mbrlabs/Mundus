@@ -22,25 +22,11 @@ uniform mat4 u_transMatrix;
 uniform mat4 u_projViewMatrix;
 uniform vec3 u_camPos;
 
-// lights
-struct DirectionalLight {
-	vec4 color;
-	vec3 direction;
-	float intensity;
-};
-struct AmbientLight {
-	vec4 color;
-	float intensity;
-};
-uniform AmbientLight u_ambientLight;
-uniform DirectionalLight u_directionalLight;
-
 // Fog
-uniform float  u_fogDensity;
-uniform float  u_fogGradient;
+uniform float u_fogDensity;
+uniform float u_fogGradient;
 
 uniform vec2 u_terrainSize;
-uniform int u_texture_has_splatmap;
 
 varying vec2 v_texCoord0;
 varying vec2 splatPosition;

@@ -27,7 +27,7 @@ import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab
-import com.mbrlabs.mundus.commons.terrain.terraform.Terraformer
+import com.mbrlabs.mundus.editor.terrain.Terraformer
 import com.mbrlabs.mundus.editor.Mundus
 import com.mbrlabs.mundus.editor.history.CommandHistory
 import com.mbrlabs.mundus.editor.history.commands.TerrainHeightCommand

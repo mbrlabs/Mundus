@@ -39,7 +39,7 @@ class WireframeShader : BaseShader() {
     private val UNIFORM_TRANS_MATRIX = register(BaseShader.Uniform("u_transMatrix"))
 
     init {
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, false)
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER)
     }
 
     override fun init() {

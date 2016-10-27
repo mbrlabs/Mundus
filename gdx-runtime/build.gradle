@@ -26,14 +26,23 @@ def buildJarTree() {
     return tree
 }
 
-task distRuntime(type: Jar) {
-    baseName = 'mundus-gdx-runtime'
-    version = '0.1.0'
+def VERSION = '0.1.0'
+def NAME = 'mundus-gdx-runtime'
+
+task distRuntime(type: Jar, dependsOn: classes) {
+    baseName = NAME
+    version = VERSION
 
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
     from { buildJarTree() }
-
 }
 
-distRuntime.dependsOn classes
+task distRuntimeSources(type: Jar, dependsOn: classes) {
+    baseName = NAME
+    version = VERSION
+    classifier = 'sources'
+
+    from files(sourceSets.main.allSource)
+    from("../commons/src/main")
+}

@@ -14,35 +14,24 @@
  * limitations under the License.
  */
 
-package com.mbrlabs.mundus.commons.terrain.terraform;
+package com.mbrlabs.mundus.editor.terrain;
 
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 
 /**
+ * Factory class for terraform generators.
  *
  * @author Marcus Brummer
  * @version 20-06-2016
  */
-public abstract class Generator<T extends Generator<T>> {
+public class Terraformer {
 
-    protected Terrain terrain;
-    protected float minHeight = 0;
-    protected float maxHeight = 50;
-
-    Generator(Terrain terrain) {
-        this.terrain = terrain;
+    public static PerlinNoiseGenerator perlin(Terrain terrain) {
+        return new PerlinNoiseGenerator(terrain);
     }
 
-    public T minHeight(float min) {
-        this.minHeight = min;
-        return (T) this;
+    public static HeightMapGenerator heightMap(Terrain terrain) {
+        return new HeightMapGenerator(terrain);
     }
-
-    public T maxHeight(float max) {
-        this.maxHeight = max;
-        return (T) this;
-    }
-
-    public abstract void terraform();
 
 }

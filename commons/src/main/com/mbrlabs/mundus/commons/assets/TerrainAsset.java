@@ -23,12 +23,10 @@ import com.mbrlabs.mundus.commons.terrain.SplatTexture;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
 import com.mbrlabs.mundus.commons.terrain.TerrainTexture;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 /**
  * @author Marcus Brummer
@@ -147,7 +145,7 @@ public class TerrainAsset extends Asset {
 
         DataInputStream is;
         try {
-            is = new DataInputStream(new BufferedInputStream(new GZIPInputStream(file.read())));
+            is = new DataInputStream(file.read());
             while (is.available() > 0) {
                 floatArray.add(is.readFloat());
             }

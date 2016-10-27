@@ -68,7 +68,7 @@ public class EntityShader extends BaseShader {
 
     public EntityShader() {
         super();
-        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER, true);
+        program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
     @Override

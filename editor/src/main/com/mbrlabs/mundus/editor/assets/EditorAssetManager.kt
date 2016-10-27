@@ -179,8 +179,7 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
         }
 
         // write terra file
-        val outputStream = DataOutputStream(
-                BufferedOutputStream(GZIPOutputStream(FileOutputStream(terraFile))))
+        val outputStream = DataOutputStream(BufferedOutputStream(FileOutputStream(terraFile)))
         for (f in data) {
             outputStream.writeFloat(f)
         }
@@ -319,8 +318,7 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
     @Throws(IOException::class)
     fun saveTerrainAsset(terrain: TerrainAsset) {
         // save .terra file
-        val outputStream = DataOutputStream(
-                BufferedOutputStream(GZIPOutputStream(FileOutputStream(terrain.file.file()))))
+        val outputStream = DataOutputStream(BufferedOutputStream(FileOutputStream(terrain.file.file())))
         for (f in terrain.data) {
             outputStream.writeFloat(f)
         }

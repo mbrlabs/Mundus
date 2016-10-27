@@ -44,7 +44,6 @@ varying float v_fog;
 
 varying vec2 splatPosition;
 
-
 // lights
 struct DirectionalLight {
 	vec4 color;

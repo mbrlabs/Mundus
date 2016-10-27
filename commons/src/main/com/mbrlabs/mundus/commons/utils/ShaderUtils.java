@@ -16,6 +16,7 @@
 
 package com.mbrlabs.mundus.commons.utils;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -33,20 +34,19 @@ public class ShaderUtils {
      *            path to vertex shader
      * @param fragmentShader
      *            path to fragment shader
-     * @param classpath
-     *            true if shader in classpath false if shader in assets folder
      *
      * @return compiled shader program
      */
-    public static ShaderProgram compile(String vertexShader, String fragmentShader, boolean classpath) {
+    public static ShaderProgram compile(String vertexShader, String fragmentShader) {
         String vert;
         String frag;
-        if (classpath) {
-            vert = Gdx.files.classpath(vertexShader).readString();
-            frag = Gdx.files.classpath(fragmentShader).readString();
-        } else {
+
+        if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
             vert = Gdx.files.internal(vertexShader).readString();
             frag = Gdx.files.internal(fragmentShader).readString();
+        } else {
+            vert = Gdx.files.classpath(vertexShader).readString();
+            frag = Gdx.files.classpath(fragmentShader).readString();
         }
 
         ShaderProgram program = new ShaderProgram(vert, frag);
