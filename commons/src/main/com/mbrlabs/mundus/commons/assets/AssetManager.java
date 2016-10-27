@@ -199,8 +199,8 @@ public class AssetManager implements Disposable {
      */
     public Asset loadAsset(Meta meta) throws MetaFileParseException, AssetNotFoundException {
         // get handle to asset
-        String assetPath = meta.getFile().pathWithoutExtension();
-        FileHandle assetFile = new FileHandle(assetPath);
+     //   String assetPath = meta.getFile().pathWithoutExtension();
+        FileHandle assetFile = meta.getFile().sibling(meta.getFile().nameWithoutExtension());
 
         // check if asset exists
         if (!assetFile.exists()) {

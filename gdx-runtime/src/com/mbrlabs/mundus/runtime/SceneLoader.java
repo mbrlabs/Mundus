@@ -25,6 +25,7 @@ import com.mbrlabs.mundus.commons.assets.MaterialAsset;
 import com.mbrlabs.mundus.commons.assets.ModelAsset;
 import com.mbrlabs.mundus.commons.importer.JsonScene;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.InvalidComponentException;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 
@@ -76,6 +77,13 @@ public class SceneLoader {
             JsonValue mats = modelComp.get(JsonScene.MODEL_COMPONENT_MATERIALS);
             for(JsonValue mat : mats.iterator()) {
                 mc.getMaterials().put(mat.name, (MaterialAsset) assetManager.findAssetByID(mats.getString(mat.name)));
+            }
+            mc.applyMaterials();
+
+            try {
+                go.addComponent(mc);
+            } catch (InvalidComponentException e) {
+                e.printStackTrace();
             }
         }
 

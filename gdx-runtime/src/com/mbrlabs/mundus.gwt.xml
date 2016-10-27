@@ -4,8 +4,8 @@
     <source path="mundus" />
 
     <!-- glsl shaders -->
-    <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/entity.frag.glsl" />
-    <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/entity.vert.glsl" />
+    <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/model.frag.glsl" />
+    <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/model.vert.glsl" />
     <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/skybox.frag.glsl" />
     <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/skybox.vert.glsl" />
     <extend-configuration-property name="gdx.files.classpath" value="com/mbrlabs/mundus/commons/shaders/terrain.frag.glsl" />
