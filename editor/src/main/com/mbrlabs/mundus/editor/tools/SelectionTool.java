@@ -65,11 +65,6 @@ public class SelectionTool extends Tool {
     }
 
     @Override
-    public void reset() {
-        getProjectManager().current().currScene.currentSelection = null;
-    }
-
-    @Override
     public void render() {
         if (getProjectManager().current().currScene.currentSelection != null) {
             getBatch().begin(getProjectManager().current().currScene.cam);
@@ -121,6 +116,16 @@ public class SelectionTool extends Tool {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void onActivated() {
+
+    }
+
+    @Override
+    public void onDisabled() {
+        getProjectManager().current().currScene.currentSelection = null;
     }
 
 }

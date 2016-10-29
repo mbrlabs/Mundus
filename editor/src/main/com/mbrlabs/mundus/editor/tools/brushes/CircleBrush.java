@@ -48,9 +48,5 @@ public class CircleBrush extends TerrainBrush {
         return Fa.Companion.getCIRCLE();
     }
 
-    @Override
-    public void reset() {
-
-    }
 
 }

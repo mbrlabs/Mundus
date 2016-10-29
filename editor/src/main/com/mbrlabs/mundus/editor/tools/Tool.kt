@@ -42,8 +42,9 @@ abstract class Tool(protected var projectManager: ProjectManager, protected var 
     abstract val icon: Drawable
     abstract val iconFont: String
 
-    abstract fun reset()
     abstract fun render()
     abstract fun act()
+    abstract fun onActivated()
+    abstract fun onDisabled()
 
 }

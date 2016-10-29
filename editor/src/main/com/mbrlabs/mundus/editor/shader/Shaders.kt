@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.mbrlabs.mundus.commons.shaders.ModelShader
 import com.mbrlabs.mundus.commons.shaders.SkyboxShader
 import com.mbrlabs.mundus.commons.shaders.TerrainShader
+import com.mbrlabs.mundus.editor.terrain.EditorTerrainShader
 import com.mbrlabs.mundus.editor.tools.picker.PickerShader
 
 /**
@@ -31,8 +32,8 @@ import com.mbrlabs.mundus.editor.tools.picker.PickerShader
 object Shaders : Disposable {
 
     val wireframeShader: WireframeShader
-    val terrainShader: TerrainShader
-    val MODEL_SHADER: ModelShader
+    val terrainShader: EditorTerrainShader
+    val modelShader: ModelShader
     val skyboxShader: SkyboxShader
     val pickerShader: PickerShader
 
@@ -40,10 +41,10 @@ object Shaders : Disposable {
         ShaderProgram.pedantic = false
         wireframeShader = WireframeShader()
         wireframeShader.init()
-        terrainShader = TerrainShader()
+        terrainShader = EditorTerrainShader()
         terrainShader.init()
-        MODEL_SHADER = ModelShader()
-        MODEL_SHADER.init()
+        modelShader = ModelShader()
+        modelShader.init()
         skyboxShader = SkyboxShader()
         skyboxShader.init()
         pickerShader = PickerShader()
@@ -53,7 +54,7 @@ object Shaders : Disposable {
     override fun dispose() {
         wireframeShader.dispose()
         terrainShader.dispose()
-        MODEL_SHADER.dispose()
+        modelShader.dispose()
         skyboxShader.dispose()
         pickerShader.dispose()
     }

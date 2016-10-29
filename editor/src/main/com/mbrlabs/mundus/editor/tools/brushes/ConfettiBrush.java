@@ -48,9 +48,5 @@ public class ConfettiBrush extends TerrainBrush {
         return Fa.Companion.getHASHTAG();
     }
 
-    @Override
-    public void reset() {
-
-    }
 
 }

@@ -21,15 +21,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.mbrlabs.mundus.commons.assets.TerrainAsset;
 import com.mbrlabs.mundus.commons.terrain.SplatMap;
@@ -42,6 +36,7 @@ import com.mbrlabs.mundus.editor.events.GlobalBrushSettingsChangedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
 import com.mbrlabs.mundus.editor.history.commands.TerrainHeightCommand;
 import com.mbrlabs.mundus.editor.history.commands.TerrainPaintCommand;
+import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.tools.Tool;
 
 /**
@@ -114,15 +109,11 @@ public abstract class TerrainBrush extends Tool {
 
     // individual brush settings
     protected final Vector3 brushPos = new Vector3();
-    protected float radius;
+    protected float radius = 25f;
     protected BrushMode mode;
     protected TerrainAsset terrainAsset;
     private BrushAction action;
 
-    // used for brush rendering
-    private Model sphereModel;
-    private ModelInstance sphereModelInstance;
-    private final BoundingBox boundingBox = new BoundingBox();
     private int lastMousePosIndicator = 0;
 
     // the pixmap brush
@@ -138,12 +129,6 @@ public abstract class TerrainBrush extends Tool {
     public TerrainBrush(ProjectManager projectManager, ModelBatch batch, CommandHistory history,
             FileHandle pixmapBrush) {
         super(projectManager, batch, history);
-
-        ModelBuilder modelBuilder = new ModelBuilder();
-        sphereModel = modelBuilder.createSphere(1, 1, 1, 30, 30, new Material(), VertexAttributes.Usage.Position);
-        sphereModelInstance = new ModelInstance(sphereModel);
-        sphereModelInstance.calculateBoundingBox(boundingBox);
-        scale(15);
 
         brushPixmap = new Pixmap(pixmapBrush);
         pixmapCenter = brushPixmap.getWidth() / 2;
@@ -289,8 +274,7 @@ public abstract class TerrainBrush extends Tool {
     }
 
     public void scale(float amount) {
-        sphereModelInstance.transform.scl(amount);
-        radius = (boundingBox.getWidth() * sphereModelInstance.transform.getScaleX()) / 2f;
+        radius *= amount;
     }
 
     public static float getStrength() {
@@ -352,11 +336,11 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public void render() {
-        if (terrainAsset.getTerrain().isOnTerrain(brushPos.x, brushPos.z)) {
-            getBatch().begin(getProjectManager().current().currScene.cam);
-            getBatch().render(sphereModelInstance, getShader());
-            getBatch().end();
-        }
+//        if (terrainAsset.getTerrain().isOnTerrain(brushPos.x, brushPos.z)) {
+//            getBatch().begin(getProjectManager().current().currScene.cam);
+//            getBatch().render(sphereModelInstance, getShader());
+//            getBatch().end();
+//        }
     }
 
     @Override
@@ -434,7 +418,8 @@ public abstract class TerrainBrush extends Tool {
         }
 
         lastMousePosIndicator = screenX + screenY;
-        sphereModelInstance.transform.setTranslation(brushPos);
+
+        Shaders.INSTANCE.getTerrainShader().setPickerPosition(brushPos.x, brushPos.y, brushPos.z);
 
         return false;
     }
@@ -446,12 +431,26 @@ public abstract class TerrainBrush extends Tool {
         } else {
             scale(1.1f);
         }
+        Shaders.INSTANCE.getTerrainShader().setPickerRadius(radius);
+
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return mouseMoved(screenX, screenY);
+    }
+
+    @Override
+    public void onDisabled() {
+        Shaders.INSTANCE.getTerrainShader().activatePicker(false);
+    }
+
+    @Override
+    public void onActivated() {
+        Shaders.INSTANCE.getTerrainShader().activatePicker(true);
+        Shaders.INSTANCE.getTerrainShader().setPickerPosition(brushPos.x, brushPos.y, brushPos.z);
+        Shaders.INSTANCE.getTerrainShader().setPickerRadius(radius);
     }
 
 }

@@ -18,10 +18,13 @@
 precision mediump float;
 #endif
 
+#define PI 3.1415926535897932384626433832795
+
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
 const vec4 COLOR_WHITE = vec4(1,1,1, 1.0);
 const vec4 COLOR_DARK = vec4(0.05,0.05,0.05, 1.0);
 const vec4 COLOR_BRIGHT = vec4(0.8,0.8,0.8, 1.0);
+const vec4 COLOR_BRUSH = vec4(0.4,0.4,0.4, 0.4);
 
 // splat textures
 uniform sampler2D u_texture_base;
@@ -32,6 +35,14 @@ uniform sampler2D u_texture_a;
 uniform sampler2D u_texture_splat;
 uniform int u_texture_has_splatmap;
 uniform int u_texture_has_diffuse;
+
+// mouse picking
+#ifdef PICKER
+uniform vec3 u_pickerPos;
+uniform float u_pickerRadius;
+uniform int u_pickerActive;
+varying vec3 v_pos;
+#endif
 
 uniform vec4 u_fogColor;
 
@@ -57,7 +68,6 @@ struct AmbientLight {
 uniform AmbientLight u_ambientLight;
 uniform DirectionalLight u_directionalLight;
 
-
 void main(void) {
 
     // blend textures
@@ -81,12 +91,23 @@ void main(void) {
     // ambient light
     diffuse_light += u_ambientLight.color * u_ambientLight.intensity;
 
+    gl_FragColor *= diffuse_light;
     // =================================================================
     //                          /Lighting
     // =================================================================
 
-    // lighting
-    gl_FragColor *= diffuse_light;
     // fog
     gl_FragColor = mix(gl_FragColor, u_fogColor, v_fog);
+
+    #ifdef PICKER
+    if(u_pickerActive == 1) {
+        float dist = distance(u_pickerPos, v_pos);
+        if(dist <= u_pickerRadius) {
+            float gradient = (u_pickerRadius - dist + 0.01) / u_pickerRadius;
+            gradient = 1.0 - clamp(cos(gradient * PI), 0.0, 1.0);
+            gl_FragColor += COLOR_BRUSH * gradient;
+        }
+    }
+    #endif
+
 }

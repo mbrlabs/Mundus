@@ -34,6 +34,10 @@ varying float v_fog;
 varying vec4 v_lighting;
 varying vec3 v_normal;
 
+#ifdef PICKER
+varying vec3 v_pos;
+#endif
+
 void main(void) {
     // position
     vec4 worldPos = u_transMatrix * vec4(a_position, 1.0);
@@ -54,5 +58,9 @@ void main(void) {
     } else {
         v_fog = 0.0;
     }
+
+    #ifdef PICKER
+    v_pos = worldPos.xyz;
+    #endif
 
 }

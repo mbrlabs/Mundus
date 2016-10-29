@@ -48,9 +48,5 @@ public class StarBrush extends TerrainBrush {
         return Fa.Companion.getSTAR();
     }
 
-    @Override
-    public void reset() {
-
-    }
 
 }

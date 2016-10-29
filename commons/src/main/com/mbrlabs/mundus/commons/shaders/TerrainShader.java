@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mbrlabs.mundus.commons.env.Fog;
 import com.mbrlabs.mundus.commons.env.MundusEnvironment;
@@ -40,8 +41,8 @@ import com.mbrlabs.mundus.commons.utils.ShaderUtils;
  */
 public class TerrainShader extends BaseShader {
 
-    private static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.vert.glsl";
-    private static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.frag.glsl";
+    protected static final String VERTEX_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.vert.glsl";
+    protected static final String FRAGMENT_SHADER = "com/mbrlabs/mundus/commons/shaders/terrain.frag.glsl";
 
     // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
@@ -71,9 +72,10 @@ public class TerrainShader extends BaseShader {
     protected final int UNIFORM_FOG_GRADIENT = register(new Uniform("u_fogGradient"));
     protected final int UNIFORM_FOG_COLOR = register(new Uniform("u_fogColor"));
 
+
     private Vector2 terrainSize = new Vector2();
 
-    private final ShaderProgram program;
+    protected ShaderProgram program;
 
     public TerrainShader() {
         program = ShaderUtils.compile(VERTEX_SHADER, FRAGMENT_SHADER);
@@ -132,7 +134,7 @@ public class TerrainShader extends BaseShader {
         renderable.meshPart.render(program);
     }
 
-    private void setLights(MundusEnvironment env) {
+    protected void setLights(MundusEnvironment env) {
         // ambient
         set(UNIFORM_AMBIENT_LIGHT_COLOR, env.getAmbientLight().color);
         set(UNIFORM_AMBIENT_LIGHT_INTENSITY, env.getAmbientLight().intensity);
@@ -153,7 +155,7 @@ public class TerrainShader extends BaseShader {
         // TODO point lights, spot lights
     }
 
-    private void setTerrainSplatTextures(Renderable renderable) {
+    protected void setTerrainSplatTextures(Renderable renderable) {
         final TerrainTextureAttribute splatAttrib = (TerrainTextureAttribute) renderable.material
                 .get(TerrainTextureAttribute.ATTRIBUTE_SPLAT0);
         final TerrainTexture terrainTexture = splatAttrib.terrainTexture;

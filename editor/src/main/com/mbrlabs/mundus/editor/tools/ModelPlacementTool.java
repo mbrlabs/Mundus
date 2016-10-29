@@ -32,7 +32,6 @@ import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.events.SceneGraphChangedEvent;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
-import com.mbrlabs.mundus.commons.scene3d.components.ModelComponent;
 import com.mbrlabs.mundus.editor.scene3d.components.PickableModelComponent;
 import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.ui.UI;
@@ -57,7 +56,7 @@ public class ModelPlacementTool extends Tool {
 
     public ModelPlacementTool(ProjectManager projectManager, ModelBatch batch, CommandHistory history) {
         super(projectManager, batch, history);
-        setShader(Shaders.INSTANCE.getMODEL_SHADER());
+        setShader(Shaders.INSTANCE.getModelShader());
         this.model = null;
         this.modelInstance = null;
     }
@@ -92,11 +91,6 @@ public class ModelPlacementTool extends Tool {
     }
 
     @Override
-    public void reset() {
-        dispose();
-    }
-
-    @Override
     public void render() {
         if (modelInstance != null) {
             getBatch().begin(getProjectManager().current().currScene.cam);
@@ -122,7 +116,7 @@ public class ModelPlacementTool extends Tool {
             modelInstance.transform.getTranslation(tempV3);
             modelGo.translate(tempV3);
 
-            PickableModelComponent modelComponent = new PickableModelComponent(modelGo, Shaders.INSTANCE.getMODEL_SHADER());
+            PickableModelComponent modelComponent = new PickableModelComponent(modelGo, Shaders.INSTANCE.getModelShader());
             modelComponent.setShader(getShader());
             modelComponent.setModel(model, true);
             modelComponent.encodeRaypickColorId();
@@ -168,6 +162,16 @@ public class ModelPlacementTool extends Tool {
     public void dispose() {
         this.model = null;
         this.modelInstance = null;
+    }
+
+    @Override
+    public void onActivated() {
+
+    }
+
+    @Override
+    public void onDisabled() {
+        dispose();
     }
 
 }

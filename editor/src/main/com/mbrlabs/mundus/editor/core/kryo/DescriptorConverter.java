@@ -234,7 +234,7 @@ public class DescriptorConverter {
             return null;
         }
 
-        PickableModelComponent component = new PickableModelComponent(go, Shaders.INSTANCE.getMODEL_SHADER());
+        PickableModelComponent component = new PickableModelComponent(go, Shaders.INSTANCE.getModelShader());
         component.setModel(model, false);
 
         for (String g3dbMatID : descriptor.getMaterials().keySet()) {

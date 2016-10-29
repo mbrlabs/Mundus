@@ -75,11 +75,12 @@ public class ToolManager extends InputAdapter implements Disposable {
         deactivateTool();
         activeTool = tool;
         inputManager.addProcessor(activeTool);
+        activeTool.onActivated();
     }
 
     public void deactivateTool() {
         if (activeTool != null) {
-            activeTool.reset();
+            activeTool.onDisabled();
             inputManager.removeProcessor(activeTool);
             activeTool = null;
         }
@@ -89,7 +90,7 @@ public class ToolManager extends InputAdapter implements Disposable {
         if (activeTool == null || activeTool == modelPlacementTool || activeTool instanceof TerrainBrush)
             activateTool(translateTool);
         else
-            activeTool.reset();
+            activeTool.onDisabled();
 
     }
 
@@ -113,7 +114,7 @@ public class ToolManager extends InputAdapter implements Disposable {
     public boolean keyUp(int keycode) {
         if (keycode == KEY_DEACTIVATE) {
             if (activeTool != null) {
-                activeTool.reset();
+                activeTool.onDisabled();
             }
             setDefaultTool();
             return true;
