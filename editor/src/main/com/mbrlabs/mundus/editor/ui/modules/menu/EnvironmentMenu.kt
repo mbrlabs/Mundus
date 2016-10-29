@@ -34,7 +34,7 @@ class EnvironmentMenu : Menu("Environment") {
     val fog = MenuItem("Fog")
 
     init {
-        addItem(ambientLight)
+       // addItem(ambientLight)
         addItem(skybox)
         addItem(fog)
 

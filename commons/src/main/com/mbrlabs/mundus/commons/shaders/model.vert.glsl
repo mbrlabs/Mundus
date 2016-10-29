@@ -61,7 +61,7 @@ void main(void) {
 
     // specular light
     vec3 vertexToCam = normalize(u_camPos - worldPos.xyz);
-    vec3 reflectedLightDirection = reflect(-u_directionalLight.direction, normal);
+    vec3 reflectedLightDirection = reflect(u_directionalLight.direction, normal);
     float specularity = max(dot(reflectedLightDirection, vertexToCam), 0.0) * u_shininess;
     v_lighting += specularity * u_directionalLight.color * u_directionalLight.intensity;
 
