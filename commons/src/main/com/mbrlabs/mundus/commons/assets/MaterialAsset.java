@@ -53,8 +53,8 @@ public class MaterialAsset extends Asset {
     private Color diffuseColor = Color.WHITE.cpy();
     private TextureAsset diffuseTexture;
     private TextureAsset normalMap;
-    private float shininess = 1f;
-    private float opacity = 1f;
+    private float shininess = 0f;
+    private float opacity = 0f;
 
     public MaterialAsset(Meta meta, FileHandle assetFile) {
         super(meta, assetFile);
@@ -94,7 +94,7 @@ public class MaterialAsset extends Asset {
     }
 
     /**
-     * Applies this model asset to the libGDX material.
+     * Applies this material asset to the libGDX material.
      *
      * @param material
      * @return

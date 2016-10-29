@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.shaders.BaseShader;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -45,9 +46,10 @@ public class ModelShader extends BaseShader {
     protected final int UNIFORM_MATERIAL_DIFFUSE_TEXTURE = register(new Uniform("u_diffuseTexture"));
     protected final int UNIFORM_MATERIAL_DIFFUSE_COLOR = register(new Uniform("u_diffuseColor"));
     protected final int UNIFORM_MATERIAL_DIFFUSE_USE_TEXTURE = register(new Uniform("u_diffuseUseTexture"));
+    protected final int UNIFORM_MATERIAL_SHININESS = register(new Uniform("u_shininess"));
 
-    // ============================ MATRICES & CAM POSITION
-    // ============================
+
+    // ============================ MATRICES & CAM POSITION ============================
     protected final int UNIFORM_PROJ_VIEW_MATRIX = register(new Uniform("u_projViewMatrix"));
     protected final int UNIFORM_TRANS_MATRIX = register(new Uniform("u_transMatrix"));
     protected final int UNIFORM_CAM_POS = register(new Uniform("u_camPos"));
@@ -119,6 +121,10 @@ public class ModelShader extends BaseShader {
             set(UNIFORM_MATERIAL_DIFFUSE_COLOR, diffuseColor.color);
             set(UNIFORM_MATERIAL_DIFFUSE_USE_TEXTURE, 0);
         }
+
+        // shininess
+        float shininess = ((FloatAttribute)renderable.material.get(FloatAttribute.Shininess)).value;
+        set(UNIFORM_MATERIAL_SHININESS, shininess);
 
         // Fog
         final Fog fog = env.getFog();

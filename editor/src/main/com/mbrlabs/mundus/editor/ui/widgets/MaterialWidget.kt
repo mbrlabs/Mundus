@@ -17,13 +17,17 @@
 package com.mbrlabs.mundus.editor.ui.widgets
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import com.kotcrab.vis.ui.util.FloatDigitsOnlyFilter
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
+import com.kotcrab.vis.ui.widget.VisTextField
 import com.kotcrab.vis.ui.widget.color.ColorPickerAdapter
 import com.mbrlabs.mundus.commons.assets.Asset
 import com.mbrlabs.mundus.commons.assets.MaterialAsset
@@ -54,6 +58,7 @@ class MaterialWidget : VisTable() {
     private val matNameLabel: VisLabel = VisLabel()
     private val diffuseColorField: ColorPickerField = ColorPickerField()
     private val diffuseAssetField: AssetSelectionField = AssetSelectionField()
+    private val shininessField = VisTextField()
 
     private val projectManager: ProjectManager = Mundus.inject()
 
@@ -67,6 +72,7 @@ class MaterialWidget : VisTable() {
                 diffuseColorField.selectedColor = value.diffuseColor
                 diffuseAssetField.setAsset(value.diffuseTexture)
                 matNameLabel.setText(value.name)
+                shininessField.text = value.shininess.toString()
             }
         }
 
@@ -106,6 +112,8 @@ class MaterialWidget : VisTable() {
         add(diffuseAssetField).growX().row()
         add(VisLabel("Diffuse color")).grow().row()
         add(diffuseColorField).growX().row()
+        add(VisLabel("Shininess")).growX().row()
+        add(shininessField).growX().row()
 
         matChangedBtn.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -133,6 +141,19 @@ class MaterialWidget : VisTable() {
                 projectManager.current().assetManager.addDirtyAsset(material!!)
             }
         }
+
+        // shininess
+        shininessField.textFieldFilter = FloatDigitsOnlyFilter(false)
+        shininessField.addListener(object: ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                if(shininessField.isInputValid && !shininessField.isEmpty) {
+                    material?.shininess = shininessField.text.toFloat()
+                    applyMaterialToModelAssets()
+                    applyMaterialToModelComponents()
+                    projectManager.current().assetManager.addDirtyAsset(material!!)
+                }
+            }
+        })
 
     }
 

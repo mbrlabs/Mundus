@@ -21,16 +21,16 @@ precision mediump float;
 const vec4 COLOR_TURQUOISE = vec4(0,0.714,0.586, 1.0);
 const vec4 AMBIENT = vec4(0.05,0.05,0.05,0.05);
 
-varying vec2 v_texCoord0;
-varying vec3 v_vectorToLight;
-varying vec3 v_surfaceNormal;
-varying float v_fog;
-varying vec4 v_lighting;
+varying vec2    v_texCoord0;
+varying vec3    v_vectorToLight;
+varying vec3    v_surfaceNormal;
+varying float   v_fog;
+varying vec4    v_lighting;
 
 // diffuse material
-uniform sampler2D u_diffuseTexture;
-uniform vec4 u_diffuseColor;
-uniform int u_diffuseUseTexture;
+uniform sampler2D   u_diffuseTexture;
+uniform vec4        u_diffuseColor;
+uniform int         u_diffuseUseTexture;
 
 // enviroment
 uniform vec4 u_fogColor;
