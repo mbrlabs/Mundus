@@ -319,7 +319,7 @@ class EditorAssetManager(assetsRoot: FileHandle) : AssetManager(assetsRoot) {
     fun saveTerrainAsset(terrain: TerrainAsset) {
         // save .terra file
         val outputStream = DataOutputStream(BufferedOutputStream(FileOutputStream(terrain.file.file())))
-        for (f in terrain.data) {
+        for (f in terrain.terrain.heightData) {
             outputStream.writeFloat(f)
         }
         outputStream.flush()

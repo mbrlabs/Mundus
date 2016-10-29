@@ -29,6 +29,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.tabbedpane.Tab
 import com.mbrlabs.mundus.editor.terrain.Terraformer
 import com.mbrlabs.mundus.editor.Mundus
+import com.mbrlabs.mundus.editor.core.project.ProjectManager
 import com.mbrlabs.mundus.editor.history.CommandHistory
 import com.mbrlabs.mundus.editor.history.commands.TerrainHeightCommand
 import com.mbrlabs.mundus.editor.ui.UI
@@ -53,6 +54,7 @@ class TerrainGenTab(private val parent: TerrainComponentWidget) : Tab(false, fal
     private val perlinNoiseMaxHeight = FloatFieldWithLabel("Max height", -1, true)
 
     private val history: CommandHistory = Mundus.inject()
+    private val projectManager: ProjectManager = Mundus.inject()
 
     init {
         root.align(Align.left)
@@ -76,6 +78,7 @@ class TerrainGenTab(private val parent: TerrainComponentWidget) : Tab(false, fal
                 val hm = hmInput.file
                 if (hm != null && hm.exists() && isImage(hm)) {
                     loadHeightMap(hm)
+                    projectManager.current().assetManager.addDirtyAsset(parent.component.terrain)
                 } else {
                     Dialogs.showErrorDialog(UI, "Please select a heightmap image")
                 }
@@ -88,6 +91,7 @@ class TerrainGenTab(private val parent: TerrainComponentWidget) : Tab(false, fal
                 val min = perlinNoiseMinHeight.float
                 val max = perlinNoiseMaxHeight.float
                 generatePerlinNoise(seed, min, max)
+                projectManager.current().assetManager.addDirtyAsset(parent.component.terrain)
             }
         })
     }

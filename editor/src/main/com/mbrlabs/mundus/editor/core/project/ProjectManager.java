@@ -229,10 +229,12 @@ public class ProjectManager implements Disposable {
             try {
                 Log.debug(TAG, "Saving dirty asset: {}", asset);
                 assetManager.saveAsset(asset);
+                System.out.println(asset.getName());
             } catch (IOException e) {
                 Log.exception(TAG, e);
             }
         }
+        assetManager.getDirtyAssets().clear();
 
         // save current in .pro file
         kryoManager.saveProjectContext(projectContext);
