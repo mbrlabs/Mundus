@@ -7,6 +7,7 @@
 - Performance improvements
 - Implemented a async project exporter
 - Improved terrain brush rendering
+- Fixed height sampling of the terrain flatten brush
 
 [0.0.9] ~ 18/10/2016
 - Updated libGDX to 1.9.4

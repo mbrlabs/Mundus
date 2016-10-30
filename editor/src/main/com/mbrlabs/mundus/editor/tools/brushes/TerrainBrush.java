@@ -202,9 +202,15 @@ public abstract class TerrainBrush extends Tool {
                     } else if (diff > 1f) {
                         final float elevation = getValueOfBrushPixmap(brushPos.x, brushPos.z, vertexPos.x, vertexPos.z,
                                 radius);
-                        final float newHeight = heightSample * elevation;
-                        if (Math.abs(heightSample - newHeight) < Math.abs(heightSample - terrain.heightData[index])) {
-                            terrain.heightData[index] = newHeight;
+                        // current height is lower than sample
+                        if(heightSample > terrain.heightData[index]) {
+                            terrain.heightData[index] += elevation * strength;
+                        } else {
+                            float newHeight = terrain.heightData[index] - elevation * strength;
+                            if(diff > Math.abs(newHeight) || terrain.heightData[index] > heightSample) {
+                                terrain.heightData[index] = newHeight;
+                            }
+
                         }
                     }
                 }
@@ -336,11 +342,7 @@ public abstract class TerrainBrush extends Tool {
 
     @Override
     public void render() {
-//        if (terrainAsset.getTerrain().isOnTerrain(brushPos.x, brushPos.z)) {
-//            getBatch().begin(getProjectManager().current().currScene.cam);
-//            getBatch().render(sphereModelInstance, getShader());
-//            getBatch().end();
-//        }
+        // rendering of the brush is done in the editor terrain shader
     }
 
     @Override
