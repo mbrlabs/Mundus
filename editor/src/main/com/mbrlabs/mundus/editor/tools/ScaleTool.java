@@ -31,6 +31,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.commons.scene3d.GameObject;
+import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.commons.utils.MathUtils;
 import com.mbrlabs.mundus.editor.Mundus;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
@@ -47,7 +48,11 @@ import com.mbrlabs.mundus.editor.utils.UsefulMeshs;
 import org.lwjgl.opengl.GL11;
 
 /**
- * @author codenigma
+ * Scales valid game objects.
+ *
+ * Game objects with terrain components can't be scaled.
+ *
+ * @author codenigma, mbrlabs
  * @version 07-10-2016
  */
 public class ScaleTool extends TransformTool {
@@ -80,7 +85,6 @@ public class ScaleTool extends TransformTool {
         this.shapeRenderer = shapeRenderer;
 
         ModelBuilder modelBuilder = new ModelBuilder();
-
         Model xPlaneHandleModel = UsefulMeshs.createArrowStub(new Material(ColorAttribute.createDiffuse(COLOR_X)),
                 Vector3.Zero, new Vector3(15, 0, 0));
         Model yPlaneHandleModel = UsefulMeshs.createArrowStub(new Material(ColorAttribute.createDiffuse(COLOR_Y)),
@@ -168,7 +172,13 @@ public class ScaleTool extends TransformTool {
     public void act() {
         super.act();
         ProjectContext projectContext = getProjectManager().current();
-        if (projectContext.currScene.currentSelection != null) {
+
+        final GameObject selection = projectContext.currScene.currentSelection;
+        if(!isScalable(selection)) {
+            return;
+        }
+
+        if (selection!= null) {
             translateHandles();
             if (state == TransformState.IDLE) {
                 return;
@@ -180,24 +190,24 @@ public class ScaleTool extends TransformTool {
                 switch (state) {
                 case TRANSFORM_X:
                     tempScale.x = (100 / tempScaleDst.x * dst) / 100;
-                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    selection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
                     modified = true;
                     break;
                 case TRANSFORM_Y:
                     tempScale.y = (100 / tempScaleDst.y * dst) / 100;
-                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    selection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
                     modified = true;
                     break;
                 case TRANSFORM_Z:
                     tempScale.z = (100 / tempScaleDst.z * dst) / 100;
-                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    selection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
                     modified = true;
                     break;
                 case TRANSFORM_XYZ:
                     tempScale.x = (100 / tempScaleDst.x * dst) / 100;
                     tempScale.y = (100 / tempScaleDst.y * dst) / 100;
                     tempScale.z = (100 / tempScaleDst.z * dst) / 100;
-                    projectContext.currScene.currentSelection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
+                    selection.setLocalScale(tempScale.x, tempScale.y, tempScale.z);
                     modified = true;
                     break;
                 default:
@@ -205,7 +215,7 @@ public class ScaleTool extends TransformTool {
                 }
             }
             if (modified) {
-                gameObjectModifiedEvent.setGameObject(projectContext.currScene.currentSelection);
+                gameObjectModifiedEvent.setGameObject(selection);
                 Mundus.INSTANCE.postEvent(gameObjectModifiedEvent);
             }
         }
@@ -213,8 +223,9 @@ public class ScaleTool extends TransformTool {
 
     private float getCurrentDst() {
         ProjectContext projectContext = getProjectManager().current();
-        if (projectContext.currScene.currentSelection != null) {
-            projectContext.currScene.currentSelection.getTransform().getTranslation(temp0);
+        final GameObject selection = projectContext.currScene.currentSelection;
+        if (selection != null) {
+            selection.getTransform().getTranslation(temp0);
             Vector3 pivot = projectContext.currScene.cam.project(temp0, viewport3d.getScreenX(),
                     viewport3d.getScreenY(), viewport3d.getWorldWidth(), viewport3d.getWorldHeight());
             Vector3 mouse = temp1.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0);
@@ -227,7 +238,13 @@ public class ScaleTool extends TransformTool {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         ProjectContext projectContext = getProjectManager().current();
+        final GameObject selection = projectContext.currScene.currentSelection;
         super.touchDown(screenX, screenY, pointer, button);
+
+        if(!isScalable(selection)) {
+            return false;
+        }
+
         if (button == Input.Buttons.LEFT && projectContext.currScene.currentSelection != null) {
             ScaleHandle handle = (ScaleHandle) handlePicker.pick(handles, projectContext.currScene, screenX, screenY);
             if (handle == null) {
@@ -235,7 +252,7 @@ public class ScaleTool extends TransformTool {
                 return false;
             }
             // current scale
-            projectContext.currScene.currentSelection.getScale(tempScale);
+            selection.getScale(tempScale);
 
             // set tempScaleDst
             tempScaleDst.x = getCurrentDst() / tempScale.x;
@@ -266,7 +283,7 @@ public class ScaleTool extends TransformTool {
 
         // scale command before
         if (state != TransformState.IDLE) {
-            command = new ScaleCommand(getProjectManager().current().currScene.currentSelection);
+            command = new ScaleCommand(selection);
             command.setBefore(tempScale);
         }
         return false;
@@ -299,6 +316,14 @@ public class ScaleTool extends TransformTool {
         scaleHandles();
         rotateHandles();
         translateHandles();
+    }
+
+    private boolean isScalable(GameObject go) {
+        if(go != null && go.findComponentByType(Component.Type.TERRAIN) != null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
