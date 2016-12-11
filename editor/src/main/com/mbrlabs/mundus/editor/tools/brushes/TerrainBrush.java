@@ -114,7 +114,7 @@ public abstract class TerrainBrush extends Tool {
     protected TerrainAsset terrainAsset;
     private BrushAction action;
 
-    private int lastMousePosIndicator = 0;
+    private boolean mouseMoved = false;
 
     // the pixmap brush
     private Pixmap brushPixmap;
@@ -146,7 +146,8 @@ public abstract class TerrainBrush extends Tool {
         }
 
         // only act if mouse has been moved
-        if (lastMousePosIndicator == Gdx.input.getX() + Gdx.input.getY()) return;
+        if (!mouseMoved) return;
+        mouseMoved = false;
 
         if (mode == BrushMode.PAINT) {
             paint();
@@ -419,7 +420,7 @@ public abstract class TerrainBrush extends Tool {
             terrainAsset.getTerrain().getRayIntersection(brushPos, ray);
         }
 
-        lastMousePosIndicator = screenX + screenY;
+        mouseMoved = true;
 
         Shaders.INSTANCE.getTerrainShader().setPickerPosition(brushPos.x, brushPos.y, brushPos.z);
 
