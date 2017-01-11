@@ -29,7 +29,7 @@ allprojects {
         jnaVersion = '4.1.0'
         jnaPlatformVersion = '3.5.2'
 
-        ktxVersion = '1.9.4-b2'
+        ktxVersion = '1.9.5-b1'
     }
 
     repositories {
