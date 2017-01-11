@@ -36,7 +36,7 @@ private fun launchEditor() {
     val editor = Editor()
     config.setWindowListener(editor)
 
-    // Set initial window size. See issue #11
+    // Set initial window size. See https://github.com/mbrlabs/Mundus/issues/11
     val dm = Lwjgl3ApplicationConfiguration.getDisplayMode()
     if (Platform.isMac()) {
         config.setWindowedMode((dm.width * 0.80f).toInt(), (dm.height * 0.80f).toInt())
@@ -47,7 +47,7 @@ private fun launchEditor() {
     config.setTitle(TITLE)
     config.setWindowSizeLimits(1350, 1, 9999, 9999)
     config.setWindowPosition(-1, -1)
-
+    config.setWindowIcon("icon/icon.png")
 
     Lwjgl3Application(editor, config)
     Log.info(TAG, "Shutting down [{}]", TITLE)

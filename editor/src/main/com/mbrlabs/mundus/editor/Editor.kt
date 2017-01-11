@@ -59,7 +59,6 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
     private lateinit var toolManager: ToolManager
 
     override fun create() {
-        Mundus.setAppIcon()
         Mundus.registerEventListener(this)
 
         camController = Mundus.inject()

@@ -17,7 +17,6 @@
 package com.mbrlabs.mundus.editor
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -41,9 +40,7 @@ import com.mbrlabs.mundus.editor.tools.ToolManager
 import com.mbrlabs.mundus.editor.tools.picker.GameObjectPicker
 import com.mbrlabs.mundus.editor.tools.picker.ToolHandlePicker
 import com.mbrlabs.mundus.editor.utils.Fa
-import com.mbrlabs.mundus.editor.utils.GLFWIconSetter
 import ktx.inject.register
-import org.apache.commons.io.FilenameUtils
 import java.io.File
 
 /**
@@ -121,21 +118,6 @@ object Mundus {
             bindSingleton(MetaSaver())
             bindSingleton(MetaLoader())
         }
-    }
-
-    /**
-     * Sets the application icon.
-     */
-    fun setAppIcon() {
-        val iconCache = File(FilenameUtils.concat(Registry.HOME_DIR, "cache/"))
-        if (!iconCache.exists()) {
-            iconCache.mkdirs()
-        }
-
-        val cache = FileHandle(iconCache)
-        val iconIco = Gdx.files.internal("icon.ico")
-        val iconPng = Gdx.files.internal("icon.png")
-        GLFWIconSetter.newInstance().setIcon(cache, iconIco, iconPng)
     }
 
     /**
