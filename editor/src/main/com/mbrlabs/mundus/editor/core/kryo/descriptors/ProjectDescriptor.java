@@ -16,10 +16,10 @@
 
 package com.mbrlabs.mundus.editor.core.kryo.descriptors;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
  * @author Marcus Brummer

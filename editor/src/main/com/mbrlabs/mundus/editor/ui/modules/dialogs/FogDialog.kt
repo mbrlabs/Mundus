@@ -137,7 +137,7 @@ class FogDialog : BaseDialog("Fog"), ProjectChangedEvent.ProjectChangedListener,
 
     private fun convert(input: String): Float? {
         try {
-            if (input.length == 0) return null
+            if (input.isEmpty()) return null
             return java.lang.Float.valueOf(input)
         } catch (e: Exception) {
             return null

@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisTable
-import com.mbrlabs.mundus.editor.utils.*
+import com.mbrlabs.mundus.editor.utils.formatFloat
 
 /**
  * Can be used inside a scroll pane & has the current value displayed on the

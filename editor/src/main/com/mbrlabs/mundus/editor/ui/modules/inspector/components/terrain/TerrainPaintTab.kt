@@ -221,7 +221,7 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
             removeTexture.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     if (channel != null) {
-                        val terrain = parentWidget.component.getTerrain()
+                        val terrain = parentWidget.component.terrain
                         if (channel == SplatTexture.Channel.R) {
                             terrain.splatR = null
                         } else if (channel == SplatTexture.Channel.G) {
@@ -249,7 +249,7 @@ class TerrainPaintTab(private val parentWidget: TerrainComponentWidget) : Tab(fa
                         UI.assetSelectionDialog.show(false, AssetTextureFilter(), object: AssetPickerDialog.AssetPickerListener {
                             override fun onSelected(asset: Asset?) {
                                 if (channel != null) {
-                                    val terrain = parentWidget.component.getTerrain()
+                                    val terrain = parentWidget.component.terrain
                                     if (channel == SplatTexture.Channel.BASE) {
                                         terrain.splatBase = asset as TextureAsset
                                     } else if (channel == SplatTexture.Channel.R) {

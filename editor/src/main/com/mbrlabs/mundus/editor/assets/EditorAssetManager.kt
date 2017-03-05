@@ -29,7 +29,6 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import java.io.*
 import java.util.*
-import java.util.zip.GZIPOutputStream
 
 /**
  * @author Marcus Brummer

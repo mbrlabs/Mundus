@@ -101,14 +101,12 @@ class ImportModelDialog : BaseDialog("Import Mesh"), Disposable {
 
         private var importedModel: ModelImporter.ImportedModel? = null
 
-        private val modelBatch: ModelBatch
-        private val cam: PerspectiveCamera
+        private val modelBatch: ModelBatch = ModelBatch()
+        private val cam: PerspectiveCamera = PerspectiveCamera()
         private val env: Environment
 
         init {
-            modelBatch = ModelBatch()
 
-            cam = PerspectiveCamera()
             cam.position.set(0f, 5f, 0f)
             cam.lookAt(0f, 0f, 0f)
             cam.near = 0.1f

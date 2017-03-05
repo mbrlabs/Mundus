@@ -76,11 +76,11 @@ class ExportSettingsTable : BaseSettingsTable(), ProjectChangedEvent.ProjectChan
     private fun updateValues() {
         val exportSettings = projectManager.current().settings?.export
         if(exportSettings?.outputFolder != null) {
-            fileChooserField.setText(exportSettings?.outputFolder?.path())
+            fileChooserField.setText(exportSettings.outputFolder?.path())
         }
         allAssets.isChecked = exportSettings?.allAssets!!
-        compression.isChecked = exportSettings?.compressScenes!!
-        jsonType.selected = exportSettings?.jsonType
+        compression.isChecked = exportSettings.compressScenes
+        jsonType.selected = exportSettings.jsonType
     }
 
     override fun onSave() {

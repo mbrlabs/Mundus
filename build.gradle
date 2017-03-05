@@ -59,7 +59,7 @@ project(":editor") {
         // compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
         compile "com.github.czyzby:ktx-inject:$ktxVersion"
 
-        // LibGDX
+        // libGDX
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 

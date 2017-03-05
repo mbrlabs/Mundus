@@ -16,10 +16,10 @@
 
 package com.mbrlabs.mundus.editor.terrain;
 
+import java.util.Random;
+
 import com.badlogic.gdx.math.Interpolation;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-
-import java.util.Random;
 
 /**
  *

@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.editor.tools.picker;
 
+import java.nio.ByteBuffer;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
@@ -26,8 +28,6 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mbrlabs.mundus.editor.utils.Log;
-
-import java.nio.ByteBuffer;
 
 /**
  * @author Marcus Brummer

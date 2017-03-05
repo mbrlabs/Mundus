@@ -32,11 +32,7 @@ import com.mbrlabs.mundus.editor.shader.Shaders
 abstract class Tool(protected var projectManager: ProjectManager, protected var batch: ModelBatch,
                     protected var history: CommandHistory) : InputAdapter(), Disposable {
 
-    protected var shader: Shader
-
-    init {
-        shader = Shaders.wireframeShader
-    }
+    protected var shader: Shader = Shaders.wireframeShader
 
     abstract val name: String
     abstract val icon: Drawable

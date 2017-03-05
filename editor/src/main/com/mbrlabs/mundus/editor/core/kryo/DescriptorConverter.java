@@ -16,6 +16,9 @@
 
 package com.mbrlabs.mundus.editor.core.kryo;
 
+import java.util.Locale;
+import java.util.Map;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Quaternion;
@@ -32,17 +35,7 @@ import com.mbrlabs.mundus.commons.scene3d.GameObject;
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph;
 import com.mbrlabs.mundus.commons.scene3d.components.Component;
 import com.mbrlabs.mundus.editor.core.EditorScene;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.BaseLightDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.FogDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ModelComponentDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectRefDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectSettingsDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.RegistryDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.SettingsDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.TerrainComponentDescriptor;
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectSettings;
 import com.mbrlabs.mundus.editor.core.registry.KeyboardLayout;
@@ -53,9 +46,6 @@ import com.mbrlabs.mundus.editor.scene3d.components.PickableModelComponent;
 import com.mbrlabs.mundus.editor.scene3d.components.PickableTerrainComponent;
 import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.utils.Log;
-
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Converts runtime formats into Kryo compatible formats for internal project

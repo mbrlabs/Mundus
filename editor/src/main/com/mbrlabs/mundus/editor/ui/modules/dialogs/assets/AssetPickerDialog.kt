@@ -16,7 +16,6 @@
 
 package com.mbrlabs.mundus.editor.ui.modules.dialogs.assets
 
-import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -48,7 +47,6 @@ class AssetPickerDialog : BaseDialog(AssetPickerDialog.TITLE),
         ProjectChangedEvent.ProjectChangedListener {
 
     private companion object {
-        private val TAG = AssetPickerDialog::class.java.simpleName
         private val TITLE = "Select an asset"
     }
 

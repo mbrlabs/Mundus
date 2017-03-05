@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.editor.utils
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.utils.GdxRuntimeException
 
 /**
  * Font Awesome font generator & unicode list.

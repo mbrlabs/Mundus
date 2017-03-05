@@ -27,10 +27,9 @@ import com.badlogic.gdx.utils.Array
 class CommandHistory(private val limit: Int) {
 
     private var pointer: Int = 0
-    private val commands: Array<Command>
+    private val commands: Array<Command> = Array(limit)
 
     init {
-        commands = Array<Command>(limit)
         pointer = -1
     }
 
@@ -96,11 +95,8 @@ class CommandHistory(private val limit: Int) {
     }
 
     fun clear() {
-        for (c in commands) {
-            if (c is DisposableCommand) {
-                c.dispose()
-            }
-        }
+        commands.filterIsInstance<DisposableCommand>()
+                .forEach { it.dispose() }
         commands.clear()
         pointer = -1
     }

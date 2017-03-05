@@ -35,18 +35,13 @@ import com.mbrlabs.mundus.editor.tools.picker.PickerIDAttribute
  */
 abstract class ToolHandle(val id: Int) : Disposable {
 
-    val position: Vector3
-    val rotationEuler: Vector3
-    val rotation: Quaternion
-    val scale: Vector3
-    val idAttribute: PickerIDAttribute
+    val position: Vector3 = Vector3()
+    val rotationEuler: Vector3 = Vector3()
+    val rotation: Quaternion = Quaternion()
+    val scale: Vector3 = Vector3(1f, 1f, 1f)
+    val idAttribute: PickerIDAttribute = PickerIDAttribute()
 
     init {
-        position = Vector3()
-        rotationEuler = Vector3()
-        rotation = Quaternion()
-        scale = Vector3(1f, 1f, 1f)
-        idAttribute = PickerIDAttribute()
         PickerColorEncoder.encodeRaypickColorId(id, idAttribute)
     }
 

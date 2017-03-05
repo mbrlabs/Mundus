@@ -16,16 +16,16 @@
 
 package com.mbrlabs.mundus.editor.core.registry;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.mbrlabs.mundus.editor.core.kryo.KryoManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.mbrlabs.mundus.editor.core.kryo.KryoManager;
 
 /**
  * Manages global settings.

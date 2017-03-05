@@ -16,6 +16,8 @@
 
 package com.mbrlabs.mundus.editor.tools;
 
+import org.lwjgl.opengl.GL11;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -40,8 +42,6 @@ import com.mbrlabs.mundus.editor.shader.Shaders;
 import com.mbrlabs.mundus.editor.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.editor.tools.picker.ToolHandlePicker;
 import com.mbrlabs.mundus.editor.utils.Fa;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author Marcus Brummer

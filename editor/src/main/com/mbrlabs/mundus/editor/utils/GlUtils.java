@@ -16,11 +16,11 @@
 
 package com.mbrlabs.mundus.editor.utils;
 
+import org.lwjgl.opengl.GL11;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author Marcus Brummer

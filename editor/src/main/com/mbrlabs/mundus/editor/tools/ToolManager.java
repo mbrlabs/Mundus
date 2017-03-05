@@ -24,11 +24,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.history.CommandHistory;
 import com.mbrlabs.mundus.editor.input.InputManager;
-import com.mbrlabs.mundus.editor.tools.brushes.CircleBrush;
-import com.mbrlabs.mundus.editor.tools.brushes.ConfettiBrush;
-import com.mbrlabs.mundus.editor.tools.brushes.SmoothCircleBrush;
-import com.mbrlabs.mundus.editor.tools.brushes.StarBrush;
-import com.mbrlabs.mundus.editor.tools.brushes.TerrainBrush;
+import com.mbrlabs.mundus.editor.tools.brushes.*;
 import com.mbrlabs.mundus.editor.tools.picker.GameObjectPicker;
 import com.mbrlabs.mundus.editor.tools.picker.ToolHandlePicker;
 

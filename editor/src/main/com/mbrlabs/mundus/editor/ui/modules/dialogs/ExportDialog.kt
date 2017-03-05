@@ -54,7 +54,7 @@ class ExportDialog : VisDialog("Exporting") {
         // validate
         val export = projectManager.current().settings?.export
         if(export == null || export.outputFolder == null
-                || export.outputFolder.path().length == 0 || !export.outputFolder.exists()) {
+                || export.outputFolder.path().isEmpty() || !export.outputFolder.exists()) {
             UI.toaster.error("Export Error\nYou have to supply a output folder in the export settings." +
                     "\nWindow -> Settings -> Export Settings")
             return

@@ -347,10 +347,9 @@ class Outline : VisTable(),
      */
     private inner class TreeNode(go: GameObject) : VisTable() {
 
-        val nameLabel: VisLabel
+        val nameLabel: VisLabel = VisLabel()
 
         init {
-            nameLabel = VisLabel()
             add(nameLabel).expand().fill()
             nameLabel.setText(go.name)
         }
@@ -361,22 +360,15 @@ class Outline : VisTable(),
      */
     private inner class RightClickMenu : PopupMenu() {
 
-        private val addEmpty: MenuItem
-        private val addTerrain: MenuItem
-        private val duplicate: MenuItem
-        private val rename: MenuItem
-        private val delete: MenuItem
+        private val addEmpty: MenuItem = MenuItem("Add Empty")
+        private val addTerrain: MenuItem = MenuItem("Add terrain")
+        private val duplicate: MenuItem = MenuItem("Duplicate")
+        private val rename: MenuItem = MenuItem("Rename")
+        private val delete: MenuItem = MenuItem("Delete")
 
         private var selectedGO: GameObject? = null
 
         init {
-
-            addEmpty = MenuItem("Add Empty")
-            addTerrain = MenuItem("Add terrain")
-            duplicate = MenuItem("Duplicate")
-            rename = MenuItem("Rename")
-            delete = MenuItem("Delete")
-
             // add empty
             addEmpty.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -495,11 +487,7 @@ class Outline : VisTable(),
             }
 
             // terrainAsset can not be duplicated
-            if (selectedGO == null || selectedGO!!.findComponentByType(Component.Type.TERRAIN) != null) {
-                duplicate.isDisabled = true
-            } else {
-                duplicate.isDisabled = false
-            }
+            duplicate.isDisabled = selectedGO == null || selectedGO!!.findComponentByType(Component.Type.TERRAIN) != null
         }
 
         fun showRenameDialog() {

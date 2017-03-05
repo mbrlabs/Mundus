@@ -32,13 +32,8 @@ class TranslateCommand(private var go: GameObject?) : Command {
         private val modEvent = GameObjectModifiedEvent(null)
     }
 
-    private var before: Vector3
-    private var after: Vector3
-
-    init {
-        this.before = Vector3()
-        this.after = Vector3()
-    }
+    private var before: Vector3 = Vector3()
+    private var after: Vector3 = Vector3()
 
     fun setBefore(before: Vector3) {
         this.before.set(before)

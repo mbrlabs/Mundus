@@ -16,11 +16,11 @@
 
 package com.mbrlabs.mundus.editor.terrain;
 
+import java.nio.ByteBuffer;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.mbrlabs.mundus.commons.terrain.Terrain;
-
-import java.nio.ByteBuffer;
 
 /**
  *

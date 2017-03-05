@@ -16,12 +16,12 @@
 
 package com.mbrlabs.mundus.editor.events;
 
-import com.mbrlabs.mundus.editor.utils.ReflectionUtils;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.mbrlabs.mundus.editor.utils.ReflectionUtils;
 
 /**
  * Simple Event bus via reflection.

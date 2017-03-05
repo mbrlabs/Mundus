@@ -19,7 +19,6 @@ package com.mbrlabs.mundus.editor.ui.modules.dialogs
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.kotcrab.vis.ui.widget.VisLabel
-import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisTextField
 import com.kotcrab.vis.ui.widget.file.FileChooser
@@ -76,7 +75,7 @@ class NewProjectDialog : BaseDialog("Create New Project") {
     }
 
     private fun validateInput(name: String?, path: String?): Boolean {
-        return name != null && name.length > 0 && path != null && path.length > 0
+        return name != null && name.isNotEmpty() && path != null && path.isNotEmpty()
     }
 
 }

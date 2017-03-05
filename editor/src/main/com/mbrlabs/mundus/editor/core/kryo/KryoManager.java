@@ -16,6 +16,14 @@
 
 package com.mbrlabs.mundus.editor.core.kryo;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.commons.io.FilenameUtils;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.kryo.Kryo;
@@ -23,30 +31,12 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.mbrlabs.mundus.commons.Scene;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.BaseLightDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.FogDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.GameObjectDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ModelComponentDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectRefDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.ProjectSettingsDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.RegistryDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.SceneDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.SettingsDescriptor;
-import com.mbrlabs.mundus.editor.core.kryo.descriptors.TerrainComponentDescriptor;
+import com.mbrlabs.mundus.editor.core.kryo.descriptors.*;
 import com.mbrlabs.mundus.editor.core.project.ProjectContext;
 import com.mbrlabs.mundus.editor.core.project.ProjectManager;
 import com.mbrlabs.mundus.editor.core.registry.KeyboardLayout;
 import com.mbrlabs.mundus.editor.core.registry.ProjectRef;
 import com.mbrlabs.mundus.editor.core.registry.Registry;
-
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Manages descriptor object <-> file io.

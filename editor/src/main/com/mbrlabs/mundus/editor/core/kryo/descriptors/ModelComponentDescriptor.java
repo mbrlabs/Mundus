@@ -16,9 +16,9 @@
 
 package com.mbrlabs.mundus.editor.core.kryo.descriptors;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-
 import java.util.HashMap;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
  * @author Marcus Brummer

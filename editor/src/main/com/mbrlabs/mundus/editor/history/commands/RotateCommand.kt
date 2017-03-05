@@ -32,13 +32,8 @@ class RotateCommand(private val go: GameObject) : Command {
         private val modEvent = GameObjectModifiedEvent(null)
     }
 
-    private var before: Quaternion
-    private var after: Quaternion
-
-    init {
-        this.before = Quaternion()
-        this.after = Quaternion()
-    }
+    private var before: Quaternion = Quaternion()
+    private var after: Quaternion = Quaternion()
 
     fun setBefore(before: Quaternion) {
         this.before.set(before)

@@ -32,7 +32,7 @@ class ShortcutController(registry: Registry, private val projectManager: Project
     private var isCtrlPressed = false
 
     override fun keyDown(keycode: Int): Boolean {
-        var keycode = convertKeycode(keycode)
+        val keycode = convertKeycode(keycode)
 
         // export
         if(keycode == Input.Keys.F1) {

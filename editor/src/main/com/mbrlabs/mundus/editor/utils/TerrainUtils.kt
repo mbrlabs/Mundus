@@ -26,7 +26,6 @@ import com.mbrlabs.mundus.commons.assets.TerrainAsset
 import com.mbrlabs.mundus.commons.scene3d.GameObject
 import com.mbrlabs.mundus.commons.scene3d.SceneGraph
 import com.mbrlabs.mundus.commons.shaders.TerrainShader
-import com.mbrlabs.mundus.commons.scene3d.components.TerrainComponent
 import com.mbrlabs.mundus.editor.scene3d.components.PickableTerrainComponent
 import com.mbrlabs.mundus.editor.shader.Shaders
 

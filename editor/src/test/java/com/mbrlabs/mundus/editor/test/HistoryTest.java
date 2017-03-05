@@ -16,12 +16,12 @@
 
 package com.mbrlabs.mundus.editor.test;
 
-import com.mbrlabs.mundus.editor.history.Command;
-import com.mbrlabs.mundus.editor.history.CommandHistory;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import com.mbrlabs.mundus.editor.history.Command;
+import com.mbrlabs.mundus.editor.history.CommandHistory;
 
 /**
  * @author Marcus Brummer

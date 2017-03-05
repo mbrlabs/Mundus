@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.utils.Disposable
 import com.mbrlabs.mundus.commons.shaders.ModelShader
 import com.mbrlabs.mundus.commons.shaders.SkyboxShader
-import com.mbrlabs.mundus.commons.shaders.TerrainShader
 import com.mbrlabs.mundus.editor.terrain.EditorTerrainShader
 import com.mbrlabs.mundus.editor.tools.picker.PickerShader
 
