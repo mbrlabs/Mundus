@@ -20,8 +20,8 @@ package com.mbrlabs.mundus.editor
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
+import com.kotcrab.vis.ui.util.OsUtils
 import com.mbrlabs.mundus.editor.utils.Log
-import com.sun.jna.Platform
 
 const private val TAG = "Main"
 const val TITLE = "Mundus v0.1.0"
@@ -38,7 +38,7 @@ private fun launchEditor() {
 
     // Set initial window size. See https://github.com/mbrlabs/Mundus/issues/11
     val dm = Lwjgl3ApplicationConfiguration.getDisplayMode()
-    if (Platform.isMac()) {
+    if (OsUtils.isMac()) {
         config.setWindowedMode((dm.width * 0.80f).toInt(), (dm.height * 0.80f).toInt())
     } else {
         config.setWindowedMode((dm.width * 0.95f).toInt(), (dm.height * 0.95f).toInt())

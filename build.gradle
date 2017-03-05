@@ -26,8 +26,6 @@ allprojects {
         junitVersion = '4.12'
         commonsIoVersion = '2.5'
         commonsLangVersion = '3.4'
-        jnaVersion = '4.1.0'
-        jnaPlatformVersion = '3.5.2'
 
         ktxVersion = '1.9.5-b1'
     }
@@ -72,10 +70,6 @@ project(":editor") {
         // commons
         compile "org.apache.commons:commons-lang3:$commonsLangVersion"
         compile "commons-io:commons-io:$commonsIoVersion"
-
-        // jna
-        compile "net.java.dev.jna:jna:$jnaVersion"
-        compile "net.java.dev.jna:platform:$jnaPlatformVersion"
 
         // other
         compile "com.kotcrab.vis:vis-ui:$visuiVersion"
