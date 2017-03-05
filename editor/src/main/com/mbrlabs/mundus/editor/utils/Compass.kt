@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g3d.Model
 import com.badlogic.gdx.graphics.g3d.ModelBatch
 import com.badlogic.gdx.graphics.g3d.ModelInstance
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder
+import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.ArrowShapeBuilder
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Disposable
 
@@ -39,14 +40,13 @@ class Compass(private var worldCam: PerspectiveCamera?) : Disposable {
     private val ARROW_CAP_SIZE = 0.2f
     private val ARROW_DIVISIONS = 5
 
-    private val ownCam: PerspectiveCamera
+    private val ownCam: PerspectiveCamera = PerspectiveCamera()
     private val compassModel: Model
     private val compassInstance: ModelInstance
 
     private val tempV3 = Vector3()
 
     init {
-        this.ownCam = PerspectiveCamera()
 
         val modelBuilder = ModelBuilder()
         modelBuilder.begin()
@@ -54,11 +54,11 @@ class Compass(private var worldCam: PerspectiveCamera?) : Disposable {
         val builder = modelBuilder.part("compass", GL20.GL_TRIANGLES,
                 (VertexAttributes.Usage.Position or VertexAttributes.Usage.ColorUnpacked).toLong(), Material())
         builder.setColor(Color.RED)
-        builder.arrow(0f, 0f, 0f, ARROW_LENGTH, 0f, 0f, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS)
+        ArrowShapeBuilder.build(builder, 0f, 0f, 0f, ARROW_LENGTH, 0f, 0f, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS)
         builder.setColor(Color.GREEN)
-        builder.arrow(0f, 0f, 0f, 0f, ARROW_LENGTH, 0f, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS)
+        ArrowShapeBuilder.build(builder, 0f, 0f, 0f, 0f, ARROW_LENGTH, 0f, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS)
         builder.setColor(Color.BLUE)
-        builder.arrow(0f, 0f, 0f, 0f, 0f, ARROW_LENGTH, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS)
+        ArrowShapeBuilder.build(builder, 0f, 0f, 0f, 0f, 0f, ARROW_LENGTH, ARROW_CAP_SIZE, ARROW_THIKNESS, ARROW_DIVISIONS)
         compassModel = modelBuilder.end()
         compassInstance = ModelInstance(compassModel)
 

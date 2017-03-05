@@ -35,11 +35,7 @@ class Toaster(stage: Stage) {
         SUCCESS, INFO, ERROR
     }
 
-    private val toastManager: ToastManager
-
-    init {
-        this.toastManager = ToastManager(stage)
-    }
+    private val toastManager: ToastManager = ToastManager(stage)
 
     /**
      * Amber background.

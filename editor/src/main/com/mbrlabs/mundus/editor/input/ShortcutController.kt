@@ -31,8 +31,8 @@ class ShortcutController(registry: Registry, private val projectManager: Project
 
     private var isCtrlPressed = false
 
-    override fun keyDown(keycode: Int): Boolean {
-        val keycode = convertKeycode(keycode)
+    override fun keyDown(code: Int): Boolean {
+        val keycode = convertKeycode(code)
 
         // export
         if(keycode == Input.Keys.F1) {
@@ -62,9 +62,8 @@ class ShortcutController(registry: Registry, private val projectManager: Project
         return false
     }
 
-    override fun keyUp(keycode: Int): Boolean {
-        var keycode = keycode
-        keycode = convertKeycode(keycode)
+    override fun keyUp(code: Int): Boolean {
+        val keycode = convertKeycode(code)
         if (keycode == Input.Keys.CONTROL_LEFT) {
             isCtrlPressed = false
         }

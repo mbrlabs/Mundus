@@ -113,7 +113,7 @@ class Editor : Lwjgl3WindowAdapter(), ApplicationListener,
         val sg = scene.sceneGraph
 
         UI.sceneWidget.setCam(context.currScene.cam)
-        UI.sceneWidget.setRenderer { cam ->
+        UI.sceneWidget.setRenderer {
             if (scene.skybox != null) {
                 batch.begin(scene.cam)
                 batch.render(scene.skybox.skyboxInstance, scene.environment, Shaders.skyboxShader)
