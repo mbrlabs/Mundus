@@ -37,9 +37,8 @@ public class SplatMap {
     private final Color c0 = new Color();
 
     public SplatMap(PixmapTextureAsset asset) {
-        Pixmap.setBlending(Pixmap.Blending.None);
         this.pixmapAsset = asset;
-        //clear();
+        this.pixmapAsset.getPixmap().setBlending(Pixmap.Blending.None);
 
         this.width = asset.getPixmap().getWidth();
         this.height = asset.getPixmap().getHeight();

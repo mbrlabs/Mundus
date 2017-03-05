@@ -113,7 +113,6 @@ class AssetPickerDialog : BaseDialog(AssetPickerDialog.TITLE),
                 }
             }
             listAdapter.add(asset)
-            Pixmap.setBlending(Pixmap.Blending.None)
         }
 
         listAdapter.itemsDataChanged()
