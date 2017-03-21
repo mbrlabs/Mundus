@@ -1,0 +1,13 @@
+{
+  "platform": "linux64",
+  "jdk": "jdks/jdk1.8.0_121.zip",
+  "executable": "Mundus",
+  "classpath": [
+    "../editor/build/libs/Mundus-0.1.0.jar"
+  ],
+  "mainclass": "com.mbrlabs.mundus.editor.Main",
+  "vmargs": [
+    "Xmx4G"
+  ],
+  "output": "build"
+}

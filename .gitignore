@@ -62,3 +62,7 @@ build/
 
 ## OS Specific
 .DS_Store
+
+# packr
+packr/jdks/
+packr/build/
