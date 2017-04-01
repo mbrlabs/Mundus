@@ -27,7 +27,7 @@ allprojects {
         commonsIoVersion = '2.5'
         commonsLangVersion = '3.4'
 
-        ktxVersion = '1.9.5-b1'
+        ktxVersion = '1.9.6-b1'
     }
 
     repositories {
