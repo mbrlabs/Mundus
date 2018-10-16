@@ -48,3 +48,6 @@ To get an overview over the project you might also want to check out the [Projec
 
 ## Working from source
 See this [wiki article](https://github.com/mbrlabs/Mundus/wiki/Working-from-source).
+
+## Credits
+Logo design: [Franziska Böhm / noxmoon.de](http://noxmoon.de) ([CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)) 
