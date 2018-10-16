@@ -1,4 +1,4 @@
-<img alt="" src="https://raw.githubusercontent.com/mbrlabs/Mundus/master/logo.svg" height="96px" width="96px" />
+<img alt="" src="/mbrlabs/Mundus/raw/master/logo.svg?sanitize=true" height="80px" />
 
 # Mundus [![](https://travis-ci.org/mbrlabs/Mundus.svg?branch=master)](https://travis-ci.org/mbrlabs/Mundus)
 Mundus is a platform independent 3D world editor, built with Java, Kotlin and LibGDX + VisUI.
